@@ -2254,7 +2254,7 @@ WHERE RowNumber BETWEEN 5 AND 10
   }
 
   @Override
-  public void createTempTable(String tableName, String[] columns, String onCommit)
+  public void createTempTable(String tableName, List<String> columns, String onCommit)
   {
     throw new UnsupportedOperationException("createTempTable method is not yet implemented for SQLServer");
   }

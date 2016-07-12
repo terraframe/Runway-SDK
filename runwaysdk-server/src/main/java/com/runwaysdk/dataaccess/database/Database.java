@@ -389,6 +389,20 @@ public class Database
   }
 
   /**
+   * A generalized delete that deletes all entries in the specified table that
+   * satisfy the given condition.
+   * 
+   * @param table
+   *          The name of the table.
+   * @param condition
+   *          The condition that all items to be deleted must satisfy.
+   */
+  public static void deleteWhere(String table, String condition)
+  {
+    instance().deleteWhere(table, condition);
+  }
+  
+  /**
    * Returns the blob as an array of bytes.
    * 
    * @param table
@@ -1481,7 +1495,7 @@ public class Database
    * @param columns An array of MdAttribute class names that represent the columns in the table.
    * @param onCommit Decides the fate of the temporary table upon transaction commit.
    */
-  public static void createTempTable(String tableName, String[] columns, String onCommit)
+  public static void createTempTable(String tableName, List<String> columns, String onCommit)
   {
     instance().createTempTable(tableName, columns, onCommit);
   }

@@ -77,13 +77,9 @@ public class DefaultStrategy implements OntologyStrategyIF
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
   @Override
-  public Relationship addLink(Term parent, Term child, String relationshipType)
+  public void addLink(Term parent, Term child, String relationshipType)
   {
-    Relationship rel = parent.addChild(child, relationshipType);
-    
-    rel.apply();
-    
-    return rel;
+    // NO OP
   }
 
   /**
@@ -170,19 +166,7 @@ public class DefaultStrategy implements OntologyStrategyIF
   @Override
   public void removeTerm(Term term, String relationshipType)
   {
-    OIterator<Term> parents = this.getDirectAncestors(term, relationshipType);
-
-    for (Term parent : parents)
-    {
-      term.removeAllParents(parent, relationshipType);
-    }
-
-    OIterator<Term> children = this.getDirectDescendants(term, relationshipType);
-
-    for (Term child : children)
-    {
-      term.removeAllChildren(child, relationshipType);
-    }
+    // NO OP
   }
 
   /*
@@ -196,7 +180,7 @@ public class DefaultStrategy implements OntologyStrategyIF
   @Override
   public void removeLink(Term parent, Term term, String relationshipType)
   {
-    term.removeAllParents(parent, relationshipType);
+    // NO OP
   }
 
   /*
@@ -216,5 +200,12 @@ public class DefaultStrategy implements OntologyStrategyIF
   public void configure(String termClass)
   {
     this.termClass = termClass;
+  }
+
+  @Override
+  public DeleteStrategyProviderIF getDeleteStrategyProvider(Term deleteRoot, String relationshipType)
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

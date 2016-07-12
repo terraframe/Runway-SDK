@@ -28,6 +28,7 @@ import java.util.List;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 
+import com.runwaysdk.business.Business;
 import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -37,6 +38,7 @@ import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
@@ -159,10 +161,17 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
     mdTermRelationship.apply();
 
+    // Gotta have a root term.
+    BusinessDAO root = BusinessDAO.newInstance(mdTerm.definesType());
+    root.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "ROOT");
+    root.setKey(Term.ROOT_KEY);
+    root.apply();
+    
     // Lets define a relationship A > B > C between these terms.
     BusinessDAO termA = BusinessDAO.newInstance(mdTerm.definesType());
     termA.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termA");
     termA.apply();
+    root.addChild(termA, mdTermRelationship.definesType()).apply();
     BusinessDAO termB = BusinessDAO.newInstance(mdTerm.definesType());
     termB.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termB");
     termB.apply();
@@ -199,9 +208,9 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
   {
     shutDownStrat(mdTerm.definesType());
 
-    TermHolder.getTermA().delete();
-    TermHolder.getTermB().delete();
-    TermHolder.getTermC().delete();
+    TestFixtureFactory.delete(TermHolder.getTermA());
+    TestFixtureFactory.delete(TermHolder.getTermB());
+    TestFixtureFactory.delete(TermHolder.getTermC());
 
     MdRelationship.get(mdTermRelationshipId).delete();
     MdBusiness.get(mdTermId).delete();
@@ -209,9 +218,9 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     didDoSetUp = false;
   }
   
-  public void testInitialized() {
-    assertTrue(Term.getStrategy(mdTerm.definesType()).isInitialized());
-  }
+//  public void testInitialized() {
+//    assertTrue(Term.getStrategy(mdTerm.definesType()).isInitialized());
+//  }
 
   public void testCopyTerm() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
   {
@@ -323,12 +332,13 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
   {
     List<Term> ancestors = TermHolder.getTermC().getAllAncestors(mdTermRelationship.definesType()).getAll();
 
-    assertEquals(2, ancestors.size());
+    assertEquals(3, ancestors.size());
     assertTrue(ancestors.contains(TermHolder.getTermB()));
     assertTrue(ancestors.contains(TermHolder.getTermA()));
+    assertTrue(ancestors.contains(Business.get(this.mdTerm.definesType(), Term.ROOT_KEY)));
   }
 
-  public void testRemoveInternalTerm() throws Exception
+  public void testDeleteInternalTerm() throws Exception
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
 
@@ -368,13 +378,13 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
     assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
 
-    parent1.removeTerm(mdTermRelationship.definesType());
+    parent1.delete();
 
     assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
     assertEquals(0, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
   }
-
-  public void testRemoveLeafTerm() throws Exception
+  
+  public void testDeleteLeafTerm() throws Exception
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
 
@@ -414,7 +424,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
     assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
 
-    child.removeTerm(mdTermRelationship.definesType());
+    child.delete();
 
     assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
     assertEquals(1, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());

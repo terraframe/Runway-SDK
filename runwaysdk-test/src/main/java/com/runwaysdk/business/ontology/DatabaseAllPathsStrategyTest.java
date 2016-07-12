@@ -22,6 +22,7 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 
 public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
@@ -75,5 +76,116 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
   {
     return "((" + DatabaseAllPathsStrategy.class.getCanonicalName() + ")strategy).configure(CLASS);";
   }
+  
+  public void testDelete()
+  {
+    AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
+    
+    util.destroyTestData();
+    try
+    {
+      util.createTestData();
+      util.validateAllpaths();
+      
+      System.out.println("Invoking delete on a Term");
+      
+      Term testRoot = Term.get(util.testRoot.getId());
+      
+      long pre = System.nanoTime();
+      testRoot.delete();
+      long post = System.nanoTime();
+      long elapsed = (post - pre) / 1000000000;
+      System.out.println("deleting a term took: " + elapsed + " seconds");
+      
+      util.validateAllpaths();
+      Term.get(util.f.getId()).delete(); // F exists outside the delRoot
+      Term.get(util.spacer.getId()).delete(); // Spacer exists outside the delRoot
+      util.ensureNoTestDataExists();
+    }
+    finally
+    {
+      util.destroyTestData();
+    }
+  }
 
+//  @Request
+//  public void testExportImport() throws Exception
+//  {
+//    AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
+//    
+//    util.destroyTestData();
+//    
+//    try
+//    {
+//      util.createTestData();
+//      
+//      OntologyExcelExporter.exportToFile(new File("OntologyExport2.xls"), Term.getByTermId("AllpathsTest Delete Root"));
+//      
+//      util.destroyTestData();
+//      
+//      OntologyExcelImporter.main(new String[]{"OntologyExport2.xls"});
+//      
+//      util.validateAllpaths();
+//    }
+//    finally
+//    {
+//      util.destroyTestData();
+//    }
+//  }
+  
+  @Request
+  public void testRemoveLink() throws Exception
+  {
+    AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
+    
+    util.destroyTestData();
+    
+    try
+    {
+      util.createTestData();
+      util.validateAllpaths();
+      
+      Term delRoot = Term.get(util.testRoot.getId());
+      Term b = Term.get(util.b.getId());
+      
+      b.removeLink(delRoot, mdTermRelationship.definesType());
+      util.validateAllpaths();
+    }
+    finally
+    {
+      util.destroyTestData();
+    }
+  }
+  
+  @Request
+  public void testDeleteRelationship() throws Exception
+  {
+    AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
+    
+    util.destroyTestData();
+    
+    try
+    {
+      util.createTestData();
+      util.validateAllpaths();
+      
+      Term a = Term.get(util.a.getId());
+      Term b = Term.get(util.b.getId());
+      Term delRoot = Term.get(util.testRoot.getId());
+      
+      b.removeLink(delRoot, mdTermRelationship.definesType());
+      b.addLink(a, mdTermRelationship.definesType());
+      util.validateAllpaths();
+      
+      b.addLink(delRoot, mdTermRelationship.definesType());
+      util.validateAllpaths();
+      
+      b.removeLink(a, mdTermRelationship.definesType());
+      util.validateAllpaths();
+    }
+    finally
+    {
+      util.destroyTestData();
+    }
+  }
 }

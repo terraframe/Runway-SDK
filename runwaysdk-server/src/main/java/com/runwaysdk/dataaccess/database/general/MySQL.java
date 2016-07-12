@@ -2170,7 +2170,7 @@ public class MySQL extends AbstractDatabase
   }
 
   @Override
-  public void createTempTable(String tableName, String[] columns, String onCommit)
+  public void createTempTable(String tableName, List<String> columns, String onCommit)
   {
     throw new UnsupportedOperationException("createTempTable is not yet implemented for MySQL.");
   }

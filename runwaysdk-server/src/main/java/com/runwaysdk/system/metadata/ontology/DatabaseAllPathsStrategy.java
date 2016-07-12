@@ -18,16 +18,25 @@
  */
 package com.runwaysdk.system.metadata.ontology;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Savepoint;
+import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;
-import com.runwaysdk.business.Relationship;
+import com.runwaysdk.business.ontology.DDMSAllpathsLogic;
 import com.runwaysdk.business.ontology.DefaultStrategy;
+import com.runwaysdk.business.ontology.DeleteStrategyProviderIF;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.IndexTypes;
@@ -39,6 +48,7 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.database.DuplicateDataDatabaseException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -83,7 +93,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   /**
    * @return
    */
-  private MdBusiness getAllPaths()
+  public MdBusiness getAllPaths()
   {
     if (this.termAllPaths == null)
     {
@@ -302,18 +312,10 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#addLink(com.runwaysdk .business.ontology.Term, com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @Override
-  public Relationship addLink(Term parent, Term child, String relationshipType)
+  public void addLink(Term parent, Term child, String relationshipType)
   {
-    /*
-     * First create the direct relationship
-     */
-    Relationship rel = parent.addChild(child, relationshipType);
-
-    rel.apply();
-
-    /*
-     * Second update the all paths data structure
-     */
+    this.add(child, relationshipType);
+    
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(PARENT_PARAMETER, parent);
     parameters.put(CHILD_PARAMETER, child);
@@ -321,8 +323,6 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
     OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
     database.copyTerm(parameters);
-
-    return rel;
   }
 
   /**
@@ -413,7 +413,6 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
     QueryFactory f = new QueryFactory();
 
-    // restrict the all paths table
     String allPathsType = this.getAllPaths().definesType();
     BusinessQuery pathsQ = f.businessQuery(allPathsType);
 
@@ -483,58 +482,13 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   @Override
   public void removeTerm(Term term, String relationshipType)
   {
-    boolean isLeaf = this.isLeaf(term, relationshipType);
-
-    /*
-     * First remove all of the direct links to the nodes parents.
-     */
-    OIterator<Term> parents = this.getDirectAncestors(term, relationshipType);
-
-    try
-    {
-      for (Term parent : parents)
-      {
-        term.removeAllParents(parent, relationshipType);
-      }
-    }
-    finally
-    {
-      parents.close();
-    }
-
-    if (!isLeaf)
-    {
-      /*
-       * First remove all of the direct links to the nodes children.
-       */
-      OIterator<Term> children = this.getDirectDescendants(term, relationshipType);
-
-      try
-      {
-        for (Term child : children)
-        {
-          term.removeAllChildren(child, relationshipType);
-        }
-      }
-      finally
-      {
-        children.close();
-      }
-
-      /*
-       * There is no good way to handle deletes of non-leaf nodes. As such we have to clear the all paths table and rebuild it.
-       */
-      this.clear();
-      this.rebuildAllPaths(relationshipType);
-    }
-
     QueryFactory f = new QueryFactory();
 
-    // restrict the all paths table
     String allPathsType = this.getAllPaths().definesType();
     BusinessQuery pathsQ = f.businessQuery(allPathsType);
 
     pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(term.getId()));
+    pathsQ.OR(pathsQ.aReference(PARENT_TERM_ATTR).EQ(term.getId()));
 
     OIterator<? extends Business> iter = pathsQ.getIterator();
     try
@@ -550,72 +504,133 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk .business.ontology.Term, com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @Override
   public void removeLink(Term parent, Term term, String relationshipType)
   {
-    boolean isLeaf = this.isLeaf(term, relationshipType);
-
-    /*
-     * First remove all of the direct links to the nodes parents.
-     */
-    parent.removeAllChildren(term, relationshipType);
-
-    if (isLeaf)
-    {
-      /*
-       * If this is a leaf the only thing left is delete all of the records in the all path where the term is a child.
-       */
-      QueryFactory f = new QueryFactory();
-
-      // restrict the all paths table
-      String allPathsType = this.getAllPaths().definesType();
-      BusinessQuery pathsQ = f.businessQuery(allPathsType);
-
-      pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(term.getId()));
-      pathsQ.AND(pathsQ.aReference(PARENT_TERM_ATTR).EQ(parent.getId()));
-
-      OIterator<? extends Business> iter = pathsQ.getIterator();
-      try
-      {
-        while (iter.hasNext())
-        {
-          iter.next().delete();
-        }
-      }
-      finally
-      {
-        iter.close();
-      }
-    }
-    else
-    {
-      /*
-       * There is no good way to handle deletes of non-leaf nodes. As such we have to clear the all paths table and rebuild it.
-       */
-      this.clear();
-      this.rebuildAllPaths(relationshipType);
-    }
+    DDMSAllpathsLogic helper = new DDMSAllpathsLogic(this, relationshipType);
+    
+    // First, remove the term and all children from the allpaths table.
+    helper.deleteTermAndChildrenFromAllPaths(term.getId(), relationshipType);
+    
+    // Now we update the term and all its children. This will rebuild the allpaths to what it should be.
+    helper.updateAllPathForTerm(term.getId(), null, true);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#add(com.runwaysdk.business .ontology.Term, java.lang.String)
    */
   @Override
   public void add(Term term, String relationshipType)
   {
-    // Create a new entry into the all paths table between where the term is the
-    // parent and the child
-    BusinessDAO instance = BusinessDAO.newInstance(this.getAllPaths().definesType());
-    instance.setValue(PARENT_TERM_ATTR, term.getId());
-    instance.setValue(CHILD_TERM_ATTR, term.getId());
-    instance.apply();
+    Savepoint savepoint = Database.setSavepoint();
+    
+    try
+    {
+      // Create a new entry into the all paths table between where the term is the
+      // parent and the child
+      BusinessDAO instance = BusinessDAO.newInstance(this.getAllPaths().definesType());
+      instance.setValue(PARENT_TERM_ATTR, term.getId());
+      instance.setValue(CHILD_TERM_ATTR, term.getId());
+      instance.apply();
+    }
+    catch (DuplicateDataDatabaseException ex)
+    {
+      // This might happen. Entry already exists.
+      Database.rollbackSavepoint(savepoint);
+    }
+    catch (RuntimeException ex)
+    {
+      Database.rollbackSavepoint(savepoint);
+      throw ex;
+    }
+    finally
+    {
+      Database.releaseSavepoint(savepoint);
+    }
   }
 
+  public class AllPathsDeleteStrategyProvider implements DeleteStrategyProviderIF
+  {
+    private String allpaths_table_name;
+    
+    private String relationshipType;
+    
+    private Long delRootACount;
+    
+    private AllPathsDeleteStrategyProvider(Term deleteRoot, String relationshipType)
+    {
+      allpaths_table_name = termAllPaths.getTableName();
+      
+      this.relationshipType = relationshipType;
+      
+      // Count how many ancestors this term has. This will be used for later calculations
+      QueryFactory f = new QueryFactory();
+      String allPathsType = DatabaseAllPathsStrategy.this.getAllPaths().definesType();
+      BusinessQuery pathsQ = f.businessQuery(allPathsType);
+      pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(deleteRoot.getId()));
+      delRootACount = pathsQ.getCount() - 1;
+    }
+
+    @Override
+    public boolean isTermAlreadyProcessed(Term child, Stack<Term> s)
+    {
+      String childCol = MdBusinessDAO.get(DatabaseAllPathsStrategy.this.getAllPaths().getId()).definesAttribute(CHILD_TERM_ATTR).getColumnName();
+      String allpathsAncestorsSql = Database.selectClause(Arrays.asList("count(*)"), Arrays.asList(allpaths_table_name), Arrays.asList(childCol + " = '" + child.getId() + "'"));
+      ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getId() + "' AND (" + allpathsAncestorsSql + ") > " + (2 + s.size() + delRootACount));
+      try
+      {
+        if (resultSet.next())
+        {
+          int count = resultSet.getInt("count");
+          
+          if (count > 0)
+          {
+            return true;
+          }
+        }
+        
+        return false;
+      }
+      catch (SQLException sqlEx1)
+      {
+        Database.throwDatabaseException(sqlEx1);
+      }
+      finally
+      {
+        try
+        {
+          java.sql.Statement statement = resultSet.getStatement();
+          resultSet.close();
+          statement.close();
+        }
+        catch (SQLException sqlEx2)
+        {
+          Database.throwDatabaseException(sqlEx2);
+        }
+      }
+      
+      return true;
+    }
+
+    @Override
+    public boolean doesAncestorHaveMultipleParents(Term child, Stack<Term> s)
+    {
+      // Count how many ancestors this term has. This will be used for later calculations
+      QueryFactory f = new QueryFactory();
+      String allPathsType = DatabaseAllPathsStrategy.this.getAllPaths().definesType();
+      BusinessQuery pathsQ = f.businessQuery(allPathsType);
+      pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(child.getId()));
+      long ancestorCount = pathsQ.getCount() - 1;
+      
+      return s.size() + delRootACount < ancestorCount;
+    }
+  }
+  
+  public DeleteStrategyProviderIF getDeleteStrategyProvider(Term deleteRoot, String relationshipType)
+  {
+    return new AllPathsDeleteStrategyProvider(deleteRoot, relationshipType);
+  }
 }

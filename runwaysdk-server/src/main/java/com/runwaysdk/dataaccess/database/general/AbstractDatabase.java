@@ -1137,7 +1137,7 @@ public abstract class AbstractDatabase
    * @param columns An array of MdAttribute class names that represent the columns in the table.
    * @param onCommit Decides the fate of the temporary table upon transaction commit.
    */
-  public abstract void createTempTable(String tableName, String[] columns, String onCommit);
+  public abstract void createTempTable(String tableName, List<String> columns, String onCommit);
 
   /**
    * Adds a field (column) to a table in the database with an alter table

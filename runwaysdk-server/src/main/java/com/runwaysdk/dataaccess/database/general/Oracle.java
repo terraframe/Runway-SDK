@@ -2644,7 +2644,7 @@ WHERE rn > 5 AND rn <= 10
   }
 
   @Override
-  public void createTempTable(String tableName, String[] columns, String onCommit)
+  public void createTempTable(String tableName, List<String> columns, String onCommit)
   {
     // TODO : This method is untested
     if (onCommit.equals("DROP"))

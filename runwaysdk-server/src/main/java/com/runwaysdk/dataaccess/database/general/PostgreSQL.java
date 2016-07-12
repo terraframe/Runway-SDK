@@ -163,7 +163,8 @@ public class PostgreSQL extends AbstractDatabase
    * @param columns An array of vendor-specific formatted columns.
    * @param onCommit Decides the fate of the temporary table upon transaction commit.
    */
-  public void createTempTable(String tableName, String[] columns, String onCommit)
+  @Override
+  public void createTempTable(String tableName, List<String> columns, String onCommit)
   {
     String statement = "CREATE TEMPORARY TABLE " + tableName + " (" + StringUtils.join(columns, ",") + ") ON COMMIT " + onCommit;
 
