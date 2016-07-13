@@ -30,9 +30,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     public static DefaultStrategy INSTANCE = new DefaultStrategy();
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see
    * com.runwaysdk.business.ontology.OntologyStrategyIF#isInitialized(java.lang
    * .String)
@@ -49,7 +47,7 @@ public class DefaultStrategy implements OntologyStrategyIF
   @Override
   public void initialize(String relationshipType)
   {
-
+    // NO OP
   }
 
   /**
@@ -58,7 +56,7 @@ public class DefaultStrategy implements OntologyStrategyIF
   @Override
   public void shutdown()
   {
-
+    // NO OP
   }
 
   /**
@@ -156,9 +154,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     return (OIterator<Term>) term.getChildren(relationshipType);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see
    * com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
    * .business.ontology.Term, java.lang.String)
@@ -169,9 +165,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     // NO OP
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see
    * com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
    * .business.ontology.Term, com.runwaysdk.business.ontology.Term,
@@ -183,9 +177,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     // NO OP
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see
    * com.runwaysdk.business.ontology.OntologyStrategyIF#add(com.runwaysdk.business
    * .ontology.Term, java.lang.String)

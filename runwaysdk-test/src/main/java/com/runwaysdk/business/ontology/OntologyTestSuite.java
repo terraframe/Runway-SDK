@@ -21,6 +21,8 @@
  */
 package com.runwaysdk.business.ontology;
 
+import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
+
 import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
@@ -48,6 +50,9 @@ public class OntologyTestSuite extends TestSuite
     TestSuite testSuite = new TestSuite(OntologyTestSuite.class.getSimpleName());
     testSuite.setName(OntologyTestSuite.class.getName());
 
+    testSuite.addTest(MdTermTest.suite());
+    testSuite.addTest(OntologyStrategyTest.suite());
+    testSuite.addTest(MdTermRelationshipTest.suite());
     testSuite.addTest(DatabaseAllPathsStrategyTest.suite());
 
     return testSuite;

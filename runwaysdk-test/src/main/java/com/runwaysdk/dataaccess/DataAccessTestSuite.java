@@ -101,9 +101,6 @@ public class DataAccessTestSuite extends TestSuite
     suite.addTest(RegexTest.suite());
     suite.addTest(EncryptionTest.suite());
     suite.addTest(MdDimensionTest.suite());
-    suite.addTest(MdTermTest.suite());
-    suite.addTest(OntologyStrategyTest.suite());
-    suite.addTest(MdTermRelationshipTest.suite());
 
     TestSuite noCaching = new TestSuite("Not Cached Tests");
     noCaching.addTest(new EntityMasterTestSetup(suite, EntityCacheMaster.CACHE_NOTHING.getCacheCode()));
