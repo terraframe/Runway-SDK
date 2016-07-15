@@ -40,12 +40,14 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.ServerConstants;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.database.general.PostgreSQL;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
 import com.runwaysdk.system.metadata.MdBusiness;
@@ -190,9 +192,9 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
   }
 
   /*
-   * (non-Javadoc)
+   * Copies the allpath entries of the parent and adds it to the child.
    * 
-   * @see com.runwaysdk.system.metadata.ontology.OntologyDatabase#copyTerm(java.util .Map)
+   * @ PRECONDITION The child has been added to the allpaths strategy, i.e. there is a record from child -> child.
    */
   @Override
   public void copyTerm(Map<String, Object> parameters)
@@ -391,11 +393,17 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
   public void initialize(Map<String, Object> parameters)
   {
     MdBusiness allPaths = (MdBusiness) this.getParameter(parameters, DatabaseAllPathsStrategy.ALL_PATHS_PARAMETER);
+    MdBusinessDAOIF allpathsDAO = MdBusinessDAO.get(allPaths.getId());
 
     String sequenceName = this.getSequenceName(allPaths);
 
     List<String> statements = new LinkedList<String>();
     statements.add("CREATE SEQUENCE " + sequenceName + " INCREMENT 1 START " + Database.STARTING_SEQUENCE_NUMBER);
+    
+    String allPathsTN = allPaths.getTableName();
+    String childCol = allpathsDAO.definesAttribute(DatabaseAllPathsStrategy.CHILD_TERM_ATTR).getColumnName();
+    String parentCol = allpathsDAO.definesAttribute(DatabaseAllPathsStrategy.PARENT_TERM_ATTR).getColumnName();
+    statements.add("ALTER TABLE " + allPathsTN + " ADD CONSTRAINT " + allPathsTN + "_unique_constraint UNIQUE(" + parentCol + ", " + childCol + ")");
 
     Database.executeBatch(statements);
   }

@@ -65,4 +65,28 @@ abstract public class AbstractConfigurationReader implements ConfigurationReader
     return ret;
   }
   
+  @Override
+  public Float getFloat(String key, Float defaultValue)
+  {
+    Float ret = getFloat(key);
+    
+    if (ret == null) {
+      return defaultValue;
+    }
+    
+    return ret;
+  }
+  
+  @Override
+  public Long getLong(String key, Long defaultValue)
+  {
+    Long ret = getLong(key);
+    
+    if (ret == null) {
+      return defaultValue;
+    }
+    
+    return ret;
+  }
+  
 }

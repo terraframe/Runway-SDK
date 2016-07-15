@@ -19,19 +19,33 @@
 package com.runwaysdk.business.ontology;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
 import com.runwaysdk.business.Business;
+import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.LocalStruct;
 import com.runwaysdk.business.Relationship;
+import com.runwaysdk.business.RelationshipQuery;
+import com.runwaysdk.constants.DatabaseProperties;
+import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.CoreException;
+import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
 import com.runwaysdk.system.metadata.ontology.StrategyState;
@@ -51,47 +65,32 @@ abstract public class Term extends Business
     super();
   }
 
-  public static Term get(String id)
-  {
-    return (Term) Business.get(id);
-  }
-
-  public static Term get(String definesType, String key)
-  {
-    return (Term) Business.get(definesType, key);
-  }
+  public static final String TEMP_TABLE = "RUNWAY_ALLPATHS_MULTIPARENT_TEMP";
+  public static final String TEMP_TERM_ID_COL = "termId";
+  public static final String TEMP_PARENT_ID_COL = "parentId";
+  public static final String TEMP_DEPTH_COL = "depth";
+  public static final String INDEX_NAME = "RUNWAY_ALLPATHS_MULTIPARENT_TEMP_INDEX";
+  public static final List<String> TEMP_TABLE_COLUMNS = Arrays.asList(
+      TEMP_TERM_ID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "64"),
+      TEMP_PARENT_ID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "64"),
+      TEMP_DEPTH_COL + " " + DatabaseProperties.getDatabaseType(MdAttributeIntegerInfo.CLASS)
+  );
+  private static final List<String> TEMP_TABLE_ATTRS = Arrays.asList(
+      MdAttributeCharacterInfo.CLASS, MdAttributeCharacterInfo.CLASS, MdAttributeIntegerInfo.CLASS
+  );
   
-  @Override
-  public String toString()
-  {
-    String template = "%s [%s : %s]";
-    Object[] args = new Object[] { this.getDisplayLabel().getValue(), this.getClassDisplayLabel(), this.buildKey() };
-    return String.format(template, args);
-  }
-  
+  /**
+   * Deletes the term, all of it's children, all associated relationships, and updates the ontology strategy across all ontological relationship types. May be a potentially expensive operation.
+   * 
+   * TODO: Multi-threading
+   * TODO: At what point is it faster to rebuild the Allpaths table?
+   * TODO: Add better support in Query API for managing tables so this temp table logic can be more cross DB
+   * TODO: Should the temp table logic be moved into the DeleteStrategyProvider?
+   * TODO: If we ever start using multiple relationships, we'll need to use different temp tables per relationship otherwise there could be conflicts.
+   */
   @Override
   @Transaction
-  public void apply()
-  {
-    if (this.getKey().equals(ROOT_KEY))
-    {
-      ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
-      exception.setRootName(this.getDisplayLabel().getValue());
-      exception.apply();
-      
-      throw exception;
-    }
-    
-    super.apply();
-  }
-  
-  @Override
   public void delete() {
-    delete(true);
-  }
-  @Transaction
-  public void delete(boolean deleteChildren)
-  {
     if (this.getKey().equals(ROOT_KEY))
     {
       ImmutableRootException exception = new ImmutableRootException("Cannot delete the root Term.");
@@ -102,64 +101,286 @@ abstract public class Term extends Business
     }
     
     String[] rels = TermUtil.getAllChildRelationships(this.getId());
-    for (int i = 0; i < rels.length; ++i) {
-      // 1. Delete this entity from the all paths strategy
-      this.removeTerm(rels[i]);
+    for (String relationship : rels)
+    {
+      exhaustiveDelete(relationship);
+    }
+    
+    super.delete();
+  }
+  
+  private void exhaustiveDelete(String relationship)
+  {
+    OntologyStrategyIF strategy = this.getStrategyWithInstance();
+    
+    DeleteStrategyProviderIF deleteProvider = strategy.getDeleteStrategyProvider(this, relationship);
+    
+    // Create us a temp table for storing multiple parents that need to be rebuilt on the post step.
+    Database.createTempTable(TEMP_TABLE, TEMP_TABLE_COLUMNS, "DROP");
+    Database.addNonUniqueIndex(TEMP_TABLE, TEMP_TERM_ID_COL, INDEX_NAME);
+    
+    // Depth first search because we're using a stack.
+    Stack<Term> s = new Stack<Term>();
+    s.push(this);
+    
+    stackLoop:
+    while (!s.empty())
+    {
+      Term current = s.pop();
       
-      // 2. Recursively delete all children.
-      if (deleteChildren && !this.isLeaf(rels[i]))
+      // Push the first child
+      OIterator<? extends Business> children = current.getChildren(relationship);
+      try
       {
-        Iterator<Term> children = this.getDirectDescendants(rels[i]).iterator();
-
+        // We're going to save on memory here by only pushing the first (unprocessed) child. When we loop back up to this node hopefully it will be deleted.
+        childLoop:
         while (children.hasNext())
         {
-          Term child = children.next();
-
-          boolean hasSingleParent = false;
-          OIterator<Term> it = child.getDirectAncestors(rels[i]);
-          if (it.hasNext()) {
-            it.next();
-            hasSingleParent = !it.hasNext();
+          Term child = (Term) children.next();
+          
+          // If this child is in our temp table, then it has already been processed (and not deleted). We have to do this query here to prevent infinite loops.
+          if (deleteProvider.isTermAlreadyProcessed(child, s))
+          {
+            continue childLoop;
           }
           
-          if (hasSingleParent)
-          {
-            children.remove();
-            child.delete();
-          }
+          s.push(current);
+          s.push(child);
+          continue stackLoop;
+        }
+      }
+      finally
+      {
+        children.close();
+      }
+      
+      
+      boolean multiParentAncestor = deleteProvider.doesAncestorHaveMultipleParents(current, s);
+      if (multiParentAncestor)
+      {
+        @SuppressWarnings("unchecked")
+        List<Term> parents = (List<Term>) current.getParents(relationship).getAll();
+        
+        List<String> parentIds = new ArrayList<String>();
+        for (Term parent : parents)
+        {
+          parentIds.add(parent.getId());
+        }
+        
+        insertIntoTemp(current.getId(), parentIds, s.size());
+      }
+      else
+      {
+        Database.deleteWhere(TEMP_TABLE, TEMP_TERM_ID_COL + " = '" + current.getId() + "' OR " + TEMP_PARENT_ID_COL + " = '" + current.getId() + "'");
+        
+        strategy.removeTerm(current, relationship);
+        if (s.size() != 0)
+        {
+          EntityDAO.get(current.getId()).getEntityDAO().delete();
         }
       }
     }
     
-    // 3. Delete this.
-    super.delete();
+    
+    // Post step: since we destroyed terms with multiple parents those multiple parents (that aren't our children) must now be rebuilt.
+    //   We have to do 2 loops here because we need two separate phases for deleting any still existing allpaths data and then rebuilding it.
+    String selectSql = Database.selectClause(Arrays.asList(TEMP_TERM_ID_COL, TEMP_PARENT_ID_COL, TEMP_DEPTH_COL), Arrays.asList(TEMP_TABLE),  new ArrayList<String>());
+    ResultSet resultSet = Database.query(selectSql + " ORDER BY " + TEMP_DEPTH_COL + " DESC");
+    
+    try
+    {
+      while (resultSet.next())
+      {
+        String termId = resultSet.getString(TEMP_TERM_ID_COL);
+        
+        strategy.removeTerm(Term.get(termId), relationship);
+      }
+    }
+    catch (SQLException sqlEx1)
+    {
+      Database.throwDatabaseException(sqlEx1);
+    }
+    finally
+    {
+      try
+      {
+        java.sql.Statement statement = resultSet.getStatement();
+        resultSet.close();
+        statement.close();
+      }
+      catch (SQLException sqlEx2)
+      {
+        Database.throwDatabaseException(sqlEx2);
+      }
+    }
+    
+    // Post Step loop #2: Rebuild the terms with multiple parents.
+    ResultSet resultSet2 = Database.query(selectSql + " ORDER BY " + TEMP_DEPTH_COL + " ASC");
+    
+    try
+    {
+      while (resultSet2.next())
+      {
+        String termId = resultSet2.getString(TEMP_TERM_ID_COL);
+        String parentId = resultSet2.getString(TEMP_PARENT_ID_COL);
+        
+        strategy.addLink(Term.get(parentId), Term.get(termId), relationship);
+      }
+    }
+    catch (SQLException sqlEx1)
+    {
+      Database.throwDatabaseException(sqlEx1);
+    }
+    finally
+    {
+      try
+      {
+        java.sql.Statement statement = resultSet2.getStatement();
+        resultSet2.close();
+        statement.close();
+      }
+      catch (SQLException sqlEx2)
+      {
+        Database.throwDatabaseException(sqlEx2);
+      }
+    }
+  }
+  private void insertIntoTemp(String termId, List<String> parentIds, Integer depth)
+  {
+    List<PreparedStatement> statements = new ArrayList<PreparedStatement>();
+    
+    for (String parentId : parentIds)
+    {
+      List<String> bindVals = Arrays.asList("?","?","?");
+      List<Object> vals = Arrays.asList(termId, parentId, String.valueOf(depth));
+      
+      PreparedStatement preparedStmt = Database.buildPreparedSQLInsertStatement(TEMP_TABLE, Arrays.asList(TEMP_TERM_ID_COL, TEMP_PARENT_ID_COL, TEMP_DEPTH_COL), bindVals, vals, TEMP_TABLE_ATTRS);
+      statements.add(preparedStmt);
+    }
+    
+    Database.executeStatementBatch(statements);
   }
   
   /**
-   * getRoot method to be used in Term.java, which allows for overriding in subtypes. We can't do this inside the regular getRoot method
-   * because it would cause an infinite loop when the subtypes "super" up to our getRoot method.  
+   * Returns a <code>MdTermDAOIF</code> that defines this Component's class.
    * 
-   * @param termType
-   * @return
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
+   * 
+   * @return a <code>MdTermDAOIF</code> that defines this Component's class.
    */
-//  private static Term getRootDelegate(String termType) {
-//    Class<?> clazz = LoaderDecorator.load(termType);
-//
-//    try
-//    {
-//      Method m = clazz.getMethod("getRoot", new Class<?>[] {});
-//      return (Term) m.invoke(null, new Object[] {});
-//    }
-//    catch (NoSuchMethodException e)
-//    {
-//      return Term.getRoot(termType);
-//    }
-//    catch (Exception e)
-//    {
-//      throw new CoreException(e);
-//    }
-//  }
+  public MdTermDAOIF getMdTerm()
+  {
+    return (MdTermDAOIF) MdClassDAO.getMdClassDAO(this.getType());
+  }
+
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
+   */
+  public OIterator<Term> getDirectAncestors(String relationshipType)
+  {
+    return getStrategyWithInstance().getDirectAncestors(this, relationshipType);
+  }
+
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectDescendants(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
+   */
+  public OIterator<Term> getDirectDescendants(String relationshipType)
+  {
+    return getStrategyWithInstance().getDirectDescendants(this, relationshipType);
+  }
+
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
+   */
+  public OIterator<Term> getAllAncestors(String relationshipType)
+  {
+    return getStrategyWithInstance().getAllAncestors(this, relationshipType);
+  }
+
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
+   */
+  public OIterator<Term> getAllDescendants(String relationshipType)
+  {
+    return getStrategyWithInstance().getAllDescendants(this, relationshipType);
+  }
+
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isLeaf(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
+   */
+  public boolean isLeaf(String relationshipType)
+  {
+    return getStrategyWithInstance().isLeaf(this, relationshipType);
+  }
+
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#addLink(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
+   */
+  @Transaction
+  public Relationship addLink(Term parent, String relationshipType)
+  {
+    if (this.getKey().equals(ROOT_KEY))
+    {
+      ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
+      exception.setRootName(this.getDisplayLabel().getValue());
+      exception.apply();
+      
+      throw exception;
+    }
+    
+    // Create the relationship
+    Relationship rel = parent.addChild(this, relationshipType);
+    rel.apply();
+    
+    // Update the strategy
+    getStrategyWithInstance().addLink(parent, this, relationshipType);
+    
+    return rel;
+  }
+
+  /**
+   * Removes the relationship between this term and the given parent. The ontology strategy will be updated such that this node (and all children nodes)
+   * remain correct.
+   */
+  @Transaction
+  public void removeLink(Term parent, String relationshipType)
+  {
+    if (this.getKey().equals(ROOT_KEY))
+    {
+      ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
+      exception.setRootName(this.getDisplayLabel().getValue());
+      exception.apply();
+      
+      throw exception;
+    }
+    
+    // Remove the relationship
+    parent.removeAllChildren(this, relationshipType);
+    
+    // Update the strategy
+    getStrategyWithInstance().removeLink(parent, this, relationshipType);
+  }
   
+  /**
+   * Adds the term to the relationship type strategy.
+   * 
+   * @param relationshipType
+   */
+  @Transaction
+  public void addTerm(String relationshipType)
+  {
+    getStrategyWithInstance().add(this, relationshipType);
+  }
+
   /**
    * Returns the root term of the ontology tree defined by this Term. This root term must be created manually, and with the key "ROOT".
    * Alternatively, this static method can also be overridden by the concrete Term subtype and a different root term can be provided.
@@ -343,130 +564,7 @@ abstract public class Term extends Business
   {
     return Term.getStrategy(this.getMdClass().definesType());
   }
-
-  /**
-   * Returns a <code>MdTermDAOIF</code> that defines this Component's class.
-   * 
-   * <br/>
-   * <b>Precondition:</b> true <br/>
-   * <b>Postcondition:</b> true
-   * 
-   * @return a <code>MdTermDAOIF</code> that defines this Component's class.
-   */
-  public MdTermDAOIF getMdTerm()
-  {
-    return (MdTermDAOIF) MdClassDAO.getMdClassDAO(this.getType());
-  }
-
-  /**
-   * Returns the unique id of this term.
-   * 
-   * @return
-   */
-  public String getId()
-  {
-    return "";
-  }
-
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term,
-   *      com.runwaysdk.business.ontology.TermRelationship)
-   */
-  public OIterator<Term> getDirectAncestors(String relationshipType)
-  {
-    return getStrategyWithInstance().getDirectAncestors(this, relationshipType);
-  }
-
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectDescendants(com.runwaysdk.business.ontology.Term,
-   *      com.runwaysdk.business.ontology.TermRelationship)
-   */
-  public OIterator<Term> getDirectDescendants(String relationshipType)
-  {
-    return getStrategyWithInstance().getDirectDescendants(this, relationshipType);
-  }
-
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term,
-   *      com.runwaysdk.business.ontology.TermRelationship)
-   */
-  public OIterator<Term> getAllAncestors(String relationshipType)
-  {
-    return getStrategyWithInstance().getAllAncestors(this, relationshipType);
-  }
-
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term,
-   *      com.runwaysdk.business.ontology.TermRelationship)
-   */
-  public OIterator<Term> getAllDescendants(String relationshipType)
-  {
-    return getStrategyWithInstance().getAllDescendants(this, relationshipType);
-  }
-
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isLeaf(com.runwaysdk.business.ontology.Term,
-   *      com.runwaysdk.business.ontology.TermRelationship)
-   */
-  public boolean isLeaf(String relationshipType)
-  {
-    return getStrategyWithInstance().isLeaf(this, relationshipType);
-  }
-
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#addLink(com.runwaysdk.business.ontology.Term,
-   *      com.runwaysdk.business.ontology.Term,
-   *      com.runwaysdk.business.ontology.TermRelationship)
-   */
-  public Relationship addLink(Term parent, String relationshipType)
-  {
-    if (this.getKey().equals(ROOT_KEY))
-    {
-      ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
-      exception.setRootName(this.getDisplayLabel().getValue());
-      exception.apply();
-      
-      throw exception;
-    }
-    
-    return getStrategyWithInstance().addLink(parent, this, relationshipType);
-  }
-
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#removeTerm(com.runwaysdk.business.ontology.Term,
-   *      java.lang.String)
-   */
-  public void removeTerm(String relationshipType)
-  {
-    getStrategyWithInstance().removeTerm(this, relationshipType);
-  }
-
-  /**
-   * {@link com.runwaysdk.business.ontology.OntologyStrategyIF#removeLink(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.Term, java.lang.String)
-   * See OntologyStrategyIF}
-   */
-  public void removeLink(Term parent, String relationshipType)
-  {
-    if (this.getKey().equals(ROOT_KEY))
-    {
-      ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
-      exception.setRootName(this.getDisplayLabel().getValue());
-      exception.apply();
-      
-      throw exception;
-    }
-    
-    getStrategyWithInstance().removeLink(parent, this, relationshipType);
-  }
-
-  // public Relationship addAndRemoveLink(Term oldParent, String oldRel, Term
-  // newParent, String newRel)
-  // {
-  // OntologyStrategyIF strat = getStrategyWithInstance();
-  // strat.removeLink(oldParent, this, oldRel);
-  // return strat.addLink(newParent, this, newRel);
-  // }
-
+  
   /**
    * A DisplayLabel attribute is automatically generated for every term subtype. This method will be overridden by your Term subtype.
    * 
@@ -474,14 +572,38 @@ abstract public class Term extends Business
    */
   abstract public LocalStruct getDisplayLabel();
 
-  /**
-   * Adds the term to the relationship type strategy.
-   * 
-   * @param relationshipType
-   */
-  public void addTerm(String relationshipType)
+  @Override
+  @Transaction
+  public void apply()
   {
-    getStrategyWithInstance().add(this, relationshipType);
+    if (this.getKey().equals(ROOT_KEY))
+    {
+      ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
+      exception.setRootName(this.getDisplayLabel().getValue());
+      exception.apply();
+      
+      throw exception;
+    }
+    
+    super.apply();
+  }
+  
+  public static Term get(String id)
+  {
+    return (Term) Business.get(id);
+  }
+
+  public static Term get(String definesType, String key)
+  {
+    return (Term) Business.get(definesType, key);
+  }
+  
+  @Override
+  public String toString()
+  {
+    String template = "%s [%s : %s]";
+    Object[] args = new Object[] { this.getDisplayLabel().getValue(), this.getClassDisplayLabel(), this.buildKey() };
+    return String.format(template, args);
   }
 
 }

@@ -2224,4 +2224,38 @@ WHERE RowNumber BETWEEN 5 AND 10
   {
     throw new UnsupportedOperationException("Backup method is not yet implemented for SQLServr");
   }
+
+  @Override
+  public void close()
+  {
+    // TODO : This method is untested
+    if (this.dataSource instanceof SharedPoolDataSource)
+    {
+      try
+      {
+        ((SharedPoolDataSource)this.dataSource).close();
+      }
+      catch (Exception e)
+      {
+        if (e instanceof SQLException)
+        {
+          Database.throwDatabaseException((SQLException)e);
+        }
+        else
+        {
+          throw new RuntimeException(e);
+        }
+      }
+    }
+    else
+    {
+      throw new UnsupportedOperationException("Close method is not yet implemented for SQLServer");
+    }
+  }
+
+  @Override
+  public void createTempTable(String tableName, List<String> columns, String onCommit)
+  {
+    throw new UnsupportedOperationException("createTempTable method is not yet implemented for SQLServer");
+  }
 }

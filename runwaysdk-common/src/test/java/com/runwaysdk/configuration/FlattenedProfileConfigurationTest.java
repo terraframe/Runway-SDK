@@ -59,6 +59,8 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
   @Override
   ConfigurationResolverIF getConfigResolver()
   {
+    ConfigurationManager.setConfigResolver(new ProfileConfigurationResolver());
+    
     baseDir = CommonProperties.getProjectBasedir();
     CommonProperties.dumpInstance();
     

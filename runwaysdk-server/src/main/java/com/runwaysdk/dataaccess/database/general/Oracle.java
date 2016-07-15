@@ -32,6 +32,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
+
 import oracle.jdbc.pool.OracleConnectionCacheManager;
 import oracle.jdbc.pool.OracleDataSource;
 
@@ -2626,5 +2628,35 @@ WHERE rn > 5 AND rn <= 10
   public String backup(String namespace, String backupFileLocation, String backupFileRootName, boolean dropSchema)
   {
     throw new UnsupportedOperationException("Backup method is not yet implemented for Oracle");
+  }
+
+  @Override
+  public void close()
+  {
+    try
+    {
+      ((OracleDataSource)this.dataSource).close();
+    }
+    catch (SQLException e)
+    {
+      Database.throwDatabaseException(e);
+    }
+  }
+
+  @Override
+  public void createTempTable(String tableName, List<String> columns, String onCommit)
+  {
+    // TODO : This method is untested
+    if (onCommit.equals("DROP"))
+    {
+      // Can we simply set the dropOnEndOfTransaction flag below? I don't know...
+      throw new UnsupportedOperationException();
+    }
+    
+    String statement = "CREATE GLOBAL TEMPORARY TABLE " + tableName + " (" + StringUtils.join(columns, ",") + ") ON COMMIT " + onCommit;
+
+    String undo = "DROP TABLE IF EXISTS " + tableName;
+
+    new DDLCommand(statement, undo, false).doIt();
   }
 }

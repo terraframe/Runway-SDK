@@ -2162,4 +2162,16 @@ public class MySQL extends AbstractDatabase
   {
     throw new UnsupportedOperationException("Backup method is not yet implemented for MySQL.");
   }
+
+  @Override
+  public void close()
+  {
+    throw new UnsupportedOperationException("Close method is not yet implemented for MySQL.");
+  }
+
+  @Override
+  public void createTempTable(String tableName, List<String> columns, String onCommit)
+  {
+    throw new UnsupportedOperationException("createTempTable is not yet implemented for MySQL.");
+  }
 }

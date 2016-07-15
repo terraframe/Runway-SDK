@@ -47,5 +47,9 @@ public interface ConfigurationReaderIF
   public Boolean getBoolean(String key, Boolean defaultValue);
   public Integer getInteger(String Key);
   public Integer getInteger(String key, Integer defaultValue);
+  public Long getLong(String key);
+  public Long getLong(String key, Long defaultValue);
+  public Float getFloat(String key);
+  public Float getFloat(String key, Float defaultValue);
   public void setProperty(String key, Object value);
 }

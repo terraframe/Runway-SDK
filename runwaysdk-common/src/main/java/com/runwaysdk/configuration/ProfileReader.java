@@ -40,7 +40,7 @@ public class ProfileReader implements ConfigurationReaderIF
 
   private static String                  profileName = System.getProperty("profile.name");
 
-  private static LegacyPropertiesSupport legacyProps = LegacyPropertiesSupport.getInstance();
+  private LegacyPropertiesSupport legacyProps;
 
   /**
    * The properties in this file. For simplicity, we store them as Strings and
@@ -83,6 +83,7 @@ public class ProfileReader implements ConfigurationReaderIF
     rawProps = new LinkedHashMap<String, String>();
     imports = new LinkedHashMap<String, String>();
     supers = new LinkedHashMap<String, String>();
+    legacyProps = LegacyPropertiesSupport.getInstance();
   }
 
   public void read() throws IOException
@@ -430,5 +431,57 @@ public class ProfileReader implements ConfigurationReaderIF
   public void setProperty(String key, Object value)
   {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Long getLong(String key)
+  {
+    String inty = properties.get(legacyProps.iModernToLegacy(key));
+    
+    if (inty == null)
+    {
+      return null;
+    }
+    
+    return Long.parseLong(inty);
+  }
+
+  @Override
+  public Long getLong(String key, Long defaultValue)
+  {
+    String inty = properties.get(legacyProps.iModernToLegacy(key));
+    
+    if (inty == null)
+    {
+      return defaultValue;
+    }
+    
+    return Long.parseLong(inty);
+  }
+
+  @Override
+  public Float getFloat(String key)
+  {
+    String inty = properties.get(legacyProps.iModernToLegacy(key));
+    
+    if (inty == null)
+    {
+      return null;
+    }
+    
+    return Float.parseFloat(inty);
+  }
+
+  @Override
+  public Float getFloat(String key, Float defaultValue)
+  {
+    String inty = properties.get(legacyProps.iModernToLegacy(key));
+    
+    if (inty == null)
+    {
+      return defaultValue;
+    }
+    
+    return Float.parseFloat(inty);
   }
 }

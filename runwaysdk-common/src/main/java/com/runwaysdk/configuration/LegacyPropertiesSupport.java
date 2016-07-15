@@ -89,16 +89,21 @@ public class LegacyPropertiesSupport
   
   /**
    * @return Returns true if the system is reading from legacy properties files.
+   * 
+   * Heads up: This flag is also used in an "if ddms" context, so if DDMS isn't using
+   * legacy properties anymore then you'll need to make sure the java code that calls
+   * this still makes sense.
    */
+  public static boolean isLegacy() { return LegacyPropertiesSupport.Singleton.INSTANCE.iIsLegacy(); }
   public boolean iIsLegacy()
   {
     return this.isLegacy;
   }
-  public static boolean isLegacy() { return LegacyPropertiesSupport.Singleton.INSTANCE.iIsLegacy(); }
   
   /**
    * Returns the legacy string, if the system is using legacy configuration. Otherwise it returns the 'notLegacy' value.
    */
+  public static String pickRelevant(String legacy, String notLegacy) { return LegacyPropertiesSupport.Singleton.INSTANCE.iPickRelevant(legacy, notLegacy); }
   public String iPickRelevant(String legacy, String notLegacy)
   {
     if (this.isLegacy)
@@ -107,13 +112,13 @@ public class LegacyPropertiesSupport
     }
     return notLegacy;
   }
-  public static String pickRelevant(String legacy, String notLegacy) { return LegacyPropertiesSupport.Singleton.INSTANCE.iPickRelevant(legacy, notLegacy); }
   
   /**
    * Takes in a legacy property key and returns the new property key.
    * 
    * @param property The name of the legacy property.
    */
+  public static String getProperty(String property) { return LegacyPropertiesSupport.Singleton.INSTANCE.iGetProperty(property); }
   public String iGetProperty(String property)
   {
     if (legacyToModern.containsKey(property))
@@ -122,7 +127,6 @@ public class LegacyPropertiesSupport
     }
     return property;
   }
-  public static String getProperty(String property) { return LegacyPropertiesSupport.Singleton.INSTANCE.iGetProperty(property); }
   
   public String iModernToLegacy(String modernKey)
   {

@@ -104,4 +104,16 @@ public class DefaultPropertiesConfigurationReader extends AbstractConfigurationR
   {
     props.setProperty(key, value.toString());
   }
+
+  @Override
+  public Long getLong(String key)
+  {
+    return Long.parseLong(props.getProperty(key));
+  }
+
+  @Override
+  public Float getFloat(String key)
+  {
+    return Float.parseFloat(props.getProperty(key));
+  }
 }

@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.business.ontology;
 
-import com.runwaysdk.business.Relationship;
 import com.runwaysdk.query.OIterator;
 
 public interface OntologyStrategyIF
@@ -51,7 +50,7 @@ public interface OntologyStrategyIF
    * @param parent
    * @param child
    */
-  public Relationship addLink(Term parent, Term child, String relationshipType);
+  public void addLink(Term parent, Term child, String relationshipType);
 
   /**
    * Returns true if the term is a leaf node. Leaf nodes have no children.
@@ -100,7 +99,7 @@ public interface OntologyStrategyIF
   public void add(Term term, String relationshipType);
   
   /**
-   * Removes the term from the strategy, but does not delete it.
+   * Removes only this term from the strategy, but does not delete it. Also does not touch children.
    * 
    * @param term
    * @param relationshipType
@@ -121,4 +120,6 @@ public interface OntologyStrategyIF
    * @param termClass The CLASS of the term that this strategy is associated with.
    */
   public void configure(String termClass);
+  
+  public DeleteStrategyProviderIF getDeleteStrategyProvider(Term deleteRoot, String relationshipType);
 }

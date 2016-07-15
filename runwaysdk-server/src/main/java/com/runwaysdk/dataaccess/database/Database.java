@@ -179,6 +179,14 @@ public class Database
   }
 
   /**
+   * Closes all active connections to the database and cleans up resources.
+   */
+  public static void close()
+  {
+    instance().close();
+  }
+  
+  /**
    * Builds a JDBC prepared <code>INSERT</code> statement for the given columns. <br>
    * 
    * @param table
@@ -380,6 +388,20 @@ public class Database
     return instance().setBlobAsBytes(table, columnName, id, bytes);
   }
 
+  /**
+   * A generalized delete that deletes all entries in the specified table that
+   * satisfy the given condition.
+   * 
+   * @param table
+   *          The name of the table.
+   * @param condition
+   *          The condition that all items to be deleted must satisfy.
+   */
+  public static void deleteWhere(String table, String condition)
+  {
+    instance().deleteWhere(table, condition);
+  }
+  
   /**
    * Returns the blob as an array of bytes.
    * 
@@ -1464,6 +1486,18 @@ public class Database
   public static void addTempFieldsToTable(String tableName, String columnName, String columnType, Integer numberOfTempFields)
   {
     instance().addTempFieldsToTable(tableName, columnName, columnType, numberOfTempFields);
+  }
+  
+  /**
+   * Creates a temporary table that lasts for at most the duration of the session. The behavior on transaction commit is configurable with the onCommit parameter.
+   * 
+   * @param tableName The name of the temp table.
+   * @param columns An array of MdAttribute class names that represent the columns in the table.
+   * @param onCommit Decides the fate of the temporary table upon transaction commit.
+   */
+  public static void createTempTable(String tableName, List<String> columns, String onCommit)
+  {
+    instance().createTempTable(tableName, columns, onCommit);
   }
 
   /**

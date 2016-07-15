@@ -33,6 +33,7 @@ import com.runwaysdk.business.generation.JavaArtifactMdTypeCommand;
 import com.runwaysdk.business.generation.TypeGenerator;
 import com.runwaysdk.business.generation.view.AbstractViewGenerator;
 import com.runwaysdk.business.state.MdStateMachineDAO;
+import com.runwaysdk.configuration.LegacyPropertiesSupport;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.GeneratedActions;
 import com.runwaysdk.constants.MdActionInfo;
@@ -106,7 +107,15 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   {
     super();
 
-    this.generateMdController = false;
+    if (LegacyPropertiesSupport.isLegacy()) // If DDMS...
+    {
+      this.generateMdController = true;
+    }
+    else
+    {
+      this.generateMdController = false;
+    }
+    
     this.hasController = false;
   }
 
@@ -117,7 +126,15 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   {
     super(attributeMap, classType);
 
-    this.generateMdController = false;
+    if (LegacyPropertiesSupport.isLegacy()) // If DDMS...
+    {
+      this.generateMdController = true;
+    }
+    else
+    {
+      this.generateMdController = false;
+    }
+    
     this.hasController = false;
   }
 

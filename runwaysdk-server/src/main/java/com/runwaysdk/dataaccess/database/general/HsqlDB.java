@@ -2206,4 +2206,16 @@ public class HsqlDB extends AbstractDatabase
     throw new UnsupportedOperationException("Backup method is not yet implemented for HsqlDB");
   }
 
+  @Override
+  public void close()
+  {
+    throw new UnsupportedOperationException("Close method is not yet implemented for HsqlDB");
+  }
+
+  @Override
+  public void createTempTable(String tableName, List<String> columns, String onCommit)
+  {
+    throw new UnsupportedOperationException("createTempTable method is not yet implemented for HsqlDB");
+  }
+
 }

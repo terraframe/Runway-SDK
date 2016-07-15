@@ -16,21 +16,13 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.dataaccess.io.excel;
+package com.runwaysdk.business.ontology;
 
-import java.util.List;
+import java.util.Stack;
 
-import org.apache.poi.ss.usermodel.Row;
-
-import com.runwaysdk.business.Mutable;
-
-public interface ImportListener
+public interface DeleteStrategyProviderIF
 {
-  /**
-   * Passes in the extra columns (not backed by metadata) for the listener to
-   * handle
-   */
-  public void handleExtraColumns(Mutable instance, List<ExcelColumn> extraColumns, Row row) throws Exception;
+  public boolean isTermAlreadyProcessed(Term child, Stack<Term> stack);
   
-  public void onFinishImport();
+  public boolean doesAncestorHaveMultipleParents(Term child, Stack<Term> stack);
 }

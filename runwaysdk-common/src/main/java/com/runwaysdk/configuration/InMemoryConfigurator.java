@@ -162,4 +162,28 @@ public class InMemoryConfigurator implements ConfigurationReaderIF
   {
     return config.getProperty(string);
   }
+
+  @Override
+  public Long getLong(String key)
+  {
+    return interpolated.getLong(key, null);
+  }
+
+  @Override
+  public Long getLong(String key, Long defaultVaule)
+  {
+    return interpolated.getLong(key, defaultVaule);
+  }
+
+  @Override
+  public Float getFloat(String key)
+  {
+    return interpolated.getFloat(key, null);
+  }
+
+  @Override
+  public Float getFloat(String key, Float defaultValue)
+  {
+    return interpolated.getFloat(key, defaultValue);
+  }
 }

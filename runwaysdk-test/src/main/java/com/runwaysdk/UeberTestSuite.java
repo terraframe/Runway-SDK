@@ -23,6 +23,7 @@ import junit.framework.TestSuite;
 
 import com.runwaysdk.business.BusinessTestSuite;
 import com.runwaysdk.business.MultiThreadTestSuite;
+import com.runwaysdk.business.ontology.OntologyTestSuite;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.dataaccess.DataAccessTestSuite;
@@ -32,7 +33,6 @@ import com.runwaysdk.facade.FacadeTestSuite;
 import com.runwaysdk.logging.LoggingTest;
 import com.runwaysdk.query.QueryTestSuite;
 import com.runwaysdk.session.SessionTestSuite;
-import com.runwaysdk.system.scheduler.SchedulerTest;
 import com.runwaysdk.vault.VaultTestSuite;
 
 public class UeberTestSuite
@@ -76,6 +76,8 @@ public class UeberTestSuite
     suite.addTestSuite(LoggingTest.class);
     
 //    suite.addTestSuite(SchedulerTest.class);
+    
+    suite.addTest(OntologyTestSuite.suite());
 
     return suite;
   }
