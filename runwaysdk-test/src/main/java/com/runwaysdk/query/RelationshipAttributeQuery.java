@@ -126,7 +126,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInEnumerationContainsAll_Generated()
   {
     try
@@ -257,7 +257,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInEnumerationContainsAny_Generated()
   {
     try
@@ -388,7 +388,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInEnumerationContainsExactly_Generated()
   {
     try
@@ -519,7 +519,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testEnumerationNotContainsAll_Generated()
   {
     try
@@ -650,7 +650,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testEnumerationNotContainsAny_Generated()
   {
     try
@@ -827,7 +827,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInBooleanEq_Generated()
   {
     try
@@ -987,7 +987,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInBooleanNotEq_Generated()
   {
     try
@@ -1101,7 +1101,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterEqString_Generated()
   {
     try
@@ -1215,7 +1215,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterEqIgnoreCaseString_Generated()
   {
     try
@@ -1329,7 +1329,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterInStringArray_Generated()
   {
     try
@@ -1443,7 +1443,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterInIngoreCaseStringArray_Generated()
   {
     try
@@ -1557,7 +1557,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterLikeString_Generated()
   {
     try
@@ -1671,7 +1671,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterLikeIgnoreCaseString_Generated()
   {
     try
@@ -1785,7 +1785,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterNotEqString_Generated()
   {
     try
@@ -1899,7 +1899,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterNotEqIgnoreCaseString_Generated()
   {
     try
@@ -2013,7 +2013,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterNotInStringArray_Generated()
   {
     try
@@ -2127,7 +2127,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -2241,7 +2241,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterNotLikeString_Generated()
   {
     try
@@ -2355,7 +2355,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInCharacterNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -2469,7 +2469,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextEqString_Generated()
   {
     try
@@ -2583,7 +2583,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextEqIgnoreCaseString_Generated()
   {
     try
@@ -2697,7 +2697,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextInStringArray_Generated()
   {
     try
@@ -2811,7 +2811,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextInIgnoreCaseStringArray_Generated()
   {
     try
@@ -2925,7 +2925,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextLikeStringGenerated()
   {
     try
@@ -3039,7 +3039,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextLikeIgnoreCaseString_Generated()
   {
     try
@@ -3153,7 +3153,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextNotEqString_Generated()
   {
     try
@@ -3267,7 +3267,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextNotEqIgnoreCaseString_Generated()
   {
     try
@@ -3381,7 +3381,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextNotInStringArray_Generated()
   {
     try
@@ -3495,7 +3495,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -3609,7 +3609,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextNotLikeString_Generated()
   {
     try
@@ -3723,7 +3723,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInTextNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -3887,7 +3887,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInDateTimeEq_Generated()
   {
     try
@@ -4055,7 +4055,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInDateTimeGt_Generated()
   {
     try
@@ -4265,7 +4265,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInDateTimeGtEq_Generated()
   {
     try
@@ -4459,7 +4459,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInDateTimeLt_Generated()
   {
     try
@@ -4669,7 +4669,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInDateTimeltEq_Generated()
   {
     try
@@ -4863,7 +4863,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInDateTimeNotEq_Generated()
   {
     try
@@ -5031,7 +5031,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInDateEq_Generated()
   {
     try
@@ -5199,7 +5199,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInDateGt_Generated()
   {
     try
@@ -5409,7 +5409,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInDateGtEq_Generated()
   {
     try
@@ -5603,7 +5603,7 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testQueryIsParentInDateLt_Generated()
   {
     try
