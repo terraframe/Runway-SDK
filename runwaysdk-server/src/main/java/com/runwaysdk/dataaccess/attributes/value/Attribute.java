@@ -212,7 +212,7 @@ public abstract class Attribute implements AttributeIF
   public com.runwaysdk.dataaccess.attributes.tranzient.Attribute buildTransientAttribute(String transientType)
   {
     com.runwaysdk.dataaccess.attributes.tranzient.Attribute transientAttribute =
-      com.runwaysdk.dataaccess.attributes.tranzient.AttributeFactory.createAttribute(this.mdAttributeIF.getType(), this.mdAttributeIF.getKey(), this.getName(),
+      com.runwaysdk.dataaccess.attributes.tranzient.AttributeFactory.createAttribute(this.mdAttributeIF.getType(), transientType + "." + this.getName(), this.getName(),
           transientType, this.getObjectValue());
 
     return transientAttribute;
