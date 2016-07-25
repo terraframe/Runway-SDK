@@ -264,6 +264,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
         !within(com.runwaysdk.facade.RMI*Test) &&
         !within(com.runwaysdk.facade.WebService*Test) &&
         !within(com.runwaysdk.facade.JSON*Test) &&
+        !within(com.runwaysdk.business.ontology.AbstractOntologyStrategyTest+) &&
 
         !within(com.runwaysdk.DoNotWeave+)
     );
