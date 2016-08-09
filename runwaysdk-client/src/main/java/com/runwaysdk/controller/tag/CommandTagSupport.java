@@ -41,7 +41,7 @@ public class CommandTagSupport extends ClassTagSupport
     super();
 
     this.addAttribute("value", "Submit");
-    this.addAttribute("type", "button");
+//    this.addAttribute("type", "button");
     this.setId(IDGenerator.nextID());
   }
 
@@ -95,6 +95,6 @@ public class CommandTagSupport extends ClassTagSupport
       throw ex;
     }
 
-    this.writeEmptyTag("input", out);
+    this.writeTag("button", this.getValue(), out);
   }
 }
