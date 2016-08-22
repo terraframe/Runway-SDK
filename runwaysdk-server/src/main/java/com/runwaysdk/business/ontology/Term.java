@@ -90,7 +90,13 @@ abstract public class Term extends Business
    */
   @Override
   @Transaction
-  public void delete() {
+  public void delete()
+  {
+    this.delete(true);
+  }
+  
+  public void delete(boolean deleteChildren)
+  {
     if (this.getKey().equals(ROOT_KEY))
     {
       ImmutableRootException exception = new ImmutableRootException("Cannot delete the root Term.");
@@ -100,12 +106,16 @@ abstract public class Term extends Business
       throw exception;
     }
     
-    String[] rels = TermUtil.getAllChildRelationships(this.getId());
-    for (String relationship : rels)
+    if (deleteChildren)
     {
-      exhaustiveDelete(relationship);
+      String[] rels = TermUtil.getAllChildRelationships(this.getId());
+      for (String relationship : rels)
+      {
+        exhaustiveDelete(relationship);
+      }
     }
     
+    this.deletePerTerm();
     super.delete();
   }
   
@@ -176,6 +186,7 @@ abstract public class Term extends Business
         strategy.removeTerm(current, relationship);
         if (s.size() != 0)
         {
+          current.deletePerTerm();
           EntityDAO.get(current.getId()).getEntityDAO().delete();
         }
       }
@@ -259,6 +270,14 @@ abstract public class Term extends Business
     }
     
     Database.executeStatementBatch(statements);
+  }
+  /**
+   * If subtypes of Term want custom delete logic they have to override this method (and not the delete method). This is because when deleting a term and all children the override "delete"
+   * method is not invoked for every child term.
+   */
+  protected void deletePerTerm()
+  {
+    
   }
   
   /**
