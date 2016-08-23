@@ -21,6 +21,7 @@ package com.runwaysdk.system.scheduler;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.quartz.JobExecutionContext;
@@ -29,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.SmartException;
-import com.runwaysdk.facade.Facade;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.util.IDGenerator;
 
@@ -41,7 +41,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
 
   public static final String       JOB_ID_PREPEND   = "_JOB_";
 
-  final static Logger              logger           = LoggerFactory.getLogger(Facade.class);
+  final static Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
 
   public ExecutableJob()
   {
@@ -78,7 +78,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   {
     return this.listeners;
   }
-
+  
   /**
    * Executes the Job within the context of Quartz.
    */
@@ -152,6 +152,20 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       jh.addStatus(AllJobStatus.SUCCESS);
     }
     jh.apply();
+    
+    
+    // Invoke Downstream jobs
+    List<? extends DownstreamJobRelationship> lDownstreamRel = job.getAlldownstreamJobRel().getAll();
+    if (lDownstreamRel.size() > 0)
+    {
+      DownstreamJobRelationship rel = lDownstreamRel.get(0);
+      ExecutableJob downstream = rel.getChild();
+      
+      if ( (errorMessage == null) || (errorMessage != null && rel.getTriggerOnFailure()) )
+      {
+        downstream.start();
+      }
+    }
   }
   
   public static String getMessageFromException(Throwable t)

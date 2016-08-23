@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 889759497)
+@com.runwaysdk.business.ClassSignature(hash = 227025376)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -35,7 +17,7 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
   public static java.lang.String ENTRYDATE = "entryDate";
   public static java.lang.String JOBID = "jobId";
   public static java.lang.String RECORDHISTORY = "recordHistory";
-  private static final long serialVersionUID = 889759497;
+  private static final long serialVersionUID = 227025376;
   
   public ExecutableJobBase()
   {
@@ -53,10 +35,10 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     this.validateAttribute(DESCRIPTION);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDescriptionMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF getDescriptionMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.ExecutableJob.CLASS);
-    return mdClassIF.definesAttribute(DESCRIPTION);
+    return (com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF)mdClassIF.definesAttribute(DESCRIPTION);
   }
   
   public java.util.Date getEntryDate()
@@ -69,10 +51,10 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     this.validateAttribute(ENTRYDATE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getEntryDateMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF getEntryDateMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.ExecutableJob.CLASS);
-    return mdClassIF.definesAttribute(ENTRYDATE);
+    return (com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF)mdClassIF.definesAttribute(ENTRYDATE);
   }
   
   public void setEntryDate(java.util.Date value)
@@ -97,10 +79,10 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     this.validateAttribute(JOBID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJobIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getJobIdMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.ExecutableJob.CLASS);
-    return mdClassIF.definesAttribute(JOBID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(JOBID);
   }
   
   public void setJobId(String value)
@@ -125,10 +107,10 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     this.validateAttribute(RECORDHISTORY);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getRecordHistoryMd()
+  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getRecordHistoryMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.ExecutableJob.CLASS);
-    return mdClassIF.definesAttribute(RECORDHISTORY);
+    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(RECORDHISTORY);
   }
   
   public void setRecordHistory(Boolean value)
@@ -174,6 +156,92 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
   public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.JobHistoryRecord> getJobHistoryRel(com.runwaysdk.system.scheduler.JobHistory jobHistory)
   {
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.JobHistoryRecord>) getRelationshipsWithChild(jobHistory, com.runwaysdk.system.scheduler.JobHistoryRecord.CLASS);
+  }
+  
+  public com.runwaysdk.system.scheduler.DownstreamJobRelationship adddownstreamJob(com.runwaysdk.system.scheduler.ExecutableJob executableJob)
+  {
+    return (com.runwaysdk.system.scheduler.DownstreamJobRelationship) addChild(executableJob, com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+  }
+  
+  public void removedownstreamJob(com.runwaysdk.system.scheduler.ExecutableJob executableJob)
+  {
+    removeAllChildren(executableJob, com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.ExecutableJob> getAlldownstreamJob()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.ExecutableJob>) getChildren(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationship> getAlldownstreamJobRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationship>) getChildRelationships(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.system.scheduler.DownstreamJobRelationship getdownstreamJobRel(com.runwaysdk.system.scheduler.ExecutableJob executableJob)
+  {
+    com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationship> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationship>) getRelationshipsWithChild(executableJob, com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    try
+    {
+      if (iterator.hasNext())
+      {
+        return iterator.next();
+      }
+      else
+      {
+        return null;
+      }
+    }
+    finally
+    {
+      iterator.close();
+    }
+  }
+  
+  public com.runwaysdk.system.scheduler.DownstreamJobRelationship addupstreamJob(com.runwaysdk.system.scheduler.ExecutableJob executableJob)
+  {
+    return (com.runwaysdk.system.scheduler.DownstreamJobRelationship) addParent(executableJob, com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+  }
+  
+  public void removeupstreamJob(com.runwaysdk.system.scheduler.ExecutableJob executableJob)
+  {
+    removeAllParents(executableJob, com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.ExecutableJob> getAllupstreamJob()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.ExecutableJob>) getParents(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationship> getAllupstreamJobRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationship>) getParentRelationships(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.system.scheduler.DownstreamJobRelationship getupstreamJobRel(com.runwaysdk.system.scheduler.ExecutableJob executableJob)
+  {
+    com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationship> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationship>) getRelationshipsWithParent(executableJob, com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    try
+    {
+      if (iterator.hasNext())
+      {
+        return iterator.next();
+      }
+      else
+      {
+        return null;
+      }
+    }
+    finally
+    {
+      iterator.close();
+    }
   }
   
   public static ExecutableJob get(String id)

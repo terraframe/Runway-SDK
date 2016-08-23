@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -406673271)
+@com.runwaysdk.business.ClassSignature(hash = -1369690016)
 public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.scheduler.AbstractJobDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.ExecutableJob";
-  private static final long serialVersionUID = -406673271;
+  private static final long serialVersionUID = -1369690016;
   
   protected ExecutableJobDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -317,6 +299,114 @@ public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.schedule
   public static void removeAllJobHistory(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
   {
     clientRequestIF.deleteChildren(id, com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO> getAllDownstreamJob()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO> getAllDownstreamJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO> getAllDownstreamJobRelationships()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO> getAllDownstreamJobRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  public com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO addDownstreamJob(com.runwaysdk.system.scheduler.ExecutableJobDTO child)
+  {
+    return (com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  public static com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO addDownstreamJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.scheduler.ExecutableJobDTO child)
+  {
+    return (com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  public void removeDownstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO relationship)
+  {
+    getRequest().deleteChild(relationship.getId());
+  }
+  
+  public static void removeDownstreamJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO relationship)
+  {
+    clientRequestIF.deleteChild(relationship.getId());
+  }
+  
+  public void removeAllDownstreamJob()
+  {
+    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  public static void removeAllDownstreamJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  {
+    clientRequestIF.deleteChildren(id, com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO> getAllUpstreamJob()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO> getAllUpstreamJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO> getAllUpstreamJobRelationships()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO> getAllUpstreamJobRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  public com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO addUpstreamJob(com.runwaysdk.system.scheduler.ExecutableJobDTO parent)
+  {
+    return (com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  public static com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO addUpstreamJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.scheduler.ExecutableJobDTO parent)
+  {
+    return (com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  public void removeUpstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO relationship)
+  {
+    getRequest().deleteParent(relationship.getId());
+  }
+  
+  public static void removeUpstreamJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO relationship)
+  {
+    clientRequestIF.deleteParent(relationship.getId());
+  }
+  
+  public void removeAllUpstreamJob()
+  {
+    getRequest().deleteParents(this.getId(), com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
+  }
+  
+  public static void removeAllUpstreamJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  {
+    clientRequestIF.deleteParents(id, com.runwaysdk.system.scheduler.DownstreamJobRelationshipDTO.CLASS);
   }
   
   public static com.runwaysdk.system.scheduler.ExecutableJobDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
