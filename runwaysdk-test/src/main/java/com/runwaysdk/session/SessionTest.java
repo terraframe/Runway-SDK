@@ -429,7 +429,7 @@ public class SessionTest extends TestCase
 
     // Convert the session time(sec) to miliseconds and
     // add enough time to ensure that the a session will expire
-    long sessionTime = ( Session.getSessionTime() + 5 ) * 1000;
+    long sessionTime = ( Session.getSessionTime() + 10 ) * 1000;
     long waitTime = System.currentTimeMillis() + sessionTime;
 
     // Get the public session
