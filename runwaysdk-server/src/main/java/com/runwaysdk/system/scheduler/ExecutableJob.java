@@ -163,7 +163,8 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       
       if ( (errorMessage == null) || (errorMessage != null && rel.getTriggerOnFailure()) )
       {
-        downstream.start();
+        // TODO : This is kind of a hack because directly invoking start() here will cause a NullPointerException in the @Authenticate (in ReportJob.start)
+        downstream.executableJobStart();
       }
     }
   }
@@ -230,6 +231,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   }
 
   public synchronized JobHistory start()
+  {
+    return executableJobStart();
+  }
+  
+  private JobHistory executableJobStart()
   {
     for (JobListener jobListener : this.listeners.values())
     {
