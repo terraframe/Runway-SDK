@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 INSERT INTO visibilitymodifier (set_id, item_id)  VALUES  ('z407g7s1elz4ecbtjydsezz9u8vrq65f', '20071109NM000000000000000000000520071109NM0000000000000000000001');
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('6uoig41ud9xrjibqf3zx9da94spksp90NM200904120000000000000000000030', '6uoig41ud9xrjibqf3zx9da94spksp90NM200904120000000000000000000030', 'www.runwaysdk.com', NULL);
 INSERT INTO visibilitymodifier (set_id, item_id)  VALUES  ('za7em9bojko8nann30zyn4psvsk6m9jv', '20071109NM000000000000000000000520071109NM0000000000000000000001');
