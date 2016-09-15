@@ -114,9 +114,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     // getPath returns spaces as %20. The file constructor does not read this
     // properly.
     webappContextPath = webappContextPath.replace("%20", " ");
-
-    // The reason we're using resource.toURI here is because if there's spaces
-    // in the path then constructing a file with a string doesn't work...
+    
     if (new File(webappContextPath).exists())
     {
       properties.setProperty("deploy.path", webappContextPath);
