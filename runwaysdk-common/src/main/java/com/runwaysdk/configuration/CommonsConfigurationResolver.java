@@ -33,7 +33,7 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
 
 public class CommonsConfigurationResolver implements ConfigurationResolverIF
 {
-  private static boolean              includeRuntimeProperties = true;
+  protected static boolean              includeRuntimeProperties = true;
 
   private static Logger               log                      = LoggerFactory.getLogger(ConfigurationManager.class);
 
@@ -42,7 +42,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
    */
   private static InMemoryConfigurator inMemoryCFG              = new InMemoryConfigurator();
 
-  private CompositeConfiguration      cconfig;
+  protected CompositeConfiguration      cconfig;
   
   /**
    * This value may be set by our custom tomcat class loader, since only the webapp class loader can tell what the deploy path is and our custom class loader obscures the webapp
@@ -90,16 +90,8 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     }
   }
 
-  /*
-   * Calculate any special properties that only have values at runtime.
-   */
-  private BaseConfiguration getRuntimeProperties()
+  protected String getWebappContextPath()
   {
-    BaseConfiguration properties = new BaseConfiguration();
-
-    // Calculate the value of deploy.path. The reason we do this at runtime is
-    // because the value of this property may vary depending on the application
-    // context path.
     String webappContextPath = deployPath;
     if (deployPath == null)
     {
@@ -114,6 +106,21 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     // getPath returns spaces as %20. The file constructor does not read this
     // properly.
     webappContextPath = webappContextPath.replace("%20", " ");
+    
+    return webappContextPath;
+  }
+  
+  /*
+   * Calculate any special properties that only have values at runtime.
+   */
+  private BaseConfiguration getRuntimeProperties()
+  {
+    BaseConfiguration properties = new BaseConfiguration();
+
+    // Calculate the value of deploy.path. The reason we do this at runtime is
+    // because the value of this property may vary depending on the application
+    // context path.
+    String webappContextPath = getWebappContextPath();
     
     if (new File(webappContextPath).exists())
     {
