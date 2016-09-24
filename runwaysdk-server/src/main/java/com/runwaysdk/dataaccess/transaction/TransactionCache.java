@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.ehcache.Cache.Entry;
+
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -249,7 +251,16 @@ public class TransactionCache extends AbstractTransactionCache
     {
       this.storeTransactionEntityDAO(entityDAO);
     }
-
+    
+    if (threadTransactionCache.newEntityIdStringFileCache != null)
+    {
+      Iterator<Entry<String, String>> entryIterator = threadTransactionCache.newEntityIdStringFileCache.iterator();
+      while (entryIterator.hasNext())
+      {
+        Entry<String, String> entry = entryIterator.next();
+        this.recordNewlyCreatedNonCachedEntity(entry.getKey());
+      }  
+    }
   }
 
   /**
@@ -258,16 +269,25 @@ public class TransactionCache extends AbstractTransactionCache
   public EntityDAOIF getEntityDAO(String id)
   {
     EntityDAOIF entityDAOIF = null;
-
+// Heads up: modify
     this.transactionStateLock.lock();
+
     try
     {
-      TransactionItemEntityDAOAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
-      if (transactionCacheItem != null)
+      if (this.isNewUncachedEntity(id))
       {
-        entityDAOIF = (EntityDAOIF) this.getEntityDAOIFfromCache(id);
+        entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+        ((EntityDAO)entityDAOIF).setIsNew(true);
       }
-
+      else
+      {
+        TransactionItemEntityDAOAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
+        if (transactionCacheItem != null)
+        {
+          entityDAOIF = (EntityDAOIF) this.getEntityDAOIFfromCache(id);
+        }
+      }
+      
       return entityDAOIF;
 
     }
@@ -295,7 +315,7 @@ public class TransactionCache extends AbstractTransactionCache
   {
     this.transactionStateLock.lock();
     try
-    {
+    {  
       this.cache.putEntityDAOIFintoCache(entityDAO);
     }
     finally
@@ -310,11 +330,14 @@ public class TransactionCache extends AbstractTransactionCache
    * @param oldId
    * @param entityDAO
    */
+  @Override
   protected void changeEntityIdInCache(String oldId, EntityDAO entityDAO)
   {
     this.transactionStateLock.lock();
     try
     {
+      super.changeEntityIdInCache(oldId, entityDAO);
+      
       this.cache.removeEntityDAOIFfromCache(oldId);
       this.cache.putEntityDAOIFintoCache(entityDAO);
     }
@@ -717,22 +740,26 @@ public class TransactionCache extends AbstractTransactionCache
       this.transactionStateLock.unlock();
     }
   }
-
-  /**
-   * Rollback the transaction cache.
-   */
-  public void rollbackTransactionCache()
-  {
-    // transactionCache.rollbackTransaction();
-  }
+// Heads up: test
+//  /**
+//   * Rollback the transaction cache.
+//   */
+//  public void rollbackTransactionCache()
+//  {
+//    // transactionCache.rollbackTransaction();
+//  }
 
   public void close()
   {
+    super.close();
     cache.close();
   }
 
   public void put(EntityDAOIF entityDAO)
   {
-    cache.putEntityDAOIFintoCache(entityDAO);
+    if (!this.isNewUncachedEntity(entityDAO.getId()))
+    {
+      cache.putEntityDAOIFintoCache(entityDAO);
+    }
   }
 }

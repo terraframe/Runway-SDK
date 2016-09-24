@@ -262,7 +262,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     return ( (AttributeEnumeration) this.getAttributeIF(MdElementInfo.CACHE_ALGORITHM) ).dereference()[0];
   }
-
+  
   /**
    * Returns an array of MdBusinessIF that defines immediate sub-entities of
    * this entity.

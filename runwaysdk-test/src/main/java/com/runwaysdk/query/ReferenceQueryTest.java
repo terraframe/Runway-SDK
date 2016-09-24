@@ -200,28 +200,28 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceEnumerationContainsAll_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -233,7 +233,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
@@ -243,7 +243,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -317,28 +317,28 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceEnumerationContainsAny_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -350,7 +350,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -361,7 +361,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -435,28 +435,28 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceEnumerationContainsExactly_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -468,7 +468,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -479,7 +479,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -553,28 +553,28 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceEnumerationNotContainsAll_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -586,7 +586,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -597,7 +597,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -671,28 +671,28 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceEnumerationNotContainsAny_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -704,7 +704,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -715,7 +715,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -789,20 +789,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -811,7 +811,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -822,7 +822,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -893,23 +893,23 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceEqComponent_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // Instantiate a business object of type Users of the system user.
-      Class referenceClass = LoaderDecorator.load(QueryMasterSetup.childRefQueryObject.getType());
+      Class<?> referenceClass = LoaderDecorator.load(QueryMasterSetup.childRefQueryObject.getType());
       Object reference = referenceClass.getMethod("get", String.class).invoke(null, QueryMasterSetup.childRefQueryObject.getId());
 
       QueryFactory factory = new QueryFactory();
@@ -919,7 +919,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -930,7 +930,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -1004,20 +1004,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceNotEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1026,7 +1026,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1037,7 +1037,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -1108,23 +1108,23 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceNotEqComponent_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // Instantiate a business object of type Users of the system user.
-      Class referenceClass = LoaderDecorator.load(QueryMasterSetup.childRefQueryObject.getType());
+      Class<?> referenceClass = LoaderDecorator.load(QueryMasterSetup.childRefQueryObject.getType());
       Object reference = referenceClass.getMethod("get", String.class).invoke(null, QueryMasterSetup.childRefQueryObject2.getId());
 
       QueryFactory factory = new QueryFactory();
@@ -1134,7 +1134,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1145,7 +1145,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -1217,25 +1217,25 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceStructBooleanEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // Load the struct object query class
       MdStructDAOIF basicMdBusinessIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.structInfo.getType());
       String basicIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(basicMdBusinessIF);
-      Class basicIFClass = LoaderDecorator.load(basicIFType);
+      Class<?> basicIFClass = LoaderDecorator.load(basicIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1245,7 +1245,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.EQ(true));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1256,7 +1256,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -1328,20 +1328,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceReferenceEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1350,7 +1350,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeRefRef.EQ(ServerConstants.SYSTEM_USER_ID));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1361,7 +1361,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -1432,20 +1432,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceBooleanEqBoolean_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1454,7 +1454,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.EQ(true));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1465,7 +1465,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -1618,20 +1618,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceBooleanNotEqBoolean_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1640,7 +1640,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.NE(false));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1651,7 +1651,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -1722,20 +1722,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1744,7 +1744,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQ("ref character value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1755,7 +1755,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -1826,20 +1826,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1848,7 +1848,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQi("REF CHARACTER VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1859,7 +1859,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -1930,20 +1930,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1952,7 +1952,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.INi("WRONG VALUE 1", "REF CHARACTER VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1963,7 +1963,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -2034,20 +2034,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2056,7 +2056,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.IN("wrong value 1", "ref character value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2067,7 +2067,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -2138,20 +2138,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2160,7 +2160,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKEi("%CHARACTER%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2171,7 +2171,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -2242,20 +2242,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2264,7 +2264,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKE("%character%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2275,7 +2275,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -2346,20 +2346,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2368,7 +2368,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NEi("WRONG CHARACTER STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2379,7 +2379,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -2450,20 +2450,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterNotEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2472,7 +2472,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NE("wrong character value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2483,7 +2483,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -2554,20 +2554,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2576,7 +2576,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2587,7 +2587,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -2658,20 +2658,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterNotInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2680,7 +2680,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2691,7 +2691,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -2762,20 +2762,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2784,7 +2784,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2795,7 +2795,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -2866,20 +2866,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceCharacterNotLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2888,7 +2888,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2899,7 +2899,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -3015,7 +3015,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateEq_Generated()
   {
     try
@@ -3023,14 +3023,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2007-11-06", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3039,7 +3039,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3050,7 +3050,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -3208,7 +3208,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateGtEq_Generated()
   {
     try
@@ -3216,14 +3216,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2007-11-06", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -3233,7 +3233,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3244,7 +3244,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -3270,7 +3270,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -3388,7 +3388,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateGt_Generated()
   {
     try
@@ -3396,14 +3396,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2007-11-05", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on greater than
       QueryFactory factory = new QueryFactory();
@@ -3413,7 +3413,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3424,7 +3424,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -3582,7 +3582,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateLtEq_Generated()
   {
     try
@@ -3590,14 +3590,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2007-11-06", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -3607,7 +3607,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3618,7 +3618,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -3644,7 +3644,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -3762,7 +3762,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateLt_Generated()
   {
     try
@@ -3770,14 +3770,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2007-11-07", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -3787,7 +3787,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3798,7 +3798,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -3916,7 +3916,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateNotEq_Generated()
   {
     try
@@ -3924,14 +3924,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2007-11-05", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -3941,7 +3941,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3952,7 +3952,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -4070,7 +4070,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateTimeEq_Generated()
   {
     try
@@ -4078,14 +4078,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2007-11-06 12:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -4095,7 +4095,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4106,7 +4106,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -4264,7 +4264,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateTimeGtEq_Generated()
   {
     try
@@ -4272,14 +4272,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2007-11-06 12:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -4289,7 +4289,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4300,7 +4300,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -4327,7 +4327,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -4445,7 +4445,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateTimeGt_Generated()
   {
     try
@@ -4453,14 +4453,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2007-11-05 13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -4470,7 +4470,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4481,7 +4481,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -4639,7 +4639,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateTimeLtEq_Generated()
   {
     try
@@ -4647,14 +4647,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2007-11-06 13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -4664,7 +4664,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4675,7 +4675,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -4702,7 +4702,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -4820,7 +4820,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateTimeLt_Generated()
   {
     try
@@ -4828,14 +4828,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2007-11-06 13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -4845,7 +4845,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4856,7 +4856,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -4974,7 +4974,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDateTimeNotEq_Generated()
   {
     try
@@ -4982,14 +4982,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2007-12-05 13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -4999,7 +4999,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5010,7 +5010,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -5124,20 +5124,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDecimalEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -5147,7 +5147,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.EQ(new BigDecimal(200.5)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5158,7 +5158,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -5270,20 +5270,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDecimalGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -5293,7 +5293,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(new BigDecimal(200)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5304,7 +5304,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -5454,20 +5454,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDecimalGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -5477,7 +5477,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(new BigDecimal(200.5)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5488,7 +5488,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -5513,7 +5513,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -5625,20 +5625,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDecimalLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on less than
       QueryFactory factory = new QueryFactory();
@@ -5648,7 +5648,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LT(new BigDecimal(201)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5659,7 +5659,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -5808,20 +5808,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDecimalLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -5831,7 +5831,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(new BigDecimal(200.5)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5842,7 +5842,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -5867,7 +5867,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -5979,20 +5979,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDecimalNotEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -6001,7 +6001,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(new BigDecimal(201)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6012,7 +6012,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -6124,20 +6124,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDoubleEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -6146,7 +6146,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.EQ(200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6157,7 +6157,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -6269,20 +6269,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDoubleGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -6291,7 +6291,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT((double) 200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6302,7 +6302,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -6452,20 +6452,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDoubleGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -6475,7 +6475,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE(200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6486,7 +6486,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -6510,7 +6510,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -6622,20 +6622,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDoubleLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on less than
       QueryFactory factory = new QueryFactory();
@@ -6645,7 +6645,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LT((double) 201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6656,7 +6656,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -6806,20 +6806,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDoubleLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -6829,7 +6829,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE(200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6840,7 +6840,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -6865,7 +6865,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -6977,20 +6977,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceDoubleNotEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -7000,7 +7000,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE((double) 201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7011,7 +7011,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -7123,20 +7123,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceFloatEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -7146,7 +7146,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ((float) 200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7157,7 +7157,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -7269,20 +7269,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceFloatGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -7292,7 +7292,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT((float) 200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7303,7 +7303,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -7453,20 +7453,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceFloatGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -7476,7 +7476,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE((float) 200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7487,7 +7487,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -7512,7 +7512,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -7624,20 +7624,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceFloatLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on less than
       QueryFactory factory = new QueryFactory();
@@ -7647,7 +7647,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT((float) 201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7658,7 +7658,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -7808,20 +7808,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceFloatLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -7831,7 +7831,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE((float) 200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7842,7 +7842,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -7867,7 +7867,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -7979,20 +7979,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceFloatNotEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on not equals
       QueryFactory factory = new QueryFactory();
@@ -8002,7 +8002,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE((float) 201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8013,7 +8013,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -8125,20 +8125,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceIntegerEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on not equals
       QueryFactory factory = new QueryFactory();
@@ -8148,7 +8148,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8159,7 +8159,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -8271,20 +8271,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceIntegerGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on not greater than
       QueryFactory factory = new QueryFactory();
@@ -8294,7 +8294,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(199));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8305,7 +8305,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -8455,20 +8455,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceIntegerGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -8478,7 +8478,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8489,7 +8489,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -8514,7 +8514,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -8626,20 +8626,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceIntegerLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on less than
       QueryFactory factory = new QueryFactory();
@@ -8649,7 +8649,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LT(201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8660,7 +8660,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -8810,20 +8810,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceIntegerLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -8833,7 +8833,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8844,7 +8844,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -8869,7 +8869,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -8981,20 +8981,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceIntegerNotEq_Generrated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on not equals
       QueryFactory factory = new QueryFactory();
@@ -9004,7 +9004,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9015,7 +9015,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9127,20 +9127,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceLongEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on not equals
       QueryFactory factory = new QueryFactory();
@@ -9150,7 +9150,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ((long) 200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9161,7 +9161,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9273,20 +9273,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceLongGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on greater than
       QueryFactory factory = new QueryFactory();
@@ -9296,7 +9296,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT((long) 199));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9307,7 +9307,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9457,20 +9457,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceLongGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -9480,7 +9480,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE((long) 200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9491,7 +9491,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9516,7 +9516,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9628,20 +9628,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceLongLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on less than
       QueryFactory factory = new QueryFactory();
@@ -9651,7 +9651,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT((long) 201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9662,7 +9662,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9812,20 +9812,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceLongLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -9835,7 +9835,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE((long) 200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9846,7 +9846,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9871,7 +9871,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9983,20 +9983,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceLongNotEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on not equals
       QueryFactory factory = new QueryFactory();
@@ -10006,7 +10006,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE((long) 201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10017,7 +10017,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10129,20 +10129,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -10152,7 +10152,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.EQ("ref text value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10163,7 +10163,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10193,20 +10193,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -10216,7 +10216,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.EQ("ref clob value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10227,7 +10227,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10341,20 +10341,20 @@ public class ReferenceQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -10364,7 +10364,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.EQi("REF TEXT VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10375,7 +10375,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10405,20 +10405,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -10428,7 +10428,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.EQi("REF CLOB VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10439,7 +10439,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10553,20 +10553,20 @@ public class ReferenceQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -10576,7 +10576,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.IN("wrong value 1", "ref text value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10587,7 +10587,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10617,20 +10617,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -10640,7 +10640,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.IN("wrong value 1", "ref clob value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10651,7 +10651,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10764,20 +10764,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -10787,7 +10787,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.INi("WRONG VALUE 1", "REF TEXT VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10798,7 +10798,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10828,20 +10828,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -10851,7 +10851,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.INi("WRONG VALUE 1", "REF CLOB VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10862,7 +10862,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10974,20 +10974,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -10997,7 +10997,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.LIKE("%text%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11008,7 +11008,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11038,20 +11038,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11061,7 +11061,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.LIKE("%clob%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11072,7 +11072,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11185,20 +11185,20 @@ public class ReferenceQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11208,7 +11208,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.LIKEi("%TEXT%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11219,7 +11219,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11249,20 +11249,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11272,7 +11272,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.LIKEi("%CLOB%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11283,7 +11283,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11396,20 +11396,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextNotEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11419,7 +11419,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NE("wrong text value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11430,7 +11430,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11460,20 +11460,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobNotEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11483,7 +11483,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NE("wrong clob value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11494,7 +11494,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11606,20 +11606,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11629,7 +11629,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NEi("WRONG TEXT STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11640,7 +11640,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11670,20 +11670,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11693,7 +11693,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NEi("WRONG CLOB STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11704,7 +11704,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11816,20 +11816,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextNotInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11839,7 +11839,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11850,7 +11850,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11880,20 +11880,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobNotInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11903,7 +11903,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11914,7 +11914,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -12027,20 +12027,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -12050,7 +12050,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12061,7 +12061,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -12091,20 +12091,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -12114,7 +12114,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12125,7 +12125,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -12237,20 +12237,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextNotLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -12260,7 +12260,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12271,7 +12271,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -12301,20 +12301,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobNotLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -12324,7 +12324,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12335,7 +12335,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -12449,20 +12449,20 @@ public class ReferenceQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTextNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -12472,7 +12472,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12483,7 +12483,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -12513,20 +12513,20 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceClobNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -12536,7 +12536,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12547,7 +12547,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -12664,7 +12664,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTimeEq_Generated()
   {
     try
@@ -12672,14 +12672,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -12689,7 +12689,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12700,7 +12700,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -12818,7 +12818,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTimeGt_Generated()
   {
     try
@@ -12826,14 +12826,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -12843,7 +12843,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12854,7 +12854,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -13012,7 +13012,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTimeGtEq_Generated()
   {
     try
@@ -13020,14 +13020,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -13037,7 +13037,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -13048,7 +13048,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -13073,7 +13073,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -13191,7 +13191,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTimeLt_Generated()
   {
     try
@@ -13199,14 +13199,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -13216,7 +13216,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -13227,7 +13227,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -13383,7 +13383,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTimeLtEq_Generated()
   {
     try
@@ -13391,14 +13391,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -13408,7 +13408,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -13419,7 +13419,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -13446,7 +13446,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -13564,7 +13564,7 @@ public class ReferenceQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testReferenceTimeNotEq_Generated()
   {
     try
@@ -13572,14 +13572,14 @@ public class ReferenceQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdBusinessDAOIF refQueryObjMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryObject.getType());
       String refQueryObjIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(refQueryObjMdBusinessIF);
-      Class refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
+      Class<?> refQueryObjIFClass = LoaderDecorator.load(refQueryObjIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -13589,7 +13589,7 @@ public class ReferenceQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -13600,7 +13600,7 @@ public class ReferenceQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);

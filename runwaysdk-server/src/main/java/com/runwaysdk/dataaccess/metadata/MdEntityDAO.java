@@ -70,6 +70,8 @@ import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalCharacter;
+import com.runwaysdk.dataaccess.cache.CacheNoneStrategy;
+import com.runwaysdk.dataaccess.cache.CacheStrategy;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
@@ -172,6 +174,28 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    *         type.
    */
   public abstract BusinessDAOIF getCacheAlgorithm();
+
+
+  /**
+   * Returns true if objects defined by this type are not cached in the global cache, 
+   * false otherwise.
+   * 
+   * @return true if objects defined by this type are not cached in the global cache, 
+   * false otherwise.
+   */
+  public boolean isNotCached()
+  {
+    CacheStrategy cacheStrategy = ObjectCache.getTypeCollection(this.definesType());
+    
+    if (cacheStrategy instanceof CacheNoneStrategy)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
 
   /**
    * Returns the integer value of cachSize, which is the optional independent

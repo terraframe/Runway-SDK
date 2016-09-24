@@ -277,7 +277,7 @@ public aspect RequestManagement extends AbstractRequestManagement
       {
         developerMessage = "";
       }
-
+     
       returnEx = new RunwayExceptionDTO(fwEx.getClass().getName(), fwEx.getLocalizedMessage(), developerMessage);
     }
     // If a runway exception was not thrown, then most likely a programming

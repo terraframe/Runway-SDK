@@ -801,6 +801,16 @@ public class EntityDAOFactory
       if (batchResults[i] == 0)
       {
         String error = "Object [" + existingId + "] is stale and cannot be updated.";
+// Heads up: debug:
+        String seq1 = entityDAO.getAttributeIF(ElementInfo.SEQUENCE).getValue(); 
+        EntityDAOIF dbEntityDAOIF = BusinessDAOFactory.get(entityDAO.getId());
+        String dbSeq2 = null;
+        if (dbEntityDAOIF != null)
+        {
+          dbSeq2 = dbEntityDAOIF.getAttributeIF(ElementInfo.SEQUENCE).getValue();        
+        }
+        
+        
         throw new StaleEntityException(error, entityDAO);
       }
     }

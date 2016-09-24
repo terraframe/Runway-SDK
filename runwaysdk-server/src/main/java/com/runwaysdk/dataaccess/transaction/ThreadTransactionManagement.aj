@@ -32,7 +32,7 @@ import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.ThreadRequestManagement;
 
-public aspect ThreadTransactionManagement extends AbstractTransactionManagement
+public privileged aspect ThreadTransactionManagement extends AbstractTransactionManagement
 {
   // public pointcut transactions()
   // : threadedTransaction(Transaction);
@@ -73,6 +73,28 @@ public aspect ThreadTransactionManagement extends AbstractTransactionManagement
     return (ThreadTransactionCache) this.getState().getCache();
   }
 
+  /**
+   * New Description:
+   * Update the cache after the object has been applied to the DB with the correct
+   * ID and KEY values.
+   * 
+   * Old description:
+   * Updating the key cache needs to occur after the call, as the key is not
+   * updated until after the object is applied.
+   * 
+   * @param entityDAO
+   */
+  protected pointcut afterEntityApply(EntityDAO entityDAO)
+  :(execution (* com.runwaysdk.dataaccess.EntityDAO.apply(..)) && target(entityDAO))
+   && within(com.runwaysdk.dataaccess.EntityDAO);  
+  after(EntityDAO entityDAO)
+    : afterEntityApply(entityDAO)
+  {     
+      // Mark the original reference as having participated in the transaction
+      entityDAO.setTransactionState();
+  }
+
+  
   /**
    * Performs actions at the successful end of the transaction.
    */
@@ -152,15 +174,6 @@ public aspect ThreadTransactionManagement extends AbstractTransactionManagement
     {
       throw new ProgrammingErrorException(e);
     }
-  }
-
-  /**
-   * Completes actions at the end of the transaction regardless of success or
-   * failure.
-   */
-  protected void doFinally()
-  {
-
   }
 
   @Override

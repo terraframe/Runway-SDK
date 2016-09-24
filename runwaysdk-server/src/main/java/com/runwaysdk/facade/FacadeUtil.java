@@ -641,11 +641,11 @@ public class FacadeUtil
     String queryType = EntityQueryAPIGenerator.getQueryClass(queryDTO.getType());
     Class<?> queryClass = LoaderDecorator.load(queryType);
 
-    OIterator iterator = null;
+    OIterator<?> iterator = null;
 
     try
     {
-      iterator = (OIterator) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(generatedRelationshipQuery);
+      iterator = (OIterator<?>) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(generatedRelationshipQuery);
     }
     catch (IllegalArgumentException e)
     {
@@ -753,12 +753,12 @@ public class FacadeUtil
     {
       // Ensure that the Classes of the actual parameters are already
       // loaded before trying to convert the parameters.
-      Class cls = FacadeUtil.loadClasses(new String[] { type })[0];
+      Class<?> cls = FacadeUtil.loadClasses(new String[] { type })[0];
 
       if (cls.isArray())
       {
         Object[] array = (Object[]) object;
-        Class componentType = cls.getComponentType();
+        Class<?> componentType = cls.getComponentType();
         Object[] converted = (Object[]) Array.newInstance(componentType, array.length);
 
         for (int i = 0; i < array.length; i++)
@@ -981,7 +981,7 @@ public class FacadeUtil
   }
 
   /**
-   * Get the Class objects which define an array of Object types
+   * Get the Class<?> objects which define an array of Object types
    * 
    * @param types
    * @return

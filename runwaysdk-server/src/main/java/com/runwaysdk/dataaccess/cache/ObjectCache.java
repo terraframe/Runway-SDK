@@ -370,6 +370,9 @@ public class ObjectCache
   }
 
   /**
+   * Fetches an object with the given ID. If the object has been modified during a transaction and the request 
+   * is from that transaction, this object will not come from the global {@link ObjectCache} but instead will
+   * come from a transaction cache.
    * 
    * @param id
    * @return
@@ -377,6 +380,21 @@ public class ObjectCache
    *           when the id does not represent a valid entity.
    */
   public static EntityDAOIF getEntityDAO(String id)
+  {
+    return _internalGetEntityDAO(id);
+  }
+  
+  /**
+   * Fetches an object with the given ID from the cache (or directly from the database, depending on its type)
+   * and should be used for internal purposes only, as it does not take into account whether the object
+   * has been modified during the transaction.
+   * 
+   * @param id
+   * @return
+   * @throws DataNotFoundException
+   *           when the id does not represent a valid entity.
+   */
+  public static EntityDAOIF _internalGetEntityDAO(String id)
   {
     ( LockObject.getLockObject() ).checkTransactionLock(id);
 
@@ -401,10 +419,12 @@ public class ObjectCache
     }
 
     return returnObject;
-
   }
 
   /**
+   * Fetches an object with the given key for the given type. If the object has been modified during a transaction and the request 
+   * is from that transaction, this object will not come from the global {@link ObjectCache} but instead will
+   * come from a transaction cache. 
    * 
    * @param type
    * @param key
@@ -413,6 +433,24 @@ public class ObjectCache
    *           when the id does not represent a valid entity.
    */
   public static EntityDAOIF getEntityDAO(String type, String key)
+  {
+    // The collection class may or may not use caching. If caching is used,
+    // a cached EntityDAO is returned
+    return _internalGetEntityDAO(type, key);
+  }
+  
+  /**
+   * Fetches an object with the given key for the given type. from the cache (or directly from the database, depending on its type)
+   * and should be used for internal purposes only, as it does not take into account whether the object
+   * has been modified during the transaction.
+   * 
+   * @param type
+   * @param key
+   * @return
+   * @throws DataNotFoundException
+   *           when the id does not represent a valid entity.
+   */
+  public static EntityDAOIF _internalGetEntityDAO(String type, String key)
   {
     ( LockObject.getLockObject() ).checkTransactionLock(type, key);
 

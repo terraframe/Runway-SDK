@@ -61,7 +61,7 @@ public aspect CommonExceptions
     (cflow(AbstractRequestManagement.allRequestEntryPoints()) &&
     execution(* com.runwaysdk.CommonExceptionProcessor.processException(String, String, Throwable)) && args(runwayExceptionType, developerMessage, throwable))
   {
-    Class runwayExceptionClass = LoaderDecorator.load(runwayExceptionType);
+    Class<?> runwayExceptionClass = LoaderDecorator.load(runwayExceptionType);
 
     RunwayException runwayException;
 
@@ -86,7 +86,7 @@ public aspect CommonExceptions
     (cflow(AbstractRequestManagement.allRequestEntryPoints()) &&
     execution(* com.runwaysdk.CommonExceptionProcessor.fileWriteException(File, Throwable)) && args(file, throwable))
   {
-    Class runwayExceptionClass = LoaderDecorator.load(ExceptionConstants.FileWriteException.getExceptionClass());
+    Class<?> runwayExceptionClass = LoaderDecorator.load(ExceptionConstants.FileWriteException.getExceptionClass());
 
     RunwayException runwayException;
 

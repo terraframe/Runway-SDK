@@ -103,19 +103,19 @@ public class DecimalTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();   
-      Class objectClass = LoaderDecorator.load(type);      
+      Class<?> objectClass = LoaderDecorator.load(type);      
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -134,7 +134,7 @@ public class DecimalTest  extends TestCase
 
       BusinessDAO businessDAO = AggregateFunctionMasterSetup.classObjectList.get(0);
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -177,19 +177,19 @@ public class DecimalTest  extends TestCase
     }
   }
   
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalGtMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
-      Class objectClass = LoaderDecorator.load(type);    
+      Class<?> objectClass = LoaderDecorator.load(type);    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -208,7 +208,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
       
       int loopCount = AggregateFunctionMasterSetup.decimalMinGtList.size() - 1;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -253,19 +253,19 @@ public class DecimalTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalGtEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();  
-      Class objectClass = LoaderDecorator.load(type);    
+      Class<?> objectClass = LoaderDecorator.load(type);    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -284,7 +284,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
       
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -314,18 +314,18 @@ public class DecimalTest  extends TestCase
     assertEquals(errMsg, 0, count);
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalLtMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -371,19 +371,19 @@ public class DecimalTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalLtEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);  
+      Class<?> objectClass = LoaderDecorator.load(type);  
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -402,7 +402,7 @@ public class DecimalTest  extends TestCase
 
       BusinessDAO businessDAO = AggregateFunctionMasterSetup.classObjectList.get(0);
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -445,19 +445,19 @@ public class DecimalTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalNotEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);  
+      Class<?> objectClass = LoaderDecorator.load(type);  
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -476,7 +476,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
       
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -518,19 +518,19 @@ public class DecimalTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();   
-      Class objectClass = LoaderDecorator.load(type);      
+      Class<?> objectClass = LoaderDecorator.load(type);      
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -549,7 +549,7 @@ public class DecimalTest  extends TestCase
 
       BusinessDAO businessDAO = AggregateFunctionMasterSetup.classObjectList.get(AggregateFunctionMasterSetup.classObjectList.size() - 1);
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -580,18 +580,18 @@ public class DecimalTest  extends TestCase
 
   }
   
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalGtMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -624,18 +624,18 @@ public class DecimalTest  extends TestCase
     assertEquals(errMsg, 1, count);
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalGtEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -681,19 +681,19 @@ public class DecimalTest  extends TestCase
     }
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalLtMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
-      Class objectClass = LoaderDecorator.load(type);   
+      Class<?> objectClass = LoaderDecorator.load(type);   
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -712,7 +712,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -755,19 +755,19 @@ public class DecimalTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalLtEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -786,7 +786,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -829,19 +829,19 @@ public class DecimalTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalNotEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();  
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -860,7 +860,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -903,19 +903,19 @@ public class DecimalTest  extends TestCase
     } 
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalEqAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -934,7 +934,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -978,19 +978,19 @@ public class DecimalTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalGtAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1009,7 +1009,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -1053,19 +1053,19 @@ public class DecimalTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalGtEqAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1084,7 +1084,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -1128,19 +1128,19 @@ public class DecimalTest  extends TestCase
     } 
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalLtAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1159,7 +1159,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -1203,19 +1203,19 @@ public class DecimalTest  extends TestCase
     } 
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalLtEqAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1234,7 +1234,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -1277,19 +1277,19 @@ public class DecimalTest  extends TestCase
     } 
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalNotEqAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1308,7 +1308,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getFuncDecimal").invoke(object);
@@ -1353,19 +1353,19 @@ public class DecimalTest  extends TestCase
     } 
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalEqCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1384,7 +1384,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getCountFuncDecimal").invoke(object);
@@ -1429,19 +1429,19 @@ public class DecimalTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalGtCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();     
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1460,7 +1460,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getCountFuncDecimal").invoke(object);
@@ -1504,19 +1504,19 @@ public class DecimalTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalGtEqCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1535,7 +1535,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getCountFuncDecimal").invoke(object);
@@ -1579,19 +1579,19 @@ public class DecimalTest  extends TestCase
     } 
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalLtCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1610,7 +1610,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getCountFuncDecimal").invoke(object);
@@ -1654,19 +1654,19 @@ public class DecimalTest  extends TestCase
     } 
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalLtEqCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1685,7 +1685,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getCountFuncDecimal").invoke(object);
@@ -1728,19 +1728,19 @@ public class DecimalTest  extends TestCase
     } 
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalNotEqCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1759,7 +1759,7 @@ public class DecimalTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         BigDecimal decimalValue = (BigDecimal)objectClass.getMethod("getCountFuncDecimal").invoke(object);

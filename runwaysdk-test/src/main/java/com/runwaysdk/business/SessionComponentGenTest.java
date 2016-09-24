@@ -1571,7 +1571,7 @@ public abstract class SessionComponentGenTest extends TestCase
     Method get = collectionClass.getMethod("get", String.class);
     object = get.invoke(null, id);
     struct = collectionClass.getMethod("getAStruct").invoke(object);
-    List out = (List) structClass.getMethod("getStructEnumeration").invoke(struct);
+    List<?> out = (List<?>) structClass.getMethod("getStructEnumeration").invoke(struct);
 
     BusinessEnumeration head = (BusinessEnumeration) out.get(0);
     String outId = (String) head.getClass().getMethod("getId").invoke(head);
@@ -2002,7 +2002,7 @@ public abstract class SessionComponentGenTest extends TestCase
   {
     // Make sure we can instantiate the subclass
     Class<?> collectionSubClass = LoaderDecorator.load(collectionSubDTO);
-    Constructor get = collectionSubClass.getConstructor(ClientRequestIF.class);
+    Constructor<?> get = collectionSubClass.getConstructor(ClientRequestIF.class);
     get.newInstance(_clientReaqest);
 
     collection = MdSessionDAO.get(collection.getId()).getBusinessDAO();
@@ -2808,7 +2808,7 @@ public abstract class SessionComponentGenTest extends TestCase
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
     object = get.invoke(null, _clientReaqest, id);
 
-    List enums = (List) collectionDTOclass.getMethod("getAnEnum").invoke(object);
+    List<?> enums = (List<?>) collectionDTOclass.getMethod("getAnEnum").invoke(object);
     EnumerationDTOIF head = (EnumerationDTOIF) enums.get(0);
     String out = (String) head.name();
 

@@ -55,6 +55,24 @@ import com.runwaysdk.session.PermissionEntity;
 public interface TransactionCacheIF
 {
   /**
+   * Records that the {@link EntityDAOIF} has been created during this
+   * transaction.
+   * <br/>
+   * <b>Pre: {@link EntityDAOIF} is of a type that is not cached<b/>
+   * <b>Pre: {@link EntityDAOIF.isNew()} equals true<b/>
+   * 
+   * @param entityDAOIF
+   *          {@link EntityDAOIF} that goes into the the global cache.
+   */
+  public abstract void recordNewlyCreatedNonCachedEntity(EntityDAOIF entityDAOIF);
+  
+  /**
+   * Close the eChache instance used to simply store ids of newly created {@link EntityDAO} objects
+   * who's type are not cached.
+   */
+  public abstract void close();
+  
+  /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in
    * which the <code>MdBusinessDAOIF</code> with the given id participates as a
    * parent.
@@ -435,7 +453,7 @@ public interface TransactionCacheIF
    * @return EntityDAO with the given id if it exists in the transaction cache,
    *         false otherwise.
    */
-  public abstract EntityDAO getEntityDAO(String type, String key);
+  public abstract EntityDAOIF getEntityDAO(String type, String key);
 
   /**
    * Returns a <code>MdClassDAOIF</code> instance of the metadata for the given
@@ -845,8 +863,6 @@ public interface TransactionCacheIF
    * @param tableName
    */
   public abstract void performDDLTable(String tableName);
-
-  public void close();
   
   public abstract void put(EntityDAOIF entityDAO);
 }

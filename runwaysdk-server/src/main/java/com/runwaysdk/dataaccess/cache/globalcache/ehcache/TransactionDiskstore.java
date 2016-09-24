@@ -55,12 +55,12 @@ public class TransactionDiskstore implements TransactionStoreIF
   {
     this.cacheName = cacheName;
     int diskSize = ServerProperties.getTransactionDiskstoreSize();
-    cacheFileLocation = ServerProperties.getTransactionCacheFileLocation();
+    this.cacheFileLocation = ServerProperties.getTransactionCacheFileLocation();
     
-    persistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(cacheFileLocation, cacheName)));
+    this.persistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(this.cacheFileLocation, this.cacheName)));
     
-    cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(String.class, EntityDAO.class)
-        .with(new UserManagedPersistenceContext<String, EntityDAO>(cacheName, persistenceService)) 
+    this.cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(String.class, EntityDAO.class)
+        .with(new UserManagedPersistenceContext<String, EntityDAO>(cacheName, this.persistenceService)) 
         .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
                   .heap(memorySize, EntryUnit.ENTRIES)
 //                  .offheap(cacheMemorySize, MemoryUnit.MB)
@@ -94,7 +94,7 @@ public class TransactionDiskstore implements TransactionStoreIF
     this.persistenceService.stop();
     try
     {
-      FileUtils.deleteDirectory(new File(cacheFileLocation, cacheName));
+      FileUtils.deleteDirectory(new File(this.cacheFileLocation, this.cacheName));
     }
     catch (IOException e)
     {

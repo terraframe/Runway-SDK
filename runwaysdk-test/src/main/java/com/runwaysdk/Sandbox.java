@@ -18,6 +18,8 @@
  */
 package com.runwaysdk;
 
+import java.util.List;
+
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -36,15 +38,15 @@ import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
-import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
+import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MdWebAttributeInfo;
-import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -74,9 +76,41 @@ public class Sandbox implements Job
 {
   public static void main(String[] args) throws Exception
   {
-    Sandbox.importWithDiff();
+//    Sandbox.importWithDiff();
+    changeMdViewCacheType();
   }
 
+  @Request
+  public static void changeMdViewCacheType()
+  {
+    MdBusinessDAO mdBusinessDAO = MdBusinessDAO.getMdBusinessDAO(MdViewInfo.CLASS).getBusinessDAO();
+    
+    List<MdBusinessDAOIF> superCasses = mdBusinessDAO.getSuperClasses();
+    
+    for (MdBusinessDAOIF mdBusinessDAOIF : superCasses)
+    {
+      BusinessDAOIF cacheEnumItem = mdBusinessDAOIF.getCacheAlgorithm();
+      
+      int cacheCode = new Integer(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
+      System.out.println(mdBusinessDAOIF.definesType()+" "+cacheCode);
+    }
+    
+//    QueryFactory qf = new QueryFactory();
+//    BusinessDAOQuery q = qf.businessDAOQuery(MdElementInfo.CLASS);
+//    
+//    OIterator<BusinessDAOIF> i = q.getIterator();
+//    
+//    for (BusinessDAOIF businessDAOIF : i)
+//    {
+//      MdElementDAOIF mdElementDAOIF = (MdElementDAOIF)businessDAOIF;
+//      BusinessDAOIF cacheEnumItem = mdElementDAOIF.getCacheAlgorithm();
+//      
+//      int cacheCode = new Integer(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
+//      System.out.println(mdElementDAOIF.definesType()+" "+cacheCode);
+//    }
+    
+  }
+  
   @Request
   public static void importWithDiff()
   {

@@ -36,7 +36,7 @@ public class EntityDAOLRUMap2 extends LinkedHashMap
   }
   
   
-  public boolean removeEldestEntry(Map.Entry eldest)
+  public boolean removeEldestEntry(@SuppressWarnings("rawtypes") Map.Entry eldest)
   { 
     if (this.size() > this.maxSize)
     {

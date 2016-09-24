@@ -120,7 +120,7 @@ public class EnumerationMasterQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumMasterAllItems_Generated()
   {
     try
@@ -128,9 +128,9 @@ public class EnumerationMasterQueryTest extends TestCase
       String enumQueryMethodName = QueryMasterSetup.stateMdEnumeration_all.getQueryMethodName();
 
       String childType = QueryMasterSetup.stateClass.getType();
-      Class childClass = LoaderDecorator.load(childType);      
+      Class<?> childClass = LoaderDecorator.load(childType);      
       String childQueryType = EntityQueryAPIGenerator.getQueryClass(childType);  
-      Class childQueryClass = LoaderDecorator.load(childQueryType); 
+      Class<?> childQueryClass = LoaderDecorator.load(childQueryType); 
       
       QueryFactory factory = new QueryFactory();
       Object childQueryObject = childQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -144,7 +144,7 @@ public class EnumerationMasterQueryTest extends TestCase
 
       Object resultIterator = childQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(childQueryObject);
       
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         childClass.cast(object);
         String childId = (String)childClass.getMethod("getId").invoke(object);
@@ -171,7 +171,7 @@ public class EnumerationMasterQueryTest extends TestCase
       childQueryClass.getMethod("WHERE", Condition.class).invoke(childQueryObject, genNotRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
       resultIterator = childQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(childQueryObject);
      
       Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
@@ -266,7 +266,7 @@ public class EnumerationMasterQueryTest extends TestCase
     }
   }
   
-  @SuppressWarnings("unchecked")
+  
   public void testEnumMasterSomeItems1_Generated()
   {
     try
@@ -274,9 +274,9 @@ public class EnumerationMasterQueryTest extends TestCase
       String enumQueryMethodName = QueryMasterSetup.stateMdEnumeration_east.getQueryMethodName();
 
       String childType = QueryMasterSetup.stateClass.getType();
-      Class childClass = LoaderDecorator.load(childType);      
+      Class<?> childClass = LoaderDecorator.load(childType);      
       String childQueryType = EntityQueryAPIGenerator.getQueryClass(childType);  
-      Class childQueryClass = LoaderDecorator.load(childQueryType); 
+      Class<?> childQueryClass = LoaderDecorator.load(childQueryType); 
       
       QueryFactory factory = new QueryFactory();
       Object childQueryObject = childQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -290,7 +290,7 @@ public class EnumerationMasterQueryTest extends TestCase
 
       Object resultIterator = childQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(childQueryObject);
       
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         childClass.cast(object);
         String childId = (String)childClass.getMethod("getId").invoke(object);
@@ -321,7 +321,7 @@ public class EnumerationMasterQueryTest extends TestCase
       
       resultIterator = childQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(childQueryObject);
       
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         childClass.cast(object);
         String childId = (String)childClass.getMethod("getId").invoke(object);
@@ -425,7 +425,7 @@ public class EnumerationMasterQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumMasterSomeItems2_Generated()
   {
     try
@@ -433,9 +433,9 @@ public class EnumerationMasterQueryTest extends TestCase
       String enumQueryMethodName = QueryMasterSetup.stateMdEnumeration_west.getQueryMethodName();
 
       String childType = QueryMasterSetup.stateClass.getType();
-      Class childClass = LoaderDecorator.load(childType);      
+      Class<?> childClass = LoaderDecorator.load(childType);      
       String childQueryType = EntityQueryAPIGenerator.getQueryClass(childType);  
-      Class childQueryClass = LoaderDecorator.load(childQueryType); 
+      Class<?> childQueryClass = LoaderDecorator.load(childQueryType); 
       
       QueryFactory factory = new QueryFactory();
       Object childQueryObject = childQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -449,7 +449,7 @@ public class EnumerationMasterQueryTest extends TestCase
 
       Object resultIterator = childQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(childQueryObject);
       
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         childClass.cast(object);
         String childId = (String)childClass.getMethod("getId").invoke(object);
@@ -480,7 +480,7 @@ public class EnumerationMasterQueryTest extends TestCase
       
       resultIterator = childQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(childQueryObject);
       
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         childClass.cast(object);
         String childId = (String)childClass.getMethod("getId").invoke(object);

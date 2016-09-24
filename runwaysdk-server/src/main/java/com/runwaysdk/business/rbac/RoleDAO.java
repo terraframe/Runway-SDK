@@ -659,7 +659,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
   public String apply()
   {
     validateRolename();
-
+// Heads up: check: Should this also allow the role name to be changed?
     if (this.isNew())
     {
       this.setKey(buildKey(this.getRoleName()));

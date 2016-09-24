@@ -1539,9 +1539,9 @@ public class MessageTest extends TestCase
   @SuppressWarnings("unchecked")
   public void testProblem_DeveloperMessage()
   {
-    Class bookClass = LoaderDecorator.load("test.bookstore.BookDTO");
-    Class tooManyCheckedOutDTOclass = LoaderDecorator.load("test.bookstore.TooManyCheckedOutBooksProblemDTO");
-    Class overdueFeesDTOclass = LoaderDecorator.load("test.bookstore.OverdueLibraryFeesProblemDTO");
+    Class<?> bookClass = LoaderDecorator.load("test.bookstore.BookDTO");
+    Class<?> tooManyCheckedOutDTOclass = LoaderDecorator.load("test.bookstore.TooManyCheckedOutBooksProblemDTO");
+    Class<?> overdueFeesDTOclass = LoaderDecorator.load("test.bookstore.OverdueLibraryFeesProblemDTO");
 
     List<ProblemDTO> problemDTOList = new LinkedList<ProblemDTO>();
 
@@ -1592,7 +1592,7 @@ public class MessageTest extends TestCase
 
         if (te != null && te instanceof ProblemExceptionDTO)
         {
-          Class problemExceptionDTOclass = LoaderDecorator.load(ProblemExceptionDTO.class.getName());
+          Class<?> problemExceptionDTOclass = LoaderDecorator.load(ProblemExceptionDTO.class.getName());
 
           try
           {
@@ -1681,9 +1681,9 @@ public class MessageTest extends TestCase
   @SuppressWarnings("unchecked")
   public void testProblem_NoDeveloperMessage()
   {
-    Class bookClass = LoaderDecorator.load("test.bookstore.BookDTO");
-    Class tooManyCheckedOutDTOclass = LoaderDecorator.load("test.bookstore.TooManyCheckedOutBooksProblemDTO");
-    Class overdueFeesDTOclass = LoaderDecorator.load("test.bookstore.OverdueLibraryFeesProblemDTO");
+    Class<?> bookClass = LoaderDecorator.load("test.bookstore.BookDTO");
+    Class<?> tooManyCheckedOutDTOclass = LoaderDecorator.load("test.bookstore.TooManyCheckedOutBooksProblemDTO");
+    Class<?> overdueFeesDTOclass = LoaderDecorator.load("test.bookstore.OverdueLibraryFeesProblemDTO");
 
     List<ProblemDTO> problemDTOList = new LinkedList<ProblemDTO>();
 
@@ -1733,7 +1733,7 @@ public class MessageTest extends TestCase
 
         if (te != null && te instanceof ProblemExceptionDTO)
         {
-          Class problemExceptionDTOclass = LoaderDecorator.load(ProblemExceptionDTO.class.getName());
+          Class<?> problemExceptionDTOclass = LoaderDecorator.load(ProblemExceptionDTO.class.getName());
 
           try
           {

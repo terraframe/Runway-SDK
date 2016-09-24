@@ -46,6 +46,7 @@ import com.runwaysdk.dataaccess.TransientDAO;
 import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
+import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
@@ -233,15 +234,22 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     this.transactionStateLock.lock();
     try
     {
-      TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
-      if (transactionCacheItem != null)
+      if (this.isNewUncachedEntity(id))
       {
-        entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
+        entityDAOIF = ObjectCache._internalGetEntityDAO(id);
       }
-      
-      if (entityDAOIF == null)
+      else
       {
-        entityDAOIF = this.getTransactionCache().getEntityDAO(id);
+        TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
+        if (transactionCacheItem != null)
+        {
+          entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
+        }
+        
+        if (entityDAOIF == null)
+        {
+          entityDAOIF = this.getTransactionCache().getEntityDAO(id);
+        }        
       }
 
       return entityDAOIF;
@@ -293,11 +301,14 @@ public class ThreadTransactionCache extends AbstractTransactionCache
    * @param oldId
    * @param entityDAO
    */
+  @Override
   protected void changeEntityIdInCache(String oldId, EntityDAO entityDAO)
   {
     this.transactionStateLock.lock();
     try
     {
+      super.changeEntityIdInCache(oldId, entityDAO);
+      
       this.transactionObjectCache.put(entityDAO.getId(), entityDAO);
       this.transactionObjectCache.remove(oldId);
     }
@@ -308,16 +319,16 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
   
   @Override
-  public EntityDAO getEntityDAO(String type, String key)
+  public EntityDAOIF getEntityDAO(String type, String key)
   {
-    EntityDAO entityDAO = super.getEntityDAO(type, key);
+    EntityDAOIF entityDAOIF = super.getEntityDAO(type, key);
 
-    if (entityDAO == null)
+    if (entityDAOIF == null)
     {
-      entityDAO = this.getTransactionCache().getEntityDAO(type, key);
+      entityDAOIF = this.getTransactionCache().getEntityDAO(type, key);
     }
 
-    return entityDAO;
+    return entityDAOIF;
   }
 
   @Override
@@ -621,11 +632,11 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   {
     super.updatedTransition(transitionDAO);
   }
-  
-  @Override
-  public void close()
-  {
-  }
+// Heads up: test:  
+//  @Override
+//  public void close()
+//  {
+//  }
   
   @Override
   public void put(EntityDAOIF entityDAO)

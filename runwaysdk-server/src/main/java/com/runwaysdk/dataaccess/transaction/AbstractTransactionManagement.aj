@@ -1055,7 +1055,13 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
    * Completes actions at the end of the transaction regardless of success or
    * failure.
    */
-  protected abstract void doFinally();
+  protected void doFinally()
+  {     
+// Heads up: test
+     this.getTransactionCache().close();
+    
+//     this.getTransactionCache().closeEntityIdFileCache();
+  }
 
   after() returning : topLevelTransactions()
   {

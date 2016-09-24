@@ -94,8 +94,14 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
   after(EntityDAO entityDAO)
     : afterEntityApply(entityDAO)
   {
-      this.getTransactionCache().put(entityDAO);
-      
+      // This can be called if this is the root most entity in a transaction and the 
+      // transaction cache has been closed. This can happen due to aspect weave ordering
+      // with the main transaction AROUND advice
+      if (!this.getTransactionCache().isClosed())
+      {
+        this.getTransactionCache().put(entityDAO);        
+      }
+     
       // Mark the original reference as having participated in the transaction
       entityDAO.setTransactionState();
   }
@@ -299,13 +305,16 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
    */
   protected void doFinally()
   {
+    super.doFinally();
+    
     this.getState().allCommandsDoFinally();
 
+// Heads up: test
     // Transaction cache should be rolled back, regardless, as we no longer
     // need the objects stored there at the end of the transaction.
-    this.getTransactionCache().rollbackTransactionCache();
+//    this.getTransactionCache().rollbackTransactionCache();
     
-    this.getTransactionCache().close();
+//    this.getTransactionCache().close();
   }
 
   /**

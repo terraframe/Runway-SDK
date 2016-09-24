@@ -132,6 +132,15 @@ public interface MdEntityDAOIF extends MdClassDAOIF
    * @return DataAccessIF object that specifies the cache algorithm used by this type.
    */
   public BusinessDAOIF getCacheAlgorithm();
+  
+  /**
+   * Returns true if objects defined by this type are not cached in the global cache, 
+   * false otherwise.
+   * 
+   * @return true if objects defined by this type are not cached in the global cache, 
+   * false otherwise.
+   */
+  public boolean isNotCached();
 
   /**
    * Returns the integer value of cachSize, which is the optional

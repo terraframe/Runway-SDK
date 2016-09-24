@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.business.ontology;
 
-import com.runwaysdk.business.Relationship;
 import com.runwaysdk.query.OIterator;
 
 public class DefaultStrategy implements OntologyStrategyIF
