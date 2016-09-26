@@ -16,12 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.controller;
+package com.runwaysdk.mvc.conversion;
 
-public interface Parameter
+import com.runwaysdk.business.NotificationDTO;
+
+public abstract class NotificationDTOToBasicJSON extends LocalizableDTOToBasicJSON
 {
 
-  public String getSingleValue();
+  protected NotificationDTOToBasicJSON(NotificationDTO notificationDTO)
+  {
+    super(notificationDTO);
+  }
 
-  public String[] getValuesAsArray();
 }

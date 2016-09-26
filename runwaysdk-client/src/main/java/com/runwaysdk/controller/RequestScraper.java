@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
@@ -41,6 +41,8 @@ import com.runwaysdk.format.FormatFactory;
 import com.runwaysdk.format.ParseException;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.mvc.ParseType;
+import com.runwaysdk.transport.conversion.json.JSONToComponentDTO;
 import com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO;
 import com.runwaysdk.transport.metadata.AttributeLocalMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
@@ -56,31 +58,25 @@ import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 public class RequestScraper
 {
   /**
-   * Fully qualified class name of the desired java object
+   * Information about the parameter
    */
-  private String                 type;
-
-  /**
-   * Name of the parameter being scraped
-   */
-  private String                 name;
+  private ParameterIF                 parameter;
 
   /**
    * Parameters from the request.
    */
-  private Map<String, Parameter> parameters;
+  private Map<String, ParameterValue> values;
 
   /**
    * Manager of the request
    */
-  private RequestManager         manager;
+  private RequestManager              manager;
 
-  public RequestScraper(String type, String name, RequestManager manager, Map<String, Parameter> parameters)
+  public RequestScraper(ParameterIF parameter, RequestManager manager, Map<String, ParameterValue> values)
   {
-    this.type = type;
-    this.name = name;
+    this.parameter = parameter;
     this.manager = manager;
-    this.parameters = parameters;
+    this.values = values;
   }
 
   /**
@@ -88,7 +84,7 @@ public class RequestScraper
    */
   public Object convert()
   {
-    Class<?> c = LoaderDecorator.load(type);
+    Class<?> c = LoaderDecorator.load(this.parameter.getType());
 
     if (c.isArray() && DispatchUtil.isPrimitive(c))
     {
@@ -100,11 +96,11 @@ public class RequestScraper
     }
     else if (MultipartFileParameter.class.isAssignableFrom(c))
     {
-      return (MultipartFileParameter) this.getParameter(name);
+      return (MultipartFileParameter) this.getParameter(this.parameter.getName());
     }
     else
     {
-      String value = getValue(name);
+      String value = getValue(this.parameter.getName());
 
       return convertValue(c, value);
     }
@@ -124,7 +120,7 @@ public class RequestScraper
     List<Object> list = new LinkedList<Object>();
 
     // Enumeration of all the parameters defined in the request
-    Set<String> parameterNames = parameters.keySet();
+    Set<String> parameterNames = values.keySet();
 
     // Index counter
     int i = 0;
@@ -138,9 +134,9 @@ public class RequestScraper
     {
       // Recursively scrape the parameter for the individual object
       String baseName = baseComponent.getName();
-      String baseIndex = name + "_" + i;
+      String baseIndex = this.parameter.getName() + "_" + i;
 
-      Object object = new RequestScraper(baseName, baseIndex, manager, parameters).convert();
+      Object object = new RequestScraper(new ParameterWrapper(baseName, baseIndex), manager, values).convert();
       list.add(object);
       i++;
     }
@@ -166,7 +162,7 @@ public class RequestScraper
     while (namesIter.hasNext())
     {
       String base = namesIter.next();
-      if (base.contains(name + "_" + index))
+      if (base.contains(this.parameter.getName() + "_" + index))
       {
         return true;
       }
@@ -186,7 +182,7 @@ public class RequestScraper
   private Object[] convertPrimitiveArray(Class<?> c)
   {
     // Assumption: All arrays are of a single dimension only!
-    String[] values = getValues(name);
+    String[] values = getValues(this.parameter.getName());
 
     // Assume zero, and only change if he have actual values to set.
     int length = 0;
@@ -223,12 +219,24 @@ public class RequestScraper
     {
       return (T) this.convertPrimitive(c, value);
     }
+    else if (this.parameter.getParseType().equals(ParseType.RUNWAY_JSON))
+    {
+      JSONToComponentDTO converter = JSONToComponentDTO.getConverter(manager.getClientRequest().getSessionId(), manager.getLocale(), value);
+      return (T) converter.populate();
+    }
+    else if (this.parameter.getParseType().equals(ParseType.BASIC_JSON))
+    {
+//      JSONToComponentDTO converter = JSONToComponentDTO.getConverter(manager.getClientRequest().getSessionId(), manager.getLocale(), value);
+//      return (T) converter.populate();
+    }
     else
     {
       // c is not primitive, must be a DTO defined type
       try
       {
         // Get the id and isNew status of the DTO
+        String name = this.parameter.getName();
+
         String id = getValue(name + ".componentId");
         Boolean isNew = Boolean.parseBoolean(getValue(name + ".isNew"));
         String isDisconnected = this.getValue("#" + name + ".disconnected");
@@ -337,7 +345,7 @@ public class RequestScraper
     catch (ParseException e)
     {
       ParameterFactory factory = new ParameterFactory(c, manager.newClientRequest());
-      manager.addAttributeNotificationDTO(factory.getException(name, locale, value));
+      manager.addAttributeNotificationDTO(factory.getException(this.parameter.getName(), locale, value));
 
       // The provided value does not convert so return the class which is
       // expected
@@ -544,6 +552,7 @@ public class RequestScraper
   {
     if (RelationshipDTO.class.isAssignableFrom(c))
     {
+      String name = this.parameter.getName();
       String parentId = getValue("#" + name + ".parent.id");
       String childId = getValue("#" + name + ".child.id");
 
@@ -586,7 +595,7 @@ public class RequestScraper
    */
   private String getValue(String key)
   {
-    Parameter parameter = this.getParameter(key);
+    ParameterValue parameter = this.getParameter(key);
 
     if (parameter != null)
     {
@@ -605,7 +614,7 @@ public class RequestScraper
    */
   private String[] getValues(String key)
   {
-    Parameter parameter = this.getParameter(key);
+    ParameterValue parameter = this.getParameter(key);
 
     if (parameter != null)
     {
@@ -619,18 +628,18 @@ public class RequestScraper
    * @param key
    * @return
    */
-  private Parameter getParameter(String key)
+  private ParameterValue getParameter(String key)
   {
-    if (parameters.containsKey(key))
+    if (values.containsKey(key))
     {
-      return parameters.get(key);
+      return values.get(key);
 
     }
     // FIXME this is awkward
     // The key name might have a [] suffix if coming from a select list in Ajax
-    else if (parameters.containsKey(key + "[]"))
+    else if (values.containsKey(key + "[]"))
     {
-      return parameters.get(key + "[]");
+      return values.get(key + "[]");
     }
 
     return null;

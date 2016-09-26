@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.facade;
 
+import com.runwaysdk.mvc.RestResponseTest;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -32,29 +34,30 @@ public class FacadeTestSuite extends TestSuite
   public static Test suite()
   {
     TestSuite suite = new TestSuite();
+    suite.addTest(RestResponseTest.suite());
 
-    suite.addTest(AdapterTest.suite());
-    suite.addTest(NoSourceAdapterTest.suite());
-    suite.addTest(ViewDTOAdapterTest.suite());
-    suite.addTest(UtilDTOAdapterTest.suite());
-    suite.addTest(InvokeMethodTest.suite());
-    suite.addTest(InvokeUtilDTOMethodTest.suite());
-    suite.addTest(InvokeViewDTOMethodTest.suite());
-    suite.addTest(FacadeGenerationTest.suite());
-    suite.addTest(MessageTest.suite());
-
-    suite.addTest(RMIAdapterTest.suite());
-    suite.addTest(RMIViewDTOAdapterTest.suite());
-    suite.addTest(RMIUtilDTOAdapterTest.suite());
-    suite.addTest(RMIInvokeMethodTest.suite());
-    suite.addTest(RMIInvokeUtilDTOMethodTest.suite());
-    suite.addTest(RMIInvokeViewDTOMethodTest.suite());
-    suite.addTest(RMIFacadeGenerationTest.suite());
-    suite.addTest(RMIMessageTest.suite());
-
-    suite.addTest(JSONInvokeMethodTest.suite());
-    suite.addTest(JSONRMIInvokeMethodTest.suite());
-
+//    suite.addTest(AdapterTest.suite());
+//    suite.addTest(NoSourceAdapterTest.suite());
+//    suite.addTest(ViewDTOAdapterTest.suite());
+//    suite.addTest(UtilDTOAdapterTest.suite());
+//    suite.addTest(InvokeMethodTest.suite());
+//    suite.addTest(InvokeUtilDTOMethodTest.suite());
+//    suite.addTest(InvokeViewDTOMethodTest.suite());
+//    suite.addTest(FacadeGenerationTest.suite());
+//    suite.addTest(MessageTest.suite());
+//
+//    suite.addTest(RMIAdapterTest.suite());
+//    suite.addTest(RMIViewDTOAdapterTest.suite());
+//    suite.addTest(RMIUtilDTOAdapterTest.suite());
+//    suite.addTest(RMIInvokeMethodTest.suite());
+//    suite.addTest(RMIInvokeUtilDTOMethodTest.suite());
+//    suite.addTest(RMIInvokeViewDTOMethodTest.suite());
+//    suite.addTest(RMIFacadeGenerationTest.suite());
+//    suite.addTest(RMIMessageTest.suite());
+//
+//    suite.addTest(JSONInvokeMethodTest.suite());
+//    suite.addTest(JSONRMIInvokeMethodTest.suite());
+//
     // suite.addTest(ConversionTest.suite());
     // if (TestProperties.getMockWebServiceTests())
     // {

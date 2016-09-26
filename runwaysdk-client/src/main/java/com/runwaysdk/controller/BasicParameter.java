@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BasicParameter implements Parameter
+public class BasicParameter implements ParameterValue
 {
   private List<String> values;
 

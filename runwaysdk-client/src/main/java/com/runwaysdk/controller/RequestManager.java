@@ -3,25 +3,27 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.runwaysdk.AttributeNotificationDTO;
@@ -29,13 +31,24 @@ import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.ProblemDTO;
 import com.runwaysdk.constants.ClientConstants;
 import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.request.RequestDecorator;
+import com.runwaysdk.request.ServletRequestIF;
+import com.runwaysdk.request.ResponseDecorator;
+import com.runwaysdk.request.ServletResponseIF;
 
 public class RequestManager
 {
   /**
    * The servlet request being managed
    */
-  private HttpServletRequest             req;
+  private ServletRequestIF             req;
+
+  /**
+   * The servlet response being managed
+   */
+  private ServletResponseIF            resp;
+
+  private ServletMethod                  method;
 
   /**
    * List of attribute notifications which have occured
@@ -54,11 +67,24 @@ public class RequestManager
 
   private ClientSession                  clientSession;
 
-  public RequestManager(HttpServletRequest req)
+  public RequestManager(HttpServletRequest req, HttpServletResponse resp, ServletMethod method)
   {
+    this(new RequestDecorator(req), new ResponseDecorator(resp), method);
+  }
+
+  public RequestManager(HttpServletRequest req, HttpServletResponse resp, ServletMethod method, ClientSession clientSession, ClientRequestIF clientReq)
+  {
+    this(new RequestDecorator(req), new ResponseDecorator(resp), method, clientSession, clientReq);
+  }
+
+  public RequestManager(ServletRequestIF req, ServletResponseIF resp, ServletMethod method)
+  {
+    this.req = req;
+    this.resp = resp;
+    this.method = method;
+
     HttpSession httpSession = req.getSession();
 
-    this.req = req;
     this.attributeNotifications = new LinkedList<AttributeNotificationDTO>();
     this.problems = new LinkedList<ProblemDTO>();
     this.clientReq = (ClientRequestIF) req.getAttribute(ClientConstants.CLIENTREQUEST);
@@ -82,18 +108,31 @@ public class RequestManager
     }
   }
 
-  public RequestManager(HttpServletRequest req, ClientSession clientSession, ClientRequestIF clientReq)
+  public RequestManager(ServletRequestIF req, ServletResponseIF resp, ServletMethod method, ClientSession clientSession, ClientRequestIF clientReq)
   {
     this.req = req;
+    this.resp = resp;
+    this.method = method;
+
     this.clientSession = clientSession;
     this.clientReq = clientReq;
     this.attributeNotifications = new LinkedList<AttributeNotificationDTO>();
     this.problems = new LinkedList<ProblemDTO>();
   }
 
-  public HttpServletRequest getReq()
+  public ServletRequestIF getReq()
   {
     return req;
+  }
+
+  public ServletResponseIF getResp()
+  {
+    return resp;
+  }
+
+  public ServletMethod getMethod()
+  {
+    return method;
   }
 
   public ClientRequestIF getClientRequest()
@@ -141,5 +180,10 @@ public class RequestManager
   public boolean hasExceptions()
   {
     return ( ( attributeNotifications.size() > 0 ) || ( problems.size() > 0 ) );
+  }
+
+  public Locale getLocale()
+  {
+    return this.req.getLocale();
   }
 }

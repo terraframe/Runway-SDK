@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.ontology;
 
@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.controller.ErrorUtility;
+import com.runwaysdk.request.RequestDecorator;
+import com.runwaysdk.request.ResponseDecorator;
 import com.runwaysdk.system.ontology.TermUtilDTO;
 import com.runwaysdk.system.ontology.io.TermFileFormatDTO;
 
@@ -67,7 +69,7 @@ public class TermControllerUtil
       {
         resp.reset();
       }
-      ErrorUtility.prepareThrowable(e, req, out, resp, false, true);
+      ErrorUtility.prepareThrowable(e, new RequestDecorator(req), out, new ResponseDecorator(resp), false, true);
     }
     finally
     {

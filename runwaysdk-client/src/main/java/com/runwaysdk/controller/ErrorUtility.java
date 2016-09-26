@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
@@ -33,8 +33,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -44,6 +42,8 @@ import com.runwaysdk.business.InformationDTO;
 import com.runwaysdk.business.ProblemDTOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
 import com.runwaysdk.generation.loader.Reloadable;
+import com.runwaysdk.request.ServletRequestIF;
+import com.runwaysdk.request.ServletResponseIF;
 import com.runwaysdk.session.AttributeReadPermissionExceptionDTO;
 import com.runwaysdk.session.ReadTypePermissionExceptionDTO;
 import com.runwaysdk.util.Base64;
@@ -61,15 +61,17 @@ public class ErrorUtility implements Reloadable
   public static final String MESSAGE_ARRAY       = "messageArray";
 
   /**
-   * Handles errors that are generated from a request sent asynchronously from the RunwayControllerForm js widget.
+   * Handles errors that are generated from a request sent asynchronously from
+   * the RunwayControllerForm js widget.
    * 
    * @param t
    * @param req
    * @param resp
    * @throws IOException
-   * @returns boolean Whether or not a redirect is required. A redirect is required if and only if the error is inlined.
+   * @returns boolean Whether or not a redirect is required. A redirect is
+   *          required if and only if the error is inlined.
    */
-  public static boolean handleFormError(Throwable t, HttpServletRequest req, HttpServletResponse resp) throws IOException
+  public static boolean handleFormError(Throwable t, ServletRequestIF req, ServletResponseIF resp) throws IOException
   {
     t = ErrorUtility.filterServletException(t);
 
@@ -86,17 +88,17 @@ public class ErrorUtility implements Reloadable
       return false;
     }
   }
-  
-  public static void prepareAjaxThrowable(Throwable t, HttpServletResponse resp) throws IOException
+
+  public static void prepareAjaxThrowable(Throwable t, ServletResponseIF resp) throws IOException
   {
-    while(t instanceof InvocationTargetException)
+    while (t instanceof InvocationTargetException)
     {
       t = t.getCause();
     }
-    
+
     if (t instanceof ProblemExceptionDTO)
     {
-      JSONProblemExceptionDTO jsonE = new JSONProblemExceptionDTO((ProblemExceptionDTO)t);
+      JSONProblemExceptionDTO jsonE = new JSONProblemExceptionDTO((ProblemExceptionDTO) t);
       resp.setStatus(500);
       resp.getWriter().print(jsonE.getJSON());
     }
@@ -107,14 +109,14 @@ public class ErrorUtility implements Reloadable
       resp.getWriter().print(jsonE.getJSON());
     }
   }
-  
-  private static void prepareProblems(ProblemExceptionDTO e, HttpServletRequest req, boolean ignoreNotifications)
+
+  private static void prepareProblems(ProblemExceptionDTO e, ServletRequestIF req, boolean ignoreNotifications)
   {
     List<String> messages = new LinkedList<String>();
 
     for (ProblemDTOIF problem : e.getProblems())
     {
-      if ((!ignoreNotifications) && ( problem instanceof AttributeNotificationDTO ))
+      if ( ( !ignoreNotifications ) && ( problem instanceof AttributeNotificationDTO ))
       {
         String message = problem.getMessage();
 
@@ -128,7 +130,7 @@ public class ErrorUtility implements Reloadable
     }
   }
 
-  public static void prepareInformation(List<InformationDTO> list, HttpServletRequest req)
+  public static void prepareInformation(List<InformationDTO> list, ServletRequestIF req)
   {
     List<String> messages = new LinkedList<String>();
 
@@ -143,17 +145,17 @@ public class ErrorUtility implements Reloadable
     }
   }
 
-  public static boolean prepareThrowable(Throwable t, HttpServletRequest req, HttpServletResponse resp, Boolean isAsynchronus) throws IOException
+  public static boolean prepareThrowable(Throwable t, ServletRequestIF req, ServletResponseIF resp, Boolean isAsynchronus) throws IOException
   {
     return ErrorUtility.prepareThrowable(t, req, resp, isAsynchronus, true);
   }
 
-  public static boolean prepareThrowable(Throwable t, HttpServletRequest req, HttpServletResponse resp, Boolean isAsynchronus, boolean ignoreNotifications) throws IOException
+  public static boolean prepareThrowable(Throwable t, ServletRequestIF req, ServletResponseIF resp, Boolean isAsynchronus, boolean ignoreNotifications) throws IOException
   {
     return prepareThrowable(t, req, resp.getOutputStream(), resp, isAsynchronus, ignoreNotifications);
   }
-  
-  public static boolean prepareThrowable(Throwable t, HttpServletRequest req, OutputStream out, HttpServletResponse resp, Boolean isAsynchronus, boolean ignoreNotifications) throws IOException
+
+  public static boolean prepareThrowable(Throwable t, ServletRequestIF req, OutputStream out, ServletResponseIF resp, Boolean isAsynchronus, boolean ignoreNotifications) throws IOException
   {
     t = ErrorUtility.filterServletException(t);
 
@@ -208,7 +210,7 @@ public class ErrorUtility implements Reloadable
     return t;
   }
 
-  private static void prepareThrowable(Throwable t, HttpServletRequest req)
+  private static void prepareThrowable(Throwable t, ServletRequestIF req)
   {
     String localizedMessage = t.getLocalizedMessage();
 
@@ -229,13 +231,14 @@ public class ErrorUtility implements Reloadable
         e.printStackTrace();
       }
     }
-    else if (t instanceof RuntimeException) {
-      throw (RuntimeException)t;
+    else if (t instanceof RuntimeException)
+    {
+      throw (RuntimeException) t;
     }
 
   }
 
-  private static String getErrorMessage(HttpServletRequest req)
+  private static String getErrorMessage(ServletRequestIF req)
   {
     Object errorMessage = req.getAttribute(ErrorUtility.ERROR_MESSAGE);
 
@@ -247,7 +250,7 @@ public class ErrorUtility implements Reloadable
     return null;
   }
 
-  private static String getErrorMessageArray(HttpServletRequest req)
+  private static String getErrorMessageArray(ServletRequestIF req)
   {
     Object errorMessage = req.getAttribute(ErrorUtility.ERROR_MESSAGE_ARRAY);
 
@@ -266,7 +269,7 @@ public class ErrorUtility implements Reloadable
     return null;
   }
 
-  private static String getMessageArray(HttpServletRequest req)
+  private static String getMessageArray(ServletRequestIF req)
   {
     Object message = req.getAttribute(ErrorUtility.MESSAGE_ARRAY);
 
@@ -287,7 +290,7 @@ public class ErrorUtility implements Reloadable
     return null;
   }
 
-  public static String getMessagesForJavascript(HttpServletRequest req)
+  public static String getMessagesForJavascript(ServletRequestIF req)
   {
     Object object = req.getAttribute(ErrorUtility.MESSAGE_ARRAY);
 
@@ -324,7 +327,7 @@ public class ErrorUtility implements Reloadable
     }
   }
 
-  public static void addErrorMessages(HttpServletRequest req, URLUtility utility)
+  public static void addErrorMessages(ServletRequestIF req, URLUtility utility)
   {
     String errorMessage = ErrorUtility.getErrorMessage(req);
     String errorMessageArray = ErrorUtility.getErrorMessageArray(req);
@@ -346,7 +349,7 @@ public class ErrorUtility implements Reloadable
     }
   }
 
-  public static void prepareMessages(HttpServletRequest req)
+  public static void prepareMessages(ServletRequestIF req)
   {
     String errorMessage = req.getParameter(ErrorUtility.ERROR_MESSAGE);
     String errorMessageArray = req.getParameter(ErrorUtility.ERROR_MESSAGE_ARRAY);
