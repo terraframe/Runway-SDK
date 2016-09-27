@@ -124,7 +124,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
   public AbstractOntologyStrategyTest() throws Exception
   {
-    
+    didDoSetUp = false;
   }
   
   /**
