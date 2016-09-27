@@ -42,6 +42,7 @@ import com.runwaysdk.format.ParseException;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.mvc.ParseType;
+import com.runwaysdk.mvc.conversion.BasicJSONToComponentDTO;
 import com.runwaysdk.transport.conversion.json.JSONToComponentDTO;
 import com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO;
 import com.runwaysdk.transport.metadata.AttributeLocalMdDTO;
@@ -226,8 +227,8 @@ public class RequestScraper
     }
     else if (this.parameter.getParseType().equals(ParseType.BASIC_JSON))
     {
-//      JSONToComponentDTO converter = JSONToComponentDTO.getConverter(manager.getClientRequest().getSessionId(), manager.getLocale(), value);
-//      return (T) converter.populate();
+      BasicJSONToComponentDTO converter = BasicJSONToComponentDTO.getConverter(manager.getClientRequest().getSessionId(), manager.getLocale(), this.parameter.getType(), value);
+      return (T) converter.populate();
     }
     else
     {

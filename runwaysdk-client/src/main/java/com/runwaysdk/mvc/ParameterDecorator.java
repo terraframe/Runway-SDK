@@ -21,7 +21,7 @@ public class ParameterDecorator implements ParameterIF
     if (annotation != null)
     {
       this.name = annotation.name();
-      this.parseType = annotation.parseType();
+      this.parseType = annotation.parser();
     }
     else
     {

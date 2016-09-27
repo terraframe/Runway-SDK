@@ -2,6 +2,7 @@ package com.runwaysdk.mvc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Locale;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
@@ -9,24 +10,58 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
+import org.json.JSONObject;
 import org.junit.Assert;
 
+import com.runwaysdk.ClientSession;
+import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.ComponentInfo;
+import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdRelationshipInfo;
+import com.runwaysdk.constants.MdTypeInfo;
+import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.controller.IllegalURIMethodException;
 import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.controller.ServletMethod;
 import com.runwaysdk.controller.URLConfigurationManager;
 import com.runwaysdk.controller.UnknownServletException;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
 
 public class DispatcherServletTest extends TestCase
 {
+  private static ClientSession session;
+
+  private static BusinessDTO   mdBusiness;
+
+  private static BusinessDTO   mdRelationship;
+
   public static Test suite()
   {
     TestSuite suite = new TestSuite();
     suite.addTestSuite(DispatcherServletTest.class);
 
-    TestSetup wrapper = new TestSetup(suite);
+    TestSetup wrapper = new TestSetup(suite)
+    {
+      @Override
+      protected void setUp() throws Exception
+      {
+        classSetup();
+      }
+
+      @Override
+      protected void tearDown() throws Exception
+      {
+        classTeardown();
+      }
+    };
 
     return wrapper;
   }
@@ -41,6 +76,60 @@ public class DispatcherServletTest extends TestCase
   public void run(TestResult testResult)
   {
     super.run(testResult);
+  }
+
+  public static void classSetup()
+  {
+    session = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    ClientRequestIF clientRequest = session.getRequest();
+
+    mdBusiness = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    mdBusiness.setValue(MdBusinessInfo.NAME, "TestBusiness");
+    mdBusiness.setValue(MdBusinessInfo.PACKAGE, "test");
+    mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration Master List");
+    mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdBusiness.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    clientRequest.createBusiness(mdBusiness);
+
+    BusinessDTO mdAttributeCharacterDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.NAME, TestFixConst.ATTRIBUTE_CHARACTER);
+    mdAttributeCharacterDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
+    mdAttributeCharacterDTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character desc");
+    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.toString());
+    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
+    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    clientRequest.createBusiness(mdAttributeCharacterDTO);
+
+    mdRelationship = clientRequest.newBusiness(MdRelationshipInfo.CLASS);
+    mdRelationship.setValue(MdRelationshipInfo.NAME, "TestRelationship");
+    mdRelationship.setValue(MdRelationshipInfo.PACKAGE, "test");
+    mdRelationship.setValue(MdRelationshipInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
+    mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Relationship");
+    mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
+    mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent dto");
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
+    mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child dto");
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "testParent");
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "testChild");
+    mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    clientRequest.createBusiness(mdRelationship);
+
+  }
+
+  public static void classTeardown()
+  {
+    ClientRequestIF request = session.getRequest();
+
+    request.delete(mdBusiness.getId());
+
+    session.logout();
   }
 
   public void testCheckAndDispatch() throws Exception
@@ -83,31 +172,31 @@ public class DispatcherServletTest extends TestCase
   public void testBasicParameter() throws Exception
   {
     InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
-    
+
     Assert.assertNotNull(istream);
-    
+
     try
     {
       URLConfigurationManager manager = new URLConfigurationManager();
       manager.readMappings(istream);
-      
+
       MockServletRequest req = new MockServletRequest();
       req.setServletPath("test/number");
       req.setParameter("value", "100");
-      
+
       MockServletResponse resp = new MockServletResponse();
-      
+
       RequestManager request = new RequestManager(req, resp, ServletMethod.GET, null, null);
-      
+
       DispatcherServlet dispatcher = new DispatcherServlet(manager);
       dispatcher.checkAndDispatch(request);
-      
+
       ByteArrayOutputStream baos = ( (ByteArrayOutputStream) resp.getOutputStream() );
-      
+
       String result = new String(baos.toByteArray(), "UTF-8");
-      
+
       Integer test = new Integer(result);
-      
+
       Assert.assertEquals(new Integer(100), test);
       Assert.assertEquals(200, resp.getStatus());
       Assert.assertEquals("application/json", resp.getContentType());
@@ -117,7 +206,60 @@ public class DispatcherServletTest extends TestCase
       istream.close();
     }
   }
-  
+
+  public void testDTOParameter() throws Exception
+  {
+    ClientRequestIF request = session.getRequest();
+
+    BusinessDTO dto = request.newBusiness("test.TestBusiness");
+    dto.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Value");
+    request.createBusiness(dto);
+
+    try
+    {
+      InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
+
+      Assert.assertNotNull(istream);
+
+      try
+      {
+        URLConfigurationManager manager = new URLConfigurationManager();
+        manager.readMappings(istream);
+
+        MockServletRequest req = new MockServletRequest();
+        req.setServletPath("test/dto");
+        req.setParameter("dto", new RestSerializer().serialize(dto).toString());
+
+        MockServletResponse resp = new MockServletResponse();
+
+        RequestManager rm = new RequestManager(req, resp, ServletMethod.POST, session, request);
+
+        DispatcherServlet dispatcher = new DispatcherServlet(manager);
+        dispatcher.checkAndDispatch(rm);
+
+        ByteArrayOutputStream baos = ( (ByteArrayOutputStream) resp.getOutputStream() );
+
+        JSONObject response = new JSONObject(new String(baos.toByteArray(), "UTF-8"));
+        JSONObject test = response.getJSONObject("dto");
+
+        Assert.assertEquals(dto.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getString(TestFixConst.ATTRIBUTE_CHARACTER));
+        Assert.assertEquals(dto.getId(), test.getString(ComponentInfo.ID));
+        Assert.assertEquals(dto.getType(), test.getString(ComponentInfo.TYPE));
+
+        Assert.assertEquals(200, resp.getStatus());
+        Assert.assertEquals("application/json", resp.getContentType());
+      }
+      finally
+      {
+        istream.close();
+      }
+    }
+    finally
+    {
+      request.delete(dto.getId());
+    }
+  }
+
   public void testInvalidUri() throws Exception
   {
     InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
@@ -189,5 +331,5 @@ public class DispatcherServletTest extends TestCase
       istream.close();
     }
   }
-  
+
 }

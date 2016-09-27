@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 public @interface RequestParamter {
   public String name();
-  
-  public ParseType parseType() default ParseType.NONE;
+
+  public ParseType parser() default ParseType.NONE;
 }
