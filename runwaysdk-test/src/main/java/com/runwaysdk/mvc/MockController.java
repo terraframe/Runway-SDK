@@ -39,4 +39,13 @@ public class MockController
 
     return response;
   }
+  
+  @Endpoint(method = ServletMethod.POST)
+  public ResponseIF runway(@RequestParamter(name = "dto", parser = ParseType.RUNWAY_JSON) BusinessDTO dto)
+  {
+    RestResponse response = new RestResponse();
+    response.set("dto", dto);
+    
+    return response;
+  }
 }

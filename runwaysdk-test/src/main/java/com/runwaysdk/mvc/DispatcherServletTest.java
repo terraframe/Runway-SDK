@@ -34,6 +34,7 @@ import com.runwaysdk.controller.UnknownServletException;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
+import com.runwaysdk.transport.conversion.json.ComponentDTOIFToJSON;
 
 public class DispatcherServletTest extends TestCase
 {
@@ -207,7 +208,7 @@ public class DispatcherServletTest extends TestCase
     }
   }
 
-  public void testDTOParameter() throws Exception
+  public void testBasicDTOParameter() throws Exception
   {
     ClientRequestIF request = session.getRequest();
 
@@ -229,6 +230,59 @@ public class DispatcherServletTest extends TestCase
         MockServletRequest req = new MockServletRequest();
         req.setServletPath("test/dto");
         req.setParameter("dto", new RestSerializer().serialize(dto).toString());
+
+        MockServletResponse resp = new MockServletResponse();
+
+        RequestManager rm = new RequestManager(req, resp, ServletMethod.POST, session, request);
+
+        DispatcherServlet dispatcher = new DispatcherServlet(manager);
+        dispatcher.checkAndDispatch(rm);
+
+        ByteArrayOutputStream baos = ( (ByteArrayOutputStream) resp.getOutputStream() );
+
+        JSONObject response = new JSONObject(new String(baos.toByteArray(), "UTF-8"));
+        JSONObject test = response.getJSONObject("dto");
+
+        Assert.assertEquals(dto.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getString(TestFixConst.ATTRIBUTE_CHARACTER));
+        Assert.assertEquals(dto.getId(), test.getString(ComponentInfo.ID));
+        Assert.assertEquals(dto.getType(), test.getString(ComponentInfo.TYPE));
+
+        Assert.assertEquals(200, resp.getStatus());
+        Assert.assertEquals("application/json", resp.getContentType());
+      }
+      finally
+      {
+        istream.close();
+      }
+    }
+    finally
+    {
+      request.delete(dto.getId());
+    }
+  }
+
+  public void testRunwayJSONDTOParameter() throws Exception
+  {
+    ClientRequestIF request = session.getRequest();
+
+    BusinessDTO dto = request.newBusiness("test.TestBusiness");
+    dto.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Value");
+    request.createBusiness(dto);
+
+    try
+    {
+      InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
+
+      Assert.assertNotNull(istream);
+
+      try
+      {
+        URLConfigurationManager manager = new URLConfigurationManager();
+        manager.readMappings(istream);
+
+        MockServletRequest req = new MockServletRequest();
+        req.setServletPath("test/runway");
+        req.setParameter("dto", ComponentDTOIFToJSON.getConverter(dto).populate().toString());
 
         MockServletResponse resp = new MockServletResponse();
 
