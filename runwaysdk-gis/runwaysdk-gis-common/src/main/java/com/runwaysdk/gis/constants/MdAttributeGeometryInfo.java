@@ -1,0 +1,44 @@
+/**
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ *
+ * This file is part of Runway SDK GIS(tm).
+ *
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.runwaysdk.gis.constants;
+
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
+
+public interface MdAttributeGeometryInfo extends MdAttributeConcreteInfo
+{
+  /**
+   * Class.
+   */
+  public static final String CLASS   = GISConstants.GIS_METADATA_PACKAGE +".MdAttributeGeometry";
+  
+  /**
+   * ID.
+   */
+  public static final String ID_VALUE  = "NM20090219000000000000000000000100000000000000000000000000000001";
+  
+  /**
+   * Projection ID used for this geometry attribute;
+   */
+  public static final String SRID   = "srid";  
+  
+  /**
+   * Dimension used for this attribute;
+   */
+  public static final String DIMENSION = "dimension";
+}

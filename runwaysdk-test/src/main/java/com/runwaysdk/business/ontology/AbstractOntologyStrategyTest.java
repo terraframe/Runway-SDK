@@ -231,6 +231,8 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     MdRelationship.get(mdTermRelationshipId).delete();
     MdBusiness.get(mdTermId).delete();
+    
+    didDoSetUp = false;
   }
   
 //  public void testInitialized() {

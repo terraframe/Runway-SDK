@@ -1,0 +1,48 @@
+<!--
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway GIS(tm).
+
+    Runway GIS(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway GIS(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway GIS(tm).  If not, see <http://www.gnu.org/licenses />.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>com.runwaysdk</groupId>
+    <artifactId>runwaysdk-root</artifactId>
+    <version>2.0.19-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  
+  <artifactId>runwaysdk-gis</artifactId>
+  <packaging>pom</packaging>
+  
+  <modules>
+    <module>runwaysdk-gis-client</module>
+    <module>runwaysdk-gis-common</module>
+    <module>runwaysdk-gis-server</module>
+    <module>runwaysdk-gis-web</module>
+    <module>runwaysdk-gis-test</module>
+  </modules>
+
+  <scm>
+    <connection>scm:git:ssh://git@github.com/terraframe/Runway-SDK-GIS</connection>
+    <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK-GIS</developerConnection>
+    <url>scm:git:ssh://git@github.com/terraframe/Runway-SDK-GIS</url>
+    <tag>v2.0.18</tag>
+  </scm>
+</project>

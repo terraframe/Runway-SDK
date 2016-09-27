@@ -37,6 +37,7 @@
     <module>runwaysdk-tomcat6cl</module>
     <module>runwaysdk-web</module>
     <module>runwaysdk-archetype</module>
+    <module>runwaysdk-gis</module>
   </modules>
   
   <inceptionYear>2004</inceptionYear>

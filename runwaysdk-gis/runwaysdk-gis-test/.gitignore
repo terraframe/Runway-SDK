@@ -1,0 +1,10 @@
+/lib
+/target
+/logs
+/sessionCache
+/cache
+/webapp
+/session
+/test.xml
+/.classpath
+/.DS_Store
