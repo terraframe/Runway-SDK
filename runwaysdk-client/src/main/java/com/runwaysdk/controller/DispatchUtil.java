@@ -156,45 +156,41 @@ public class DispatchUtil
   /**
    * Converts all primitive parameters into their {@link String} representations
    */
-  private final void prepareFailure(Map<String, ParameterValue> parameters)
+  private final void prepareFailure(Map<String, ParameterValue> values)
   {
-    // TODO Update for ParameterIF
-//    StringTokenizer toke = new StringTokenizer(annotation.parameters(), ",");
-//
-//    for (int i = 0; i < objects.length; i++)
-//    {
-//      String parameter = toke.nextToken();
-//      String[] value = parameter.split(":");
-//      String parameterName = value[1];
-//
-//      if (objects[i] != null)
-//      {
-//        Class<?> c = null;
-//
-//        if (objects[i] instanceof Class<?>)
-//        {
-//          c = (Class<?>) objects[i];
-//        }
-//        else
-//        {
-//          c = objects[i].getClass();
-//        }
-//
-//        if (DispatchUtil.isPrimitive(c))
-//        {
-//          if (c.isArray())
-//          {
-//            String type = new String[0].getClass().getName();
-//            objects[i] = new RequestScraper(type, parameterName, manager, parameters).convert();
-//          }
-//          else
-//          {
-//            String type = String.class.getName();
-//            objects[i] = new RequestScraper(type, parameterName, manager, parameters).convert();
-//          }
-//        }
-//      }
-//    }
+
+    for (int i = 0; i < objects.length; i++)
+    {
+      ParameterIF parameter = this.parameters.get(i);
+
+      if (objects[i] != null)
+      {
+        Class<?> c = null;
+
+        if (objects[i] instanceof Class<?>)
+        {
+          c = (Class<?>) objects[i];
+        }
+        else
+        {
+          c = objects[i].getClass();
+        }
+
+        if (DispatchUtil.isPrimitive(c))
+        {
+          if (c.isArray())
+          {
+            String type = new String[0].getClass().getName();
+            objects[i] = new RequestScraper(new ParameterWrapper(type, parameter.getName()), manager, values).convert();
+          }
+          else
+          {
+            String type = String.class.getName();
+            objects[i] = new RequestScraper(new ParameterWrapper(type, parameter.getName()), manager, values).convert();
+          }
+        }
+      }
+    }
   }
 
   /**

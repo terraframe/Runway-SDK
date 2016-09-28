@@ -3,22 +3,26 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.facade;
 
+import com.runwaysdk.controller.URLConfigurationManagerTest;
+import com.runwaysdk.mvc.DispatcherServletTest;
+import com.runwaysdk.mvc.RestBodyResponseTest;
 import com.runwaysdk.mvc.RestResponseTest;
+import com.runwaysdk.mvc.ViewResponseTest;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -36,29 +40,36 @@ public class FacadeTestSuite extends TestSuite
     TestSuite suite = new TestSuite();
     suite.addTest(RestResponseTest.suite());
 
-//    suite.addTest(AdapterTest.suite());
-//    suite.addTest(NoSourceAdapterTest.suite());
-//    suite.addTest(ViewDTOAdapterTest.suite());
-//    suite.addTest(UtilDTOAdapterTest.suite());
-//    suite.addTest(InvokeMethodTest.suite());
-//    suite.addTest(InvokeUtilDTOMethodTest.suite());
-//    suite.addTest(InvokeViewDTOMethodTest.suite());
-//    suite.addTest(FacadeGenerationTest.suite());
-//    suite.addTest(MessageTest.suite());
-//
-//    suite.addTest(RMIAdapterTest.suite());
-//    suite.addTest(RMIViewDTOAdapterTest.suite());
-//    suite.addTest(RMIUtilDTOAdapterTest.suite());
-//    suite.addTest(RMIInvokeMethodTest.suite());
-//    suite.addTest(RMIInvokeUtilDTOMethodTest.suite());
-//    suite.addTest(RMIInvokeViewDTOMethodTest.suite());
-//    suite.addTest(RMIFacadeGenerationTest.suite());
-//    suite.addTest(RMIMessageTest.suite());
-//
-//    suite.addTest(JSONInvokeMethodTest.suite());
-//    suite.addTest(JSONRMIInvokeMethodTest.suite());
-//
-    // suite.addTest(ConversionTest.suite());
+    suite.addTest(AdapterTest.suite());
+    suite.addTest(NoSourceAdapterTest.suite());
+    suite.addTest(ViewDTOAdapterTest.suite());
+    suite.addTest(UtilDTOAdapterTest.suite());
+    suite.addTest(InvokeMethodTest.suite());
+    suite.addTest(InvokeUtilDTOMethodTest.suite());
+    suite.addTest(InvokeViewDTOMethodTest.suite());
+    suite.addTest(FacadeGenerationTest.suite());
+    suite.addTest(MessageTest.suite());
+
+    suite.addTest(RMIAdapterTest.suite());
+    suite.addTest(RMIViewDTOAdapterTest.suite());
+    suite.addTest(RMIUtilDTOAdapterTest.suite());
+    suite.addTest(RMIInvokeMethodTest.suite());
+    suite.addTest(RMIInvokeUtilDTOMethodTest.suite());
+    suite.addTest(RMIInvokeViewDTOMethodTest.suite());
+    suite.addTest(RMIFacadeGenerationTest.suite());
+    suite.addTest(RMIMessageTest.suite());
+
+    suite.addTest(JSONInvokeMethodTest.suite());
+    suite.addTest(JSONRMIInvokeMethodTest.suite());
+    
+    suite.addTest(URLConfigurationManagerTest.suite());
+    suite.addTest(RestBodyResponseTest.suite());
+    suite.addTest(RestResponseTest.suite());
+    suite.addTest(ViewResponseTest.suite());
+    suite.addTest(DispatcherServletTest.suite());    
+    
+
+    // suite.addTest(DocumentConversionTest.suite());
     // if (TestProperties.getMockWebServiceTests())
     // {
     // suite.addTest(MockWebServiceAdapterTest.suite());

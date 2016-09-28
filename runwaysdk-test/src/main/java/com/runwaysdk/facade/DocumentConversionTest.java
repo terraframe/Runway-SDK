@@ -47,7 +47,7 @@ import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 
-public class ConversionTest extends TestCase
+public class DocumentConversionTest extends TestCase
 {
   private static TypeInfo    houseType            = new TypeInfo("com.test.conversion", "House");
 
@@ -73,13 +73,13 @@ public class ConversionTest extends TestCase
 
   public static void main(String[] args)
   {
-    junit.textui.TestRunner.run(ConversionTest.suite());
+    junit.textui.TestRunner.run(DocumentConversionTest.suite());
   }
 
   public static Test suite()
   {
     TestSuite suite = new TestSuite();
-    suite.addTestSuite(ConversionTest.class);
+    suite.addTestSuite(DocumentConversionTest.class);
 
     TestSetup wrapper = new TestSetup(suite)
     {
