@@ -60,9 +60,4 @@ public class Synonym extends SynonymBase
   {
     return GeoEntity.getRoot();
   }
-  
-  public static OntologyStrategyIF createStrategy()
-  {
-    return new DatabaseAllPathsStrategy();
-  }
 }
