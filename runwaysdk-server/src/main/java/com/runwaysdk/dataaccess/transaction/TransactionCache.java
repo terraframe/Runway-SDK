@@ -144,7 +144,6 @@ public class TransactionCache extends AbstractTransactionCache
     this.updatedMdClassDefinedTypeMap.putAll(threadTransactionCache.updatedMdClassDefinedTypeMap);
     this.updatedMdClassRootIdMap.putAll(threadTransactionCache.updatedMdClassRootIdMap);
     this.updatedRoleIFMap.putAll(threadTransactionCache.updatedRoleIFMap);
-    this.updatedMdFacadeMap.putAll(threadTransactionCache.updatedMdFacadeMap);
 
     this.updatedStateMasterMap.putAll(threadTransactionCache.updatedStateMasterMap);
 
@@ -181,9 +180,6 @@ public class TransactionCache extends AbstractTransactionCache
     this.unregisterPermissionEntity.addAll(threadTransactionCache.unregisterPermissionEntity);
 
     this.dmlTableName.addAll(threadTransactionCache.dmlTableName);
-
-    this.webServiceMdFacadeMapDeploy.putAll(threadTransactionCache.webServiceMdFacadeMapDeploy);
-    this.webServiceMdFacadeMapUndeploy.putAll(threadTransactionCache.webServiceMdFacadeMapUndeploy);
 
     for (String key : threadTransactionCache.cachedAddedRelationships.keySet())
     {

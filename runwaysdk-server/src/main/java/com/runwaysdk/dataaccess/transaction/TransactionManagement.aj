@@ -219,21 +219,6 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     // From here on out there is no going back.
     // Perform DELETE DML. Delete DML cannot be undone
     this.getState().processNotUndoableCommands();
-
-    if (CommonProperties.getContainerWebServiceEnabled())
-    {
-      // 9. Undeploy web services for all deleted MdFacades
-      // remove the web service for this facade if it exists
-      WebServiceUndeployer serviceUndeployer = new WebServiceUndeployer();
-      serviceUndeployer.addServices(this.getTransactionCache().getMdFacadesForServicesUndeploy());
-      serviceUndeployer.undeploy();
-
-      // 10. Deploy web services for all updated MdFacades
-      // this will overwrite the previous services, which is OKAY
-      WebServiceDeployer serviceDeployer = new WebServiceDeployer();
-      serviceDeployer.addServices(this.getTransactionCache().getMdFacadesForServicesDeploy());
-      serviceDeployer.deploy();
-    }
   }
 
   protected void rollbackTransaction(Throwable ex)

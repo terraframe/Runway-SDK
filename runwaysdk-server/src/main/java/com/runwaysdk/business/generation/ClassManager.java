@@ -33,13 +33,11 @@ import com.runwaysdk.business.generation.dto.ComponentQueryDTOGenerator;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeBlob;
 import com.runwaysdk.dataaccess.io.FileReadException;
 import com.runwaysdk.dataaccess.io.FileWriteException;
-import com.runwaysdk.dataaccess.metadata.MdFacadeDAO;
 import com.runwaysdk.util.FileIO;
 
 /**
@@ -166,54 +164,6 @@ public class ClassManager
     String fileSystemPackage = GenerationUtil.getPackageForFileSystem(mdType);
     File dir = new File(AbstractClientGenerator.getRootClientBinDirectory(fileSystemPackage), fileSystemPackage);
     return readClasses(dir, classFilter);
-  }
-
-  /**
-   * Reads all generated server .class files for the given mdFacadeIF, and
-   * packages them into a single byte[] for storage into the database.
-   * 
-   * @param mdFacadeIF
-   *          mdFacadeIF whose server .class files are being stored
-   * @return byte[] containing all of the server .class files for this type
-   */
-  public static byte[] readGeneratedServerClasses(MdFacadeDAOIF mdFacadeIF)
-  {
-    FacadeServerClassFilter facadeServerClassFilter = new FacadeServerClassFilter(mdFacadeIF);
-    String fileSystemPackage = GenerationUtil.getPackageForFileSystem(mdFacadeIF);
-    File dir = new File(AbstractServerGenerator.getRootServerBinDirectory(fileSystemPackage), fileSystemPackage);
-    return readClasses(dir, facadeServerClassFilter);
-  }
-
-  /**
-   * Reads all generated common .class files for the given mdFacadeIF, and
-   * packages them into a single byte[] for storage into the database.
-   * 
-   * @param mdFacadeIF
-   *          mdFacadeIF whose server .class files are being stored
-   * @return byte[] containing all of the common .class files for this type
-   */
-  public static byte[] readGeneratedCommonClasses(MdFacadeDAOIF mdFacadeIF)
-  {
-    FacadeCommonClassFilter facadeCommonClassFilter = new FacadeCommonClassFilter(mdFacadeIF);
-    String fileSystemPackage = GenerationUtil.getPackageForFileSystem(mdFacadeIF);
-    File dir = new File(AbstractCommonGenerator.getRootCommonBaseDirectory(fileSystemPackage), fileSystemPackage);
-    return readClasses(dir, facadeCommonClassFilter);
-  }
-
-  /**
-   * Reads all generated client .class files for the given mdFacadeIF, and
-   * packages them into a single byte[] for storage into the database.
-   * 
-   * @param mdFacadeIF
-   *          mdFacadeIF whose server .class files are being stored
-   * @return byte[] containing all of the client .class files for this type
-   */
-  public static byte[] readGeneratedClientClasses(MdFacadeDAOIF mdFacadeIF)
-  {
-    FacadeClientClassFilter facadeClientClassFilter = new FacadeClientClassFilter(mdFacadeIF);
-    String fileSystemPackage = GenerationUtil.getPackageForFileSystem(mdFacadeIF);
-    File dir = new File(AbstractClientGenerator.getRootClientBinDirectory(fileSystemPackage), fileSystemPackage);
-    return readClasses(dir, facadeClientClassFilter);
   }
 
   /**
@@ -346,52 +296,7 @@ public class ClassManager
     File[] listFiles = directory.listFiles(filter);
     deleteFiles(listFiles);
   }
-
-  /**
-   * Deletes the all generated server classes for the given MdFacadeIF.
-   * 
-   * @param directory
-   *          where the server classes reside.
-   * @param mdFacadeIF
-   *          .
-   */
-  public static void deleteGeneratedServerClasses(File directory, MdFacadeDAOIF mdFacadeIF)
-  {
-    FacadeServerClassFilter filter = new FacadeServerClassFilter(mdFacadeIF);
-    File[] listFiles = directory.listFiles(filter);
-    deleteFiles(listFiles);
-  }
-
-  /**
-   * Deletes the all generated common classes for the given MdFacadeIF.
-   * 
-   * @param directory
-   *          where the common classes reside.
-   * @param mdFacadeIF
-   *          .
-   */
-  public static void deleteGeneratedCommonClasses(File directory, MdFacadeDAOIF mdFacadeIF)
-  {
-    FacadeCommonClassFilter filter = new FacadeCommonClassFilter(mdFacadeIF);
-    File[] listFiles = directory.listFiles(filter);
-    deleteFiles(listFiles);
-  }
-
-  /**
-   * Deletes the all generated client classes for the given MdFacadeIF.
-   * 
-   * @param directory
-   *          where the client classes reside.
-   * @param mdFacadeIF
-   *          .
-   */
-  public static void deleteGeneratedClientClasses(File directory, MdFacadeDAOIF mdFacadeIF)
-  {
-    FacadeClientClassFilter filter = new FacadeClientClassFilter(mdFacadeIF);
-    File[] listFiles = directory.listFiles(filter);
-    deleteFiles(listFiles);
-  }
-
+  
   private static void deleteFiles(File[] listFiles)
   {
     if (listFiles == null)
@@ -438,102 +343,6 @@ class ClassFilter implements FilenameFilter
       return true;
     if (name.startsWith(type + '$'))
       return true;
-    return false;
-  }
-}
-
-/**
- * Filters server class files generated for MdFacades.
- * 
- * @author Nathan
- */
-class FacadeServerClassFilter implements FilenameFilter
-{
-  MdFacadeDAOIF mdFacadeIF;
-
-  FacadeServerClassFilter(MdFacadeDAOIF mdFacadeIF)
-  {
-    this.mdFacadeIF = mdFacadeIF;
-  }
-
-  public boolean accept(File dir, String name)
-  {
-    for (String serverClassName : MdFacadeDAO.generatedServerClassFiles(mdFacadeIF))
-    {
-      if (name.equalsIgnoreCase(serverClassName))
-      {
-        return true;
-      }
-      if (name.startsWith(serverClassName + '$'))
-      {
-        return true;
-      }
-    }
-
-    return false;
-  }
-}
-
-/**
- * Filters common class files generated for MdFacades.
- * 
- * @author Nathan
- */
-class FacadeCommonClassFilter implements FilenameFilter
-{
-  MdFacadeDAOIF mdFacadeIF;
-
-  FacadeCommonClassFilter(MdFacadeDAOIF mdFacadeIF)
-  {
-    this.mdFacadeIF = mdFacadeIF;
-  }
-
-  public boolean accept(File dir, String name)
-  {
-    for (String commonClassName : MdFacadeDAO.generatedCommonClassFiles(mdFacadeIF))
-    {
-      if (name.equalsIgnoreCase(commonClassName))
-      {
-        return true;
-      }
-      if (name.startsWith(commonClassName + '$'))
-      {
-        return true;
-      }
-    }
-
-    return false;
-  }
-}
-
-/**
- * Filters client class files generated for MdFacades.
- * 
- * @author Nathan
- */
-class FacadeClientClassFilter implements FilenameFilter
-{
-  MdFacadeDAOIF mdFacadeIF;
-
-  FacadeClientClassFilter(MdFacadeDAOIF mdFacadeIF)
-  {
-    this.mdFacadeIF = mdFacadeIF;
-  }
-
-  public boolean accept(File dir, String name)
-  {
-    for (String clientClassName : MdFacadeDAO.generatedClientClassFiles(mdFacadeIF))
-    {
-      if (name.equalsIgnoreCase(clientClassName))
-      {
-        return true;
-      }
-      if (name.startsWith(clientClassName + '$'))
-      {
-        return true;
-      }
-    }
-
     return false;
   }
 }

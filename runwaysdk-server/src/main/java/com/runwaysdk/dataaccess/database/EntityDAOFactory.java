@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.database;
 
@@ -22,12 +22,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ComponentInfo;
@@ -35,11 +33,9 @@ import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeClobInfo;
-import com.runwaysdk.constants.MdFacadeInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.DuplicateGraphPathException;
 import com.runwaysdk.dataaccess.ElementDAO;
@@ -52,7 +48,6 @@ import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
@@ -72,10 +67,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
 import com.runwaysdk.dataaccess.transaction.ActionEnumDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionItemDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionRecordDAO;
-import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.ColumnInfo;
-import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.QueryFactory;
 
 public class EntityDAOFactory
 {
@@ -994,25 +986,6 @@ public class EntityDAOFactory
   public static String buildType(String packageName, String typeName)
   {
     return packageName + "." + typeName;
-  }
-
-  /**
-   * 
-   * @return
-   */
-  public static Set<MdFacadeDAOIF> getAllMdFacades()
-  {
-    Set<MdFacadeDAOIF> facades = new HashSet<MdFacadeDAOIF>();
-
-    QueryFactory factory = new QueryFactory();
-    BusinessDAOQuery query = factory.businessDAOQuery(MdFacadeInfo.CLASS);
-    OIterator<BusinessDAOIF> iter = query.getIterator();
-    while (iter.hasNext())
-    {
-      BusinessDAOIF businessDAOIF = iter.next();
-      facades.add((MdFacadeDAOIF) businessDAOIF);
-    }
-    return facades;
   }
 
   /**

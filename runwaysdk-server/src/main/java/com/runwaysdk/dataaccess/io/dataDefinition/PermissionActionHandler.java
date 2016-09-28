@@ -42,7 +42,6 @@ public class PermissionActionHandler extends TagHandler implements TagHandlerIF,
     this.addHandler(XMLTags.MD_VIEW_PERMISSION_TAG, handler);
     this.addHandler(XMLTags.MD_BUSINESS_PERMISSION_TAG, new MdBusinessPermissionHandler(manager));
     this.addHandler(XMLTags.MD_RELATIONSHIP_PERMISSION_TAG, new MdRelationshipPermissionHandler(manager));
-    this.addHandler(XMLTags.MD_FACADE_PERMISSION_TAG, new MdFacadePermissionHandler(manager));
   }
 
   /*

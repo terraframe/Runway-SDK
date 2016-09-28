@@ -95,7 +95,6 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
@@ -4217,112 +4216,6 @@ public abstract class AbstractDatabase
   public String getMdTypeDTOsource(String mdTypeId, Connection conn)
   {
     return this.getSourceField(mdTypeId, conn, MdTypeDAOIF.TABLE, MdTypeDAOIF.DTO_BASE_SOURCE_COLUMN);
-  }
-
-  /**
-   * This is a special method used get the generated MdFacade server classes
-   * from the database. This method is used when a transaction is rolled back to
-   * restore the generated server classes to the file system from the database.
-   * It is used only within the TransactionManagement aspect, hence it takes a
-   * JDBC connection object as a parameter. It is up to the client to close the
-   * connection object.
-   * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
-   * 
-   * @param mdFacadeId
-   * @param conn
-   */
-  public byte[] getMdFacadeServerClasses(String mdFacadeId, Connection conn)
-  {
-    String columnName = MdFacadeDAOIF.SERVER_CLASSES_COLUMN;
-    String table = MdFacadeDAOIF.TABLE;
-
-    return this.getBlobAsBytes(table, columnName, mdFacadeId, conn);
-  }
-
-  /**
-   * This is a special method used get the generated MdFacade common classes
-   * from the database. This method is used when a transaction is rolled back to
-   * restore the generated common classes to the file system from the database.
-   * It is used only within the TransactionManagement aspect, hence it takes a
-   * JDBC connection object as a parameter. It is up to the client to close the
-   * connection object.
-   * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
-   * 
-   * @param mdFacadeId
-   * @param conn
-   */
-  public byte[] getMdFacadeCommonClasses(String mdFacadeId, Connection conn)
-  {
-    String columnName = MdFacadeDAOIF.COMMON_CLASSES_COLUMN;
-    String table = MdFacadeDAOIF.TABLE;
-
-    return this.getBlobAsBytes(table, columnName, mdFacadeId, conn);
-  }
-
-  /**
-   * This is a special method used get the generated MdFacade client classes
-   * from the database. This method is used when a transaction is rolled back to
-   * restore the generated client classes to the file system from the database.
-   * It is used only within the TransactionManagement aspect, hence it takes a
-   * JDBC connection object as a parameter. It is up to the client to close the
-   * connection object.
-   * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
-   * 
-   * @param mdFacadeId
-   * @param conn
-   */
-  public byte[] getMdFacadeClientClasses(String mdFacadeId, Connection conn)
-  {
-    String columnName = MdFacadeDAOIF.CLIENT_CLASSES_COLUMN;
-    String table = MdFacadeDAOIF.TABLE;
-
-    return this.getBlobAsBytes(table, columnName, mdFacadeId, conn);
-  }
-
-  /**
-   * This is a special method used get the MdFacade stub class from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the stub class to the file system from the database. It is used only within
-   * the TransactionManagement aspect, hence it takes a JDBC connection object
-   * as a parameter. It is up to the client to close the connection object.
-   * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
-   * 
-   * @param mdFacadeId
-   * @param conn
-   */
-  public byte[] getMdFacadeStubClass(String mdFacadeId, Connection conn)
-  {
-    String columnName = MdFacadeDAOIF.STUB_CLASS_COLUMN;
-    String table = MdFacadeDAOIF.TABLE;
-
-    return this.getBlobAsBytes(table, columnName, mdFacadeId, conn);
-  }
-
-  /**
-   * This is a special method used get the MdFacade stub source from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the stub source on the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
-   * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
-   * 
-   * @param mdFacadeId
-   * @param conn
-   */
-  public String getMdFacadeStubSource(String mdFacadeId, Connection conn)
-  {
-    return this.getSourceField(mdFacadeId, conn, MdFacadeDAOIF.TABLE, MdFacadeDAOIF.STUB_SOURCE_COLUMN);
   }
 
   /**

@@ -121,7 +121,6 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(MergeTest.suite());
     testSuite.addTest(InstanceImportTest.suite());
     testSuite.addTest(SiteTest.suite());
-    testSuite.addTest(MdFacadeTest.suite());
     testSuite.addTest(MdDomainTest.suite());
     testSuite.addTest(MdTermTest.suite());
     testSuite.addTest(MdTermRelationshipTest.suite());

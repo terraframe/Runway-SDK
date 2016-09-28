@@ -417,14 +417,12 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    *          Metadata of the type that the method is defined on
    * @param mdClassMdBusiness
    *          Metadata that defines MdClass
-   * @param mdFacadeMdBusiness
-   *          Metadata that defines MdBusiness
    * @return The localized error message
    */
 
-  public static String methodDefinitionException_DefiningType(Locale locale, MdMethodDAOIF mdMethod, MdTypeDAOIF definingMdTypeIF, MdBusinessDAOIF mdClassMdBusiness, MdBusinessDAOIF mdFacadeMdBusiness)
+  public static String methodDefinitionException_DefiningType(Locale locale, MdMethodDAOIF mdMethod, MdTypeDAOIF definingMdTypeIF, MdBusinessDAOIF mdClassMdBusiness)
   {
-    return getMessage(locale, "MethodDefinitionException_InvalidParentReference", mdMethod.getDisplayLabel(locale), definingMdTypeIF.getDisplayLabel(locale), mdClassMdBusiness.getDisplayLabel(locale), mdFacadeMdBusiness.getDisplayLabel(locale));
+    return getMessage(locale, "MethodDefinitionException_InvalidParentReference", mdMethod.getDisplayLabel(locale), definingMdTypeIF.getDisplayLabel(locale), mdClassMdBusiness.getDisplayLabel(locale));
   }
 
   /**

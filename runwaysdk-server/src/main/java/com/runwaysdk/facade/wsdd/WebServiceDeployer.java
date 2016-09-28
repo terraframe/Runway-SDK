@@ -19,17 +19,14 @@
 package com.runwaysdk.facade.wsdd;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.axis.client.AdminClient;
 
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DeployProperties;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.facade.WebServiceAdapter;
 import com.runwaysdk.web.json.JSONWebServiceAdapter;
@@ -63,36 +60,6 @@ public class WebServiceDeployer {
 	public void addService(Class<?> service)
 	{
 		services.add(new CoreService(service));
-	}
-
-	/**
-	 * Adds a service to this ServiceDeployer based
-	 * on an MdFacade.
-	 *
-	 * @pre The MdFacade must already exist on the filesystem
-	 *
-	 * @param service
-	 * @throws ClassNotFoundException
-	 * @throws MalformedURLException
-	 */
-	public void addService(MdFacadeDAOIF mdFacade)
-	{
-		Service service = new MdFacadeService(mdFacade);
-		services.add(service);
-	}
-
-	/**
-	 * Adds services to this ServiceDeployer based on a list
-	 * of MdFacades.
-	 *
-	 * @param mdFacades
-	 */
-	public void addServices(Set<MdFacadeDAOIF> mdFacades)
-	{
-		for(MdFacadeDAOIF mdFacade : mdFacades)
-		{
-			addService(mdFacade);
-		}
 	}
 
 	/**

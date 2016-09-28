@@ -34,7 +34,6 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
@@ -266,18 +265,6 @@ public interface TransactionCacheIF
   public abstract void updatedMdMethod_CodeGen(MdMethodDAO mdMethod);
 
   /**
-   * Adds a reference to a newly created or updated MdMethod to the cache.
-   * 
-   * <br/>
-   * <b>Precondition:</b> mdMethod != null <br/>
-   * <b>Postcondition:</b> mdMethod is added to the transaction cache
-   * 
-   * @param mdMethod
-   *          MdMethod to add to the cache.
-   */
-  public abstract void updatedMdMethod_WebServiceDeploy(MdMethodDAO mdMethod);
-
-  /**
    * Adds a reference to a newly created or updated MdAction to the cache.
    * 
    * <br/>
@@ -300,18 +287,6 @@ public interface TransactionCacheIF
    *          MdParameter to add to the cache.
    */
   public abstract void updatedMdParameter_CodeGen(MdParameterDAO mdParameter);
-
-  /**
-   * Adds a reference to a newly created or updated MdParameter to the cache.
-   * 
-   * <br/>
-   * <b>Precondition:</b> mdParameter != null <br/>
-   * <b>Postcondition:</b> mdParameter is added to the transaction cache
-   * 
-   * @param mdParameter
-   *          MdParameter to add to the cache.
-   */
-  public abstract void updatedMdParameter_WebServiceDeploy(MdParameterDAO mdParameter);
 
   /**
    * Adds a reference to a newly created MdType to the cache.
@@ -504,25 +479,6 @@ public interface TransactionCacheIF
   public abstract Map<String, MdAttributeDAO> getAddedMdAttributes();
 
   /**
-   * Returns a MdFacadeIF instance of the metadata for the given type. Returns
-   * null if the MdFacadeIF is not in this transaction cache.
-   * 
-   * <br/>
-   * <b>Precondition:</b> type != null <br/>
-   * <b>Precondition:</b> !type.trim().equals("") <br/>
-   * <b>Precondition:</b> type is a valid class defined in the database <br/>
-   * <b>Postcondition:</b> return value null if MdFacadeIF is not in the cache. <br/>
-   * <b>Postcondition:</b> Returns a MdFacadeIF instance of the metadata for the
-   * given type (MdFacadeIF.definesType().equals(type)
-   * 
-   * @param type
-   *          Name of the class
-   * @return MdFacadeIF instance of the metadata for the given type or null if
-   *         it is not in the transaction cache.
-   */
-  public abstract MdFacadeDAOIF getMdFacade(String type);
-
-  /**
    * Returns the role with the given name if it was modified during this
    * transaction.
    * 
@@ -635,20 +591,6 @@ public interface TransactionCacheIF
    *          EntityDAO to add to the cache to be delted
    */
   public abstract void deleteEntityDAO(EntityDAO entityDAO);
-
-  /**
-   * Returns all MdFacades that need to have web services regenerated for them.
-   * 
-   * @return
-   */
-  public abstract Set<MdFacadeDAOIF> getMdFacadesForServicesDeploy();
-
-  /**
-   * Returns all MdFacades that need to have web services undeployed.
-   * 
-   * @return
-   */
-  public abstract Set<MdFacadeDAOIF> getMdFacadesForServicesUndeploy();
 
   /**
    * Removes the given deleted EntityDAOCollection from the cache.

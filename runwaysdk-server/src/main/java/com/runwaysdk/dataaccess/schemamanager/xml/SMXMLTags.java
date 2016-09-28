@@ -51,7 +51,6 @@ public class SMXMLTags implements XMLTags
     classTags.add(MD_EXCEPTION_TAG);
     classTags.add(MD_CONTROLLER_TAG);
     classTags.add(MD_VIEW_TAG);
-    classTags.add(MD_FACADE_TAG);
     classTags.add(ENUMERATION_MASTER_TAG);
     classTags.add(MD_PROBLEM_TAG);
     classTags.add(MD_STRUCT_TAG);
@@ -170,7 +169,6 @@ public class SMXMLTags implements XMLTags
 
   static
   {
-    permissionTypeTags.add(MD_FACADE_PERMISSION_TAG);
     permissionTypeTags.add(MD_BUSINESS_PERMISSION_TAG);
     permissionTypeTags.add(MD_STRUCT_PERMISSION_TAG);
     permissionTypeTags.add(MD_VIEW_PERMISSION_TAG);

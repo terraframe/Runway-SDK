@@ -30,7 +30,6 @@ import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.io.FileReadException;
@@ -233,21 +232,6 @@ public class GenerationFacade
     }
 
     return null;
-  }
-
-  public static byte[] getGeneratedServerClasses(MdFacadeDAOIF mdFacadeIF)
-  {
-    return ClassManager.readGeneratedServerClasses(mdFacadeIF);
-  }
-
-  public static byte[] getGeneratedCommonClasses(MdFacadeDAOIF mdFacadeIF)
-  {
-    return ClassManager.readGeneratedCommonClasses(mdFacadeIF);
-  }
-
-  public static byte[] getGeneratedClientClasses(MdFacadeDAOIF mdFacadeIF)
-  {
-    return ClassManager.readGeneratedClientClasses(mdFacadeIF);
   }
 
   private static File getFile(String directory, String type, String suffix)

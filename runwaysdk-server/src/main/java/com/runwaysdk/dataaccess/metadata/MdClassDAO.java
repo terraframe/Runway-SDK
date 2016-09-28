@@ -54,7 +54,6 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -965,7 +964,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       String dtoStubSourceColumnName = MdClassDAOIF.DTO_STUB_SOURCE_COLUMN;
 
       String stubClassColumnName = MdClassDAOIF.STUB_CLASS_COLUMN;
-      String stubSourceColumnName = MdFacadeDAOIF.STUB_SOURCE_COLUMN;
+      String stubSourceColumnName = MdClassDAOIF.STUB_SOURCE_COLUMN;
 
       if (stubSource != null && stubClassBytes != null && dtoStubClass != null && dtoStubSource != null)
       {

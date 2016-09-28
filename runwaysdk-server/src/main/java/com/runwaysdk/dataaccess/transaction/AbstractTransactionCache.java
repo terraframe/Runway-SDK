@@ -58,7 +58,6 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -79,7 +78,6 @@ import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
-import com.runwaysdk.dataaccess.metadata.MdFacadeDAO;
 import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
@@ -203,15 +201,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * <b>invariant</b> updatedRoleIFMap != null
    */
   protected Map<String, String>                              updatedRoleIFMap;
-
-  /**
-   * Contains a reference to all {@link MdFacadeDAO} objects that were modified
-   * during this transaction. The key is the name of the class. Used to allow
-   * sets of classes to be defined within a transaction. The value is the id of
-   * the {@link MdFacadeDAO}. <br/>
-   * <b>invariant</b> updatedMdFacadeMap != null
-   */
-  protected Map<String, String>                              updatedMdFacadeMap;
 
   /**
    * Maps state master objects for a given state machine type that were modified
@@ -409,18 +398,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected Map<String, String>                              indexNameMap;
 
   /**
-   * Map of {@link MdFacadeDAOIF} to deploy. Key: defined type Value: id of
-   * {@link MdFacadeDAOIF}
-   */
-  protected Map<String, String>                              webServiceMdFacadeMapDeploy;
-
-  /**
-   * Map of {@link MdFacadeDAOIF} to undeploy. Key: defined type Value: id of
-   * {@link MdFacadeDAOIF}
-   */
-  protected Map<String, String>                              webServiceMdFacadeMapUndeploy;
-
-  /**
    * Contains Actors that need to be notified that their permissions have
    * changed.
    */
@@ -503,7 +480,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.updatedMdClassDefinedTypeMap = new HashMap<String, String>();
     this.updatedMdClassRootIdMap = new HashMap<String, String>();
     this.updatedRoleIFMap = new HashMap<String, String>();
-    this.updatedMdFacadeMap = new HashMap<String, String>();
 
     this.updatedStateMasterMap = new HashMap<String, Set<String>>();
 
@@ -544,9 +520,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.unregisterPermissionEntity = new HashSet<PermissionEntity>();
 
     this.dmlTableName = new HashSet<String>();
-
-    this.webServiceMdFacadeMapDeploy = new HashMap<String, String>();
-    this.webServiceMdFacadeMapUndeploy = new HashMap<String, String>();
 
     this.mdBusinessParentMdRelationships = new HashMap<String, Set<String>>();
     this.mdBusinessChildMdRelationships = new HashMap<String, Set<String>>();
@@ -777,11 +750,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
           this.mdBusinessChildMdRelationships.put(mdBusinessDAO.getId(), new HashSet<String>());
         }
       }
-      else if (entityDAO instanceof MdFacadeDAO)
-      {
-        MdFacadeDAO mdFacade = (MdFacadeDAO) entityDAO;
-        this.updatedMdFacadeMap.put(mdFacade.definesType(), mdFacade.getId());
-      }
       else if (entityDAO instanceof MdEnumerationDAO)
       {
         MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) entityDAO;
@@ -934,11 +902,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     {
       this.deletedMdTypeMap_CodeGeneration.put(mdTypeIF.definesType(), mdTypeIF.getId());
       this.storeTransactionEntityDAO((MdTypeDAO) mdTypeIF);
-
-      if (mdTypeIF instanceof MdFacadeDAOIF)
-      {
-        webServiceMdFacadeMapUndeploy.put(mdTypeIF.definesType(), mdTypeIF.getId());
-      }
     }
     finally
     {
@@ -1635,70 +1598,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getMdFacade(java.lang.String)
-   */
-  public MdFacadeDAOIF getMdFacade(String type)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      return (MdFacadeDAOIF) this.internalGetEntityDAO(this.updatedMdFacadeMap.get(type));
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getMdFacadesForServicesDeploy()
-   */
-  public Set<MdFacadeDAOIF> getMdFacadesForServicesDeploy()
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      Set<MdFacadeDAOIF> mdFacades = new HashSet<MdFacadeDAOIF>();
-
-      for (String mdFacadeId : this.webServiceMdFacadeMapDeploy.values())
-      {
-        MdFacadeDAOIF mdFacadeIF = (MdFacadeDAOIF) this.internalGetEntityDAO(mdFacadeId);
-        mdFacades.add(mdFacadeIF);
-      }
-
-      return mdFacades;
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getMdFacadesForServicesUndeploy()
-   */
-  public Set<MdFacadeDAOIF> getMdFacadesForServicesUndeploy()
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      Set<MdFacadeDAOIF> mdFacades = new HashSet<MdFacadeDAOIF>();
-
-      for (String mdFacadeId : this.webServiceMdFacadeMapUndeploy.values())
-      {
-        MdFacadeDAOIF mdFacadeIF = (MdFacadeDAOIF) this.internalGetEntityDAO(mdFacadeId);
-        mdFacades.add(mdFacadeIF);
-      }
-
-      return mdFacades;
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getMdIndexDAO(java.lang.String)
    */
   public MdIndexDAOIF getMdIndexDAO(String indexName)
@@ -2314,11 +2213,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
           }
         }
       }
-      else if (entityDAO instanceof MdFacadeDAO)
-      {
-        MdFacadeDAO mdFacade = (MdFacadeDAO) entityDAO;
-        this.updatedMdFacadeMap.put(mdFacade.definesType(), mdFacade.getId());
-      }
       else if (entityDAO instanceof MdEnumerationDAO)
       {
         MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) entityDAO;
@@ -2435,28 +2329,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#updatedMdMethod_WebServiceDeploy(com.runwaysdk.dataaccess.metadata.MdMethodDAO)
-   */
-  public void updatedMdMethod_WebServiceDeploy(MdMethodDAO mdMethod)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      MdTypeDAOIF mdType = mdMethod.getEnclosingMdTypeDAO();
-      if (mdType instanceof MdFacadeDAOIF)
-      {
-        MdFacadeDAOIF mdFacade = (MdFacadeDAOIF) mdType;
-        this.webServiceMdFacadeMapDeploy.put(mdFacade.definesType(), mdFacade.getId());
-        this.storeTransactionEntityDAO((MdFacadeDAO) mdFacade);
-      }
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#updatedMdParameter_CodeGen(com.runwaysdk.dataaccess.metadata.MdParameterDAO)
    */
   public void updatedMdParameter_CodeGen(MdParameterDAO mdParameterDAO)
@@ -2466,28 +2338,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     {
       this.updatedMdParameter_CodeGeneration.add(mdParameterDAO.getId());
       this.storeTransactionEntityDAO(mdParameterDAO);
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#updatedMdParameter_WebServiceDeploy(com.runwaysdk.dataaccess.metadata.MdParameterDAO)
-   */
-  public void updatedMdParameter_WebServiceDeploy(MdParameterDAO mdParameter)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      MdTypeDAOIF mdType = mdParameter.getEnclosingMetadata().getEnclosingMdTypeDAO();
-      if (mdType instanceof MdFacadeDAOIF)
-      {
-        MdFacadeDAOIF mdFacade = (MdFacadeDAOIF) mdType;
-        this.webServiceMdFacadeMapDeploy.put(mdFacade.definesType(), mdFacade.getId());
-        this.storeTransactionEntityDAO((MdFacadeDAO) mdFacade);
-      }
     }
     finally
     {
@@ -2556,13 +2406,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
             this.deletedMdRelationshipSet_CodeGeneration.add(mdRelationship.getId());
           }
         }
-      }
-
-      // If the MdType is an MdFacade, add it to the list for web service
-      // deployment
-      if (mdType instanceof MdFacadeDAO)
-      {
-        this.webServiceMdFacadeMapDeploy.put(mdType.definesType(), mdType.getId());
       }
     }
     finally

@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.facade;
 
-import java.util.Date;
 import java.util.Locale;
 
 import junit.framework.TestCase;
@@ -59,7 +58,6 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdExceptionInfo;
-import com.runwaysdk.constants.MdFacadeInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
@@ -112,7 +110,6 @@ public class SeleniumTest extends TestCase
   private BusinessDTO subClassMd;
   private BusinessDTO refClassMd;
   private BusinessDTO befriendsMd;
-  private BusinessDTO mdFacade;
   private BusinessDTO stateEnumMdBusiness;
   private BusinessDTO structClassMd;
   private BusinessDTO mdView;
@@ -877,167 +874,10 @@ public class SeleniumTest extends TestCase
     problemChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A problem char");
     problemChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdProblem.getId());
     clientRequest.createBusiness(problemChar);
-
-    /* Define a facade */
-
-    mdFacade = clientRequest.newBusiness(MdFacadeInfo.CLASS);
-    mdFacade.setStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Summation");
-    mdFacade.setValue(MdFacadeInfo.PACKAGE, PACKAGE);
-    mdFacade.setValue(MdFacadeInfo.NAME, "Summation");
-    clientRequest.createBusiness(mdFacade);
-
-    BusinessDTO facadeMethod = clientRequest.newBusiness(MdMethodInfo.CLASS);
-    facadeMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    facadeMethod.setValue(MdMethodInfo.NAME, "sumIntegerValues");
-    facadeMethod.setValue(MdMethodInfo.RETURN_TYPE, "java.lang.Integer");
-    facadeMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sums the values of the attribute testInteger on TestClass");
-    clientRequest.createBusiness(facadeMethod);
-
-    BusinessDTO facadeParam = clientRequest.newBusiness(MdParameterInfo.CLASS);
-    facadeParam.setValue(MdParameterInfo.ENCLOSING_METADATA, facadeMethod.getId());
-    facadeParam.setValue(MdParameterInfo.TYPE, testClassDefinesType + "[]");
-    facadeParam.setValue(MdParameterInfo.NAME, "testClassArr");
-    facadeParam.setValue(MdParameterInfo.ORDER, "0");
-    facadeParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "TestClass Array");
-    clientRequest.createBusiness(facadeParam);
-
-    BusinessDTO facadeMethod1 = clientRequest.newBusiness(MdMethodInfo.CLASS);
-    facadeMethod1.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    facadeMethod1.setValue(MdMethodInfo.NAME, "facadeForceException");
-    facadeMethod1.setValue(MdMethodInfo.RETURN_TYPE, "void");
-    facadeMethod1.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Throws an exception.");
-    clientRequest.createBusiness(facadeMethod1);
-
-    BusinessDTO facadeMethod2 = clientRequest.newBusiness(MdMethodInfo.CLASS);
-    facadeMethod2.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    facadeMethod2.setValue(MdMethodInfo.NAME, "getNullInteger");
-    facadeMethod2.setValue(MdMethodInfo.RETURN_TYPE, "java.lang.Integer");
-    facadeMethod2.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Tests null passing (param and return)");
-    clientRequest.createBusiness(facadeMethod2);
-
-    facadeParam = clientRequest.newBusiness(MdParameterInfo.CLASS);
-    facadeParam.setValue(MdParameterInfo.ENCLOSING_METADATA, facadeMethod2.getId());
-    facadeParam.setValue(MdParameterInfo.TYPE, testClassDefinesType);
-    facadeParam.setValue(MdParameterInfo.NAME, "nullObj");
-    facadeParam.setValue(MdParameterInfo.ORDER, "0");
-    facadeParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A null");
-    clientRequest.createBusiness(facadeParam);
-
-    BusinessDTO facadeMethod3 = clientRequest.newBusiness(MdMethodInfo.CLASS);
-    facadeMethod3.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    facadeMethod3.setValue(MdMethodInfo.NAME, "getState");
-    facadeMethod3.setValue(MdMethodInfo.RETURN_TYPE, mdEnumerationDefinesType);
-    facadeMethod3.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Receives a State Enumeration and returns the same object");
-    clientRequest.createBusiness(facadeMethod3);
-
-    facadeParam = clientRequest.newBusiness(MdParameterInfo.CLASS);
-    facadeParam.setValue(MdParameterInfo.ENCLOSING_METADATA, facadeMethod3.getId());
-    facadeParam.setValue(MdParameterInfo.TYPE, mdEnumerationDefinesType);
-    facadeParam.setValue(MdParameterInfo.NAME, "state");
-    facadeParam.setValue(MdParameterInfo.ORDER, "0");
-    facadeParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A State");
-    clientRequest.createBusiness(facadeParam);
-
-    // create an MdMethod with 2 parameters (to test javascript's ability to loop through params)
-    BusinessDTO facadeMethod4 = clientRequest.newBusiness(MdMethodInfo.CLASS);
-    facadeMethod4.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    facadeMethod4.setValue(MdMethodInfo.NAME, "compareStates");
-    facadeMethod4.setValue(MdMethodInfo.RETURN_TYPE, Boolean.class.getName());
-    facadeMethod4.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE,  "Receives two state parameters and compares them");
-    clientRequest.createBusiness(facadeMethod4);
-
-    facadeParam = clientRequest.newBusiness(MdParameterInfo.CLASS);
-    facadeParam.setValue(MdParameterInfo.ENCLOSING_METADATA, facadeMethod4.getId());
-    facadeParam.setValue(MdParameterInfo.TYPE, mdEnumerationDefinesType);
-    facadeParam.setValue(MdParameterInfo.NAME, "state1");
-    facadeParam.setValue(MdParameterInfo.ORDER, "0");
-    facadeParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State 1");
-    clientRequest.createBusiness(facadeParam);
-
-    facadeParam = clientRequest.newBusiness(MdParameterInfo.CLASS);
-    facadeParam.setValue(MdParameterInfo.ENCLOSING_METADATA, facadeMethod4.getId());
-    facadeParam.setValue(MdParameterInfo.TYPE, mdEnumerationDefinesType);
-    facadeParam.setValue(MdParameterInfo.NAME, "state2");
-    facadeParam.setValue(MdParameterInfo.ORDER, "1");
-    facadeParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State 2");
-    clientRequest.createBusiness(facadeParam);
-
-    BusinessDTO facadeMethod5 = clientRequest.newBusiness(MdMethodInfo.CLASS);
-    facadeMethod5.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    facadeMethod5.setValue(MdMethodInfo.NAME, "concatViewChar");
-    facadeMethod5.setValue(MdMethodInfo.RETURN_TYPE, testViewDefinesType);
-    facadeMethod5.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "concats the char value in a view.");
-    clientRequest.createBusiness(facadeMethod5);
-
-    facadeParam = clientRequest.newBusiness(MdParameterInfo.CLASS);
-    facadeParam.setValue(MdParameterInfo.ENCLOSING_METADATA, facadeMethod5.getId());
-    facadeParam.setValue(MdParameterInfo.TYPE, testViewDefinesType);
-    facadeParam.setValue(MdParameterInfo.NAME, "view");
-    facadeParam.setValue(MdParameterInfo.ORDER, "0");
-    facadeParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "View input");
-    clientRequest.createBusiness(facadeParam);
-
-    BusinessDTO facadeMethod6 = clientRequest.newBusiness(MdMethodInfo.CLASS);
-    facadeMethod6.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    facadeMethod6.setValue(MdMethodInfo.NAME, "concatUtilChar");
-    facadeMethod6.setValue(MdMethodInfo.RETURN_TYPE, testUtilDefinesType);
-    facadeMethod6.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "concats the char value in a util.");
-    clientRequest.createBusiness(facadeMethod6);
-
-    facadeParam = clientRequest.newBusiness(MdParameterInfo.CLASS);
-    facadeParam.setValue(MdParameterInfo.ENCLOSING_METADATA, facadeMethod6.getId());
-    facadeParam.setValue(MdParameterInfo.TYPE, testUtilDefinesType);
-    facadeParam.setValue(MdParameterInfo.NAME, "util");
-    facadeParam.setValue(MdParameterInfo.ORDER, "0");
-    facadeParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "View input");
-    clientRequest.createBusiness(facadeParam);
-
-    BusinessDTO facadeMethod7 = clientRequest.newBusiness(MdMethodInfo.CLASS);
-    facadeMethod7.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    facadeMethod7.setValue(MdMethodInfo.NAME, "doNothing");
-    facadeMethod7.setValue(MdMethodInfo.RETURN_TYPE, "void");
-    facadeMethod7.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "takes in nothing, returns nothing");
-    clientRequest.createBusiness(facadeMethod7);
-
-    BusinessDTO facadeMethod8 = clientRequest.newBusiness(MdMethodInfo.CLASS);
-    facadeMethod8.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    facadeMethod8.setValue(MdMethodInfo.NAME, "arrayInOut");
-    facadeMethod8.setValue(MdMethodInfo.RETURN_TYPE, Integer.class.getName()+"[][]");
-    facadeMethod8.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "creates and returns a 2-dimensional int array");
-    clientRequest.createBusiness(facadeMethod8);
-
-    facadeParam = clientRequest.newBusiness(MdParameterInfo.CLASS);
-    facadeParam.setValue(MdParameterInfo.ENCLOSING_METADATA, facadeMethod8.getId());
-    facadeParam.setValue(MdParameterInfo.TYPE, Integer.class.getName()+"[][]");
-    facadeParam.setValue(MdParameterInfo.NAME, "array");
-    facadeParam.setValue(MdParameterInfo.ORDER, "0");
-    facadeParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "array input");
-    clientRequest.createBusiness(facadeParam);
-
-    BusinessDTO facadeMethod9 = clientRequest.newBusiness(MdMethodInfo.CLASS);
-    facadeMethod9.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    facadeMethod9.setValue(MdMethodInfo.NAME, "dateInOut");
-    facadeMethod9.setValue(MdMethodInfo.RETURN_TYPE, Date.class.getName());
-    facadeMethod9.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Takes in a date and returns it.");
-    clientRequest.createBusiness(facadeMethod9);
-
-    facadeParam = clientRequest.newBusiness(MdParameterInfo.CLASS);
-    facadeParam.setValue(MdParameterInfo.ENCLOSING_METADATA, facadeMethod9.getId());
-    facadeParam.setValue(MdParameterInfo.TYPE, Date.class.getName());
-    facadeParam.setValue(MdParameterInfo.NAME, "date");
-    facadeParam.setValue(MdParameterInfo.ORDER, "0");
-    facadeParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "date input");
-    clientRequest.createBusiness(facadeParam);
   }
 
   private void finalizeSetup()
   {
-    // change/apply the facade source
-    String facadeSource = getFacadeSource();
-    clientRequest.lock(mdFacade);
-    mdFacade.setValue(MdFacadeInfo.STUB_SOURCE, facadeSource);
-    clientRequest.update(mdFacade);
-
     // change/apply the class source
     String classSource = getClassSource();
     clientRequest.lock(testClassMd);
@@ -1065,9 +905,6 @@ public class SeleniumTest extends TestCase
 
     clientRequest.lock(noPermissions);
     clientRequest.delete(noPermissions.getId());
-
-    clientRequest.lock(mdFacade);
-    clientRequest.delete(mdFacade.getId());
 
     clientRequest.lock(mdException);
     clientRequest.delete(mdException.getId());
@@ -1171,79 +1008,6 @@ public class SeleniumTest extends TestCase
           "public static java.lang.Integer doubleAnInt(java.lang.Integer num)",
           "{",
             "return 2 * num;",
-          "}",
-        "}",
-    };
-
-    String source = "";
-    for(String line : lines)
-    {
-      source += line + "\n";
-    }
-
-    return source;
-  }
-
-  private String getFacadeSource()
-  {
-    String[] lines = {
-        "package "+PACKAGE+";",
-        "public class Summation extends SummationBase" + Reloadable.IMPLEMENTS,
-        "{",
-          "protected static void facadeForceException(String sessionId)" +
-          "{" +
-          "  "+PACKAGE+".TestException ex = new "+PACKAGE+".TestException(\"Test Ex\");" +
-          "  ex.setExChar(\"Test exChar\");" +
-          "  throw ex;" +
-          "}" +
-          "protected static java.util.Date dateInOut(String sessionId, java.util.Date date)" +
-          "{" +
-          " return date;" +
-          "}" +
-          "protected static java.lang.Integer[][] arrayInOut(String sessionId, java.lang.Integer[][] arrayIn)" +
-          "{" +
-          "  java.lang.Integer[][] array = new java.lang.Integer[5][5];" +
-          "  for(int i=0; i<5; i++)" +
-          "  {" +
-          "    for(int j=0; j<5; j++)" +
-          "    {" +
-          "      array[i][j] = arrayIn[i][j];" +
-          "    }" +
-          "  }" +
-          "  return array;" +
-          "}" +
-          "protected static void doNothing(String sessionId)",
-          "{",
-          "}",
-          "protected static java.lang.Integer sumIntegerValues(String sessionId, "+PACKAGE+".TestClass[] testClassArr)",
-          "{",
-            "int sum = 0;",
-            "for(TestClass testClass : testClassArr)",
-            "{",
-              "sum += testClass.getTestInteger();",
-            "}",
-            "return sum;",
-          "}",
-          "protected static java.lang.Integer getNullInteger(String sessionId, "+PACKAGE+".TestClass nullObj)",
-          "{",
-            "if(nullObj == null)",
-              "return null;",
-            "else",
-              "throw new RuntimeException();",
-          "}",
-          "protected static "+PACKAGE+".States getState(String sessionId, "+PACKAGE+".States state)",
-          "{",
-            "return state;",
-          "}",
-          "protected static "+PACKAGE+".TestView concatViewChar(String sessionId, "+PACKAGE+".TestView view)",
-          "{",
-          "  view.setViewCharacter(view.getViewCharacter() + view.getViewCharacter());",
-          "  return view;",
-          "}",
-          "protected static "+PACKAGE+".TestUtil concatUtilChar(String sessionId, "+PACKAGE+".TestUtil util)",
-          "{",
-          "  util.setUtilCharacter(util.getUtilCharacter() + util.getUtilCharacter());",
-          "  return util;",
           "}",
         "}",
     };

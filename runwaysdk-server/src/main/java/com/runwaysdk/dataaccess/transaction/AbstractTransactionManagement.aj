@@ -59,7 +59,6 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MissingKeyNameValue;
@@ -514,7 +513,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     {
       this.getTransactionCache().updatedMdMethod_CodeGen(mdMethod);
     }
-    this.getTransactionCache().updatedMdMethod_WebServiceDeploy(mdMethod);
   }
 
   // MdMethod objects that have been deleted.
@@ -528,7 +526,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     {
       this.getTransactionCache().updatedMdMethod_CodeGen(mdMethod);
     }
-    this.getTransactionCache().updatedMdMethod_WebServiceDeploy(mdMethod);
   }
 
   // MdAction objects that have been updated or created.
@@ -568,8 +565,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     {
       this.getTransactionCache().updatedMdParameter_CodeGen(mdParameter);
     }
-
-    this.getTransactionCache().updatedMdParameter_WebServiceDeploy(mdParameter);
   }
 
   // MdParameter objects that have been deleted.
@@ -583,8 +578,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     {
       this.getTransactionCache().updatedMdParameter_CodeGen(mdParameter);
     }
-
-    this.getTransactionCache().updatedMdParameter_WebServiceDeploy(mdParameter);
   }
 
   protected pointcut createStateMaster(StateMasterDAO stateMaster)
@@ -1362,20 +1355,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdFacadeDAOReturnNull(String)) )
   && !within(AbstractTransactionManagement+)
   && args(facadeType);
-  
-  Object around(String facadeType) : getMdFacadeDAO(facadeType)
-  {
-    MdFacadeDAOIF mdFacadeIF = null;
-
-    mdFacadeIF = this.getTransactionCache().getMdFacade(facadeType);
-
-    if (mdFacadeIF == null)
-    {
-      mdFacadeIF = (MdFacadeDAOIF) proceed(facadeType);
-    }
-
-    return mdFacadeIF;
-  }
 
   // If an MdEnumeration were added during this transaction, then it will not
   // exist yet in the metadata

@@ -84,7 +84,6 @@ import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdExceptionInfo;
-import com.runwaysdk.constants.MdFacadeInfo;
 import com.runwaysdk.constants.MdFieldInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdInformationInfo;
@@ -164,7 +163,6 @@ import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdFieldDAOIF;
 import com.runwaysdk.dataaccess.MdGraphDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
@@ -318,10 +316,6 @@ public class ExportVisitor extends MarkupVisitor
     {
       visitMdIndex((MdIndexDAOIF) component);
     }
-    else if (component instanceof MdFacadeDAOIF)
-    {
-      visitMdFacade((MdFacadeDAOIF) component);
-    }
     else if (component instanceof MdControllerDAOIF)
     {
       visitMdController((MdControllerDAOIF) component);
@@ -449,66 +443,6 @@ public class ExportVisitor extends MarkupVisitor
     paramAttributes.put(XMLTags.DESCRIPTION_ATTRIBUTE, mdParameter.getDescription(CommonProperties.getDefaultLocale()));
 
     writer.writeEmptyEscapedTag(XMLTags.MD_PARAMETER_TAG, paramAttributes);
-  }
-
-  /**
-   * Specifies behavior upon entering a MdFacade on visit: Exports the MdFacade tag.
-   * 
-   * @param mdFacade
-   *          The MdFacade being visited
-   */
-  protected void enterMdFacade(MdFacadeDAOIF mdFacade)
-  {
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, mdFacade.definesType());
-
-    Map<String, String> localValues = mdFacade.getDisplayLabels();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
-
-    attributes.put(XMLTags.REMOVE_ATTRIBUTE, mdFacade.getValue(MdFacadeInfo.REMOVE));
-
-    Map<String, String> localDescValues = mdFacade.getDescriptions();
-    writeLocaleValues(attributes, XMLTags.DESCRIPTION_ATTRIBUTE, localDescValues);
-
-    // Write the INDEX_TAG with is parameters
-    writer.openEscapedTag(XMLTags.MD_FACADE_TAG, attributes);
-  }
-
-  /**
-   * Visits a MdFacade: Export a MdFacade
-   * 
-   * @param mdFacade
-   *          The MdFacade to visit
-   */
-  public void visitMdFacade(MdFacadeDAOIF mdFacade)
-  {
-    enterMdFacade(mdFacade);
-
-    // Write the mdMethod defined by the entity
-    for (MdMethodDAOIF mdMethod : mdFacade.getMdMethods())
-    {
-      visitMdMethod(mdMethod, mdMethod.getMdParameterDAOs());
-    }
-
-    exitMdFacade(mdFacade);
-  }
-
-  /**
-   * Specifies visit behavior after the MdFacade has been visited. This method is likely to be overwritten in child classes.
-   * 
-   * @param mdFacade
-   *          MdFacade being visited
-   */
-  protected void exitMdFacade(MdFacadeDAOIF mdFacade)
-  {
-    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
-    {
-      writer.openTag(XMLTags.STUB_SOURCE_TAG);
-      writer.writeCData(mdFacade.getValue(MdFacadeInfo.STUB_SOURCE));
-      writer.closeTag();
-    }
-
-    writer.closeTag();
   }
 
   protected void enterMdWebForm(MdWebFormDAOIF mdWebForm)

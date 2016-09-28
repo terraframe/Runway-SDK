@@ -74,7 +74,6 @@ import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
-import com.runwaysdk.constants.MdFacadeInfo;
 import com.runwaysdk.constants.MdGraphInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdLocalStructInfo;
@@ -377,7 +376,7 @@ public class XMLImporter
 
   private boolean isEntityClass(String type)
   {
-    if (type.equalsIgnoreCase(MdBusinessInfo.CLASS) || type.equalsIgnoreCase(MdTermInfo.CLASS) || type.equalsIgnoreCase(MdStructInfo.CLASS) || type.equalsIgnoreCase(MdLocalStructInfo.CLASS) || type.equalsIgnoreCase(MdRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdTreeInfo.CLASS) || type.equalsIgnoreCase(MdGraphInfo.CLASS) || type.equalsIgnoreCase(MdTermRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdEnumerationInfo.CLASS) || type.equalsIgnoreCase(MdFacadeInfo.CLASS))
+    if (type.equalsIgnoreCase(MdBusinessInfo.CLASS) || type.equalsIgnoreCase(MdTermInfo.CLASS) || type.equalsIgnoreCase(MdStructInfo.CLASS) || type.equalsIgnoreCase(MdLocalStructInfo.CLASS) || type.equalsIgnoreCase(MdRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdTreeInfo.CLASS) || type.equalsIgnoreCase(MdGraphInfo.CLASS) || type.equalsIgnoreCase(MdTermRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdEnumerationInfo.CLASS))
     {
       return true;
     }

@@ -41,7 +41,6 @@ import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
@@ -300,11 +299,6 @@ public abstract class PermissionVisitor extends MarkupVisitor
         visitMdUtil(permission, actorIF, (MdUtilDAOIF) metadata);
         exportedTypes.add(actorIF.getId() + metadata.getId());
       }
-      else if (metadata instanceof MdFacadeDAOIF)
-      {
-        visitMdFacade(permission, actorIF, (MdFacadeDAOIF) metadata);
-        exportedTypes.add(actorIF.getId() + metadata.getId());
-      }
     }
   }
 
@@ -468,24 +462,6 @@ public abstract class PermissionVisitor extends MarkupVisitor
 
     writer.closeTag();
   }
-
-  private void visitMdFacade(RelationshipDAOIF permission, ActorDAOIF actorIF, MdFacadeDAOIF mdFacade)
-  {
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.TYPE_ATTRIBUTE, mdFacade.definesType());
-
-    // Open MdBusiness Permission tag
-    writer.openEscapedTag(XMLTags.MD_FACADE_PERMISSION_TAG, attributes);
-
-    // Export the MdMethod permissions of the MdClass
-    for (MdMethodDAOIF mdMethod : mdFacade.getMdMethods())
-    {
-      visitMdMethod(mdMethod, actorIF);
-    }
-
-    writer.closeTag();
-  }
-
   private void visitMdBusiness(RelationshipDAOIF permission, ActorDAOIF actorIF, MdBusinessDAOIF mdBusiness, Boolean all)
   {
     HashMap<String, String> attributes = new HashMap<String, String>();

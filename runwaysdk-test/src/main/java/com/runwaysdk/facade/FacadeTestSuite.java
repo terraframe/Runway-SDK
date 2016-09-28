@@ -47,7 +47,6 @@ public class FacadeTestSuite extends TestSuite
     suite.addTest(InvokeMethodTest.suite());
     suite.addTest(InvokeUtilDTOMethodTest.suite());
     suite.addTest(InvokeViewDTOMethodTest.suite());
-    suite.addTest(FacadeGenerationTest.suite());
     suite.addTest(MessageTest.suite());
 
     suite.addTest(RMIAdapterTest.suite());
@@ -56,7 +55,6 @@ public class FacadeTestSuite extends TestSuite
     suite.addTest(RMIInvokeMethodTest.suite());
     suite.addTest(RMIInvokeUtilDTOMethodTest.suite());
     suite.addTest(RMIInvokeViewDTOMethodTest.suite());
-    suite.addTest(RMIFacadeGenerationTest.suite());
     suite.addTest(RMIMessageTest.suite());
 
     suite.addTest(JSONInvokeMethodTest.suite());

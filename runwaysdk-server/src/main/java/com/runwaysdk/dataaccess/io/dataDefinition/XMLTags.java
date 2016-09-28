@@ -491,11 +491,6 @@ public interface XMLTags
   public static final String   MD_LOCAL_STRUCT_TAG              = "mdLocalStruct";
 
   /**
-   * The xml tag to define a MdFacade
-   */
-  public static final String   MD_FACADE_TAG                    = "mdFacade";
-
-  /**
    * The xml tag to define an MdMethod
    */
   public static final String   MD_METHOD_TAG                    = "mdMethod";
@@ -727,8 +722,6 @@ public interface XMLTags
   public static final String   METHOD_PERMISSION_NAME_ATTRIBUTE = "methodName";
 
   public static final String   MD_METHOD_PERMISSION_TAG         = "mdMethodPermission";
-
-  public static final String   MD_FACADE_PERMISSION_TAG         = "mdFacadePermission";
 
   public static final String   MD_CONTROLLER_TAG                = "mdController";
 
