@@ -82,6 +82,9 @@ abstract public class Term extends Business
   /**
    * Deletes the term, all of it's children, all associated relationships, and updates the ontology strategy across all ontological relationship types. May be a potentially expensive operation.
    * 
+   * Warning: Be very careful when overriding this method! Overriding should only be used to completely change the behavior (and not super), or to add a "before hook" into delete. If you want special delete logic done
+   *          every time a term is deleted then you need to override deletePerTerm instead because this delete method is not called on all children (only the very first deleted term).
+   * 
    * TODO: Multi-threading
    * TODO: At what point is it faster to rebuild the Allpaths table?
    * TODO: Add better support in Query API for managing tables so this temp table logic can be more cross DB

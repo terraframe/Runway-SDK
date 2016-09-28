@@ -124,7 +124,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
   public AbstractOntologyStrategyTest() throws Exception
   {
-    
+    didDoSetUp = false;
   }
   
   /**
@@ -231,6 +231,8 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     MdRelationship.get(mdTermRelationshipId).delete();
     MdBusiness.get(mdTermId).delete();
+    
+    didDoSetUp = false;
   }
   
 //  public void testInitialized() {

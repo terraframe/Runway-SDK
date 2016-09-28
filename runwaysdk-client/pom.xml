@@ -24,7 +24,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>2.0.17</version>
+    <version>2.0.20-SNAPSHOT</version>
   </parent>
   
   <artifactId>runwaysdk-client</artifactId>
@@ -87,6 +87,7 @@
   <build>
     <finalName>${project.artifactId}</finalName>
     <plugins>
+      <!--
       <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>
@@ -106,6 +107,7 @@
           </execution>
         </executions>
       </plugin>
+      -->
       
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

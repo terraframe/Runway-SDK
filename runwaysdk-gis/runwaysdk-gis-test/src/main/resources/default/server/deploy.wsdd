@@ -1,0 +1,11 @@
+<deployment xmlns="http://xml.apache.org/axis/wsdd/"
+   xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+ <service name="com.terraframe.mojo.facade.WebServiceAdapter" provider="java:RPC">
+  <parameter name="className" value="com.terraframe.mojo.facade.WebServiceAdapter"/>
+  <parameter name="allowedMethods" value="*"/>
+ </service>
+  <service name="com.terraframe.mojo.facade.JSONWebServiceAdapter" provider="java:RPC">
+  <parameter name="className" value="com.terraframe.mojo.facade.JSONWebServiceAdapter"/>
+  <parameter name="allowedMethods" value="*"/>
+ </service>
+</deployment>

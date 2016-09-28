@@ -1,0 +1,617 @@
+<!--
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway SDK GIS(tm).
+
+    Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<version
+   xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version_gis.xsd"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.geo.Universal"
+         label="Universal"
+         generateController="true">
+        <attributes>
+          <reference name="mdBusiness" label="MdBusiness" required="true" immutable="true" description="The MdBusiness this Universal wraps." type="com.runwaysdk.system.metadata.MdBusiness" />
+        </attributes>
+      </mdBusiness>
+      <mdView
+         name="com.runwaysdk.system.gis.geo.UniversalInput"
+         label="Universal Input"
+         description="An abridged version of Universal for input."
+         generateController="false">
+        <attributes>
+          <char name="displayLabel" label="Display Label" required="true" size="100" />
+          <char name="description" label="Description" required="true" size="100" />
+          <reference name="parentUniversal" type="com.runwaysdk.system.gis.geo.Universal" label="Display Label" required="false" />
+          <reference name="universal" type="com.runwaysdk.system.gis.geo.Universal" label="Universal" required="false" />
+          <boolean name="moveOperation" label="Move Operation" defaultValue="true" required="true" />
+        </attributes>
+      </mdView>
+      <mdView
+         name="com.runwaysdk.system.gis.geo.UniversalView"
+         label="Universal View"
+         description="An abridged version of Universal for display."
+         generateController="false">
+        <attributes>
+          <char name="displayLabel" label="Display Label" required="true" size="100" />
+          <char name="description" label="Description" required="true" size="100" />
+          <reference name="universal" type="com.runwaysdk.system.gis.geo.Universal" label="Universal" required="false" />
+        </attributes>
+      </mdView>
+      <mdException
+         name="com.runwaysdk.system.gis.geo.InvalidGeoEntityUniversalException"
+         label="Invalid GeoEntity Universal Exception"
+         description="Thrown when the a GeoEntity is created that references the wrong Universal."
+         message="The GeoEntity's Universal attribute [{universalValue}] does not match its actual type [{universalType}].">
+         <attributes>
+           <char name="universalValue" size="100" required="true" label="Universal Type" />
+           <char name="universalType" size="100" required="true" label="Universal Type" />
+         </attributes>
+      </mdException> 
+      <mdBusiness
+         name="com.runwaysdk.system.gis.geo.universal.GeoEntity"
+         label="Geo Entity"
+         generateController="true"
+         isAbstract="true"
+         removable="false">
+        <attributes>
+          <char name="geoId" size="50" required="true" indexType="unique index" />
+          <text name="wkt" required="false" label="WKT" description="The WKT string of the geometry" />
+          <reference name="universal" label="Universal" required="true" immutable="true" type="com.runwaysdk.system.gis.geo.Universal" />
+          <localChar name="entityName" required="true" size="50" />
+          <point name="geoPoint" dimension="2" srid="4326" required="false" />
+          <multipolygon name="geoMultiPolygon" dimension="2" srid="4326" required="false" />
+        </attributes>
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.GeneratedMap"
+         label="Map"
+         generateController="true">
+        <attributes>
+          <dateTime name="mapDate" label="Map Date" description="The date of the map." required="true" />
+          <localChar name="mapName" required="true" size="50" />
+        </attributes>
+        <mdMethod name="getInitialMaps" label="Get Initial Maps" static="true" returnType="java.lang.String" description="Returns a JSON configuration string for mapping." />
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.Layer"
+         label="Layer"
+         generateController="true">
+        <attributes>
+          <boolean name="published" label="Published" required="true" defaultValue="false" description="Denotes if the map has been published to geoserver." />
+          <boolean name="forceRefresh" label="Force Refresh" required="true" defaultValue="false" description="Denotes if the layer should be refreshed due to data changes." />
+          <reference name="defaultStyle" required="true" type="com.runwaysdk.system.gis.mapping.LayerStyle" />
+          <reference name="sqlBuilder" required="true" type="com.runwaysdk.system.gis.mapping.LayerSQLBuilder" />
+          <localChar name="layerName" required="true" size="50" />
+        </attributes>
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.LayerSQLBuilder"
+         label="Layer SQL Builder"
+         isAbstract="true"
+         generateController="false">
+        <attributes>
+          <char name="viewName" label="View Name" required="true" size="25" />
+          <reference name="geomAttribute" required="true" type="com.runwaysdk.system.gis.metadata.MdAttributeGeometry" />
+          <reference name="displayAttribute" required="true" type="com.runwaysdk.system.metadata.MdAttribute" />
+        </attributes>
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.UniversalSQLBuilder"
+         extends="com.runwaysdk.system.gis.mapping.LayerSQLBuilder"
+         label="Universal SQL Builder"
+         generateController="false">
+        <attributes>
+          <reference name="universal" label="Universal" requied="true" type="com.runwaysdk.system.gis.geo.Universal" />
+        </attributes>
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.LayerStyle"
+         label="Style"
+         generateController="true">
+        <attributes>
+          <char name="polygonFill" label="Polygon Color" description="The fill color" required="true" defaultValue="#FFFFFF" size="7" />
+          <char name="polygonStroke" label="Polygon Stroke" description="The stroke color" required="true" defaultValue="#C3C3DC" size="7" />
+          <integer name="polygonStrokeWidth" label="Polygon Stroke Width" description="The stroke width" required="true" defaultValue="1" rejectNegative="true" />
+        </attributes>
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.ThematicAttribute"
+         label="Thematic Attribute"
+         generateController="true">
+        <attributes>
+          <reference name="mdAttribute" required="true" type="com.runwaysdk.system.metadata.MdAttribute" />
+        </attributes>
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.ThematicRule"
+         label="Rule"
+         isAbstract="true"
+         generateController="true">
+        <attributes>
+          <reference name="ruleStyle" required="false" type="com.runwaysdk.system.gis.mapping.LayerStyle" />
+        </attributes>
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.PrimitiveRule"
+         extends="com.runwaysdk.system.gis.mapping.ThematicRule"
+         label="Primitive Rule"
+         isAbstract="true"
+         generateController="true">
+        <attributes>
+          <char name="attributeValue" size="100" required="true" label="Value" />
+        </attributes>
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.ExactRule"
+         extends="com.runwaysdk.system.gis.mapping.PrimitiveRule"
+         label="Exact Rule"
+         generateController="true">
+        <attributes />
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.GreaterThanRule"
+         extends="com.runwaysdk.system.gis.mapping.PrimitiveRule"
+         label="Greater Than Rule"
+         generateController="true">
+        <attributes />
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.LessThanRule"
+         extends="com.runwaysdk.system.gis.mapping.PrimitiveRule"
+         label="Less Than Rule"
+         generateController="true">
+        <attributes />
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.GreaterThanOrEqualRule"
+         extends="com.runwaysdk.system.gis.mapping.PrimitiveRule"
+         label="Greater Than Or Equal Rule"
+         generateController="true">
+        <attributes />
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.LessThanOrEqualRule"
+         extends="com.runwaysdk.system.gis.mapping.PrimitiveRule"
+         label="Less Than Or Equal Rule"
+         generateController="true">
+        <attributes />
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.CompositeRule"
+         extends="com.runwaysdk.system.gis.mapping.ThematicRule"
+         label="Compound Rule"
+         isAbstract="true"
+         generateController="true">
+        <attributes />
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.AndRule"
+         label="And Rule"
+         extends="com.runwaysdk.system.gis.mapping.CompositeRule"
+         generateController="true">
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.mapping.OrRule"
+         label="Or Rule"
+         extends="com.runwaysdk.system.gis.mapping.CompositeRule"
+         generateController="true">
+      </mdBusiness>
+      <mdBusiness
+         name="com.runwaysdk.system.gis.geo.universal.Root"
+         label="Root"
+         description="Root"
+         removable="false"
+         extends="com.runwaysdk.system.gis.geo.universal.GeoEntity">
+      </mdBusiness>
+      <mdException
+        name="com.runwaysdk.system.gis.geo.DeleteRootException"
+        label="Delete Earth Exception"
+        description="Thrown when a user tries to delete the Root GeoEntity">
+        <attributes>
+          <char
+            name="rootName"
+            label="Root Name"
+            size="100"
+            required="true"
+            description="Localized name of Root" />
+        </attributes>
+      </mdException>
+      <mdException
+        name="com.runwaysdk.system.gis.geo.DuplicateRootException"
+        label="Dupliate Root Exception"
+        description="Thrown when a user tries to create another Root">
+        <attributes>
+          <char
+            name="rootName"
+            label="Root Name"
+            size="100"
+            required="true"
+            description="Localized name of Root" />
+        </attributes>
+      </mdException>    
+      <mdRelationship
+         name="com.runwaysdk.system.gis.geo.AllowedIn">
+        <parent cardinality="*" name="com.runwaysdk.system.gis.geo.Universal" method="AllowedIn" />
+        <child cardinality="*" name="com.runwaysdk.system.gis.geo.Universal" method="Contains" />
+      </mdRelationship>
+      <mdBusiness
+        name="com.runwaysdk.system.gis.geo.UniversalAllPaths"
+        label="Universal All Paths"
+        description="Contains recursive relationships for all Universal paths within the table."
+        extendable="false"
+        isAbstract="false"
+        generateController="false"
+        table="allpaths_universal">
+        <attributes>
+          <reference
+            name="parentUniversal"
+            label="Parent Universal"
+            required="true"
+            unique="false"
+            type="com.runwaysdk.system.gis.geo.Universal"
+            description="The Universal of the Parent"
+            indexType="non-unique index"/>
+          <reference
+            name="parentMdBusiness"
+            label="Parent MdBusiness"
+            required="true"
+            unique="false"
+            type="com.runwaysdk.system.metadata.MdBusiness"
+            description="The MdBusiness of the Parent" />
+          <reference
+            name="childUniversal"
+            label="Child Universal"
+            required="true"
+            unique="false"
+            type="com.runwaysdk.system.gis.geo.Universal"
+            description="The Universal of the Child"
+            indexType="non-unique index"/>
+          <reference
+            name="childMdBusiness"
+            label="Child MdBusiness"
+            required="true"
+            unique="false"
+            type="com.runwaysdk.system.metadata.MdBusiness"
+            description="The MdBusiness of the Child" />
+        </attributes>
+      </mdBusiness>
+      <mdIndex
+        type="com.runwaysdk.system.gis.geo.UniversalAllPaths"
+        label="Parent-Child GeoEntity Index"
+        active="true"
+        unique="true"
+        description="Enforces a unique index between the parent universal and the child universal">
+        <attribute
+          name="parentUniversal"
+          indexOrder="0" />
+        <attribute
+          name="childUniversal"
+          indexOrder="1" />
+      </mdIndex>      
+      <mdRelationship
+         name="com.runwaysdk.system.gis.geo.LocatedIn"
+         label="Located In"
+         generateController="true">
+        <parent cardinality="*" name="com.runwaysdk.system.gis.geo.universal.GeoEntity" method="LocatedIn" />
+        <child cardinality="*" name="com.runwaysdk.system.gis.geo.universal.GeoEntity" method="Contains" />
+      </mdRelationship>
+      <mdBusiness
+        name="com.runwaysdk.system.gis.geo.GeoEntityAllPaths"
+        label="GeoEntity All Paths"
+        description="Contains recursive relationships for all geo entity paths within the table."
+        extendable="false"
+        isAbstract="false"
+        generateController="false"
+        table="allpaths_geoentity">
+        <attributes>
+          <reference
+            name="parentGeoEntity"
+            label="Parent Geo Entity"
+            required="true"
+            unique="false"
+            type="com.runwaysdk.system.gis.geo.universal.GeoEntity"
+            description="The parent geo entity contains the child geo entity."
+            indexType="non-unique index"/>
+          <reference
+            name="parentUniversal"
+            label="Parent Universal"
+            required="true"
+            unique="false"
+            type="com.runwaysdk.system.gis.geo.Universal"
+            description="The Universal of the Parent" />
+          <reference
+            name="childGeoEntity"
+            label="Child Geo Entity"
+            required="true"
+            unique="false"
+            type="com.runwaysdk.system.gis.geo.universal.GeoEntity"
+            description="The child geo entity is located in the parent geo entity."
+            indexType="non-unique index"/>
+          <reference
+            name="childUniversal"
+            label="Child Universal"
+            required="true"
+            unique="false"
+            type="com.runwaysdk.system.gis.geo.Universal"
+            description="The Universal of the Child" />
+        </attributes>
+      </mdBusiness>
+      <mdIndex
+        type="com.runwaysdk.system.gis.geo.GeoEntityAllPaths"
+        label="Parent-Child GeoEntity Index"
+        active="true"
+        unique="true"
+        description="Enforces a unique index between the parent geo entity and the child geo entity">
+        <attribute
+          name="parentGeoEntity"
+          indexOrder="0" />
+        <attribute
+          name="childGeoEntity"
+          indexOrder="1" />
+      </mdIndex>      
+      <mdRelationship
+         name="com.runwaysdk.system.gis.mapping.HasLayer"
+         label="Has Layer"
+         composition="true">
+        <attributes>
+          <integer name="layerIndex" required="true" rejectNegative="true" />
+        </attributes>
+        <parent cardinality="1" name="com.runwaysdk.system.gis.mapping.GeneratedMap" method="ContainingMap" />
+        <child cardinality="*" name="com.runwaysdk.system.gis.mapping.Layer" method="HasLayer" />
+      </mdRelationship>
+      <mdRelationship
+         name="com.runwaysdk.system.gis.mapping.HasThematicAttribute"
+         label="Has Thematic Attribute"
+         generateController="true"
+         composition="true">
+        <parent cardinality="1" name="com.runwaysdk.system.gis.mapping.Layer" method="ContainingLayer" />
+        <child cardinality="*" name="com.runwaysdk.system.gis.mapping.ThematicAttribute" method="HasThematicAttribute" />
+      </mdRelationship>
+      <mdRelationship
+         name="com.runwaysdk.system.gis.mapping.HasPrimitiveRule"
+         label="Has Primitive Rule"
+         composition="true">
+        <parent cardinality="1" name="com.runwaysdk.system.gis.mapping.CompositeRule" method="CompositeRule" />
+        <child cardinality="*" name="com.runwaysdk.system.gis.mapping.PrimitiveRule" method="PrimitiveRule" />
+      </mdRelationship>
+      <mdRelationship
+         name="com.runwaysdk.system.gis.mapping.HasThematicRule"
+         label="Has Thematic Rule"
+         composition="true">
+        <parent cardinality="1" name="com.runwaysdk.system.gis.mapping.ThematicAttribute" method="ContainingThematicAttribute" />
+        <child cardinality="*" name="com.runwaysdk.system.gis.mapping.ThematicRule" method="HasThematicRule" />
+      </mdRelationship>
+      <mdException
+         name="com.runwaysdk.system.gis.InvalidFormatException"
+         label="Invalid Format Exception"
+         description="Thrown when incoming data cannot be parsed."
+         message="The incoming data is in an invalid format.">
+      </mdException>
+      <mdException
+         name="com.runwaysdk.system.gis.ConnectionException"
+         label="Connection Exception"
+         description="Thrown when a remote connection fails."
+         message="An error occurred when connecting to the remote server.">
+      </mdException>
+      <mdException
+         name="com.runwaysdk.system.gis.ConfigurationException"
+         label="Configuration Exception"
+         description="Thrown when the application is invalid."
+         message="The application is not configured correctly.">
+      </mdException>
+      <mdException
+         name="com.runwaysdk.system.gis.geo.InvalidUniversalTypeException"
+         label="Invalid Type Exception"
+         description="Thrown when the a Universal is created with an invalid MdBusiness type."
+         message="A Universal can only reference a subclass of GeoEntity.">
+      </mdException>
+      <mdUtil
+         name="com.runwaysdk.system.gis.mapping.GeoserverFacade"
+         label="GeoserverFacade"
+         publish="true"
+         generateController="false">
+        <mdMethod name="initializeGeoServer" label="Initialize GeoServer" static="true" description="Puts all maps in GeoServer if they do not exist." returnType="void" />
+      </mdUtil>
+      <mdController
+         name="com.runwaysdk.system.gis.LoginController"
+         label="Login Controller"
+         description="Provides functionallity for logging in and logging out">
+        <mdAction
+           name="login"
+           label="login"
+           isPost="true">
+          <mdParameter name="username" label="username" order="0" type="java.lang.String" />
+          <mdParameter name="password" label="password" order="1" type="java.lang.String" />
+        </mdAction>
+        <mdAction name="logout" label="logout" isPost="true" />
+      </mdController>
+    </create>
+    <create>
+      <object key="universal-com.runwaysdk.system.gis.geo.universal.Root" type="com.runwaysdk.system.gis.geo.Universal">
+        <attributeReference name="mdBusiness" key="com.runwaysdk.system.gis.geo.universal.Root" />
+      </object>
+    </create>
+    <create>
+      <!-- The singleton instance of Root which contains all GeoEntities -->
+      <object key="Root" type="com.runwaysdk.system.gis.geo.universal.Root">
+        <attribute name="entityName" value="Root" />
+        <attribute name="geoId" value="ROOT" />
+        <attributeReference name="universal" key="universal-com.runwaysdk.system.gis.geo.universal.Root" />
+      </object>
+    </create>
+    <permissions>
+      <role
+         roleName="PUBLIC">
+        <grant>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.geo.Universal">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdViewPermission type="com.runwaysdk.system.gis.geo.UniversalView">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdViewPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.geo.universal.GeoEntity">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.GeneratedMap">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.Layer">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.LayerStyle">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.ThematicAttribute">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.ThematicRule">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.PrimitiveRule">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.ExactRule">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.GreaterThanRule">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.GreaterThanOrEqualRule">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.LessThanRule">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.LessThanOrEqualRule">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.CompositeRule">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.AndRule">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdBusinessPermission
+             type="com.runwaysdk.system.gis.mapping.OrRule">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdBusinessPermission>
+          <mdRelationshipPermission
+             type="com.runwaysdk.system.gis.geo.AllowedIn">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdRelationshipPermission>
+          <mdRelationshipPermission
+             type="com.runwaysdk.system.gis.geo.LocatedIn">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdRelationshipPermission>
+          <mdRelationshipPermission
+             type="com.runwaysdk.system.gis.mapping.HasLayer">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdRelationshipPermission>
+          <mdRelationshipPermission
+             type="com.runwaysdk.system.gis.mapping.HasThematicAttribute">
+            <operation name="READ" />
+            <operation name="READ_ALL_ATTRIBUTES" />
+          </mdRelationshipPermission>
+        </grant>
+      </role>
+      <method
+         methodName="initializeGeoServer"
+         type="com.runwaysdk.system.gis.mapping.GeoserverFacade">
+        <assignedRole roleName="Administrator" />
+      </method>
+    </permissions>
+  </doIt>
+  <undoIt>
+    <delete>
+      <object key="com.runwaysdk.system.gis.InvalidFormatException" type="com.runwaysdk.system.metadata.MdException" />
+      <object key="com.runwaysdk.system.gis.ConnectionException" type="com.runwaysdk.system.metadata.MdException" />
+      <object key="com.runwaysdk.system.gis.ConfigurationException" type="com.runwaysdk.system.metadata.MdException" />
+      <object key="com.runwaysdk.system.gis.mapping.LayerStyle.polygonStroke" type="com.runwaysdk.system.metadata.MdAttributeCharacter" />
+      <object key="com.runwaysdk.system.gis.mapping.LayerStyle.polygonStrokeWidth" type="com.runwaysdk.system.metadata.MdAttributeInteger" />
+    </delete>
+    <delete>
+      <object key="com.runwaysdk.system.gis.mapping.HasThematicRule" type="com.runwaysdk.system.metadata.MdRelationship" />
+      <object key="com.runwaysdk.system.gis.mapping.PrimitiveRule.attributeValue" type="com.runwaysdk.system.metadata.MdAttributeCharacter" />
+    </delete>
+    <delete>
+      <object key="com.runwaysdk.system.gis.mapping.LayerStyle.polygonFill" type="com.runwaysdk.system.metadata.MdAttributeCharacter" />
+      <object key="com.runwaysdk.system.gis.mapping.GeneratedMap.getInitialMaps" type="com.runwaysdk.system.metadata.MdMethod" />
+      <object key="com.runwaysdk.system.gis.mapping.GeoserverFacade" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="universal-com.runwaysdk.system.gis.geo.universal.Root" type="com.runwaysdk.system.gis.geo.Universal" />
+      <object key="com.runwaysdk.system.gis.geo.universal.Root" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.LoginController" type="com.runwaysdk.system.metadata.MdController" />
+      <object key="com.runwaysdk.system.gis.geo.Universal" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.geo.AllowedIn" type="com.runwaysdk.system.metadata.MdRelationship" />
+      <object key="com.runwaysdk.system.gis.geo.universal.GeoEntity" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.geo.LocatedIn" type="com.runwaysdk.system.metadata.MdRelationship" />
+      <object key="com.runwaysdk.system.gis.mapping.GeneratedMap" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.mapping.Layer" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.mapping.HasLayer" type="com.runwaysdk.system.metadata.MdRelationship" />
+      <object key="com.runwaysdk.system.gis.mapping.LayerStyle" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.mapping.HasThematicAttribute" type="com.runwaysdk.system.metadata.MdRelationship" />
+      <object key="com.runwaysdk.system.gis.mapping.ThematicRule" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.mapping.PrimitiveRule" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.mapping.CompositeRule" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.mapping.AndRule" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.mapping.OrRule" type="com.runwaysdk.system.metadata.MdBusiness" />
+      <object key="com.runwaysdk.system.gis.geo.DeleteRootException" type="com.runwaysdk.system.metadata.MdException" />
+      <object key="com.runwaysdk.system.gis.geo.DuplicateRootException" type="com.runwaysdk.system.metadata.MdException" />
+      <object key="com.runwaysdk.system.gis.geo.UniversalView" type="com.runwaysdk.system.metadata.MdView" />
+      <object key="com.runwaysdk.system.gis.geo.UniversalInput" type="com.runwaysdk.system.metadata.MdView" />
+      <object key="com.runwaysdk.system.gis.geo.InvalidGeoEntityUniversalException" type="com.runwaysdk.system.metadata.MdException" />
+    </delete>
+  </undoIt>
+</version>
