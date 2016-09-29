@@ -2183,7 +2183,7 @@ public class HsqlDB extends AbstractDatabase
    * @param dropSchema true if backup should include commands to drop the schema
    */
   @Override
-  public String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName, boolean dropSchema)
+  public String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName,  PrintStream out, PrintStream errOut, boolean dropSchema)
   {
     throw new UnsupportedOperationException("Backup method is not yet implemented for HsqlDB");
   }
@@ -2195,13 +2195,13 @@ public class HsqlDB extends AbstractDatabase
    * @param printStream
    */
   @Override
-  public void importFromSQL(String restoreSQLFile, PrintStream printStream)
+  public void importFromSQL(String restoreSQLFile, PrintStream out, PrintStream errOut)
   {
     throw new UnsupportedOperationException("Backup method is not yet implemented for HsqlDB");
   }
 
   @Override
-  public String backup(String namespace, String backupFileLocation, String backupFileRootName, boolean dropSchema)
+  public String backup(String namespace, String backupFileLocation, String backupFileRootName,  PrintStream out, PrintStream errOut, boolean dropSchema)
   {
     throw new UnsupportedOperationException("Backup method is not yet implemented for HsqlDB");
   }
