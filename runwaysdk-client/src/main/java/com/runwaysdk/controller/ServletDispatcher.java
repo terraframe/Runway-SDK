@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
@@ -84,6 +84,13 @@ public class ServletDispatcher extends HttpServlet implements DispatcherIF
   public ServletDispatcher()
   {
     this(false, false);
+  }
+
+  public ServletDispatcher(URLConfigurationManager manager)
+  {
+    this.isAsynchronous = false;
+    this.hasFormObject = false;
+    this.xmlMapper = manager;
   }
 
   public ServletDispatcher(boolean isAsynchronous, boolean hasFormObject)
@@ -373,7 +380,7 @@ public class ServletDispatcher extends HttpServlet implements DispatcherIF
    * @param servletMethod
    * @throws IOException
    */
-  private void checkAndDispatch(RequestManager manager) throws IOException
+  public void checkAndDispatch(RequestManager manager) throws IOException
   {
     String servletPath = ServletDispatcher.getServletPath(manager.getReq());
 
@@ -386,13 +393,24 @@ public class ServletDispatcher extends HttpServlet implements DispatcherIF
     {
       // Else expect that the controller classname followed by the action name
       // and then a prefix (like mojo) is in the url.
-      servletPath = servletPath.substring(0, servletPath.lastIndexOf("."));
+      int lastIndexOf = servletPath.lastIndexOf(".");
 
-      int index = servletPath.lastIndexOf(".");
-      String actionName = servletPath.substring(index + 1);
-      String controllerName = servletPath.substring(0, index).replace("/", "");
+      if (lastIndexOf != -1)
+      {
+        servletPath = servletPath.substring(0, lastIndexOf);
 
-      invokeControllerAction(controllerName, actionName, manager);
+        int index = servletPath.lastIndexOf(".");
+        String actionName = servletPath.substring(index + 1);
+        String controllerName = servletPath.substring(0, index).replace("/", "");
+
+        invokeControllerAction(controllerName, actionName, manager);
+      }
+      else
+      {
+        String msg = "An endpoint at the uri [" + servletPath + "] does not exist.";
+
+        throw new UnknownServletException(msg, manager.getLocale(), servletPath);
+      }
     }
   }
 

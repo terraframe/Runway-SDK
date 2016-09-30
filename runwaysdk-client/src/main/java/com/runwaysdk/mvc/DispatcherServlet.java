@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc;
 
@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,10 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
+import org.json.HTTP;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.runwaysdk.controller.BasicParameter;
 import com.runwaysdk.controller.DispatchUtil;
@@ -57,6 +62,7 @@ import com.runwaysdk.controller.UnknownServletException;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.request.ServletRequestIF;
+import com.runwaysdk.web.ServletUtility;
 
 public class DispatcherServlet extends HttpServlet implements DispatcherIF
 {
@@ -101,7 +107,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
    */
   public void checkAndDispatch(RequestManager manager) throws IOException
   {
-    String servletPath = DispatcherServlet.getServletPath(manager.getReq());
+    String servletPath = ServletUtility.getServletPath(manager.getReq());
 
     UriMapping uriMapping = xmlMapper.getMapping(servletPath);
 
@@ -120,7 +126,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
   @Override
   public void invokeControllerAction(String controllerName, String actionName, RequestManager manager) throws IOException
   {
-    String servletPath = DispatcherServlet.getServletPath(manager.getReq());
+    String servletPath = ServletUtility.getServletPath(manager.getReq());
 
     try
     {
@@ -254,14 +260,14 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
   {
     // Use standard parsing
     Parameter[] parameters = method.getParameters();
-    
+
     List<ParameterIF> parameterIfs = new LinkedList<ParameterIF>();
-    
-    for(Parameter parameter : parameters)
+
+    for (Parameter parameter : parameters)
     {
       parameterIfs.add(new ParameterDecorator(parameter));
     }
-    
+
     return new DispatchUtil(parameterIfs, manager, parameterMap).getObjects();
   }
 
@@ -272,7 +278,9 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
    */
   private Map<String, ParameterValue> getParameters(RequestManager manager)
   {
-    if (manager.getReq().isMultipartContent())
+    ServletRequestIF request = manager.getReq();
+
+    if (request.isMultipartContent())
     {
       Map<String, ParameterValue> parameters = new HashMap<String, ParameterValue>();
 
@@ -284,7 +292,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
 
       try
       {
-        List<FileItem> items = manager.getReq().getFileItems(upload);
+        List<FileItem> items = request.getFileItems(upload);
 
         for (FileItem item : items)
         {
@@ -317,7 +325,49 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
     }
     else
     {
-      return this.getParameterMap(manager.getReq().getParameterMap());
+      String contentType = request.getContentType();
+
+      if (contentType != null && contentType.contains("application/json"))
+      {
+        return this.getParamaterMap(request);
+      }
+      else
+      {
+        return this.getParameterMap(request.getParameterMap());
+      }
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public Map<String, ParameterValue> getParamaterMap(ServletRequestIF request)
+  {
+    try
+    {
+      String body = IOUtils.toString(request.getReader());
+
+      JSONObject object = new JSONObject(body);
+
+      Map<String, ParameterValue> values = new HashMap<String, ParameterValue>();
+
+      Iterator<String> keys = object.keys();
+
+      while (keys.hasNext())
+      {
+        String key = keys.next();
+        String value = object.get(key).toString();
+
+        values.put(key, new BasicParameter(new String[] { value }));
+      }
+
+      return values;
+    }
+    catch (IOException e)
+    {
+      throw new RuntimeException(e);
+    }
+    catch (JSONException e)
+    {
+      throw new RuntimeException(e);
     }
   }
 
@@ -338,28 +388,5 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
     Throwable target = e.getTargetException();
 
     ErrorUtility.prepareThrowable(target, manager.getReq(), manager.getResp(), false, true);
-  }
-
-  /**
-   * This method strips the context path from the request URI and returns it.
-   * Use this method to handle URI's in a context path agnostic manner.
-   * 
-   * @param request
-   * @return
-   */
-  private static final String getServletPath(ServletRequestIF request)
-  {
-    String servletPath = request.getServletPath();
-
-    if (!"".equals(servletPath))
-    {
-      return servletPath;
-    }
-
-    String requestUri = request.getRequestURI();
-    int startIndex = request.getContextPath().equals("") ? 0 : request.getContextPath().length();
-    int endIndex = request.getPathInfo() == null ? requestUri.length() : requestUri.indexOf(request.getPathInfo());
-
-    return requestUri.substring(startIndex, endIndex);
   }
 }

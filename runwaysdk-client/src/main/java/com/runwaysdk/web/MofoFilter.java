@@ -34,19 +34,25 @@ import com.runwaysdk.web.json.JSONRunwayExceptionDTO;
 
 public class MofoFilter implements Filter
 {
+  private ServletDispatcher dis;
+
+  @Override
+  public void init(FilterConfig arg0) throws ServletException
+  {
+    this.dis = new ServletDispatcher(true, true);
+  }
 
   @Override
   public void destroy()
   {
+    this.dis = null;
   }
 
   @Override
-  public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException,
-      ServletException
+  public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException
   {
     try
     {
-      ServletDispatcher dis = new ServletDispatcher(true, true);
       dis.service(req, res);
     }
     catch (ClientException e)
@@ -59,10 +65,4 @@ public class MofoFilter implements Filter
       httpRes.getWriter().append(json);
     }
   }
-
-  @Override
-  public void init(FilterConfig arg0) throws ServletException
-  {
-  }
-
 }

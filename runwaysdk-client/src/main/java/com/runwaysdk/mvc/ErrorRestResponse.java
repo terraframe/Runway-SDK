@@ -16,31 +16,22 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.request;
+package com.runwaysdk.mvc;
 
-import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class DispatchDecorator implements RequestDispatcherIF
+public class ErrorRestResponse extends AbstractRestResponse implements ResponseIF
 {
-  private RequestDispatcher dispatcher;
+  private String message;
 
-  public DispatchDecorator(RequestDispatcher dispatcher)
+  public ErrorRestResponse(String message)
   {
-    this.dispatcher = dispatcher;
+    super(500);
+
+    this.message = message;
   }
 
   @Override
-  public void forward(ServletRequestIF req, ServletResponseIF resp) throws ServletException, IOException
+  protected Object serialize()
   {
-    HttpServletRequest request = ( (RequestDecorator) req ).getRequest();
-    HttpServletResponse response = ( (ResponseDecorator) resp ).getResponse();
-
-    this.dispatcher.forward(request, response);
+    return this.message;
   }
-
 }

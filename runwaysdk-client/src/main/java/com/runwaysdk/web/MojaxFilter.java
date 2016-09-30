@@ -35,28 +35,34 @@ import com.runwaysdk.web.json.JSONRunwayExceptionDTO;
 
 public class MojaxFilter implements Filter
 {
+  private ServletDispatcher dispatcher;
+
+  @Override
   public void init(FilterConfig filterConfig) throws ServletException
   {
+    this.dispatcher = new ServletDispatcher(true, false);
   }
 
+  @Override
   public void destroy()
   {
+    this.dispatcher = null;
   }
 
+  @Override
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException
   {
     try
     {
       res.setCharacterEncoding(JavascriptConstants.ENCODING);
-      
-      boolean fo = false;
-      new ServletDispatcher(true, fo).service(req, res);
+
+      this.dispatcher.service(req, res);
     }
-    catch(ClientException e)
+    catch (ClientException e)
     {
       JSONRunwayExceptionDTO ex = new JSONRunwayExceptionDTO(e);
       HttpServletResponse httpRes = (HttpServletResponse) res;
-      
+
       httpRes.setStatus(500);
       String json = ex.getJSON();
       httpRes.getWriter().append(json);

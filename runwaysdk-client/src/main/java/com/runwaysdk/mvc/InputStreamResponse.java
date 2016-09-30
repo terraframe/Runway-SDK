@@ -19,52 +19,56 @@
 package com.runwaysdk.mvc;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.servlet.ServletException;
 
+import org.apache.commons.io.IOUtils;
+
 import com.runwaysdk.controller.RequestManager;
-import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
 
-public abstract class AbstractRestResponse implements ResponseIF
+public class InputStreamResponse implements ResponseIF
 {
-  private int status;
+  private InputStream istream;
 
-  public AbstractRestResponse(int status)
+  private String      contentType;
+
+  /**
+   * @param istream
+   * @param contentType
+   */
+  public InputStreamResponse(InputStream istream, String contentType)
   {
-    this.status = status;
+    this.istream = istream;
+    this.contentType = contentType;
   }
-
-  protected abstract Object serialize();
 
   @Override
   public void handle(RequestManager manager) throws ServletException, IOException
   {
-    ServletRequestIF req = manager.getReq();
     ServletResponseIF resp = manager.getResp();
-
-    String encoding = ( req.getCharacterEncoding() != null ? req.getCharacterEncoding() : "UTF-8" );
-
-    Object object = this.serialize();
-
-    resp.setStatus(this.status);
-    resp.setContentType("application/json");
-
-    OutputStream ostream = resp.getOutputStream();
+    resp.setStatus(200);
+    resp.setContentType(this.contentType);
 
     try
     {
-      if (object != null)
-      {
-        ostream.write(object.toString().getBytes(encoding));
-      }
+      OutputStream ostream = resp.getOutputStream();
 
-      ostream.flush();
+      try
+      {
+        IOUtils.copy(this.istream, ostream);
+      }
+      finally
+      {
+        ostream.close();
+      }
     }
     finally
     {
-      ostream.close();
+      this.istream.close();
     }
   }
+
 }

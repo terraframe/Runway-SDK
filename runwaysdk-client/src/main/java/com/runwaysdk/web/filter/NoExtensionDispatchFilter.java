@@ -33,28 +33,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.controller.ServletDispatcher;
+import com.runwaysdk.mvc.DelegatingServlet;
 
 /**
- * This Filter forwards all requests that don't have an extension to our ServletDispatcher.
+ * This Filter forwards all requests that don't have an extension to our
+ * ServletDispatcher.
  */
 public class NoExtensionDispatchFilter implements Filter
 {
   // Always use the SLF4J logger.
-  private static Logger log = LoggerFactory.getLogger(NoExtensionDispatchFilter.class);
+  private static Logger     log = LoggerFactory.getLogger(NoExtensionDispatchFilter.class);
 
-  public NoExtensionDispatchFilter()
+  private DelegatingServlet servlet;
+
+  @Override
+  public void init(FilterConfig arg0) throws ServletException
   {
+    this.servlet = new DelegatingServlet();
+  }
 
+  @Override
+  public void destroy()
+  {
+    this.servlet = null;
   }
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
   {
-    // Creating the ServletDispatcher will read the urlmap.xml file. If there's
-    // a problem in urlmap.xml we want that exception to be thrown, so keep this
-    // out of the try/catch.
-    ServletDispatcher dis = new ServletDispatcher(false, false);
-
     String path = null;
     HttpServletRequest req = null;
     HttpServletResponse resp = null;
@@ -71,26 +77,14 @@ public class NoExtensionDispatchFilter implements Filter
 
     // This regex matches all urls with no extension. (Test it @
     // http://regex101.com/)
-    if (path != null && path.matches("^.*\\/[^\\.]*$") && dis.hasXmlMapping(req, resp))
+    if (path != null && path.matches("^.*\\/[^\\.]*$") && this.servlet.hasXmlMapping(req, resp))
     {
-      dis.service(request, response);
+      servlet.service(request, response);
     }
     else
     {
       // Just let container's default servlet do its job.
       chain.doFilter(request, response);
     }
-  }
-
-  @Override
-  public void destroy()
-  {
-
-  }
-
-  @Override
-  public void init(FilterConfig arg0) throws ServletException
-  {
-
   }
 }

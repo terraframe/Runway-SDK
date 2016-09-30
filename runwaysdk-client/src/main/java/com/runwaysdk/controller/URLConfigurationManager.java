@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
@@ -232,7 +232,7 @@ public class URLConfigurationManager
 
       String uri = urlMapping[0].url();
 
-      ControllerMapping mapping = new ControllerMapping(uri, type.getName());
+      ControllerMapping mapping = new ControllerMapping(uri, type.getName(), ControllerVersion.V2);
 
       Method[] methods = type.getMethods();
 
@@ -248,11 +248,11 @@ public class URLConfigurationManager
           {
             String url = urlAction.url();
 
-            mapping.add(method.getName(), url);
+            mapping.add(method.getName(), url, ControllerVersion.V2);
           }
           else
           {
-            mapping.add(method.getName(), method.getName());
+            mapping.add(method.getName(), method.getName(), ControllerVersion.V2);
           }
         }
       }
@@ -280,11 +280,11 @@ public class URLConfigurationManager
     }
     else if (forward != null && forward != "")
     {
-      mappings.add(new UriForwardMapping(uri, forward));
+      mappings.add(new UriForwardMapping(uri, forward, ControllerVersion.V1));
     }
     else if (redirect != null && redirect != "")
     {
-      mappings.add(new UriRedirectMapping(uri, redirect));
+      mappings.add(new UriRedirectMapping(uri, redirect, ControllerVersion.V1));
     }
     else
     {
@@ -295,7 +295,7 @@ public class URLConfigurationManager
 
   private void readController(String uri, String controllerClassName, Element el)
   {
-    ControllerMapping controllerMapping = new ControllerMapping(uri, controllerClassName);
+    ControllerMapping controllerMapping = new ControllerMapping(uri, controllerClassName, ControllerVersion.V1);
 
     ArrayList<Method> methods = null;
     try
@@ -336,7 +336,7 @@ public class URLConfigurationManager
         {
           if (m.getName().matches(method))
           {
-            controllerMapping.add(m.getName(), actionUrl);
+            controllerMapping.add(m.getName(), actionUrl, ControllerVersion.V1);
             didMatch = true;
           }
         }
@@ -370,16 +370,29 @@ public class URLConfigurationManager
    */
   public abstract class UriMapping
   {
-    private String uri;
+    private String            uri;
 
-    public UriMapping()
+    private ControllerVersion version;
+
+    public UriMapping(ControllerVersion version)
     {
-      this.uri = null;
+      this(null, version);
     }
 
-    public UriMapping(String uri)
+    public UriMapping(String uri, ControllerVersion version)
     {
-      this.setUri(uri);
+      this.uri = uri;
+      this.version = version;
+    }
+
+    public ControllerVersion getVersion()
+    {
+      return version;
+    }
+
+    public void setVersion(ControllerVersion version)
+    {
+      this.version = version;
     }
 
     public String getUri()
@@ -412,9 +425,9 @@ public class URLConfigurationManager
   {
     private String uriEnd;
 
-    public UriForwardMapping(String uriStart, String uriEnd)
+    public UriForwardMapping(String uriStart, String uriEnd, ControllerVersion version)
     {
-      super(uriStart);
+      super(uriStart, version);
 
       this.uriEnd = uriEnd;
     }
@@ -464,9 +477,9 @@ public class URLConfigurationManager
    */
   public class UriRedirectMapping extends UriForwardMapping
   {
-    public UriRedirectMapping(String uriStart, String uriEnd)
+    public UriRedirectMapping(String uriStart, String uriEnd, ControllerVersion version)
     {
-      super(uriStart, uriEnd);
+      super(uriStart, uriEnd, version);
     }
 
     @Override
@@ -500,9 +513,9 @@ public class URLConfigurationManager
 
     private ArrayList<ActionMapping> actions;
 
-    public ControllerMapping(String controllerUri, String className)
+    public ControllerMapping(String controllerUri, String className, ControllerVersion version)
     {
-      super(controllerUri);
+      super(controllerUri, version);
 
       this.className = className;
       actions = new ArrayList<ActionMapping>();
@@ -534,7 +547,7 @@ public class URLConfigurationManager
       return null;
     }
 
-    public void add(String actionName, String url)
+    public void add(String actionName, String url, ControllerVersion version)
     {
       // Iterator<ActionMapping> it = actions.iterator();
       // while (it.hasNext()) {
@@ -547,7 +560,7 @@ public class URLConfigurationManager
       // }
       // }
 
-      actions.add(new ActionMapping(this, actionName, url));
+      actions.add(new ActionMapping(this, actionName, url, version));
     }
 
     public String toString(String indent)
@@ -587,9 +600,9 @@ public class URLConfigurationManager
 
       ControllerMapping controller;
 
-      public ActionMapping(ControllerMapping controller, String actionName, String uri)
+      public ActionMapping(ControllerMapping controller, String actionName, String uri, ControllerVersion version)
       {
-        super();
+        super(version);
 
         this.actionName = actionName;
         this.controller = controller;

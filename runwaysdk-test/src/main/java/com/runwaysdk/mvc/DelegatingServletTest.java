@@ -54,7 +54,7 @@ import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
 import com.runwaysdk.transport.conversion.json.ComponentDTOIFToJSON;
 
-public class DispatcherServletTest extends TestCase
+public class DelegatingServletTest extends TestCase
 {
   private static ClientSession session;
 
@@ -65,7 +65,7 @@ public class DispatcherServletTest extends TestCase
   public static Test suite()
   {
     TestSuite suite = new TestSuite();
-    suite.addTestSuite(DispatcherServletTest.class);
+    suite.addTestSuite(DelegatingServletTest.class);
 
     TestSetup wrapper = new TestSetup(suite)
     {
@@ -151,7 +151,7 @@ public class DispatcherServletTest extends TestCase
     session.logout();
   }
 
-  public void testCheckAndDispatch() throws Exception
+  public void testdelegate() throws Exception
   {
     InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
 
@@ -169,8 +169,8 @@ public class DispatcherServletTest extends TestCase
 
       RequestManager request = new RequestManager(req, resp, ServletMethod.GET, null, null);
 
-      DispatcherServlet dispatcher = new DispatcherServlet(manager);
-      dispatcher.checkAndDispatch(request);
+      DelegatingServlet dispatcher = new DelegatingServlet(manager);
+      dispatcher.delegate(request);
 
       ByteArrayOutputStream baos = ( (ByteArrayOutputStream) resp.getOutputStream() );
 
@@ -207,8 +207,8 @@ public class DispatcherServletTest extends TestCase
 
       RequestManager request = new RequestManager(req, resp, ServletMethod.GET, null, null);
 
-      DispatcherServlet dispatcher = new DispatcherServlet(manager);
-      dispatcher.checkAndDispatch(request);
+      DelegatingServlet dispatcher = new DelegatingServlet(manager);
+      dispatcher.delegate(request);
 
       ByteArrayOutputStream baos = ( (ByteArrayOutputStream) resp.getOutputStream() );
 
@@ -253,8 +253,8 @@ public class DispatcherServletTest extends TestCase
 
         RequestManager rm = new RequestManager(req, resp, ServletMethod.POST, session, request);
 
-        DispatcherServlet dispatcher = new DispatcherServlet(manager);
-        dispatcher.checkAndDispatch(rm);
+        DelegatingServlet dispatcher = new DelegatingServlet(manager);
+        dispatcher.delegate(rm);
 
         ByteArrayOutputStream baos = ( (ByteArrayOutputStream) resp.getOutputStream() );
 
@@ -306,8 +306,8 @@ public class DispatcherServletTest extends TestCase
 
         RequestManager rm = new RequestManager(req, resp, ServletMethod.POST, session, request);
 
-        DispatcherServlet dispatcher = new DispatcherServlet(manager);
-        dispatcher.checkAndDispatch(rm);
+        DelegatingServlet dispatcher = new DelegatingServlet(manager);
+        dispatcher.delegate(rm);
 
         ByteArrayOutputStream baos = ( (ByteArrayOutputStream) resp.getOutputStream() );
 
@@ -318,7 +318,6 @@ public class DispatcherServletTest extends TestCase
         Assert.assertEquals(dto.getId(), test.getString(ComponentInfo.ID));
         Assert.assertEquals(dto.getType(), test.getString(ComponentInfo.TYPE));
 
-        Assert.assertEquals(request.getSessionId(), response.getString("sessionId"));
         Assert.assertEquals(200, resp.getStatus());
         Assert.assertEquals("application/json", resp.getContentType());
       }
@@ -353,8 +352,8 @@ public class DispatcherServletTest extends TestCase
 
       try
       {
-        DispatcherServlet dispatcher = new DispatcherServlet(manager);
-        dispatcher.checkAndDispatch(request);
+        DelegatingServlet dispatcher = new DelegatingServlet(manager);
+        dispatcher.delegate(request);
 
         Assert.fail();
       }
@@ -389,8 +388,8 @@ public class DispatcherServletTest extends TestCase
 
       try
       {
-        DispatcherServlet dispatcher = new DispatcherServlet(manager);
-        dispatcher.checkAndDispatch(request);
+        DelegatingServlet dispatcher = new DelegatingServlet(manager);
+        dispatcher.delegate(request);
 
         Assert.fail();
       }
