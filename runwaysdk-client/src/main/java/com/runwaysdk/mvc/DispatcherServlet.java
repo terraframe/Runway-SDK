@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc;
 
@@ -41,10 +41,12 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
-import org.json.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.runwaysdk.ClientException;
+import com.runwaysdk.ProblemExceptionDTO;
+import com.runwaysdk.business.ProblemDTO;
 import com.runwaysdk.controller.BasicParameter;
 import com.runwaysdk.controller.DispatchUtil;
 import com.runwaysdk.controller.DispatcherIF;
@@ -62,6 +64,7 @@ import com.runwaysdk.controller.UnknownServletException;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.request.ServletRequestIF;
+import com.runwaysdk.transport.conversion.json.RunwayExceptionDTOToJSON;
 import com.runwaysdk.web.ServletUtility;
 
 public class DispatcherServlet extends HttpServlet implements DispatcherIF
@@ -183,19 +186,13 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
       String msg = "An endpoint at the uri [" + servletPath + "] does not exist.";
       throw new UnknownServletException(msg, manager.getLocale(), servletPath);
     }
-    catch (InstantiationException e)
-    {
-      String msg = "An endpoint at the uri [" + servletPath + "] does not exist.";
-      throw new UnknownServletException(msg, manager.getLocale(), servletPath);
-    }
-    catch (IllegalAccessException e)
-    {
-      String msg = "An endpoint at the uri [" + servletPath + "] does not exist.";
-      throw new UnknownServletException(msg, manager.getLocale(), servletPath);
-    }
     catch (InvocationTargetException e)
     {
       this.handleInvocationTargetException(manager, e);
+    }
+    catch (Throwable e)
+    {
+      throw new ClientException(e);
     }
   }
 
@@ -210,6 +207,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
    *          The controller class
    * @param method
    *          The controller method
+   * @throws Throwable
    * 
    * @throws NoSuchMethodException
    * @throws InstantiationException
@@ -220,7 +218,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
    * @throws IOException
    * @throws FileUploadException
    */
-  private void dispatch(RequestManager manager, Class<?> clazz, Method method) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException
+  private void dispatch(RequestManager manager, Class<?> clazz, Method method) throws Throwable
   {
     Constructor<?> constructor = clazz.getConstructor();
     Object controller = constructor.newInstance();
@@ -229,23 +227,42 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
 
     Object[] objects = this.getObjects(manager, method, parameters);
 
-    // Ensure an exception has not occured while converting the request
-    // parameters to objects. If an exception did occur then invoke the failure
-    // case
-    if (manager.hasExceptions())
+    try
     {
-      // Handle unparsable values
-    }
-    else
-    {
-      try
+      // Ensure an exception has not occurred while converting the request
+      // parameters to objects. If an exception did occur then invoke the
+      // failure
+      // case
+      List<ProblemDTO> problems = manager.getProblems();
+
+      if (problems.size() > 0)
       {
-        ResponseIF response = (ResponseIF) method.invoke(controller, objects);
+        throw new ProblemExceptionDTO("", problems);
+      }
+
+      ResponseIF response = (ResponseIF) method.invoke(controller, objects);
+      response.handle(manager);
+    }
+    catch (Throwable e)
+    {
+      Endpoint annotation = method.getAnnotation(Endpoint.class);
+
+      if (annotation.error().equals(ErrorSerialization.JSON))
+      {
+        if (e instanceof InvocationTargetException)
+        {
+          e = ( (InvocationTargetException) e ).getTargetException();
+        }
+
+        RunwayExceptionDTOToJSON converter = new RunwayExceptionDTOToJSON(e.getClass().getName(), e.getMessage(), e.getLocalizedMessage());
+        JSONObject json = converter.populate();
+
+        ErrorRestResponse response = new ErrorRestResponse(json.toString());
         response.handle(manager);
       }
-      catch (ServletException e)
+      else
       {
-        // Handle unparsable values
+        throw e;
       }
     }
   }

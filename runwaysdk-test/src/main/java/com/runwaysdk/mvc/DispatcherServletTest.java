@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc;
 
@@ -37,6 +37,7 @@ import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.JSON;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -342,11 +343,11 @@ public class DispatcherServletTest extends TestCase
     try
     {
       MockServletRequest req = new MockServletRequest();
-      req.setServletPath("test/bad");
+      req.setServletPath("test/null");
 
       MockServletResponse resp = new MockServletResponse();
 
-      RequestManager request = new RequestManager(req, resp, ServletMethod.GET, null, null);
+      RequestManager request = new RequestManager(req, resp, ServletMethod.POST, null, null);
 
       URLConfigurationManager manager = new URLConfigurationManager();
       manager.readMappings(istream);
@@ -398,6 +399,80 @@ public class DispatcherServletTest extends TestCase
       {
         // This is expected
       }
+    }
+    finally
+    {
+      istream.close();
+    }
+  }
+
+  public void testError() throws Exception
+  {
+    InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
+
+    Assert.assertNotNull(istream);
+
+    try
+    {
+      MockServletRequest req = new MockServletRequest();
+      req.setServletPath("test/bad");
+
+      MockServletResponse resp = new MockServletResponse();
+
+      RequestManager request = new RequestManager(req, resp, ServletMethod.GET, null, null);
+
+      URLConfigurationManager manager = new URLConfigurationManager();
+      manager.readMappings(istream);
+
+      try
+      {
+        DispatcherServlet dispatcher = new DispatcherServlet(manager);
+        dispatcher.checkAndDispatch(request);
+
+        Assert.fail();
+      }
+      catch (RuntimeException e)
+      {
+        // This is expected
+      }
+    }
+    finally
+    {
+      istream.close();
+    }
+  }
+
+  public void testJSONError() throws Exception
+  {
+    InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
+
+    Assert.assertNotNull(istream);
+
+    try
+    {
+      String message = "Test Message";
+
+      MockServletRequest req = new MockServletRequest();
+      req.setServletPath("test/hello");
+      req.setParameter("message", message);
+
+      MockServletResponse resp = new MockServletResponse();
+
+      RequestManager request = new RequestManager(req, resp, ServletMethod.GET, null, null);
+
+      URLConfigurationManager manager = new URLConfigurationManager();
+      manager.readMappings(istream);
+
+      DispatcherServlet dispatcher = new DispatcherServlet(manager);
+      dispatcher.checkAndDispatch(request);
+
+      ByteArrayOutputStream baos = ( (ByteArrayOutputStream) resp.getOutputStream() );
+
+      JSONObject response = new JSONObject(new String(baos.toByteArray(), "UTF-8"));
+
+      Assert.assertEquals(message, response.getString(JSON.EXCEPTION_LOCALIZED_MESSAGE.getLabel()));
+      Assert.assertEquals(500, resp.getStatus());
+      Assert.assertEquals("application/json", resp.getContentType());
     }
     finally
     {
