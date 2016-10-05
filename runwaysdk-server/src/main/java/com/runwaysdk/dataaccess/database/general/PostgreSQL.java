@@ -44,6 +44,8 @@ import org.apache.commons.lang.StringUtils;
 import org.postgresql.ds.PGPoolingDataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.ds.common.BaseDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.runwaysdk.RunwayMetadataVersion;
@@ -101,6 +103,8 @@ import com.runwaysdk.query.SubSelectReturnedMultipleRowsException;
  */
 public class PostgreSQL extends AbstractDatabase
 {
+  private Logger logger = LoggerFactory.getLogger(PostgreSQL.class);
+  
   private String       databaseNamespace;
 
   public static String OBJECT_UPDATE_SEQUENCE = "object_sequence_unique_id";
@@ -2571,7 +2575,7 @@ public class PostgreSQL extends AbstractDatabase
    *          true if backup should include commands to drop the schema
    */
   @Override
-  public String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName, boolean dropSchema)
+  public String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName, PrintStream out, PrintStream errOut, boolean dropSchema)
   {
     String backupFileName = backupFileRootName + ".sql";
 
@@ -2615,16 +2619,11 @@ public class PostgreSQL extends AbstractDatabase
 
     ProcessBuilder pb = new ProcessBuilder(argList);
 
-    System.out.println("Running Backup Command:");
-    for (String string : argList)
-    {
-      System.out.print(string + " ");
-    }
-    System.out.println();
+    logger.info("Running backup command [" + StringUtils.join(argList, " ") + "].");
 
     try
     {
-      ProcessReader reader = new ProcessReader(pb, System.out);
+      ProcessReader reader = new ProcessReader(pb, out, errOut);
       reader.start();
     }
     catch (Exception e)
@@ -2648,7 +2647,7 @@ public class PostgreSQL extends AbstractDatabase
    *          true if backup should include commands to drop the schema
    */
   @Override
-  public String backup(String namespace, String backupFileLocation, String backupFileRootName, boolean dropSchema)
+  public String backup(String namespace, String backupFileLocation, String backupFileRootName, PrintStream out, PrintStream errOut, boolean dropSchema)
   {
     String backupFileName = backupFileRootName + ".sql";
 
@@ -2691,16 +2690,11 @@ public class PostgreSQL extends AbstractDatabase
 
     ProcessBuilder pb = new ProcessBuilder(argList);
 
-    System.out.println("Running Backup Command:");
-    for (String string : argList)
-    {
-      System.out.print(string + " ");
-    }
-    System.out.println();
+    logger.info("Running backup command [" + StringUtils.join(argList, " ") + "].");
 
     try
     {
-      ProcessReader reader = new ProcessReader(pb, System.out);
+      ProcessReader reader = new ProcessReader(pb, out, errOut);
       reader.start();
     }
     catch (Exception e)
@@ -2712,13 +2706,13 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Imports the given SQL file into the database
+   * Imports the given SQL file into the database. The password will be read from a pgpass file, so make sure it exists there before running this.
    * 
    * @param restoreSQLFile
    * @param printStream
    */
   @Override
-  public void importFromSQL(String restoreSQLFile, PrintStream printStream)
+  public void importFromSQL(String restoreSQLFile, PrintStream out, PrintStream errOut)
   {
     String databaseBinDirectory = DatabaseProperties.getDatabaseBinDirectory();
 
@@ -2734,79 +2728,24 @@ public class PostgreSQL extends AbstractDatabase
     argList.add(DatabaseProperties.getUser());
     argList.add("-d");
     argList.add(DatabaseProperties.getDatabaseName());
-    argList.add("-q");
-    argList.add("-f");
+    argList.add("--file");
     argList.add(restoreSQLFile);
-
+    argList.add("--no-password");
+    argList.add("--quiet");
+    
+    logger.info("Importing SQL file with command [" + StringUtils.join(argList, " ") + "] in a new process and waiting for the process to exit.");
+    
     ProcessBuilder pb = new ProcessBuilder(argList);
 
     try
     {
-      ProcessReader reader = new ProcessReader(pb, printStream);
+      ProcessReader reader = new ProcessReader(pb, out, errOut);
       reader.start();
     }
     catch (Exception e)
     {
       throw new ProgrammingErrorException(e);
     }
-
-    // String databaseBinDirectory =
-    // DatabaseProperties.getDatabaseBinDirectory();
-    //
-    // String dbImportTool =
-    // ""+databaseBinDirectory+File.separator+DatabaseProperties.getDataImportExecutable()+"";
-    //
-    // ArrayList<String> argList = new ArrayList<String>();
-    // argList.add(dbImportTool);
-    //
-    // argList.add("-h");
-    // argList.add("127.0.0.1");
-    // argList.add("-p");
-    // argList.add(Integer.toString(DatabaseProperties.getPort()));
-    //
-    // argList.add("-U");
-    // argList.add(DatabaseProperties.getUser());
-    //
-    // argList.add("--clean");
-    //
-    // argList.add("-d");
-    // argList.add(DatabaseProperties.getDatabaseName());
-    //
-    // argList.add(restoreSQLFile);
-    //
-    // ProcessBuilder pb = new ProcessBuilder(argList);
-    //
-    // try
-    // {
-    // Process process = pb.start();
-    // // Put a buffered reader on stderr, where the PostgreSQL log is output
-    // BufferedReader procReader = new BufferedReader(new
-    // InputStreamReader(process.getErrorStream()));
-    // // Set up a writer to output the password.
-    // PrintWriter procWriter = new PrintWriter(process.getOutputStream());
-    //
-    // StringBuffer tempSB = new StringBuffer();
-    //
-    // do
-    // {
-    // int tempInt = procReader.read();
-    // tempSB.append((char) tempInt);
-    //
-    // if (-1 != tempSB.indexOf("Password: "))
-    // {
-    // procWriter.println(DatabaseProperties.getPassword());
-    // procWriter.flush();
-    // break;
-    // }
-    // } while (procReader.ready());
-    //
-    //
-    // }
-    // catch (IOException e)
-    // {
-    // throw new ProgrammingErrorException(e);
-    // }
-
   }
 
   @Override

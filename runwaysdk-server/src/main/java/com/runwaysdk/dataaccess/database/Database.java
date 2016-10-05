@@ -2889,9 +2889,9 @@ public class Database
    * @param dropSchema
    *          true if backup should include commands to drop the schema
    */
-  public static String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName, boolean dropSchema)
+  public static String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName, PrintStream out, PrintStream errOut, boolean dropSchema)
   {
-    return instance().backup(tableNames, backupFileLocation, backupFileRootName, dropSchema);
+    return instance().backup(tableNames, backupFileLocation, backupFileRootName, out, errOut, dropSchema);
   }
 
   /**
@@ -2906,20 +2906,21 @@ public class Database
    * @param dropSchema
    *          true if backup should include commands to drop the schema
    */
-  public static String backup(String namespace, String backupFileLocation, String backupFileRootName, boolean dropSchema)
+  public static String backup(String namespace, String backupFileLocation, String backupFileRootName, PrintStream out, PrintStream errOut, boolean dropSchema)
   {
-    return instance().backup(namespace, backupFileLocation, backupFileRootName, dropSchema);
+    return instance().backup(namespace, backupFileLocation, backupFileRootName, out, errOut, dropSchema);
   }
 
   /**
    * Imports the given SQL file into the database
    * 
    * @param restoreSQLFile
-   * @param logPrintStream
+   * @param out The output stream that the new process will print standard out to.
+   * @param errOut The output stream that the new process will print err output to.
    */
-  public static void importFromSQL(String restoreSQLFile, PrintStream logPrintStream)
+  public static void importFromSQL(String restoreSQLFile, PrintStream out, PrintStream errOut)
   {
-    instance().importFromSQL(restoreSQLFile, logPrintStream);
+    instance().importFromSQL(restoreSQLFile, out, errOut);
   }
 
   /**

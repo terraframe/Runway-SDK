@@ -29,7 +29,7 @@ public class TimestampFile
 {
   private static final String DATE_PATTEN  = "\\d{13,}";
 
-  private static final String NAME_PATTERN = "[A-Za-z_]*\\((" + DATE_PATTEN + ")\\)[A-Za-z_]*.xml$";
+  private static final String NAME_PATTERN = "^[A-Za-z_\\-\\d\\.]*\\((" + DATE_PATTEN + ")\\)[A-Za-z_\\-\\d\\.]*.xml$";
 
   private File                file;
 

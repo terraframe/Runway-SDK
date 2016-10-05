@@ -29,8 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Business;
@@ -65,6 +65,8 @@ public class Backup
   private static final SimpleDateFormat formatter        = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
 
   private PrintStream                   logPrintStream;
+  
+  private PrintStream                   errOut;
 
   private String                        backupFileRootName;
 
@@ -88,13 +90,12 @@ public class Backup
 
   private List<BackupAgent>             agents;
 
-  private Log                           log;
+  private static Logger                           logger = LoggerFactory.getLogger(Backup.class);
 
-  public Backup(PrintStream logPrintStream, String backupFileRootName, String backupFileLocationDir, boolean backupVaults, boolean backupWebFiles)
+  public Backup(PrintStream logPrintStream, PrintStream errOut, String backupFileRootName, String backupFileLocationDir, boolean backupVaults, boolean backupWebFiles)
   {
-    log = LogFactory.getLog(this.getClass());
-
     this.logPrintStream = logPrintStream;
+    this.errOut = errOut;
 
     this.backupFileRootName = backupFileRootName;
     this.backupFileLocation = backupFileLocationDir;
@@ -135,7 +136,7 @@ public class Backup
    */
   public String backup(boolean useNamespace)
   {
-    this.log.trace("Starting backup for [" + backupFileLocation + "][" + backupFileRootName + "].");
+    logger.trace("Starting backup for [" + backupFileLocation + "][" + backupFileRootName + "].");
 
     for (BackupAgent agent : agents)
     {
@@ -180,14 +181,14 @@ public class Backup
       agent.postBackup();
     }
 
-    this.log.trace("Finished backup file [" + zipFileNameAndLocation + "]");
+    logger.trace("Finished backup file [" + zipFileNameAndLocation + "]");
 
     return zipFileNameAndLocation;
   }
   
   private void backupVaults()
   {
-    log.trace("Starting backup of vaults.");
+    logger.trace("Starting backup of vaults.");
     
     QueryFactory qf = new QueryFactory();
     BusinessQuery vaultQ = qf.businessQuery(VaultInfo.CLASS);
@@ -207,14 +208,14 @@ public class Backup
 
         if (vaultLocationFile != null && vaultLocationFile.exists())
         {
-          log.debug("Backing up vault [" + vaultName + "] at location [" + vaultLocation + "].");
+          logger.debug("Backing up vault [" + vaultName + "] at location [" + vaultLocation + "].");
           
           FileIO.copyFolder(new File(vaultLocation), new File(backupVaultFileLocation + File.separator
               + vault.getId() + File.separator));
         }
         else
         {
-          log.warn("Skipped backup of vault [" + vaultName + "] at location [" + vaultLocation + "] because it does not exist.");
+          logger.warn("Skipped backup of vault [" + vaultName + "] at location [" + vaultLocation + "] because it does not exist.");
         }
       }
     }
@@ -267,7 +268,7 @@ public class Backup
       directory.mkdirs();
 
       File cacheDir = new File(this.cacheDir);
-      this.log.trace("Backing up cache files from [" + cacheDir + "] to [" + copyTo + "].");
+      logger.trace("Backing up cache files from [" + cacheDir + "] to [" + copyTo + "].");
 
       FileFilter filter = new FileFilter()
       {
@@ -284,7 +285,7 @@ public class Backup
       {
         for (File file : files)
         {
-          this.log.debug("Backing up cache file [" + file + "].");
+          logger.debug("Backing up cache file [" + file + "].");
 
           FileInputStream iStream = new FileInputStream(file);
           FileOutputStream oStream = new FileOutputStream(new File(copyTo + File.separator + file.getName()));
@@ -300,7 +301,7 @@ public class Backup
       throw cbe;
     }
 
-    this.log.trace("Finished backing up the cache files.");
+    logger.trace("Finished backing up the cache files.");
   }
 
   private void backupDatabase(boolean useNamespace)
@@ -316,18 +317,18 @@ public class Backup
     {
       String namespace = Database.getApplicationNamespace();
 
-      this.log.debug("Backing up the database with namespace [" + namespace + "]");
+      logger.debug("Backing up the database with namespace [" + namespace + "]");
 
-      createdFile = Database.backup(namespace, directory.getAbsolutePath(), this.timeStampedName, false);
+      createdFile = Database.backup(namespace, directory.getAbsolutePath(), this.timeStampedName, logPrintStream, errOut, false);
     }
     else
     {
       List<String> tableNames = Database.getAllApplicationTables();
 
-      createdFile = Database.backup(tableNames, directory.getAbsolutePath(), backupFileRootName, false);
+      createdFile = Database.backup(tableNames, directory.getAbsolutePath(), backupFileRootName, logPrintStream, errOut, false);
     }
 
-    this.log.debug("Finished backing up the database without output file [" + createdFile + "]");
+    logger.debug("Finished backing up the database without output file [" + createdFile + "]");
   }
 
   /**
@@ -342,7 +343,7 @@ public class Backup
 
     String zipFileNameAndLocation = this.backupFileLocation + File.separator + zipBackupFileName;
 
-    this.log.trace("Creating zipfile [" + zipBackupFileName + "]");
+    logger.trace("Creating zipfile [" + zipBackupFileName + "]");
 
     try
     {
@@ -363,7 +364,7 @@ public class Backup
       throw cbe;
     }
 
-    this.log.trace("Finished creating zipfile [" + zipBackupFileName + "]");
+    logger.trace("Finished creating zipfile [" + zipBackupFileName + "]");
 
     return zipFileNameAndLocation;
   }
@@ -446,7 +447,7 @@ public class Backup
     }
     else
     {
-      Backup backup = new Backup(System.out, args[0], args[1], true, true);
+      Backup backup = new Backup(System.out, System.err, args[0], args[1], true, true);
       backup.backup();
     }
   }

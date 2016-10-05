@@ -5041,7 +5041,7 @@ public abstract class AbstractDatabase
    * @param dropSchema
    *          true if backup should include commands to drop the schema
    */
-  public abstract String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName, boolean dropSchema);
+  public abstract String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName, PrintStream out, PrintStream errOut, boolean dropSchema);
 
   /**
    * Backs up the install to a file name in the given location.
@@ -5055,7 +5055,7 @@ public abstract class AbstractDatabase
    * @param dropSchema
    *          true if backup should include commands to drop the schema
    */
-  public abstract String backup(String namespace, String backupFileLocation, String backupFileRootName, boolean dropSchema);
+  public abstract String backup(String namespace, String backupFileLocation, String backupFileRootName, PrintStream out, PrintStream errOut, boolean dropSchema);
 
   /**
    * Imports the given SQL file into the database
@@ -5063,7 +5063,7 @@ public abstract class AbstractDatabase
    * @param restoreSQLFile
    * @param printStream
    */
-  public abstract void importFromSQL(String restoreSQLFile, PrintStream printStream);
+  public abstract void importFromSQL(String restoreSQLFile, PrintStream out, PrintStream errOut);
 
   /**
    * Drops all of the tables given in the list. This method does not use the

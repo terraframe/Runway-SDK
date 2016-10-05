@@ -31,8 +31,8 @@ import java.util.Properties;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Business;
@@ -57,6 +57,8 @@ import com.runwaysdk.util.FileIO;
 public class Restore
 {
   private PrintStream        logPrintStream;
+  
+  private PrintStream        errPrintStream;
 
   private String             zipFileLocation;
 
@@ -66,15 +68,14 @@ public class Restore
 
   private String             cacheDir;
 
-  private Log                log;
+  private static Logger                logger = LoggerFactory.getLogger(Restore.class);
 
   private String             cacheName;
 
-  public Restore(PrintStream logPrintStream, String zipFileLocation)
+  public Restore(PrintStream logPrintStream, PrintStream errPrintStream, String zipFileLocation)
   {
-    log = LogFactory.getLog(this.getClass());
-
     this.logPrintStream = logPrintStream;
+    this.errPrintStream = errPrintStream;
 
     this.zipFileLocation = zipFileLocation;
 
@@ -107,7 +108,7 @@ public class Restore
     this.logPrintStream.println(ServerExceptionMessageLocalizer.restoringApplicationMessage(Session.getCurrentLocale()));
     this.logPrintStream.println("-----------------------------------------------");
 
-    this.log.debug("Starting restore from [" + this.zipFileLocation + "]");
+    logger.debug("Starting restore from [" + this.zipFileLocation + "]");
 
     for (RestoreAgent agent : agents)
     {
@@ -150,7 +151,7 @@ public class Restore
       agent.postRestore();
     }
 
-    this.log.trace("Finished restore from [" + this.zipFileLocation + "].");
+    logger.trace("Finished restore from [" + this.zipFileLocation + "].");
 
     this.logPrintStream.println("\n" + ServerExceptionMessageLocalizer.restoreCompleteMessage(Session.getCurrentLocale()));
   }
@@ -221,7 +222,7 @@ public class Restore
     try
     {
       FileIO.write(new ZipFile(this.zipFileLocation), this.restoreDirectory.getAbsolutePath());
-      this.log.debug("Unzipped from [" + this.zipFileLocation + "] to [" + this.restoreDirectory + "]");
+      logger.debug("Unzipped from [" + this.zipFileLocation + "] to [" + this.restoreDirectory + "]");
     }
     catch (ZipException e)
     {
@@ -250,7 +251,7 @@ public class Restore
 
     File sqlDir = new File(this.restoreDirectory.getAbsoluteFile() + File.separator + Backup.SQL + File.separator);
 
-    this.log.debug("Importing SQL from directory [" + sqlDir + "]");
+    logger.debug("Importing SQL from directory [" + sqlDir + "]");
 
     File[] sqlFiles = sqlDir.listFiles(filter);
 
@@ -258,7 +259,7 @@ public class Restore
     {
       for (File sqlFile : sqlFiles)
       {
-        Database.importFromSQL(sqlFile.getAbsolutePath(), this.logPrintStream);
+        Database.importFromSQL(sqlFile.getAbsolutePath(), this.logPrintStream, this.errPrintStream);
       }
     }
   }
@@ -270,7 +271,7 @@ public class Restore
     File dataFile = new File(cacheDir + File.separator + cacheName + ".data");
     try
     {
-      this.log.debug("Deleting cache data file [" + dataFile.getAbsolutePath() + "].");
+      logger.debug("Deleting cache data file [" + dataFile.getAbsolutePath() + "].");
       FileIO.deleteFile(dataFile);
     }
     catch (IOException e)
@@ -283,7 +284,7 @@ public class Restore
     File indexFile = new File(cacheDir + File.separator + cacheName + ".index");
     try
     {
-      this.log.debug("Deleting cache index file [" + indexFile.getAbsolutePath() + "].");
+      logger.debug("Deleting cache index file [" + indexFile.getAbsolutePath() + "].");
       FileIO.deleteFile(indexFile);
     }
     catch (IOException e)
@@ -293,7 +294,7 @@ public class Restore
       throw bre;
     }
 
-    this.log.trace("Finished backing up the cache files.");
+    logger.trace("Finished backing up the cache files.");
   }
 
   // private void restoreCacheFile()
@@ -303,7 +304,7 @@ public class Restore
   // // Make the temp cache directory
   // File cacheDir = new File(this.restoreDirectory.getAbsoluteFile() +
   // File.separator + Backup.CACHE + File.separator);
-  // this.log.trace("Restoring cache files from [" + cacheDir + "]");
+  // logger.trace("Restoring cache files from [" + cacheDir + "]");
   //
   // File[] files = cacheDir.listFiles();
   //
@@ -314,7 +315,7 @@ public class Restore
   // for (File file : files)
   // {
   // String filename = this.cacheDir + File.separator + file.getName();
-  // this.log.debug("Restoring cache file [" + filename + "]");
+  // logger.debug("Restoring cache file [" + filename + "]");
   //
   // FileInputStream iStream = new FileInputStream(file);
   // FileOutputStream oStream = new FileOutputStream(new File(filename));
@@ -324,7 +325,7 @@ public class Restore
   // }
   // else
   // {
-  // this.log.trace("There were no files in the cache directory [" + cacheDir +
+  // logger.trace("There were no files in the cache directory [" + cacheDir +
   // "] to restore.");
   // }
   // }
@@ -392,7 +393,7 @@ public class Restore
  
   private void restoreVault()
   {
-    log.trace("Starting restore of vaults.");
+    logger.trace("Starting restore of vaults.");
     
     QueryFactory qf = new QueryFactory();
     BusinessQuery vaultQ = qf.businessQuery(VaultInfo.CLASS);
@@ -419,13 +420,13 @@ public class Restore
         
         if (vaultInsideBackupFile.exists())
         {
-          log.debug("Restoring vault [" + vaultName + "] from [" + vaultInsideBackup + "] to [" + vaultLocation + "].");
+          logger.debug("Restoring vault [" + vaultName + "] from [" + vaultInsideBackup + "] to [" + vaultLocation + "].");
           
           FileIO.copyFolder(vaultInsideBackupFile, vaultLocationFile, this.logPrintStream);
         }
         else
         {
-          log.warn("Skipped restore of vault [" + vaultName + "] from backup [" + vaultInsideBackup + "] to [" + vaultLocation + "] because the file in the backup does not exist.");
+          logger.warn("Skipped restore of vault [" + vaultName + "] from backup [" + vaultInsideBackup + "] to [" + vaultLocation + "] because the file in the backup does not exist.");
         }
       }
     }
@@ -506,7 +507,7 @@ public class Restore
     }
     else
     {
-      Restore restore = new Restore(System.out, args[0]);
+      Restore restore = new Restore(System.out, System.err, args[0]);
       restore.restore();
     }
   }
