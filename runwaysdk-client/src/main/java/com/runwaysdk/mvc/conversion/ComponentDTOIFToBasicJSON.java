@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc.conversion;
 
@@ -33,6 +33,7 @@ import com.runwaysdk.business.ValueObjectDTO;
 import com.runwaysdk.business.ViewDTO;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ExceptionConstants;
+import com.runwaysdk.mvc.JsonConfiguration;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
 public abstract class ComponentDTOIFToBasicJSON extends DTOToBasicJSON
@@ -49,25 +50,17 @@ public abstract class ComponentDTOIFToBasicJSON extends DTOToBasicJSON
 
   /**
    * Constructor to set the source ComponentDTO.
+   * 
+   * @param configuration
    *
    * @param componentDTO
    */
-  protected ComponentDTOIFToBasicJSON(ComponentDTOIF componentDTOIF)
+  protected ComponentDTOIFToBasicJSON(ComponentDTOIF componentDTOIF, JsonConfiguration configuration)
   {
+    super(configuration);
+
     this.componentDTOIF = componentDTOIF;
     this.json = new JSONObject();
-  }
-
-  /**
-   * Constructor to set the source ComponentDTO and destination JSONObject.
-   *
-   * @param componentDTO
-   * @param json
-   */
-  protected ComponentDTOIFToBasicJSON(ComponentDTOIF componentDTOIF, JSONObject json)
-  {
-    this.componentDTOIF = componentDTOIF;
-    this.json = json;
   }
 
   /**
@@ -121,7 +114,7 @@ public abstract class ComponentDTOIFToBasicJSON extends DTOToBasicJSON
 
     setProperties();
 
-    setAttributes();
+    serializeAttributes();
 
     return json;
   }
@@ -131,7 +124,7 @@ public abstract class ComponentDTOIFToBasicJSON extends DTOToBasicJSON
    *
    * @throws JSONException
    */
-  private void setAttributes() throws JSONException
+  private void serializeAttributes() throws JSONException
   {
     for (String name : componentDTOIF.getAttributeNames())
     {
@@ -139,7 +132,7 @@ public abstract class ComponentDTOIFToBasicJSON extends DTOToBasicJSON
 
       if (isValid(attributeDTO))
       {
-        Object attribute = setAttribute(attributeDTO);
+        Object attribute = serializeAttribute(attributeDTO);
 
         if (attribute != null)
         {
@@ -154,6 +147,14 @@ public abstract class ComponentDTOIFToBasicJSON extends DTOToBasicJSON
   {
     String name = attributeDTO.getName();
 
+    if (this.getConfiguration().supports(this.componentDTOIF.getClass()))
+    {
+      if (this.getConfiguration().exclude(attributeDTO.getName()))
+      {
+        return false;
+      }
+    }
+
     return ! ( attributeDTO.getAttributeMdDTO().isSystem() || name.equals(ComponentInfo.KEY) );
   }
 
@@ -162,37 +163,38 @@ public abstract class ComponentDTOIFToBasicJSON extends DTOToBasicJSON
    * ComponentDTOToJSON that can convert the concrete ComponentDTOIF correctly.
    *
    * @param componentDTOIF
+   * @param configuration
    * @return
    */
-  public static ComponentDTOIFToBasicJSON getConverter(ComponentDTOIF componentDTOIF)
+  public static ComponentDTOIFToBasicJSON getConverter(ComponentDTOIF componentDTOIF, JsonConfiguration configuration)
   {
     if (componentDTOIF instanceof BusinessDTO)
     {
-      return new BusinessDTOToBasicJSON((BusinessDTO) componentDTOIF);
+      return new BusinessDTOToBasicJSON((BusinessDTO) componentDTOIF, configuration);
     }
     else if (componentDTOIF instanceof RelationshipDTO)
     {
-      return new RelationshipDTOToBasicJSON((RelationshipDTO) componentDTOIF);
+      return new RelationshipDTOToBasicJSON((RelationshipDTO) componentDTOIF, configuration);
     }
     else if (componentDTOIF instanceof LocalStructDTO)
     {
-      return new LocalStructDTOToBasicJSON((LocalStructDTO) componentDTOIF);
+      return new LocalStructDTOToBasicJSON((LocalStructDTO) componentDTOIF, configuration);
     }
     else if (componentDTOIF instanceof StructDTO)
     {
-      return new StructDTOToBasicJSON((StructDTO) componentDTOIF);
+      return new StructDTOToBasicJSON((StructDTO) componentDTOIF, configuration);
     }
     else if (componentDTOIF instanceof ValueObjectDTO)
     {
-      return new ValueObjectDTOToBasicJSON((ValueObjectDTO) componentDTOIF);
+      return new ValueObjectDTOToBasicJSON((ValueObjectDTO) componentDTOIF, configuration);
     }
     else if (componentDTOIF instanceof ViewDTO)
     {
-      return new ViewDTOToBasicJSON((ViewDTO) componentDTOIF);
+      return new ViewDTOToBasicJSON((ViewDTO) componentDTOIF, configuration);
     }
     else if (componentDTOIF instanceof UtilDTO)
     {
-      return new UtilDTOToBasicJSON((UtilDTO) componentDTOIF);
+      return new UtilDTOToBasicJSON((UtilDTO) componentDTOIF, configuration);
     }
     else
     {

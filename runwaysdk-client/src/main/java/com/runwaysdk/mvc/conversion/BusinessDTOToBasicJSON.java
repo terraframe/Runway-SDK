@@ -19,17 +19,19 @@
 package com.runwaysdk.mvc.conversion;
 
 import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.mvc.JsonConfiguration;
 
 public class BusinessDTOToBasicJSON extends ElementDTOToBasicJSON
 {
   /**
    * Constructor to set the source BusinessDTO
+   * @param configuration 
    * 
    * @param BusinessDTO
    */
-  protected BusinessDTOToBasicJSON(BusinessDTO businessDTO)
+  protected BusinessDTOToBasicJSON(BusinessDTO businessDTO, JsonConfiguration configuration)
   {
-    super(businessDTO);
+    super(businessDTO, configuration);
   }
   
   /**

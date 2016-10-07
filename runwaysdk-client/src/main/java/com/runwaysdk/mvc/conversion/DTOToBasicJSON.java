@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc.conversion;
 
@@ -29,6 +29,7 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.constants.MdAttributeDateTimeUtil;
 import com.runwaysdk.constants.MdAttributeDateUtil;
 import com.runwaysdk.constants.MdAttributeTimeUtil;
+import com.runwaysdk.mvc.JsonConfiguration;
 import com.runwaysdk.transport.attributes.AttributeBlobDTO;
 import com.runwaysdk.transport.attributes.AttributeBooleanDTO;
 import com.runwaysdk.transport.attributes.AttributeCharacterDTO;
@@ -49,13 +50,19 @@ import com.runwaysdk.util.DateUtilities;
 
 public abstract class DTOToBasicJSON
 {
+  private JsonConfiguration configuration;
 
   /**
    * Default constructor
    */
-  protected DTOToBasicJSON()
+  protected DTOToBasicJSON(JsonConfiguration configuration)
   {
-    super();
+    this.configuration = configuration;
+  }
+
+  protected JsonConfiguration getConfiguration()
+  {
+    return configuration;
   }
 
   /**
@@ -65,7 +72,7 @@ public abstract class DTOToBasicJSON
    * @param attributeDTO
    * @return
    */
-  protected Object setAttribute(AttributeDTO attributeDTO) throws JSONException
+  protected Object serializeAttribute(AttributeDTO attributeDTO) throws JSONException
   {
     AttributeDTOHandler handler = null; // the attribute handler to set the
     // attribute JSON
@@ -430,7 +437,7 @@ public abstract class DTOToBasicJSON
           }
           else
           {
-            StructDTOToBasicJSON structDTOToJSON = new StructDTOToBasicJSON(structDTO);
+            StructDTOToBasicJSON structDTOToJSON = new StructDTOToBasicJSON(structDTO, configuration);
             return structDTOToJSON.populate();
           }
         }

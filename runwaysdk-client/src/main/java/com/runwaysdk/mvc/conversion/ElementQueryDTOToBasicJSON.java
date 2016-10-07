@@ -19,6 +19,7 @@
 package com.runwaysdk.mvc.conversion;
 
 import com.runwaysdk.business.ElementQueryDTO;
+import com.runwaysdk.mvc.JsonConfiguration;
 
 /**
  * Converts an ElementQueryDTO into a JSONObject.
@@ -26,9 +27,9 @@ import com.runwaysdk.business.ElementQueryDTO;
 public abstract class ElementQueryDTOToBasicJSON extends EntityQueryDTOToBasicJSON
 {
 
-  protected ElementQueryDTOToBasicJSON(ElementQueryDTO queryDTO, boolean typeSafe)
+  protected ElementQueryDTOToBasicJSON(ElementQueryDTO queryDTO, JsonConfiguration configuration)
   {
-    super(queryDTO, typeSafe);
+    super(queryDTO, configuration);
   }
 
   @Override

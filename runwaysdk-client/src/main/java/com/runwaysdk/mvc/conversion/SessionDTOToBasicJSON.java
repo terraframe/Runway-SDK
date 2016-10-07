@@ -19,11 +19,12 @@
 package com.runwaysdk.mvc.conversion;
 
 import com.runwaysdk.business.SessionDTO;
+import com.runwaysdk.mvc.JsonConfiguration;
 
 public abstract class SessionDTOToBasicJSON extends TransientDTOToBasicJSON
 {
-  protected SessionDTOToBasicJSON(SessionDTO sessionDTO)
+  protected SessionDTOToBasicJSON(SessionDTO sessionDTO, JsonConfiguration configuration)
   {
-    super(sessionDTO);
+    super(sessionDTO, configuration);
   }
 }

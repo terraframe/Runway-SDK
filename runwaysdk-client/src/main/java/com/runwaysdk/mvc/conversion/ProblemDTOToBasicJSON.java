@@ -19,11 +19,12 @@
 package com.runwaysdk.mvc.conversion;
 
 import com.runwaysdk.business.ProblemDTO;
+import com.runwaysdk.mvc.JsonConfiguration;
 
 public class ProblemDTOToBasicJSON extends NotificationDTOToBasicJSON
 {
-  protected ProblemDTOToBasicJSON(ProblemDTO problemDTO)
+  protected ProblemDTOToBasicJSON(ProblemDTO problemDTO, JsonConfiguration configuration)
   {
-    super(problemDTO);
+    super(problemDTO, configuration);
   }
 }

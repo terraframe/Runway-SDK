@@ -19,13 +19,14 @@
 package com.runwaysdk.mvc.conversion;
 
 import com.runwaysdk.business.RelationshipQueryDTO;
+import com.runwaysdk.mvc.JsonConfiguration;
 
 public class RelationshipQueryDTOToBasicJSON extends ElementQueryDTOToBasicJSON
 {
 
-  protected RelationshipQueryDTOToBasicJSON(RelationshipQueryDTO queryDTO, boolean typeSafe)
+  protected RelationshipQueryDTOToBasicJSON(RelationshipQueryDTO queryDTO, JsonConfiguration configuration)
   {
-    super(queryDTO, typeSafe);
+    super(queryDTO, configuration);
   }
 
   @Override

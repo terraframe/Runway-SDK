@@ -23,5 +23,5 @@ import org.json.JSONException;
 
 public interface JsonSerializer
 {
-  public Object serialize(Object object) throws JSONException;
+  public Object serialize(Object object, JsonConfiguration configuration) throws JSONException;
 }

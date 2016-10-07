@@ -19,13 +19,14 @@
 package com.runwaysdk.mvc.conversion;
 
 import com.runwaysdk.business.LocalizableDTO;
+import com.runwaysdk.mvc.JsonConfiguration;
 
 public abstract class LocalizableDTOToBasicJSON extends TransientDTOToBasicJSON
 {
 
-  protected LocalizableDTOToBasicJSON(LocalizableDTO localizableDTO)
+  protected LocalizableDTOToBasicJSON(LocalizableDTO localizableDTO, JsonConfiguration configuration)
   {
-    super(localizableDTO);
+    super(localizableDTO, configuration);
   }
 
 }

@@ -77,7 +77,7 @@ public class NoExtensionDispatchFilter implements Filter
 
     // This regex matches all urls with no extension. (Test it @
     // http://regex101.com/)
-    if (path != null && path.matches("^.*\\/[^\\.]*$") && this.servlet.hasXmlMapping(req, resp))
+    if (path != null && (path.equals("/") || path.matches("^.*\\/[^\\.]*$")) && this.servlet.hasXmlMapping(req, resp))
     {
       servlet.service(request, response);
     }

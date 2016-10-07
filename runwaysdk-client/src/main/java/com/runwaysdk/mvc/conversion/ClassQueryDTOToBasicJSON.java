@@ -19,13 +19,14 @@
 package com.runwaysdk.mvc.conversion;
 
 import com.runwaysdk.business.ClassQueryDTO;
+import com.runwaysdk.mvc.JsonConfiguration;
 
 public abstract class ClassQueryDTOToBasicJSON extends ComponentQueryDTOToBasicJSON
 {
 
-  protected ClassQueryDTOToBasicJSON(ClassQueryDTO queryDTO, boolean typeSafe)
+  protected ClassQueryDTOToBasicJSON(ClassQueryDTO queryDTO, JsonConfiguration configuration)
   {
-    super(queryDTO);
+    super(queryDTO, configuration);
   }
 
   @Override

@@ -247,7 +247,7 @@ public class DelegatingServletTest extends TestCase
 
         MockServletRequest req = new MockServletRequest();
         req.setServletPath("test/dto");
-        req.setParameter("dto", new RestSerializer().serialize(dto).toString());
+        req.setParameter("dto", new RestSerializer().serialize(dto, new NullConfiguration()).toString());
 
         MockServletResponse resp = new MockServletResponse();
 

@@ -20,18 +20,20 @@ package com.runwaysdk.mvc.conversion;
 
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.constants.ElementInfo;
+import com.runwaysdk.mvc.JsonConfiguration;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
 public abstract class ElementDTOToBasicJSON extends EntityDTOToBasicJSON
 {
   /**
    * Constructor
+   * @param configuration 
    * 
    * @param entityDTO
    */
-  protected ElementDTOToBasicJSON(ElementDTO elementDTO)
+  protected ElementDTOToBasicJSON(ElementDTO elementDTO, JsonConfiguration configuration)
   {
-    super(elementDTO);
+    super(elementDTO, configuration);
   }
 
   /**

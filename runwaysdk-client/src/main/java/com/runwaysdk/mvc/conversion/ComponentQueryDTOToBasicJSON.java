@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc.conversion;
 
@@ -32,6 +32,7 @@ import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.constants.JSON;
+import com.runwaysdk.mvc.JsonConfiguration;
 
 public abstract class ComponentQueryDTOToBasicJSON extends DTOToBasicJSON
 {
@@ -50,8 +51,10 @@ public abstract class ComponentQueryDTOToBasicJSON extends DTOToBasicJSON
    * 
    * @param queryDTO
    */
-  protected ComponentQueryDTOToBasicJSON(ComponentQueryDTO queryDTO)
+  protected ComponentQueryDTOToBasicJSON(ComponentQueryDTO queryDTO, JsonConfiguration configuration)
   {
+    super(configuration);
+
     this.queryDTO = queryDTO;
     this.json = new JSONObject();
   }
@@ -99,7 +102,7 @@ public abstract class ComponentQueryDTOToBasicJSON extends DTOToBasicJSON
 
     for (ComponentDTOIF componentDTOIF : queryDTO.getResultSet())
     {
-      ComponentDTOIFToBasicJSON componentDTOToJSON = ComponentDTOIFToBasicJSON.getConverter(componentDTOIF);
+      ComponentDTOIFToBasicJSON componentDTOToJSON = ComponentDTOIFToBasicJSON.getConverter(componentDTOIF, this.getConfiguration());
       resultSet.put(componentDTOToJSON.populate());
     }
 
@@ -130,31 +133,32 @@ public abstract class ComponentQueryDTOToBasicJSON extends DTOToBasicJSON
    * subclass that generates the JSON to represent the ComponentQueryDTO.
    * 
    * @param queryDTO
+   * @param configuration2
    * @return
    */
-  public static ComponentQueryDTOToBasicJSON getConverter(ComponentQueryDTO queryDTO, boolean typeSafe)
+  public static ComponentQueryDTOToBasicJSON getConverter(ComponentQueryDTO queryDTO, JsonConfiguration configuration)
   {
     ComponentQueryDTOToBasicJSON converter = null;
     if (queryDTO instanceof BusinessQueryDTO)
     {
-      converter = new BusinessQueryDTOToBasicJSON((BusinessQueryDTO) queryDTO, typeSafe);
+      converter = new BusinessQueryDTOToBasicJSON((BusinessQueryDTO) queryDTO, configuration);
     }
     else if (queryDTO instanceof RelationshipQueryDTO)
     {
-      converter = new RelationshipQueryDTOToBasicJSON((RelationshipQueryDTO) queryDTO, typeSafe);
+      converter = new RelationshipQueryDTOToBasicJSON((RelationshipQueryDTO) queryDTO, configuration);
     }
     else if (queryDTO instanceof StructQueryDTO)
     {
-      converter = new StructQueryDTOToBasicJSON((StructQueryDTO) queryDTO, typeSafe);
+      converter = new StructQueryDTOToBasicJSON((StructQueryDTO) queryDTO, configuration);
     }
     else if (queryDTO instanceof ValueQueryDTO)
     {
       // The value query is always type-unsafe
-      converter = new ValueQueryDTOToBasicJSON((ValueQueryDTO) queryDTO, false);
+      converter = new ValueQueryDTOToBasicJSON((ValueQueryDTO) queryDTO, configuration);
     }
     else if (queryDTO instanceof ViewQueryDTO)
     {
-      converter = new ViewQueryDTOToBasicJSON((ViewQueryDTO) queryDTO, typeSafe);
+      converter = new ViewQueryDTOToBasicJSON((ViewQueryDTO) queryDTO, configuration);
     }
     else
     {

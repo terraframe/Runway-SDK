@@ -19,12 +19,13 @@
 package com.runwaysdk.mvc.conversion;
 
 import com.runwaysdk.business.EntityQueryDTO;
+import com.runwaysdk.mvc.JsonConfiguration;
 
 public abstract class EntityQueryDTOToBasicJSON extends ClassQueryDTOToBasicJSON
 {
-  protected EntityQueryDTOToBasicJSON(EntityQueryDTO queryDTO, boolean typeSafe)
+  protected EntityQueryDTOToBasicJSON(EntityQueryDTO queryDTO, JsonConfiguration configuration)
   {
-    super(queryDTO, typeSafe);
+    super(queryDTO, configuration);
   }
 
   @Override

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc;
 
@@ -149,7 +149,7 @@ public class RestResponseTest extends TestCase
     session.logout();
   }
 
-  public void testHandleBusinessPaameter() throws Exception
+  public void testHandleBusinessParameter() throws Exception
   {
     String value = "Test Value";
     String type = "test.TestBusiness";
@@ -181,7 +181,54 @@ public class RestResponseTest extends TestCase
     Assert.assertEquals(type, test.get(EntityInfo.TYPE));
   }
 
-  public void testHandleRelationshipPaameter() throws Exception
+  public void testHandleJsonConfiguration() throws Exception
+  {
+    String value = "Test Value";
+    String type = "test.TestBusiness";
+
+    ClientRequestIF request = session.getRequest();
+
+    BusinessDTO dto = request.newBusiness(type);
+    dto.setValue(TestFixConst.ATTRIBUTE_CHARACTER, value);
+
+    MockServletRequest req = new MockServletRequest();
+    MockServletResponse resp = new MockServletResponse();
+    RequestManager manager = new RequestManager(req, resp, ServletMethod.GET, null, null);
+
+    JsonConfiguration config = new JsonConfiguration()
+    {
+      @Override
+      public boolean supports(Class<?> clazz)
+      {
+        return true;
+      }
+
+      @Override
+      public boolean exclude(String name)
+      {
+        return name.equals(TestFixConst.ATTRIBUTE_CHARACTER);
+      }
+    };
+
+    RestResponse response = new RestResponse();
+    response.set("dto", dto, config);
+    response.handle(manager);
+
+    ByteArrayOutputStream baos = ( (ByteArrayOutputStream) resp.getOutputStream() );
+
+    String result = new String(baos.toByteArray(), "UTF-8");
+
+    JSONObject object = new JSONObject(result);
+
+    Assert.assertTrue(object.has("dto"));
+
+    JSONObject test = object.getJSONObject("dto");
+
+    Assert.assertFalse(test.has(TestFixConst.ATTRIBUTE_CHARACTER));
+    Assert.assertEquals(type, test.get(EntityInfo.TYPE));
+  }
+
+  public void testHandleRelationshipParameter() throws Exception
   {
     String type = "test.TestRelationship";
     ClientRequestIF request = session.getRequest();
@@ -222,7 +269,7 @@ public class RestResponseTest extends TestCase
     }
   }
 
-  public void testHandleBasicPaameter() throws Exception
+  public void testHandleBasicParameter() throws Exception
   {
     Integer value = new Integer(12);
 
@@ -244,7 +291,7 @@ public class RestResponseTest extends TestCase
     Assert.assertEquals(value, object.get("basic"));
   }
 
-  public void testHandleSerializablePaameter() throws Exception
+  public void testHandleSerializableParameter() throws Exception
   {
     String businessType = "test.TestBusiness";
     String relType = "test.TestRelationship";
@@ -283,13 +330,13 @@ public class RestResponseTest extends TestCase
       Assert.assertTrue(test.has("child"));
 
       JSONObject parent = test.getJSONObject("parent");
-      
+
       Assert.assertEquals(testValue, parent.get(TestFixConst.ATTRIBUTE_CHARACTER));
       Assert.assertEquals(businessType, parent.get(EntityInfo.TYPE));
       Assert.assertEquals(dto.getId(), parent.get(EntityInfo.ID));
-      
+
       JSONObject child = test.getJSONObject("child");
-      
+
       Assert.assertEquals(testValue, child.get(TestFixConst.ATTRIBUTE_CHARACTER));
       Assert.assertEquals(businessType, child.get(EntityInfo.TYPE));
       Assert.assertEquals(dto.getId(), child.get(EntityInfo.ID));
