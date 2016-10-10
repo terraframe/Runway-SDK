@@ -61,10 +61,14 @@ import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdExceptionInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdInformationInfo;
+import com.runwaysdk.constants.MdLocalStructInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
+import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
+import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
@@ -251,6 +255,8 @@ public class MergeTest extends TestCase
   public void testUpdateBlobMerge()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     ComponentIF[] componentArray = new ComponentIF[] { mdBusiness1 };
@@ -286,6 +292,8 @@ public class MergeTest extends TestCase
     final String newAttributeName = "renamedAttribute";
 
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -332,6 +340,8 @@ public class MergeTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -441,7 +451,9 @@ public class MergeTest extends TestCase
   public void testUpdateStructMerge()
   {
     final MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
-    mdStruct.setValue(MdBusinessInfo.CACHE_SIZE, "525");
+    mdStruct.setValue(MdStructInfo.CACHE_SIZE, "525");
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     MdAttributeConcreteDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdStruct);
@@ -450,6 +462,8 @@ public class MergeTest extends TestCase
     mdAttributeBoolean.apply();
 
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     final MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addStructAttribute(mdBusiness1, mdStruct);
@@ -515,11 +529,13 @@ public class MergeTest extends TestCase
     mdInformation1.setValue(MdInformationInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdInformation1.setValue(MdInformationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdInformation1.setValue(MdInformationInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdInformation1.setValue(MdInformationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdInformation1.apply();
 
     MdInformationDAO mdInformation2 = TestFixtureFactory.createMdInformation2();
     mdInformation2.setValue(MdInformationInfo.SUPER_MD_INFORMATION, mdInformation1.getId());
     mdInformation2.setValue(MdInformationInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdInformation2.setValue(MdInformationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdInformation2.apply();
 
     generateCreateSchema(new ComponentIF[] { mdInformation1, mdInformation2 });
@@ -623,6 +639,7 @@ public class MergeTest extends TestCase
     mdProblem1.setValue(MdProblemInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdProblem1.setValue(MdProblemInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdProblem1.setValue(MdProblemInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdProblem1.setValue(MdProblemInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdProblem1.apply();
 
     final MdAttributeConcreteDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdProblem1);
@@ -630,6 +647,7 @@ public class MergeTest extends TestCase
     MdProblemDAO mdProblem2 = TestFixtureFactory.createMdProblem2();
     mdProblem2.setValue(MdProblemInfo.SUPER_MD_PROBLEM, mdProblem1.getId());
     mdProblem2.setValue(MdProblemInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdProblem2.setValue(MdProblemInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdProblem2.apply();
     final ComponentIF[] componentArray = new ComponentIF[] { mdProblem1, mdProblem2 };
     generateCreateSchema(componentArray);
@@ -863,6 +881,8 @@ public class MergeTest extends TestCase
   public void testAddAttributeToMdBusinessMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
@@ -904,7 +924,10 @@ public class MergeTest extends TestCase
   public void testAddParameterToMdMethodMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
+
     MdMethodDAO mdMethod = createMethod(mdBusiness);
     mdMethod.apply();
     VersionExporter.export(CREATE_SCHEMA, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness }));
@@ -934,9 +957,15 @@ public class MergeTest extends TestCase
   public void testAddStateToStateMachineMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
+    
     MdStateMachineDAO mdStateMachine = createMdStateMachine(mdBusiness);
+    mdStateMachine.setGenerateMdController(false);
+    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine.apply();
+    
     StateMasterDAO activeState = mdStateMachine.addState(ACTIVE_STATE, StateMasterDAOIF.Entry.ENTRY_STATE.getId());
     activeState.apply();
     StateMasterDAO passiveState = mdStateMachine.addState(PASSIVE_STATE, StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
@@ -971,8 +1000,13 @@ public class MergeTest extends TestCase
   public void testDeleteMerge()
   {
     final MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     final ComponentIF[] componentArray = new ComponentIF[] { mdBusiness, mdBusiness2 };
@@ -1016,6 +1050,7 @@ public class MergeTest extends TestCase
     mdException1.setValue(MdExceptionInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdException1.setValue(MdExceptionInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdException1.setValue(MdExceptionInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdException1.setValue(MdExceptionInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdException1.apply();
 
     final MdAttributeConcreteDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdException1);
@@ -1023,6 +1058,7 @@ public class MergeTest extends TestCase
     final MdExceptionDAO mdException2 = TestFixtureFactory.createMdException2();
     mdException2.setValue(MdExceptionInfo.SUPER_MD_EXCEPTION, mdException1.getId());
     mdException2.setValue(MdExceptionInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdException2.setValue(MdExceptionInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdException2.apply();
 
     ComponentIF[] componentArray = new ComponentIF[] { mdException1, mdException2 };
@@ -1072,9 +1108,13 @@ public class MergeTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     MdAttributeConcreteDAO mdAttributeChar = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
@@ -1088,6 +1128,8 @@ public class MergeTest extends TestCase
     mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State desc");
     mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
+    mdStateMachine.setGenerateMdController(false);
+    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine.apply();
 
     StateMasterDAO state11 = mdStateMachine.addState("Writing", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
@@ -1110,6 +1152,8 @@ public class MergeTest extends TestCase
     mdStateMachine2.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
     mdStateMachine2.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdStateMachine2.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness2.getId());
+    mdStateMachine2.setGenerateMdController(false);
+    mdStateMachine2.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine2.apply();
 
     // Add states
@@ -1145,6 +1189,8 @@ public class MergeTest extends TestCase
 
     // Add struct permissions
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     user.grantPermission(Operation.DELETE, mdStruct.getId());
@@ -1292,9 +1338,13 @@ public class MergeTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     MdAttributeConcreteDAO mdAttributeChar = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
@@ -1308,6 +1358,8 @@ public class MergeTest extends TestCase
     mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State desc");
     mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
+    mdStateMachine.setGenerateMdController(false);
+    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine.apply();
 
     StateMasterDAO state11 = mdStateMachine.addState("Writing", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
@@ -1330,6 +1382,8 @@ public class MergeTest extends TestCase
     mdStateMachine2.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
     mdStateMachine2.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdStateMachine2.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness2.getId());
+    mdStateMachine2.setGenerateMdController(false);
+    mdStateMachine2.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine2.apply();
 
     // Add states
@@ -1347,6 +1401,8 @@ public class MergeTest extends TestCase
     mdStateMachine2.addTransition("Stock", state23.getId(), state21.getId()).apply();
 
     MdRelationshipDAO mdRelationship = TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
+    mdRelationship.setGenerateMdController(false);
+    mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.apply();
 
     MdAttributeConcreteDAO mdAttributeBool = TestFixtureFactory.addBooleanAttribute(mdRelationship);
@@ -1366,6 +1422,8 @@ public class MergeTest extends TestCase
 
     // Add struct permissions
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     user.grantPermission(Operation.DELETE, mdStruct.getId());
@@ -1508,9 +1566,13 @@ public class MergeTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     MdAttributeConcreteDAO mdAttributeChar = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
@@ -1687,9 +1749,13 @@ public class MergeTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     MdMethodDAO mdMethod = TestFixtureFactory.createMdMethod(mdBusiness1);
@@ -1754,9 +1820,13 @@ public class MergeTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     // Add permissions to the MdBusiness
@@ -1818,6 +1888,8 @@ public class MergeTest extends TestCase
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     // Export partial schema element with definition of new attribute
@@ -1856,6 +1928,8 @@ public class MergeTest extends TestCase
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     // Export partial schema element with definition of new attribute
@@ -1902,6 +1976,8 @@ public class MergeTest extends TestCase
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdMethodDAO mdMethod = TestFixtureFactory.createMdMethod(mdBusiness1);
@@ -1965,9 +2041,13 @@ public class MergeTest extends TestCase
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     MdAttributeReferenceDAO mdAttribute = TestFixtureFactory.addReferenceAttribute(mdBusiness1, mdBusiness2);
@@ -1995,6 +2075,8 @@ public class MergeTest extends TestCase
   {
     // Create test MdBusiness
     MdBusinessDAO enumerationMaster = TestFixtureFactory.createEnumClass1();
+    enumerationMaster.setGenerateMdController(false);
+    enumerationMaster.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     enumerationMaster.apply();
 
     EnumerationItemDAO item = EnumerationItemDAO.newInstance(enumerationMaster.definesType());
@@ -2031,9 +2113,13 @@ public class MergeTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdLocalStructDAO mdLocalStruct = TestFixtureFactory.createMdLocalStruct();
+    mdLocalStruct.setGenerateMdController(false);
+    mdLocalStruct.setValue(MdLocalStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdLocalStruct.apply();
 
     MdAttributeLocalCharacterDAO.addDefaultLocale(mdLocalStruct);
@@ -2088,9 +2174,13 @@ public class MergeTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdLocalStructDAO mdLocalStruct = TestFixtureFactory.createMdLocalStruct();
+    mdLocalStruct.setGenerateMdController(false);
+    mdLocalStruct.setValue(MdLocalStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdLocalStruct.apply();
 
     MdAttributeLocalCharacterDAO.addDefaultLocale(mdLocalStruct);
@@ -2138,9 +2228,13 @@ public class MergeTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdBusinessDAO mdEnumerationMaster = TestFixtureFactory.createEnumClass1();
+    mdEnumerationMaster.setGenerateMdController(false);
+    mdEnumerationMaster.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumerationMaster.apply();
 
     EnumerationItemDAO hearts = TestFixtureFactory.createEnumObject(mdEnumerationMaster, "Hearts");
@@ -2150,6 +2244,7 @@ public class MergeTest extends TestCase
     clubs.apply();
 
     MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdEnumerationMaster);
+    mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
 
     MdAttributeEnumerationDAO mdAttribute = TestFixtureFactory.addEnumerationAttribute(mdBusiness1, mdEnumeration);
@@ -2191,12 +2286,15 @@ public class MergeTest extends TestCase
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeCharacterDAO mdAttribute = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
     mdAttribute.apply();
 
     MdViewDAO mdView = TestFixtureFactory.createMdView1();
+    mdView.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView.apply();
 
     MdAttributeVirtualDAO mdAttributeVirtual = TestFixtureFactory.addVirtualAttribute(mdView, mdAttribute);
@@ -2226,9 +2324,13 @@ public class MergeTest extends TestCase
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     MdAttributeReferenceDAO mdAttribute = TestFixtureFactory.addReferenceAttribute(mdBusiness1, mdBusiness2);
@@ -2258,6 +2360,8 @@ public class MergeTest extends TestCase
   public void testIndexMerge()
   {
     final MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -2316,6 +2420,8 @@ public class MergeTest extends TestCase
   public void testMultiIndexMerge()
   {
     final MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeConcreteDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
@@ -2680,6 +2786,8 @@ public class MergeTest extends TestCase
   public void testDeleteAttributeFromMdBusinessMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     final MdAttributeConcreteDAO mdAttribute = createCharacterAttribute(mdBusiness);
@@ -2711,7 +2819,10 @@ public class MergeTest extends TestCase
   public void testDeleteMdMethodFromMdBusinessMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
+    
     final MdMethodDAO mdMethod = createMethod(mdBusiness);
     mdMethod.apply();
     generateCreateSchema(new ComponentIF[] { mdBusiness });
@@ -2742,6 +2853,8 @@ public class MergeTest extends TestCase
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     // Export partial schema element with definition of new attribute
@@ -2790,11 +2903,16 @@ public class MergeTest extends TestCase
   public void testDeleteParameterFromMdMethodMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
+    
     final MdMethodDAO mdMethod = createMethod(mdBusiness);
     mdMethod.apply();
+    
     final MdParameterDAO mdParameter = createMdParameter(mdMethod);
     mdParameter.apply();
+    
     generateCreateSchema(new ComponentIF[] { mdBusiness });
     final ExportMetadata updateMetadata = new ExportMetadata();
     generateMerge(updateMetadata, new ComponentIF[] {}, new ComponentIF[] { mdBusiness }, new UpdateActions()
@@ -2965,6 +3083,8 @@ public class MergeTest extends TestCase
       try
       {
         MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+        mdBusiness.setGenerateMdController(false);
+        mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
         mdBusiness.apply();
 
         MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
@@ -3056,12 +3176,18 @@ public class MergeTest extends TestCase
   public void testAttributeOnRelationship()
   {
     MdBusinessDAO parentMdBusiness = TestFixtureFactory.createMdBusiness1();
+    parentMdBusiness.setGenerateMdController(false);
+    parentMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     parentMdBusiness.apply();
 
     MdBusinessDAO childMdBusiness = TestFixtureFactory.createMdBusiness2();
+    childMdBusiness.setGenerateMdController(false);
+    childMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     childMdBusiness.apply();
 
     MdRelationshipDAO mdRelationship = TestFixtureFactory.createMdRelationship1(parentMdBusiness, childMdBusiness);
+    mdRelationship.setGenerateMdController(false);
+    mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.apply();
 
     generateCreateSchema(ExportMetadata.buildCreate(mdRelationship));
@@ -3088,6 +3214,8 @@ public class MergeTest extends TestCase
   public void testCreateUpdateThenDeleteOnObject()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
@@ -3123,6 +3251,8 @@ public class MergeTest extends TestCase
   public void testFormMerge()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeBooleanDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -3160,6 +3290,8 @@ public class MergeTest extends TestCase
     final String newAttributeName = "renamedAttribute";
 
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeBooleanDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -3201,6 +3333,8 @@ public class MergeTest extends TestCase
     final String newAttributeName = "renamedAttribute";
 
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeBooleanDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -3259,6 +3393,8 @@ public class MergeTest extends TestCase
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, "test.xmlclasses");
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdBusiness Set Test");
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdBusiness Attributes Test");
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     return mdBusiness;
   }
@@ -3308,6 +3444,8 @@ public class MergeTest extends TestCase
     mdState.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, STATE_MACHINE_NAME);
     mdState.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdState.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness.getId());
+    mdState.setGenerateMdController(false);
+    mdState.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     return mdState;
   }
 

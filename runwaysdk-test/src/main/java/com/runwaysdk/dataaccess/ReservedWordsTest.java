@@ -68,6 +68,7 @@ public class ReservedWordsTest extends TestCase
     mdAttTest.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
     mdAttTest.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
     mdAttTest.setGenerateMdController(false);
+    mdAttTest.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdAttTest.apply();
   }
 
@@ -128,6 +129,7 @@ public class ReservedWordsTest extends TestCase
       mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       // If we get this far, it didn't throw the exception
@@ -153,6 +155,7 @@ public class ReservedWordsTest extends TestCase
       mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       // If we get this far, it didn't throw the exception, the test passed
@@ -177,6 +180,7 @@ public class ReservedWordsTest extends TestCase
       mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       // If we get this far, it didn't throw the exception, the test failed
@@ -202,6 +206,7 @@ public class ReservedWordsTest extends TestCase
       mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       // If we get this far, it didn't throw the exception, the test passed

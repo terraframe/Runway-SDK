@@ -36,6 +36,7 @@ import com.runwaysdk.dataaccess.EnumerationAttributeItem;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
@@ -55,6 +56,7 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.session.PermissionEntity;
+import com.runwaysdk.util.IdParser;
 
 public class ThreadTransactionCache extends AbstractTransactionCache
 {
@@ -230,27 +232,73 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   public EntityDAOIF getEntityDAO(String id)
   {
     EntityDAOIF entityDAOIF = null;
+ 
+ // Heads up: modify
     
     this.transactionStateLock.lock();
     try
     {
-      if (this.isNewUncachedEntity(id))
+      // 1) Check to see if the object's type has been modified in this transaction.
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(id); 
+      boolean typeInTransaction = this.typeRootIdsInTransaction.contains(mdTypeRootId);
+      
+      // 2) If the object's type is not in the transaction, then we know that we need to fetch it 
+      // from the global cache 
+      if (!typeInTransaction)
       {
-        entityDAOIF = ObjectCache._internalGetEntityDAO(id);
-      }
-      else
+        // By returning null the calling aspect advice will fetch the object
+        // from the global cache
+        return null;
+      }      
+      else // (typeInTransaction)
       {
-        TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
-        if (transactionCacheItem != null)
+        // 3) Determine if the object's type is cached or not
+        MdEntityDAOIF mdEntityDAOIF = (MdEntityDAOIF)ObjectCache.getMdClassDAOByRootId(mdTypeRootId);
+
+        // 4) If the type IS cached...
+        if (!mdEntityDAOIF.isNotCached())
         {
-          entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
+          // 4.1) fetch the object from the transaction
+          TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
+          if (transactionCacheItem != null)
+          {
+            entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
+          }
+          
+          // 4.2) If it is not in the transaction cache, fetch it from the main thread
+          if (entityDAOIF == null)
+          {
+            entityDAOIF = this.getTransactionCache().getEntityDAO(id);
+          }   
         }
-        
-        if (entityDAOIF == null)
+        else // (mdEntityDAOIF.isNotCached())
         {
-          entityDAOIF = this.getTransactionCache().getEntityDAO(id);
-        }        
+          // 5) If the object is not cached, 
+          if (this.isNewUncachedEntity(id))
+          {
+            entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+            ((EntityDAO)entityDAOIF).setIsNew(true);
+          }
+        }
       }
+      
+//      if (this.isNewUncachedEntity(id))
+//      {
+//        entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+//      }
+//      else
+//      {
+//        TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
+//        if (transactionCacheItem != null)
+//        {
+//          entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
+//        }
+//        
+//        if (entityDAOIF == null)
+//        {
+//          entityDAOIF = this.getTransactionCache().getEntityDAO(id);
+//        }        
+//      }
 
       return entityDAOIF;
       

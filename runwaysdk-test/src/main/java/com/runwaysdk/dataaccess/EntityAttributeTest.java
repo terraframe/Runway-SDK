@@ -241,6 +241,8 @@ public class EntityAttributeTest extends TestCase
     referenceMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.REFERENCE_CLASS.getType());
 
     testTerm = TestFixtureFactory.createMdTerm();
+    testTerm.setGenerateMdController(false);
+    testTerm.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     testTerm.apply();
 
     TypeInfo someTreeInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "SomeTree");
@@ -258,7 +260,8 @@ public class EntityAttributeTest extends TestCase
     someTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 2");
     someTree.setValue(MdTreeInfo.PARENT_METHOD, "someParentAccessor");
     someTree.setValue(MdTreeInfo.CHILD_METHOD, "someChildAccessor");
-    someTree.setValue(MdElementInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    someTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    someTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     someTree.apply();
 
     MdStructDAOIF phoneNumber = MdStructDAO.getMdStructDAO(EntityTypes.PHONE_NUMBER.getType());
@@ -3411,6 +3414,7 @@ public class EntityAttributeTest extends TestCase
       other.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       other.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       other.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, testMdBusinessIF.getId());
+      other.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       other.apply();
 
       // first declaration of attribute Cost

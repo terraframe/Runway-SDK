@@ -51,6 +51,7 @@ import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.TypeInfo;
@@ -154,6 +155,8 @@ public class MetaDataTest extends TestCase
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdElementInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     // Create a struct
@@ -163,6 +166,8 @@ public class MetaDataTest extends TestCase
     mdStruct.setValue(MdStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Struct");
     mdStruct.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Struct");
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(STRUCT.getType());
@@ -189,7 +194,7 @@ public class MetaDataTest extends TestCase
   /**
    * Make sure we can set the publish attribute on the root of a hierarchy.
    */
-  public void ignoreValidPublishHierarchyRoot()
+  public void testValidPublishHierarchyRoot()
   {
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
 
@@ -202,6 +207,8 @@ public class MetaDataTest extends TestCase
     subMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     subMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getId());
     subMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    subMdBusiness.setGenerateMdController(false);
+    subMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     subMdBusiness.apply();
 
     MdBusinessDAO mdBusiness = null;
@@ -241,7 +248,7 @@ public class MetaDataTest extends TestCase
   /**
    * Make sure we can set the publish attribute on the root of a hierarchy.
    */
-  public void ignoreInvalidPublishHierarchyRoot()
+  public void testInvalidPublishHierarchyRoot()
   {
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
 
@@ -254,6 +261,8 @@ public class MetaDataTest extends TestCase
     subMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     subMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getId());
     subMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    subMdBusiness.setGenerateMdController(false);
+    subMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     subMdBusiness.apply();
 
     try
@@ -276,7 +285,7 @@ public class MetaDataTest extends TestCase
   /**
    * Make sure that references do not point to Structs.
    */
-  public void ignoreReferenceNoStruct()
+  public void testReferenceNoStruct()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
 
@@ -308,7 +317,7 @@ public class MetaDataTest extends TestCase
    * extendable. Subclasses of Constants.ROOT_ENUMERATION_ATTRIBUTE_CLASS cannot
    * be extended.
    */
-  public void ignoreInvalidNewEnummerationExtendable()
+  public void testInvalidNewEnummerationExtendable()
   {
     TypeInfo testEnumerationMaster = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TestEnumerationMaster");
 
@@ -323,6 +332,8 @@ public class MetaDataTest extends TestCase
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -342,7 +353,7 @@ public class MetaDataTest extends TestCase
    * Makes sure that a class that extends EnumerationMaster cannot define an
    * MdAttributeEnumeration.
    */
-  public void ignoreExtendEnumerationMasterDefineEnumeration()
+  public void testExtendEnumerationMasterDefineEnumeration()
   {
     MdBusinessDAO mdBusiness = null;
     MdBusinessDAO stateEnumMdBusiness = null;
@@ -362,6 +373,8 @@ public class MetaDataTest extends TestCase
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
+      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       // Define an enumeration that will be used by the MdAttributeEnumeration
@@ -374,6 +387,8 @@ public class MetaDataTest extends TestCase
       stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
+      stateEnumMdBusiness.setGenerateMdController(false);
+      stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       stateEnumMdBusiness.apply();
 
       MdEnumerationDAO mdEnumeration = MdEnumerationDAO.newInstance();
@@ -384,6 +399,7 @@ public class MetaDataTest extends TestCase
       mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
       mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusiness.getId());
+      mdEnumeration.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdEnumeration.apply();
 
 
@@ -416,7 +432,7 @@ public class MetaDataTest extends TestCase
    * Make sure that a reference attribute cannot be added to basic
    * classes.
    */
-  public void ignoreReferenceAttributeForAStruct()
+  public void testReferenceAttributeForAStruct()
   {
     MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(STRUCT.getType());
 
@@ -428,6 +444,8 @@ public class MetaDataTest extends TestCase
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Reference");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     String referenceMdBusinessId = mdBusiness.apply();
 
     MdAttributeReferenceDAO mdAttributeReference = MdAttributeReferenceDAO.newInstance();
@@ -460,7 +478,7 @@ public class MetaDataTest extends TestCase
   /**
    * Make sure that struct attributes cannot be added to struct.
    */
-  public void ignoreStructAttributeForAStruct()
+  public void testStructAttributeForAStruct()
   {
     MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(STRUCT.getType());
 
@@ -488,7 +506,7 @@ public class MetaDataTest extends TestCase
   /**
    * Make sure that structs cannot be extended.
    */
-  public void ignoreDoNotExtendBStruct()
+  public void testDoNotExtendBStruct()
   {
     TypeInfo testExtendedBasic = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TestExtendBasic");
 
@@ -506,6 +524,8 @@ public class MetaDataTest extends TestCase
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdStructIF.getId());
+      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       // should this test fail, delete this object
@@ -522,7 +542,7 @@ public class MetaDataTest extends TestCase
    * Tests that an attribute that should be unique should also be required.
    *
    */
-  public void ignoreRequiredUniqueAttribute()
+  public void testRequiredUniqueAttribute()
   {
     MdStructDAOIF mdStruct = MdStructDAO.getMdStructDAO(STRUCT.getType());
 
@@ -560,7 +580,7 @@ public class MetaDataTest extends TestCase
    * Tests that an attribute that should be unique should also be required.
    *
    */
-  public void ignoreRequiredUniqueAttributeGroup()
+  public void testRequiredUniqueAttributeGroup()
   {
     MdBusinessDAOIF metaDataMdBusiness = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
 
@@ -602,7 +622,7 @@ public class MetaDataTest extends TestCase
    * attribute back to not being unique and check that the database no longer
    * has the index.
    */
-  public void ignoreUniqueAttributeDatabaseIndex()
+  public void testUniqueAttributeDatabaseIndex()
   {
     MdBusinessDAOIF metaDataMdBusiness = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
 
@@ -664,7 +684,7 @@ public class MetaDataTest extends TestCase
    * attribute back to not being unique and check that the database no longer
    * has the index.
    */
-  public void ignoreNonUniqueAttributeDatabaseIndex()
+  public void testNonUniqueAttributeDatabaseIndex()
   {
     MdBusinessDAOIF metaDataMdBusiness = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
 
@@ -852,7 +872,7 @@ public class MetaDataTest extends TestCase
    * the MdEntity that the MdIndex is defined on.
    *
    */
-  public void ignoreValidIndexDefinition()
+  public void testValidIndexDefinition()
   {
     MdBusinessDAOIF metaDataMdBusiness = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
 
@@ -940,7 +960,7 @@ public class MetaDataTest extends TestCase
   /**
    * Tests that a type can't extend MdAttribute.
    */
-  public void ignoreExtendAttribute()
+  public void testExtendAttribute()
   {
     MdBusinessDAO mdBusiness = null;
     try
@@ -956,6 +976,8 @@ public class MetaDataTest extends TestCase
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdPrimitive.getId());
+      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       fail("A type was able to extend MdAttribute (this isn't allowed).");
@@ -979,7 +1001,7 @@ public class MetaDataTest extends TestCase
   /**
    * Tests to make sure that an attribute cannot be added to an MdElement.
    */
-  public void ignoreAddAttributeToMdRelationshipClassAttirbute()
+  public void testAddAttributeToMdRelationshipClassAttirbute()
   {
     MdAttributeIntegerDAO mdAttributeInteger = null;
 
@@ -1015,7 +1037,7 @@ public class MetaDataTest extends TestCase
   /**
    * Tests to make sure that an attribute cannot be added to an MdAttribute or a subclass.
    */
-  public void ignoreAddAttributeToMdAttribute()
+  public void testAddAttributeToMdAttribute()
   {
     MdAttributeIntegerDAO mdAttributeInteger = null;
 

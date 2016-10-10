@@ -97,6 +97,7 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.MdViewInfo;
@@ -417,7 +418,6 @@ public class SAXParseTest extends TestCase
     }
   }
   
-
   /**
    * Test setting of attributes on the local text datatype minus any overlapping attributes from the boolean test
    */
@@ -435,6 +435,8 @@ public class SAXParseTest extends TestCase
   public void testCreateLocalText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addLocalTextAttribute(mdBusiness1).apply();
@@ -470,6 +472,8 @@ public class SAXParseTest extends TestCase
   public void testCreateLocalCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addLocalCharacterAttribute(mdBusiness1).apply();
@@ -505,6 +509,8 @@ public class SAXParseTest extends TestCase
   public void testCreateBlob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addBlobAttribute(mdBusiness1).apply();
@@ -533,6 +539,8 @@ public class SAXParseTest extends TestCase
   public void testCreateBoolean()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeBooleanDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -591,6 +599,8 @@ public class SAXParseTest extends TestCase
   public void testCreateCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeCharacterDAO mdAttribute = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
@@ -619,6 +629,8 @@ public class SAXParseTest extends TestCase
   public void testColumnNames()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeCharacterDAO mdAttributeCharacterDAO_1 = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
@@ -656,6 +668,8 @@ public class SAXParseTest extends TestCase
   public void testCreateDate()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addDateAttribute(mdBusiness1).apply();
@@ -688,6 +702,8 @@ public class SAXParseTest extends TestCase
     {
 
       MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+      mdBusiness1.setGenerateMdController(false);
+      mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.apply();
 
       MdAttributeDateDAO mdAttribute = TestFixtureFactory.addDateAttribute(mdBusiness1);
@@ -726,6 +742,8 @@ public class SAXParseTest extends TestCase
   public void testCreateDateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addDateTimeAttribute(mdBusiness1).apply();
@@ -750,6 +768,8 @@ public class SAXParseTest extends TestCase
   public void testCreateDecimal()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addDecimalAttribute(mdBusiness1).apply();
@@ -775,6 +795,8 @@ public class SAXParseTest extends TestCase
   public void testCreateDouble()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addDoubleAttribute(mdBusiness1).apply();
@@ -800,6 +822,8 @@ public class SAXParseTest extends TestCase
   public void testCreateVirtual()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeDoubleDAO concrete = TestFixtureFactory.addDoubleAttribute(mdBusiness1);
@@ -831,7 +855,12 @@ public class SAXParseTest extends TestCase
   public void testCreateEnumeration()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
+    mdBusinessEnum1.setGenerateMdController(false);
+    mdBusinessEnum1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     mdBusinessEnum1.apply();
     mdBusiness1.apply();
@@ -845,6 +874,7 @@ public class SAXParseTest extends TestCase
     businessDAO.apply();
 
     MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessEnum1);
+    mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
 
     MdAttributeConcreteDAO addEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdBusiness1, mdEnumeration);
@@ -886,6 +916,8 @@ public class SAXParseTest extends TestCase
   public void testCreateFile()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addFileAttribute(mdBusiness1).apply();
@@ -914,6 +946,8 @@ public class SAXParseTest extends TestCase
   public void testCreateFloat()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addFloatAttribute(mdBusiness1).apply();
@@ -940,7 +974,13 @@ public class SAXParseTest extends TestCase
   public void testCreateReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
 
     mdBusiness1.apply();
     mdBusiness2.apply();
@@ -978,9 +1018,13 @@ public class SAXParseTest extends TestCase
   public void testCreateMultiReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
-    MdBusinessDAO mdTerm = TestFixtureFactory.createMdTerm();
-
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
+    
+    MdBusinessDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     TestFixtureFactory.addCharacterAttribute(mdTerm).apply();
@@ -1027,14 +1071,20 @@ public class SAXParseTest extends TestCase
   public void testCreateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     TestFixtureFactory.addCharacterAttribute(mdTerm).apply();
 
     MdTermRelationshipDAO mdTermRelationship = TestFixtureFactory.createMdTermRelationship(mdTerm);
+    mdTermRelationship.setGenerateMdController(false);
+    mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTermRelationship.apply();
 
     BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
@@ -1104,14 +1154,20 @@ public class SAXParseTest extends TestCase
   public void testCreateTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     TestFixtureFactory.addCharacterAttribute(mdTerm).apply();
 
     MdTermRelationshipDAO mdTermRelationship = TestFixtureFactory.createMdTermRelationship(mdTerm);
+    mdTermRelationship.setGenerateMdController(false);
+    mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTermRelationship.apply();
 
     BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
@@ -1181,6 +1237,8 @@ public class SAXParseTest extends TestCase
   public void testCreateInteger()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addIntegerAttribute(mdBusiness1).apply();
@@ -1205,6 +1263,8 @@ public class SAXParseTest extends TestCase
   public void testCreateLong()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addLongAttribute(mdBusiness1).apply();
@@ -1228,6 +1288,8 @@ public class SAXParseTest extends TestCase
   public void testCreateText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addTextAttribute(mdBusiness1).apply();
@@ -1250,6 +1312,8 @@ public class SAXParseTest extends TestCase
   public void testCreateClob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addClobAttribute(mdBusiness1).apply();
@@ -1272,6 +1336,8 @@ public class SAXParseTest extends TestCase
   public void testCreateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addTimeAttribute(mdBusiness1).apply();
@@ -1296,6 +1362,8 @@ public class SAXParseTest extends TestCase
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Struct Set Test");
     mdStruct.setValue(MdStructInfo.CACHE_SIZE, "525");
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdStruct);
@@ -1304,6 +1372,8 @@ public class SAXParseTest extends TestCase
     mdAttributeBoolean.apply();
 
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addStructAttribute(mdBusiness1, mdStruct).apply();
@@ -1347,6 +1417,8 @@ public class SAXParseTest extends TestCase
   public void testCreateSymmetric()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addSymmetricAttribute(mdBusiness1).apply();
@@ -1372,6 +1444,8 @@ public class SAXParseTest extends TestCase
   public void testCreateHash()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addHashAttribute(mdBusiness1).apply();
@@ -1398,17 +1472,25 @@ public class SAXParseTest extends TestCase
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
     mdBusiness1.setValue(MdBusinessInfo.CACHE_SIZE, "50");
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
     mdStruct.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     MdRelationshipDAO mdRelationship1 = TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
-    mdRelationship1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdRelationship1.setValue(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdRelationship1.setGenerateMdController(false);
+    mdRelationship1.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship1.apply();
 
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, mdStruct, mdRelationship1 }));
@@ -1451,6 +1533,8 @@ public class SAXParseTest extends TestCase
     mdBusiness1.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdBusiness1.setValue(MdBusinessInfo.CACHE_SIZE, "50");
     mdBusiness1.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addBooleanAttribute(mdBusiness1).apply();
@@ -1458,6 +1542,8 @@ public class SAXParseTest extends TestCase
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusiness1.getId());
     mdBusiness2.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     // Create test MdStateMachine
@@ -1468,6 +1554,8 @@ public class SAXParseTest extends TestCase
     mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
     mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
+    mdStateMachine.setGenerateMdController(false);
+    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine.apply();
 
     // Add states
@@ -1848,6 +1936,7 @@ public class SAXParseTest extends TestCase
     mdView1.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdView1.setValue(MdViewInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdView1.setValue(MdViewInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdView1.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView1.apply();
 
     TestFixtureFactory.addBooleanAttribute(mdView1).apply();
@@ -1864,8 +1953,9 @@ public class SAXParseTest extends TestCase
     MdViewDAO mdView2 = TestFixtureFactory.createMdView2();
     mdView2.setValue(MdViewInfo.SUPER_MD_VIEW, mdView1.getId());
     mdView2.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdView2.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView2.apply();
-
+    
     // Export the test entities
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdView2, mdView1 }));
 
@@ -1919,6 +2009,7 @@ public class SAXParseTest extends TestCase
     mdUtil1.setValue(MdUtilInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdUtil1.setValue(MdUtilInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdUtil1.setValue(MdUtilInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdUtil1.setValue(MdUtilInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil1.apply();
 
     TestFixtureFactory.addBooleanAttribute(mdUtil1).apply();
@@ -1935,8 +2026,9 @@ public class SAXParseTest extends TestCase
     MdUtilDAO mdUtil2 = TestFixtureFactory.createMdUtil2();
     mdUtil2.setValue(MdUtilInfo.SUPER_MD_UTIL, mdUtil1.getId());
     mdUtil2.setValue(MdUtilInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdUtil2.setValue(MdUtilInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil2.apply();
-
+    
     // Export the test entities
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdUtil2, mdUtil1 }));
 
@@ -2096,6 +2188,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebDate()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
@@ -2143,6 +2237,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebText()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeTextDAO mdAttributeText = TestFixtureFactory.addTextAttribute(mdBusiness);
@@ -2186,6 +2282,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebInteger()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeIntegerDAO mdAttributeInteger = TestFixtureFactory.addIntegerAttribute(mdBusiness);
@@ -2229,6 +2327,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebLong()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeLongDAO mdAttributeLong = TestFixtureFactory.addLongAttribute(mdBusiness);
@@ -2272,6 +2372,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebDouble()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
@@ -2317,6 +2419,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebFloat()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeFloatDAO mdAttributeFloat = TestFixtureFactory.addFloatAttribute(mdBusiness);
@@ -2362,6 +2466,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebDecimal()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDecimalDAO mdAttributeDecimal = TestFixtureFactory.addDecimalAttribute(mdBusiness);
@@ -2407,9 +2513,13 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebGeo()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdBusinessDAO referenceBusiness = TestFixtureFactory.createMdBusiness2();
+    referenceBusiness.setGenerateMdController(false);
+    referenceBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     referenceBusiness.apply();
 
     MdAttributeReferenceDAO mdAttributeReference = TestFixtureFactory.addReferenceAttribute(mdBusiness, referenceBusiness);
@@ -2451,9 +2561,13 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebSingleTermGrid()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdBusinessDAO referenceBusiness = TestFixtureFactory.createMdBusiness2();
+    referenceBusiness.setGenerateMdController(false);
+    referenceBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     referenceBusiness.apply();
 
     MdAttributeReferenceDAO mdAttributeReference = TestFixtureFactory.addReferenceAttribute(mdBusiness, referenceBusiness);
@@ -2526,9 +2640,13 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebMultipleTerm()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdBusinessDAO referenceBusiness = TestFixtureFactory.createMdBusiness2();
+    referenceBusiness.setGenerateMdController(false);
+    referenceBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     referenceBusiness.apply();
 
     MdAttributeReferenceDAO mdAttributeReference = TestFixtureFactory.addReferenceAttribute(mdBusiness, referenceBusiness);
@@ -2570,6 +2688,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebBoolean()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
@@ -2612,6 +2732,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebDateTime()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDateTimeDAO mdAttributeDateTime = TestFixtureFactory.addDateTimeAttribute(mdBusiness);
@@ -2653,6 +2775,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebTime()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeTimeDAO mdAttributeTime = TestFixtureFactory.addTimeAttribute(mdBusiness);
@@ -2694,6 +2818,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebBreak()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2731,6 +2857,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebComment()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2768,6 +2896,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebGroup()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
@@ -2838,6 +2968,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdWebHeader()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2875,6 +3007,8 @@ public class SAXParseTest extends TestCase
   public void testCreateBasicDateCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
@@ -2935,6 +3069,8 @@ public class SAXParseTest extends TestCase
   public void testCreateBasicCharacterCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
@@ -2995,6 +3131,8 @@ public class SAXParseTest extends TestCase
   public void testCreateBasicLongCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeLongDAO mdAttributeLong = TestFixtureFactory.addLongAttribute(mdBusiness);
@@ -3055,6 +3193,8 @@ public class SAXParseTest extends TestCase
   public void testCreateBasicDoubleCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
@@ -3115,6 +3255,8 @@ public class SAXParseTest extends TestCase
   public void testCreateAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
@@ -3184,6 +3326,8 @@ public class SAXParseTest extends TestCase
   public void testCreateNestedAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
@@ -3265,6 +3409,8 @@ public class SAXParseTest extends TestCase
   public void testCreateOrUpdateNestedAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
@@ -3348,6 +3494,8 @@ public class SAXParseTest extends TestCase
   public void testSelectionSet()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
+    mdBusinessEnum1.setGenerateMdController(false);
+    mdBusinessEnum1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessEnum1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addFloatAttribute(mdBusinessEnum1);
@@ -3375,12 +3523,15 @@ public class SAXParseTest extends TestCase
 
     MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessEnum1);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.FALSE);
+    mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
 
     mdEnumeration.addEnumItem(businessDAO1.getId());
     mdEnumeration.addEnumItem(businessDAO3.getId());
 
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     TestFixtureFactory.addTimeAttribute(mdBusiness1).apply();
@@ -3511,7 +3662,12 @@ public class SAXParseTest extends TestCase
   public void testCreateObject()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     mdBusiness1.apply();
     mdBusiness2.apply();
@@ -3583,11 +3739,19 @@ public class SAXParseTest extends TestCase
   {
     // Create the Metadata entities
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     mdBusiness1.apply();
     mdBusiness2.apply();
 
     MdRelationshipDAO mdRelationship1 = TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
+    mdRelationship1.setGenerateMdController(false);
+    mdRelationship1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship1.apply();
 
     TestFixtureFactory.addBooleanAttribute(mdRelationship1).apply();
@@ -3635,20 +3799,29 @@ public class SAXParseTest extends TestCase
   {
     // Create the Metadata entities
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     mdBusiness1.apply();
     mdBusiness2.apply();
 
-    MdTreeDAO mdRelationship1 = TestFixtureFactory.createMdTree(mdBusiness1, mdBusiness2);
-    mdRelationship1.apply();
+    MdTreeDAO mdTree1 = TestFixtureFactory.createMdTree(mdBusiness1, mdBusiness2);
+    mdTree1.setGenerateMdController(false);
+    mdTree1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
+    mdTree1.apply();
 
-    TestFixtureFactory.addBooleanAttribute(mdRelationship1).apply();
+    TestFixtureFactory.addBooleanAttribute(mdTree1).apply();
 
     // Export the test entities
-    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, mdRelationship1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, mdTree1 }));
 
     // Delete the entities
-    TestFixtureFactory.delete(mdRelationship1);
+    TestFixtureFactory.delete(mdTree1);
     TestFixtureFactory.delete(mdBusiness1);
     TestFixtureFactory.delete(mdBusiness2);
 
@@ -3658,6 +3831,8 @@ public class SAXParseTest extends TestCase
   public void testIndex()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -3801,6 +3976,8 @@ public class SAXParseTest extends TestCase
   public void testCreateMdFacade()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdFacadeDAO mdFacade = MdFacadeDAO.newInstance();
@@ -3809,6 +3986,7 @@ public class SAXParseTest extends TestCase
     mdFacade.setStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
     mdFacade.setStructValue(MdFacadeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
     mdFacade.setValue(MdFacadeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdFacade.setValue(MdFacadeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdFacade.apply();
 
     MdMethodDAO mdMethod = MdMethodDAO.newInstance();
@@ -3988,6 +4166,8 @@ public class SAXParseTest extends TestCase
     String stateMachineDescription = "Star State desc";
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     // Create a new MdState
@@ -3998,6 +4178,8 @@ public class SAXParseTest extends TestCase
     mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, stateMachineDescription);
     mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness.getId());
+    mdStateMachine.setGenerateMdController(false);
+    mdStateMachine.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine.apply();
 
     // Add states
@@ -4142,6 +4324,8 @@ public class SAXParseTest extends TestCase
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     // Export partial schema element with definition of new attribute
@@ -4188,9 +4372,13 @@ public class SAXParseTest extends TestCase
 
       // Create test MdBusiness
       MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+      mdBusiness1.setGenerateMdController(false);
+      mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.apply();
 
       MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+      mdBusiness2.setGenerateMdController(false);
+      mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness2.apply();
 
       MdAttributeConcreteDAO mdAttributeChar = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
@@ -4204,6 +4392,8 @@ public class SAXParseTest extends TestCase
       mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State desc");
       mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
       mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
+      mdStateMachine.setGenerateMdController(false);
+      mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdStateMachine.apply();
 
       StateMasterDAO state11 = mdStateMachine.addState("Writing", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
@@ -4226,6 +4416,8 @@ public class SAXParseTest extends TestCase
       mdStateMachine2.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
       mdStateMachine2.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
       mdStateMachine2.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness2.getId());
+      mdStateMachine2.setGenerateMdController(false);
+      mdStateMachine2.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdStateMachine2.apply();
 
       // Add states
@@ -4243,6 +4435,8 @@ public class SAXParseTest extends TestCase
       mdStateMachine2.addTransition("Stock", state23.getId(), state21.getId()).apply();
 
       MdRelationshipDAO mdRelationship = TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
+      mdRelationship.setGenerateMdController(false);
+      mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdRelationship.apply();
 
       MdAttributeConcreteDAO mdAttributeBool = TestFixtureFactory.addBooleanAttribute(mdRelationship);
@@ -4262,6 +4456,8 @@ public class SAXParseTest extends TestCase
 
       // Add struct permissions
       MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
+      mdStruct.setGenerateMdController(false);
+      mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdStruct.apply();
 
       user.grantPermission(Operation.DELETE, mdStruct.getId());
@@ -4397,9 +4593,13 @@ public class SAXParseTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     MdAttributeConcreteDAO mdAttributeChar = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
@@ -4413,6 +4613,8 @@ public class SAXParseTest extends TestCase
     mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State desc");
     mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
+    mdStateMachine.setGenerateMdController(false);
+    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine.apply();
 
     StateMasterDAO state11 = mdStateMachine.addState("Writing", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
@@ -4435,6 +4637,8 @@ public class SAXParseTest extends TestCase
     mdStateMachine2.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
     mdStateMachine2.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdStateMachine2.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness2.getId());
+    mdStateMachine2.setGenerateMdController(false);
+    mdStateMachine2.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine2.apply();
 
     // Add states
@@ -4578,18 +4782,24 @@ public class SAXParseTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     // Create test MdView
     MdViewDAO mdView1 = TestFixtureFactory.createMdView1();
+    mdView1.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView1.apply();
 
     // Create test MdUtil
     MdUtilDAO mdUtil1 = TestFixtureFactory.createMdUtil1();
+    mdUtil1.setValue(MdUtilInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil1.apply();
 
     // Create test MdStruct
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     // Add permissions to the MdBusiness
@@ -4657,18 +4867,24 @@ public class SAXParseTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     // Create test MdView
     MdViewDAO mdView1 = TestFixtureFactory.createMdView1();
+    mdView1.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView1.apply();
 
     // Create test MdUtil
     MdUtilDAO mdUtil1 = TestFixtureFactory.createMdUtil1();
+    mdUtil1.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil1.apply();
 
     // Create test MdStruct
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     // Add permissions to the MdBusiness
@@ -4732,6 +4948,7 @@ public class SAXParseTest extends TestCase
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     // Export the permissions
@@ -4771,18 +4988,24 @@ public class SAXParseTest extends TestCase
 
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     // Create test MdView
     MdViewDAO mdView1 = TestFixtureFactory.createMdView1();
+    mdView1.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView1.apply();
 
     // Create test MdUtil
     MdUtilDAO mdUtil1 = TestFixtureFactory.createMdUtil1();
+    mdUtil1.setValue(MdUtilInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil1.apply();
 
     // Create test MdStruct
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     // Add permissions to the MdBusiness
@@ -4829,6 +5052,8 @@ public class SAXParseTest extends TestCase
   public void testMethodPermissions()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdMethodDAO mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
@@ -4840,6 +5065,7 @@ public class SAXParseTest extends TestCase
     mdFacade.setStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
     mdFacade.setStructValue(MdFacadeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
     mdFacade.setValue(MdFacadeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdFacade.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdFacade.apply();
 
     MdMethodDAO mdMethod2 = MdMethodDAO.newInstance();
@@ -4861,14 +5087,18 @@ public class SAXParseTest extends TestCase
 
     // Create test MdView
     MdViewDAO mdView1 = TestFixtureFactory.createMdView1();
+    mdView1.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView1.apply();
 
     // Create test MdUtil
     MdUtilDAO mdUtil1 = TestFixtureFactory.createMdUtil1();
+    mdUtil1.setValue(MdUtilInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil1.apply();
 
     // Create test MdStruct
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     // Add permissions to the MdBusiness
@@ -4936,6 +5166,8 @@ public class SAXParseTest extends TestCase
   public void testRevokeMethodPermissions()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdMethodDAO mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
@@ -4947,6 +5179,7 @@ public class SAXParseTest extends TestCase
     mdFacade.setStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
     mdFacade.setStructValue(MdFacadeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
     mdFacade.setValue(MdFacadeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdFacade.setValue(MdFacadeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdFacade.apply();
 
     MdMethodDAO mdMethod2 = MdMethodDAO.newInstance();
@@ -4968,14 +5201,18 @@ public class SAXParseTest extends TestCase
 
     // Create test MdView
     MdViewDAO mdView1 = TestFixtureFactory.createMdView1();
+    mdView1.setValue(MdFacadeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView1.apply();
 
     // Create test MdUtil
     MdUtilDAO mdUtil1 = TestFixtureFactory.createMdUtil1();
+    mdUtil1.setValue(MdFacadeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil1.apply();
 
     // Create test MdStruct
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     // Add permissions to the MdBusiness
@@ -5034,6 +5271,8 @@ public class SAXParseTest extends TestCase
     mdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness1.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdBusiness1.setValue(MdBusinessInfo.CACHE_SIZE, "50");
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -5047,6 +5286,8 @@ public class SAXParseTest extends TestCase
     mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
     mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
+    mdStateMachine.setGenerateMdController(false);
+    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine.apply();
 
     // Add states
@@ -5148,6 +5389,8 @@ public class SAXParseTest extends TestCase
     mdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness1.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdBusiness1.setValue(MdBusinessInfo.CACHE_SIZE, "50");
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -5161,6 +5404,8 @@ public class SAXParseTest extends TestCase
     mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
     mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
     mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
+    mdStateMachine.setGenerateMdController(false);
+    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine.apply();
 
     StateMasterDAO state1 = mdStateMachine.addState("Available", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
@@ -5261,6 +5506,8 @@ public class SAXParseTest extends TestCase
     String updatedName = "updatedName";
 
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -5299,6 +5546,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateBoolean()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
@@ -5330,6 +5579,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateBlob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addBlobAttribute(mdBusiness1);
@@ -5363,6 +5614,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeCharacterDAO mdAttribute = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
@@ -5396,6 +5649,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateDate()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addDateAttribute(mdBusiness1);
@@ -5427,6 +5682,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateDateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addDateTimeAttribute(mdBusiness1);
@@ -5453,6 +5710,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateDecimal()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addDecimalAttribute(mdBusiness1);
@@ -5485,6 +5744,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateDouble()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addDoubleAttribute(mdBusiness1);
@@ -5512,12 +5773,15 @@ public class SAXParseTest extends TestCase
   public void testUpdateVirtual()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeDoubleDAO concrete = TestFixtureFactory.addDoubleAttribute(mdBusiness1);
     concrete.apply();
 
     MdViewDAO mdView = TestFixtureFactory.createMdView1();
+    mdView.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView.apply();
 
     TestFixtureFactory.addVirtualAttribute(mdView, concrete).apply();
@@ -5540,7 +5804,12 @@ public class SAXParseTest extends TestCase
   public void testUpdateEnumeration()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
+    mdBusinessEnum1.setGenerateMdController(false);
+    mdBusinessEnum1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     mdBusinessEnum1.apply();
     mdBusiness1.apply();
@@ -5554,6 +5823,7 @@ public class SAXParseTest extends TestCase
     businessDAO.apply();
 
     MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessEnum1);
+    mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addEnumerationAttribute(mdBusiness1, mdEnumeration);
@@ -5584,6 +5854,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateFile()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addFileAttribute(mdBusiness1);
@@ -5617,6 +5889,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateFloat()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addFloatAttribute(mdBusiness1);
@@ -5649,6 +5923,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateHash()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addHashAttribute(mdBusiness1);
@@ -5676,6 +5952,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateInteger()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addIntegerAttribute(mdBusiness1);
@@ -5704,6 +5982,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateLong()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addLongAttribute(mdBusiness1);
@@ -5730,8 +6010,13 @@ public class SAXParseTest extends TestCase
   public void testUpdateReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
-
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     mdBusiness1.apply();
     mdBusiness2.apply();
 
@@ -5761,7 +6046,12 @@ public class SAXParseTest extends TestCase
   public void testUpdateMultiReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     mdBusiness1.apply();
     mdBusiness2.apply();
@@ -5801,7 +6091,12 @@ public class SAXParseTest extends TestCase
   public void testUpdateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     mdBusiness1.apply();
     mdTerm.apply();
@@ -5841,9 +6136,13 @@ public class SAXParseTest extends TestCase
   public void testUpdateTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addTermAttribute(mdBusiness1, mdTerm);
@@ -5874,6 +6173,8 @@ public class SAXParseTest extends TestCase
   {
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
     mdStruct.setValue(MdBusinessInfo.CACHE_SIZE, "525");
+    mdStruct.setGenerateMdController(false);
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
     MdAttributeConcreteDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdStruct);
@@ -5882,6 +6183,8 @@ public class SAXParseTest extends TestCase
     mdAttributeBoolean.apply();
 
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addStructAttribute(mdBusiness1, mdStruct);
@@ -5924,6 +6227,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateSymmetric()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addSymmetricAttribute(mdBusiness1);
@@ -5953,6 +6258,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateClob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addTextAttribute(mdBusiness1);
@@ -5977,6 +6284,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addClobAttribute(mdBusiness1);
@@ -6001,6 +6310,8 @@ public class SAXParseTest extends TestCase
   public void testUpdateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addTimeAttribute(mdBusiness1);
@@ -6095,6 +6406,7 @@ public class SAXParseTest extends TestCase
     mdFacade.setStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
     mdFacade.setStructValue(MdFacadeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
     mdFacade.setValue(MdFacadeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdFacade.setValue(MdFacadeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdFacade.apply();
 
     MdMethodDAO mdMethod = MdMethodDAO.newInstance();
@@ -6418,6 +6730,7 @@ public class SAXParseTest extends TestCase
     mdException1.setValue(MdExceptionInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdException1.setValue(MdExceptionInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdException1.setValue(MdExceptionInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdException1.setValue(MdExceptionInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdException1.apply();
 
     MdAttributeConcreteDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdException1);
@@ -6425,6 +6738,7 @@ public class SAXParseTest extends TestCase
     MdExceptionDAO mdException2 = TestFixtureFactory.createMdException2();
     mdException2.setValue(MdExceptionInfo.SUPER_MD_EXCEPTION, mdException1.getId());
     mdException2.setValue(MdExceptionInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdException2.setValue(MdExceptionInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdException2.apply();
 
     // Export the test entities
@@ -6514,6 +6828,7 @@ public class SAXParseTest extends TestCase
     mdInformation1.setValue(MdInformationInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdInformation1.setValue(MdInformationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdInformation1.setValue(MdInformationInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdInformation1.setValue(MdInformationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdInformation1.apply();
 
     MdAttributeConcreteDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdInformation1);
@@ -6521,6 +6836,7 @@ public class SAXParseTest extends TestCase
     MdInformationDAO mdInformation2 = TestFixtureFactory.createMdInformation2();
     mdInformation2.setValue(MdInformationInfo.SUPER_MD_INFORMATION, mdInformation1.getId());
     mdInformation2.setValue(MdInformationInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdInformation2.setValue(MdInformationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdInformation2.apply();
 
     // Export the test entities
@@ -6562,6 +6878,7 @@ public class SAXParseTest extends TestCase
     mdView1.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdView1.setValue(MdViewInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdView1.setValue(MdViewInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdView1.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdView1);
@@ -6569,6 +6886,7 @@ public class SAXParseTest extends TestCase
     MdViewDAO mdView2 = TestFixtureFactory.createMdView2();
     mdView2.setValue(MdViewInfo.SUPER_MD_VIEW, mdView1.getId());
     mdView2.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdView2.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView2.apply();
 
     // Export the test entities
@@ -6610,6 +6928,7 @@ public class SAXParseTest extends TestCase
     mdUtil1.setValue(MdUtilInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdUtil1.setValue(MdUtilInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdUtil1.setValue(MdUtilInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdUtil1.setValue(MdUtilInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil1.apply();
 
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdUtil1);
@@ -6617,6 +6936,7 @@ public class SAXParseTest extends TestCase
     MdUtilDAO mdUtil2 = TestFixtureFactory.createMdUtil2();
     mdUtil2.setValue(MdUtilInfo.SUPER_MD_UTIL, mdUtil1.getId());
     mdUtil2.setValue(MdUtilInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdUtil2.setValue(MdUtilInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil2.apply();
 
     // Export the test entities
@@ -6701,7 +7021,12 @@ public class SAXParseTest extends TestCase
   public void testUpdateObject()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     mdBusiness1.apply();
     mdBusiness2.apply();
@@ -6775,7 +7100,12 @@ public class SAXParseTest extends TestCase
     final String newKey = "newKey";
 
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     mdBusiness1.apply();
     mdBusiness2.apply();
@@ -6826,12 +7156,20 @@ public class SAXParseTest extends TestCase
   {
     // Create the Metadata entities
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     mdBusiness1.apply();
     mdBusiness2.apply();
 
     MdRelationshipDAO mdRelationship1 = TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
     mdRelationship1.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
+    mdRelationship1.setGenerateMdController(false);
+    mdRelationship1.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship1.apply();
 
     TestFixtureFactory.addBooleanAttribute(mdRelationship1).apply();
@@ -6901,12 +7239,20 @@ public class SAXParseTest extends TestCase
 
     // Create the Metadata entities
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     mdBusiness1.apply();
     mdBusiness2.apply();
 
     MdRelationshipDAO mdRelationship1 = TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
     mdRelationship1.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
+    mdRelationship1.setGenerateMdController(false);
+    mdRelationship1.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship1.apply();
 
     TestFixtureFactory.addBooleanAttribute(mdRelationship1).apply();
@@ -7049,11 +7395,15 @@ public class SAXParseTest extends TestCase
     String KEY = "KEY";
 
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
 
     try
     {
       MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+      mdBusiness2.setGenerateMdController(false);
+      mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness2.apply();
 
       try
@@ -7164,9 +7514,13 @@ public class SAXParseTest extends TestCase
   public void testUpdateMdWebForm()
   {
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
@@ -7225,6 +7579,7 @@ public class SAXParseTest extends TestCase
     // Create test MdBusiness
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
     // mdTerm.setValue(MdEntityInfo.HAS_DETERMINISTIC_IDS, true);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     MdAttributeBooleanDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdTerm);
@@ -7268,6 +7623,7 @@ public class SAXParseTest extends TestCase
   {
     // Create test MdBusiness
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm("ParentTerm");
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     MdTermRelationshipDAO mdTermRelationship = TestFixtureFactory.createMdTermRelationship(mdTerm);

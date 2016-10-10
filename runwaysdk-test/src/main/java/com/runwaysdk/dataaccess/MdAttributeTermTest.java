@@ -30,9 +30,11 @@ import junit.framework.TestSuite;
 
 import org.junit.Assert;
 
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
@@ -98,11 +100,15 @@ public class MdAttributeTermTest extends TestCase
   public void testCreateAndGet()
   {
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
     {
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       try
@@ -143,11 +149,15 @@ public class MdAttributeTermTest extends TestCase
   public void testInvalidType()
   {
     MdBusinessDAO mdReference = TestFixtureFactory.createMdBusiness1();
+    mdReference.setGenerateMdController(false);
+    mdReference.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdReference.apply();
 
     try
     {
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness2();
+      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       try
@@ -181,6 +191,8 @@ public class MdAttributeTermTest extends TestCase
   public void testAddAttributeRoots()
   {
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
@@ -190,6 +202,8 @@ public class MdAttributeTermTest extends TestCase
       term.apply();
 
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       try

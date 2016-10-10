@@ -141,6 +141,7 @@ public class MdRelationshipTest extends TestCase
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent1");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild1");
     mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
     abstractParentMdTree1 = mdTree;
 
@@ -158,12 +159,16 @@ public class MdRelationshipTest extends TestCase
     mdBusinessClass1.setValue(MdBusinessInfo.PACKAGE, "junit.test");
     mdBusinessClass1.setValue(MdBusinessInfo.NAME, "Class1");
     mdBusinessClass1.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "junit.test.Class1");
+    mdBusinessClass1.setGenerateMdController(false);
+    mdBusinessClass1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessClass1.apply();
 
     mdBusinessParentClass1 = MdBusinessDAO.newInstance();
     mdBusinessParentClass1.setValue(MdBusinessInfo.PACKAGE, "junit.test");
     mdBusinessParentClass1.setValue(MdBusinessInfo.NAME, "ParentClass1");
     mdBusinessParentClass1.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "junit.test.ParentClass1");
+    mdBusinessParentClass1.setGenerateMdController(false);
+    mdBusinessParentClass1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessParentClass1.apply();
 
     mdBusinessChildClass1 = MdBusinessDAO.newInstance();
@@ -171,6 +176,8 @@ public class MdRelationshipTest extends TestCase
     mdBusinessChildClass1.setValue(MdBusinessInfo.NAME, "ChildClass1");
     mdBusinessChildClass1.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "junit.test.ChildClass1");
     mdBusinessChildClass1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessParentClass1.getId());
+    mdBusinessChildClass1.setGenerateMdController(false);
+    mdBusinessChildClass1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessChildClass1.apply();
 
     TypeInfo ABSTRACT_MD_TREE_2 = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "AbstractMdTree2");
@@ -193,6 +200,7 @@ public class MdRelationshipTest extends TestCase
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent2");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild2");
     mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
     abstractParentMdTree2 = mdTree;
 
@@ -215,6 +223,7 @@ public class MdRelationshipTest extends TestCase
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "AbstractParent3");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "AbstractChild3");
     mdRelationship.setGenerateMdController(false);
+    mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.apply();
     abstractMdRelationship1 = mdRelationship;
 
@@ -237,6 +246,7 @@ public class MdRelationshipTest extends TestCase
     mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent4");
     mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild4");
     mdGraph.setGenerateMdController(false);
+    mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdGraph.apply();
     abstractMdGraph1 = mdGraph;
 
@@ -261,6 +271,7 @@ public class MdRelationshipTest extends TestCase
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent1");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild1");
     mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
     //
@@ -338,6 +349,8 @@ public class MdRelationshipTest extends TestCase
       mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getId());
       mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
+      mdTree.setGenerateMdController(false);
+      mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTree.apply();
       fail("A Relationship type was defined incorrectly.  Relationship was defined to extend a Class.  Relationships can only extend other Relationships.");
     }
@@ -381,6 +394,8 @@ public class MdRelationshipTest extends TestCase
     concreteParentMdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     concreteParentMdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent5");
     concreteParentMdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild5");
+    concreteParentMdTree.setGenerateMdController(false);
+    concreteParentMdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     concreteParentMdTree.apply();
 
     TypeInfo newRelationship = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "InvalidParentTypeRelationship");
@@ -403,6 +418,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "ConcreteParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "ConcreteChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -454,6 +471,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -493,6 +512,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -534,6 +555,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -576,6 +599,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -619,6 +644,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
     abstractParentMdTree1 = MdRelationshipDAO.get(abstractParentMdTree1.getId()).getBusinessDAO();
@@ -677,6 +704,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
     try
@@ -733,6 +762,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
     try
@@ -791,6 +822,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
     mdTree.setGenerateMdController(false);
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -833,6 +866,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -878,6 +913,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -924,6 +961,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -970,6 +1009,8 @@ public class MdRelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -1011,6 +1052,8 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdGraph.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent6");
       mdGraph.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild6");
+      mdGraph.setGenerateMdController(false);
+      mdGraph.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
       fail("A graph was allowed to extend a relationship.  Graphs cannot extend relationships.");
@@ -1056,6 +1099,8 @@ public class MdRelationshipTest extends TestCase
       mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent7");
       mdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild7");
+      mdTree.setGenerateMdController(false);
+      mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTree.apply();
 
       fail("A tree was allowed to extend a relationship.  Trees cannot extend relationship.");
@@ -1085,22 +1130,24 @@ public class MdRelationshipTest extends TestCase
 
     try
     {
-      mdRelationship.setValue(MdTreeInfo.NAME, "SomeTestGraphForJUnit");
-      mdRelationship.setValue(MdTreeInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
-      mdRelationship.setValue(MdTreeInfo.PACKAGE, EntityMasterTestSetup.JUNIT_PACKAGE);
-      mdRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Relationship Graph");
-      mdRelationship.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdRelationship.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-      mdRelationship.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdRelationship.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, abstractMdGraph1.getId());
-      mdRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, busObjectMdBusiness.getId());
-      mdRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "10");
-      mdRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
-      mdRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, busObjectMdBusiness.getId());
-      mdRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
-      mdRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
-      mdRelationship.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent8");
-      mdRelationship.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild8");
+      mdRelationship.setValue(MdRelationshipInfo.NAME, "SomeTestGraphForJUnit");
+      mdRelationship.setValue(MdRelationshipInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
+      mdRelationship.setValue(MdRelationshipInfo.PACKAGE, EntityMasterTestSetup.JUNIT_PACKAGE);
+      mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Relationship Graph");
+      mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+      mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+      mdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      mdRelationship.setValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP, abstractMdGraph1.getId());
+      mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, busObjectMdBusiness.getId());
+      mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "10");
+      mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
+      mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, busObjectMdBusiness.getId());
+      mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
+      mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
+      mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "AbstractParent8");
+      mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "AbstractChild8");
+      mdRelationship.setGenerateMdController(false);
+      mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdRelationship.apply();
 
       fail("A relationship was allowed to extend a graph.  Relationships cannot extend graphs.");
@@ -1146,6 +1193,8 @@ public class MdRelationshipTest extends TestCase
       mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent9");
       mdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild9");
+      mdTree.setGenerateMdController(false);
+      mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTree.apply();
 
       fail("A tree was allowed to extend a graph.  Trees cannot extend graphs.");
@@ -1175,22 +1224,24 @@ public class MdRelationshipTest extends TestCase
 
     try
     {
-      mdRelationship.setValue(MdTreeInfo.NAME, "SomeTestGraphForJUnit");
-      mdRelationship.setValue(MdTreeInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
-      mdRelationship.setValue(MdTreeInfo.PACKAGE, EntityMasterTestSetup.JUNIT_PACKAGE);
-      mdRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Relationship Graph");
-      mdRelationship.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdRelationship.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-      mdRelationship.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdRelationship.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, abstractParentMdTree1.getId());
-      mdRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, busObjectMdBusiness.getId());
-      mdRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "10");
-      mdRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
-      mdRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, busObjectMdBusiness.getId());
-      mdRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
-      mdRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
-      mdRelationship.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent10");
-      mdRelationship.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild10");
+      mdRelationship.setValue(MdRelationshipInfo.NAME, "SomeTestGraphForJUnit");
+      mdRelationship.setValue(MdRelationshipInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
+      mdRelationship.setValue(MdRelationshipInfo.PACKAGE, EntityMasterTestSetup.JUNIT_PACKAGE);
+      mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Relationship Graph");
+      mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+      mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+      mdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      mdRelationship.setValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP, abstractParentMdTree1.getId());
+      mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, busObjectMdBusiness.getId());
+      mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "10");
+      mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
+      mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, busObjectMdBusiness.getId());
+      mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
+      mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
+      mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "AbstractParent10");
+      mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "AbstractChild10");
+      mdRelationship.setGenerateMdController(false);
+      mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdRelationship.apply();
 
       fail("A relationship was allowed to extend a tree.  Relationship cannot extend trees.");
@@ -1236,6 +1287,8 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent11");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild11");
+      mdGraph.setGenerateMdController(false);
+      mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
       fail("A graph was allowed to extend a tree.  Graphs cannot extend trees.");
@@ -1259,8 +1312,11 @@ public class MdRelationshipTest extends TestCase
    */
   public void testDuplicateParentMethod()
   {
-    MdBusinessDAOIF testClassMdBusiness = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
-
+    // Method name conflicts are only checked on classes that compile
+    MdBusinessDAO testClassMdBusiness = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType()).getBusinessDAO();
+    testClassMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    testClassMdBusiness.apply();
+    
     // Now for a new Relationship
     MdGraphDAO mdGraph = MdGraphDAO.newInstance();
 
@@ -1281,6 +1337,8 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, testClassMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent1");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild379");
+      mdGraph.setGenerateMdController(false);
+      mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
       mdGraph.apply();
 
       fail("Created a new MdRelationship with conflicting method names.");
@@ -1291,6 +1349,9 @@ public class MdRelationshipTest extends TestCase
     }
     finally
     {
+      testClassMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+      testClassMdBusiness.apply();
+      
       if (mdGraph.isAppliedToDB())
       {
         mdGraph.delete();
@@ -1326,6 +1387,8 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, testClassMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent1");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild379");
+      mdGraph.setGenerateMdController(false);
+      mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
     }
     catch (RelationshipDefinitionException e)
@@ -1347,8 +1410,11 @@ public class MdRelationshipTest extends TestCase
    */
   public void testDuplicateChildMethod()
   {
-    MdBusinessDAOIF testClassMdBusiness = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
-
+    // Method name conflicts are only checked on classes that compile
+    MdBusinessDAO testClassMdBusiness = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType()).getBusinessDAO();
+    testClassMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    testClassMdBusiness.apply();
+    
     // Now for a new Relationship
     MdGraphDAO mdGraph = MdGraphDAO.newInstance();
 
@@ -1369,6 +1435,8 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, testClassMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent3240");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild1");
+      mdGraph.setGenerateMdController(false);
+      mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
       mdGraph.apply();
 
       fail("Created a new MdRelationship with conflicting method names.");
@@ -1379,6 +1447,9 @@ public class MdRelationshipTest extends TestCase
     }
     finally
     {
+      testClassMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+      testClassMdBusiness.apply();
+      
       if (mdGraph.isAppliedToDB())
       {
         mdGraph.delete();
@@ -1414,6 +1485,8 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, testClassMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent3240");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild1");
+      mdGraph.setGenerateMdController(false);
+      mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
     }
     catch (RelationshipDefinitionException e)
@@ -1458,6 +1531,8 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "SortParent1");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "SortChild1");
       mdGraph.setValue(MdGraphInfo.SORT_MD_ATTRIBUTE, mdAttribute.getId());
+      mdGraph.setGenerateMdController(false);
+      mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
       fail("Created a new MdRelationship with an invalid sortMdAttribute value.");
@@ -1504,6 +1579,8 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "CompParent1");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "CompChild1");
+      mdGraph.setGenerateMdController(false);
+      mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
       fail("Created a new MdRelationship with a parent of type Component.");
@@ -1550,6 +1627,8 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, componentMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "CompParent1");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "CompChild1");
+      mdGraph.setGenerateMdController(false);
+      mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
       fail("Created a new MdRelationship with a child of type Component.");

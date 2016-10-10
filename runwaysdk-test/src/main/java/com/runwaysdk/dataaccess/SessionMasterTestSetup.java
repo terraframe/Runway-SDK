@@ -25,6 +25,7 @@ import junit.framework.TestResult;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
@@ -118,6 +119,7 @@ public class SessionMasterTestSetup extends TestSetup
       parentMdView.setStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent View");
       parentMdView.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       parentMdView.setValue(MdViewInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
+      parentMdView.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       parentMdView.apply();
 
       MdViewDAO childMdView = MdViewDAO.newInstance();
@@ -129,6 +131,7 @@ public class SessionMasterTestSetup extends TestSetup
       childMdView.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       childMdView.setValue(MdViewInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       childMdView.setValue(MdViewInfo.SUPER_MD_VIEW, parentMdView.getId());
+      childMdView.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       childMdView.apply();
 
       mdView = childMdView;
@@ -150,6 +153,7 @@ public class SessionMasterTestSetup extends TestSetup
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Reference Type");
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       referenceMdBusiness = mdBusiness;
@@ -162,6 +166,7 @@ public class SessionMasterTestSetup extends TestSetup
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some JUnit Type");
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
     }

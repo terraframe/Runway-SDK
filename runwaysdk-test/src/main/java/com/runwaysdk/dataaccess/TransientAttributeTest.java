@@ -268,7 +268,8 @@ public class TransientAttributeTest extends TestCase
     someTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 2");
     someTree.setValue(MdTreeInfo.PARENT_METHOD, "someParentAccessor");
     someTree.setValue(MdTreeInfo.CHILD_METHOD, "someChildAccessor");
-    someTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    someTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);  
+    someTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     someTree.apply();
 
     MdStructDAOIF phoneNumber = MdStructDAO.getMdStructDAO(EntityTypes.PHONE_NUMBER.getType());
@@ -542,6 +543,7 @@ public class TransientAttributeTest extends TestCase
     stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.apply();
     stateEnumerationMdBusiness = stateEnumMdBusiness;
 
@@ -554,6 +556,7 @@ public class TransientAttributeTest extends TestCase
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumerationMdBusiness.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
     stateMdEnumeration = mdEnumeration;
 
@@ -1876,6 +1879,7 @@ public class TransientAttributeTest extends TestCase
       other.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       other.setValue(MdViewInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       other.setValue(MdViewInfo.SUPER_MD_VIEW, attributeMdView.getId());
+      other.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       other.apply();
 
       // first declaration of attribute Cost
