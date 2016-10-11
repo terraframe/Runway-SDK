@@ -2277,121 +2277,6 @@ public class Database
   }
 
   /**
-   * This is a special method used to update the generated server, common, and
-   * client classes for an MdType. This method is used only within the
-   * TransactionManagement aspect, hence it takes a JDBC connection object as a
-   * parameter. It is up to the client to close the connection object.
-   * 
-   * @param table
-   * @param updateTable
-   * @param serverClassesColumnName
-   * @param serverClassesBytes
-   * @param commonClassesColumnName
-   * @param commonClassesBytes
-   * @param clientClassesColumnName
-   * @param clientClassesBytes
-   * @param conn
-   */
-  public static int updateMdFacadeGeneratedClasses(String mdFacadeId, String table, String serverClassesColumnName, byte[] serverClassesBytes, String commonClassesColumnName, byte[] commonClassesBytes, String clientClassesColumnName, byte[] clientClassesBytes, Connection conn)
-  {
-    return instance().updateMdFacadeGeneratedClasses(mdFacadeId, table, serverClassesColumnName, serverClassesBytes, commonClassesColumnName, commonClassesBytes, clientClassesColumnName, clientClassesBytes, conn);
-  }
-
-  /**
-   * This is a special method used get the generated MdFacade server classes
-   * from the database. This method is used when a transaction is rolled back to
-   * restore the generated server classes to the file system from the database.
-   * It is used only within the TransactionManagement aspect, hence it takes a
-   * JDBC connection object as a parameter. It is up to the client to close the
-   * connection object.
-   * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
-   * 
-   * @param mdFacadeId
-   * @param conn
-   */
-  public static byte[] getMdFacadeServerClasses(String mdFacadeId, Connection conn)
-  {
-    return instance().getMdFacadeServerClasses(mdFacadeId, conn);
-  }
-
-  /**
-   * This is a special method used get the generated MdFacade common classes
-   * from the database. This method is used when a transaction is rolled back to
-   * restore the generated common classes to the file system from the database.
-   * It is used only within the TransactionManagement aspect, hence it takes a
-   * JDBC connection object as a parameter. It is up to the client to close the
-   * connection object.
-   * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
-   * 
-   * @param mdFacadeId
-   * @param conn
-   */
-  public static byte[] getMdFacadeCommonClasses(String mdFacadeId, Connection conn)
-  {
-    return instance().getMdFacadeCommonClasses(mdFacadeId, conn);
-  }
-
-  /**
-   * This is a special method used get the generated MdFacade client classes
-   * from the database. This method is used when a transaction is rolled back to
-   * restore the generated client classes to the file system from the database.
-   * It is used only within the TransactionManagement aspect, hence it takes a
-   * JDBC connection object as a parameter. It is up to the client to close the
-   * connection object.
-   * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
-   * 
-   * @param mdFacadeId
-   * @param conn
-   */
-  public static byte[] getMdFacadeClientClasses(String mdFacadeId, Connection conn)
-  {
-    return instance().getMdFacadeClientClasses(mdFacadeId, conn);
-  }
-
-  /**
-   * This is a special method used get the MdFacade stub source from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the stub source on the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
-   * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
-   * 
-   * @param mdFacadeId
-   * @param conn
-   */
-  public static String getMdFacadeStubSource(String mdFacadeId, Connection conn)
-  {
-    return instance().getMdFacadeStubSource(mdFacadeId, conn);
-  }
-
-  /**
-   * This is a special method used get the MdFacade stub class from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the stub class to the file system from the database. It is used only within
-   * the TransactionManagement aspect, hence it takes a JDBC connection object
-   * as a parameter. It is up to the client to close the connection object.
-   * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
-   * 
-   * @param mdFacadeId
-   * @param conn
-   */
-  public static byte[] getMdFacadeStubClass(String mdFacadeId, Connection conn)
-  {
-    return instance().getMdFacadeStubClass(mdFacadeId, conn);
-  }
-
-  /**
    * This is a special method used get the MdClass dto stub source from the
    * database. This method is used when a transaction is rolled back to restore
    * the dto stub source on the file system from the database. It is used only
@@ -3004,9 +2889,9 @@ public class Database
    * @param dropSchema
    *          true if backup should include commands to drop the schema
    */
-  public static String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName, boolean dropSchema)
+  public static String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName, PrintStream out, PrintStream errOut, boolean dropSchema)
   {
-    return instance().backup(tableNames, backupFileLocation, backupFileRootName, dropSchema);
+    return instance().backup(tableNames, backupFileLocation, backupFileRootName, out, errOut, dropSchema);
   }
 
   /**
@@ -3021,20 +2906,21 @@ public class Database
    * @param dropSchema
    *          true if backup should include commands to drop the schema
    */
-  public static String backup(String namespace, String backupFileLocation, String backupFileRootName, boolean dropSchema)
+  public static String backup(String namespace, String backupFileLocation, String backupFileRootName, PrintStream out, PrintStream errOut, boolean dropSchema)
   {
-    return instance().backup(namespace, backupFileLocation, backupFileRootName, dropSchema);
+    return instance().backup(namespace, backupFileLocation, backupFileRootName, out, errOut, dropSchema);
   }
 
   /**
    * Imports the given SQL file into the database
    * 
    * @param restoreSQLFile
-   * @param logPrintStream
+   * @param out The output stream that the new process will print standard out to.
+   * @param errOut The output stream that the new process will print err output to.
    */
-  public static void importFromSQL(String restoreSQLFile, PrintStream logPrintStream)
+  public static void importFromSQL(String restoreSQLFile, PrintStream out, PrintStream errOut)
   {
-    instance().importFromSQL(restoreSQLFile, logPrintStream);
+    instance().importFromSQL(restoreSQLFile, out, errOut);
   }
 
   /**

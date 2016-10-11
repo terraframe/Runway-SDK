@@ -23,7 +23,7 @@
   
   <groupId>com.runwaysdk</groupId>
   <artifactId>runwaysdk-root</artifactId>
-  <version>2.0.17-SNAPSHOT</version>
+  <version>2.0.22-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>runwaysdk-root</name>
@@ -33,9 +33,11 @@
     <module>runwaysdk-common</module>
     <module>runwaysdk-client</module>
     <module>runwaysdk-server</module>
+    <module>runwaysdk-test</module>
     <module>runwaysdk-tomcat6cl</module>
     <module>runwaysdk-web</module>
     <module>runwaysdk-archetype</module>
+    <module>runwaysdk-gis</module>
   </modules>
   
   <inceptionYear>2004</inceptionYear>
@@ -93,7 +95,7 @@
     <connection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</connection>
     <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</developerConnection>
     <url>scm:git:ssh://git@github.com/terraframe/Runway-SDK</url>
-    <tag>v2.0.1-SNAPSHOT</tag>
+    <tag>v2.0.18-SNAPSHOT</tag>
   </scm>
   
   <properties>
@@ -397,14 +399,15 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.4.1</version>
-        <configuration>
-          <goals>deploy site</goals>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <tagNameFormat>v@{project.version}</tagNameFormat>
-        </configuration>
+	      <artifactId>maven-release-plugin</artifactId>
+	      <version>2.4.2</version>
+	      <dependencies>
+	        <dependency>
+	          <groupId>org.apache.maven.scm</groupId>
+	          <artifactId>maven-scm-provider-gitexe</artifactId>
+	          <version>1.8.1</version>
+	        </dependency>
+	       </dependencies>
       </plugin>
       <!--
       <plugin>
@@ -517,14 +520,14 @@
           </properties>
           <encoding>UTF-8</encoding>
         </configuration>
-        <executions>
+        <!-- <executions>
           <execution>
             <phase>process-sources</phase>
             <goals>
               <goal>check</goal>
             </goals>
           </execution>
-        </executions>
+        </executions> -->
       </plugin>
     </plugins>
     <pluginManagement>

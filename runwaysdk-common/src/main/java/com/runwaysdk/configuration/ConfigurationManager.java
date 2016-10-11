@@ -26,24 +26,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+/**
+ * Manages access to all configuration resources used by Runway SDK and provides an inversion of control mechanism for configuration resolving.
  * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ * @author Richard Rowlands
+ */
 public class ConfigurationManager
 {
   public static interface ConfigGroupIF
@@ -83,12 +70,6 @@ public class ConfigurationManager
     }
   }
 
-  // PROFILE("profile"), JAVA_PROPERTIES("java properties"), // Not used unless
-  // explicitly set,
-  // because default
-  // java properties
-  // sucks.
-
   public static class Singleton
   {
     public static final ConfigurationManager INSTANCE = new ConfigurationManager();
@@ -116,11 +97,27 @@ public class ConfigurationManager
         if (resolver.equals("Apache Commons"))
         {
           configResolver = new CommonsConfigurationResolver();
-          return;
         }
         else
         {
+          try
+          {
+            Class<?> resolverClass = ConfigurationManager.class.getClassLoader().loadClass(resolver);
+            configResolver = (ConfigurationResolverIF) resolverClass.newInstance();
+          }
+          catch (ClassNotFoundException | InstantiationException | IllegalAccessException | ClassCastException e) 
+          {
+            // Fall through we'll check it later
+          }
+        }
+        
+        if (configResolver == null)
+        {
           throw new RunwayConfigurationException("Unsupported configuration resolver '" + resolver + "'.");
+        }
+        else
+        {
+          return;
         }
       }
       catch (IOException e)

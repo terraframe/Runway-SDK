@@ -49,13 +49,13 @@ import com.runwaysdk.controller.URLConfigurationManager.UriMapping;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.request.RequestDecorator;
+import com.runwaysdk.request.ResponseDecorator;
+import com.runwaysdk.request.ServletRequestIF;
+import com.runwaysdk.request.ServletResponseIF;
 
-public class ServletDispatcher extends HttpServlet
+public class ServletDispatcher extends HttpServlet implements DispatcherIF
 {
-  private enum ServletMethod {
-    GET, POST
-  }
-
   public static final String      IS_ASYNCHRONOUS  = Constants.ROOT_PACKAGE + ".isAsynchronous_mojax";
 
   /**
@@ -70,8 +70,6 @@ public class ServletDispatcher extends HttpServlet
    */
   public static final String      MOFO_OBJECT      = Constants.ROOT_PACKAGE + ".mofoObject";
 
-  private ServletMethod           servletMethod;
-
   /**
    *
    */
@@ -83,13 +81,16 @@ public class ServletDispatcher extends HttpServlet
 
   private URLConfigurationManager xmlMapper;
 
-  private HttpServletRequest      req;
-
-  private HttpServletResponse     resp;
-
   public ServletDispatcher()
   {
     this(false, false);
+  }
+
+  public ServletDispatcher(URLConfigurationManager manager)
+  {
+    this.isAsynchronous = false;
+    this.hasFormObject = false;
+    this.xmlMapper = manager;
   }
 
   public ServletDispatcher(boolean isAsynchronous, boolean hasFormObject)
@@ -102,21 +103,13 @@ public class ServletDispatcher extends HttpServlet
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
   {
-    this.req = req;
-    this.resp = resp;
-
-    this.servletMethod = ServletMethod.POST;
-    checkAndDispatch(req, resp);
+    checkAndDispatch(new RequestManager(req, resp, ServletMethod.POST));
   }
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
   {
-    this.req = req;
-    this.resp = resp;
-
-    this.servletMethod = ServletMethod.GET;
-    checkAndDispatch(req, resp);
+    checkAndDispatch(new RequestManager(req, resp, ServletMethod.GET));
   }
 
   /**
@@ -148,11 +141,14 @@ public class ServletDispatcher extends HttpServlet
    * @throws IOException
    * @throws FileUploadException
    */
-  private void dispatch(HttpServletRequest req, HttpServletResponse resp, RequestManager manager, String actionName, String controllerName, Class<?> baseClass, Method baseMethod) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException
+  private void dispatch(RequestManager manager, String actionName, String controllerName, Class<?> baseClass, Method baseMethod) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException
   {
     Class<?> controllerClass = LoaderDecorator.load(controllerName);
-
     Constructor<?> constructor = controllerClass.getConstructor(HttpServletRequest.class, HttpServletResponse.class, Boolean.class);
+
+    HttpServletRequest req = ( (RequestDecorator) manager.getReq() ).getRequest();
+    HttpServletResponse resp = ( (ResponseDecorator) manager.getResp() ).getResponse();
+
     Object controller = constructor.newInstance(req, resp, isAsynchronous);
 
     // Add an asynchronous flag to the request object
@@ -163,20 +159,28 @@ public class ServletDispatcher extends HttpServlet
 
     // parameter map will be different depending on the call
 
-    Map<String, Parameter> parameters = this.getParameters(req, annotation);
+    Map<String, ParameterValue> parameters = this.getParameters(req, annotation);
 
     Object[] objects = this.getObjects(req, manager, annotation, parameters);
 
     // Ensure an exception has not occured while converting the request
     // parameters to objects. If an exception did occur then invoke the failure
     // case
-    if (manager.hasExceptions())
+    try
     {
-      try
+      if (manager.hasExceptions())
       {
         dispatchFailure(actionName, baseClass, controllerClass, controller, objects);
       }
-      catch (UndefinedControllerActionException e)
+      else
+      {
+        // No problems when converting parameters to objects
+        dispatchSuccess(actionName, baseMethod, controllerClass, controller, objects);
+      }
+    }
+    catch (InvocationTargetException e)
+    {
+      if (e.getCause() instanceof UndefinedControllerActionException)
       {
         RuntimeException ex;
 
@@ -196,13 +200,10 @@ public class ServletDispatcher extends HttpServlet
           ex = new RuntimeException(StringUtils.join(msgs, ", "));
         }
 
-        ErrorUtility.prepareThrowable(ex, this.req, this.resp, this.isAsynchronous, true);
+        ErrorUtility.prepareThrowable(ex, manager.getReq(), manager.getResp(), this.isAsynchronous, true);
       }
-    }
-    else
-    {
-      // No problems when converting parameters to objects
-      dispatchSuccess(actionName, baseMethod, controllerClass, controller, objects);
+
+      this.handleInvocationTargetException(manager.getReq(), manager.getResp(), e);
     }
   }
 
@@ -213,7 +214,7 @@ public class ServletDispatcher extends HttpServlet
    * @param parameters
    * @return
    */
-  private Object[] getObjects(HttpServletRequest req, RequestManager manager, ActionParameters annotation, Map<String, Parameter> parameters)
+  private Object[] getObjects(HttpServletRequest req, RequestManager manager, ActionParameters annotation, Map<String, ParameterValue> parameters)
   {
     // The Ajax FormObject is parsed specially
     if (this.hasFormObject)
@@ -236,7 +237,7 @@ public class ServletDispatcher extends HttpServlet
    * @throws FileUploadException
    */
   @SuppressWarnings("unchecked")
-  private Map<String, Parameter> getParameters(HttpServletRequest req, ActionParameters annotation)
+  private Map<String, ParameterValue> getParameters(HttpServletRequest req, ActionParameters annotation)
   {
     String mojaxObject = req.getParameter(MOJAX_OBJECT);
 
@@ -255,7 +256,7 @@ public class ServletDispatcher extends HttpServlet
     {
       if (ServletFileUpload.isMultipartContent(req))
       {
-        Map<String, Parameter> parameters = new HashMap<String, Parameter>();
+        Map<String, ParameterValue> parameters = new HashMap<String, ParameterValue>();
 
         // Create a factory for disk-based file items
         FileItemFactory factory = new DiskFileItemFactory();
@@ -303,9 +304,9 @@ public class ServletDispatcher extends HttpServlet
     }
   }
 
-  private Map<String, Parameter> getParameterMap(Map<String, String[]> parameters)
+  private Map<String, ParameterValue> getParameterMap(Map<String, String[]> parameters)
   {
-    Map<String, Parameter> map = new HashMap<String, Parameter>();
+    Map<String, ParameterValue> map = new HashMap<String, ParameterValue>();
 
     for (Entry<String, String[]> entry : parameters.entrySet())
     {
@@ -333,24 +334,17 @@ public class ServletDispatcher extends HttpServlet
    * @throws IOException
    * @throws InvocationTargetException
    */
-  private void dispatchSuccess(String actionName, Method baseMethod, Class<?> controllerClass, Object controller, Object[] objects) throws IllegalAccessException, NoSuchMethodException, IOException
+  private void dispatchSuccess(String actionName, Method baseMethod, Class<?> controllerClass, Object controller, Object[] objects) throws IllegalAccessException, NoSuchMethodException, IOException, IllegalArgumentException, InvocationTargetException
   {
-    try
-    {
-      Method method = controllerClass.getMethod(actionName, ( (Class[]) baseMethod.getParameterTypes() ));
-      method.invoke(controller, objects);
-    }
-    catch (InvocationTargetException e)
-    {
-      this.handleInvocationTargetException(e);
-    }
+    Method method = controllerClass.getMethod(actionName, ( (Class[]) baseMethod.getParameterTypes() ));
+    method.invoke(controller, objects);
   }
 
-  private void handleInvocationTargetException(InvocationTargetException e) throws IOException
+  private void handleInvocationTargetException(ServletRequestIF req, ServletResponseIF resp, InvocationTargetException e) throws IOException
   {
     Throwable target = e.getTargetException();
 
-    ErrorUtility.prepareThrowable(target, this.req, this.resp, this.isAsynchronous, true);
+    ErrorUtility.prepareThrowable(target, req, resp, this.isAsynchronous, true);
   }
 
   /**
@@ -365,31 +359,16 @@ public class ServletDispatcher extends HttpServlet
    * @throws IllegalAccessException
    * @throws NoSuchMethodException
    * @throws IOException
+   * @throws SecurityException
+   * @throws InvocationTargetException
+   * @throws IllegalArgumentException
    */
-  private void dispatchFailure(String actionName, Class<?> baseClass, Class<?> controllerClass, Object controller, Object[] objects) throws IllegalAccessException, NoSuchMethodException, IOException
+  private void dispatchFailure(String actionName, Class<?> baseClass, Class<?> controllerClass, Object controller, Object[] objects) throws IllegalAccessException, NoSuchMethodException, IOException, IllegalArgumentException, InvocationTargetException, SecurityException
   {
-    try
-    {
+    String failureName = "fail" + CommonGenerationUtil.upperFirstCharacter(actionName);
+    Method failureBase = RequestScraper.getMethod(failureName, baseClass);
 
-      String failureName = "fail" + CommonGenerationUtil.upperFirstCharacter(actionName);
-      Method failureBase = RequestScraper.getMethod(failureName, baseClass);
-
-      controllerClass.getMethod(failureName, ( (Class[]) failureBase.getParameterTypes() )).invoke(controller, objects);
-    }
-    catch (InvocationTargetException e)
-    {
-      if (e.getCause() instanceof UndefinedControllerActionException)
-      {
-        throw (UndefinedControllerActionException) e.getCause();
-      }
-
-      this.handleInvocationTargetException(e);
-    }
-  }
-
-  public boolean hasXmlMapping(HttpServletRequest req, HttpServletResponse resp)
-  {
-    return xmlMapper.getMapping(ServletDispatcher.getServletPath(req)) != null;
+    controllerClass.getMethod(failureName, ( (Class[]) failureBase.getParameterTypes() )).invoke(controller, objects);
   }
 
   /**
@@ -401,39 +380,47 @@ public class ServletDispatcher extends HttpServlet
    * @param servletMethod
    * @throws IOException
    */
-  private void checkAndDispatch(HttpServletRequest req, HttpServletResponse resp) throws IOException
+  public void checkAndDispatch(RequestManager manager) throws IOException
   {
-    String actionName;
-    String controllerName;
-    String servletPath = ServletDispatcher.getServletPath(req);
+    String servletPath = ServletDispatcher.getServletPath(manager.getReq());
 
     UriMapping uriMapping = xmlMapper.getMapping(servletPath);
     if (uriMapping != null)
     {
-      uriMapping.performRequest(req, resp, this);
+      uriMapping.performRequest(this, manager);
     }
     else
     {
       // Else expect that the controller classname followed by the action name
       // and then a prefix (like mojo) is in the url.
-      servletPath = servletPath.substring(0, servletPath.lastIndexOf("."));
+      int lastIndexOf = servletPath.lastIndexOf(".");
 
-      int index = servletPath.lastIndexOf(".");
-      actionName = servletPath.substring(index + 1);
-      controllerName = servletPath.substring(0, index).replace("/", "");
+      if (lastIndexOf != -1)
+      {
+        servletPath = servletPath.substring(0, lastIndexOf);
 
-      invokeControllerAction(controllerName, actionName, req, resp);
+        int index = servletPath.lastIndexOf(".");
+        String actionName = servletPath.substring(index + 1);
+        String controllerName = servletPath.substring(0, index).replace("/", "");
+
+        invokeControllerAction(controllerName, actionName, manager);
+      }
+      else
+      {
+        String msg = "An endpoint at the uri [" + servletPath + "] does not exist.";
+
+        throw new UnknownServletException(msg, manager.getLocale(), servletPath);
+      }
     }
   }
 
-  public void invokeControllerAction(String controllerName, String actionName, HttpServletRequest req, HttpServletResponse resp) throws IOException
+  @Override
+  public void invokeControllerAction(String controllerName, String actionName, RequestManager manager) throws IOException
   {
-    String servletPath = ServletDispatcher.getServletPath(req);
+    String servletPath = ServletDispatcher.getServletPath(manager.getReq());
 
     try
     {
-      RequestManager manager = new RequestManager(req);
-
       Class<?> baseClass = LoaderDecorator.load(controllerName + "Base");
       Method baseMethod = RequestScraper.getMethod(actionName, baseClass);
 
@@ -442,20 +429,20 @@ public class ServletDispatcher extends HttpServlet
         ActionParameters annotation = baseMethod.getAnnotation(ActionParameters.class);
 
         // POST methods cannot be invoked through GETS
-        if (annotation.post() && servletMethod.equals(ServletMethod.GET))
+        if (annotation.post() && manager.getMethod().equals(ServletMethod.GET))
         {
           String msg = "The uri [" + servletPath + "] can only be accessed by a post method";
-          throw new IllegalURIMethodException(msg, req.getLocale(), servletPath);
+          throw new IllegalURIMethodException(msg, manager.getLocale(), servletPath);
         }
         else
         {
-          dispatch(req, resp, manager, actionName, controllerName, baseClass, baseMethod);
+          dispatch(manager, actionName, controllerName, baseClass, baseMethod);
         }
       }
       else
       {
         String msg = "A servlet at the uri [" + servletPath + "] does not exist.";
-        throw new UnknownServletException(msg, req.getLocale(), servletPath);
+        throw new UnknownServletException(msg, manager.getLocale(), servletPath);
       }
     }
     catch (RuntimeException ex)
@@ -463,7 +450,7 @@ public class ServletDispatcher extends HttpServlet
       if (ex instanceof LoaderDecoratorExceptionIF)
       {
         String msg = "A servlet at the uri [" + servletPath + "] does not exist.";
-        throw new UnknownServletException(msg, req.getLocale(), servletPath);
+        throw new UnknownServletException(msg, manager.getLocale(), servletPath);
       }
       else
       {
@@ -473,31 +460,32 @@ public class ServletDispatcher extends HttpServlet
     catch (NoSuchMethodException e)
     {
       String msg = "A servlet at the uri [" + servletPath + "] does not exist.";
-      throw new UnknownServletException(msg, req.getLocale(), servletPath);
+      throw new UnknownServletException(msg, manager.getLocale(), servletPath);
     }
     catch (InstantiationException e)
     {
       String msg = "A servlet at the uri [" + servletPath + "] does not exist.";
-      throw new UnknownServletException(msg, req.getLocale(), servletPath);
+      throw new UnknownServletException(msg, manager.getLocale(), servletPath);
     }
     catch (IllegalAccessException e)
     {
       String msg = "A servlet at the uri [" + servletPath + "] does not exist.";
-      throw new UnknownServletException(msg, req.getLocale(), servletPath);
+      throw new UnknownServletException(msg, manager.getLocale(), servletPath);
     }
     catch (InvocationTargetException e)
     {
-      this.handleInvocationTargetException(e);
+      this.handleInvocationTargetException(manager.getReq(), manager.getResp(), e);
     }
   }
 
   /**
-   * This method strips the context path from the request URI and returns it. Use this method to handle URI's in a context path agnostic manner.
+   * This method strips the context path from the request URI and returns it.
+   * Use this method to handle URI's in a context path agnostic manner.
    * 
    * @param request
    * @return
    */
-  private static final String getServletPath(HttpServletRequest request)
+  private static final String getServletPath(ServletRequestIF request)
   {
     String servletPath = request.getServletPath();
 
@@ -511,5 +499,10 @@ public class ServletDispatcher extends HttpServlet
     int endIndex = request.getPathInfo() == null ? requestUri.length() : requestUri.indexOf(request.getPathInfo());
 
     return requestUri.substring(startIndex, endIndex);
+  }
+
+  public boolean hasXmlMapping(HttpServletRequest req, HttpServletResponse resp)
+  {
+    return xmlMapper.getMapping(ServletDispatcher.getServletPath(new RequestDecorator(req))) != null;
   }
 }

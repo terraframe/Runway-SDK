@@ -34,7 +34,6 @@ import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdInformationDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
@@ -119,10 +118,6 @@ public class UpdateVisitor extends ExportVisitor
       MdEnumerationDAOIF enumeration = (MdEnumerationDAOIF) component;
       visitMdEnumeration(enumeration);
     }
-    else if (component instanceof MdFacadeDAOIF)
-    {
-      visitMdFacade((MdFacadeDAOIF) component);
-    }
     else if (component instanceof MdControllerDAOIF)
     {
       visitMdController((MdControllerDAOIF) component);
@@ -197,20 +192,6 @@ public class UpdateVisitor extends ExportVisitor
     }
 
     super.exitMdAction(mdAction);
-  }
-
-  @Override
-  protected void exitMdFacade(MdFacadeDAOIF mdFacade)
-  {
-    if (metadata.hasNewComponents(mdFacade))
-    {
-      // Write the attributes of the entity
-      writer.openTag(XMLTags.CREATE_TAG);
-      exportNewTypeComponents(mdFacade);
-      writer.closeTag();
-    }
-
-    super.exitMdFacade(mdFacade);
   }
 
   @Override

@@ -25,6 +25,8 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.runwaysdk.request.ServletRequestIF;
+
 public class ServletUtility
 {
 
@@ -33,11 +35,34 @@ public class ServletUtility
     Enumeration<Locale> enumeration = req.getLocales();
     List<Locale> locales = new LinkedList<Locale>();
 
-    while(enumeration.hasMoreElements())
+    while (enumeration.hasMoreElements())
     {
       locales.add(enumeration.nextElement());
-    }        
-    
+    }
+
     return locales.toArray(new Locale[locales.size()]);
+  }
+
+  /**
+   * This method strips the context path from the request URI and returns it.
+   * Use this method to handle URI's in a context path agnostic manner.
+   * 
+   * @param request
+   * @return
+   */
+  public static final String getServletPath(ServletRequestIF request)
+  {
+    String servletPath = request.getServletPath();
+
+    if (!"".equals(servletPath))
+    {
+      return servletPath;
+    }
+
+    String requestUri = request.getRequestURI();
+    int startIndex = request.getContextPath().equals("") ? 0 : request.getContextPath().length();
+    int endIndex = request.getPathInfo() == null ? requestUri.length() : requestUri.indexOf(request.getPathInfo());
+
+    return requestUri.substring(startIndex, endIndex);
   }
 }

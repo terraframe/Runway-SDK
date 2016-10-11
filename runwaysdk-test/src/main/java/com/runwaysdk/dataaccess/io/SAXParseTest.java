@@ -31,7 +31,6 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import com.runwaysdk.ComponentIF;
-import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.business.rbac.Operation;
@@ -88,7 +87,6 @@ import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdExceptionInfo;
-import com.runwaysdk.constants.MdFacadeInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdInformationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
@@ -143,7 +141,6 @@ import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdFieldDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdInformationDAOIF;
@@ -209,7 +206,6 @@ import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdExceptionDAO;
-import com.runwaysdk.dataaccess.metadata.MdFacadeDAO;
 import com.runwaysdk.dataaccess.metadata.MdGraphDAO;
 import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
 import com.runwaysdk.dataaccess.metadata.MdInformationDAO;
@@ -306,8 +302,6 @@ public class SAXParseTest extends TestCase
 
   public static final String   SELECTION_SET_TEST          = path + "selectionSetTest.xml";
 
-  public static final String   FACADE_SET_TEST             = path + "mdFacadeTest.xml";
-
   public static final String   METHOD_SET_TEST             = path + "mdMethodTest.xml";
 
   public static final String   INDEX_TEST                  = path + "indexTest.xml";
@@ -353,9 +347,7 @@ public class SAXParseTest extends TestCase
 
   public static final String   ENUM_CLASS                  = "test.xmlclasses.EnumClassTest";
 
-  public static final String   FACADE_CLASS                = "test.xmlclasses.Facade1";
-
-  public static final String[] classNames                  = { RELATIONSHIP, RELATIONSHIP2, FILTER, FILTER2, CLASS, CLASS2, CLASS3, ENUM_CLASS, FACADE_CLASS };
+  public static final String[] classNames                  = { RELATIONSHIP, RELATIONSHIP2, FILTER, FILTER2, CLASS, CLASS2, CLASS3, ENUM_CLASS };
 
   /**
    * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps it in <code>MasterTestSetup</code>. The returned class is a suite of all the tests in <code>AttributeTest</code>, with the
@@ -3875,56 +3867,6 @@ public class SAXParseTest extends TestCase
     assertTrue(TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(1).definesAttribute()));
   }
 
-  public void testFacade()
-  {
-    SAXImporter.runImport(new File(FACADE_SET_TEST));
-
-    MdFacadeDAOIF mdFacade = MdFacadeDAO.getMdFacadeDAO(FACADE_CLASS);
-    assertEquals("Facade1", mdFacade.getStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals("A test Facade", mdFacade.getStructValue(MdFacadeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdFacade.getValue(MdFacadeInfo.REMOVE));
-
-    List<MdMethodDAOIF> mdMethods = mdFacade.getMdMethods();
-
-    assertEquals(2, mdMethods.size());
-
-    for (MdMethodDAOIF mdMethod : mdMethods)
-    {
-      if (mdMethod.getName().equals("checkin"))
-      {
-        assertTrue(mdMethod.getReturnType().isVoid());
-        List<MdParameterDAOIF> mdParameters = mdMethod.getMdParameterDAOs();
-        assertEquals(1, mdParameters.size());
-        assertEquals("testInteger", mdParameters.get(0).getParameterName());
-        assertEquals("java.lang.Integer", mdParameters.get(0).getParameterType().getType());
-        assertEquals("1", mdParameters.get(0).getParameterOrder());
-        assertEquals(true, mdMethod.isStatic());
-      }
-      else
-      {
-        assertEquals("checkout", mdMethod.getName());
-        assertTrue(mdMethod.getReturnType().isArray());
-        assertEquals("java.lang.Integer[]", mdMethod.getReturnType().getType());
-
-        List<MdParameterDAOIF> mdParameters = mdMethod.getMdParameterDAOs();
-        assertEquals(2, mdParameters.size());
-
-        assertEquals("testInteger", mdParameters.get(0).getParameterName());
-        assertEquals("java.lang.Integer", mdParameters.get(0).getParameterType().getType());
-        assertEquals("1", mdParameters.get(0).getParameterOrder());
-
-        assertEquals(TestFixConst.ATTRIBUTE_CHARACTER, mdParameters.get(1).getParameterName());
-        assertEquals("java.lang.String", mdParameters.get(1).getParameterType().getType());
-        assertEquals("4", mdParameters.get(1).getParameterOrder());
-      }
-    }
-
-    for (MdMethodDAOIF mdMethod : mdMethods)
-    {
-      TestFixtureFactory.delete(mdMethod);
-    }
-  }
-
   public void testMdMethod()
   {
     SAXImporter.runImport(new File(METHOD_SET_TEST));
@@ -3971,122 +3913,6 @@ public class SAXParseTest extends TestCase
     {
       TestFixtureFactory.delete(mdMethod);
     }
-  }
-
-  public void testCreateMdFacade()
-  {
-    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
-    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.apply();
-
-    MdFacadeDAO mdFacade = MdFacadeDAO.newInstance();
-    mdFacade.setValue(MdFacadeInfo.NAME, "Facade1");
-    mdFacade.setValue(MdFacadeInfo.PACKAGE, "test.xmlclasses");
-    mdFacade.setStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
-    mdFacade.setStructValue(MdFacadeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
-    mdFacade.setValue(MdFacadeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdFacade.setValue(MdFacadeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdFacade.apply();
-
-    MdMethodDAO mdMethod = MdMethodDAO.newInstance();
-    mdMethod.setValue(MdMethodInfo.NAME, "checkin");
-    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    mdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
-    mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
-    mdMethod.apply();
-
-    MdParameterDAO mdParameter = MdParameterDAO.newInstance();
-    mdParameter.setValue(MdParameterInfo.NAME, "param1");
-    mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getId());
-    mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.apply();
-
-    MdParameterDAO mdParameter2 = MdParameterDAO.newInstance();
-    mdParameter2.setValue(MdParameterInfo.NAME, "param2");
-    mdParameter2.setValue(MdParameterInfo.TYPE, "java.lang.Integer");
-    mdParameter2.setValue(MdParameterInfo.ORDER, "1");
-    mdParameter2.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param2");
-    mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getId());
-    mdParameter2.apply();
-
-    // Test importing and exporting a query return type
-    String returnType = mdBusiness.definesType() + EntityQueryAPIGenerator.QUERY_API_SUFFIX;
-    MdMethodDAO mdMethod2 = MdMethodDAO.newInstance();
-    mdMethod2.setValue(MdMethodInfo.NAME, "checkout");
-    mdMethod2.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    mdMethod2.setValue(MdMethodInfo.RETURN_TYPE, returnType);
-    mdMethod2.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdMethod2.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdMethod2.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
-    mdMethod2.apply();
-
-    mdFacade = MdFacadeDAO.get(mdFacade.getId()).getBusinessDAO();
-
-    mdFacade.setValue(MdFacadeInfo.STUB_SOURCE, TestFixtureFactory.getMdFacadeStub());
-    mdFacade.apply();
-
-    ExportMetadata metadata = new ExportMetadata(true);
-    metadata.addCreate(new ComponentIF[] { mdFacade, mdBusiness });
-
-    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
-
-    TestFixtureFactory.delete(mdFacade);
-    TestFixtureFactory.delete(mdBusiness);
-
-    SAXImporter.runImport(new File(tempXMLFile));
-
-    assertTrue(MdFacadeDAO.isDefined("test.xmlclasses.Facade1"));
-
-    MdFacadeDAOIF mdFacadeIF = MdFacadeDAO.getMdFacadeDAO("test.xmlclasses.Facade1");
-    assertEquals("Facade1", mdFacadeIF.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals("Facade1", mdFacadeIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(TestFixtureFactory.getMdFacadeStub(), mdFacadeIF.getValue(MdFacadeInfo.STUB_SOURCE));
-
-    List<MdMethodDAOIF> mdMethods = mdFacadeIF.getMdMethods();
-
-    assertEquals(2, mdMethods.size());
-
-    MdMethodDAOIF mdMethodIF = mdMethods.get(0);
-    MdMethodDAOIF mdMethod2IF = mdMethods.get(1);
-
-    if (!mdMethods.get(0).getName().equals("checkin"))
-    {
-      mdMethodIF = mdMethods.get(1);
-      mdMethod2IF = mdMethods.get(0);
-    }
-
-    assertEquals(true, mdMethodIF.isStatic());
-    assertEquals("checkin", mdMethodIF.getName());
-    assertTrue(mdMethodIF.getReturnType().isVoid());
-    assertEquals("checkin", mdMethodIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkin", mdMethodIF.getDescription(CommonProperties.getDefaultLocale()));
-
-    List<MdParameterDAOIF> mdParameters = mdMethodIF.getMdParameterDAOs();
-    assertEquals(2, mdParameters.size());
-    assertEquals("param1", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
-
-    assertEquals("param2", mdParameters.get(1).getParameterName());
-    assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
-    assertEquals("1", mdParameters.get(1).getParameterOrder());
-    assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    assertEquals(true, mdMethod2IF.isStatic());
-    assertEquals("checkout", mdMethod2IF.getName());
-    assertEquals(returnType, mdMethod2IF.getReturnType().getType());
-    assertEquals("checkout", mdMethod2IF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkout", mdMethod2IF.getDescription(CommonProperties.getDefaultLocale()));
-
-    new File(tempXMLFile).delete();
   }
 
   public void testCreateMdController()
@@ -5059,24 +4885,6 @@ public class SAXParseTest extends TestCase
     MdMethodDAO mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
     mdMethod.apply();
 
-    MdFacadeDAO mdFacade = MdFacadeDAO.newInstance();
-    mdFacade.setValue(MdFacadeInfo.NAME, "Facade1");
-    mdFacade.setValue(MdFacadeInfo.PACKAGE, "test.xmlclasses");
-    mdFacade.setStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
-    mdFacade.setStructValue(MdFacadeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
-    mdFacade.setValue(MdFacadeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdFacade.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdFacade.apply();
-
-    MdMethodDAO mdMethod2 = MdMethodDAO.newInstance();
-    mdMethod2.setValue(MdMethodInfo.NAME, "checkin");
-    mdMethod2.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    mdMethod2.setValue(MdMethodInfo.RETURN_TYPE, "void");
-    mdMethod2.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdMethod2.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdMethod2.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
-    mdMethod2.apply();
-
     MethodActorDAO methodActor = TestFixtureFactory.createMethodActor(mdMethod);
     methodActor.apply();
 
@@ -5112,7 +4920,6 @@ public class SAXParseTest extends TestCase
     methodActor.grantPermission(Operation.DELETE, mdStruct.getId());
     methodActor.grantPermission(Operation.WRITE, mdStruct.getId());
     methodActor.grantPermission(Operation.WRITE, mdStruct.getId());
-    methodActor.grantPermission(Operation.EXECUTE, mdMethod2.getId());
 
     // Export the permissions
     ExportMetadata metadata = new ExportMetadata();
@@ -5157,10 +4964,6 @@ public class SAXParseTest extends TestCase
     assertEquals(2, operations.size());
     assertTrue(operations.contains(Operation.DELETE));
     assertTrue(operations.contains(Operation.WRITE));
-
-    operations = methodActorIF.getAllPermissions(mdMethod2);
-    assertEquals(1, operations.size());
-    assertTrue(operations.contains(Operation.EXECUTE));
   }
 
   public void testRevokeMethodPermissions()
@@ -5173,24 +4976,6 @@ public class SAXParseTest extends TestCase
     MdMethodDAO mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
     mdMethod.apply();
 
-    MdFacadeDAO mdFacade = MdFacadeDAO.newInstance();
-    mdFacade.setValue(MdFacadeInfo.NAME, "Facade1");
-    mdFacade.setValue(MdFacadeInfo.PACKAGE, "test.xmlclasses");
-    mdFacade.setStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
-    mdFacade.setStructValue(MdFacadeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
-    mdFacade.setValue(MdFacadeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdFacade.setValue(MdFacadeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdFacade.apply();
-
-    MdMethodDAO mdMethod2 = MdMethodDAO.newInstance();
-    mdMethod2.setValue(MdMethodInfo.NAME, "checkin");
-    mdMethod2.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    mdMethod2.setValue(MdMethodInfo.RETURN_TYPE, "void");
-    mdMethod2.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdMethod2.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdMethod2.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
-    mdMethod2.apply();
-
     MethodActorDAO methodActor = TestFixtureFactory.createMethodActor(mdMethod);
     methodActor.apply();
 
@@ -5201,12 +4986,12 @@ public class SAXParseTest extends TestCase
 
     // Create test MdView
     MdViewDAO mdView1 = TestFixtureFactory.createMdView1();
-    mdView1.setValue(MdFacadeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdView1.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView1.apply();
 
     // Create test MdUtil
     MdUtilDAO mdUtil1 = TestFixtureFactory.createMdUtil1();
-    mdUtil1.setValue(MdFacadeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdUtil1.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil1.apply();
 
     // Create test MdStruct
@@ -5226,7 +5011,6 @@ public class SAXParseTest extends TestCase
     methodActor.grantPermission(Operation.DELETE, mdStruct.getId());
     methodActor.grantPermission(Operation.WRITE, mdStruct.getId());
     methodActor.grantPermission(Operation.WRITE, mdStruct.getId());
-    methodActor.grantPermission(Operation.EXECUTE, mdMethod2.getId());
 
     // Export the permissions
     ExportMetadata metadata = new ExportMetadata();
@@ -5257,9 +5041,6 @@ public class SAXParseTest extends TestCase
     assertEquals(0, operations.size());
 
     operations = methodActorIF.getAllPermissions(mdStruct);
-    assertEquals(0, operations.size());
-
-    operations = methodActorIF.getAllPermissions(mdMethod2);
     assertEquals(0, operations.size());
   }
 
@@ -6396,152 +6177,6 @@ public class SAXParseTest extends TestCase
     MdRelationshipDAO mdRelationship2 = MdRelationshipDAO.getMdRelationshipDAO(RELATIONSHIP2).getBusinessDAO();
     assertEquals(mdRelationship.getId(), mdRelationship2.getValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP));
     assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
-  }
-
-  public void testUpdateMdFacade()
-  {
-    MdFacadeDAO mdFacade = MdFacadeDAO.newInstance();
-    mdFacade.setValue(MdFacadeInfo.NAME, "Facade1");
-    mdFacade.setValue(MdFacadeInfo.PACKAGE, "test.xmlclasses");
-    mdFacade.setStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
-    mdFacade.setStructValue(MdFacadeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1");
-    mdFacade.setValue(MdFacadeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdFacade.setValue(MdFacadeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdFacade.apply();
-
-    MdMethodDAO mdMethod = MdMethodDAO.newInstance();
-    mdMethod.setValue(MdMethodInfo.NAME, "checkin");
-    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdFacade.getId());
-    mdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
-    mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
-    mdMethod.apply();
-
-    MdParameterDAO mdParameter = MdParameterDAO.newInstance();
-    mdParameter.setValue(MdParameterInfo.NAME, "param1");
-    mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getId());
-    mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.apply();
-
-    MdParameterDAO mdParameter2 = MdParameterDAO.newInstance();
-    mdParameter2.setValue(MdParameterInfo.NAME, "param2");
-    mdParameter2.setValue(MdParameterInfo.TYPE, "java.lang.Integer");
-    mdParameter2.setValue(MdParameterInfo.ORDER, "1");
-    mdParameter2.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param2");
-    mdParameter2.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "param2");
-    mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getId());
-    mdParameter2.apply();
-
-    // Define new MdMethods and MdParameters to be added to the existing
-    // MdFacade
-    MdParameterDAO mdParameter3 = MdParameterDAO.newInstance();
-    mdParameter3.setValue(MdParameterInfo.NAME, "param3");
-    mdParameter3.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter3.setValue(MdParameterInfo.ORDER, "4");
-    mdParameter3.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param3");
-
-    MdMethodDAO mdMethod2 = MdMethodDAO.newInstance();
-    mdMethod2.setValue(MdMethodInfo.NAME, "checkout");
-    mdMethod2.setValue(MdMethodInfo.RETURN_TYPE, "void");
-    mdMethod2.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdMethod2.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdMethod2.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
-
-    MdParameterDAO mdParameter4 = MdParameterDAO.newInstance();
-    mdParameter4.setValue(MdParameterInfo.NAME, "param4");
-    mdParameter4.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter4.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter4.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param4");
-
-    // Export mdFacade with all of its MdMethods defined in the database, and
-    // export a new MdMethod for the mdFacade, as well as a new MdParameter
-    // for an existing MdMethod of mdFacade
-    ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdFacade });
-    metadata.addNewMdMethod(mdFacade, mdMethod2, mdParameter4);
-    metadata.addNewMdParameter(mdMethod, mdParameter3);
-
-    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
-
-    mdFacade = MdFacadeDAO.get(mdFacade.getId()).getBusinessDAO();
-
-    mdFacade.setStructValue(MdFacadeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1 Update");
-    mdFacade.setStructValue(MdFacadeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Facade1 Update");
-    mdFacade.setValue(MdFacadeInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    mdFacade.apply();
-
-    mdMethod.setValue(MdMethodInfo.RETURN_TYPE, "java.lang.Long");
-    mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "CheckIn Update");
-    mdMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "CheckIn Update");
-    mdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
-    mdMethod.apply();
-
-    mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.Integer");
-    mdParameter.setValue(MdParameterInfo.ORDER, "99");
-    mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "First Integer");
-    mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter Update Test");
-    mdParameter.apply();
-
-    SAXImporter.runImport(new File(tempXMLFile));
-
-    assertTrue(MdFacadeDAO.isDefined("test.xmlclasses.Facade1"));
-
-    MdFacadeDAOIF mdFacadeIF = MdFacadeDAO.getMdFacadeDAO("test.xmlclasses.Facade1");
-    assertEquals("Facade1", mdFacadeIF.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals("Facade1", mdFacadeIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    List<MdMethodDAOIF> mdMethods = mdFacadeIF.getMdMethods();
-
-    assertEquals(2, mdMethods.size());
-
-    int i = 0;
-    int j = 1;
-
-    if (!"checkin".equals(mdMethods.get(0).getName()))
-    {
-      i = 1;
-      j = 0;
-    }
-
-    assertEquals(true, mdMethods.get(i).isStatic());
-    assertEquals("checkin", mdMethods.get(i).getName());
-    assertTrue(mdMethods.get(i).getReturnType().isVoid());
-    assertEquals("checkin", mdMethods.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkin", mdMethods.get(i).getDescription(CommonProperties.getDefaultLocale()));
-
-    List<MdParameterDAOIF> mdParameters = mdMethods.get(i).getMdParameterDAOs();
-    assertEquals(3, mdParameters.size());
-    assertEquals("param1", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
-
-    assertEquals("param2", mdParameters.get(1).getParameterName());
-    assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
-    assertEquals("1", mdParameters.get(1).getParameterOrder());
-    assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    assertEquals("param3", mdParameters.get(2).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(2).getParameterType().getType());
-    assertEquals("4", mdParameters.get(2).getParameterOrder());
-    assertEquals("param3", mdParameters.get(2).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    assertEquals(true, mdMethods.get(j).isStatic());
-    assertEquals("checkout", mdMethods.get(j).getName());
-    assertTrue(mdMethods.get(j).getReturnType().isVoid());
-    assertEquals("checkout", mdMethods.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkout", mdMethods.get(j).getDescription(CommonProperties.getDefaultLocale()));
-
-    mdParameters = mdMethods.get(j).getMdParameterDAOs();
-    assertEquals(1, mdParameters.size());
-    assertEquals("param4", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
   public void testUpdateMdController()

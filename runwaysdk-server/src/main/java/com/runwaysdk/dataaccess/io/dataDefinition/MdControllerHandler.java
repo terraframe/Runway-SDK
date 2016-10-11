@@ -21,7 +21,6 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 import org.xml.sax.Attributes;
 
 import com.runwaysdk.constants.MdControllerInfo;
-import com.runwaysdk.constants.MdFacadeInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
@@ -36,7 +35,7 @@ public class MdControllerHandler extends TagHandler implements TagHandlerIF, Han
 
     this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
     this.addHandler(XMLTags.MD_ACTION_TAG, new MdActionHandler(manager));
-    this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdFacadeInfo.STUB_SOURCE));
+    this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdControllerInfo.STUB_SOURCE));
   }
 
   /*

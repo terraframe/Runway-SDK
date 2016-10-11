@@ -79,6 +79,9 @@ abstract public class Term extends Business
   /**
    * Deletes the term, all of it's children, all associated relationships, and updates the ontology strategy across all ontological relationship types. May be a potentially expensive operation.
    * 
+   * Warning: Be very careful when overriding this method! Overriding should only be used to completely change the behavior (and not super), or to add a "before hook" into delete. If you want special delete logic done
+   *          every time a term is deleted then you need to override deletePerTerm instead because this delete method is not called on all children (only the very first deleted term).
+   * 
    * TODO: Multi-threading
    * TODO: At what point is it faster to rebuild the Allpaths table?
    * TODO: Add better support in Query API for managing tables so this temp table logic can be more cross DB
@@ -87,7 +90,13 @@ abstract public class Term extends Business
    */
   @Override
   @Transaction
-  public void delete() {
+  public void delete()
+  {
+    this.delete(true);
+  }
+  
+  public void delete(boolean deleteChildren)
+  {
     if (this.getKey().equals(ROOT_KEY))
     {
       ImmutableRootException exception = new ImmutableRootException("Cannot delete the root Term.");
@@ -97,12 +106,16 @@ abstract public class Term extends Business
       throw exception;
     }
     
-    String[] rels = TermUtil.getAllChildRelationships(this.getId());
-    for (String relationship : rels)
+    if (deleteChildren)
     {
-      exhaustiveDelete(relationship);
+      String[] rels = TermUtil.getAllChildRelationships(this.getId());
+      for (String relationship : rels)
+      {
+        exhaustiveDelete(relationship);
+      }
     }
     
+    this.deletePerTerm();
     super.delete();
   }
   
@@ -173,6 +186,7 @@ abstract public class Term extends Business
         strategy.removeTerm(current, relationship);
         if (s.size() != 0)
         {
+          current.deletePerTerm();
           EntityDAO.get(current.getId()).getEntityDAO().delete();
         }
       }
@@ -256,6 +270,14 @@ abstract public class Term extends Business
     }
     
     Database.executeStatementBatch(statements);
+  }
+  /**
+   * If subtypes of Term want custom delete logic they have to override this method (and not the delete method). This is because when deleting a term and all children the override "delete"
+   * method is not invoked for every child term.
+   */
+  protected void deletePerTerm()
+  {
+    
   }
   
   /**

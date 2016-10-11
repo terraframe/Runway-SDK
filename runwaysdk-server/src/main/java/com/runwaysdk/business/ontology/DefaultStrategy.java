@@ -18,11 +18,22 @@
  */
 package com.runwaysdk.business.ontology;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
+
+import com.runwaysdk.dataaccess.database.Database;
+
 import com.runwaysdk.query.OIterator;
 
 public class DefaultStrategy implements OntologyStrategyIF
 {
   protected String termClass;
+  
+  private String relationshipType;
   
   public static class Singleton
   {
@@ -96,18 +107,16 @@ public class DefaultStrategy implements OntologyStrategyIF
   @Override
   public OIterator<Term> getAllAncestors(Term term, String relationshipType)
   {
-//    List<Term> retList = new ArrayList<Term>();
-//    List<Term> ancestors = getDirectAncestors(term, relationshipType);
-//    retList.addAll(ancestors);
-//
-//    for (Iterator<Term> i = ancestors.iterator(); i.hasNext();)
-//    {
-//      retList.addAll(getAllAncestors(i.next(), relationshipType));
-//    }
-//
-//    return retList;
-    
-    throw new UnsupportedOperationException("Implement Me!");
+    List<Term> retList = new ArrayList<Term>();
+    List<Term> ancestors = getDirectAncestors(term, relationshipType).getAll();
+    retList.addAll(ancestors);
+
+    for (Iterator<Term> i = ancestors.iterator(); i.hasNext();)
+    {
+      retList.addAll(getAllAncestors(i.next(), relationshipType).getAll());
+    }
+
+    return new InMemoryObjectIterator<Term>(retList);
   }
 
   /**
@@ -117,18 +126,16 @@ public class DefaultStrategy implements OntologyStrategyIF
   @Override
   public OIterator<Term> getAllDescendants(Term term, String relationshipType)
   {
-//    List<Term> retList = new ArrayList<Term>();
-//    List<Term> descendants = getDirectDescendants(term, relationshipType);
-//    retList.addAll(descendants);
-//
-//    for (Iterator<Term> i = descendants.iterator(); i.hasNext();)
-//    {
-//      retList.addAll(this.getAllDescendants(i.next(), relationshipType));
-//    }
-//
-//    return retList;
-    
-    throw new UnsupportedOperationException("Implement Me!");
+    List<Term> retList = new ArrayList<Term>();
+    List<Term> descendants = getDirectDescendants(term, relationshipType).getAll();
+    retList.addAll(descendants);
+
+    for (Iterator<Term> i = descendants.iterator(); i.hasNext();)
+    {
+      retList.addAll(this.getAllDescendants(i.next(), relationshipType).getAll());
+    }
+
+    return new InMemoryObjectIterator<Term>(retList);
   }
 
   /**
@@ -193,10 +200,120 @@ public class DefaultStrategy implements OntologyStrategyIF
     this.termClass = termClass;
   }
 
+  private class InMemoryObjectIterator<T> implements OIterator<T>
+  {
+    List<T> list;
+    
+    Iterator<T> it;
+    
+    private InMemoryObjectIterator(List<T> list)
+    {
+      this.list = list;
+      it = this.list.iterator();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+      return it;
+    }
+
+    @Override
+    public T next() {
+      return it.next();
+    }
+
+    @Override
+    public void remove() {
+      it.remove();
+    }
+
+    @Override
+    public boolean hasNext() {
+      return it.hasNext();
+    }
+
+    @Override
+    public void close() {
+      
+    }
+
+    @Override
+    public List<T> getAll() {
+      return list;
+    }
+    
+  }
+  
+  public class DefaultDeleteStrategyProvider implements DeleteStrategyProviderIF
+  {
+    private String relationshipType;
+    
+    private DefaultDeleteStrategyProvider(Term deleteRoot, String relationshipType)
+    {
+      this.relationshipType = relationshipType;
+    }
+
+    @Override
+    public boolean isTermAlreadyProcessed(Term child, Stack<Term> s)
+    {
+      int count = 0;
+      
+      ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getId() + "'");
+      try
+      {
+        if (resultSet.next())
+        {
+          count = resultSet.getInt("count");
+        }
+      }
+      catch (SQLException sqlEx1)
+      {
+        Database.throwDatabaseException(sqlEx1);
+      }
+      finally
+      {
+        try
+        {
+          java.sql.Statement statement = resultSet.getStatement();
+          resultSet.close();
+          statement.close();
+        }
+        catch (SQLException sqlEx2)
+        {
+          Database.throwDatabaseException(sqlEx2);
+        }
+      }
+      
+      return count > 0 && this.doesAncestorHaveMultipleParents(child, s);
+    }
+
+    @Override
+    public boolean doesAncestorHaveMultipleParents(Term child, Stack<Term> s)
+    {
+      List<Term> ancestors = DefaultStrategy.this.getDirectAncestors(child, relationshipType).getAll();
+      
+      if (ancestors.size() > 1)
+      {
+        return true;
+      }
+
+      for (Iterator<Term> i = ancestors.iterator(); i.hasNext();)
+      {
+        boolean doesParent = doesAncestorHaveMultipleParents(i.next(), s);
+        
+        if (doesParent)
+        {
+          return true;
+        }
+      }
+
+      return false;
+    }
+  }
+  
   @Override
   public DeleteStrategyProviderIF getDeleteStrategyProvider(Term deleteRoot, String relationshipType)
   {
-    // TODO Auto-generated method stub
-    return null;
+    return new DefaultDeleteStrategyProvider(deleteRoot, relationshipType);
   }
 }

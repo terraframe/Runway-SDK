@@ -41,7 +41,11 @@ public class CommandTagSupport extends ClassTagSupport
     super();
 
     this.addAttribute("value", "Submit");
-    this.addAttribute("type", "button");
+    
+    // I know a button with type="button" seems redundant, but its actually not. Without type="button" it will always refresh the page.
+    // http://stackoverflow.com/questions/7803814/prevent-refresh-of-page-when-button-inside-form-clicked
+//    this.addAttribute("type", "button");
+    
     this.setId(IDGenerator.nextID());
   }
 
@@ -95,6 +99,6 @@ public class CommandTagSupport extends ClassTagSupport
       throw ex;
     }
 
-    this.writeEmptyTag("input", out);
+    this.writeTag("button", this.getValue(), out);
   }
 }

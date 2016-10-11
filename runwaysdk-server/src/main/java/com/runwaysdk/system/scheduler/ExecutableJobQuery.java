@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -301057408)
+@com.runwaysdk.business.ClassSignature(hash = 452102665)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -169,6 +169,122 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   }
 
 
+  public com.runwaysdk.query.Condition upstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.getBusinessQuery().isChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition upstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.getBusinessQuery().isChildIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.getBusinessQuery().isChildIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(executableJobQuery));
+
+    return this.getBusinessQuery().isChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(executableJobQuery));
+
+    return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasParent(executableJobQuery));
+    return this.getBusinessQuery().isChildIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasParent(executableJobQuery));
+    return this.getBusinessQuery().isChildIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.getBusinessQuery().isNotChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.getBusinessQuery().isNotChildIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(executableJobQuery));
+
+    return this.getBusinessQuery().isNotChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(executableJobQuery));
+
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasParent(executableJobQuery));
+    return this.getBusinessQuery().isNotChildIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasParent(executableJobQuery));
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+
   public com.runwaysdk.query.Condition jobHistory()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
@@ -285,6 +401,122 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   }
 
 
+  public com.runwaysdk.query.Condition downstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.getBusinessQuery().isParentIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.getBusinessQuery().isParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition downstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.getBusinessQuery().isParentIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.getBusinessQuery().isParentIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(executableJobQuery));
+
+    return this.getBusinessQuery().isParentIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(executableJobQuery));
+
+    return this.getBusinessQuery().isParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasChild(executableJobQuery));
+    return this.getBusinessQuery().isParentIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasChild(executableJobQuery));
+    return this.getBusinessQuery().isParentIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.getBusinessQuery().isNotParentIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.getBusinessQuery().isNotParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.getBusinessQuery().isNotParentIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.getBusinessQuery().isNotParentIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(executableJobQuery));
+
+    return this.getBusinessQuery().isNotParentIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(executableJobQuery));
+
+    return this.getBusinessQuery().isNotParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasChild(executableJobQuery));
+    return this.getBusinessQuery().isNotParentIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasChild(executableJobQuery));
+    return this.getBusinessQuery().isNotParentIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+
 /**
  * Interface that masks all type unsafe query methods and defines all type safe methods.
  * This type is used when a join is performed on this class as a reference.
@@ -324,6 +556,20 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   public com.runwaysdk.query.Condition SUBSELECT_jobHistory(com.runwaysdk.system.scheduler.JobHistoryQuery jobHistoryQuery, com.runwaysdk.system.scheduler.JobHistoryRecordQuery jobHistoryRecordQuery);
 
 
+  public com.runwaysdk.query.Condition downstreamJob();
+
+  public com.runwaysdk.query.Condition downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery);
+
+  public com.runwaysdk.query.Condition downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob();
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery);
+
+
   public com.runwaysdk.query.Condition NOT_IN_jobHistory();
 
   public com.runwaysdk.query.Condition NOT_IN_jobHistory(com.runwaysdk.system.scheduler.JobHistoryQuery jobHistoryQuery);
@@ -336,6 +582,44 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_jobHistory(com.runwaysdk.system.scheduler.JobHistoryQuery jobHistoryQuery);
 
   public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_jobHistory(com.runwaysdk.system.scheduler.JobHistoryQuery jobHistoryQuery, com.runwaysdk.system.scheduler.JobHistoryRecordQuery jobHistoryRecordQuery);
+
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob();
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery);
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob();
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery);
+
+
+  public com.runwaysdk.query.Condition upstreamJob();
+  public com.runwaysdk.query.Condition upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery);
+
+  public com.runwaysdk.query.Condition upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob();
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery);
+
+
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob();
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery);
+
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob();
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery);
 
   }
 
@@ -494,6 +778,64 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   }
 
 
+  public com.runwaysdk.query.Condition downstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.isParentIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.isParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition downstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.isParentIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.isParentIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(executableJobQuery));
+
+    return this.isParentIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(executableJobQuery));
+
+    return this.isParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasChild(executableJobQuery));
+    return this.isParentIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasChild(executableJobQuery));
+    return this.isParentIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+
   public com.runwaysdk.query.Condition NOT_IN_jobHistory()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
@@ -549,6 +891,180 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   {
     jobHistoryRecordQuery.AND(jobHistoryRecordQuery.hasChild(jobHistoryQuery));
     return this.isNotParentIn_SUBSELECT(jobHistoryRecordQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.isNotParentIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.isNotParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.isNotParentIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.isNotParentIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(executableJobQuery));
+
+    return this.isNotParentIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(executableJobQuery));
+
+    return this.isNotParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasChild(executableJobQuery));
+    return this.isNotParentIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_downstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasChild(executableJobQuery));
+    return this.isNotParentIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition upstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.isChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition upstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.isChildIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.isChildIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(executableJobQuery));
+
+    return this.isChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(executableJobQuery));
+
+    return this.isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasParent(executableJobQuery));
+    return this.isChildIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasParent(executableJobQuery));
+    return this.isChildIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.isNotChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+
+    return this.isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.isNotChildIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    return this.isNotChildIn_SUBSELECT(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(executableJobQuery));
+
+    return this.isNotChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.DownstreamJobRelationship.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(executableJobQuery));
+
+    return this.isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasParent(executableJobQuery));
+    return this.isNotChildIn(downstreamJobRelationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_upstreamJob(com.runwaysdk.system.scheduler.ExecutableJobQuery executableJobQuery, com.runwaysdk.system.scheduler.DownstreamJobRelationshipQuery downstreamJobRelationshipQuery)
+  {
+    downstreamJobRelationshipQuery.AND(downstreamJobRelationshipQuery.hasParent(executableJobQuery));
+    return this.isNotChildIn_SUBSELECT(downstreamJobRelationshipQuery);
   }
 
   protected com.runwaysdk.query.AttributeLocal localFactory( com.runwaysdk.dataaccess.MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)

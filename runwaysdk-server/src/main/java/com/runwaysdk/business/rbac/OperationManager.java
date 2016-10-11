@@ -27,7 +27,6 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdSessionDAOIF;
@@ -266,11 +265,6 @@ public class OperationManager
     else if (businessDAO instanceof StateMasterDAOIF)
     {
       return stateOperations;
-    }
-    else if (businessDAO instanceof MdFacadeDAOIF)
-    {
-      //MdFacades do not have any permissions associated with them
-      return new TreeSet<Operation>();
     }
     else if (businessDAO instanceof MdMethodDAOIF)
     {

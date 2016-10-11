@@ -116,7 +116,14 @@ public class Sandbox implements Job
   {
     Database.enableLoggingDMLAndDDLstatements(true);
 
-    Sandbox.createGenerateSourceAttribute();
+    // Sandbox.createGenerateSourceAttribute();
+    Sandbox.deleteMdFacade();
+  }
+
+  private static void deleteMdFacade()
+  {
+//    MdBusinessDAO mdFacade = MdBusinessDAO.getMdBusinessDAO(MdFacadeInfo.CLASS).getBusinessDAO();
+//    mdFacade.delete();
   }
 
   private static int count = 0;
@@ -161,7 +168,7 @@ public class Sandbox implements Job
     businessDAO.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, display);
     businessDAO.apply();
   }
-  
+
   @Transaction
   private static void createGenerateSourceAttribute()
   {

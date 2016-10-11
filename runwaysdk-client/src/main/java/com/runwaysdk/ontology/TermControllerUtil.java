@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.controller.ErrorUtility;
+import com.runwaysdk.request.RequestDecorator;
+import com.runwaysdk.request.ResponseDecorator;
 import com.runwaysdk.system.ontology.TermUtilDTO;
 import com.runwaysdk.system.ontology.io.TermFileFormatDTO;
 
@@ -67,7 +69,7 @@ public class TermControllerUtil
       {
         resp.reset();
       }
-      ErrorUtility.prepareThrowable(e, req, out, resp, false, true);
+      ErrorUtility.prepareThrowable(e, new RequestDecorator(req), out, new ResponseDecorator(resp), false, true);
     }
     finally
     {

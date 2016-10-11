@@ -18,9 +18,11 @@
  */
 package com.runwaysdk.dataaccess.io;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
@@ -103,22 +105,54 @@ public class BackupTest extends TestCase
 
     try
     {
-      System.out.println("Starting backup");
-
-      Backup backup = new Backup(System.out, "test", "test/backup", true, true);
-      String location = backup.backup(false);
-
-      System.out.println("Backed up to [" + location + "].");
+      String location = doBackup();
       
-      System.out.println("Starting restore from [" + location + "].");
-      
-      Restore restore = new Restore(System.out, location);
-      restore.restore();
+      doRestore(location);
     }
     finally
     {
       this.cleanupWebapp();
     }
+  }
+  
+  private void doRestore(String location)
+  {
+    System.out.println("Starting restore from [" + location + "].");
+    
+    ByteArrayOutputStream errBaos = new ByteArrayOutputStream();
+    PrintStream errPs = new PrintStream(errBaos);
+    
+    Restore restore = new Restore(System.out, errPs, location);
+    restore.restore();
+    
+    String errOut = errBaos.toString();
+    if (errOut.length() > 0)
+    {
+      throw new RuntimeException("psql produced this error output: " + errOut);
+    }
+  }
+  
+  private String doBackup()
+  {
+    System.out.println("Starting backup");
+    
+    ByteArrayOutputStream errBaos = new ByteArrayOutputStream();
+    PrintStream errPs = new PrintStream(errBaos);
+    
+    Backup backup = new Backup(System.out, errPs, "test", "test/backup", true, true);
+    String location = backup.backup(false);
+    
+    String errOut = errBaos.toString();
+    if (errOut.length() > 0)
+    {
+      throw new RuntimeException("psql produced this error output: " + errOut);
+    }
+    else
+    {
+      System.out.println("Backed up to [" + location + "].");
+    }
+    
+    return location;
   }
 
   public void testBackupAndRestoreOfDifferentFileName() throws IOException
@@ -127,20 +161,14 @@ public class BackupTest extends TestCase
 
     try
     {
-      System.out.println("Starting backup");
+      String location = doBackup();
       
-      Backup backup = new Backup(System.out, "test", "test/backup", true, true);
-      String location = backup.backup(false);
-      
-      System.out.println("Backed up to [" + location + "].");
-
       File destination = new File("test/backup/test.zip");
       FileIO.copy(new File(location), destination);
       
       System.out.println("Starting restore from [" + destination.getAbsolutePath() + "].");
 
-      Restore restore = new Restore(System.out, destination.getAbsolutePath());
-      restore.restore();
+      doRestore(destination.getAbsolutePath());
     }
     finally
     {
@@ -160,20 +188,12 @@ public class BackupTest extends TestCase
       File file = new File(DeployProperties.getDeployPath());
       file.mkdirs();
       
-      System.out.println("Starting backup");
-
-      Backup backup = new Backup(System.out, "test", "test/backup", true, true);
-      String location = backup.backup(false);
-      
-      System.out.println("Backed up to [" + location + "].");
+      String location = doBackup();
 
       File destination = new File("test/backup/test.zip");
       FileIO.copy(new File(location), destination);
       
-      System.out.println("Starting restore from [" + destination.getAbsolutePath() + "].");
-
-      Restore restore = new Restore(System.out, destination.getAbsolutePath());
-      restore.restore();
+      doRestore(destination.getAbsolutePath());
     }
     finally
     {

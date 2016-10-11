@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.database.general;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -26,8 +27,8 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
@@ -45,9 +46,11 @@ public class ProcessReader implements UncaughtExceptionHandler
 
   private PrintStream    output;
 
-  private StringBuffer   errorOut;
+  private PrintStream   errorOut;
   
-  private static Log log = LogFactory.getLog(ProcessReader.class);
+  private ByteArrayOutputStream errorBAOS = null;
+  
+  private static Logger logger = LoggerFactory.getLogger(ProcessReader.class);
   
   /**
    * A map with the key being the name of the thread, which is defined by
@@ -65,7 +68,12 @@ public class ProcessReader implements UncaughtExceptionHandler
    */
   public ProcessReader(ProcessBuilder builder)
   {
-    this(builder, System.out);
+    this(builder, System.out, null);
+  }
+  
+  public ProcessReader(ProcessBuilder builder, PrintStream output)
+  {
+    this(builder, output, null);
   }
 
   /**
@@ -75,13 +83,23 @@ public class ProcessReader implements UncaughtExceptionHandler
    * @param process
    * @param out
    */
-  public ProcessReader(ProcessBuilder builder, PrintStream output)
+  public ProcessReader(ProcessBuilder builder, PrintStream output, PrintStream errOut)
   {
     this.builder = builder;
     this.output = output;
     this.process = null;
-    this.errorOut = new StringBuffer();
     this.threadThrowables = new HashMap<String, Throwable>();
+    
+    if (errOut == null)
+    {
+      ByteArrayOutputStream errorBAOS = new ByteArrayOutputStream();
+      PrintStream ps = new PrintStream(errorBAOS, true);
+      this.errorOut = ps;
+    }
+    else
+    {
+      this.errorOut = errOut;
+    }
   }
 
   /**
@@ -90,9 +108,9 @@ public class ProcessReader implements UncaughtExceptionHandler
    * @param inputStream
    * @param stream
    */
-  private void consumeOutput(final InputStream inputStream, final PrintStream stream)
+  private void consumeOutput(final InputStream in, final PrintStream out, final String threadName)
   {
-    final BufferedReader out = new BufferedReader(new InputStreamReader(inputStream));
+    final BufferedReader buffIn = new BufferedReader(new InputStreamReader(in));
     
     Thread t = new Thread(new Runnable(){
       
@@ -103,12 +121,10 @@ public class ProcessReader implements UncaughtExceptionHandler
         {
           String line = new String();
 
-          while ( ( line = out.readLine() ) != null)
+          while ( ( line = buffIn.readLine() ) != null)
           {
-            stream.println(line);
+            out.println(line);
           }
-          
-          stream.close();
         }
         catch (Throwable t)
         {
@@ -116,43 +132,7 @@ public class ProcessReader implements UncaughtExceptionHandler
           throw new ProgrammingErrorException(msg, t);
         }
       }
-    }, OUTPUT_THREAD);
-    
-    t.setUncaughtExceptionHandler(this);
-    t.setDaemon(true);
-    t.start();
-  }
-  
-  /**
-   * Consumes the 
-   * @param reader
-   * @param buffer
-   */
-  private void consumeError(final InputStream inputStream, final StringBuffer buffer)
-  {
-    final BufferedReader out = new BufferedReader(new InputStreamReader(inputStream));
-    
-    Thread t = new Thread(new Runnable(){
-      
-      @Override
-      public void run()
-      {
-        try
-        {
-          String line = new String();
-
-          while ( ( line = out.readLine() ) != null)
-          {
-            buffer.append(line);
-          }
-        }
-        catch (Throwable t)
-        {
-          String msg = "Error when consuming the error stream.";
-          throw new ProgrammingErrorException(msg, t);
-        }
-      }
-    }, ERROR_THREAD);
+    }, threadName);
     
     t.setUncaughtExceptionHandler(this);
     t.setDaemon(true);
@@ -181,8 +161,8 @@ public class ProcessReader implements UncaughtExceptionHandler
         {
           ProcessReader.this.process = ProcessReader.this.builder.start();
           
-          consumeOutput(process.getInputStream(), ProcessReader.this.output);
-          consumeError(process.getErrorStream(), ProcessReader.this.errorOut);
+          consumeOutput(process.getInputStream(), ProcessReader.this.output, OUTPUT_THREAD);
+          consumeOutput(process.getErrorStream(), ProcessReader.this.errorOut, ERROR_THREAD);
 
           ProcessReader.this.process.waitFor();
         }
@@ -204,7 +184,7 @@ public class ProcessReader implements UncaughtExceptionHandler
       }
       catch (InterruptedException e)
       {
-        log.error(e);
+        logger.error("Interrupted while waiting for process thread.", e);
       }
     }
   }
@@ -232,11 +212,21 @@ public class ProcessReader implements UncaughtExceptionHandler
   /**
    * Returns any errors gathered from the process's output.
    * 
+   * Deprecated since 2.0.20
+   * 
    * @return
    */
+  @Deprecated
   public StringBuffer getProcessError()
   {
-    return this.errorOut;
+    if (errorBAOS != null)
+    {
+      return new StringBuffer(this.errorBAOS.toString());
+    }
+    else
+    {
+      return new StringBuffer(this.errorOut.toString());
+    }
   }
   
   /**
@@ -291,7 +281,7 @@ public class ProcessReader implements UncaughtExceptionHandler
   @Override
   public void uncaughtException(Thread thread, Throwable t)
   {
-    log.error(thread, t);
+    logger.error("Error caught in thread [" + thread.getName() + "].", t);
     
     this.threadThrowables.put(thread.getName(), t);
   }

@@ -18,6 +18,13 @@
  */
 package com.runwaysdk.facade;
 
+import com.runwaysdk.controller.URLConfigurationManagerTest;
+import com.runwaysdk.mvc.DelegatingServletTest;
+import com.runwaysdk.mvc.DispatcherServletTest;
+import com.runwaysdk.mvc.RestBodyResponseTest;
+import com.runwaysdk.mvc.RestResponseTest;
+import com.runwaysdk.mvc.ViewResponseTest;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -32,6 +39,7 @@ public class FacadeTestSuite extends TestSuite
   public static Test suite()
   {
     TestSuite suite = new TestSuite();
+    suite.addTest(RestResponseTest.suite());
 
     suite.addTest(AdapterTest.suite());
     suite.addTest(NoSourceAdapterTest.suite());
@@ -40,7 +48,6 @@ public class FacadeTestSuite extends TestSuite
     suite.addTest(InvokeMethodTest.suite());
     suite.addTest(InvokeUtilDTOMethodTest.suite());
     suite.addTest(InvokeViewDTOMethodTest.suite());
-    suite.addTest(FacadeGenerationTest.suite());
     suite.addTest(MessageTest.suite());
 
     suite.addTest(RMIAdapterTest.suite());
@@ -49,13 +56,19 @@ public class FacadeTestSuite extends TestSuite
     suite.addTest(RMIInvokeMethodTest.suite());
     suite.addTest(RMIInvokeUtilDTOMethodTest.suite());
     suite.addTest(RMIInvokeViewDTOMethodTest.suite());
-    suite.addTest(RMIFacadeGenerationTest.suite());
     suite.addTest(RMIMessageTest.suite());
 
     suite.addTest(JSONInvokeMethodTest.suite());
     suite.addTest(JSONRMIInvokeMethodTest.suite());
+    
+    suite.addTest(URLConfigurationManagerTest.suite());
+    suite.addTest(RestBodyResponseTest.suite());
+    suite.addTest(RestResponseTest.suite());
+    suite.addTest(ViewResponseTest.suite());
+    suite.addTest(DispatcherServletTest.suite());    
+    suite.addTest(DelegatingServletTest.suite());        
 
-    // suite.addTest(ConversionTest.suite());
+    // suite.addTest(DocumentConversionTest.suite());
     // if (TestProperties.getMockWebServiceTests())
     // {
     // suite.addTest(MockWebServiceAdapterTest.suite());

@@ -1,0 +1,299 @@
+<?xml version="1.0"?>
+<!--
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway SDK GIS(tm).
+
+    Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<!-- Copyright (c) 2013 TerraFrame, Inc. All rights reserved. This file is part of Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. Runway SDK(tm) is distributed in the hope that it will 
+  be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>. -->
+
+<Runway xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version_gis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <create>
+    <!-- 
+          The GIS metadata exporter depends on all of this metadata being in the com.runwaysdk.system.gis.geo package.
+     -->
+  
+    <mdTerm isAbstract="false" description="Universal" hasDeterministicId="true" removable="false" name="com.runwaysdk.system.gis.geo.Universal" label="Universal" table="universal" publish="true" extendable="true" generateController="true" cacheAlgorithm="everything">
+      <mdMethod static="true" description="Returns the Root Universal" name="getRoot" label="getRoot" returnType="com.runwaysdk.system.gis.geo.Universal">
+      </mdMethod>
+      <mdMethod static="true" name="create" label="create" description="Creates a new Universal and appends it to a parent with a relationship type." returnType="com.runwaysdk.business.ontology.TermAndRel">
+        <mdParameter order="0" description="A Universal to apply and relate." name="dto" label="A Universal to apply and relate." type="com.runwaysdk.system.gis.geo.Universal" />
+        <mdParameter order="1" description="parentId" name="parentId" label="The id of the parent." type="java.lang.String" />
+        <mdParameter order="2" description="relationshipType" name="relationshipType" label="relationshipType" type="java.lang.String" />
+      </mdMethod>
+      <attributes>
+        <char removable="true" label="Unique Id" indexType="unique index" description="Universal name" name="universalId" size="100" immutable="false" required="true" />
+        <localChar removable="true" label="Description" description="Description" name="description" immutable="false" required="false" size="255" />
+      </attributes>
+    </mdTerm>
+
+    <mdTermRelationship name="com.runwaysdk.system.gis.geo.IsARelationship" isAbstract="false" description="IsA Relationship" hasDeterministicId="true" label="IsA Relationship" generateController="false" associationType="TREE">
+      <parent cardinality="*" name="com.runwaysdk.system.gis.geo.Universal" method="SuperType" />
+      <child cardinality="*" name="com.runwaysdk.system.gis.geo.Universal" method="SubType" />
+    </mdTermRelationship>
+
+    <mdTermRelationship name="com.runwaysdk.system.gis.geo.AllowedIn" isAbstract="false" description="Allowed In" removable="true" hasDeterministicId="true" label="Allowed In" generateController="false" associationType="TREE" cacheAlgorithm="everything">
+      <parent cardinality="*" name="com.runwaysdk.system.gis.geo.Universal" method="AllowedIn" />
+      <child cardinality="*" name="com.runwaysdk.system.gis.geo.Universal" method="Contains" />
+    </mdTermRelationship>
+
+    <mdTerm isAbstract="false" description="Geo Entity" hasDeterministicId="true" removable="false" name="com.runwaysdk.system.gis.geo.GeoEntity" label="Geo Entity" extendable="true" generateController="true" cacheSize="0">
+      <mdMethod static="true" description="Returns the Root Geo Entity" name="getRoot" label="getRoot" returnType="com.runwaysdk.system.gis.geo.GeoEntity">
+      </mdMethod>
+      <mdMethod static="true" name="create" label="create" description="Creates a new GeoEntity and appends it to a parent with a relationship type." returnType="com.runwaysdk.system.gis.geo.GeoEntityView">
+        <mdParameter order="0" description="A GeoEntity to apply and relate." name="dto" label="A GeoEntity to apply and relate." type="com.runwaysdk.system.gis.geo.GeoEntity" />
+        <mdParameter order="1" description="parentId" name="parentId" label="The id of the parent." type="java.lang.String" />
+        <mdParameter order="2" description="relationshipType" name="relationshipType" label="relationshipType" type="java.lang.String" />
+      </mdMethod>
+      <mdMethod static="true" name="getDirectDescendants" returnType="com.runwaysdk.system.gis.geo.GeoEntityView[]">
+        <mdParameter order="1" name="parentId" type="java.lang.String" />
+        <mdParameter order="2" name="relationshipTypes" type="java.lang.String[]" />
+        <mdParameter order="3" name="pageNum" type="java.lang.Integer" />
+        <mdParameter order="4" name="pageSize" type="java.lang.Integer" />
+      </mdMethod>
+      <attributes>
+        <char name="geoId" size="50" required="true" indexType="unique index" label="Geo Id" />
+        <text name="wkt" required="false" label="WKT" description="The WKT string of the geometry" />
+        <reference name="universal" label="Universal" required="true" immutable="false" type="com.runwaysdk.system.gis.geo.Universal" indexType="non-unique index" />
+        <point name="geoPoint" dimension="2" srid="4326" required="false" label="Geo Point" />
+        <multipolygon name="geoMultiPolygon" dimension="2" srid="4326" required="false" label="Geo Multi Polygon" />
+      </attributes>
+    </mdTerm>
+
+    <mdTermRelationship name="com.runwaysdk.system.gis.geo.SynonymRelationship" isAbstract="false" description="Synonym Relationship" hasDeterministicId="true" label="Synonym Relationship" generateController="false" associationType="TREE">
+      <parent cardinality="*" name="com.runwaysdk.system.gis.geo.GeoEntity" method="GeoEntity" />
+      <child cardinality="*" name="com.runwaysdk.system.gis.geo.Synonym" method="Synonym" />
+    </mdTermRelationship>
+
+    <mdTerm isAbstract="false" description="Synonym" hasDeterministicId="true" name="com.runwaysdk.system.gis.geo.Synonym" label="Synonym" table="rwsynonym" publish="true" extendable="true" generateController="true">
+      <mdMethod static="true" name="create" label="create" description="Calls apply on the provided synonym dto and then creates+applies a relationship with the given geoentity." returnType="com.runwaysdk.business.ontology.TermAndRel">
+        <mdParameter order="0" name="synonym" label="synonym" type="com.runwaysdk.system.gis.geo.Synonym" />
+        <mdParameter order="1" name="geoId" label="geoId" type="java.lang.String" />
+      </mdMethod>
+      <attributes>
+      </attributes>
+    </mdTerm>
+
+    <mdView name="com.runwaysdk.system.gis.geo.GeoEntityView" label="GeoEntity View">
+      <attributes>
+        <boolean name="canCreateChildren" label="canCreateChildren" required="true" />
+        <char name="relationshipType" label="relationshipType" size="255" required="false" />
+        <char name="relationshipId" label="relationshipId" size="255" required="false" />
+        <char name="geoEntityDisplayLabel" label="geoEntityDisplayLabel" size="255" required="true" />
+        <char name="universalDisplayLabel" label="universalDisplayLabel" size="255" required="false" />
+        <char name="geoEntityId" label="geoEntityId" size="255" required="true" />
+      </attributes>
+    </mdView>
+
+    <mdTermRelationship name="com.runwaysdk.system.gis.geo.LocatedIn" isAbstract="false" description="Located In" removable="true" hasDeterministicId="true" label="Located In" generateController="false" associationType="TREE">
+      <parent cardinality="*" name="com.runwaysdk.system.gis.geo.GeoEntity" method="LocatedIn" />
+      <child cardinality="*" name="com.runwaysdk.system.gis.geo.GeoEntity" method="Contains" />
+    </mdTermRelationship>
+
+    <mdProblem name="com.runwaysdk.system.gis.geo.WKTParsingProblem" label="WKT Parsing Problem" description="Raised when there is an error parsing WKT for a GeoEntity." extends="com.runwaysdk.system.web.AttributeNotificationProblem" message="[{reason}]">
+      <attributes>
+        <char name="reason" label="Reason" size="255" />
+      </attributes>
+    </mdProblem>
+
+    <mdException name="com.runwaysdk.system.gis.geo.InvalidGeoEntityUniversalException" label="Invalid GeoEntity Universal Exception" description="Thrown when a GeoEntity's Universal does not allow its current GeoEntity parent." message="The GeoEntities with the universal [{childUniversal}] cannot be assigned to a parent with the universal [{parentUniversal}].">
+      <attributes>
+        <char name="childUniversal" size="100" required="true" label="Child universal" />
+        <char name="parentUniversal" size="100" required="true" label="Parent universal" />
+      </attributes>
+    </mdException>
+
+    <mdException name="com.runwaysdk.system.gis.geo.InvalidUniversalRemoveLinkException" label="Invalid GeoEntity Universal Exception" description="Thrown when the user attempts to remove a Universal link which produces an invalid GeoEntity tree." message="This action cannot be performed because the following GeoEntities [{geoEntities}] depend on the Universal [{childUni}] being a child of [{parentUni}].">
+      <attributes>
+        <char name="geoEntities" size="100" required="true" label="Invalidated GeoEntities" />
+        <char name="childUni" size="100" required="true" label="Child Universal" />
+        <char name="parentUni" size="100" required="true" label="Parent Universal" />
+      </attributes>
+    </mdException>
+
+    <mdBusiness name="com.runwaysdk.system.gis.geo.ReadableIdGenerator" label="Human Readable Id Properties" description="Defines properties for generating human readable GeoEntity Ids" publish="false">
+      <attributes>
+        <long name="counter" description="A counter, used for id generation, that increments everytime an id is generated." rejectNegative="true" />
+      </attributes>
+    </mdBusiness>
+
+    <object key="SINGLETON" type="com.runwaysdk.system.gis.geo.ReadableIdGenerator">
+      <attribute name="counter" value="1000" />
+    </object>
+
+    <object key="ROOT" type="com.runwaysdk.system.gis.geo.Universal">
+      <attribute name="universalId" value="ROOT" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="ROOT" />
+      </attributeStruct>
+      <attributeStruct name="description">
+        <attribute name="defaultLocale" value="ROOT" />
+      </attributeStruct>
+    </object>
+
+    <object key="ROOT" type="com.runwaysdk.system.gis.geo.GeoEntity">
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="ROOT" />
+      </attributeStruct>
+      <attribute name="geoId" value="ROOT" />
+      <attributeReference name="universal" key="ROOT" />
+    </object>
+
+    <mdLocalStruct name="com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDescription" label="Description" description="Description" />
+
+    <enumerationMaster name="com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMaster" label="Geo entity problem type" generateController="false">
+      <attributes>
+        <localChar removable="true" label="Description" description="Description" name="description" immutable="false" required="false" size="255" type="com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDescription" />
+      </attributes>
+    </enumerationMaster>
+
+    <object key="UNMATCHED" type="com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMaster">
+      <attribute name="enumName" value="UNMATCHED" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="Unmatched" />
+      </attributeStruct>
+      <attributeStruct name="description">
+        <attribute name="defaultLocale" value="[{0}]: Unmatched geo entity" />
+      </attributeStruct>
+    </object>
+
+    <object key="MISSING_GEOM" type="com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMaster">
+      <attribute name="enumName" value="MISSING_GEOM" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="Missing geometry" />
+      </attributeStruct>
+      <attributeStruct name="description">
+        <attribute name="defaultLocale" value="[{0}]: No geometry information" />
+      </attributeStruct>
+    </object>
+
+    <mdEnumeration name="com.runwaysdk.system.gis.geo.GeoEntityProblemType" type="com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMaster">
+      <includeAll />
+    </mdEnumeration>
+
+    <mdBusiness name="com.runwaysdk.system.gis.geo.GeoEntityProblem" label="Geo entity problem" generateController="false">
+      <attributes>
+        <reference name="geoEntity" label="Geo entity" type="com.runwaysdk.system.gis.geo.GeoEntity" required="true" indexType="non-unique index" />
+        <enumeration name="problemType" label="Problem type" type="com.runwaysdk.system.gis.geo.GeoEntityProblemType" selectMultiple="false" />
+      </attributes>
+    </mdBusiness>
+
+    <mdView name="com.runwaysdk.system.gis.geo.GeoEntityProblemView" label="Geo entity problem" generateController="false">
+      <attributes>
+        <char name="geoId" label="Geo entity id" size="255" />
+        <char name="concreteId" label="Concrete id" size="255" />
+        <text name="problem" label="Problem" />
+        <text name="problemName" label="Problem name" />
+      </attributes>
+    </mdView>
+    <mdBusiness name="com.runwaysdk.system.gis.geo.GeoNode" label="Geo node" isAbstract="true" cacheAlgorithm="everything"  generateController="false" hasDeterministicId="true" >
+      <attributes>
+        <reference name="geoEntityAttribute" label="Geo entity attribute" required="true" immutable="false" type="com.runwaysdk.system.metadata.MdAttributeReference" indexType="non-unique index"  />
+      </attributes>
+    </mdBusiness>
+    <mdBusiness name="com.runwaysdk.system.gis.geo.GeoNodeGeometry" label="Geo node geometry" isAbstract="false" extends="com.runwaysdk.system.gis.geo.GeoNode" generateController="false" hasDeterministicId="true" >
+      <attributes>
+        <reference name="identifierAttribute" label="Identifier attribute" required="false" immutable="false" type="com.runwaysdk.system.metadata.MdAttribute" indexType="non-unique index" />
+        <reference name="displayLabelAttribute" label="Display label attribute" required="true" immutable="false" type="com.runwaysdk.system.metadata.MdAttribute" indexType="non-unique index" />
+        <reference name="geometryAttribute" label="Geometry attribute" required="true" immutable="false" type="com.runwaysdk.system.metadata.MdAttribute" indexType="non-unique index" />
+        <reference name="multiPolygonAttribute" label="Multipolygon attribute" required="false" immutable="false" type="com.runwaysdk.system.gis.metadata.MdAttributeMultiPolygon" indexType="non-unique index" />
+        <reference name="pointAttribute" label="Multipolygon attribute" required="false" immutable="false" type="com.runwaysdk.system.gis.metadata.MdAttributePoint" indexType="non-unique index" />
+      </attributes>
+    </mdBusiness>
+    <mdBusiness name="com.runwaysdk.system.gis.geo.GeoNodeEntity" label="Geo node entity" isAbstract="false" extends="com.runwaysdk.system.gis.geo.GeoNode" generateController="false" hasDeterministicId="true" />
+  </create>
+  <update>
+    <mdController name="com.runwaysdk.system.gis.geo.UniversalController">
+      <mdAction name="create" isPost="true" isQuery="false">
+        <mdParameter order="0" name="dto" type="com.runwaysdk.system.gis.geo.Universal" />
+        <create>
+          <mdParameter order="1" name="parentId" type="java.lang.String" />
+          <mdParameter order="2" name="relationshipType" type="java.lang.String" />
+        </create>
+      </mdAction>
+      <create>
+        <mdAction name="viewCreate" isPost="true" isQuery="false">
+        </mdAction>
+        <mdAction name="viewUpdate" isPost="true" isQuery="false">
+          <mdParameter order="0" name="id" type="java.lang.String" />
+        </mdAction>
+        <mdAction name="getDirectDescendants" isPost="true" isQuery="false">
+          <mdParameter order="0" name="parentId" type="java.lang.String" />
+          <mdParameter order="1" name="relationshipTypes" type="java.lang.String[]" />
+          <mdParameter order="2" name="pageNum" type="java.lang.Integer" />
+          <mdParameter order="3" name="pageSize" type="java.lang.Integer" />
+        </mdAction>
+      </create>
+    </mdController>
+
+    <mdController name="com.runwaysdk.system.gis.geo.GeoEntityController">
+      <mdAction name="create" isPost="true" isQuery="false">
+        <mdParameter order="0" name="dto" type="com.runwaysdk.system.gis.geo.GeoEntity" />
+        <create>
+          <mdParameter order="1" name="parentId" type="java.lang.String" />
+          <mdParameter order="2" name="relationshipType" type="java.lang.String" />
+        </create>
+      </mdAction>
+      <mdAction name="update" isPost="true" isQuery="false">
+        <mdParameter order="0" name="dto" type="com.runwaysdk.system.gis.geo.GeoEntity" />
+        <create>
+          <mdParameter order="1" name="parentId" type="java.lang.String" />
+          <mdParameter order="2" name="relationshipType" type="java.lang.String" />
+        </create>
+      </mdAction>
+      <create>
+        <mdAction name="viewCreate" isPost="true" isQuery="false">
+          <mdParameter order="0" name="parentId" type="java.lang.String" />
+          <mdParameter order="1" name="relationshipType" type="java.lang.String" />
+        </mdAction>
+        <mdAction name="viewUpdate" isPost="true" isQuery="false">
+          <mdParameter order="0" name="id" type="java.lang.String" />
+          <mdParameter order="1" name="parentId" type="java.lang.String" />
+        </mdAction>
+        <mdAction name="getDirectDescendants" isPost="true" isQuery="false">
+          <mdParameter order="0" name="parentId" type="java.lang.String" />
+          <mdParameter order="1" name="relationshipTypes" type="java.lang.String[]" />
+          <mdParameter order="2" name="pageNum" type="java.lang.Integer" />
+          <mdParameter order="3" name="pageSize" type="java.lang.Integer" />
+        </mdAction>
+      </create>
+    </mdController>
+
+    <mdController name="com.runwaysdk.system.gis.geo.SynonymController">
+      <mdAction name="create" isPost="true" isQuery="false">
+        <mdParameter order="0" name="dto" type="com.runwaysdk.system.gis.geo.Synonym" />
+        <create>
+          <mdParameter order="1" name="geoId" type="java.lang.String" />
+        </create>
+      </mdAction>
+      <mdAction name="update" isPost="true" isQuery="false">
+        <mdParameter order="0" name="dto" type="com.runwaysdk.system.gis.geo.Synonym" />
+      </mdAction>
+      <create>
+        <mdAction name="viewCreate" isPost="true" isQuery="false">
+        </mdAction>
+        <mdAction name="viewUpdate" isPost="true" isQuery="false">
+          <mdParameter order="0" name="id" type="java.lang.String" />
+        </mdAction>
+        <mdAction name="getDirectDescendants" isPost="true" isQuery="false">
+          <mdParameter order="0" name="parentId" type="java.lang.String" />
+        </mdAction>
+      </create>
+    </mdController>
+  </update>
+</Runway>

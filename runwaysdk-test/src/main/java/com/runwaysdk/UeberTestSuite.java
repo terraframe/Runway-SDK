@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
- package com.runwaysdk;
+package com.runwaysdk;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -70,13 +70,13 @@ public class UeberTestSuite
     suite.addTest(QueryTestSuite.suite());
 
     suite.addTest(MultiThreadTestSuite.suite());
-    
+
     suite.addTestSuite(CommonExceptionTest.class);
-    
+
     suite.addTestSuite(LoggingTest.class);
-    
-//    suite.addTestSuite(SchedulerTest.class);
-    
+
+    // suite.addTestSuite(SchedulerTest.class);
+
     suite.addTest(OntologyTestSuite.suite());
 
     return suite;

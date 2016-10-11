@@ -28,6 +28,8 @@ import org.junit.Assert;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.form.FormObject;
+import com.runwaysdk.request.ServletRequestIF;
+import com.runwaysdk.request.ServletResponseIF;
 
 public class MofoParserTest extends TestCase
 {
@@ -60,7 +62,7 @@ public class MofoParserTest extends TestCase
     {
       String json = "{\"criteria\":null,\"type\":\"dss.vector.solutions.form.business.TestForm\",\"sortAttribute\":null,\"isAscending\":true,\"pageSize\":20,\"pageNumber\":1}";
 
-      RequestManager manager = new RequestManager(null, session, session.getRequest());
+      RequestManager manager = new RequestManager((ServletRequestIF) null, (ServletResponseIF) null, ServletMethod.GET, session, session.getRequest());
 
       ActionParameters annotation = this.getAnnotation();
 

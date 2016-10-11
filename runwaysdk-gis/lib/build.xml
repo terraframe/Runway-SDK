@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway GIS(tm).
+
+    Runway GIS(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway GIS(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<project name="runwaysdk-gis" default="reconfig_geoserver">
+  
+  <target name="reconfig_geoserver" description="Opens the war, sets [Enable direct WMS integration = true], then rezips the war." depends="" >
+    <move file="geoserver.war" tofile="geoserver_original.war" />
+
+    <unzip src="geoserver_original.war" dest="geoserver" />
+    
+
+
+    <replace file="geoserver/data/wms.xml" token="&lt;metadata&gt;"
+      value="&lt;metadata&gt;&#xD;    &lt;entry key=&quot;GWC_WMS_Integration&quot;&gt;true&lt;/entry&gt;" />
+
+    <echo message="The property [&lt;entry key=&quot;GWC_WMS_Integration&quot;&gt;true&lt;/entry&gt;] has been added to geoserver/data/wms.xml. Please ensure that the file looks as expected:" />
+    <loadfile property="wms_xml" srcFile="geoserver/data/wms.xml"/> 
+    <echo>${wms_xml}</echo>
+    
+
+
+    <zip destfile="geoserver.war" basedir="geoserver" />
+
+    <delete dir="geoserver" />
+  </target>
+
+</project>

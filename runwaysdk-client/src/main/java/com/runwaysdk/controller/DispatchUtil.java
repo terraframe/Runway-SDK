@@ -36,39 +36,78 @@ import com.runwaysdk.ClientRequest;
 public class DispatchUtil
 {
   /**
-   * Annotation describing the parameter names and types
+   * Information about all of the action parameters
    */
-  private ActionParameters annotation;
+  private List<ParameterIF> parameters;
 
   /**
    * Contains information about the status of the scraping
    */
-  private RequestManager   manager;
+  private RequestManager    manager;
 
   /**
    * List of objects scrapped from the {@link HttpServletRequest}
    */
-  private Object[]         objects;
+  private Object[]          objects;
 
   /**
    * @param annotation
    *          {@link ActionParameters} describing the parameter names and types
    * @param manager
    *          Manager of the {@link HttpServletRequest} scraping
+   * @param values
+   *          Map of request parameter values
+   * 
    */
-  public DispatchUtil(ActionParameters annotation, RequestManager manager, Map<String, Parameter> parameters)
+  public DispatchUtil(ActionParameters annotation, RequestManager manager, Map<String, ParameterValue> values)
   {
-    this.annotation = annotation;
+    this.parameters = this.getParametersFromAnnotation(annotation);
     this.manager = manager;
 
-    objects = loadObjects(parameters);
+    this.objects = loadObjects(values);
 
     if (manager.hasExceptions())
     {
       // Rescrap all of the primitive values such that the values to strings
-      this.prepareFailure(parameters);
+      this.prepareFailure(values);
       this.propigateExceptions();
     }
+  }
+
+  public DispatchUtil(List<ParameterIF> parameters, RequestManager manager, Map<String, ParameterValue> values)
+  {
+    this.parameters = parameters;
+    this.manager = manager;
+
+    this.objects = loadObjects(values);
+
+    if (manager.hasExceptions())
+    {
+      // Rescrap all of the primitive values such that the values to strings
+      this.prepareFailure(values);
+      this.propigateExceptions();
+    }
+  }
+
+  private List<ParameterIF> getParametersFromAnnotation(ActionParameters annotation)
+  {
+    List<ParameterIF> parameters = new LinkedList<ParameterIF>();
+
+    String paramString = annotation.parameters();
+
+    StringTokenizer toke = new StringTokenizer(paramString, ",");
+
+    // Load objects from the parameters list
+    while (toke.hasMoreTokens())
+    {
+      String parameter = toke.nextToken();
+      String[] value = parameter.split(":");
+      String type = value[0].trim();
+      String parameterName = value[1].trim();
+
+      parameters.add(new ParameterWrapper(type, parameterName));
+    }
+    return parameters;
   }
 
   /**
@@ -101,20 +140,14 @@ public class DispatchUtil
   /**
    * @return Loads all expected parameters to objects
    */
-  private final Object[] loadObjects(Map<String, Parameter> parameters)
+  private final Object[] loadObjects(Map<String, ParameterValue> values)
   {
-    StringTokenizer toke = new StringTokenizer(annotation.parameters(), ",");
     List<Object> objects = new LinkedList<Object>();
 
     // Load objects from the parameters list
-    while (toke.hasMoreTokens())
+    for (ParameterIF parameter : this.parameters)
     {
-      String parameter = toke.nextToken();
-      String[] value = parameter.split(":");
-      String type = value[0].trim();
-      String parameterName = value[1].trim();
-
-      objects.add(new RequestScraper(type, parameterName, manager, parameters).convert());
+      objects.add(new RequestScraper(parameter, manager, values).convert());
     }
 
     return objects.toArray(new Object[objects.size()]);
@@ -123,15 +156,12 @@ public class DispatchUtil
   /**
    * Converts all primitive parameters into their {@link String} representations
    */
-  private final void prepareFailure(Map<String, Parameter> parameters)
+  private final void prepareFailure(Map<String, ParameterValue> values)
   {
-    StringTokenizer toke = new StringTokenizer(annotation.parameters(), ",");
 
     for (int i = 0; i < objects.length; i++)
     {
-      String parameter = toke.nextToken();
-      String[] value = parameter.split(":");
-      String parameterName = value[1];
+      ParameterIF parameter = this.parameters.get(i);
 
       if (objects[i] != null)
       {
@@ -151,12 +181,12 @@ public class DispatchUtil
           if (c.isArray())
           {
             String type = new String[0].getClass().getName();
-            objects[i] = new RequestScraper(type, parameterName, manager, parameters).convert();
+            objects[i] = new RequestScraper(new ParameterWrapper(type, parameter.getName()), manager, values).convert();
           }
           else
           {
             String type = String.class.getName();
-            objects[i] = new RequestScraper(type, parameterName, manager, parameters).convert();
+            objects[i] = new RequestScraper(new ParameterWrapper(type, parameter.getName()), manager, values).convert();
           }
         }
       }

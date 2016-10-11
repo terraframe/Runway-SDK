@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.locks.ReentrantLock;
 
-import net.sourceforge.jtds.jdbcx.JtdsDataSource;
-
 import org.apache.commons.dbcp.datasources.SharedPoolDataSource;
 
 import com.google.inject.Inject;
@@ -78,6 +76,8 @@ import com.runwaysdk.dataaccess.database.DropGroupAttributeDDLCommand;
 import com.runwaysdk.dataaccess.database.DuplicateDataDatabaseException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.query.SubSelectReturnedMultipleRowsException;
+
+import net.sourceforge.jtds.jdbcx.JtdsDataSource;
 
 
 public class SQLServer extends AbstractDatabase
@@ -2202,7 +2202,7 @@ WHERE RowNumber BETWEEN 5 AND 10
    * @param dropSchema true if backup should include commands to drop the schema
    */
   @Override
-  public String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName, boolean dropSchema)
+  public String backup(List<String> tableNames, String backupFileLocation, String backupFileRootName,  PrintStream out, PrintStream errOut, boolean dropSchema)
   {
     throw new UnsupportedOperationException("Backup method is not yet implemented for SQLServr");
   }
@@ -2214,13 +2214,13 @@ WHERE RowNumber BETWEEN 5 AND 10
    * @param printStream
    */
   @Override
-  public void importFromSQL(String restoreSQLFile, PrintStream printStream)
+  public void importFromSQL(String restoreSQLFile, PrintStream out, PrintStream errOut)
   {
     throw new UnsupportedOperationException("Backup method is not yet implemented for SQLServr");
   }
 
   @Override
-  public String backup(String namespace, String backupFileLocation, String backupFileRootName, boolean dropSchema)
+  public String backup(String namespace, String backupFileLocation, String backupFileRootName,  PrintStream out, PrintStream errOut, boolean dropSchema)
   {
     throw new UnsupportedOperationException("Backup method is not yet implemented for SQLServr");
   }

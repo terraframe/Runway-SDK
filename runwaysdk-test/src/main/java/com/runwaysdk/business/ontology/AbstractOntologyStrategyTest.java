@@ -41,6 +41,7 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
@@ -114,6 +115,8 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
   public static MdTermDAO             mdTerm;
 
   public static MdTermRelationshipDAO mdTermRelationship;
+  
+  protected static boolean            didDoSetUp = false;
 
   public abstract String getInitializeStrategySource();
 
@@ -121,17 +124,46 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
   public AbstractOntologyStrategyTest() throws Exception
   {
+    didDoSetUp = false;
+  }
+  
+  /**
+   * Unfortunately we have to do this hack instead of the traditional classSetUp fixture method because the
+   * classSetUp method must be static, but we require that our abstract methods are overridden by subclasses
+   * before we call the class set up so our's can't be static. This is the only way to achieve a non-static
+   * class initialization.
+   */
+  protected void setUp()
+  {
     if (didDoSetUp == false)
     {
       doSetUp();
+      initStrat(mdTerm.definesType(), mdTermRelationship.definesType());
     }
 
     didDoSetUp = true;
   }
+  
+  protected void tearDown()
+  {
+    
+  }
 
-  protected static boolean didDoSetUp = false;
-
-  protected void doSetUp() throws Exception
+  public static void initStrat(String mdTermDefinesType, String mdTermRelationshipDefinesType) {
+    Term.assignStrategy(mdTermDefinesType);
+    Term.getStrategy(mdTermDefinesType).initialize(mdTermRelationshipDefinesType);
+  }
+  
+  public static OntologyStrategyIF getStrategy(String mdTermDefinesType) {
+    return Term.getStrategy(mdTermDefinesType);
+  }
+  
+  public static void shutDownStrat(String mdTermDefinesType) {
+    Term.getStrategy(mdTermDefinesType).shutdown();
+  }
+  
+  @Transaction
+  protected void doSetUp()
   {
     mdTerm = MdTermDAO.newInstance();
     mdTerm.setValue(MdTermInfo.NAME, "Alphabet");
@@ -187,21 +219,6 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     
     mdTermId = mdTerm.getId();
     mdTermRelationshipId = mdTermRelationship.getId();
-    
-    initStrat(mdTerm.definesType(), mdTermRelationship.definesType());
-  }
-  
-  public static void initStrat(String mdTermDefinesType, String mdTermRelationshipDefinesType) {
-    Term.assignStrategy(mdTermDefinesType);
-    Term.getStrategy(mdTermDefinesType).initialize(mdTermRelationshipDefinesType);
-  }
-  
-  public static OntologyStrategyIF getStrategy(String mdTermDefinesType) {
-    return Term.getStrategy(mdTermDefinesType);
-  }
-  
-  public static void shutDownStrat(String mdTermDefinesType) {
-    Term.getStrategy(mdTermDefinesType).shutdown();
   }
   
   protected static void classTearDown()
@@ -214,7 +231,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     MdRelationship.get(mdTermRelationshipId).delete();
     MdBusiness.get(mdTermId).delete();
-
+    
     didDoSetUp = false;
   }
   

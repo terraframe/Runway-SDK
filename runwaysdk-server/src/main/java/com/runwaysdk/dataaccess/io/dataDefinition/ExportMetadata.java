@@ -50,7 +50,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
-import com.runwaysdk.dataaccess.metadata.MdFacadeDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;

@@ -114,4 +114,18 @@ public abstract class SimpleMapTagSupport extends SimpleTagSupport
 
     writer.println(" />");
   }
+  
+  protected void writeTag(String tagname, String body, JspWriter writer) throws IOException
+  {
+    // Write the value of the option
+    writer.print("<" + tagname);
+
+    this.writeAttributes(writer);
+
+    writer.println(" >");
+    
+    writer.print(body);
+    
+    writer.println("</" + tagname + " >");
+  }
 }

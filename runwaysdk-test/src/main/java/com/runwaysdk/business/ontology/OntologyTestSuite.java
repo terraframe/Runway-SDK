@@ -54,6 +54,7 @@ public class OntologyTestSuite extends TestSuite
     testSuite.addTest(OntologyStrategyTest.suite());
     testSuite.addTest(MdTermRelationshipTest.suite());
     testSuite.addTest(DatabaseAllPathsStrategyTest.suite());
+    testSuite.addTest(DefaultStrategyTest.suite());
 
     return testSuite;
   }

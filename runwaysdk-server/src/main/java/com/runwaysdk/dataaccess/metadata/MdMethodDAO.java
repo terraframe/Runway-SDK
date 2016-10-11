@@ -491,10 +491,10 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
   {
     MdTypeDAOIF mdType = this.getEnclosingMdTypeDAO();
 
-    // Ensure that the MdMethod references a MdClass or an MdFacade
-    if (! ( mdType instanceof MdClassDAO ) && ! ( mdType instanceof MdFacadeDAO ))
+    // Ensure that the MdMethod references a MdClass
+    if (! ( mdType instanceof MdClassDAO ))
     {
-      String msg = "A MdMethod can only reference a MdClass or a MdFacade.";
+      String msg = "A MdMethod can only reference a MdClass.";
 
       throw new MethodDefinitionException_DefiningType(msg, this, mdType);
     }
@@ -534,28 +534,19 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     List<MdMethodDAOIF> mdMethodIFList = null;
     MdTypeDAOIF mdTypeIF = this.getMdType();
 
-    // Get the MdMethods already defined for either the MdFacade
-    // or MdClass on which this MdMethod is to be added.
-    if (mdTypeIF instanceof MdFacadeDAO)
+    // Get the MdMethods already defined for either MdClass on which this
+    // MdMethod is to be added.
+    MdTypeDAOIF parentMdTypeIF = mdTypeIF;
+
+    validateChildren(mdTypeIF, validateName);
+
+    // Traverse the MdEntities entire inheritence tree front and back
+    while (parentMdTypeIF != null)
     {
-      mdMethodIFList = mdTypeIF.getMdMethods();
+      mdMethodIFList = parentMdTypeIF.getMdMethods();
 
-      validateName(validateName, mdMethodIFList, mdTypeIF);
-    }
-    else
-    {
-      MdTypeDAOIF parentMdTypeIF = mdTypeIF;
-
-      validateChildren(mdTypeIF, validateName);
-
-      // Traverse the MdEntities entire inheritence tree front and back
-      while (parentMdTypeIF != null)
-      {
-        mdMethodIFList = parentMdTypeIF.getMdMethods();
-
-        validateName(validateName, mdMethodIFList, parentMdTypeIF);
-        parentMdTypeIF = ( (MdClassDAOIF) parentMdTypeIF ).getSuperClass();
-      }
+      validateName(validateName, mdMethodIFList, parentMdTypeIF);
+      parentMdTypeIF = ( (MdClassDAOIF) parentMdTypeIF ).getSuperClass();
     }
   }
 

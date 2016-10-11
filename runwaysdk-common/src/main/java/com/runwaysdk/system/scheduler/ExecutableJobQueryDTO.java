@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 2074395986)
+@com.runwaysdk.business.ClassSignature(hash = 683569143)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system.scheduler;
  */
 public class ExecutableJobQueryDTO extends com.runwaysdk.system.scheduler.AbstractJobQueryDTO
 {
-private static final long serialVersionUID = 2074395986;
+private static final long serialVersionUID = 683569143;
 
   protected ExecutableJobQueryDTO(String type)
   {

@@ -41,7 +41,7 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
     {
       protected void setUp() throws Exception
       {
-        // classSetUp();
+//        classSetUp();
       }
 
       protected void tearDown() throws Exception

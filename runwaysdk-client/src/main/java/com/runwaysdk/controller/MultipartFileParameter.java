@@ -25,7 +25,7 @@ import java.io.InputStream;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 
-public class MultipartFileParameter implements Parameter
+public class MultipartFileParameter implements ParameterValue
 {
 
   private final FileItem fileItem;

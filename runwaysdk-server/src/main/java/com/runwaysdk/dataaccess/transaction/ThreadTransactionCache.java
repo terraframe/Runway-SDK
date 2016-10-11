@@ -38,7 +38,6 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
-import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
@@ -432,41 +431,6 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
 
   @Override
-  public MdFacadeDAOIF getMdFacade(String type)
-  {
-    MdFacadeDAOIF mdFacadeDAO = super.getMdFacade(type);
-
-    if (mdFacadeDAO == null)
-    {
-      mdFacadeDAO = this.getTransactionCache().getMdFacade(type);
-    }
-
-    return mdFacadeDAO;
-  }
-
-  @Override
-  public Set<MdFacadeDAOIF> getMdFacadesForServicesDeploy()
-  {
-    Set<MdFacadeDAOIF> mdFacadeSet = new HashSet<MdFacadeDAOIF>();
-
-    mdFacadeSet.addAll(super.getMdFacadesForServicesDeploy());
-    mdFacadeSet.addAll(this.getTransactionCache().getMdFacadesForServicesDeploy());
-
-    return mdFacadeSet;
-  }
-
-  @Override
-  public Set<MdFacadeDAOIF> getMdFacadesForServicesUndeploy()
-  {
-    Set<MdFacadeDAOIF> mdFacadeSet = new HashSet<MdFacadeDAOIF>();
-
-    mdFacadeSet.addAll(super.getMdFacadesForServicesUndeploy());
-    mdFacadeSet.addAll(this.getTransactionCache().getMdFacadesForServicesUndeploy());
-
-    return mdFacadeSet;
-  }
-
-  @Override
   public MdIndexDAOIF getMdIndexDAO(String indexName)
   {
     MdIndexDAOIF mdIndexDAOIF = super.getMdIndexDAO(indexName);
@@ -646,21 +610,9 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
 
   @Override
-  public void updatedMdMethod_WebServiceDeploy(MdMethodDAO mdMethod)
-  {
-    super.updatedMdMethod_WebServiceDeploy(mdMethod);
-  }
-
-  @Override
   public void updatedMdParameter_CodeGen(MdParameterDAO mdParameter)
   {
     super.updatedMdParameter_CodeGen(mdParameter);
-  }
-
-  @Override
-  public void updatedMdParameter_WebServiceDeploy(MdParameterDAO mdParameter)
-  {
-    super.updatedMdParameter_WebServiceDeploy(mdParameter);
   }
 
   @Override

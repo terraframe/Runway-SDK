@@ -20,7 +20,6 @@ package com.runwaysdk.dataaccess.metadata;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.constants.MdClassInfo;
-import com.runwaysdk.constants.MdFacadeInfo;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -113,8 +112,6 @@ public class MethodDefinitionException_DefiningType extends MethodDefinitionExce
   {
     MdBusinessDAOIF mdClassMdBusiness = MdBusinessDAO.getMdBusinessDAO(MdClassInfo.CLASS);
     
-    MdBusinessDAOIF mdFacadeMdBusiness = MdBusinessDAO.getMdBusinessDAO(MdFacadeInfo.CLASS);
-    
-    return ServerExceptionMessageLocalizer.methodDefinitionException_DefiningType(this.getLocale(), this.mdMethod, definingMdTypeIF, mdClassMdBusiness, mdFacadeMdBusiness);
+    return ServerExceptionMessageLocalizer.methodDefinitionException_DefiningType(this.getLocale(), this.mdMethod, definingMdTypeIF, mdClassMdBusiness);
   }
 }
