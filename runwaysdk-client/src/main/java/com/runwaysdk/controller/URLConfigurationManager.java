@@ -3,24 +3,25 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -238,21 +239,24 @@ public class URLConfigurationManager
 
       for (Method method : methods)
       {
-        Class<?> returnType = method.getReturnType();
-
-        if (ResponseIF.class.isAssignableFrom(returnType))
+        if (Modifier.isPublic(method.getModifiers()))
         {
-          Endpoint urlAction = method.getAnnotation(Endpoint.class);
+          Class<?> returnType = method.getReturnType();
 
-          if (urlAction != null && !urlAction.url().equals("[unassigned]"))
+          if (ResponseIF.class.isAssignableFrom(returnType))
           {
-            String url = urlAction.url();
+            Endpoint urlAction = method.getAnnotation(Endpoint.class);
 
-            mapping.add(method.getName(), url, ControllerVersion.V2);
-          }
-          else
-          {
-            mapping.add(method.getName(), method.getName(), ControllerVersion.V2);
+            if (urlAction != null && !urlAction.url().equals("[unassigned]"))
+            {
+              String url = urlAction.url();
+
+              mapping.add(method.getName(), url, ControllerVersion.V2);
+            }
+            else
+            {
+              mapping.add(method.getName(), method.getName(), ControllerVersion.V2);
+            }
           }
         }
       }
