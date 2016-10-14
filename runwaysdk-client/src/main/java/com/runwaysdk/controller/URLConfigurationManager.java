@@ -21,6 +21,7 @@ package com.runwaysdk.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -238,21 +239,24 @@ public class URLConfigurationManager
 
       for (Method method : methods)
       {
-        Class<?> returnType = method.getReturnType();
-
-        if (ResponseIF.class.isAssignableFrom(returnType))
+        if (Modifier.isPublic(method.getModifiers()))
         {
-          Endpoint urlAction = method.getAnnotation(Endpoint.class);
+          Class<?> returnType = method.getReturnType();
 
-          if (urlAction != null && !urlAction.url().equals("[unassigned]"))
+          if (ResponseIF.class.isAssignableFrom(returnType))
           {
-            String url = urlAction.url();
+            Endpoint urlAction = method.getAnnotation(Endpoint.class);
 
-            mapping.add(method.getName(), url, ControllerVersion.V2);
-          }
-          else
-          {
-            mapping.add(method.getName(), method.getName(), ControllerVersion.V2);
+            if (urlAction != null && !urlAction.url().equals("[unassigned]"))
+            {
+              String url = urlAction.url();
+
+              mapping.add(method.getName(), url, ControllerVersion.V2);
+            }
+            else
+            {
+              mapping.add(method.getName(), method.getName(), ControllerVersion.V2);
+            }
           }
         }
       }

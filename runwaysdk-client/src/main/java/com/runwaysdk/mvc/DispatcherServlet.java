@@ -43,6 +43,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.ClientException;
 import com.runwaysdk.ProblemExceptionDTO;
@@ -73,6 +75,9 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
    * 
    */
   private static final long       serialVersionUID = 2153995526229356351L;
+
+  // Always use the SLF4J logger.
+  private static Logger           log              = LoggerFactory.getLogger(URLConfigurationManager.class);
 
   private URLConfigurationManager xmlMapper;
 
@@ -249,6 +254,8 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
 
       if (annotation.error().equals(ErrorSerialization.JSON))
       {
+        log.error("JSON handling of error", e);
+        
         if (e instanceof InvocationTargetException)
         {
           e = ( (InvocationTargetException) e ).getTargetException();
