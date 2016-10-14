@@ -231,8 +231,6 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   public EntityDAOIF getEntityDAO(String id)
   {
     EntityDAOIF entityDAOIF = null;
- 
- // Heads up: modify
     
     this.transactionStateLock.lock();
     try
@@ -280,24 +278,6 @@ public class ThreadTransactionCache extends AbstractTransactionCache
           }
         }
       }
-      
-//      if (this.isNewUncachedEntity(id))
-//      {
-//        entityDAOIF = ObjectCache._internalGetEntityDAO(id);
-//      }
-//      else
-//      {
-//        TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
-//        if (transactionCacheItem != null)
-//        {
-//          entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
-//        }
-//        
-//        if (entityDAOIF == null)
-//        {
-//          entityDAOIF = this.getTransactionCache().getEntityDAO(id);
-//        }        
-//      }
 
       return entityDAOIF;
       
@@ -632,11 +612,6 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   {
     super.updatedTransition(transitionDAO);
   }
-// Heads up: test:  
-//  @Override
-//  public void close()
-//  {
-//  }
   
   @Override
   public void put(EntityDAOIF entityDAO)

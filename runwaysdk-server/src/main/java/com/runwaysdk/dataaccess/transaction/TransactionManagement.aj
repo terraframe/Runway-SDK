@@ -20,8 +20,6 @@ package com.runwaysdk.dataaccess.transaction;
 
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +30,6 @@ import com.runwaysdk.ProblemIF;
 import com.runwaysdk.business.generation.CompilerException;
 import com.runwaysdk.business.generation.GenerationFacade;
 import com.runwaysdk.business.generation.GenerationUtil;
-import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -42,8 +39,7 @@ import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.AddGroupIndexDDLCommand;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
-import com.runwaysdk.facade.wsdd.WebServiceDeployer;
-import com.runwaysdk.facade.wsdd.WebServiceUndeployer;
+
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.PermissionCache;
@@ -293,13 +289,6 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     super.doFinally();
     
     this.getState().allCommandsDoFinally();
-
-// Heads up: test
-    // Transaction cache should be rolled back, regardless, as we no longer
-    // need the objects stored there at the end of the transaction.
-//    this.getTransactionCache().rollbackTransactionCache();
-    
-//    this.getTransactionCache().close();
   }
 
   /**

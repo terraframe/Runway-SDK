@@ -48,7 +48,6 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdIndexInfo;
-import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;

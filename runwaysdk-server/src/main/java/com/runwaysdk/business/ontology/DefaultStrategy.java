@@ -33,7 +33,7 @@ public class DefaultStrategy implements OntologyStrategyIF
 {
   protected String termClass;
   
-  private String relationshipType;
+//  private String relationshipType;
   
   public static class Singleton
   {

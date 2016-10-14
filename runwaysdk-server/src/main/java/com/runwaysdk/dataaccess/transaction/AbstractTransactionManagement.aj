@@ -1051,10 +1051,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
    */
   protected void doFinally()
   {     
-// Heads up: test
-     this.getTransactionCache().close();
-    
-//     this.getTransactionCache().closeEntityIdFileCache();
+    this.getTransactionCache().close();
   }
 
   after() returning : topLevelTransactions()

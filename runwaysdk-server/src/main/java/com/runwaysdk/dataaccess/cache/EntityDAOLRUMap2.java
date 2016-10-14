@@ -21,6 +21,7 @@ package com.runwaysdk.dataaccess.cache;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@SuppressWarnings("rawtypes")
 public class EntityDAOLRUMap2 extends LinkedHashMap
 {
   /**
@@ -36,7 +37,7 @@ public class EntityDAOLRUMap2 extends LinkedHashMap
   }
   
   
-  public boolean removeEldestEntry(@SuppressWarnings("rawtypes") Map.Entry eldest)
+  public boolean removeEldestEntry(Map.Entry eldest)
   { 
     if (this.size() > this.maxSize)
     {

@@ -70,6 +70,7 @@ public abstract class RunwayMemoryCache<K, V>
 
     private LinkedHashMapWrapper() { super(); }
     
+    @SuppressWarnings("rawtypes")
     @Override
     protected boolean removeEldestEntry(Map.Entry eldest) {
       return size() > maxSize;

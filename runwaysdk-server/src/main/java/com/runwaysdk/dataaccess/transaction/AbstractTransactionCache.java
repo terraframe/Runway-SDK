@@ -1681,19 +1681,10 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    */
   protected EntityDAOIF getUpdatedEntityFromKeyNameMap(String providedType, String key)
   {
-// Heads up: modify: Fetch the object from the database
-// ObjectCache.getEntityDAO(type, key);
-// Check to see if the id is in the newlyCreatedEntity non cached type file cache
-// Set the isNewFlag
-
-// Heads up: modify
     EntityDAOIF entityDAOIF = null;
     
     // Check to see if the type and the key have been modified in this transaction
     String id = this.updatedEntityDAOKeyMap.get(providedType + "-" + key);
-    
-//    MdEntityDAOIF objectMdEntityDAOIF = null;
-//    String objectType = null;
     
     // The type provided could be a parent type of the object with the key. Check all subclasses.
     if (id == null)
@@ -1732,82 +1723,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     }  
  
     return entityDAOIF;
-    
-
-//    String id = this.updatedEntityDAOKeyMap.get(type + "-" + key);
-//    
-//    EntityDAOIF entityDAOIF;
-//    
-//    if (id == null)
-//    {
-//      entityDAOIF = ObjectCache.getEntityDAO(type, key);
-//      
-//      if (this.isNewUncachedEntity(entityDAOIF.getId()))
-//      {
-//        ((EntityDAO)entityDAOIF).setIsNew(true);
-//      }
-//    }
-//    else
-//    {
-//      entityDAOIF = this.internalGetEntityDAO(id);
-//    }
-//    
-//    return entityDAOIF;
-  }
-  
-  
-//  MdEntityDAOIF rootMdEntityDAOIF = MdEntityDAO.getMdEntityDAO(type);
-//  
-//  boolean typeInTransaction = this.typeRootIdsInTransaction.contains(rootMdEntityDAOIF.getRootId());
-//  // Check the children classes to see if one of them participated in the transaction. This is necessary because
-//  // The type parameter provided may be of a parent type
-//  if (!typeInTransaction)
-//  {
-//    List<? extends MdEntityDAOIF> subClasses = rootMdEntityDAOIF.getAllSubClasses();
-//    
-//    for (MdEntityDAOIF mdEntityDAOIF : subClasses)
-//    {
-//      typeInTransaction = this.typeRootIdsInTransaction.contains(mdEntityDAOIF.getRootId());
-//      
-//      if (typeInTransaction)
-//      {
-//        break;
-//      }
-//    }
-//  }
-//
-//  // 2) If the object's type is not in the transaction, then we know that we need to fetch it 
-//  // from the global cache 
-//  if (!typeInTransaction)
-//  {
-//    // By returning null the calling aspect advice will fetch the object
-//    // from the global cache
-//    return null;
-//  }
-//  else // (typeInTransaction)
-//  {     
-//    // 3) Determine if the object's type is cached or not
-//    // 4) If the type IS cached...
-//    if (!mdEntityDAOIF.isNotCached())
-//    {
-//      // 4.1) fetch the object from the transaction
-//      String id = this.updatedEntityDAOKeyMap.get(type + "-" + key);
-//      entityDAOIF = this.internalGetEntityDAO(id);
-//    }
-//    else // (mdEntityDAOIF.isNotCached())
-//    {
-//      entityDAOIF = ObjectCache.getEntityDAO(type, key);
-//      
-//      if (this.isNewUncachedEntity(entityDAOIF.getId()))
-//      {
-//        ((EntityDAO)entityDAOIF).setIsNew(true);
-//      }
-//    }
-//  }
-//
-//  return entityDAOIF;
-  
-  
+  } 
 
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAO(java.lang.String,
@@ -2175,10 +2091,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    */
   public void setExecutedEntityDeleteMethod(EntityDAO entityDAO, String signature)
   {
-
-// Heads up: test
-//System.out.println("SETTING: "+signature+" "+entityDAO.getId());
- 
     this.transactionStateLock.lock();
     try
     {
@@ -2206,10 +2118,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    *      java.lang.String)
    */
   public boolean removeExecutedDeleteMethod(EntityDAO entityDAO, String signature)
-  {
-// Heads up: test
-//    System.out.println("REMOVING: "+signature+" "+entityDAO.getId());
-    
+  {  
     this.transactionStateLock.lock();
     try
     {
@@ -2459,7 +2368,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {      
-// Heads up: modify
       MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
       
       // Record that this object's type is participating in this transaction.

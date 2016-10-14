@@ -115,8 +115,22 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
   @Test
   public void testNotWritingNewProperties() throws FileNotFoundException
   {
-    // Make sure we don't have any weird bugs that cause the ProfileFlattener to write the migrated properties instead of the legacy ones
-    String dbProps = new Scanner(new File(baseDir + "/target/test-classes/flat/database.properties")).useDelimiter("\\Z").next();
-    assertFalse(dbProps.contains("database.port"));
+    Scanner scanner = null;
+    
+    try
+    {
+      scanner = new Scanner(new File(baseDir + "/target/test-classes/flat/database.properties"));
+      
+      // Make sure we don't have any weird bugs that cause the ProfileFlattener to write the migrated properties instead of the legacy ones
+      String dbProps = scanner.useDelimiter("\\Z").next();
+      assertFalse(dbProps.contains("database.port"));
+    }
+    finally
+    {
+      if (scanner != null)
+      {
+        scanner.close();
+      }
+    }
   }
 }

@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.mvc;
 
-import com.runwaysdk.request.ServletRequestIF;
 
 public class ServletUtil
 {

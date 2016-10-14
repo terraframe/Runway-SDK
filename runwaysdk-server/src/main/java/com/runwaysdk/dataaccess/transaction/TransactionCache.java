@@ -269,7 +269,7 @@ public class TransactionCache extends AbstractTransactionCache
   public EntityDAOIF getEntityDAO(String id)
   {
     EntityDAOIF entityDAOIF = null;
-// Heads up: modify
+
     this.transactionStateLock.lock();
     try
     {
@@ -316,22 +316,6 @@ public class TransactionCache extends AbstractTransactionCache
           }
         }
       }
-//      
-//      
-//      
-//      if (this.isNewUncachedEntity(id))
-//      {
-//        entityDAOIF = ObjectCache._internalGetEntityDAO(id);
-//        ((EntityDAO)entityDAOIF).setIsNew(true);
-//      }
-//      else
-//      {
-//        TransactionItemEntityDAOAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
-//        if (transactionCacheItem != null)
-//        {
-//          entityDAOIF = (EntityDAOIF) this.getEntityDAOIFfromCache(id);
-//        }
-//      }
       
       return entityDAOIF;
 
@@ -785,14 +769,6 @@ public class TransactionCache extends AbstractTransactionCache
       this.transactionStateLock.unlock();
     }
   }
-// Heads up: test
-//  /**
-//   * Rollback the transaction cache.
-//   */
-//  public void rollbackTransactionCache()
-//  {
-//    // transactionCache.rollbackTransaction();
-//  }
 
   public void close()
   {
@@ -802,17 +778,11 @@ public class TransactionCache extends AbstractTransactionCache
 
   public void put(EntityDAOIF entityDAO)
   {
-// Heads up: modify:
     MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
     
     if (!mdEntityDAOIF.isNotCached())
     {
       cache.putEntityDAOIFintoCache(entityDAO);
     }
-    
-//    if (!this.isNewUncachedEntity(entityDAO.getId()))
-//    {      
-//      cache.putEntityDAOIFintoCache(entityDAO);
-//    }
   }
 }

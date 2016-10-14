@@ -74,11 +74,8 @@ public aspect PolicyEnforcement
       && !(within(com.runwaysdk.dataaccess.cache.CacheStrategy+) ||
           within(com.runwaysdk.dataaccess.database.BusinessDAOFactory) ||
           within(com.runwaysdk.dataaccess.database.EntityDAOFactory) ||
-          within(com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement+) ||
-          
-// Heads up: debug:          
+          within(com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement+) ||       
           within(com.runwaysdk.dataaccess.transaction.AbstractTransactionCache+) ||
-          
           within(com.runwaysdk.dataaccess.DAOStatePostTransaction+) ||         
           within(com.runwaysdk.dataaccess.*Test) ||
           within(com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_E))

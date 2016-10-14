@@ -25,7 +25,6 @@ import junit.framework.TestResult;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
