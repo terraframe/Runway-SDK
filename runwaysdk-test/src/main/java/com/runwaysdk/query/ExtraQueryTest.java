@@ -108,16 +108,16 @@ public class ExtraQueryTest extends TestCase
     }   
   }
   
-  @SuppressWarnings("unchecked")
+  
   public void testQueryAnd_Condition_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -128,7 +128,7 @@ public class ExtraQueryTest extends TestCase
       queryClass.getMethod("AND", Condition.class).invoke(queryObject, attributeBoolean.NE(false));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
@@ -137,7 +137,7 @@ public class ExtraQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
       
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -221,16 +221,16 @@ public class ExtraQueryTest extends TestCase
     }   
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryOr_Condition_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -241,7 +241,7 @@ public class ExtraQueryTest extends TestCase
       queryClass.getMethod("OR", Condition.class).invoke(queryObject, attributeBoolean.NE(false));
       
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
@@ -250,7 +250,7 @@ public class ExtraQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
       
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);

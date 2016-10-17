@@ -167,6 +167,8 @@ public class RelationshipTest extends TestCase
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "TestParent1");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "TestChild1");
+    mdRelationship.setGenerateMdController(false);
+    mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.apply();
 
     // Now for a new Relationship
@@ -186,6 +188,8 @@ public class RelationshipTest extends TestCase
     mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "TestParent2");
     mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "TestChild2");
+    mdGraph.setGenerateMdController(false);
+    mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdGraph.apply();
 
     // Now for a new Relationship
@@ -205,6 +209,8 @@ public class RelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent3");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild3");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
     mdTree = MdTreeDAO.newInstance();
@@ -223,6 +229,8 @@ public class RelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "RecursionParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "RecursionChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
     MdTreeDAO mdTreeTestAbstract = MdTreeDAO.newInstance();
@@ -241,6 +249,8 @@ public class RelationshipTest extends TestCase
     mdTreeTestAbstract.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTreeTestAbstract.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent");
     mdTreeTestAbstract.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild");
+    mdTreeTestAbstract.setGenerateMdController(false);
+    mdTreeTestAbstract.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTreeTestAbstract.apply();
 
     mdTree = MdTreeDAO.newInstance();
@@ -260,6 +270,8 @@ public class RelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "ConcreteParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "ConcreteChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
     mdTree = MdTreeDAO.newInstance();
@@ -279,6 +291,8 @@ public class RelationshipTest extends TestCase
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "Concrete2Parent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "Concrete2Child");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
   }
@@ -890,6 +904,8 @@ public class RelationshipTest extends TestCase
     teaches.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     teaches.setValue(MdTreeInfo.PARENT_METHOD, "Teacher");
     teaches.setValue(MdTreeInfo.CHILD_METHOD, "Student");
+    teaches.setGenerateMdController(false);
+    teaches.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     teaches.apply();
 
     // create an attribute for the relationship TEACHES
@@ -951,6 +967,8 @@ public class RelationshipTest extends TestCase
       teacherDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       teacherDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       teacherDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      teacherDO.setGenerateMdController(false);
+      teacherDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       teacherDO.apply();
 
       TypeInfo studentClass = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "Student");
@@ -964,6 +982,8 @@ public class RelationshipTest extends TestCase
       studentDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       studentDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       studentDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      studentDO.setGenerateMdController(false);
+      studentDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       studentDO.apply();
 
       TypeInfo pencilClass = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "Pencil");
@@ -977,6 +997,8 @@ public class RelationshipTest extends TestCase
       pencilDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       pencilDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       pencilDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      pencilDO.setGenerateMdController(false);
+      pencilDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       pencilDO.apply();
 
       TypeInfo graphiteClass = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "Graphite");
@@ -990,6 +1012,8 @@ public class RelationshipTest extends TestCase
       graphiteDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       graphiteDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       graphiteDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      graphiteDO.setGenerateMdController(false);
+      graphiteDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       graphiteDO.apply();
 
       // Create the relationships necessary for composition
@@ -1012,6 +1036,8 @@ public class RelationshipTest extends TestCase
       teachesREL.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, studentClass.getTypeName() + " is taught by a teacher");
       teachesREL.setValue(MdTreeInfo.PARENT_METHOD, "Teacher");
       teachesREL.setValue(MdTreeInfo.CHILD_METHOD, "Student");
+      teachesREL.setGenerateMdController(false);
+      teachesREL.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       teachesREL.apply();
 
       TypeInfo writesWithRelationship = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "WritesWith");
@@ -1033,6 +1059,8 @@ public class RelationshipTest extends TestCase
       writesREL.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A pencil is used by a student to write with");
       writesREL.setValue(MdTreeInfo.PARENT_METHOD, "Writer");
       writesREL.setValue(MdTreeInfo.CHILD_METHOD, "Pencil1");
+      writesREL.setGenerateMdController(false);
+      writesREL.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       writesREL.apply();
 
       TypeInfo mediumRelationship = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "Medium");
@@ -1054,6 +1082,8 @@ public class RelationshipTest extends TestCase
       mediumREL.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Graphite is a pencil's medium");
       mediumREL.setValue(MdTreeInfo.PARENT_METHOD, "Pencil2");
       mediumREL.setValue(MdTreeInfo.CHILD_METHOD, "Graphite");
+      mediumREL.setGenerateMdController(false);
+      mediumREL.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mediumREL.apply();
 
       // Create instances of the data types
@@ -1189,6 +1219,8 @@ public class RelationshipTest extends TestCase
     someDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     someDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     someDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    someDO.setGenerateMdController(false);
+    someDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     someDO.apply();
 
     TypeInfo some2Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "Something2");
@@ -1199,7 +1231,9 @@ public class RelationshipTest extends TestCase
     some2DO.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, some2Class.getTypeName() + " test type");
     some2DO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     some2DO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    some2DO.setValue(MdElementInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    some2DO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    some2DO.setGenerateMdController(false);
+    some2DO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     some2DO.apply();
 
     TypeInfo structEntityInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "StructEntity");
@@ -1209,6 +1243,8 @@ public class RelationshipTest extends TestCase
     structDO.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     structDO.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, structEntityInfo.getTypeName() + " Test Type");
     structDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
+    structDO.setGenerateMdController(false);
+    structDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     structDO.apply();
 
     TypeInfo badRelationship = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "Bad");
@@ -1226,6 +1262,8 @@ public class RelationshipTest extends TestCase
     badREL.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     badREL.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 2");
     badREL.setValue(MdTreeInfo.CHILD_METHOD, "childMethod");
+    badREL.setGenerateMdController(false);  
+    badREL.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     badREL.apply();
 
@@ -1304,6 +1342,8 @@ public class RelationshipTest extends TestCase
       A.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       A.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       A.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      A.setGenerateMdController(false);  
+      A.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       A.apply();
 
       TypeInfo B_Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "BB");
@@ -1316,6 +1356,8 @@ public class RelationshipTest extends TestCase
       B.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       B.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       B.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, A.getId());
+      B.setGenerateMdController(false);  
+      B.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       B.apply();
 
       TypeInfo C_Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "CC");
@@ -1328,6 +1370,8 @@ public class RelationshipTest extends TestCase
       C.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       C.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       C.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, A.getId());
+      C.setGenerateMdController(false);  
+      C.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       C.apply();
 
       TypeInfo D_Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "DD");
@@ -1340,6 +1384,8 @@ public class RelationshipTest extends TestCase
       D.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       D.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       D.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, B.getId());
+      D.setGenerateMdController(false);  
+      D.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       D.apply();
 
       TypeInfo W_Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "WW");
@@ -1351,6 +1397,8 @@ public class RelationshipTest extends TestCase
       W.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       W.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       W.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      W.setGenerateMdController(false);  
+      W.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       W.apply();
 
       TypeInfo X_Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "XX");
@@ -1363,6 +1411,8 @@ public class RelationshipTest extends TestCase
       X.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       X.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       X.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, W.getId());
+      X.setGenerateMdController(false);  
+      X.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       X.apply();
 
       TypeInfo Y_Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "YY");
@@ -1375,6 +1425,8 @@ public class RelationshipTest extends TestCase
       Y.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       Y.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       Y.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, W.getId());
+      Y.setGenerateMdController(false);  
+      Y.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       Y.apply();
 
       TypeInfo Z_Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "ZZ");
@@ -1387,6 +1439,8 @@ public class RelationshipTest extends TestCase
       Z.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       Z.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       Z.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, X.getId());
+      Z.setGenerateMdController(false);  
+      Z.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       Z.apply();
 
       // Relate the two corresponding inheritances.
@@ -1408,6 +1462,8 @@ public class RelationshipTest extends TestCase
       AtoW.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child W");
       AtoW.setValue(MdTreeInfo.PARENT_METHOD, "A");
       AtoW.setValue(MdTreeInfo.CHILD_METHOD, "W");
+      AtoW.setGenerateMdController(false);  
+      AtoW.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       AtoW.apply();
 
       TypeInfo BtoX_REL = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "BtoX");
@@ -1427,6 +1483,8 @@ public class RelationshipTest extends TestCase
       BtoX.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child X");
       BtoX.setValue(MdTreeInfo.PARENT_METHOD, "B");
       BtoX.setValue(MdTreeInfo.CHILD_METHOD, "X");
+      BtoX.setGenerateMdController(false);  
+      BtoX.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       BtoX.apply();
 
       TypeInfo CtoY_REL = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "CtoY");
@@ -1446,6 +1504,8 @@ public class RelationshipTest extends TestCase
       CtoY.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child Y");
       CtoY.setValue(MdTreeInfo.PARENT_METHOD, "C");
       CtoY.setValue(MdTreeInfo.CHILD_METHOD, "Y");
+      CtoY.setGenerateMdController(false);  
+      CtoY.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       CtoY.apply();
 
       TypeInfo DtoZ_REL = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "DtoZ");
@@ -1465,6 +1525,8 @@ public class RelationshipTest extends TestCase
       DtoZ.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child Z");
       DtoZ.setValue(MdTreeInfo.PARENT_METHOD, "D");
       DtoZ.setValue(MdTreeInfo.CHILD_METHOD, "Z");
+      DtoZ.setGenerateMdController(false);  
+      DtoZ.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       DtoZ.apply();
 
       // now delete the superclass, A, and make sure all relationships are gone.
@@ -1519,6 +1581,8 @@ public class RelationshipTest extends TestCase
       A.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       A.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       A.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      A.setGenerateMdController(false);  
+      A.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       A.apply();
 
       TypeInfo W_Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "WW");
@@ -1530,6 +1594,8 @@ public class RelationshipTest extends TestCase
       W.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       W.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       W.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      W.setGenerateMdController(false);  
+      W.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       W.apply();
 
       TypeInfo AtoW_REL = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "AtoW");
@@ -1548,6 +1614,8 @@ public class RelationshipTest extends TestCase
       AtoW.setValue(MdTreeInfo.CHILD_MD_BUSINESS, W.getId());
       AtoW.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       AtoW.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child W");
+      AtoW.setGenerateMdController(false);  
+      AtoW.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       AtoW.apply();
 
       fail("A relationship was incorrectly able to have an MRU cache algorithm.");
@@ -1599,6 +1667,8 @@ public class RelationshipTest extends TestCase
     mdTree.setValue(MdTreeInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "CachedParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "CachedChild");
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
     MdAttributeCharacterDAO mdAttrChar = MdAttributeCharacterDAO.newInstance();

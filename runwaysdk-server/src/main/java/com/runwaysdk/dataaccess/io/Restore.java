@@ -161,7 +161,7 @@ public class Restore
    */
   private void validateRestore()
   {
-    String webappRootDir = DeployProperties.getDeployPath();
+//    String webappRootDir = DeployProperties.getDeployPath();
     
     // Check if the webapp that we're restoring onto has the same name as what's in the backup, otherwise the user may be restoring the wrong backup file!
     // TODO : Add support for the non-legacy properties format

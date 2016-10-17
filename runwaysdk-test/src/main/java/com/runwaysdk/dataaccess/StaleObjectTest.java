@@ -119,6 +119,8 @@ public class StaleObjectTest extends TestCase
     utensilMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     utensilMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     utensilMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    utensilMdBusiness.setGenerateMdController(false);
+    utensilMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     utensilMdBusiness.apply();
     utensilClass.setId(utensilMdBusiness.getId());
   }
@@ -235,6 +237,8 @@ public class StaleObjectTest extends TestCase
       A.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       A.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       A.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      A.setGenerateMdController(false);
+      A.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       A.apply();
 
       TypeInfo W_Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "WW");
@@ -246,6 +250,8 @@ public class StaleObjectTest extends TestCase
       W.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       W.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       W.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      W.setGenerateMdController(false);
+      W.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       W.apply();
 
       TypeInfo AtoW_REL = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "AtoW");
@@ -266,6 +272,8 @@ public class StaleObjectTest extends TestCase
       AtoW.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child W");
       AtoW.setValue(MdTreeInfo.PARENT_METHOD, "A");
       AtoW.setValue(MdTreeInfo.CHILD_METHOD, "W");
+      AtoW.setGenerateMdController(false);
+      AtoW.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       AtoW.apply();
 
       AtoW.delete();

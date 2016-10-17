@@ -28,10 +28,8 @@ import java.util.List;
 import java.util.Stack;
 
 import com.runwaysdk.business.Business;
-import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.LocalStruct;
 import com.runwaysdk.business.Relationship;
-import com.runwaysdk.business.RelationshipQuery;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
@@ -45,7 +43,6 @@ import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
 import com.runwaysdk.system.metadata.ontology.StrategyState;

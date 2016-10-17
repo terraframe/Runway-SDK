@@ -112,6 +112,8 @@ public class DeterministicIDTest extends TestCase
     mdBusiness.setValue(MdBusinessInfo.ABSTRACT,               MdAttributeBooleanInfo.FALSE);
     mdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM,        EntityCacheMaster.CACHE_EVERYTHING.getId());
     mdBusiness.setValue(MdEntityInfo.HAS_DETERMINISTIC_IDS,    MdAttributeBooleanInfo.FALSE);
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
     
     MdAttributeCharacterDAO mdAttChar = MdAttributeCharacterDAO.newInstance();

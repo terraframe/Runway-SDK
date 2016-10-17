@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.ehcache.Cache.Entry;
+
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -39,6 +41,7 @@ import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -56,6 +59,7 @@ import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.util.IdParser;
 
 /**
  *Caches all Relationships and EntityDAOs that were added, removed, or modified
@@ -245,7 +249,18 @@ public class TransactionCache extends AbstractTransactionCache
     {
       this.storeTransactionEntityDAO(entityDAO);
     }
-
+    
+    if (threadTransactionCache.newEntityIdStringFileCache != null)
+    {
+      Iterator<Entry<String, String>> entryIterator = threadTransactionCache.newEntityIdStringFileCache.iterator();
+      while (entryIterator.hasNext())
+      {
+        Entry<String, String> entry = entryIterator.next();
+        this.recordNewlyCreatedNonCachedEntity(entry.getKey());
+      }  
+    }
+    
+    this.typeRootIdsInTransaction.addAll(threadTransactionCache.typeRootIdsInTransaction); 
   }
 
   /**
@@ -258,12 +273,50 @@ public class TransactionCache extends AbstractTransactionCache
     this.transactionStateLock.lock();
     try
     {
-      TransactionItemEntityDAOAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
-      if (transactionCacheItem != null)
+      // 1) Check to see if the object's type has been modified in this transaction.
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(id); 
+      boolean typeInTransaction = this.typeRootIdsInTransaction.contains(mdTypeRootId);
+      
+      // 2) If the object's type is not in the transaction, then we know that we need to fetch it 
+      // from the global cache 
+      if (!typeInTransaction)
       {
-        entityDAOIF = (EntityDAOIF) this.getEntityDAOIFfromCache(id);
+        // By returning null the calling aspect advice will fetch the object
+        // from the global cache
+        return null;
       }
-
+      else // (typeInTransaction)
+      {
+        // 3) Determine if the object's type is cached or not
+        MdEntityDAOIF mdEntityDAOIF = (MdEntityDAOIF)ObjectCache.getMdClassDAOByRootId(mdTypeRootId);
+        
+        // 4) If the type IS cached...
+        if (!mdEntityDAOIF.isNotCached())
+        {
+          // 4.1) fetch the object from the transaction
+          TransactionItemEntityDAOAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
+          if (transactionCacheItem != null)
+          {
+            entityDAOIF = (EntityDAOIF) this.getEntityDAOIFfromCache(id);
+          }
+          
+          // 4.2) If it is not in the transaction cache, fetch it from the global cache
+          if (entityDAOIF == null)
+          {
+            entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+          }
+        }
+        else // (mdEntityDAOIF.isNotCached())
+        {
+          // 5) If the object is not cached, 
+          if (this.isNewUncachedEntity(id))
+          {
+            entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+            ((EntityDAO)entityDAOIF).setIsNew(true);
+          }
+        }
+      }
+      
       return entityDAOIF;
 
     }
@@ -291,7 +344,7 @@ public class TransactionCache extends AbstractTransactionCache
   {
     this.transactionStateLock.lock();
     try
-    {
+    {  
       this.cache.putEntityDAOIFintoCache(entityDAO);
     }
     finally
@@ -306,11 +359,14 @@ public class TransactionCache extends AbstractTransactionCache
    * @param oldId
    * @param entityDAO
    */
+  @Override
   protected void changeEntityIdInCache(String oldId, EntityDAO entityDAO)
   {
     this.transactionStateLock.lock();
     try
     {
+      super.changeEntityIdInCache(oldId, entityDAO);
+      
       this.cache.removeEntityDAOIFfromCache(oldId);
       this.cache.putEntityDAOIFintoCache(entityDAO);
     }
@@ -714,21 +770,19 @@ public class TransactionCache extends AbstractTransactionCache
     }
   }
 
-  /**
-   * Rollback the transaction cache.
-   */
-  public void rollbackTransactionCache()
-  {
-    // transactionCache.rollbackTransaction();
-  }
-
   public void close()
   {
+    super.close();
     cache.close();
   }
 
   public void put(EntityDAOIF entityDAO)
   {
-    cache.putEntityDAOIFintoCache(entityDAO);
+    MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
+    
+    if (!mdEntityDAOIF.isNotCached())
+    {
+      cache.putEntityDAOIFintoCache(entityDAO);
+    }
   }
 }

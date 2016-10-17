@@ -105,19 +105,18 @@ public class DateTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void testDateEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();   
-      Class objectClass = LoaderDecorator.load(type);      
+      Class<?> objectClass = LoaderDecorator.load(type);      
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -135,7 +134,7 @@ public class DateTest extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
@@ -179,20 +178,19 @@ public class DateTest extends TestCase
       loopCount += 1;
     }
   }
-  
-  @SuppressWarnings("unchecked")
+
   public void testDateGtMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
-      Class objectClass = LoaderDecorator.load(type);    
+      Class<?> objectClass = LoaderDecorator.load(type);    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -211,7 +209,7 @@ public class DateTest extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
       
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
@@ -257,19 +255,18 @@ public class DateTest extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
   public void testDateGtEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();  
-      Class objectClass = LoaderDecorator.load(type);    
+      Class<?> objectClass = LoaderDecorator.load(type);    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -288,7 +285,7 @@ public class DateTest extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
       
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
@@ -317,19 +314,18 @@ public class DateTest extends TestCase
     String errMsg = "Less than MIN() check returned wrong result.";
     assertEquals(errMsg, 0, count);
   }
- 
-  @SuppressWarnings("unchecked")
+
   public void testDateLtMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -377,19 +373,18 @@ public class DateTest extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
   public void testDateLtEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);  
+      Class<?> objectClass = LoaderDecorator.load(type);  
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -408,7 +403,7 @@ public class DateTest extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
       
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
@@ -453,19 +448,18 @@ public class DateTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void testDateNotEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);  
+      Class<?> objectClass = LoaderDecorator.load(type);  
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -484,7 +478,7 @@ public class DateTest extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
       
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
@@ -528,19 +522,19 @@ public class DateTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();   
-      Class objectClass = LoaderDecorator.load(type);      
+      Class<?> objectClass = LoaderDecorator.load(type);      
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -559,7 +553,7 @@ public class DateTest extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
@@ -590,18 +584,18 @@ public class DateTest extends TestCase
 
   }
   
-  @SuppressWarnings("unchecked")
+  
   public void testDateGtMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -648,19 +642,19 @@ public class DateTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateGtEqMaxAttribute_Generated()
   { 
     try
     {  
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
-      Class objectClass = LoaderDecorator.load(type);   
+      Class<?> objectClass = LoaderDecorator.load(type);   
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -678,7 +672,7 @@ public class DateTest extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
@@ -723,19 +717,19 @@ public class DateTest extends TestCase
     }
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testDateLtMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
-      Class objectClass = LoaderDecorator.load(type);   
+      Class<?> objectClass = LoaderDecorator.load(type);   
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -753,7 +747,7 @@ public class DateTest extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
@@ -797,19 +791,19 @@ public class DateTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateLtEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -828,7 +822,7 @@ public class DateTest extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
@@ -872,19 +866,19 @@ public class DateTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateNotEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();  
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -903,7 +897,7 @@ public class DateTest extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);

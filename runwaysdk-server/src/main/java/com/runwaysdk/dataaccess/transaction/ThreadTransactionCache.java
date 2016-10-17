@@ -36,6 +36,7 @@ import com.runwaysdk.dataaccess.EnumerationAttributeItem;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -45,6 +46,7 @@ import com.runwaysdk.dataaccess.TransientDAO;
 import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
+import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
@@ -53,6 +55,7 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.session.PermissionEntity;
+import com.runwaysdk.util.IdParser;
 
 public class ThreadTransactionCache extends AbstractTransactionCache
 {
@@ -232,15 +235,48 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     this.transactionStateLock.lock();
     try
     {
-      TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
-      if (transactionCacheItem != null)
-      {
-        entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
-      }
+      // 1) Check to see if the object's type has been modified in this transaction.
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(id); 
+      boolean typeInTransaction = this.typeRootIdsInTransaction.contains(mdTypeRootId);
       
-      if (entityDAOIF == null)
+      // 2) If the object's type is not in the transaction, then we know that we need to fetch it 
+      // from the global cache 
+      if (!typeInTransaction)
       {
-        entityDAOIF = this.getTransactionCache().getEntityDAO(id);
+        // By returning null the calling aspect advice will fetch the object
+        // from the global cache
+        return null;
+      }      
+      else // (typeInTransaction)
+      {
+        // 3) Determine if the object's type is cached or not
+        MdEntityDAOIF mdEntityDAOIF = (MdEntityDAOIF)ObjectCache.getMdClassDAOByRootId(mdTypeRootId);
+
+        // 4) If the type IS cached...
+        if (!mdEntityDAOIF.isNotCached())
+        {
+          // 4.1) fetch the object from the transaction
+          TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
+          if (transactionCacheItem != null)
+          {
+            entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
+          }
+          
+          // 4.2) If it is not in the transaction cache, fetch it from the main thread
+          if (entityDAOIF == null)
+          {
+            entityDAOIF = this.getTransactionCache().getEntityDAO(id);
+          }   
+        }
+        else // (mdEntityDAOIF.isNotCached())
+        {
+          // 5) If the object is not cached, 
+          if (this.isNewUncachedEntity(id))
+          {
+            entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+            ((EntityDAO)entityDAOIF).setIsNew(true);
+          }
+        }
       }
 
       return entityDAOIF;
@@ -292,11 +328,14 @@ public class ThreadTransactionCache extends AbstractTransactionCache
    * @param oldId
    * @param entityDAO
    */
+  @Override
   protected void changeEntityIdInCache(String oldId, EntityDAO entityDAO)
   {
     this.transactionStateLock.lock();
     try
     {
+      super.changeEntityIdInCache(oldId, entityDAO);
+      
       this.transactionObjectCache.put(entityDAO.getId(), entityDAO);
       this.transactionObjectCache.remove(oldId);
     }
@@ -307,16 +346,16 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
   
   @Override
-  public EntityDAO getEntityDAO(String type, String key)
+  public EntityDAOIF getEntityDAO(String type, String key)
   {
-    EntityDAO entityDAO = super.getEntityDAO(type, key);
+    EntityDAOIF entityDAOIF = super.getEntityDAO(type, key);
 
-    if (entityDAO == null)
+    if (entityDAOIF == null)
     {
-      entityDAO = this.getTransactionCache().getEntityDAO(type, key);
+      entityDAOIF = this.getTransactionCache().getEntityDAO(type, key);
     }
 
-    return entityDAO;
+    return entityDAOIF;
   }
 
   @Override
@@ -572,11 +611,6 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   public void updatedTransition(TransitionDAO transitionDAO)
   {
     super.updatedTransition(transitionDAO);
-  }
-  
-  @Override
-  public void close()
-  {
   }
   
   @Override

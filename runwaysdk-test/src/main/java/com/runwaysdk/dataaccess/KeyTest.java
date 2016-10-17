@@ -25,7 +25,9 @@ import junit.framework.TestSuite;
 
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 
@@ -58,6 +60,8 @@ public class KeyTest extends TestCase
   protected static void classSetUp()
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
   }
 

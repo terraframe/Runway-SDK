@@ -39,6 +39,7 @@ import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.AttributeValueCannotBeNegativeProblem;
@@ -122,6 +123,8 @@ public class MdDimensionTest extends TestCase
   public static void classSetUp()
   {
     testMdBusiness = TestFixtureFactory.createMdBusiness1();
+    testMdBusiness.setGenerateMdController(false);
+    testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     testMdBusiness.apply();
 
     MdAttributeCharacterDAO mdAttributeDAO_1 = TestFixtureFactory.addCharacterAttribute(testMdBusiness, "characterAttribute");
@@ -564,6 +567,8 @@ public class MdDimensionTest extends TestCase
   public void testInvalidReferenceValue()
   {
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     try
@@ -597,6 +602,8 @@ public class MdDimensionTest extends TestCase
   public void testValidReferenceValue()
   {
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness2.setGenerateMdController(false);
+    mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
     try
@@ -903,6 +910,8 @@ public class MdDimensionTest extends TestCase
   public void testDeleteMdBusinessWithAttributeDimesnions()
   {
     MdBusinessDAO _mdBusiness = TestFixtureFactory.createMdBusiness2();
+    _mdBusiness.setGenerateMdController(false);
+    _mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     _mdBusiness.apply();
 
     MdAttributeCharacterDAO _mdAttribute = TestFixtureFactory.addCharacterAttribute(_mdBusiness);

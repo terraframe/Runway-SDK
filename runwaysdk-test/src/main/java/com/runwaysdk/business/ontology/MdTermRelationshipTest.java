@@ -30,6 +30,7 @@ import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
@@ -107,6 +108,8 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
@@ -125,6 +128,8 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.setGenerateMdController(false);
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
+      mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
       try
@@ -151,6 +156,8 @@ public class MdTermRelationshipTest extends TestCase
   public void testInvalidParentType()
   {
     MdBusinessDAO parentMdBusiness = TestFixtureFactory.createMdBusiness1();
+    parentMdBusiness.setGenerateMdController(false);
+    parentMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     parentMdBusiness.apply();
 
     try
@@ -163,6 +170,8 @@ public class MdTermRelationshipTest extends TestCase
       mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      mdTerm.setGenerateMdController(false);
+      mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTerm.apply();
 
       try
@@ -181,6 +190,7 @@ public class MdTermRelationshipTest extends TestCase
         mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
         mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
         mdTermRelationship.setGenerateMdController(false);
+        mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
         mdTermRelationship.apply();
 
         TestFixtureFactory.delete(mdTermRelationship);
@@ -205,6 +215,8 @@ public class MdTermRelationshipTest extends TestCase
   public void testInvalidChildType()
   {
     MdBusinessDAO childMdBusiness = TestFixtureFactory.createMdBusiness1();
+    childMdBusiness.setGenerateMdController(false);
+    childMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     childMdBusiness.apply();
 
     try
@@ -217,6 +229,8 @@ public class MdTermRelationshipTest extends TestCase
       mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      mdTerm.setGenerateMdController(false);
+      mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTerm.apply();
 
       try
@@ -235,6 +249,7 @@ public class MdTermRelationshipTest extends TestCase
         mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
         mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
         mdTermRelationship.setGenerateMdController(false);
+        mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
         mdTermRelationship.apply();
 
         TestFixtureFactory.delete(mdTermRelationship);
@@ -266,6 +281,8 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
@@ -284,6 +301,7 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
       mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
       try
@@ -326,6 +344,8 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
@@ -344,6 +364,7 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
       mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
       try
@@ -386,6 +407,8 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
@@ -404,6 +427,7 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getId());
       mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
       try
@@ -446,6 +470,8 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
@@ -464,6 +490,7 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getId());
       mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
       try
@@ -511,6 +538,8 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
@@ -529,6 +558,8 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
       mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
       try

@@ -25,8 +25,6 @@ import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
-import com.runwaysdk.business.ontology.MdTermRelationshipTest;
-import com.runwaysdk.business.ontology.MdTermTest;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.TestConstants;
@@ -39,7 +37,6 @@ import com.runwaysdk.dataaccess.io.VersionTest;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.resolver.TransactionImportTest;
 import com.runwaysdk.dataaccess.schemamanager.MergeTest;
-import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
 
 /**
  * 
@@ -123,17 +120,16 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(SiteTest.suite());
     testSuite.addTest(MdDomainTest.suite());
     testSuite.addTest(MdTermTest.suite());
-    testSuite.addTest(MdTermRelationshipTest.suite());
     testSuite.addTest(MdAttributeTermTest.suite());
     testSuite.addTest(MdAttributeMultiReferenceTest.suite());
     testSuite.addTest(MdAttributeMultiTermTest.suite());
-    testSuite.addTest(MdDomainTest.suite());
     testSuite.addTest(MdControllerTest.suite());
     testSuite.addTest(LocalizationTest.suite());
     testSuite.addTest(ReservedWordsTest.suite());
     testSuite.addTest(KeyTest.suite());
     testSuite.addTest(IdPropigationTest.suite());
 
+    // Looks like Resolver test is broken due to Site Master field now being immutable.
     // testSuite.addTest(ResolverTest.suite());
     testSuite.addTest(TransactionImportTest.suite());
     testSuite.addTest(MdWebFormTest.suite());
@@ -141,7 +137,6 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(AttributeValidationTest.suite());
     testSuite.addTest(ExcelExporterTest.suite());
     testSuite.addTest(ExcelImporterTest.suite());
-    testSuite.addTest(AttributeValidationTest.suite());
     testSuite.addTest(ClassAndAttributeDimensionBuilderTest.suite());
     testSuite.addTest(FieldConditionTest.suite());
     testSuite.addTest(TransientAttributeMultiReferenceTest.suite());

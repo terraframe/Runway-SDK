@@ -31,6 +31,7 @@ import junit.framework.TestSuite;
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeDateUtil;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
@@ -38,6 +39,7 @@ import com.runwaysdk.constants.MdAttributeDoubleInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.attributes.AttributeValueAboveRangeProblem;
 import com.runwaysdk.dataaccess.attributes.AttributeValueBelowRangeProblem;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
@@ -90,6 +92,8 @@ public class AttributeValidationTest extends TestCase
   public static void classSetUp()
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);

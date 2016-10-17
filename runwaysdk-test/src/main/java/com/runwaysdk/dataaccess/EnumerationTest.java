@@ -230,6 +230,8 @@ public class EnumerationTest extends TestCase
     stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    stateEnumMdBusiness.setGenerateMdController(false);
+    stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.apply();
 
     stateEnumMdBusinessIF = stateEnumMdBusiness;
@@ -243,6 +245,7 @@ public class EnumerationTest extends TestCase
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
     stateMdEnumerationIF = mdEnumeration;
 
@@ -320,6 +323,7 @@ public class EnumerationTest extends TestCase
     mdStruct.setValue(MdStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Struct");
     mdStruct.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Struct");
+    mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
     mdStructIF = mdStruct;
 
@@ -412,6 +416,7 @@ public class EnumerationTest extends TestCase
     voltronMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     voltronMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     voltronMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    voltronMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     voltronMdBusiness.apply();
     voltronMdBusinessIF = voltronMdBusiness;
 
@@ -470,6 +475,7 @@ public class EnumerationTest extends TestCase
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, voltronMdBusinessIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
     voltronMdEnumerationIF = mdEnumeration;
   }
@@ -1200,6 +1206,7 @@ public class EnumerationTest extends TestCase
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessTestIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -1233,6 +1240,7 @@ public class EnumerationTest extends TestCase
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     mdEnumeration.apply();
 
@@ -1244,6 +1252,7 @@ public class EnumerationTest extends TestCase
     mdEnumeration2.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration2.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration2.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getId());
+    mdEnumeration2.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
     {
@@ -1289,6 +1298,7 @@ public class EnumerationTest extends TestCase
       mdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+      mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.apply();
 
       fail("An enumerated type was (incorrectly) marked as extendable.");
@@ -1328,6 +1338,7 @@ public class EnumerationTest extends TestCase
       mdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+      mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.apply();
 
       TypeInfo enum2Class = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "ExtEnum");
@@ -1340,6 +1351,7 @@ public class EnumerationTest extends TestCase
       mdBusiness2.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       mdBusiness2.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness2.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusiness1.getId());
+      mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness2.apply();
 
       fail("An enumerated type was (incorrectly) able to extend an enumerated masterlist");

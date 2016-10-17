@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess.transaction;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,6 +30,18 @@ import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
+import org.apache.commons.io.FileUtils;
+import org.ehcache.PersistentUserManagedCache;
+import org.ehcache.UserManagedCacheBuilder;
+import org.ehcache.config.ResourcePoolsBuilder;
+import org.ehcache.config.persistence.DefaultPersistenceConfiguration;
+import org.ehcache.config.persistence.UserManagedPersistenceContext;
+import org.ehcache.config.units.EntryUnit;
+import org.ehcache.config.units.MemoryUnit;
+import org.ehcache.internal.persistence.DefaultLocalPersistenceService;
+import org.ehcache.spi.service.LocalPersistenceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.rbac.ActorDAOIF;
@@ -42,6 +56,7 @@ import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
+import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -91,11 +106,13 @@ import com.runwaysdk.session.PermissionEntity;
 import com.runwaysdk.session.PermissionObserver;
 import com.runwaysdk.system.metadata.MdClass;
 import com.runwaysdk.system.metadata.MdType;
+import com.runwaysdk.util.IDGenerator;
 import com.runwaysdk.util.IdParser;
 
 public abstract class AbstractTransactionCache implements TransactionCacheIF
 {
-
+  final static Logger logger = LoggerFactory.getLogger(AbstractTransactionCache.class);
+  
   protected ReentrantLock                                    transactionStateLock;
 
   /**
@@ -450,6 +467,26 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected Map<String, String>                              changedIds;
 
   /**
+   * A cache to the file system for storing ids of newly created entities from which 
+   */
+  protected PersistentUserManagedCache<String, String>       newEntityIdStringFileCache;
+  private String                                             entityIdFileCacheName;
+  private String                                             entityIdCacheFileLocation;
+  private LocalPersistenceService                            filePersistenceService;
+  
+  /**
+   * Indicates whether the transaction cache has been closed. True if closed false if otherwise.
+   */
+  private Boolean                                            isClosed;
+
+  /**
+   * Records the types, as the class root id, that have participated in this transaction. 
+   * If a type has not participated in the transaction than no need to check the file system 
+   * to see if an object instance of the type has participated in the transaction.
+   */
+  protected Set<String>                                      typeRootIdsInTransaction;
+  
+  /**
    * Initializes all caches.
    * 
    * <br/>
@@ -525,8 +562,136 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.mdBusinessChildMdRelationships = new HashMap<String, Set<String>>();
 
     this.changedIds = new HashMap<String, String>();
+    
+    this.newEntityIdStringFileCache = null;
+    this.entityIdFileCacheName = null;
+    this.entityIdCacheFileLocation = null;
+    this.filePersistenceService = null;
+    
+    this.isClosed = false;
+    
+    this.typeRootIdsInTransaction = new HashSet<String>();
   }
 
+  /**
+   * Indicates whether the transaction cache has been closed. True if closed false if otherwise.
+   */
+  protected Boolean isClosed()
+  {
+    return isClosed;
+  }
+  
+  /**
+   * If the file cache used to check whether an {@link EntityDAO} of a non-cached type is not initialized, then
+   * initialize it. Checks if the {@code this.newEntityIdStringFileCach} equals null. 
+   * 
+   */
+  private void checkAndInitializeEntityIdFileCache()
+  {
+    if (this.newEntityIdStringFileCache == null)
+    {
+      this.entityIdFileCacheName = IDGenerator.nextID();;
+      int diskSize = ServerProperties.getTransactionDiskstoreSize();
+      this.entityIdCacheFileLocation = ServerProperties.getTransactionCacheFileLocation();
+ 
+      this.filePersistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(this.entityIdCacheFileLocation, this.entityIdFileCacheName)));
+    
+      this.newEntityIdStringFileCache = UserManagedCacheBuilder.newUserManagedCacheBuilder(String.class, String.class)
+          .with(new UserManagedPersistenceContext<String, String>(this.entityIdFileCacheName, this.filePersistenceService)) 
+          .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
+                    .heap(0, EntryUnit.ENTRIES)
+//                    .offheap(cacheMemorySize, MemoryUnit.MB)
+                    .disk(diskSize, MemoryUnit.MB, true)
+           )
+          .build(true);
+    }
+  }
+ 
+  /**
+   * Records that the {@link EntityDAOIF} has been created during this
+   * transaction.
+   * <br/>
+   * <b>Pre: {@link EntityDAOIF} is of a type that is not cached<b/>
+   * <b>Pre: {@link EntityDAOIF.isNew()} equals true<b/>
+   * 
+   * @param entityDAOIF
+   *          {@link EntityDAOIF} that goes into the the global cache.
+   */
+  public void recordNewlyCreatedNonCachedEntity(EntityDAOIF entityDAOIF)
+  {
+    this.recordNewlyCreatedNonCachedEntity(entityDAOIF.getId());
+  }
+
+  /**
+   * Records that the {@link EntityDAOIF} has been created during this
+   * transaction.
+   * <br/>
+   * <b>Pre: {@link EntityDAOIF} is of a type that is not cached<b/>
+   * <b>Pre: {@link EntityDAOIF.isNew()} equals true<b/>
+   * 
+   * @param entityId
+   *          ID of the {@link EntityDAOIF} that goes into the the global cache.
+   */
+  public void recordNewlyCreatedNonCachedEntity(String entityId)
+  {
+    this.checkAndInitializeEntityIdFileCache();
+    this.newEntityIdStringFileCache.put(entityId, "");
+  }
+  
+  /**
+   * Returns true if the given id is from a newly created {@link EntityDAO} who's type 
+   * is not cached.
+   * 
+   * @param entityDAOid
+   * @return true if the given id is from a newly created {@link EntityDAO} who's type 
+   * is not cached.
+   */
+  public boolean isNewUncachedEntity(String entityDAOid)
+  {   
+    this.checkAndInitializeEntityIdFileCache();  
+    return this.newEntityIdStringFileCache.containsKey(entityDAOid);
+  }
+
+  /**
+   * Changes the id of the {@link EntityDAO} in the transaction cache.
+   * 
+   * @param oldId
+   * @param entityDAO
+   */
+  protected void changeEntityIdInCache(String oldId, EntityDAO entityDAO)
+  {
+    this.checkAndInitializeEntityIdFileCache();
+    this.newEntityIdStringFileCache.remove(oldId);
+    this.newEntityIdStringFileCache.put(entityDAO.getId(), "");
+    
+    String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId()); 
+    this.typeRootIdsInTransaction.add(mdTypeRootId);
+  }
+  
+  /**
+   * Close the eChache instance used to simply store ids of newly created {@link EntityDAO} objects
+   * who's type are not cached.
+   */
+  public void close()
+  {
+    if (this.newEntityIdStringFileCache != null)
+    {
+      this.newEntityIdStringFileCache.close();
+      this.filePersistenceService.destroyAllPersistenceSpaces();
+      this.filePersistenceService.stop();
+      try
+      {
+        FileUtils.deleteDirectory(new File(this.entityIdCacheFileLocation, this.entityIdFileCacheName));
+      }
+      catch (IOException e)
+      {
+        logger.info("Error happened while deleting transaction cache directory. This probably shouldn't matter if ehcache shut down correctly.", e);
+      }
+    }
+    
+    this.isClosed = true;
+  } 
+  
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#addDMLTableName(java.lang.String)
    */
@@ -691,79 +856,88 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      TransactionItemEntityDAOAction transactionCacheItem = TransactionItemEntityDAOAction.factory(ActionEnumDAO.DELETE, entityDAO, this);
-
-      this.storeTransactionEntityDAO(entityDAO);
-
-      this.addUpdatedEntityToKeyNameMap(entityDAO);
-
-      this.addToUpdatedEntityTransactionItemMap(transactionCacheItem);
-
-      if (entityDAO instanceof MdEntityDAO)
+      // Record that this object's type is participating in this transaction.
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId()); 
+      this.typeRootIdsInTransaction.add(mdTypeRootId);
+      
+      MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
+      // We are only storing entities in the transaction cache that are cached or metadata in the transaction cache.
+      if (!mdEntityDAOIF.isNotCached())
       {
-        MdEntityDAO mdEntityDAO = (MdEntityDAO) entityDAO;
-        this.updatedMdClassDefinedTypeMap.put(mdEntityDAO.definesType(), mdEntityDAO.getId());
-        this.updatedMdClassRootIdMap.put(mdEntityDAO.getRootId(), mdEntityDAO.getId());
+        TransactionItemEntityDAOAction transactionCacheItem = TransactionItemEntityDAOAction.factory(ActionEnumDAO.DELETE, entityDAO, this);
 
-        if (mdEntityDAO instanceof MdRelationshipDAO)
+        this.storeTransactionEntityDAO(entityDAO);
+
+        this.addUpdatedEntityToKeyNameMap(entityDAO);
+
+        this.addToUpdatedEntityTransactionItemMap(transactionCacheItem);
+
+        if (entityDAO instanceof MdEntityDAO)
         {
-          MdRelationshipDAO mdRelationshipDAO = (MdRelationshipDAO) mdEntityDAO;
+          MdEntityDAO mdEntityDAO = (MdEntityDAO) entityDAO;
+          this.updatedMdClassDefinedTypeMap.put(mdEntityDAO.definesType(), mdEntityDAO.getId());
+          this.updatedMdClassRootIdMap.put(mdEntityDAO.getRootId(), mdEntityDAO.getId());
 
-          String parentMdBusinessId = mdRelationshipDAO.getAttribute(MdRelationshipInfo.PARENT_MD_BUSINESS).getValue();
-          Set<String> parentRelationshipSet;
-          if (this.mdBusinessParentMdRelationships.containsKey(parentMdBusinessId))
+          if (mdEntityDAO instanceof MdRelationshipDAO)
           {
-            parentRelationshipSet = this.mdBusinessParentMdRelationships.get(parentMdBusinessId);
-          }
-          else
-          {
-            // Clone the Set in the global cache. This will be used for the rest
-            // of the transaction.
-            parentRelationshipSet = new HashSet<String>(ObjectCache.getParentMdRelationshipDAOids(parentMdBusinessId));
-            this.mdBusinessParentMdRelationships.put(parentMdBusinessId, parentRelationshipSet);
-          }
-          parentRelationshipSet.remove(mdRelationshipDAO.getId());
+            MdRelationshipDAO mdRelationshipDAO = (MdRelationshipDAO) mdEntityDAO;
 
-          String childMdBusinessId = mdRelationshipDAO.getAttribute(MdRelationshipInfo.CHILD_MD_BUSINESS).getValue();
-          Set<String> childRelationshipSet;
-          if (this.mdBusinessChildMdRelationships.containsKey(childMdBusinessId))
-          {
-            childRelationshipSet = this.mdBusinessChildMdRelationships.get(childMdBusinessId);
+            String parentMdBusinessId = mdRelationshipDAO.getAttribute(MdRelationshipInfo.PARENT_MD_BUSINESS).getValue();
+            Set<String> parentRelationshipSet;
+            if (this.mdBusinessParentMdRelationships.containsKey(parentMdBusinessId))
+            {
+              parentRelationshipSet = this.mdBusinessParentMdRelationships.get(parentMdBusinessId);
+            }
+            else
+            {
+              // Clone the Set in the global cache. This will be used for the rest
+              // of the transaction.
+              parentRelationshipSet = new HashSet<String>(ObjectCache.getParentMdRelationshipDAOids(parentMdBusinessId));
+              this.mdBusinessParentMdRelationships.put(parentMdBusinessId, parentRelationshipSet);
+            }
+            parentRelationshipSet.remove(mdRelationshipDAO.getId());
+
+            String childMdBusinessId = mdRelationshipDAO.getAttribute(MdRelationshipInfo.CHILD_MD_BUSINESS).getValue();
+            Set<String> childRelationshipSet;
+            if (this.mdBusinessChildMdRelationships.containsKey(childMdBusinessId))
+            {
+              childRelationshipSet = this.mdBusinessChildMdRelationships.get(childMdBusinessId);
+            }
+            else
+            {
+              // Clone the Set in the global cache. This will be used for the rest
+              // of the transaction.
+              childRelationshipSet = new HashSet<String>(ObjectCache.getChildMdRelationshipDAOids(childMdBusinessId));
+              this.mdBusinessChildMdRelationships.put(childMdBusinessId, childRelationshipSet);
+            }
+            childRelationshipSet.remove(mdRelationshipDAO.getId());
           }
-          else
+          else if (mdEntityDAO instanceof MdBusinessDAO)
           {
-            // Clone the Set in the global cache. This will be used for the rest
-            // of the transaction.
-            childRelationshipSet = new HashSet<String>(ObjectCache.getChildMdRelationshipDAOids(childMdBusinessId));
-            this.mdBusinessChildMdRelationships.put(childMdBusinessId, childRelationshipSet);
+            MdBusinessDAO mdBusinessDAO = (MdBusinessDAO) mdEntityDAO;
+
+            // Do not remove the entries from the map, otherwise, on an update,
+            // the values in the global cache
+            // will be placed here again.
+            this.mdBusinessParentMdRelationships.put(mdBusinessDAO.getId(), new HashSet<String>());
+            this.mdBusinessChildMdRelationships.put(mdBusinessDAO.getId(), new HashSet<String>());
           }
-          childRelationshipSet.remove(mdRelationshipDAO.getId());
         }
-        else if (mdEntityDAO instanceof MdBusinessDAO)
+        else if (entityDAO instanceof MdEnumerationDAO)
         {
-          MdBusinessDAO mdBusinessDAO = (MdBusinessDAO) mdEntityDAO;
+          MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) entityDAO;
 
-          // Do not remove the entries from the map, otherwise, on an update,
-          // the values in the global cache
-          // will be placed here again.
-          this.mdBusinessParentMdRelationships.put(mdBusinessDAO.getId(), new HashSet<String>());
-          this.mdBusinessChildMdRelationships.put(mdBusinessDAO.getId(), new HashSet<String>());
+          if (!entityDAO.isImport())
+          {
+            this.updatedMdEnumerationMap_CodeGeneration.put(mdEnumeration.definesEnumeration(), mdEnumeration.getId());
+          }
         }
-      }
-      else if (entityDAO instanceof MdEnumerationDAO)
-      {
-        MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) entityDAO;
-
-        if (!entityDAO.isImport())
+        else if (entityDAO instanceof MdIndexDAO)
         {
-          this.updatedMdEnumerationMap_CodeGeneration.put(mdEnumeration.definesEnumeration(), mdEnumeration.getId());
+          MdIndexDAO mdIndexDAO = (MdIndexDAO) entityDAO;
+          this.updatedMdIndexMap.put(mdIndexDAO.getIndexName(), mdIndexDAO.getId());
         }
-      }
-      else if (entityDAO instanceof MdIndexDAO)
-      {
-        MdIndexDAO mdIndexDAO = (MdIndexDAO) entityDAO;
-        this.updatedMdIndexMap.put(mdIndexDAO.getIndexName(), mdIndexDAO.getId());
-      }
+      } 
     }
     finally
     {
@@ -1421,12 +1595,12 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     }
 
     EntityDAOIF entityDAOIF = this.getEntityDAO(id);
-
+    
     if (entityDAOIF == null)
     {
-      entityDAOIF = ObjectCache.getEntityDAO(id);
+      entityDAOIF = ObjectCache._internalGetEntityDAO(id);
     }
-
+    
     return entityDAOIF;
   }
 
@@ -1437,14 +1611,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * @param entityDAO
    */
   public abstract void storeTransactionEntityDAO(EntityDAO entityDAO);
-
-  /**
-   * Changes the id of the {@link EntityDAO} in the transaction cache.
-   * 
-   * @param oldId
-   * @param entityDAO
-   */
-  protected abstract void changeEntityIdInCache(String oldId, EntityDAO entityDAO);
 
   protected RelationshipDAOCollection getCachedRemovedRelationships(String relationshipType)
   {
@@ -1495,32 +1661,75 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   public void addUpdatedEntityToKeyNameMap(EntityDAO entityDAO)
   {
     MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
-    this.storeTransactionEntityDAO(entityDAO);
-
-    for (String type : mdEntityDAOIF.getSuperTypes())
+    if (!mdEntityDAOIF.isNotCached())
     {
-      this.updatedEntityDAOKeyMap.put(type + "-" + entityDAO.getKey(), entityDAO.getId());
+      this.storeTransactionEntityDAO(entityDAO);
+
+      for (String type : mdEntityDAOIF.getSuperTypes())
+      {
+        this.updatedEntityDAOKeyMap.put(type + "-" + entityDAO.getKey(), entityDAO.getId());
+      }
     }
   }
 
   /**
    * Returns an EntityDAO of the given type with the given key.
    * 
-   * @param type
+   * @param providedType
    * @param key
    * @return EntityDAO of the given type with the given key.
    */
-  protected EntityDAO getUpdatedEntityFromKeyNameMap(String type, String key)
+  protected EntityDAOIF getUpdatedEntityFromKeyNameMap(String providedType, String key)
   {
-    String id = this.updatedEntityDAOKeyMap.get(type + "-" + key);
-    return (EntityDAO) this.internalGetEntityDAO(id);
-  }
+    EntityDAOIF entityDAOIF = null;
+    
+    // Check to see if the type and the key have been modified in this transaction
+    String id = this.updatedEntityDAOKeyMap.get(providedType + "-" + key);
+    
+    // The type provided could be a parent type of the object with the key. Check all subclasses.
+    if (id == null)
+    {
+      MdEntityDAOIF rootMdEntityDAOIF = MdEntityDAO.getMdEntityDAO(providedType);
+      List<? extends MdEntityDAOIF> subClasses = rootMdEntityDAOIF.getAllSubClasses();
+      
+      for (MdEntityDAOIF mdEntityDAOIF : subClasses)
+      {
+        String subType = mdEntityDAOIF.definesType();
+        id = this.updatedEntityDAOKeyMap.get(subType + "-" + key);
+        
+        if (id != null)
+        {
+          // We have identified the type of the object that has been modified in this transaction. 
+          // Type is also a cached type.
+          break;
+        }
+      }
+    }
+    
+    // Object has participated in the transaction and is of a cached type.
+    if (id != null)
+    {
+      entityDAOIF = this.internalGetEntityDAO(id);
+    }
+    // Either the object has not participated in the transaction or is not of
+    // a cached type.
+    else
+    {
+      entityDAOIF = ObjectCache.getEntityDAO(providedType, key);
+      if (this.isNewUncachedEntity(entityDAOIF.getId()))
+      {
+        ((EntityDAO)entityDAOIF).setIsNew(true);
+      }
+    }  
+ 
+    return entityDAOIF;
+  } 
 
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAO(java.lang.String,
    *      java.lang.String)
    */
-  public EntityDAO getEntityDAO(String type, String key)
+  public EntityDAOIF getEntityDAO(String type, String key)
   {
     this.transactionStateLock.lock();
     try
@@ -1556,8 +1765,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   {
     this.transactionStateLock.lock();
     try
-    {
-      return (MdClassDAOIF) this.internalGetEntityDAO(this.updatedMdClassDefinedTypeMap.get(type));
+    {       
+      return (MdClassDAOIF)this.internalGetEntityDAO(this.updatedMdClassDefinedTypeMap.get(type));
     }
     finally
     {
@@ -1909,7 +2118,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    *      java.lang.String)
    */
   public boolean removeExecutedDeleteMethod(EntityDAO entityDAO, String signature)
-  {
+  {  
     this.transactionStateLock.lock();
     try
     {
@@ -2158,89 +2367,101 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   {
     this.transactionStateLock.lock();
     try
-    {
-      TransactionItemEntityDAOAction transactionCacheItem = this.createTransactionItemForEntity(entityDAO);
-
-      this.storeTransactionEntityDAO(entityDAO);
-
-      this.addToUpdatedEntityTransactionItemMap(transactionCacheItem);
-
-      if (entityDAO instanceof MdClassDAO)
+    {      
+      MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
+      
+      // Record that this object's type is participating in this transaction.
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId()); 
+      this.typeRootIdsInTransaction.add(mdTypeRootId);
+      
+      if (mdEntityDAOIF.isNotCached() && entityDAO.isNew())
       {
-        MdClassDAO mdClassDAO = (MdClassDAO) entityDAO;
+        this.recordNewlyCreatedNonCachedEntity(entityDAO);
+      } // (!mdEntityDAOIF.isNotCached() || !entityDAO.isNew())
+      else
+      {
+        TransactionItemEntityDAOAction transactionCacheItem = this.createTransactionItemForEntity(entityDAO);   
 
-        this.updatedMdClassDefinedTypeMap.put(mdClassDAO.definesType(), mdClassDAO.getId());
-        this.updatedMdClassRootIdMap.put(mdClassDAO.getRootId(), mdClassDAO.getId());
+        this.storeTransactionEntityDAO(entityDAO);
+        this.addToUpdatedEntityTransactionItemMap(transactionCacheItem);
 
-        if (mdClassDAO instanceof MdRelationshipDAO)
+        if (entityDAO instanceof MdClassDAO)
         {
-          MdRelationshipDAO mdRelationshipDAO = (MdRelationshipDAO) mdClassDAO;
+          MdClassDAO mdClassDAO = (MdClassDAO) entityDAO;
 
-          if (mdRelationshipDAO.getAttributeIF(MdRelationshipInfo.PARENT_MD_BUSINESS).isModified())
+          this.updatedMdClassDefinedTypeMap.put(mdClassDAO.definesType(), mdClassDAO.getId());
+          this.updatedMdClassRootIdMap.put(mdClassDAO.getRootId(), mdClassDAO.getId());
+
+          if (mdClassDAO instanceof MdRelationshipDAO)
           {
-            String parentMdBusinessId = mdRelationshipDAO.getAttributeIF(MdRelationshipInfo.PARENT_MD_BUSINESS).getValue();
-            Set<String> parentRelationshipSet;
-            if (this.mdBusinessParentMdRelationships.containsKey(parentMdBusinessId))
-            {
-              parentRelationshipSet = this.mdBusinessParentMdRelationships.get(parentMdBusinessId);
-            }
-            else
-            {
-              // Clone the Set in the global cache. This will be used for the
-              // rest of the transaction.
-              parentRelationshipSet = new HashSet<String>(ObjectCache.getParentMdRelationshipDAOids(parentMdBusinessId));
-              this.mdBusinessParentMdRelationships.put(parentMdBusinessId, parentRelationshipSet);
-            }
-            parentRelationshipSet.add(mdRelationshipDAO.getId());
-          }
+            MdRelationshipDAO mdRelationshipDAO = (MdRelationshipDAO) mdClassDAO;
 
-          if (mdRelationshipDAO.getAttributeIF(MdRelationshipInfo.CHILD_MD_BUSINESS).isModified())
+            if (mdRelationshipDAO.getAttributeIF(MdRelationshipInfo.PARENT_MD_BUSINESS).isModified())
+            {
+              String parentMdBusinessId = mdRelationshipDAO.getAttributeIF(MdRelationshipInfo.PARENT_MD_BUSINESS).getValue();
+              Set<String> parentRelationshipSet;
+              if (this.mdBusinessParentMdRelationships.containsKey(parentMdBusinessId))
+              {
+                parentRelationshipSet = this.mdBusinessParentMdRelationships.get(parentMdBusinessId);
+              }
+              else
+              {
+                // Clone the Set in the global cache. This will be used for the
+                // rest of the transaction.
+                parentRelationshipSet = new HashSet<String>(ObjectCache.getParentMdRelationshipDAOids(parentMdBusinessId));
+                this.mdBusinessParentMdRelationships.put(parentMdBusinessId, parentRelationshipSet);
+              }
+              parentRelationshipSet.add(mdRelationshipDAO.getId());
+            }
+
+            if (mdRelationshipDAO.getAttributeIF(MdRelationshipInfo.CHILD_MD_BUSINESS).isModified())
+            {
+              String childMdBusinessId = mdRelationshipDAO.getAttribute(MdRelationshipInfo.CHILD_MD_BUSINESS).getValue();
+              Set<String> childRelationshipSet;
+              if (this.mdBusinessChildMdRelationships.containsKey(childMdBusinessId))
+              {
+                childRelationshipSet = this.mdBusinessChildMdRelationships.get(childMdBusinessId);
+              }
+              else
+              {
+                // Clone the Set in the global cache. This will be used for the
+                // rest of the transaction.
+                childRelationshipSet = new HashSet<String>(ObjectCache.getChildMdRelationshipDAOids(childMdBusinessId));
+                this.mdBusinessChildMdRelationships.put(childMdBusinessId, childRelationshipSet);
+              }
+              childRelationshipSet.add(mdRelationshipDAO.getId());
+            }
+          }
+        } // if (entityDAO instanceof MdClassDAO)
+        else if (entityDAO instanceof MdEnumerationDAO)
+        {
+          MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) entityDAO;
+          this.updatedMdEnumerationMap.put(mdEnumeration.definesEnumeration(), mdEnumeration.getId());
+
+          // Regenerate the EnumerationMaster class
+          if (!mdEnumeration.isImport() && mdEnumeration.isNew())
           {
-            String childMdBusinessId = mdRelationshipDAO.getAttribute(MdRelationshipInfo.CHILD_MD_BUSINESS).getValue();
-            Set<String> childRelationshipSet;
-            if (this.mdBusinessChildMdRelationships.containsKey(childMdBusinessId))
-            {
-              childRelationshipSet = this.mdBusinessChildMdRelationships.get(childMdBusinessId);
-            }
-            else
-            {
-              // Clone the Set in the global cache. This will be used for the
-              // rest of the transaction.
-              childRelationshipSet = new HashSet<String>(ObjectCache.getChildMdRelationshipDAOids(childMdBusinessId));
-              this.mdBusinessChildMdRelationships.put(childMdBusinessId, childRelationshipSet);
-            }
-            childRelationshipSet.add(mdRelationshipDAO.getId());
+            this.updatedMdEnumerationMap_CodeGeneration.put(mdEnumeration.definesEnumeration(), mdEnumeration.getId());
           }
         }
-      }
-      else if (entityDAO instanceof MdEnumerationDAO)
-      {
-        MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) entityDAO;
-        this.updatedMdEnumerationMap.put(mdEnumeration.definesEnumeration(), mdEnumeration.getId());
-
-        // Regenerate the EnumerationMaster class
-        if (!mdEnumeration.isImport() && mdEnumeration.isNew())
+        else if (entityDAO instanceof MdIndexDAO)
         {
-          this.updatedMdEnumerationMap_CodeGeneration.put(mdEnumeration.definesEnumeration(), mdEnumeration.getId());
+          MdIndexDAO mdIndexDAO = (MdIndexDAO) entityDAO;
+          this.updatedMdIndexMap.put(mdIndexDAO.getIndexName(), mdIndexDAO.getId());
         }
-      }
-      else if (entityDAO instanceof MdIndexDAO)
-      {
-        MdIndexDAO mdIndexDAO = (MdIndexDAO) entityDAO;
-        this.updatedMdIndexMap.put(mdIndexDAO.getIndexName(), mdIndexDAO.getId());
-      }
-      else if (entityDAO instanceof EnumerationItemDAO && entityDAO.getAttribute(EnumerationMasterInfo.NAME).isModified())
-      {
-        if (!entityDAO.isImport())
+        else if (entityDAO instanceof EnumerationItemDAO && entityDAO.getAttribute(EnumerationMasterInfo.NAME).isModified())
         {
-          this.updatedEnumerationItemSet_CodeGeneration.add(entityDAO.getId());
+          if (!entityDAO.isImport())
+          {
+            this.updatedEnumerationItemSet_CodeGeneration.add(entityDAO.getId());
+          }
         }
-      }
-      else if (entityDAO instanceof RoleDAOIF)
-      {
-        RoleDAOIF roleIF = (RoleDAOIF) entityDAO;
-        this.updatedRoleIFMap.put(roleIF.getRoleName(), roleIF.getId());
-      }
+        else if (entityDAO instanceof RoleDAOIF)
+        {
+          RoleDAOIF roleIF = (RoleDAOIF) entityDAO;
+          this.updatedRoleIFMap.put(roleIF.getRoleName(), roleIF.getId());
+        }
+      } // mdEntityDAOIF.isNotCached()
     }
     finally
     {

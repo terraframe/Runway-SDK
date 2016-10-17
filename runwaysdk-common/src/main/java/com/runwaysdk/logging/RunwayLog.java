@@ -56,7 +56,7 @@ public class RunwayLog implements Log
     logger = Logger.getLogger(name);
   }
   
-  public RunwayLog(Class clazz)
+  public RunwayLog(Class<?> clazz)
   {
     super();
     

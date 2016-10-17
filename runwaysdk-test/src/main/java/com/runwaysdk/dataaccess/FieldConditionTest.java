@@ -33,6 +33,7 @@ import com.runwaysdk.constants.DateConditionInfo;
 import com.runwaysdk.constants.DoubleConditionInfo;
 import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdWebAttributeInfo;
 import com.runwaysdk.constants.MdWebDateInfo;
 import com.runwaysdk.constants.MdWebIntegerInfo;
@@ -113,6 +114,8 @@ public class FieldConditionTest extends TestCase
   public static void classSetUp()
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);

@@ -25,8 +25,11 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiTermInfo;
+import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
@@ -97,6 +100,8 @@ public class TransientAttributeMultiTermTest extends AbstractTransientAttributeM
   public static void classSetUp()
   {
     mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     defaultValue = BusinessDAO.newInstance(mdTerm.definesType());
@@ -104,6 +109,7 @@ public class TransientAttributeMultiTermTest extends AbstractTransientAttributeM
     defaultValue.apply();
 
     mdView = TestFixtureFactory.createMdView1();
+    mdView.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView.apply();
 
     mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();

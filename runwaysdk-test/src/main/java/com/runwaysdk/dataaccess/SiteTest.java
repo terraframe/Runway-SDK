@@ -27,6 +27,7 @@ import junit.textui.TestRunner;
 
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DatabaseProperties;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -85,6 +86,8 @@ public class SiteTest extends TestCase
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, "test.xmlclasses");
     mdBusiness.setValue(MdBusinessInfo.NAME, "Class1");
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Importer Class 1");
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeConcreteDAO mdAttribute = MdAttributeCharacterDAO.newInstance();

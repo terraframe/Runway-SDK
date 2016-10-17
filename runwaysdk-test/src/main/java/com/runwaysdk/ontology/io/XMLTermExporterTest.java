@@ -47,7 +47,6 @@ import com.runwaysdk.dataaccess.io.StringStreamSource;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.io.dataDefinition.ImportPluginIF;
-import com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXSourceParser;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionExporter;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler;

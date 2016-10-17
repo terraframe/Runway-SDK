@@ -19,6 +19,7 @@
 package com.runwaysdk.generation.loader;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -128,6 +129,8 @@ public class ClassLoaderTest extends TestCase
 
   public void testValidProperties()
   {
+    RunwayClassLoader runwayClassLoader = null;
+    
     try
     {
       File clientBin = new File(LocalProperties.getClientGenBin());
@@ -140,7 +143,7 @@ public class ClassLoaderTest extends TestCase
 
       URL[] url = new URL[] { clientBin.toURI().toURL(), commonBin.toURI().toURL(), serverBin.toURI().toURL() };
 
-      new RunwayClassLoader(url, null, false, clientBin, commonBin, serverBin);
+      runwayClassLoader = new RunwayClassLoader(url, null, false, clientBin, commonBin, serverBin);
     }
     catch (ConfigurationException e)
     {
@@ -152,10 +155,26 @@ public class ClassLoaderTest extends TestCase
 
       fail(e.getLocalizedMessage());
     }
+    finally
+    {
+      if (runwayClassLoader != null)
+      {
+        try
+        {
+          runwayClassLoader.close();
+        }
+        catch (IOException e)
+        {
+          fail(e.getLocalizedMessage());
+        }
+      }
+    }
   }
 
   public void testInvalidClientProperties()
   {
+    RunwayClassLoader runwayClassLoader = null;
+    
     try
     {
       File clientBin = new File(LocalProperties.getClientGenBin());
@@ -167,7 +186,7 @@ public class ClassLoaderTest extends TestCase
 
       URL[] url = new URL[] { clientBin.toURI().toURL(), commonBin.toURI().toURL(), serverBin.toURI().toURL() };
 
-      new RunwayClassLoader(url, null, false, invalidFile, commonBin, serverBin);
+      runwayClassLoader = new RunwayClassLoader(url, null, false, invalidFile, commonBin, serverBin);
 
       fail("Invalid properties throw bad error in RunwayClassLoader");
     }
@@ -180,11 +199,27 @@ public class ClassLoaderTest extends TestCase
       e.printStackTrace();
 
       fail(e.getLocalizedMessage());
+    }
+    finally
+    {
+      if (runwayClassLoader != null)
+      {
+        try
+        {
+          runwayClassLoader.close();
+        }
+        catch (IOException e)
+        {
+          fail(e.getLocalizedMessage());
+        }
+      }
     }
   }
 
   public void testInvalidServerProperties()
   {
+    RunwayClassLoader runwayClassLoader = null;
+    
     try
     {
       File clientBin = new File(LocalProperties.getClientGenBin());
@@ -196,7 +231,7 @@ public class ClassLoaderTest extends TestCase
 
       URL[] url = new URL[] { clientBin.toURI().toURL(), commonBin.toURI().toURL(), serverBin.toURI().toURL() };
 
-      new RunwayClassLoader(url, null, false, clientBin, commonBin, invalidFile);
+      runwayClassLoader = new RunwayClassLoader(url, null, false, clientBin, commonBin, invalidFile);
 
       fail("Invalid properties throw bad error in RunwayClassLoader");
     }
@@ -210,10 +245,26 @@ public class ClassLoaderTest extends TestCase
 
       fail(e.getLocalizedMessage());
     }
+    finally
+    {
+      if (runwayClassLoader != null)
+      {
+        try
+        {
+          runwayClassLoader.close();
+        }
+        catch (IOException e)
+        {
+          fail(e.getLocalizedMessage());
+        }
+      }
+    }
   }
 
   public void testInvalidCommonProperties()
   {
+    RunwayClassLoader runwayClassLoader = null;
+    
     try
     {
       File clientBin = new File(LocalProperties.getClientGenBin());
@@ -225,7 +276,7 @@ public class ClassLoaderTest extends TestCase
 
       URL[] url = new URL[] { clientBin.toURI().toURL(), commonBin.toURI().toURL(), serverBin.toURI().toURL() };
 
-      new RunwayClassLoader(url, null, false, clientBin, invalidFile, serverBin);
+      runwayClassLoader = new RunwayClassLoader(url, null, false, clientBin, invalidFile, serverBin);
 
       fail("Invalid properties throw bad error in RunwayClassLoader");
     }
@@ -238,6 +289,20 @@ public class ClassLoaderTest extends TestCase
       e.printStackTrace();
 
       fail(e.getLocalizedMessage());
+    }
+    finally
+    {
+      if (runwayClassLoader != null)
+      {
+        try
+        {
+          runwayClassLoader.close();
+        }
+        catch (IOException e)
+        {
+          fail(e.getLocalizedMessage());
+        }
+      }
     }
   }
 

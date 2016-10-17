@@ -23,6 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.aspectj.lang.annotation.SuppressAjWarnings;
+
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
@@ -34,7 +36,6 @@ import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionCache;
 import com.runwaysdk.dataaccess.transaction.TransactionCacheIF;
-import com.runwaysdk.dataaccess.io.dataDefinition.TagContext;
 
 public privileged aspect BatchEntityDDL percflow(runImport())
 {
@@ -201,6 +202,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
 
   protected Map<String, MdEntityInfo> typeDDLMap = new HashMap<String, MdEntityInfo>();
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   public pointcut runImport()
   :  (execution (* com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter.runImport(..)) ||
       execution (* com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler.runImport(..))

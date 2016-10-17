@@ -122,7 +122,7 @@ public class ViewQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String queryCharacter = (String) objectClass.getMethod("getQueryCharacter").invoke(object);

@@ -126,27 +126,27 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInEnumerationContainsAll_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -162,7 +162,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -173,7 +173,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -257,27 +257,27 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInEnumerationContainsAny_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -293,7 +293,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -304,7 +304,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -388,27 +388,27 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInEnumerationContainsExactly_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -424,7 +424,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -435,7 +435,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -519,27 +519,27 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationNotContainsAll_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -555,7 +555,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -566,7 +566,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -650,27 +650,27 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationNotContainsAny_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -686,7 +686,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -697,7 +697,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -827,19 +827,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInBooleanEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -851,7 +851,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -862,7 +862,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -987,19 +987,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInBooleanNotEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1011,7 +1011,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -1022,7 +1022,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -1101,19 +1101,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterEqString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1125,7 +1125,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -1136,7 +1136,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -1215,19 +1215,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterEqIgnoreCaseString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1239,7 +1239,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -1250,7 +1250,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -1329,19 +1329,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterInStringArray_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1353,7 +1353,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -1364,7 +1364,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -1443,19 +1443,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterInIngoreCaseStringArray_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1467,7 +1467,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -1478,7 +1478,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -1557,19 +1557,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterLikeString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1581,7 +1581,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -1592,7 +1592,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -1671,19 +1671,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterLikeIgnoreCaseString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1695,7 +1695,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -1706,7 +1706,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -1785,19 +1785,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterNotEqString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1809,7 +1809,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -1820,7 +1820,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -1899,19 +1899,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1923,7 +1923,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -1934,7 +1934,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -2013,19 +2013,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterNotInStringArray_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2037,7 +2037,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -2048,7 +2048,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -2127,19 +2127,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2151,7 +2151,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -2162,7 +2162,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -2241,19 +2241,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterNotLikeString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2265,7 +2265,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -2276,7 +2276,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -2355,19 +2355,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInCharacterNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2379,7 +2379,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -2390,7 +2390,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -2469,19 +2469,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextEqString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2493,7 +2493,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -2504,7 +2504,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -2583,19 +2583,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextEqIgnoreCaseString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2607,7 +2607,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -2618,7 +2618,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -2697,19 +2697,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextInStringArray_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2721,7 +2721,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -2732,7 +2732,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -2811,19 +2811,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2835,7 +2835,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -2846,7 +2846,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -2925,19 +2925,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextLikeStringGenerated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2949,7 +2949,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -2960,7 +2960,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -3039,19 +3039,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextLikeIgnoreCaseString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3063,7 +3063,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -3074,7 +3074,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -3153,19 +3153,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextNotEqString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3177,7 +3177,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -3188,7 +3188,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -3267,19 +3267,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3291,7 +3291,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -3302,7 +3302,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -3381,19 +3381,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextNotInStringArray_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3405,7 +3405,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -3416,7 +3416,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -3495,19 +3495,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3519,7 +3519,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -3530,7 +3530,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -3609,19 +3609,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextNotLikeString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3633,7 +3633,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -3644,7 +3644,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -3723,19 +3723,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTextNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3747,7 +3747,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -3758,7 +3758,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -3887,19 +3887,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateTimeEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
 
@@ -3913,7 +3913,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -3924,7 +3924,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -4055,19 +4055,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateTimeGt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
 
@@ -4081,7 +4081,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -4092,7 +4092,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -4265,19 +4265,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateTimeGtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
 
@@ -4291,7 +4291,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -4301,7 +4301,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -4329,7 +4329,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -4459,19 +4459,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateTimeLt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00",  new java.text.ParsePosition(0));
 
@@ -4485,7 +4485,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -4496,7 +4496,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -4669,19 +4669,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateTimeltEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
 
@@ -4695,7 +4695,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -4705,7 +4705,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -4733,7 +4733,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -4863,19 +4863,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateTimeNotEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
 
@@ -4889,7 +4889,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -4900,7 +4900,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -5031,19 +5031,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
 
@@ -5057,7 +5057,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -5068,7 +5068,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -5199,19 +5199,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateGt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
 
@@ -5225,7 +5225,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -5236,7 +5236,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -5409,19 +5409,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateGtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
 
@@ -5435,7 +5435,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -5445,7 +5445,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -5473,7 +5473,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -5603,19 +5603,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateLt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07",  new java.text.ParsePosition(0));
 
@@ -5629,7 +5629,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -5640,7 +5640,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -5814,19 +5814,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateltEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
 
@@ -5840,7 +5840,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -5850,7 +5850,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -5878,7 +5878,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -6008,19 +6008,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDateNotEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
 
@@ -6034,7 +6034,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -6045,7 +6045,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -6176,19 +6176,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTimeEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
 
@@ -6202,7 +6202,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -6213,7 +6213,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -6344,19 +6344,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTimeGt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
 
@@ -6370,7 +6370,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -6381,7 +6381,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -6554,19 +6554,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTimeGtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
 
@@ -6580,7 +6580,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -6590,7 +6590,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -6618,7 +6618,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -6748,19 +6748,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTimeLt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
 
@@ -6774,7 +6774,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -6785,7 +6785,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -6959,19 +6959,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTimeltEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
 
@@ -6985,7 +6985,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -6995,7 +6995,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -7023,7 +7023,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -7153,19 +7153,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInTimeNotEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
 
@@ -7179,7 +7179,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -7190,7 +7190,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -7317,19 +7317,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInIntegerEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7341,7 +7341,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -7352,7 +7352,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -7477,19 +7477,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInIntegerGt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7501,7 +7501,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -7512,7 +7512,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -7677,19 +7677,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInIntegerGtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7701,7 +7701,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -7712,7 +7712,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -7739,7 +7739,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -7864,19 +7864,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInIntegerLt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7888,7 +7888,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -7899,7 +7899,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -8064,19 +8064,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInIntegerLtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8088,7 +8088,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -8099,7 +8099,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -8126,7 +8126,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -8251,19 +8251,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInIntegerNotEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8275,7 +8275,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -8286,7 +8286,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -8411,19 +8411,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInLongEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8435,7 +8435,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -8446,7 +8446,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -8571,19 +8571,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInLongGt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8595,7 +8595,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -8606,7 +8606,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -8771,19 +8771,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInLongGtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8795,7 +8795,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -8806,7 +8806,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -8833,7 +8833,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -8958,19 +8958,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInLongLt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8982,7 +8982,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -8993,7 +8993,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -9158,19 +9158,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInLongLtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9182,7 +9182,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -9193,7 +9193,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -9220,7 +9220,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -9345,19 +9345,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInLongNotEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9369,7 +9369,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -9380,7 +9380,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -9505,19 +9505,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInFloatEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9529,7 +9529,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -9540,7 +9540,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -9665,19 +9665,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInFloatGt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9689,7 +9689,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -9700,7 +9700,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -9865,19 +9865,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInFloatGtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9889,7 +9889,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -9900,7 +9900,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -9927,7 +9927,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -10052,19 +10052,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInFloatLt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10076,7 +10076,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -10087,7 +10087,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -10252,19 +10252,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInFloatLtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10276,7 +10276,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -10287,7 +10287,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -10314,7 +10314,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -10439,19 +10439,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInFloatNotEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10463,7 +10463,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -10474,7 +10474,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -10599,19 +10599,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDecimalEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10623,7 +10623,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -10634,7 +10634,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -10759,19 +10759,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDecimalGt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10783,7 +10783,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -10794,7 +10794,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -10959,19 +10959,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDecimalGtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10983,7 +10983,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -10994,7 +10994,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -11021,7 +11021,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -11146,19 +11146,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDecimalLt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11170,7 +11170,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -11181,7 +11181,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -11346,19 +11346,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDecimalLtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11370,7 +11370,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -11381,7 +11381,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -11408,7 +11408,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -11533,19 +11533,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDecimalNotEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11557,7 +11557,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -11568,7 +11568,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -11693,19 +11693,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDoubleEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11717,7 +11717,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -11728,7 +11728,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -11853,19 +11853,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDoubleGt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11877,7 +11877,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -11888,7 +11888,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -12053,19 +12053,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDoubleGtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12077,7 +12077,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -12088,7 +12088,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -12115,7 +12115,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -12240,19 +12240,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDoubleLt_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12264,7 +12264,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -12275,7 +12275,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -12440,19 +12440,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDoubleLtEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12464,7 +12464,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -12475,7 +12475,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -12502,7 +12502,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -12627,19 +12627,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInDoubleNotEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12651,7 +12651,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -12662,7 +12662,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -12741,19 +12741,19 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInReferenceEqString_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12765,7 +12765,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -12776,7 +12776,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
@@ -12809,29 +12809,29 @@ public class RelationshipAttributeQuery extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testQueryIsParentInReferenceEq_Generated()
   {
     try
     {
       String parentType = QueryMasterSetup.childQueryInfo.getType();
-      Class parentClass = LoaderDecorator.load(parentType);
+      Class<?> parentClass = LoaderDecorator.load(parentType);
       String parentQueryType = EntityQueryAPIGenerator.getQueryClass(parentType);
-      Class parentQueryClass = LoaderDecorator.load(parentQueryType);
+      Class<?> parentQueryClass = LoaderDecorator.load(parentQueryType);
 
       String relType = QueryMasterSetup.connectionQueryInfo.getType();
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
-      Class relQueryClass = LoaderDecorator.load(relQueryType);
+      Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
       // Load the reference query class
       MdBusinessDAOIF assignableMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(SingleActorDAOIF.CLASS);
       String assignableQueryReferenceIFType =  BusinessQueryAPIGenerator.getRefInterfaceCompiled(assignableMdBusinessMasterIF);
-      Class assignableQueryReferenceClassIF = LoaderDecorator.load(assignableQueryReferenceIFType);
+      Class<?> assignableQueryReferenceClassIF = LoaderDecorator.load(assignableQueryReferenceIFType);
 
-      Class AssignableClass = LoaderDecorator.load(SingleActorDAOIF.CLASS);
+      Class<?> AssignableClass = LoaderDecorator.load(SingleActorDAOIF.CLASS);
 
       // Instantiate a business object of type Users of the system user.
-      Class usersClass = LoaderDecorator.load(UserInfo.CLASS);
+      Class<?> usersClass = LoaderDecorator.load(UserInfo.CLASS);
       Object busObjUser = usersClass.getMethod("get", String.class).invoke(null, ServerConstants.SYSTEM_USER_ID);
 
       QueryFactory factory = new QueryFactory();
@@ -12846,7 +12846,7 @@ public class RelationshipAttributeQuery extends TestCase
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
@@ -12857,7 +12857,7 @@ public class RelationshipAttributeQuery extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         parentClass.cast(object);
         String parentId = (String)parentClass.getMethod("getId").invoke(object);
