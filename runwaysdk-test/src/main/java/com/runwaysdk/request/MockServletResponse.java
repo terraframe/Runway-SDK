@@ -85,4 +85,9 @@ public class MockServletResponse implements ServletResponseIF
   {
     return contentType;
   }
+  
+  @Override
+  public void setHeader(String name, String value)
+  {
+  }
 }

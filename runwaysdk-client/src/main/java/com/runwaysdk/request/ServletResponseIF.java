@@ -37,4 +37,6 @@ public interface ServletResponseIF
   public int getStatus();
 
   public String getContentType();
+
+  public void setHeader(String name, String value);
 }

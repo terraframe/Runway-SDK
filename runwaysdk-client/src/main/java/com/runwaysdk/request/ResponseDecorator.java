@@ -78,4 +78,10 @@ public class ResponseDecorator implements ServletResponseIF
   {
     this.response.sendRedirect(location);
   }
+  
+  @Override
+  public void setHeader(String name, String value)
+  {
+    this.response.setHeader(name, value);
+  }
 }

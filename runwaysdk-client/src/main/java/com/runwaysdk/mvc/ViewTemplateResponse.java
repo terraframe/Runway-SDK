@@ -32,21 +32,24 @@ import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
 
-public class ViewResponse implements ResponseIF
+public class ViewTemplateResponse implements ResponseIF
 {
   private Map<String, Object> attributes;
 
+  private String              template;
+
   private String              path;
 
-  public ViewResponse(String directory, String view)
+  public ViewTemplateResponse(String template, String directory, String view)
   {
-    this(directory + File.separator + view);
+    this(template, directory + File.separator + view);
   }
 
-  public ViewResponse(String path)
+  public ViewTemplateResponse(String template, String path)
   {
     super();
 
+    this.template = template;
     this.path = path;
     this.attributes = new HashMap<String, Object>();
   }
@@ -79,6 +82,7 @@ public class ViewResponse implements ResponseIF
       req.setAttribute(entry.getKey(), entry.getValue());
     }
 
-    req.getRequestDispatcher(this.path).forward(req, resp);
+    req.setAttribute(JSPFetcher.INNER_JSP, this.path);
+    req.getRequestDispatcher(this.template).forward(req, resp);
   }
 }

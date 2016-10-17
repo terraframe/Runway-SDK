@@ -25,7 +25,7 @@ import org.junit.Assert;
 import com.runwaysdk.controller.JSPFetcher;
 import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.controller.ServletMethod;
-import com.runwaysdk.mvc.ViewResponse;
+import com.runwaysdk.mvc.ViewTemplateResponse;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
 
@@ -64,7 +64,7 @@ public class ViewResponseTest extends TestCase
     String name = "test";
     Integer value = new Integer(45);
 
-    ViewResponse response = new ViewResponse("template.jsp", "view.jsp");
+    ViewTemplateResponse response = new ViewTemplateResponse("template.jsp", "view.jsp");
     response.set(name, value);
 
     Assert.assertEquals(value, response.getAttribute(name));
@@ -79,7 +79,7 @@ public class ViewResponseTest extends TestCase
     String template = "template.jsp";
     String view = "view.jsp";
 
-    ViewResponse response = new ViewResponse(template, view);
+    ViewTemplateResponse response = new ViewTemplateResponse(template, view);
     response.handle(manager);
 
     Assert.assertEquals(view, req.getAttribute(JSPFetcher.INNER_JSP));
@@ -96,7 +96,7 @@ public class ViewResponseTest extends TestCase
     String directory = "test";
     String view = "view.jsp";
 
-    ViewResponse response = new ViewResponse(template, directory, view);
+    ViewTemplateResponse response = new ViewTemplateResponse(template, directory, view);
     response.handle(manager);
 
     Assert.assertEquals(directory + File.separator + view, req.getAttribute(JSPFetcher.INNER_JSP));
@@ -112,7 +112,7 @@ public class ViewResponseTest extends TestCase
     String name = "test";
     Integer value = new Integer(45);
 
-    ViewResponse response = new ViewResponse("template.jsp", "view.jsp");
+    ViewTemplateResponse response = new ViewTemplateResponse("template.jsp", "view.jsp");
     response.set(name, value);
     response.handle(manager);
 
