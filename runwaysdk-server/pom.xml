@@ -187,41 +187,7 @@
       <groupId>ognl</groupId>
       <artifactId>ognl</artifactId>
       <version>3.0.8</version>
-    </dependency>
-    
-    <!-- SOLR dependencies -->
-    <dependency>
-      <groupId>org.apache.solr</groupId>
-      <artifactId>solr-core</artifactId>
-      <version>6.2.1</version>
-      <exclusions>
-        <exclusion>
-		      <groupId>org.restlet.jee</groupId>
-		      <artifactId>org.restlet</artifactId>
-		    </exclusion>
-		    <exclusion>
-		      <groupId>org.restlet.jee</groupId>
-		      <artifactId>org.restlet.ext.servlet</artifactId>
-		    </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.tika</groupId>
-      <artifactId>tika-core</artifactId>
-      <version>1.13</version>
-    </dependency>
-    <!-- These dependencies were recompiled by rrowlands because they were built incorrectly by Oracle (of all people..) -->
-    <!-- invalid Class-Path header in manifest of jar file org.restlet.ext.servlet-2.3.0.jar -->
-    <dependency>
-      <groupId>org.restlet.jee</groupId>
-      <artifactId>terraframe.org.restlet</artifactId>
-      <version>2.3.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.restlet.jee</groupId>
-      <artifactId>terraframe.org.restlet.ext.servlet</artifactId>
-      <version>2.3.0</version>
-    </dependency>
+    </dependency>    
   </dependencies>
 
   <build>
