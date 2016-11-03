@@ -122,24 +122,24 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationContainsAll_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
 
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -152,7 +152,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
@@ -162,7 +162,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -237,24 +237,24 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationContainsAny_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
 
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -267,7 +267,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -278,7 +278,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -353,24 +353,24 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationContainsExactly_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
 
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -383,7 +383,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -394,7 +394,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -469,24 +469,24 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationNotContainsAll_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
 
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -499,7 +499,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -510,7 +510,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -585,23 +585,23 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationNotContainsAny_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -614,7 +614,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -625,7 +625,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -741,19 +741,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationBooleanEqBoolean_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -763,7 +763,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.EQ(true));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -774,7 +774,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -887,19 +887,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationBooleanNotEqBoolean_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = (MdBusinessDAOIF)MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -909,7 +909,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.NE(false));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -920,7 +920,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -991,19 +991,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -1013,7 +1013,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQ("enum character value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1024,7 +1024,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1096,19 +1096,19 @@ public class EnumerationQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -1118,7 +1118,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQi("ENUM CHARACTER VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1129,7 +1129,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1200,19 +1200,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -1222,7 +1222,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.INi("WRONG VALUE 1", "ENUM CHARACTER VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1233,7 +1233,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1304,19 +1304,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -1326,7 +1326,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.IN("wrong value 1", "enum character value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1337,7 +1337,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1408,19 +1408,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -1430,7 +1430,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.LIKEi("%CHARACTER%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1441,7 +1441,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1512,19 +1512,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -1534,7 +1534,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.LIKE("%character%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1545,7 +1545,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1616,19 +1616,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -1638,7 +1638,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NEi("WRONG CHARACTER STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1649,7 +1649,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1720,19 +1720,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterNotEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -1742,7 +1742,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NE("wrong character value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1753,7 +1753,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1824,19 +1824,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -1846,7 +1846,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1857,7 +1857,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1928,19 +1928,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterNotInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -1950,7 +1950,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1961,7 +1961,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2032,19 +2032,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -2054,7 +2054,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2065,7 +2065,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2136,19 +2136,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationCharacterNotLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -2158,7 +2158,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2169,7 +2169,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2285,7 +2285,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateEq_Generated()
   {
     try
@@ -2293,13 +2293,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-11-06",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -2309,7 +2309,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2320,7 +2320,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2479,7 +2479,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateGtEq_Generated()
   {
     try
@@ -2488,13 +2488,13 @@ public class EnumerationQueryTest extends TestCase
 
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2503,7 +2503,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2514,7 +2514,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2541,7 +2541,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2659,7 +2659,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateGt_Generated()
   {
     try
@@ -2667,13 +2667,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-11-05",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -2683,7 +2683,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2694,7 +2694,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2852,7 +2852,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateLtEq_Generated()
   {
     try
@@ -2860,13 +2860,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-11-06",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -2878,7 +2878,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2889,7 +2889,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2916,7 +2916,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3034,7 +3034,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateLt_Generated()
   {
     try
@@ -3042,13 +3042,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-11-07",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -3058,7 +3058,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3069,7 +3069,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3187,7 +3187,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateNotEq_Generated()
   {
     try
@@ -3195,13 +3195,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-11-05",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -3211,7 +3211,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3222,7 +3222,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3340,7 +3340,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateTimeEq_Generated()
   {
     try
@@ -3348,13 +3348,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-11-06 12:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -3364,7 +3364,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3375,7 +3375,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3534,7 +3534,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateTimeGtEq_Generated()
   {
     try
@@ -3542,13 +3542,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-11-06 12:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3557,7 +3557,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3568,7 +3568,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3594,7 +3594,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3712,7 +3712,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateTimeGt_Generated()
   {
     try
@@ -3720,13 +3720,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-11-05 13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -3736,7 +3736,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3747,7 +3747,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3905,7 +3905,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateTimeLtEq_Generated()
   {
     try
@@ -3913,13 +3913,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-11-06 13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -3930,7 +3930,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3941,7 +3941,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3969,7 +3969,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4087,7 +4087,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateTimeLt_Generated()
   {
     try
@@ -4095,13 +4095,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-12-07 13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -4111,7 +4111,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4122,7 +4122,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4240,7 +4240,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDateTimeNotEq_Generated()
   {
     try
@@ -4248,13 +4248,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-12-05 13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -4264,7 +4264,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4275,7 +4275,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4389,19 +4389,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDecimalEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -4411,7 +4411,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.EQ(new BigDecimal(200.5)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4422,7 +4422,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4534,19 +4534,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDecimalGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -4556,7 +4556,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(new BigDecimal(200)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4567,7 +4567,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4717,19 +4717,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDecimalGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // perform a query that WILL find a match based on equal
       QueryFactory factory = new QueryFactory();
@@ -4739,7 +4739,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(new BigDecimal(200.5)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4750,7 +4750,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4775,7 +4775,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4887,19 +4887,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDecimalLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -4909,7 +4909,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LT(new BigDecimal(201)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4920,7 +4920,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5070,19 +5070,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDecimalLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -5092,7 +5092,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(new BigDecimal(200.5)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5103,7 +5103,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5129,7 +5129,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5241,19 +5241,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDecimalNotEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -5263,7 +5263,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(new BigDecimal(201)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5274,7 +5274,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5386,19 +5386,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDoubleEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -5408,7 +5408,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.EQ(200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5419,7 +5419,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5531,19 +5531,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDoubleGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -5553,7 +5553,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT((double)200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5564,7 +5564,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5714,19 +5714,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDoubleGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -5736,7 +5736,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE(200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5747,7 +5747,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5772,7 +5772,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5884,19 +5884,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDoubleLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -5906,7 +5906,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LT((double)201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5917,7 +5917,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6067,19 +6067,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDoubleLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -6089,7 +6089,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE(200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6100,7 +6100,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6126,7 +6126,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6238,19 +6238,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationDoubleNotEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -6260,7 +6260,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE((double)201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6271,7 +6271,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6383,19 +6383,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationFloatEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -6405,7 +6405,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ((float)200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6416,7 +6416,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6528,19 +6528,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationFloatGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -6550,7 +6550,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT((float)200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6561,7 +6561,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6711,19 +6711,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationFloatGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -6733,7 +6733,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE((float)200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6744,7 +6744,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6770,7 +6770,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6882,19 +6882,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationFloatLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -6904,7 +6904,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT((float)201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6915,7 +6915,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7046,19 +7046,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationFloatLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -7068,7 +7068,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE((float)200.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7079,7 +7079,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7191,19 +7191,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationFloatNotEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -7213,7 +7213,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE((float)201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7224,7 +7224,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7336,19 +7336,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationIntegerEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -7358,7 +7358,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7369,7 +7369,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7481,19 +7481,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationIntegerGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -7503,7 +7503,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(199));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7514,7 +7514,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7656,19 +7656,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationIntegerGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -7678,7 +7678,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7689,7 +7689,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7715,7 +7715,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7827,19 +7827,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationIntegerLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -7849,7 +7849,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LT(201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7860,7 +7860,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8010,19 +8010,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationIntegerLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -8032,7 +8032,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8043,7 +8043,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8068,7 +8068,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8180,19 +8180,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationIntegerNotEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -8202,7 +8202,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8213,7 +8213,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8325,19 +8325,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationLongEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -8347,7 +8347,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ((long)200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8358,7 +8358,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8470,19 +8470,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationLongGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -8492,7 +8492,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT((long)199));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8503,7 +8503,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8653,19 +8653,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationLongGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -8675,7 +8675,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE((long)200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8686,7 +8686,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8711,7 +8711,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8823,19 +8823,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationLongLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -8845,7 +8845,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT((long)201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8856,7 +8856,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9006,19 +9006,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationLongLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -9028,7 +9028,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE((long)200));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9039,7 +9039,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9064,7 +9064,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9176,19 +9176,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationLongNotEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -9198,7 +9198,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE((long)201));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9209,7 +9209,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9321,19 +9321,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -9343,7 +9343,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.EQ("enum text value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9354,7 +9354,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9384,19 +9384,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -9406,7 +9406,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.EQ("enum clob value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9417,7 +9417,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9530,19 +9530,19 @@ public class EnumerationQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextEqIgnoreCase_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9551,7 +9551,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.EQi("ENUM TEXT VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9562,7 +9562,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9592,19 +9592,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobEqIgnoreCase_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9613,7 +9613,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.EQi("ENUM CLOB VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9624,7 +9624,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9737,19 +9737,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9758,7 +9758,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.IN("wrong value 1", "enum text value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9769,7 +9769,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9799,19 +9799,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9820,7 +9820,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.IN("wrong value 1", "enum clob value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9831,7 +9831,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9943,19 +9943,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9964,7 +9964,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.INi("WRONG VALUE 1", "ENUM TEXT VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9975,7 +9975,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10005,19 +10005,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10026,7 +10026,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.INi("WRONG VALUE 1", "ENUM CLOB VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10037,7 +10037,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10149,19 +10149,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10170,7 +10170,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.LIKE("%text%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10181,7 +10181,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10211,19 +10211,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10232,7 +10232,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.LIKE("%clob%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10243,7 +10243,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10355,19 +10355,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10376,7 +10376,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.LIKEi("%TEXT%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10387,7 +10387,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10417,19 +10417,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10438,7 +10438,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.LIKEi("%CLOB%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10449,7 +10449,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10561,19 +10561,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextNotEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10582,7 +10582,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NE("wrong text value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10593,7 +10593,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10623,19 +10623,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobNotEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10644,7 +10644,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NE("wrong clob value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10655,7 +10655,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10767,19 +10767,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10788,7 +10788,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NEi("WRONG TEXT STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10799,7 +10799,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10829,19 +10829,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10850,7 +10850,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NEi("WRONG CLOB STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10861,7 +10861,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10973,19 +10973,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextNotInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10994,7 +10994,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11005,7 +11005,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11035,19 +11035,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobNotInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11056,7 +11056,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11067,7 +11067,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11180,19 +11180,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11201,7 +11201,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11212,7 +11212,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11242,19 +11242,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11263,7 +11263,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11274,7 +11274,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11386,19 +11386,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextNotLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11407,7 +11407,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11418,7 +11418,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11448,19 +11448,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobNotLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11469,7 +11469,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11480,7 +11480,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11593,19 +11593,19 @@ public class EnumerationQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTextNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11614,7 +11614,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11625,7 +11625,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11655,19 +11655,19 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationClobNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11676,7 +11676,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11687,7 +11687,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11804,7 +11804,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTimeEq_Generated()
   {
     try
@@ -11812,13 +11812,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -11828,7 +11828,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11839,7 +11839,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11957,7 +11957,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTimeGt_Generated()
   {
     try
@@ -11965,13 +11965,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -11981,7 +11981,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11992,7 +11992,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12150,7 +12150,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTimeGtEq_Generated()
   {
     try
@@ -12158,13 +12158,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -12174,7 +12174,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12185,7 +12185,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12211,7 +12211,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12329,7 +12329,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTimeLt_Generated()
   {
     try
@@ -12337,13 +12337,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -12353,7 +12353,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12364,7 +12364,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12522,7 +12522,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTimeLtEq_Generated()
   {
     try
@@ -12530,13 +12530,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
       // perform a query that WILL find a match based on equ
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
 
       QueryFactory factory = new QueryFactory();
@@ -12546,7 +12546,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12557,7 +12557,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12583,7 +12583,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12701,7 +12701,7 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationTimeNotEq_Generated()
   {
     try
@@ -12709,13 +12709,13 @@ public class EnumerationQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12724,7 +12724,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12735,7 +12735,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12810,24 +12810,24 @@ public class EnumerationQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationReferenceEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // Load the reference query class
       MdBusinessDAOIF usersMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(UserInfo.CLASS);
       String usersQueryRefIFType =  BusinessQueryAPIGenerator.getRefInterfaceCompiled(usersMdBusinessMasterIF);
-      Class usersQueryRefClassIF = LoaderDecorator.load(usersQueryRefIFType);
+      Class<?> usersQueryRefClassIF = LoaderDecorator.load(usersQueryRefIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12837,7 +12837,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12848,7 +12848,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12880,29 +12880,29 @@ public class EnumerationQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testEnumerationRefEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdBusinessDAOIF stateMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.stateEnumMdBusiness.definesType());
       String stateEnumMasterIFType =  BusinessQueryAPIGenerator.getEnumInterfaceCompiled(stateMdBusinessMasterIF);
-      Class stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
+      Class<?> stateEnumMasterClassIF = LoaderDecorator.load(stateEnumMasterIFType);
 
       // Load the reference query class
       MdBusinessDAOIF assignableMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(SingleActorDAOIF.CLASS);
       String assignableQueryRefIFType =  BusinessQueryAPIGenerator.getRefInterfaceCompiled(assignableMdBusinessMasterIF);
-      Class assignableQueryRefClassIF = LoaderDecorator.load(assignableQueryRefIFType);
+      Class<?> assignableQueryRefClassIF = LoaderDecorator.load(assignableQueryRefIFType);
 
-      Class assignableClass = LoaderDecorator.load(SingleActorDAOIF.CLASS);
+      Class<?> assignableClass = LoaderDecorator.load(SingleActorDAOIF.CLASS);
 
       // Instantiate a business object of type Users of the system user.
-      Class usersClass = LoaderDecorator.load(UserInfo.CLASS);
+      Class<?> usersClass = LoaderDecorator.load(UserInfo.CLASS);
       Object busObjUser = usersClass.getMethod("get", String.class).invoke(null, ServerConstants.SYSTEM_USER_ID);
 
       QueryFactory factory = new QueryFactory();
@@ -12914,7 +12914,7 @@ public class EnumerationQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12925,7 +12925,7 @@ public class EnumerationQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);

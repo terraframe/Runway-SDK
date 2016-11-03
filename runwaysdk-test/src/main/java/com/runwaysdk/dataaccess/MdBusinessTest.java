@@ -131,6 +131,8 @@ public class MdBusinessTest extends TestCase
     newParentMdBusiness.setValue(MdBusinessInfo.EXTENDABLE,             MdAttributeBooleanInfo.TRUE);
     newParentMdBusiness.setValue(MdBusinessInfo.ABSTRACT,               MdAttributeBooleanInfo.FALSE);
     newParentMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM,        EntityCacheMaster.CACHE_NOTHING.getId());
+    newParentMdBusiness.setGenerateMdController(false);
+    newParentMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     newParentMdBusiness.apply();
 
     createNewMdBusiness();
@@ -155,6 +157,8 @@ public class MdBusinessTest extends TestCase
     newMdBusiness.setValue(MdBusinessInfo.ABSTRACT,               MdAttributeBooleanInfo.FALSE);
     newMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM,        EntityCacheMaster.CACHE_EVERYTHING.getId());
     newMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS,      newParentMdBusiness.getId());
+    newMdBusiness.setGenerateMdController(false);
+    newMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     newMdBusiness.apply();
   }
 
@@ -312,59 +316,6 @@ public class MdBusinessTest extends TestCase
     }
   }
 
-//  public void testDuplicateAttributeInInheritedHierarchy()
-//  {
-//    MdClassIF parentMdClassIF = MdClass.getMdClass(SessionMasterTestSetup.PARENT_SESSION_CLASS.getType());
-//    MdClassIF childMdClassIF = MdClass.getMdClass(SessionMasterTestSetup.CHILD_SESSION_CLASS.getType());
-//
-//    if (attributeMdView.definesType().equals(SessionMasterTestSetup.PARENT_SESSION_CLASS.getType()))
-//    {
-//      try
-//      {
-//        MdAttributeCharacter mdAttributeCharacter = MdAttributeCharacter.newInstance();
-//        mdAttributeCharacter.setValue(MdAttributeInfo.NAME,               "testChar64");
-//        mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE,      "64");
-//        mdAttributeCharacter.setValue(MetaDataInfo.DISPLAY_LABEL,         "Character Length 64");
-//        mdAttributeCharacter.setValue(MdAttributeInfo.DEFAULT_VALUE,      "");
-//        mdAttributeCharacter.setValue(MdAttributeInfo.REQUIRED,           MdAttributeBooleanInfo.FALSE);
-//        mdAttributeCharacter.setValue(MetaDataInfo.REMOVE,                MdAttributeBooleanInfo.TRUE);
-//        mdAttributeCharacter.setValue(MdAttributeInfo.DEFINING_MD_CLASS,  childMdClassIF.getId());
-//        mdAttributeCharacter.apply();
-//
-//        fail("Able to add an attribute to a type where the parent type already has an attribute defined with that same name");
-//      }
-//      catch (DuplicateAttributeInInheritedHierarchy e)
-//      {
-//        // this is expected
-//      }
-//    }
-//    else if (attributeMdView.definesType().equals(SessionMasterTestSetup.CHILD_SESSION_CLASS.getType()))
-//    {
-//      try
-//      {
-//        MdAttributeCharacter mdAttributeCharacter = MdAttributeCharacter.newInstance();
-//        mdAttributeCharacter.setValue(MdAttributeInfo.NAME,               "testChar64");
-//        mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE,      "64");
-//        mdAttributeCharacter.setValue(MetaDataInfo.DISPLAY_LABEL,         "Character Length 64");
-//        mdAttributeCharacter.setValue(MdAttributeInfo.DEFAULT_VALUE,      "");
-//        mdAttributeCharacter.setValue(MdAttributeInfo.REQUIRED,           MdAttributeBooleanInfo.FALSE);
-//        mdAttributeCharacter.setValue(MetaDataInfo.REMOVE,                MdAttributeBooleanInfo.TRUE);
-//        mdAttributeCharacter.setValue(MdAttributeInfo.DEFINING_MD_CLASS,  parentMdClassIF.getId());
-//        mdAttributeCharacter.apply();
-//
-//        fail("Able to add an attribute to a type where a child type already has an attribute defined with that same name");
-//      }
-//      catch (DuplicateAttributeDefinedInSubclass e)
-//      {
-//        // this is expected
-//      }
-//    }
-//    else
-//    {
-//      fail("Test class is of the wrong type.");
-//    }
-//  }
-//
   /**
    * Checks the database directly to make sure that the corresponding table has
    * been created for a new type.
@@ -401,6 +352,8 @@ public class MdBusinessTest extends TestCase
     template.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Description");
     template.setValue(MdBusinessInfo.CACHE_SIZE, "0");
     template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    template.setGenerateMdController(false);
+    template.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     template.apply();
     template.delete();
   }
@@ -414,6 +367,8 @@ public class MdBusinessTest extends TestCase
     template.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Description");
     template.setValue(MdBusinessInfo.CACHE_SIZE, "0");
     template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    template.setGenerateMdController(false);
+    template.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     template.apply();
     template.delete();
   }
@@ -427,6 +382,9 @@ public class MdBusinessTest extends TestCase
     template.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Description");
     template.setValue(MdBusinessInfo.CACHE_SIZE, "0");
     template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    template.setGenerateMdController(false);
+    template.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    
     try
     {
       template.apply();
@@ -662,6 +620,8 @@ public class MdBusinessTest extends TestCase
     mdBusinessTarget.setValue(MdBusinessInfo.PACKAGE,                deleteMeClass.getPackageName());
     mdBusinessTarget.setStructValue(MdBusinessInfo.DISPLAY_LABEL,    MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary Testing Class");
     mdBusinessTarget.setValue(MdBusinessInfo.REMOVE,                 MdAttributeBooleanInfo.TRUE);
+    mdBusinessTarget.setGenerateMdController(false);
+    mdBusinessTarget.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessTarget.apply();
 
     // Add a reference attribute that points to the new class
@@ -734,6 +694,8 @@ public class MdBusinessTest extends TestCase
       newClassWithSameName.setValue(MdBusinessInfo.EXTENDABLE,             MdAttributeBooleanInfo.TRUE);
       newClassWithSameName.setValue(MdBusinessInfo.ABSTRACT,               MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM,        EntityCacheMaster.CACHE_EVERYTHING.getId());
+      newClassWithSameName.setGenerateMdController(false);
+      newClassWithSameName.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.apply();
 
       BusinessDAO businessDAO = BusinessDAO.newInstance(someNewClass.getType());
@@ -771,6 +733,8 @@ public class MdBusinessTest extends TestCase
       newClassWithSameName.setValue(MdBusinessInfo.EXTENDABLE,             MdAttributeBooleanInfo.TRUE);
       newClassWithSameName.setValue(MdBusinessInfo.ABSTRACT,               MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM,        EntityCacheMaster.CACHE_EVERYTHING.getId());
+      newClassWithSameName.setGenerateMdController(false);
+      newClassWithSameName.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.apply();
 
       fail("Created a class with the same type an existing class.");
@@ -809,8 +773,10 @@ public class MdBusinessTest extends TestCase
       newClassWithSameName.setStructValue(MdBusinessInfo.DESCRIPTION,      MdAttributeLocalInfo.DEFAULT_LOCALE,      "Temporary JUnit Test Class");
       newClassWithSameName.setValue(MdBusinessInfo.EXTENDABLE,             MdAttributeBooleanInfo.TRUE);
       newClassWithSameName.setValue(MdBusinessInfo.ABSTRACT,               MdAttributeBooleanInfo.FALSE);
-      newClassWithSameName.setValue(MdBusinessInfo.SUPER_MD_BUSINESS,                mdRelationshipIFmetadata.getId());
+      newClassWithSameName.setValue(MdBusinessInfo.SUPER_MD_BUSINESS,      mdRelationshipIFmetadata.getId());
       newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM,        EntityCacheMaster.CACHE_EVERYTHING.getId());
+      newClassWithSameName.setGenerateMdController(false);
+      newClassWithSameName.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.apply();
 
       fail("Created a class where the parent type is a relationship.");
@@ -850,6 +816,8 @@ public class MdBusinessTest extends TestCase
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT,               MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.CACHE_SIZE,              "0");
       mdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM,        EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       fail("Created an MdBusiness that defined an MRU cache without a valid size");

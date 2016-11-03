@@ -411,7 +411,7 @@ public class StandaloneStructQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeBoolean using booleans.
    */
-  @SuppressWarnings("unchecked")
+  
   public void testBooleanEqBoolean_Generated()
   {
     try
@@ -419,9 +419,9 @@ public class StandaloneStructQueryTest extends TestCase
       try
       {
         String type = collection.definesType();
-        Class objectClass = LoaderDecorator.load(type);
+        Class<?> objectClass = LoaderDecorator.load(type);
         String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-        Class queryClass = LoaderDecorator.load(queryType);
+        Class<?> queryClass = LoaderDecorator.load(queryType);
 
         QueryFactory factory = new QueryFactory();
         Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -429,7 +429,7 @@ public class StandaloneStructQueryTest extends TestCase
         queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.EQ(true));
 
         // Load the iterator class
-        Class iteratorClass = OIterator.class;
+        Class<?> iteratorClass = OIterator.class;
         Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
         Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
@@ -439,7 +439,7 @@ public class StandaloneStructQueryTest extends TestCase
           fail("A query did not return any results when it should have");
         }
 
-        for (Object object : (Iterable)resultIterator)
+        for (Object object : (Iterable<?>)resultIterator)
         {
           objectClass.cast(object);
           String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -522,15 +522,15 @@ public class StandaloneStructQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeBoolean using booleans.
    */
-  @SuppressWarnings("unchecked")
+  
   public void testBooleanNotEqBoolean_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -538,7 +538,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.NE(false));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -549,7 +549,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -665,15 +665,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterEqString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -682,7 +682,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQ("some character value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -693,7 +693,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -763,15 +763,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -780,7 +780,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQi("SOME CHARACTER VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -791,7 +791,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -862,15 +862,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterInStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -879,7 +879,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.IN("wrong value 1", "some character value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -890,7 +890,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -960,15 +960,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -977,7 +977,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.INi("WRONG VALUE 1", "SOME CHARACTER VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -988,7 +988,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1058,15 +1058,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterLikeString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -1075,7 +1075,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.LIKE("%character%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1086,7 +1086,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1156,15 +1156,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -1173,7 +1173,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.LIKEi("%CHARACTER%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1184,7 +1184,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1254,15 +1254,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterNotEqString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -1271,7 +1271,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NE("wrong character value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1282,7 +1282,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1352,15 +1352,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -1369,7 +1369,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NEi("WRONG CHARACTER STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1380,7 +1380,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1450,15 +1450,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterNotInStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -1467,7 +1467,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1478,7 +1478,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1548,15 +1548,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -1565,7 +1565,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1576,7 +1576,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1646,15 +1646,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterNotLikeString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -1663,7 +1663,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1674,7 +1674,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1744,15 +1744,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testCharacterNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -1761,7 +1761,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1772,7 +1772,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1883,15 +1883,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextEqString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -1900,7 +1900,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.EQ("some text value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1911,7 +1911,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1941,15 +1941,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobEqString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -1958,7 +1958,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.EQ("some clob value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1969,7 +1969,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2081,15 +2081,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -2098,7 +2098,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.EQi("SOME TEXT VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2109,7 +2109,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2139,15 +2139,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -2156,7 +2156,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.EQi("SOME CLOB VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2167,7 +2167,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2279,15 +2279,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextInStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -2296,7 +2296,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.IN("wrong value 1", "some text value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2307,7 +2307,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2337,15 +2337,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobInStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -2354,7 +2354,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.IN("wrong value 1", "some clob value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2365,7 +2365,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2477,15 +2477,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -2494,7 +2494,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.INi("WRONG VALUE 1", "SOME TEXT VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2505,7 +2505,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2535,15 +2535,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -2552,7 +2552,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.INi("WRONG VALUE 1", "SOME CLOB VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2563,7 +2563,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2675,15 +2675,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextLikeString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -2692,7 +2692,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.LIKE("%text%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2703,7 +2703,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2733,15 +2733,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobLikeString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -2750,7 +2750,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.LIKE("%clob%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2761,7 +2761,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2873,15 +2873,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -2890,7 +2890,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.LIKEi("%TEXT%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2901,7 +2901,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2931,15 +2931,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -2948,7 +2948,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.LIKEi("%CLOB%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2959,7 +2959,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3072,15 +3072,15 @@ public class StandaloneStructQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextNotEqString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -3089,7 +3089,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NE("wrong text value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3100,7 +3100,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3130,15 +3130,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobNotEqString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -3147,7 +3147,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NE("wrong clob value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3158,7 +3158,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3271,15 +3271,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -3288,7 +3288,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NEi("WRONG TEXT STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3299,7 +3299,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3329,15 +3329,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -3346,7 +3346,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NEi("WRONG CLOB STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3357,7 +3357,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3470,15 +3470,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextNotInStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -3487,7 +3487,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3498,7 +3498,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3528,15 +3528,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobNotInStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -3545,7 +3545,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3556,7 +3556,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3668,15 +3668,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -3685,7 +3685,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3696,7 +3696,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3808,15 +3808,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextNotLikeString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -3825,7 +3825,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3836,7 +3836,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3866,15 +3866,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobNotLikeString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -3883,7 +3883,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3894,7 +3894,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4007,15 +4007,15 @@ public class StandaloneStructQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testTextNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -4024,7 +4024,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4035,7 +4035,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4065,15 +4065,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testClobNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -4082,7 +4082,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4093,7 +4093,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4209,7 +4209,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateTimeEq_Generated()
   {
     try
@@ -4217,9 +4217,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-12-06 13:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -4228,7 +4228,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4239,7 +4239,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4358,7 +4358,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateTimeGt_Generated()
   {
     try
@@ -4366,9 +4366,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-12-05 13:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -4377,7 +4377,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4388,7 +4388,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4549,7 +4549,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateTimeGtEq_Generated()
   {
     try
@@ -4558,9 +4558,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-12-06 13:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -4569,7 +4569,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4580,7 +4580,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4607,7 +4607,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4726,7 +4726,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateTimeLt_Generation()
   {
     try
@@ -4734,9 +4734,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-12-07 13:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -4745,7 +4745,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4756,7 +4756,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4915,7 +4915,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateTimeLtEq_Generated()
   {
     try
@@ -4924,9 +4924,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-12-06 13:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -4935,7 +4935,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4946,7 +4946,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4973,7 +4973,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5091,7 +5091,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateTimeNotEq_Generated()
   {
     try
@@ -5099,9 +5099,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2006-12-05 13:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -5110,7 +5110,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5121,7 +5121,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5239,7 +5239,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateEq_Generated()
   {
     try
@@ -5247,9 +5247,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-12-06",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -5258,7 +5258,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5269,7 +5269,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5387,7 +5387,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateGt_Generated()
   {
     try
@@ -5395,9 +5395,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-12-05",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -5406,7 +5406,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5417,7 +5417,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5580,7 +5580,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateGtEq_Generated()
   {
     try
@@ -5589,9 +5589,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-12-06",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -5600,7 +5600,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5611,7 +5611,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5639,7 +5639,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5757,7 +5757,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateLt_Generated()
   {
     try
@@ -5765,9 +5765,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-12-07",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -5776,7 +5776,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5787,7 +5787,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5946,7 +5946,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateLtEq_Generated()
   {
     try
@@ -5955,9 +5955,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-12-06",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -5966,7 +5966,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5977,7 +5977,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6004,7 +6004,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6124,7 +6124,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDateNotEq_Generated()
   {
     try
@@ -6132,9 +6132,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2006-12-05",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -6143,7 +6143,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6154,7 +6154,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6274,7 +6274,7 @@ public class StandaloneStructQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testTimeEq_Generated()
   {
     try
@@ -6282,9 +6282,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -6293,7 +6293,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6304,7 +6304,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6423,7 +6423,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTimeGt_Generated()
   {
     try
@@ -6431,9 +6431,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -6442,7 +6442,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6453,7 +6453,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6614,7 +6614,7 @@ public class StandaloneStructQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testTimeGtEq_Generated()
   {
     try
@@ -6622,9 +6622,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -6633,7 +6633,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6644,7 +6644,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6669,7 +6669,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6787,7 +6787,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTimeLt_Generated()
   {
     try
@@ -6795,9 +6795,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -6806,7 +6806,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6817,7 +6817,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6976,7 +6976,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTimeLtEq_Generated()
   {
     try
@@ -6985,9 +6985,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -6996,7 +6996,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7007,7 +7007,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7034,7 +7034,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7152,7 +7152,7 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testTimeNotEq_Generated()
   {
     try
@@ -7160,9 +7160,9 @@ public class StandaloneStructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
 
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -7171,7 +7171,7 @@ public class StandaloneStructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7182,7 +7182,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7296,15 +7296,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testIntegerEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -7312,7 +7312,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(100));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7323,7 +7323,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7434,15 +7434,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testIntegerGt_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -7450,7 +7450,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(99));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7461,7 +7461,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7610,15 +7610,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testIntegerGtEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -7627,7 +7627,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(100));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7638,7 +7638,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7662,7 +7662,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7773,15 +7773,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testIntegerLt_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -7789,7 +7789,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LT(101));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7800,7 +7800,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7949,15 +7949,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testIntegerLtEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
       // perform a query that WILL find a match based on equals
@@ -7965,7 +7965,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(100));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7976,7 +7976,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8000,7 +8000,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8111,15 +8111,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testIntegerNotEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -8127,7 +8127,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(101));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8138,7 +8138,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8249,15 +8249,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testLongEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -8265,7 +8265,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ((long)100));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8276,7 +8276,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8387,15 +8387,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testLongGt_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -8403,7 +8403,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT((long)99));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8414,7 +8414,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8563,15 +8563,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testLongGtEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -8580,7 +8580,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE((long)100));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8591,7 +8591,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8615,7 +8615,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8727,15 +8727,15 @@ public class StandaloneStructQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testLongLt_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -8743,7 +8743,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT((long)101));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8754,7 +8754,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8903,15 +8903,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testLongLtEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -8920,7 +8920,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE((long)100));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8931,7 +8931,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8955,7 +8955,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9067,15 +9067,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testLongNotEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -9083,7 +9083,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE((long)101));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9094,7 +9094,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9205,15 +9205,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -9221,7 +9221,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ((float)100.5));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9232,7 +9232,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9344,15 +9344,15 @@ public class StandaloneStructQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatGt_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -9360,7 +9360,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT((float)100));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9371,7 +9371,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9520,15 +9520,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatGtEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
       // perform a query that WILL find a match based on equals
@@ -9536,7 +9536,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE((float)100.5));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9547,7 +9547,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9571,7 +9571,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9682,15 +9682,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatLt_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -9698,7 +9698,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT((float)101));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9709,7 +9709,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9858,15 +9858,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatLtEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
       // perform a query that WILL find a match based on equals
@@ -9874,7 +9874,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE((float)100.5));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9885,7 +9885,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -9909,7 +9909,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10020,15 +10020,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatNotEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -10036,7 +10036,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE((float)101));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10047,7 +10047,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10159,15 +10159,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -10175,7 +10175,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.EQ(new BigDecimal(100.5)));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10186,7 +10186,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10297,15 +10297,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalGt_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -10313,7 +10313,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(new BigDecimal(100)));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10324,7 +10324,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10473,15 +10473,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalGtEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
       // perform a query that WILL find a match based on equals
@@ -10489,7 +10489,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(new BigDecimal(100.5)));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10500,7 +10500,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10524,7 +10524,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10635,15 +10635,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalLt_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -10651,7 +10651,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LT(new BigDecimal(101)));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10662,7 +10662,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10811,15 +10811,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalLtEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
       // perform a query that WILL find a match based on equals
@@ -10827,7 +10827,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(new BigDecimal(100.5)));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10838,7 +10838,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10862,7 +10862,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -10973,15 +10973,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDecimalNotEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -10989,7 +10989,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(new BigDecimal(101)));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11000,7 +11000,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11111,15 +11111,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDoubleEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -11127,7 +11127,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDouble.EQ(100.5));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11138,7 +11138,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11249,15 +11249,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDoubleGt_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -11265,7 +11265,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDouble.GT((double)100));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11276,7 +11276,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11425,15 +11425,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDoubleGtEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -11442,7 +11442,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDouble.GE(100.5));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11453,7 +11453,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11477,7 +11477,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11588,15 +11588,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDoubleLt_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -11604,7 +11604,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDouble.GE(100.5));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11615,7 +11615,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11764,15 +11764,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDoubleLtEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
       // perform a query that WILL find a match based on equal
@@ -11780,7 +11780,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDouble.LE(100.5));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11791,7 +11791,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11815,7 +11815,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
@@ -11926,15 +11926,15 @@ public class StandaloneStructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testDoubleNotEq_Generated()
   {
     try
     {
       String type = collection.definesType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       QueryFactory factory = new QueryFactory();
 
@@ -11942,7 +11942,7 @@ public class StandaloneStructQueryTest extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDouble.NE((double)101));
 
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11953,7 +11953,7 @@ public class StandaloneStructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable) resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String) objectClass.getMethod("getId").invoke(object);

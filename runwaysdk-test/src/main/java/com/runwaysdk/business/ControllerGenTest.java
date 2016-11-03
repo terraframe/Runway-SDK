@@ -196,7 +196,7 @@ public class ControllerGenTest extends TestCase
       return CommonProperties.getDefaultLocale();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public Enumeration getParameterNames()
     {

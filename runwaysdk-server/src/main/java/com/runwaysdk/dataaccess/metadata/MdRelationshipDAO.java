@@ -364,7 +364,7 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
   @SuppressWarnings("unchecked")
   public List<MdRelationshipDAOIF> getAllSubClasses()
   {
-    List list = super.getAllSubClasses();
+    List<MdRelationshipDAOIF> list = (List<MdRelationshipDAOIF>)super.getAllSubClasses();
     return list;
   }
 
@@ -380,7 +380,7 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
   @SuppressWarnings("unchecked")
   public List<MdRelationshipDAOIF> getAllConcreteSubClasses()
   {
-    List list = super.getAllConcreteSubClasses();
+    List<MdRelationshipDAOIF> list = (List<MdRelationshipDAOIF>)super.getAllConcreteSubClasses();
     return list;
   }
 
@@ -413,7 +413,7 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
   @SuppressWarnings("unchecked")
   public List<MdRelationshipDAOIF> getSuperClasses()
   {
-    List list = super.getSuperClasses();
+    List<MdRelationshipDAOIF> list = (List<MdRelationshipDAOIF>)super.getSuperClasses();
     return list;
   }
 

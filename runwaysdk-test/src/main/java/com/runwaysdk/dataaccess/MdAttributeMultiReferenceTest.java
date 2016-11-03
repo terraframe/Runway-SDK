@@ -28,8 +28,12 @@ import junit.framework.TestSuite;
 
 import org.junit.Assert;
 
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
@@ -97,11 +101,15 @@ public class MdAttributeMultiReferenceTest extends TestCase
   {
     String tableName = "class1_test_multi_reference";
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
     {
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       try
@@ -150,11 +158,14 @@ public class MdAttributeMultiReferenceTest extends TestCase
   {
     String tableName = "view1_test_multi_reference";
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
     {
       MdViewDAO mdView = TestFixtureFactory.createMdView1();
+      mdView.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdView.apply();
 
       try
@@ -204,6 +215,8 @@ public class MdAttributeMultiReferenceTest extends TestCase
   public void testDefaultValue()
   {
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
@@ -213,6 +226,8 @@ public class MdAttributeMultiReferenceTest extends TestCase
       defaultValue.apply();
 
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       try

@@ -117,28 +117,28 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructEnumerationContainsAll_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -150,7 +150,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -161,7 +161,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -234,28 +234,28 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructEnumerationContainsAny_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -267,7 +267,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -278,7 +278,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -351,28 +351,28 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructEnumerationContainsExactly_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -384,7 +384,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -395,7 +395,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -468,28 +468,28 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructEnumerationNotContainsAll_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -501,7 +501,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -512,7 +512,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -585,28 +585,28 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructEnumerationNotContainsAny_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
-      Class stateEnumClass = LoaderDecorator.load(stateEnumType);
+      Class<?> stateEnumClass = LoaderDecorator.load(stateEnumType);
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
       String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
-      Class stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
+      Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -618,7 +618,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -629,7 +629,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -743,19 +743,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructBooleanEqBoolean_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -764,7 +764,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.EQ(true));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -775,7 +775,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -887,19 +887,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructBooleanNotEqBoolean_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -908,7 +908,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.NE(false));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -919,7 +919,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -990,19 +990,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1011,7 +1011,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQ("basic character value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1022,7 +1022,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1093,19 +1093,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1114,7 +1114,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQi("BASIC CHARACTER VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1125,7 +1125,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1196,19 +1196,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1217,7 +1217,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.INi("WRONG VALUE 1", "BASIC CHARACTER VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1228,7 +1228,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1299,19 +1299,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1320,7 +1320,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.IN("wrong value 1", "basic character value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1331,7 +1331,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1402,19 +1402,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1423,7 +1423,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.LIKEi("%CHARACTER%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1434,7 +1434,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1505,19 +1505,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1526,7 +1526,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.LIKE("%character%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1537,7 +1537,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1608,19 +1608,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterNotEqIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1629,7 +1629,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NEi("WRONG CHARACTER STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1640,7 +1640,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1711,19 +1711,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterNotEqString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1732,7 +1732,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NE("wrong character value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1743,7 +1743,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1815,19 +1815,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1836,7 +1836,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1847,7 +1847,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -1919,19 +1919,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterNotInStringArray_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1940,7 +1940,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -1951,7 +1951,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2022,19 +2022,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2043,7 +2043,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2054,7 +2054,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2125,19 +2125,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructCharacterNotLikeString_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2146,7 +2146,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2157,7 +2157,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2274,7 +2274,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateEq_Generated()
   {
     try
@@ -2282,13 +2282,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2297,7 +2297,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2308,7 +2308,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2464,7 +2464,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateGtEq_Generated()
   {
     try
@@ -2473,13 +2473,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2488,7 +2488,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2499,7 +2499,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2525,7 +2525,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2643,7 +2643,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateGt_Generated()
   {
     try
@@ -2652,13 +2652,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2667,7 +2667,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2678,7 +2678,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2836,7 +2836,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateLtEq_Generated()
   {
     try
@@ -2845,13 +2845,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2860,7 +2860,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -2871,7 +2871,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -2897,7 +2897,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3016,7 +3016,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateLt_Generated()
   {
     try
@@ -3025,13 +3025,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3040,7 +3040,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3051,7 +3051,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3169,7 +3169,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateNotEq_Generated()
   {
     try
@@ -3178,13 +3178,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3193,7 +3193,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3204,7 +3204,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3322,7 +3322,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateTimeEq_Generated()
   {
     try
@@ -3331,13 +3331,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3346,7 +3346,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3357,7 +3357,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3516,7 +3516,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateTimeGtEq_Generated()
   {
     try
@@ -3525,13 +3525,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3540,7 +3540,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3551,7 +3551,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3578,7 +3578,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3697,7 +3697,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateTimeGt_Generated()
   {
     try
@@ -3706,13 +3706,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3721,7 +3721,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3732,7 +3732,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3890,7 +3890,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateTimeLtEq_Generated()
   {
     try
@@ -3899,13 +3899,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -3914,7 +3914,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -3925,7 +3925,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -3952,7 +3952,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4070,7 +4070,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateTimeLt_Generated()
   {
     try
@@ -4079,13 +4079,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-07 13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -4094,7 +4094,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4105,7 +4105,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4223,7 +4223,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDateTimeNotEq_Generated()
   {
     try
@@ -4232,13 +4232,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-05 13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -4247,7 +4247,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4258,7 +4258,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4372,19 +4372,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDecimalEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -4393,7 +4393,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.EQ(new BigDecimal(300.5)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4404,7 +4404,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4516,19 +4516,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDecimalGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -4537,7 +4537,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(new BigDecimal(300)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4548,7 +4548,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4698,19 +4698,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDecimalGtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -4720,7 +4720,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(new BigDecimal(300.5)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4731,7 +4731,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4756,7 +4756,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -4869,19 +4869,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDecimalLt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -4890,7 +4890,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LT(new BigDecimal(301)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -4901,7 +4901,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5051,19 +5051,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDecimalLtEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -5073,7 +5073,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(new BigDecimal(300.5)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5084,7 +5084,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5109,7 +5109,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5221,19 +5221,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDecimalNotEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -5242,7 +5242,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(new BigDecimal(301)));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5253,7 +5253,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5366,19 +5366,19 @@ public class StructQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDoubleEq_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -5387,7 +5387,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.EQ(300.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5398,7 +5398,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5510,19 +5510,19 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDoubleGt_Generated()
   {
     try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -5531,7 +5531,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT((double)300));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5542,7 +5542,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5692,20 +5692,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDoubleGtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -5714,7 +5714,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE(300.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5725,7 +5725,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5750,7 +5750,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -5821,7 +5821,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDoubleLt_Generated()
   {
     try
@@ -5983,20 +5983,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDoubleLtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -6005,7 +6005,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE(300.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6016,7 +6016,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6041,7 +6041,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6154,20 +6154,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructDoubleNotEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -6176,7 +6176,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE((double)301));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6187,7 +6187,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6299,20 +6299,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructFloatEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -6321,7 +6321,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ((float)300.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6332,7 +6332,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6444,20 +6444,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructFloatGt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -6466,7 +6466,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT((float)300));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6477,7 +6477,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6627,20 +6627,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructFloatGtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equalsls
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -6649,7 +6649,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE((float)300.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6660,7 +6660,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6685,7 +6685,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6797,20 +6797,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructFloatLt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -6819,7 +6819,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT((float)301));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6830,7 +6830,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -6980,20 +6980,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructFloatLtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equalsls
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7002,7 +7002,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE((float)300.5));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7013,7 +7013,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7038,7 +7038,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7150,20 +7150,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructFloatNotEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7172,7 +7172,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE((float)301));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7183,7 +7183,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7295,20 +7295,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructIntegerEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7317,7 +7317,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(300));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7328,7 +7328,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7440,20 +7440,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructIntegerGt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7462,7 +7462,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(299));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7473,7 +7473,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7623,20 +7623,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructIntegerGtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7645,7 +7645,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(300));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7656,7 +7656,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7681,7 +7681,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7793,20 +7793,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructIntegerLt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7815,7 +7815,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LT(301));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7826,7 +7826,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -7976,20 +7976,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructIntegerLtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -7998,7 +7998,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(300));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8009,7 +8009,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8034,7 +8034,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8146,20 +8146,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructIntegerNotEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on not equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8168,7 +8168,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(301));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8179,7 +8179,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8291,20 +8291,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructLongEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8313,7 +8313,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ((long)300));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8324,7 +8324,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8436,20 +8436,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructLongGt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8458,7 +8458,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT((long)299));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8469,7 +8469,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8619,20 +8619,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructLongGtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8641,7 +8641,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE((long)300));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8652,7 +8652,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8677,7 +8677,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8789,20 +8789,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructLongLt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8811,7 +8811,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT((long)301));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -8822,7 +8822,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -8972,20 +8972,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructLongLtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -8994,7 +8994,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE((long)300));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9005,7 +9005,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9030,7 +9030,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9142,20 +9142,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructLongNotEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9164,7 +9164,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE((long)301));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9175,7 +9175,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9287,20 +9287,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextEqString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9309,7 +9309,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQ("basic text value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9320,7 +9320,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9350,20 +9350,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobEqString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9372,7 +9372,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQ("basic clob value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9383,7 +9383,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9496,20 +9496,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextEqIgnoreCaseString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9518,7 +9518,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQi("BASIC TEXT VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9529,7 +9529,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9559,20 +9559,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobEqIgnoreCaseString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9581,7 +9581,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQi("BASIC CLOB VALUE"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9592,7 +9592,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9704,20 +9704,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextInStringArray_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9726,7 +9726,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.IN("wrong value 1", "basic text value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9737,7 +9737,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9767,20 +9767,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobInStringArray_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9789,7 +9789,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.IN("wrong value 1", "basic clob value", "wrong value 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9800,7 +9800,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9912,20 +9912,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextInIgnoreCaseStringArray_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9934,7 +9934,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.INi("WRONG VALUE 1", "BASIC TEXT VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -9945,7 +9945,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -9975,20 +9975,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobInIgnoreCaseStringArray_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -9997,7 +9997,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.INi("WRONG VALUE 1", "BASIC CLOB VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10008,7 +10008,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10121,20 +10121,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextLikeString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10143,7 +10143,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKE("%text%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10154,7 +10154,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10184,20 +10184,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobLikeString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10206,7 +10206,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKE("%clob%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10217,7 +10217,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10329,20 +10329,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextLikeIgnoreCaseString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10351,7 +10351,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKEi("%TEXT%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10362,7 +10362,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10392,20 +10392,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobLikeIgnoreCaseString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10414,7 +10414,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKEi("%CLOB%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10425,7 +10425,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10537,20 +10537,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextNotEqString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10559,7 +10559,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NE("wrong text value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10570,7 +10570,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10600,20 +10600,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobNotEqString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10622,7 +10622,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NE("wrong clob value"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10633,7 +10633,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10745,20 +10745,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextNotEqIgnoreCaseString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10767,7 +10767,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NEi("WRONG TEXT STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10778,7 +10778,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10808,20 +10808,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobNotEqIgnoreCaseString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10830,7 +10830,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NEi("WRONG CLOB STRING"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10841,7 +10841,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -10954,20 +10954,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextNotInStringArray_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -10976,7 +10976,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -10987,7 +10987,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11017,20 +11017,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobNotInStringArray_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11039,7 +11039,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11050,7 +11050,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11162,20 +11162,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11184,7 +11184,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11195,7 +11195,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11225,20 +11225,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobNotInIgnoreCaseStringArray_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11247,7 +11247,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11258,7 +11258,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11371,20 +11371,20 @@ public class StructQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextNotLikeString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11393,7 +11393,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11404,7 +11404,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11434,20 +11434,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobNotLikeString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11456,7 +11456,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKE("%wrong%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11467,7 +11467,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11580,20 +11580,20 @@ public class StructQueryTest extends TestCase
   }
 
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTextNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11602,7 +11602,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11613,7 +11613,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11643,20 +11643,20 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructClobNotLikeIgnoreCaseString_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on greater than
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11665,7 +11665,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKEi("%WRONG%"));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11676,7 +11676,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11792,7 +11792,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTimeEq_Generated()
   {
     try
@@ -11801,13 +11801,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11816,7 +11816,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11827,7 +11827,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -11945,7 +11945,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTimeGt_Generated()
   {
     try
@@ -11954,13 +11954,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -11969,7 +11969,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -11980,7 +11980,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12136,7 +12136,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTimeGtEq_Generated()
   {
     try
@@ -12145,13 +12145,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12160,7 +12160,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12171,7 +12171,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12197,7 +12197,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12315,7 +12315,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTimeLt_Generated()
   {
     try
@@ -12324,13 +12324,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12339,7 +12339,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12350,7 +12350,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12506,7 +12506,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTimeLtEq_Generated()
   {
     try
@@ -12515,13 +12515,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12530,7 +12530,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12541,7 +12541,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12567,7 +12567,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -12685,7 +12685,7 @@ public class StructQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testStructTimeNotEq_Generated()
   {
     try
@@ -12694,13 +12694,13 @@ public class StructQueryTest extends TestCase
       Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);
+      Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
 
       MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
       String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
-      Class basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
+      Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -12709,7 +12709,7 @@ public class StructQueryTest extends TestCase
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
       // Load the iterator class
-      Class iteratorClass = OIterator.class;
+      Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -12720,7 +12720,7 @@ public class StructQueryTest extends TestCase
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);

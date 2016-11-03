@@ -110,7 +110,7 @@ public abstract class AbstractGenerator implements GeneratorIF
       FileInputStream fstream = new FileInputStream(file);
       // Get the object of DataInputStream
       DataInputStream in = new DataInputStream(fstream);
-          BufferedReader br = new BufferedReader(new InputStreamReader(in));
+      BufferedReader br = new BufferedReader(new InputStreamReader(in));
       String strLine;
       //Read File Line By Line
       while ((strLine = br.readLine()) != null)
@@ -139,6 +139,8 @@ public abstract class AbstractGenerator implements GeneratorIF
           return false;
         }
       }
+      br.close();
+      
       //Close the input stream
       in.close();
     }

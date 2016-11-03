@@ -20,8 +20,6 @@ package com.runwaysdk.dataaccess.transaction;
 
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +30,6 @@ import com.runwaysdk.ProblemIF;
 import com.runwaysdk.business.generation.CompilerException;
 import com.runwaysdk.business.generation.GenerationFacade;
 import com.runwaysdk.business.generation.GenerationUtil;
-import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -42,8 +39,7 @@ import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.AddGroupIndexDDLCommand;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
-import com.runwaysdk.facade.wsdd.WebServiceDeployer;
-import com.runwaysdk.facade.wsdd.WebServiceUndeployer;
+
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.PermissionCache;
@@ -94,8 +90,14 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
   after(EntityDAO entityDAO)
     : afterEntityApply(entityDAO)
   {
-      this.getTransactionCache().put(entityDAO);
-      
+      // This can be called if this is the root most entity in a transaction and the 
+      // transaction cache has been closed. This can happen due to aspect weave ordering
+      // with the main transaction AROUND advice
+      if (!this.getTransactionCache().isClosed())
+      {
+        this.getTransactionCache().put(entityDAO);        
+      }
+     
       // Mark the original reference as having participated in the transaction
       entityDAO.setTransactionState();
   }
@@ -284,13 +286,9 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
    */
   protected void doFinally()
   {
-    this.getState().allCommandsDoFinally();
-
-    // Transaction cache should be rolled back, regardless, as we no longer
-    // need the objects stored there at the end of the transaction.
-    this.getTransactionCache().rollbackTransactionCache();
+    super.doFinally();
     
-    this.getTransactionCache().close();
+    this.getState().allCommandsDoFinally();
   }
 
   /**

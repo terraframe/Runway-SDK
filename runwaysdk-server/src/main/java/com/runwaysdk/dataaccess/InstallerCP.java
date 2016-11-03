@@ -136,17 +136,23 @@ public class InstallerCP
         jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
         jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
         jf = new JarFile(jarFileName);
-        jarEntries = jf.entries();
-        while (jarEntries.hasMoreElements())
+        try
         {
-          entryName = jarEntries.nextElement().getName();
-          if (entryName.startsWith(packageName) && entryName.length() > packageName.length() + 5)
+          jarEntries = jf.entries();
+          while (jarEntries.hasMoreElements())
           {
-            entryName = entryName.substring(entryName.lastIndexOf('/') + 1, entryName.lastIndexOf('.'));
-            names.add(entryName);
+            entryName = jarEntries.nextElement().getName();
+            if (entryName.startsWith(packageName) && entryName.length() > packageName.length() + 5)
+            {
+              entryName = entryName.substring(entryName.lastIndexOf('/') + 1, entryName.lastIndexOf('.'));
+              names.add(entryName);
+            }
           }
         }
-
+        finally
+        {
+          jf.close();
+        }
       }
       else
       {

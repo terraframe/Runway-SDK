@@ -25,8 +25,11 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiTermInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -98,6 +101,7 @@ public class EntityAttributeMultiTermTest extends AbstractEntityAttributeMultiRe
   public static void classSetUp()
   {
     mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     defaultValue = BusinessDAO.newInstance(mdTerm.definesType());
@@ -105,6 +109,7 @@ public class EntityAttributeMultiTermTest extends AbstractEntityAttributeMultiRe
     defaultValue.apply();
 
     mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();

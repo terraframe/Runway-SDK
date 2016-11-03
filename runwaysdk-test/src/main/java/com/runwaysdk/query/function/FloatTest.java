@@ -101,19 +101,19 @@ public class FloatTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();   
-      Class objectClass = LoaderDecorator.load(type);      
+      Class<?> objectClass = LoaderDecorator.load(type);      
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -132,7 +132,7 @@ public class FloatTest  extends TestCase
 
       BusinessDAO businessDAO = AggregateFunctionMasterSetup.classObjectList.get(0);
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -175,19 +175,19 @@ public class FloatTest  extends TestCase
     }
   }
   
-  @SuppressWarnings("unchecked")
+  
   public void testFloatGtMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
-      Class objectClass = LoaderDecorator.load(type);    
+      Class<?> objectClass = LoaderDecorator.load(type);    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -206,7 +206,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
       
       int loopCount = AggregateFunctionMasterSetup.floatMinGtList.size() - 1;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -251,19 +251,19 @@ public class FloatTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatGtEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();  
-      Class objectClass = LoaderDecorator.load(type);    
+      Class<?> objectClass = LoaderDecorator.load(type);    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -282,7 +282,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
       
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -312,18 +312,18 @@ public class FloatTest  extends TestCase
     assertEquals(errMsg, 0, count);
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testFloatLtMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -369,19 +369,19 @@ public class FloatTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatLtEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);  
+      Class<?> objectClass = LoaderDecorator.load(type);  
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -400,7 +400,7 @@ public class FloatTest  extends TestCase
 
       BusinessDAO businessDAO = AggregateFunctionMasterSetup.classObjectList.get(0);
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -443,19 +443,19 @@ public class FloatTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatNotEqMinAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type);  
+      Class<?> objectClass = LoaderDecorator.load(type);  
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -474,7 +474,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
       
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -516,19 +516,19 @@ public class FloatTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();   
-      Class objectClass = LoaderDecorator.load(type);      
+      Class<?> objectClass = LoaderDecorator.load(type);      
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -547,7 +547,7 @@ public class FloatTest  extends TestCase
 
       BusinessDAO businessDAO = AggregateFunctionMasterSetup.classObjectList.get(AggregateFunctionMasterSetup.classObjectList.size() - 1);
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         String objectId = (String)objectClass.getMethod("getId").invoke(object);
@@ -578,18 +578,18 @@ public class FloatTest  extends TestCase
 
   }
   
-  @SuppressWarnings("unchecked")
+  
   public void testFloatGtMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -622,18 +622,18 @@ public class FloatTest  extends TestCase
     assertEquals(errMsg, 1, count);
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatGtEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -679,19 +679,19 @@ public class FloatTest  extends TestCase
     }
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testFloatLtMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
-      Class objectClass = LoaderDecorator.load(type);   
+      Class<?> objectClass = LoaderDecorator.load(type);   
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -710,7 +710,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -753,19 +753,19 @@ public class FloatTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatLtEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -784,7 +784,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -827,19 +827,19 @@ public class FloatTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatNotEqMaxAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();  
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -858,7 +858,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -901,19 +901,19 @@ public class FloatTest  extends TestCase
     } 
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatEqAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -932,7 +932,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -976,19 +976,19 @@ public class FloatTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatGtAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1007,7 +1007,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -1051,19 +1051,19 @@ public class FloatTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatGtEqAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1082,7 +1082,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -1126,19 +1126,19 @@ public class FloatTest  extends TestCase
     } 
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testFloatLtAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1157,7 +1157,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -1201,19 +1201,19 @@ public class FloatTest  extends TestCase
     } 
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testFloatLtEqAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1232,7 +1232,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -1275,19 +1275,19 @@ public class FloatTest  extends TestCase
     } 
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatNotEqAvgAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1306,7 +1306,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -1351,19 +1351,19 @@ public class FloatTest  extends TestCase
     } 
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatEqCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1382,7 +1382,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getCountFuncFloat").invoke(object);
@@ -1426,19 +1426,19 @@ public class FloatTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatGtCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();     
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1457,7 +1457,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getCountFuncFloat").invoke(object);
@@ -1501,19 +1501,19 @@ public class FloatTest  extends TestCase
     
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatGtEqCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1532,7 +1532,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getCountFuncFloat").invoke(object);
@@ -1576,19 +1576,19 @@ public class FloatTest  extends TestCase
     } 
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testFloatLtCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1607,7 +1607,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getCountFuncFloat").invoke(object);
@@ -1651,19 +1651,19 @@ public class FloatTest  extends TestCase
     } 
   }
  
-  @SuppressWarnings("unchecked")
+  
   public void testFloatLtEqCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1682,7 +1682,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getCountFuncFloat").invoke(object);
@@ -1725,19 +1725,19 @@ public class FloatTest  extends TestCase
     } 
   }
 
-  @SuppressWarnings("unchecked")
+  
   public void testFloatNotEqCountAttribute_Generated()
   { 
     try
     {
       String type = AggregateFunctionMasterSetup.countQueryInfo.getType();
-      Class objectClass = LoaderDecorator.load(type); 
+      Class<?> objectClass = LoaderDecorator.load(type); 
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-      Class queryClass = LoaderDecorator.load(queryType);
+      Class<?> queryClass = LoaderDecorator.load(queryType);
     
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-      Class comQueryClass = LoaderDecorator.load(comQueryType);
+      Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
     
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1756,7 +1756,7 @@ public class FloatTest  extends TestCase
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable<?>)resultIterator)
       {
         objectClass.cast(object);
         Float floatValue = (Float)objectClass.getMethod("getCountFuncFloat").invoke(object);
@@ -1800,19 +1800,19 @@ public class FloatTest  extends TestCase
 //    } 
 //  }
 //
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatEqStdDevAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1831,7 +1831,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -1875,19 +1875,19 @@ public class FloatTest  extends TestCase
 //    
 //  }
 //
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatGtStdDevAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1906,7 +1906,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -1950,19 +1950,19 @@ public class FloatTest  extends TestCase
 //    
 //  }
 //
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatGtEqStdDevAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1981,7 +1981,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -2025,19 +2025,19 @@ public class FloatTest  extends TestCase
 //    } 
 //  }
 // 
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatLtStdDevAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2056,7 +2056,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -2100,19 +2100,19 @@ public class FloatTest  extends TestCase
 //    } 
 //  }
 // 
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatLtEqStdDevAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2131,7 +2131,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -2174,19 +2174,19 @@ public class FloatTest  extends TestCase
 //    } 
 //  }
 //
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatNotEqStdDevAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2205,7 +2205,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -2248,19 +2248,19 @@ public class FloatTest  extends TestCase
 //    } 
 //  }
 //
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatEqVarianceAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2279,7 +2279,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -2323,19 +2323,19 @@ public class FloatTest  extends TestCase
 //    
 //  }
 //
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatGtVarianceAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2354,7 +2354,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -2398,19 +2398,19 @@ public class FloatTest  extends TestCase
 //    
 //  }
 //
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatGtEqVarianceAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2429,7 +2429,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -2473,19 +2473,19 @@ public class FloatTest  extends TestCase
 //    } 
 //  }
 // 
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatLtVarianceAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2504,7 +2504,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -2548,19 +2548,19 @@ public class FloatTest  extends TestCase
 //    } 
 //  }
 // 
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatLtEqVarianceAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2579,7 +2579,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);
@@ -2622,19 +2622,19 @@ public class FloatTest  extends TestCase
 //    } 
 //  }
 //
-//  @SuppressWarnings("unchecked")
+//  
 //  public void testFloatNotEqVarianceAttribute_Generated()
 //  { 
 //    try
 //    {
 //      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-//      Class objectClass = GenerationFacade.load(type); 
+//      Class<?> objectClass = GenerationFacade.load(type); 
 //      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
-//      Class queryClass = GenerationFacade.load(queryType);
+//      Class<?> queryClass = GenerationFacade.load(queryType);
 //    
 //      String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
 //      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
-//      Class comQueryClass = GenerationFacade.load(comQueryType);
+//      Class<?> comQueryClass = GenerationFacade.load(comQueryType);
 //    
 //      QueryFactory factory = new QueryFactory();
 //      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -2653,7 +2653,7 @@ public class FloatTest  extends TestCase
 //      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.RESULT_SET_METHOD).invoke(queryObject);
 //
 //      int loopCount = 0;
-//      for (Object object : (Iterable)resultIterator)
+//      for (Object object : (Iterable<?>)resultIterator)
 //      {
 //        objectClass.cast(object);
 //        Float floatValue = (Float)objectClass.getMethod("getFuncFloat").invoke(object);

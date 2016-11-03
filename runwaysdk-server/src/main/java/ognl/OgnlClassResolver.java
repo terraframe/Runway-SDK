@@ -32,7 +32,7 @@ public class OgnlClassResolver implements ClassResolver
    * @see ognl.ClassResolver#classForName(java.lang.String, java.util.Map)
    */
   @Override
-  public Class classForName(String className, Map context) throws ClassNotFoundException
+  public Class<?> classForName(String className, @SuppressWarnings("rawtypes") Map context) throws ClassNotFoundException
   {
     return LoaderDecorator.load(className);
   }

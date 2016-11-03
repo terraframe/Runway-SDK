@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess;
 
 import junit.framework.TestCase;
 
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
@@ -68,10 +70,14 @@ public abstract class MdFormDAOTest extends TestCase
   {
     // Define a test class
     testTypeMd = TestFixtureFactory.createMdBusiness1();
+    testTypeMd.setGenerateMdController(false);
+    testTypeMd.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     testTypeMd.apply();
     
     // reference class
     refTypeMd = TestFixtureFactory.createMdBusiness2();
+    refTypeMd.setGenerateMdController(false);
+    refTypeMd.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     refTypeMd.apply();
     
     charAttr = TestFixtureFactory.addCharacterAttribute(testTypeMd);

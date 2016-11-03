@@ -26,13 +26,14 @@ import java.util.List;
 import java.util.Stack;
 
 import com.runwaysdk.dataaccess.database.Database;
+
 import com.runwaysdk.query.OIterator;
 
 public class DefaultStrategy implements OntologyStrategyIF
 {
   protected String termClass;
   
-  private String relationshipType;
+//  private String relationshipType;
   
   public static class Singleton
   {

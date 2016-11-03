@@ -27,6 +27,8 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
@@ -86,6 +88,8 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
     mdDimension.apply();
 
     mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);

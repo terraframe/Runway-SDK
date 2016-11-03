@@ -25,6 +25,7 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import com.runwaysdk.constants.ElementInfo;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdDomainInfo;
@@ -71,6 +72,8 @@ public class MdDomainTest extends TestCase
     mdBusiness.setValue(MdBusinessInfo.NAME, "TestBusiness");
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, "com.test");
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Business");
+    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
   }
 

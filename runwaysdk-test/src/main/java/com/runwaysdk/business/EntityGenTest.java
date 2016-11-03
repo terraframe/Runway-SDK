@@ -1781,7 +1781,7 @@ public class EntityGenTest extends TestCase
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
-    List out = (List) structClass.getMethod("getStructEnumeration").invoke(struct);
+    List<?> out = (List<?>) structClass.getMethod("getStructEnumeration").invoke(struct);
 
     BusinessEnumeration head = (BusinessEnumeration) out.get(0);
     String outId = (String) head.getClass().getMethod("getId").invoke(head);
@@ -2012,7 +2012,7 @@ public class EntityGenTest extends TestCase
 
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
     Object object = collectionClass.getMethod("get", String.class).invoke(null, id);
-    List out = (List) collectionClass.getMethod("getAnEnum").invoke(object);
+    List<?> out = (List<?>) collectionClass.getMethod("getAnEnum").invoke(object);
     BusinessEnumeration head = (BusinessEnumeration) out.get(0);
     String outId = (String) head.getClass().getMethod("getId").invoke(head);
 
@@ -2979,7 +2979,7 @@ public class EntityGenTest extends TestCase
     Object aRelationshipDTO = referenceDTOclass.getMethod("addRelParent", collectionDTOclass).invoke(referenceDTOObject, collectionDTOObject);
     relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
     referenceDTOclass.getMethod("getAllRelParent").invoke(referenceDTOObject);
-    List relationshipList = (List) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
+    List<?> relationshipList = (List<?>) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
     referenceDTOclass.getMethod("removeRelParent", relationshipDTOclass).invoke(referenceDTOObject, relationshipList.get(0));
     referenceDTOclass.getMethod("removeAllRelParent").invoke(referenceDTOObject);
 
@@ -3052,7 +3052,7 @@ public class EntityGenTest extends TestCase
         }
         try
         {
-          relationshipList = (List) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
+          relationshipList = (List<?>) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
           fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
@@ -3111,7 +3111,7 @@ public class EntityGenTest extends TestCase
         }
         try
         {
-          relationshipList = (List) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
+          relationshipList = (List<?>) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
           fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
@@ -3186,7 +3186,7 @@ public class EntityGenTest extends TestCase
       relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
 
       referenceDTOclass.getMethod("getAllRelParent").invoke(referenceDTOObject);
-      relationshipList = (List) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
+      relationshipList = (List<?>) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
       referenceDTOclass.getMethod("removeRelParent", relationshipDTOclass).invoke(referenceDTOObject, relationshipList.get(0));
       referenceDTOclass.getMethod("removeAllRelParent").invoke(referenceDTOObject);
 
@@ -3237,7 +3237,7 @@ public class EntityGenTest extends TestCase
     Object aRelationshipDTO = collectionDTOclass.getMethod("addRelChild", referenceDTOclass).invoke(collectionDTOObject, referenceDTOObject);
     relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
     collectionDTOclass.getMethod("getAllRelChild").invoke(collectionDTOObject);
-    List relationshipList = (List) collectionDTOclass.getMethod("getAllRelChildRelationships").invoke(collectionDTOObject);
+    List<?> relationshipList = (List<?>) collectionDTOclass.getMethod("getAllRelChildRelationships").invoke(collectionDTOObject);
     collectionDTOclass.getMethod("removeRelChild", relationshipDTOclass).invoke(collectionDTOObject, relationshipList.get(0));
     collectionDTOclass.getMethod("removeAllRelChild").invoke(collectionDTOObject);
 
@@ -3311,7 +3311,7 @@ public class EntityGenTest extends TestCase
         }
         try
         {
-          relationshipList = (List) collectionDTOclass.getMethod("getAllRelChildRelationships").invoke(collectionDTOObject);
+          relationshipList = (List<?>) collectionDTOclass.getMethod("getAllRelChildRelationships").invoke(collectionDTOObject);
           fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
@@ -3371,7 +3371,7 @@ public class EntityGenTest extends TestCase
         }
         try
         {
-          relationshipList = (List) collectionDTOclass.getMethod("getAllRelChildRelationships").invoke(collectionDTOObject);
+          relationshipList = (List<?>) collectionDTOclass.getMethod("getAllRelChildRelationships").invoke(collectionDTOObject);
           fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
@@ -3449,7 +3449,7 @@ public class EntityGenTest extends TestCase
       aRelationshipDTO = collectionDTOclass.getMethod("addRelChild", referenceDTOclass).invoke(collectionDTOObject, referenceDTOObject);
       relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
       collectionDTOclass.getMethod("getAllRelChild").invoke(collectionDTOObject);
-      relationshipList = (List) collectionDTOclass.getMethod("getAllRelChildRelationships").invoke(collectionDTOObject);
+      relationshipList = (List<?>) collectionDTOclass.getMethod("getAllRelChildRelationships").invoke(collectionDTOObject);
       collectionDTOclass.getMethod("removeRelChild", relationshipDTOclass).invoke(collectionDTOObject, relationshipList.get(0));
       collectionDTOclass.getMethod("removeAllRelChild").invoke(collectionDTOObject);
 
@@ -3601,7 +3601,7 @@ public class EntityGenTest extends TestCase
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
-    List enums = (List) collectionClass.getMethod("getAnEnum").invoke(object);
+    List<?> enums = (List<?>) collectionClass.getMethod("getAnEnum").invoke(object);
     EnumerationDTOIF head = (EnumerationDTOIF) enums.get(0);
     String out = (String) head.name();
 
@@ -3824,7 +3824,7 @@ public class EntityGenTest extends TestCase
     RelationshipDAO.newInstance(momId, kidId, mdRelationship.definesType()).apply();
 
     Object kid = referenceClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, kidId);
-    List<RelationshipDTO> list = (List) referenceClass.getMethod("getAllRelParentRelationships").invoke(kid);
+    List<RelationshipDTO> list = (List<RelationshipDTO>) referenceClass.getMethod("getAllRelParentRelationships").invoke(kid);
 
     assertEquals(4, list.size());
     RelationshipDTO oracle = list.get(0);
@@ -3906,7 +3906,7 @@ public class EntityGenTest extends TestCase
     Object object = get.invoke(null, clientRequestIF, id);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
 
-    List enums = (List) structClass.getMethod("getStructEnumeration").invoke(struct);
+    List<?> enums = (List<?>) structClass.getMethod("getStructEnumeration").invoke(struct);
     EnumerationDTOIF head = (EnumerationDTOIF) enums.get(0);
     String out = (String) head.name();
     String structChar = (String) structClass.getMethod("getStructCharacter").invoke(struct);

@@ -1866,14 +1866,14 @@ public class MultiThreadTestSuite extends TestCase
    * @param sessionId
    * @param objectId
    */
-  @SuppressWarnings("unchecked")
+  
   @Request(RequestType.SESSION)
   public static void executeMethodOnObject(String sessionId, String objectId) throws Throwable
   {
     Business busObject = Business.get(objectId);
 
     String classType = multiThreadMdBusiness1.definesType();
-    Class objectClass = LoaderDecorator.load(classType);
+    Class<?> objectClass = LoaderDecorator.load(classType);
 
     try
     {
@@ -1900,12 +1900,12 @@ public class MultiThreadTestSuite extends TestCase
    * @param sessionId
    * @param objectId
    */
-  @SuppressWarnings("unchecked")
+  
   @Request(RequestType.SESSION)
   public static void executeMethodStatic(String sessionId) throws Throwable
   {
     String classType = multiThreadMdBusiness1.definesType();
-    Class objectClass = LoaderDecorator.load(classType);
+    Class<?> objectClass = LoaderDecorator.load(classType);
 
     try
     {

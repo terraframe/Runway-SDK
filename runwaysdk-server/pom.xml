@@ -1,23 +1,5 @@
-<!--
-
-    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
-
-    This file is part of Runway SDK(tm).
-
-    Runway SDK(tm) is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    Runway SDK(tm) is distributed in the hope that it will be useful, but
-    WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses />.
-
--->
+<!-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved. This file is part of Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. Runway SDK(tm) is distributed in the hope that it will 
+  be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses />. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -31,6 +13,15 @@
   <packaging>jar</packaging>
   <name>runwaysdk-server</name>
   <url>${runway.url}</url>
+
+  <repositories>
+    <repository>
+      <id>central</id>
+      <name>central</name>
+      <url>http://central.maven.org/maven2</url>
+      <layout>default</layout>
+    </repository>
+  </repositories>
 
   <dependencies>
     <dependency>
@@ -188,15 +179,45 @@
       <version>1.0.0</version>
     </dependency>
     <dependency>
-	    <groupId>org.terracotta</groupId>
-	    <artifactId>management-model</artifactId>
-	    <version>2.0.0</version>
-		</dependency>
+      <groupId>org.terracotta</groupId>
+      <artifactId>management-model</artifactId>
+      <version>2.0.0</version>
+    </dependency>
     <dependency>
       <groupId>ognl</groupId>
       <artifactId>ognl</artifactId>
       <version>3.0.8</version>
     </dependency>
+    
+    <!-- SOLR dependencies -->
+    <dependency>
+      <groupId>org.apache.solr</groupId>
+      <artifactId>solr-core</artifactId>
+      <version>6.2.1</version>
+      <exclusions>
+        <exclusion>
+		      <groupId>org.restlet.jee</groupId>
+		      <artifactId>org.restlet</artifactId>
+		    </exclusion>
+		    <exclusion>
+		      <groupId>org.restlet.jee</groupId>
+		      <artifactId>org.restlet.ext.servlet</artifactId>
+		    </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- These dependencies were recompiled by rrowlands because they were built incorrectly by Oracle (of all people..) -->
+    <!-- invalid Class-Path header in manifest of jar file org.restlet.ext.servlet-2.3.0.jar -->
+    <dependency>
+      <groupId>org.restlet.jee</groupId>
+      <artifactId>terraframe.org.restlet</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.restlet.jee</groupId>
+      <artifactId>terraframe.org.restlet.ext.servlet</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+    <!-- SOLR dependencies -->
   </dependencies>
 
   <build>
@@ -228,27 +249,7 @@
         </executions>
       </plugin>
 
-      <!--
-      <plugin>
-        <groupId>com.github.github</groupId>
-        <artifactId>site-maven-plugin</artifactId>
-        <version>0.8</version>
-        <configuration>
-          <path>
-            ${project.version}/${project.artifactId}
-          </path>
-        </configuration>
-        <executions>
-          <execution>
-            <id>github-site</id>
-            <goals>
-              <goal>site</goal>
-            </goals>
-            <phase>site</phase>
-          </execution>
-        </executions>
-      </plugin>
-      -->
+      <!-- <plugin> <groupId>com.github.github</groupId> <artifactId>site-maven-plugin</artifactId> <version>0.8</version> <configuration> <path> ${project.version}/${project.artifactId} </path> </configuration> <executions> <execution> <id>github-site</id> <goals> <goal>site</goal> </goals> <phase>site</phase> </execution> </executions> </plugin> -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>

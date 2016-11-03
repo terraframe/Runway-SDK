@@ -792,7 +792,7 @@ public class EntityDAOFactory
     {
       if (batchResults[i] == 0)
       {
-        String error = "Object [" + existingId + "] is stale and cannot be updated.";
+        String error = "Object [" + existingId + "] is stale and cannot be updated.";      
         throw new StaleEntityException(error, entityDAO);
       }
     }

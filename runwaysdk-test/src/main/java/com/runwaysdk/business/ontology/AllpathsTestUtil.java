@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;

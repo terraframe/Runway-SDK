@@ -602,7 +602,7 @@ public class SeleniumTest extends TestCase
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL,         MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS,  stateEnumMdBusiness.getId());
     clientRequest.createBusiness(mdEnumeration);
-    String mdEnumerationDefinesType = mdEnumeration.getValue(MdTypeInfo.PACKAGE) + "." + mdEnumeration.getValue(MdTypeInfo.NAME);
+//    String mdEnumerationDefinesType = mdEnumeration.getValue(MdTypeInfo.PACKAGE) + "." + mdEnumeration.getValue(MdTypeInfo.NAME);
 
     // Define attributes on the enumeration
     BusinessDTO mdAttrChar = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);

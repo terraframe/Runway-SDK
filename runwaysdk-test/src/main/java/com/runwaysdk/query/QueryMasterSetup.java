@@ -1006,7 +1006,7 @@ public class QueryMasterSetup extends TestSetup
    * @return reflection array of the enumeration constants that have the given
    *         name strings.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   protected static Object getStateEnumConstants(Class enumClass, Object[] enumConstants, String... enumNames)
   {
     Object array = Array.newInstance(enumClass, enumNames.length);
