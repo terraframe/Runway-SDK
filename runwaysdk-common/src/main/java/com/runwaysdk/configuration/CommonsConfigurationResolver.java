@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
+import com.runwaysdk.constants.DeployProperties;
 
 public class CommonsConfigurationResolver implements ConfigurationResolverIF
 {
@@ -48,7 +49,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
    * This value may be set by our custom tomcat class loader, since only the webapp class loader can tell what the deploy path is and our custom class loader obscures the webapp
    * class loader.
    */
-  private static String deployPath;
+  private static File deployPath;
 
   public CommonsConfigurationResolver()
   {
@@ -90,24 +91,56 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     }
   }
 
-  protected String getWebappContextPath()
+  /**
+   * Calculates and returns the deployed path of the currently running application. If we are deployed inside a container, this will return $CATALINA_HOME/webapps/$CONTEXT_PATH
+   *   as a resolved absolute path. If we are running inside a jar, this will return the directory that contains the running jar.
+   * 
+   * This method is what populates DeployProperties.getDeployPath() and thus it is preferred that you get this value from there instead.
+   * 
+   * @return An absolute file path of the deploy.path.
+   */
+  public File getDeployedPath()
   {
-    String webappContextPath = deployPath;
-    if (deployPath == null)
+    if (deployPath != null)
     {
-      webappContextPath = CommonsConfigurationResolver.class.getResource("/").getPath().replace("WEB-INF/classes", "");
+      return deployPath;
     }
-
-    if (webappContextPath.endsWith("/"))
-    {
-      webappContextPath = webappContextPath.substring(0, webappContextPath.length() - 1);
-    }
-
-    // getPath returns spaces as %20. The file constructor does not read this
-    // properly.
-    webappContextPath = webappContextPath.replace("%20", " ");
     
-    return webappContextPath;
+    String sDeployPath;
+    
+    URL rootPath = CommonsConfigurationResolver.class.getResource("/");
+    if (rootPath != null && !rootPath.getPath().equals(""))
+    {
+      sDeployPath = rootPath.getPath();
+    }
+    else
+    {
+      // If our code lives inside a jar, getResource will return null
+      String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+      
+      if (path.endsWith(".jar") || path.endsWith(".war") || path.endsWith(".class"))
+      {
+        path = new File(path).getParent();
+      }
+      
+      sDeployPath = path.replace(this.getClass().getPackage().getName().replace(".", "/"), "");
+    }
+    
+    if (sDeployPath.endsWith("/"))
+    {
+      sDeployPath = sDeployPath.substring(0, sDeployPath.length() - 1);
+    }
+    
+    if (sDeployPath.endsWith("WEB-INF/classes"))
+    {
+      sDeployPath = sDeployPath.replace("WEB-INF/classes", "");
+    }
+
+    // getPath returns spaces as %20 for some reason
+    sDeployPath = sDeployPath.replace("%20", " ");
+    
+    deployPath = new File(sDeployPath);
+    return deployPath;
   }
   
   /*
@@ -120,16 +153,16 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     // Calculate the value of deploy.path. The reason we do this at runtime is
     // because the value of this property may vary depending on the application
     // context path.
-    String webappContextPath = getWebappContextPath();
+    String deployPath = getDeployedPath().getAbsolutePath();
     
-    if (new File(webappContextPath).exists())
+    if (new File(deployPath).exists())
     {
-      properties.setProperty("deploy.path", webappContextPath);
-      log.info("deploy.path resolved to [" + webappContextPath + "]");
+      properties.setProperty("deploy.path", deployPath);
+      log.info("deploy.path resolved to [" + deployPath + "]");
     }
     else
     {
-      throw new RunwayConfigurationException("Unable to determine deploy.path, the location [" + webappContextPath + "] does not exist.");
+      throw new RunwayConfigurationException("Unable to determine deploy.path, the location [" + deployPath + "] does not exist.");
     }
 
     return properties;
@@ -168,9 +201,12 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     return CommonsConfigurationResolver.inMemoryCFG;
   }
 
+  /**
+   * WARNING : Do not change this method signature, it is referenced via strings in the TomcatLoader.
+   */
   public static void setDeployPath(String _deployPath)
   {
-    deployPath = _deployPath;
+    deployPath = new File(_deployPath);
   }
   
   /**
