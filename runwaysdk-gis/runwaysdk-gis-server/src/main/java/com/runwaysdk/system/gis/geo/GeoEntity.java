@@ -90,14 +90,17 @@ public class GeoEntity extends GeoEntityBase
   @Override
   public void apply()
   {
-    applyInternal();
+    applyInternal(true);
   }
 
   /**
    * Persists this GeoEntity and performs validation on its values.
+   * 
+   * @param validate
+   *          TODO
    */
   @Transaction
-  public void applyInternal()
+  public void applyInternal(boolean validate)
   {
     if ( ( this.getGeoId() == null ) || ( this.getGeoId().length() == 0 ))
     {
@@ -150,7 +153,8 @@ public class GeoEntity extends GeoEntityBase
 
     }
     // allow new instances to set geoPoint and geoMultiPolygon directly because
-    // the values may have been set via the geo entity importer. Otherwise, null the
+    // the values may have been set via the geo entity importer. Otherwise, null
+    // the
     // values out if geoData is empty.
     else if (!this.isNew())
     {
@@ -160,7 +164,10 @@ public class GeoEntity extends GeoEntityBase
 
     boolean isNew = this.isNew() && !this.isAppliedToDB();
 
-    this.validateUniversal();
+    if (validate)
+    {
+      this.validateUniversal();
+    }
 
     super.apply();
 
@@ -172,7 +179,8 @@ public class GeoEntity extends GeoEntityBase
       this.addTerm(LocatedIn.CLASS);
     }
 
-    // If geo multipolygon is null then add an entry into the problems page if one doesn't already exist
+    // If geo multipolygon is null then add an entry into the problems page if
+    // one doesn't already exist
     if (this.getGeoMultiPolygon() == null && !GeoEntityProblem.hasEntry(this, GeoEntityProblemType.MISSING_GEOM))
     {
       GeoEntityProblem.createProblems(this, GeoEntityProblemType.MISSING_GEOM);
@@ -219,7 +227,8 @@ public class GeoEntity extends GeoEntityBase
   }
 
   /**
-   * Deletes this Universal, which removes the associated MdBusiness and all the GeoEntity objects defined by that type.
+   * Deletes this Universal, which removes the associated MdBusiness and all the
+   * GeoEntity objects defined by that type.
    */
   // @Override
   // @Transaction
@@ -262,7 +271,8 @@ public class GeoEntity extends GeoEntityBase
   }
 
   /**
-   * This MdMethod will apply the GeoEntity dto and append it to parentId with relationshipType.
+   * This MdMethod will apply the GeoEntity dto and append it to parentId with
+   * relationshipType.
    * 
    * @param dto
    * @param parentId
@@ -322,7 +332,8 @@ public class GeoEntity extends GeoEntityBase
   private void validateUniversal(Universal childUniversal, Universal parentUniversal)
   {
     /*
-     * Ensure that the child's universal is a descendant of the parent's universal
+     * Ensure that the child's universal is a descendant of the parent's
+     * universal
      */
     List<Term> ancestors = childUniversal.getAllAncestors(AllowedIn.CLASS).getAll();
 
