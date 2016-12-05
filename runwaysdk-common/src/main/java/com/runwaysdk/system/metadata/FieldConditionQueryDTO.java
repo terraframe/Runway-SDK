@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1755713965)
+@com.runwaysdk.business.ClassSignature(hash = 1524167982)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system.metadata;
  */
 public class FieldConditionQueryDTO extends com.runwaysdk.business.BusinessQueryDTO
 {
-private static final long serialVersionUID = -1755713965;
+private static final long serialVersionUID = 1524167982;
 
   protected FieldConditionQueryDTO(String type)
   {

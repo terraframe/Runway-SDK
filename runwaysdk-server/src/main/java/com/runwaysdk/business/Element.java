@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import com.runwaysdk.business.rbac.ActorDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.constants.ElementInfo;
@@ -245,7 +246,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
    *
    * @return UserIF object that represents the user that has a lock on this entity, or null if the entity is not locked.
    */
-  protected UserDAOIF getLockedByDAO()
+  protected SingleActorDAOIF getLockedByDAO()
   {
     if (entityDAO.getAttributeIF(ElementInfo.LOCKED_BY).getValue().trim().equals(""))
     {
@@ -253,7 +254,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
     else
     {
-      return (UserDAOIF)((AttributeReference)entityDAO.getAttributeIF(ElementInfo.LOCKED_BY)).dereference();
+      return (SingleActorDAOIF)((AttributeReference)entityDAO.getAttributeIF(ElementInfo.LOCKED_BY)).dereference();
     }
   }
 
@@ -331,6 +332,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
   public void lock()
   {
     SessionIF session = Session.getCurrentSession();
+    
     if(session != null)
     {
       this.userLock(session.getUser().getId());
@@ -710,11 +712,11 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
   }
 
-  public com.runwaysdk.system.Users getLockedBy()
+  public com.runwaysdk.system.SingleActor getLockedBy()
   {
     try
     {
-      return com.runwaysdk.system.Users.get(getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActor.get(getValue(LOCKEDBY));
     }
     catch (com.runwaysdk.dataaccess.cache.DataNotFoundException e)
     {

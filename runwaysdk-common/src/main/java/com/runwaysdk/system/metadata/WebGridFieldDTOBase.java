@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 999959836)
+@com.runwaysdk.business.ClassSignature(hash = 1534620663)
 public abstract class WebGridFieldDTOBase extends com.runwaysdk.business.RelationshipDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.WebGridField";
-  private static final long serialVersionUID = 999959836;
+  private static final long serialVersionUID = 1534620663;
   
   public WebGridFieldDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
   {
@@ -268,7 +268,7 @@ public abstract class WebGridFieldDTOBase extends com.runwaysdk.business.Relatio
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -276,7 +276,7 @@ public abstract class WebGridFieldDTOBase extends com.runwaysdk.business.Relatio
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

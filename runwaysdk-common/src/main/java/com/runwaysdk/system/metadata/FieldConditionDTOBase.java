@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1106543158)
+@com.runwaysdk.business.ClassSignature(hash = 719900517)
 public abstract class FieldConditionDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.FieldCondition";
-  private static final long serialVersionUID = -1106543158;
+  private static final long serialVersionUID = 719900517;
   
   protected FieldConditionDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -267,7 +267,7 @@ public abstract class FieldConditionDTOBase extends com.runwaysdk.business.Busin
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -275,7 +275,7 @@ public abstract class FieldConditionDTOBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

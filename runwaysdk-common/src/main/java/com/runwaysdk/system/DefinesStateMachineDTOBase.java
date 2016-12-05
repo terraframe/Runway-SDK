@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -2045960728)
+@com.runwaysdk.business.ClassSignature(hash = 1461124077)
 public abstract class DefinesStateMachineDTOBase extends com.runwaysdk.business.RelationshipDTO
 {
   public final static String CLASS = "com.runwaysdk.system.DefinesStateMachine";
-  private static final long serialVersionUID = -2045960728;
+  private static final long serialVersionUID = 1461124077;
   
   public DefinesStateMachineDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
   {
@@ -268,7 +268,7 @@ public abstract class DefinesStateMachineDTOBase extends com.runwaysdk.business.
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -276,7 +276,7 @@ public abstract class DefinesStateMachineDTOBase extends com.runwaysdk.business.
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

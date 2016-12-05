@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1603178730)
+@com.runwaysdk.business.ClassSignature(hash = -924565349)
 public abstract class TypePermissionDTOBase extends com.runwaysdk.business.RelationshipDTO
 {
   public final static String CLASS = "com.runwaysdk.system.TypePermission";
-  private static final long serialVersionUID = -1603178730;
+  private static final long serialVersionUID = -924565349;
   
   public TypePermissionDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
   {
@@ -269,7 +269,7 @@ public abstract class TypePermissionDTOBase extends com.runwaysdk.business.Relat
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -277,7 +277,7 @@ public abstract class TypePermissionDTOBase extends com.runwaysdk.business.Relat
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

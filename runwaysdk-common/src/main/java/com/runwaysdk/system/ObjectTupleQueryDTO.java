@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 1064017279)
+@com.runwaysdk.business.ClassSignature(hash = -450674684)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system;
  */
 public class ObjectTupleQueryDTO extends com.runwaysdk.business.BusinessQueryDTO
 {
-private static final long serialVersionUID = 1064017279;
+private static final long serialVersionUID = -450674684;
 
   protected ObjectTupleQueryDTO(String type)
   {

@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -412340142)
+@com.runwaysdk.business.ClassSignature(hash = -1660347305)
 public abstract class ControllerActionDTOBase extends com.runwaysdk.business.RelationshipDTO
 {
   public final static String CLASS = "com.runwaysdk.system.ControllerAction";
-  private static final long serialVersionUID = -412340142;
+  private static final long serialVersionUID = -1660347305;
   
   public ControllerActionDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
   {
@@ -268,7 +268,7 @@ public abstract class ControllerActionDTOBase extends com.runwaysdk.business.Rel
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -276,7 +276,7 @@ public abstract class ControllerActionDTOBase extends com.runwaysdk.business.Rel
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

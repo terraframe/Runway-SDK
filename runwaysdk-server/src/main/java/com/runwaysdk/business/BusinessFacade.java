@@ -27,6 +27,7 @@ import java.util.Locale;
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.rbac.ActorDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.business.state.StateMasterDAOIF;
@@ -85,7 +86,7 @@ public class BusinessFacade
    * 
    * @return UserIF object that represents the user that has a lock on this entity, or null if the entity is not locked.
    */
-  public static UserDAOIF getLockedByDAO(Element element)
+  public static SingleActorDAOIF getLockedByDAO(Element element)
   {
     return element.getLockedByDAO();
   }

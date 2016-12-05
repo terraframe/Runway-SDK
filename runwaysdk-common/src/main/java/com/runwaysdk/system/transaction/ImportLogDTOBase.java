@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.transaction;
 
-@com.runwaysdk.business.ClassSignature(hash = -2079341277)
+@com.runwaysdk.business.ClassSignature(hash = -2076139864)
 public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.transaction.ImportLog";
-  private static final long serialVersionUID = -2079341277;
+  private static final long serialVersionUID = -2076139864;
   
   protected ImportLogDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -306,7 +306,7 @@ public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDT
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -314,7 +314,7 @@ public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDT
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1000297168)
+@com.runwaysdk.business.ClassSignature(hash = 1030902485)
 public abstract class DownstreamJobRelationshipDTOBase extends com.runwaysdk.business.RelationshipDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.DownstreamJobRelationship";
-  private static final long serialVersionUID = 1000297168;
+  private static final long serialVersionUID = 1030902485;
   
   public DownstreamJobRelationshipDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
   {
@@ -269,7 +269,7 @@ public abstract class DownstreamJobRelationshipDTOBase extends com.runwaysdk.bus
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -277,7 +277,7 @@ public abstract class DownstreamJobRelationshipDTOBase extends com.runwaysdk.bus
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

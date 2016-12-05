@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1844638446)
+@com.runwaysdk.business.ClassSignature(hash = 1056239639)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system;
  */
 public class ConflictingRolesQueryDTO extends com.runwaysdk.business.RelationshipQueryDTO
 {
-private static final long serialVersionUID = -1844638446;
+private static final long serialVersionUID = 1056239639;
 
   protected ConflictingRolesQueryDTO(String type)
   {

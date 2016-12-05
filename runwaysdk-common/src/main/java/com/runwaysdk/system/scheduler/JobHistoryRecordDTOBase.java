@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1726165583)
+@com.runwaysdk.business.ClassSignature(hash = 2014498474)
 public abstract class JobHistoryRecordDTOBase extends com.runwaysdk.business.RelationshipDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryRecord";
-  private static final long serialVersionUID = 1726165583;
+  private static final long serialVersionUID = 2014498474;
   
   public JobHistoryRecordDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
   {
@@ -268,7 +268,7 @@ public abstract class JobHistoryRecordDTOBase extends com.runwaysdk.business.Rel
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -276,7 +276,7 @@ public abstract class JobHistoryRecordDTOBase extends com.runwaysdk.business.Rel
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

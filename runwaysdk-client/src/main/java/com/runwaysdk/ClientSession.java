@@ -35,18 +35,20 @@ public class ClientSession
   /**
    * Id of the session.
    */
-  private String sessionId;
+  private String          sessionId;
 
-  private Locale[] locales;
+  private Locale[]        locales;
 
-  private boolean isPublicUser = false;
+  private boolean         isPublicUser = false;
 
-  private boolean isLoggedIn = false;
+  private boolean         isLoggedIn   = false;
 
   /**
-   * Creates a session on the server that is logged in as the anonymous public user.
+   * Creates a session on the server that is logged in as the anonymous public
+   * user.
    *
-   * @param locales the locale of the session
+   * @param locales
+   *          the locale of the session
    */
   protected ClientSession(Locale[] locales)
   {
@@ -59,9 +61,11 @@ public class ClientSession
   }
 
   /**
-   * Creates a session on the server that is logged in as the anonymous public user.
+   * Creates a session on the server that is logged in as the anonymous public
+   * user.
    *
-   * @param locales the locale of the session
+   * @param locales
+   *          the locale of the session
    */
   public static ClientSession createAnonymousSession(Locale[] locales)
   {
@@ -69,10 +73,12 @@ public class ClientSession
   }
 
   /**
-   * Creates a session on the server located at the given label that is logged in as the anonymous public user.
+   * Creates a session on the server located at the given label that is logged
+   * in as the anonymous public user.
    *
    * @param connectionLabel
-   * @param locales the locale of the session
+   * @param locales
+   *          the locale of the session
    */
   protected ClientSession(ConnectionLabel connectionLabel, Locale[] locales)
   {
@@ -85,10 +91,12 @@ public class ClientSession
   }
 
   /**
-   * Creates a session on the server located at the given label that is logged in as the anonymous public user.
+   * Creates a session on the server located at the given label that is logged
+   * in as the anonymous public user.
    *
    * @param label
-   * @param locales the locale of the session
+   * @param locales
+   *          the locale of the session
    */
   public static ClientSession createAnonymousSession(String label, Locale[] locales)
   {
@@ -109,7 +117,9 @@ public class ClientSession
     this.locales = locales;
 
     ClientRequestIF clientRequest = ClientRequest.getRequest(this, sessionId);
-    copyClientRequestAttributes(clientRequest);
+
+    this.copyClientRequestAttributes(clientRequest);
+    this.setLoginStatus(false, true);
   }
 
   /**
@@ -123,7 +133,8 @@ public class ClientSession
   }
 
   /**
-   * Connects to an existing session with the given session id at the end point with the given label.
+   * Connects to an existing session with the given session id at the end point
+   * with the given label.
    *
    * @param connectionLabel
    * @param sessionId
@@ -139,7 +150,8 @@ public class ClientSession
   }
 
   /**
-   * Connects to an existing session with the given session id at the end point with the given label.
+   * Connects to an existing session with the given session id at the end point
+   * with the given label.
    *
    * @param label
    * @param sessionId
@@ -199,7 +211,8 @@ public class ClientSession
   }
 
   /**
-   * Creates a session on the server located at the given label for the given user with the given password.
+   * Creates a session on the server located at the given label for the given
+   * user with the given password.
    *
    * @param label
    * @param userName
@@ -214,6 +227,7 @@ public class ClientSession
 
   /**
    * Returns a new clientRequest object for a request.
+   * 
    * @return new clientRequest object for a request.
    */
   public ClientRequestIF getRequest()
@@ -230,7 +244,7 @@ public class ClientSession
    */
   public ClientRequestIF changeLogin(String username, String password)
   {
-    ClientRequest clientRequest = (ClientRequest)this.getRequest();
+    ClientRequest clientRequest = (ClientRequest) this.getRequest();
     clientRequest.changeLogin(username, password);
     return clientRequest;
   }
@@ -241,7 +255,7 @@ public class ClientSession
    */
   public ClientRequestIF logout()
   {
-    ClientRequest clientRequest = (ClientRequest)this.getRequest();
+    ClientRequest clientRequest = (ClientRequest) this.getRequest();
     clientRequest.logout();
     return clientRequest;
   }
@@ -252,7 +266,9 @@ public class ClientSession
   }
 
   /**
-   * Returns the session id used by the clientRequest to connect to the back-end.
+   * Returns the session id used by the clientRequest to connect to the
+   * back-end.
+   * 
    * @return session id used by the clientRequest to connect to the back-end.
    */
   public synchronized String getSessionId()
@@ -262,6 +278,7 @@ public class ClientSession
 
   /**
    * Returns the <code>Locale</code> used by the clientRequest.
+   * 
    * @return <code>Locale</code> used by the clientRequest.
    */
   public synchronized Locale[] getLocales()
@@ -297,8 +314,11 @@ public class ClientSession
   }
 
   /**
-   * Returns true if the clientRequest is logged in as the anonymouse public user, false otherwise.
-   * @return true if the clientRequest is logged in as the anonymouse public user, false otherwise.
+   * Returns true if the clientRequest is logged in as the anonymouse public
+   * user, false otherwise.
+   * 
+   * @return true if the clientRequest is logged in as the anonymouse public
+   *         user, false otherwise.
    */
   protected synchronized boolean isPublicUser()
   {
@@ -312,6 +332,7 @@ public class ClientSession
 
   /**
    * Returns true if the clientRequest is loggedIn, false otherwise.
+   * 
    * @return true if the clientRequest is loggedIn, false otherwise.
    */
   protected synchronized boolean isLoggedIn()

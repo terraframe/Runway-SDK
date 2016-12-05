@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 1313699588)
+@com.runwaysdk.business.ClassSignature(hash = -676180407)
 public abstract class EnumerationMasterDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.EnumerationMaster";
-  private static final long serialVersionUID = 1313699588;
+  private static final long serialVersionUID = -676180407;
   
   protected EnumerationMasterDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -331,7 +331,7 @@ public abstract class EnumerationMasterDTOBase extends com.runwaysdk.business.Bu
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -339,7 +339,7 @@ public abstract class EnumerationMasterDTOBase extends com.runwaysdk.business.Bu
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

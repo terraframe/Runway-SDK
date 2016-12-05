@@ -315,12 +315,12 @@ public abstract class ElementDTO extends EntityDTO
     return (com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO) getAttributeDTO("lastUpdateDate").getAttributeMdDTO();
   }
 
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
-    return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+    return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
   }
 
-  public void setLockedBy(com.runwaysdk.system.UsersDTO value)
+  public void setLockedBy(com.runwaysdk.system.SingleActorDTO value)
   {
     if(value == null)
     {

@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.transaction;
 
-@com.runwaysdk.business.ClassSignature(hash = 746862266)
+@com.runwaysdk.business.ClassSignature(hash = -643218689)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system.transaction;
  */
 public class ImportLogQueryDTO extends com.runwaysdk.business.BusinessQueryDTO
 {
-private static final long serialVersionUID = 746862266;
+private static final long serialVersionUID = -643218689;
 
   protected ImportLogQueryDTO(String type)
   {

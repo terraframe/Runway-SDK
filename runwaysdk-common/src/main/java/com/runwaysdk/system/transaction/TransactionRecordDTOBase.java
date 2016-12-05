@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.transaction;
 
-@com.runwaysdk.business.ClassSignature(hash = 358352385)
+@com.runwaysdk.business.ClassSignature(hash = 1932137052)
 public abstract class TransactionRecordDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.transaction.TransactionRecord";
-  private static final long serialVersionUID = 358352385;
+  private static final long serialVersionUID = 1932137052;
   
   protected TransactionRecordDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -293,7 +293,7 @@ public abstract class TransactionRecordDTOBase extends com.runwaysdk.business.Bu
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -301,7 +301,7 @@ public abstract class TransactionRecordDTOBase extends com.runwaysdk.business.Bu
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

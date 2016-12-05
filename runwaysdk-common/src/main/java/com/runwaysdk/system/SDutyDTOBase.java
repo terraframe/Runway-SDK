@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -312240616)
+@com.runwaysdk.business.ClassSignature(hash = -191605411)
 public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.SDuty";
-  private static final long serialVersionUID = -312240616;
+  private static final long serialVersionUID = -191605411;
   
   protected SDutyDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -269,7 +269,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -277,7 +277,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

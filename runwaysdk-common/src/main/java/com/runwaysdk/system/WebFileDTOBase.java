@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 384045459)
+@com.runwaysdk.business.ClassSignature(hash = 1049340014)
 public abstract class WebFileDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.WebFile";
-  private static final long serialVersionUID = 384045459;
+  private static final long serialVersionUID = 1049340014;
   
   protected WebFileDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -381,7 +381,7 @@ public abstract class WebFileDTOBase extends com.runwaysdk.business.BusinessDTO
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -389,7 +389,7 @@ public abstract class WebFileDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.business;
 
-@com.runwaysdk.business.ClassSignature(hash = -1785329487)
+@com.runwaysdk.business.ClassSignature(hash = 1462838070)
 public abstract class ElementSystemDTOBase extends com.runwaysdk.business.EntitySystemDTO
 {
   public final static String CLASS = "com.runwaysdk.business.Element";
-  private static final long serialVersionUID = -1785329487;
+  private static final long serialVersionUID = 1462838070;
   
   protected ElementSystemDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -275,7 +275,7 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -283,7 +283,7 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   
@@ -292,7 +292,7 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     return getValue(LOCKEDBY);
   }
   
-  public void setLockedBy(com.runwaysdk.system.UsersDTO value)
+  public void setLockedBy(com.runwaysdk.system.SingleActorDTO value)
   {
     if(value == null)
     {

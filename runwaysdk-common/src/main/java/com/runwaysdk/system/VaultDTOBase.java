@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1603261965)
+@com.runwaysdk.business.ClassSignature(hash = -1395814898)
 public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.Vault";
-  private static final long serialVersionUID = -1603261965;
+  private static final long serialVersionUID = -1395814898;
   
   protected VaultDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -306,7 +306,7 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -314,7 +314,7 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

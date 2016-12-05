@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.metadata.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -1085474723)
+@com.runwaysdk.business.ClassSignature(hash = 2054704610)
 public abstract class OntologyStrategyDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.ontology.OntologyStrategy";
-  private static final long serialVersionUID = -1085474723;
+  private static final long serialVersionUID = 2054704610;
   
   protected OntologyStrategyDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -268,7 +268,7 @@ public abstract class OntologyStrategyDTOBase extends com.runwaysdk.business.Bus
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -276,7 +276,7 @@ public abstract class OntologyStrategyDTOBase extends com.runwaysdk.business.Bus
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

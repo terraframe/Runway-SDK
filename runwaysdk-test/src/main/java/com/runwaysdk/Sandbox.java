@@ -24,8 +24,11 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import com.runwaysdk.business.generation.GenerationManager;
 import com.runwaysdk.constants.Constants;
+import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.JobOperationInfo;
@@ -38,25 +41,32 @@ import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
+import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MdWebAttributeInfo;
+import com.runwaysdk.constants.SingleActorInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.query.BusinessDAOQuery;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.Vault;
 import com.runwaysdk.system.metadata.MdAttributeBoolean;
@@ -76,41 +86,82 @@ public class Sandbox implements Job
 {
   public static void main(String[] args) throws Exception
   {
-//    Sandbox.importWithDiff();
-    changeMdViewCacheType();
+    // Sandbox.importWithDiff();
+    changeLockedByReference();
+  }
+
+  @Request
+  public static void changeLockedByReference()
+  {
+    Sandbox.changeLockedByReference_InTransaction();
+  }
+
+  @Transaction
+  public static void changeLockedByReference_InTransaction()
+  {
+    MdBusinessDAOIF mdSingleActor = MdBusinessDAO.getMdBusinessDAO(SingleActorInfo.CLASS);
+
+    QueryFactory factory = new QueryFactory();
+    BusinessDAOQuery query = factory.businessDAOQuery(MdAttributeReferenceInfo.CLASS);
+    query.WHERE(query.aCharacter(MdAttributeConcreteInfo.NAME).EQ(MdElementInfo.LOCKED_BY));
+    query.AND(query.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(mdSingleActor));
+
+    OIterator<BusinessDAOIF> iterator = query.getIterator();
+
+    while (iterator.hasNext())
+    {
+      MdAttributeConcreteDAO lockedBy = (MdAttributeConcreteDAO) iterator.next().getBusinessDAO();
+//      lockedBy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdSingleActor.getId());
+//      lockedBy.apply();
+      
+      MdClassDAOIF mdClass = lockedBy.definedByClass();
+      
+      System.out.println(mdClass.getKey());
+      
+      GenerationManager.generate(mdClass);
+    }
+
+    // MdBusinessDAOIF mdBusinessDAO =
+    // MdBusinessDAO.getMdBusinessDAO(ElementInfo.CLASS);
+    // MdAttributeConcreteDAO lockedBy = (MdAttributeConcreteDAO)
+    // mdBusinessDAO.definesAttribute(MdElementInfo.LOCKED_BY).getBusinessDAO();
+    // lockedBy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,
+    // mdSingleActor.getId());
+    // lockedBy.apply();
   }
 
   @Request
   public static void changeMdViewCacheType()
   {
     MdBusinessDAO mdBusinessDAO = MdBusinessDAO.getMdBusinessDAO(MdViewInfo.CLASS).getBusinessDAO();
-    
+
     List<MdBusinessDAOIF> superCasses = mdBusinessDAO.getSuperClasses();
-    
+
     for (MdBusinessDAOIF mdBusinessDAOIF : superCasses)
     {
       BusinessDAOIF cacheEnumItem = mdBusinessDAOIF.getCacheAlgorithm();
-      
+
       int cacheCode = new Integer(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
-      System.out.println(mdBusinessDAOIF.definesType()+" "+cacheCode);
+      System.out.println(mdBusinessDAOIF.definesType() + " " + cacheCode);
     }
-    
-//    QueryFactory qf = new QueryFactory();
-//    BusinessDAOQuery q = qf.businessDAOQuery(MdElementInfo.CLASS);
-//    
-//    OIterator<BusinessDAOIF> i = q.getIterator();
-//    
-//    for (BusinessDAOIF businessDAOIF : i)
-//    {
-//      MdElementDAOIF mdElementDAOIF = (MdElementDAOIF)businessDAOIF;
-//      BusinessDAOIF cacheEnumItem = mdElementDAOIF.getCacheAlgorithm();
-//      
-//      int cacheCode = new Integer(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
-//      System.out.println(mdElementDAOIF.definesType()+" "+cacheCode);
-//    }
-    
+
+    // QueryFactory qf = new QueryFactory();
+    // BusinessDAOQuery q = qf.businessDAOQuery(MdElementInfo.CLASS);
+    //
+    // OIterator<BusinessDAOIF> i = q.getIterator();
+    //
+    // for (BusinessDAOIF businessDAOIF : i)
+    // {
+    // MdElementDAOIF mdElementDAOIF = (MdElementDAOIF)businessDAOIF;
+    // BusinessDAOIF cacheEnumItem = mdElementDAOIF.getCacheAlgorithm();
+    //
+    // int cacheCode = new
+    // Integer(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
+    // System.out.println(mdElementDAOIF.definesType()+" "+cacheCode);
+    // }
+
   }
-  
+
   @Request
   public static void importWithDiff()
   {
@@ -122,8 +173,9 @@ public class Sandbox implements Job
 
   private static void deleteMdFacade()
   {
-//    MdBusinessDAO mdFacade = MdBusinessDAO.getMdBusinessDAO(MdFacadeInfo.CLASS).getBusinessDAO();
-//    mdFacade.delete();
+    // MdBusinessDAO mdFacade =
+    // MdBusinessDAO.getMdBusinessDAO(MdFacadeInfo.CLASS).getBusinessDAO();
+    // mdFacade.delete();
   }
 
   private static int count = 0;

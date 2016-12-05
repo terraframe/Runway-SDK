@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1195285424)
+@com.runwaysdk.business.ClassSignature(hash = -1776204715)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -42,7 +42,7 @@ public abstract class DownstreamJobRelationshipBase extends com.runwaysdk.busine
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TRIGGERONFAILURE = "triggerOnFailure";
   public static java.lang.String TYPE = "type";
-  private static final long serialVersionUID = -1195285424;
+  private static final long serialVersionUID = -1776204715;
   
   public DownstreamJobRelationshipBase(String parentId, String childId)
   {
@@ -221,7 +221,7 @@ public abstract class DownstreamJobRelationshipBase extends com.runwaysdk.busine
     return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LASTUPDATEDBY);
   }
   
-  public com.runwaysdk.system.Users getLockedBy()
+  public com.runwaysdk.system.SingleActor getLockedBy()
   {
     if (getValue(LOCKEDBY).trim().equals(""))
     {
@@ -229,7 +229,7 @@ public abstract class DownstreamJobRelationshipBase extends com.runwaysdk.busine
     }
     else
     {
-      return com.runwaysdk.system.Users.get(getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActor.get(getValue(LOCKEDBY));
     }
   }
   

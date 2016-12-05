@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1342958783)
+@com.runwaysdk.business.ClassSignature(hash = -117222842)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system;
  */
 public class AssignmentsQueryDTO extends com.runwaysdk.business.RelationshipQueryDTO
 {
-private static final long serialVersionUID = -1342958783;
+private static final long serialVersionUID = -117222842;
 
   protected AssignmentsQueryDTO(String type)
   {

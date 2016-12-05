@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = 377714726)
+@com.runwaysdk.business.ClassSignature(hash = -782757141)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system.metadata.ontology;
  */
 public class OntologyStrategyQueryDTO extends com.runwaysdk.business.BusinessQueryDTO
 {
-private static final long serialVersionUID = 377714726;
+private static final long serialVersionUID = -782757141;
 
   protected OntologyStrategyQueryDTO(String type)
   {
