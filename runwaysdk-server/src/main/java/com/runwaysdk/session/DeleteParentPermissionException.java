@@ -21,7 +21,7 @@ package com.runwaysdk.session;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 
 public class DeleteParentPermissionException extends RelationshipPermissionException
@@ -49,7 +49,7 @@ public class DeleteParentPermissionException extends RelationshipPermissionExcep
    *          The user attempting the operation
    */
   public DeleteParentPermissionException(String devMessage, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
   {
     super(devMessage, Operation.DELETE_PARENT, parentBusiness, childBusiness, mdRelationshipIF, user);
   }
@@ -81,7 +81,7 @@ public class DeleteParentPermissionException extends RelationshipPermissionExcep
    *          The user attempting the operation
    */
   public DeleteParentPermissionException(String devMessage, Throwable cause, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, Operation.DELETE_PARENT, parentBusiness, childBusiness, mdRelationshipIF, user);
   }
@@ -106,7 +106,7 @@ public class DeleteParentPermissionException extends RelationshipPermissionExcep
    *          The user attempting the operation
    */
   public DeleteParentPermissionException(Throwable cause, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
   {
     super(cause, Operation.DELETE_PARENT, parentBusiness, childBusiness, mdRelationshipIF, user);
   }

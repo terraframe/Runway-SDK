@@ -21,6 +21,7 @@ package com.runwaysdk.session;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -52,7 +53,7 @@ public class AttributeWritePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public AttributeWritePermissionException(String devMessage, ComponentIF componentIF, MdAttributeDAOIF mdAttribute, UserDAOIF user)
+  public AttributeWritePermissionException(String devMessage, ComponentIF componentIF, MdAttributeDAOIF mdAttribute, SingleActorDAOIF user)
   {
     super(devMessage, componentIF, Operation.WRITE, user);
     this.mdAttribute = mdAttribute;
@@ -82,7 +83,7 @@ public class AttributeWritePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public AttributeWritePermissionException(String devMessage, Throwable cause, ComponentIF componentIF, MdAttributeConcreteDAOIF mdAttribute, UserDAOIF user)
+  public AttributeWritePermissionException(String devMessage, Throwable cause, ComponentIF componentIF, MdAttributeConcreteDAOIF mdAttribute, SingleActorDAOIF user)
   {
     super(devMessage, cause, componentIF, Operation.WRITE, user);
     this.mdAttribute = mdAttribute;
@@ -105,7 +106,7 @@ public class AttributeWritePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public AttributeWritePermissionException(Throwable cause, ComponentIF componentIF, MdAttributeConcreteDAOIF mdAttribute, UserDAOIF user)
+  public AttributeWritePermissionException(Throwable cause, ComponentIF componentIF, MdAttributeConcreteDAOIF mdAttribute, SingleActorDAOIF user)
   {
     super(cause, componentIF, Operation.WRITE, user);
     this.mdAttribute = mdAttribute;

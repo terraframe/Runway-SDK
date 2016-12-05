@@ -30,8 +30,8 @@ import com.runwaysdk.business.Element;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.Struct;
-import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.Operation;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.ElementInfo;
@@ -116,7 +116,7 @@ public abstract class PermissionEntity implements Serializable
    *
    * @return
    */
-  public abstract ActorDAOIF getUser();
+  public abstract SingleActorDAOIF getUser(); 
 
   /**
    * @return The current dimension of the permission entity

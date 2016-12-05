@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import com.runwaysdk.business.rbac.SingleActorDAO;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -37,20 +39,20 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 public abstract class ManagedUserSessionCache extends SessionCache
 {
   /**
-   * A mapping between a {@link UserDAO} and the total number of {@link Session}s
-   * the {@link UserDAO} is currently logged in to.
+   * A mapping between a {@link SingleActorDAO} and the total number of {@link Session}s
+   * the {@link SingleActorDAO} is currently logged in to.
    */
   private Map<String, Integer> userSessions;
 
   /**
-   * Limit on the number of unique {@link UserDAO}s who can be logged into this
+   * Limit on the number of unique {@link SingleActorDAO}s who can be logged into this
    * {@link SessionCache} at a given time.
    */
   private int usersLimit;
 
   /**
    * Constructs a new {@link ManagedUserSessionCache}. Upon construction the
-   * mapping between {@link UserDAO} and {@link Session} count is empty.  Additionally,
+   * mapping between {@link SingleActorDAO} and {@link Session} count is empty.  Additionally,
    * the userLimit is set to 10,000.
    */
   public ManagedUserSessionCache()
@@ -60,10 +62,10 @@ public abstract class ManagedUserSessionCache extends SessionCache
 
   /**
    * Constructs a new {@link ManagedUserSessionCache}. Upon construction the
-   * mapping between {@link UserDAO} and {@link Session} count is empty.  Additionally,
+   * mapping between {@link SingleActorDAO} and {@link Session} count is empty.  Additionally,
    * the userLimit is set to given value.
    *
-   * @param userLimit Limit on the number of unique {@link UserDAO}s who can be logged into
+   * @param userLimit Limit on the number of unique {@link SingleActorDAO}s who can be logged into
    *                  this {@link SessionCache} at any given time.
    */
   public ManagedUserSessionCache(int usersLimit)
@@ -84,6 +86,22 @@ public abstract class ManagedUserSessionCache extends SessionCache
   {
     Session session = logInCommon(username, password, locales);
     session.setDimension(dimensionKey);
+    return session.getId();
+  }
+  
+  @Override
+  protected String logIn(SingleActorDAOIF user, Locale[] locales)
+  {
+    Session session = this.logInCommon(user, locales);
+    return session.getId();
+  }
+  
+  @Override
+  protected String logIn(SingleActorDAOIF user, String dimensionKey, Locale[] locales)
+  {
+    Session session = this.logInCommon(user, locales);
+    session.setDimension(dimensionKey);
+    
     return session.getId();
   }
 
@@ -117,6 +135,36 @@ public abstract class ManagedUserSessionCache extends SessionCache
     return session;
   }
 
+  private Session logInCommon(SingleActorDAOIF user, Locale[] locales)
+  {
+    Session session = new Session(locales);
+    
+    //Update the session on the cache with the user logged in
+    this.addSession(session);
+    
+    try
+    {
+      //Log the user into the session
+      this.changeLogIn(user, session);
+    }
+    catch (InvalidLoginException e)
+    {
+      this.closeSession(session.getId());
+      throw e;
+    }
+    catch (InactiveUserException e)
+    {
+      this.closeSession(session.getId());
+      throw e;
+    }
+    catch (MaximumSessionsException e)
+    {
+      this.closeSession(session.getId());
+      throw e;
+    }
+    return session;
+  }
+  
   /**
    * Logs a {@link UserDAO} into an existing {@link Session} of this {@link SessionCache}.
    * Additionally, the permissions of the {@link UserDAO} are loaded into the {@link Session}.
@@ -167,7 +215,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
       int sessionLimit = user.getSessionLimit();
       int currentAmount = getUserSessionCount(userId);
       UserDAOIF publicUser = UserDAO.getPublicUser();
-      UserDAOIF userOld = session.getUser();
+      SingleActorDAOIF userOld = session.getUser();
 
       if(!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
       {
@@ -202,6 +250,73 @@ public abstract class ManagedUserSessionCache extends SessionCache
     }
   }
 
+  /**
+   * Logs a {@link UserDAO} into an existing {@link Session} of this {@link SessionCache}.
+   * Additionally, the permissions of the {@link UserDAO} are loaded into the {@link Session}.
+   * During log in the session count for the previous {@link UserDAO} of the {@link Session} is
+   * decremented and the session count for the new {@link UserDAO} of the {@link Session} is
+   * incremented.
+   *
+   * @param username The name of the user
+   * @param password The password of the user
+   * @param session The {@link Session} to log into.
+   *
+   * @return The id of the {@link Session} which was logged into.
+   */
+  protected void changeLogIn(SingleActorDAOIF user, Session session)
+  {
+    sessionCacheLock.lock();
+    
+    try
+    {                  
+      String userId = user.getId();
+      
+      int sessionLimit = user.getSessionLimit();
+      int currentAmount = getUserSessionCount(userId);
+      UserDAOIF publicUser = UserDAO.getPublicUser();
+      SingleActorDAOIF userOld = session.getUser();
+      
+      if(!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
+      {
+        String msg = "Too many users are currently logged into the system.";
+        throw new ProgrammingErrorException(msg);
+      }
+      
+      // If the session already has a user, we need to decrement the session
+      // count.
+      if (!user.isLoginSupported())
+      {
+        String devMessage = "The class [" + user.getType() + "] does not support logging in";
+        throw new LoginNotSupportedException(devMessage, user);
+      }
+      
+      // If the session already has a user, we need to decrement the session
+      // count.
+      if (!user.equals(publicUser) && sessionLimit != -1 && currentAmount >= sessionLimit)
+      {
+        String devMessage = "The user [" + user.getSingleActorName() + "] already has the maximum number sessions opened";
+        throw new MaximumSessionsException(devMessage, user);
+      }
+      
+      if (userOld != null && !userOld.equals(publicUser))
+      {
+        this.decrementUserLoginCount(userOld);
+      }
+      
+      //Increment the users session count
+      if(!user.equals(publicUser))
+      {
+        userSessions.put(user.getId(), new Integer(currentAmount + 1));
+      }
+      
+      session.setUser(user);
+    }
+    finally
+    {
+      sessionCacheLock.unlock();
+    }
+  }
+  
   @Override
   protected void clearSessions()
   {
@@ -221,7 +336,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
    *
    * @param user The {@link UserDAOIF} in which to decrement the session count.
    */
-  private void decrementUserLoginCount(UserDAOIF user)
+  private void decrementUserLoginCount(SingleActorDAOIF user)
   {
     sessionCacheLock.lock();
     try
@@ -257,7 +372,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
   {
     // Remove one from the total amount of sessions allocated
     // to a user if the user is not anonymous
-    UserDAOIF user = session.getUser();
+    SingleActorDAOIF user = session.getUser();
     UserDAOIF publicUser = UserDAO.getPublicUser();
 
     if (!user.getId().equals(publicUser.getId()))
@@ -305,7 +420,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
     try
     {
       UserDAOIF publicUser = UserDAO.getPublicUser();
-      UserDAOIF user = session.getUser();
+      SingleActorDAOIF user = session.getUser();
 
       if (!user.equals(publicUser))
       {
@@ -340,7 +455,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
       int currentAmount = getUserSessionCount(userId);
       UserDAOIF publicUser = UserDAO.getPublicUser();
       Session session = this.getSession(sessionId);
-      UserDAOIF userOld = session.getUser();
+      SingleActorDAOIF userOld = session.getUser();
 
       if(!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
       {

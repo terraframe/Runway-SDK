@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -23,16 +23,16 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.system.metadata.MdDimension;
 
 /**
- * An abstract {@link SessionCache} which uses the composite pattern.
- * This cache is the composition of two different session caches.
- * Concrete implementations of this class must provide logic to
- * determine when to use each session cache. 
+ * An abstract {@link SessionCache} which uses the composite pattern. This cache
+ * is the composition of two different session caches. Concrete implementations
+ * of this class must provide logic to determine when to use each session cache.
  * 
  * @author Justin Smethie
  */
@@ -49,10 +49,12 @@ public abstract class CompositeSessionCache extends SessionCache
   protected SessionCache secondCache;
 
   /**
-   * Constructs a new {@link CompositeSessionCache}. 
+   * Constructs a new {@link CompositeSessionCache}.
    * 
-   * @param firstCache A {@link SessionCache} to use in the composition.
-   * @param secondCache A {@link SessionCache} to use in the composition.
+   * @param firstCache
+   *          A {@link SessionCache} to use in the composition.
+   * @param secondCache
+   *          A {@link SessionCache} to use in the composition.
    * 
    * @pre firstCache != null
    * @pre secondCache != null
@@ -82,17 +84,35 @@ public abstract class CompositeSessionCache extends SessionCache
   protected String logIn(String username, String password, Locale[] locales)
   {
     Session session = logInCommon(username, password, locales);
-    
+
     return session.getId();
   }
-  
+
   @Override
   protected String logIn(String username, String password, String dimensionKey, Locale[] locales)
   {
     Session session = logInCommon(username, password, locales);
-    
+
     session.setDimension(dimensionKey);
-    
+
+    return session.getId();
+  }
+  
+  @Override
+  protected String logIn(SingleActorDAOIF user, Locale[] locales)
+  {
+    Session session = logInCommon(user, locales);
+
+    return session.getId();
+  }
+  
+  @Override
+  protected String logIn(SingleActorDAOIF user, String dimensionKey, Locale[] locales)
+  {
+    Session session = logInCommon(user, locales);
+
+    session.setDimension(dimensionKey);
+
     return session.getId();
   }
 
@@ -124,6 +144,34 @@ public abstract class CompositeSessionCache extends SessionCache
     return session;
   }
 
+  private Session logInCommon(SingleActorDAOIF user, Locale[] locales)
+  {
+    Session session = new Session(locales);
+    
+    try
+    {
+      this.addSession(session);
+      
+      this.changeLogin(user, session.getId());
+    }
+    catch (InvalidLoginException e)
+    {
+      this.closeSession(session.getId());
+      throw e;
+    }
+    catch (InactiveUserException e)
+    {
+      this.closeSession(session.getId());
+      throw e;
+    }
+    catch (MaximumSessionsException e)
+    {
+      this.closeSession(session.getId());
+      throw e;
+    }
+    return session;
+  }
+  
   @Override
   protected void changeLogin(String username, String password, String sessionId)
   {
@@ -169,8 +217,25 @@ public abstract class CompositeSessionCache extends SessionCache
         String devMessage = "The user [" + username + "] already has the maximum number sessions opened [" + sessionLimit + "].";
         throw new MaximumSessionsException(devMessage, user);
       }
-      
+
       cache.changeLogin(username, password, sessionId);
+    }
+    finally
+    {
+      sessionCacheLock.unlock();
+    }
+  }
+
+  @Override
+  protected void changeLogin(SingleActorDAOIF user, String sessionId)
+  {
+    sessionCacheLock.lock();
+
+    try
+    {
+      SessionCache cache = this.getCache(sessionId);
+
+      cache.changeLogin(user, sessionId);
     }
     finally
     {
@@ -180,8 +245,11 @@ public abstract class CompositeSessionCache extends SessionCache
 
   /**
    * Sets the dimension of an existing {@link Session}.
-   * @param sessionId The id of the {@link Session}.
-   * @param dimensionKey key of a {@link MdDimension}.
+   * 
+   * @param sessionId
+   *          The id of the {@link Session}.
+   * @param dimensionKey
+   *          key of a {@link MdDimension}.
    */
   @Override
   protected void setDimension(String sessionId, String dimensionKey)
@@ -236,7 +304,7 @@ public abstract class CompositeSessionCache extends SessionCache
 
     return session;
   }
-  
+
   @Override
   int getUserSessionCount(String userId)
   {
@@ -270,7 +338,8 @@ public abstract class CompositeSessionCache extends SessionCache
       int currentAmount = this.getUserSessionCount(userId);
       UserDAOIF publicUser = UserDAO.getPublicUser();
 
-      // If the session already has a user, we need to decrement the session count.
+      // If the session already has a user, we need to decrement the session
+      // count.
       if (!user.equals(publicUser) && currentAmount >= sessionLimit)
       {
         String devMessage = "The user [" + user.getUsername() + "] already has the maximum number sessions opened";
@@ -284,7 +353,7 @@ public abstract class CompositeSessionCache extends SessionCache
       sessionCacheLock.unlock();
     }
   }
-  
+
   /**
    * @see com.runwaysdk.session.SessionCache#getIterator()
    */
@@ -292,20 +361,23 @@ public abstract class CompositeSessionCache extends SessionCache
   {
     return new CompositeSessionIterator();
   }
+
   private class CompositeSessionIterator implements SessionIterator
   {
     SessionIterator currentIt;
+
     SessionIterator firstIt;
+
     SessionIterator secondIt;
-    
-    SessionIF next;
-    
+
+    SessionIF       next;
+
     private CompositeSessionIterator()
     {
       firstIt = firstCache.getIterator();
       secondIt = secondCache.getIterator();
       currentIt = firstIt;
-      
+
       privateNext(true);
     }
 
@@ -317,13 +389,16 @@ public abstract class CompositeSessionCache extends SessionCache
     {
       return privateNext(false);
     }
-    
+
     private SessionIF privateNext(boolean isConstructor)
     {
-      if (next == null && !isConstructor) { throw new NoSuchElementException(); }
-      
+      if (next == null && !isConstructor)
+      {
+        throw new NoSuchElementException();
+      }
+
       SessionIF current = next;
-      
+
       if (firstIt.hasNext())
       {
         next = firstIt.next();
@@ -331,14 +406,15 @@ public abstract class CompositeSessionCache extends SessionCache
       else
       {
         currentIt = secondIt;
-        
+
         while (true)
         {
           if (currentIt.hasNext())
           {
             next = currentIt.next();
-            
-            // Skip the session if its in the first cache since we've already returned it.
+
+            // Skip the session if its in the first cache since we've already
+            // returned it.
             if (firstCache.containsSession(next.getId()))
             {
               continue;
@@ -355,7 +431,7 @@ public abstract class CompositeSessionCache extends SessionCache
           }
         }
       }
-      
+
       return current;
     }
 
@@ -394,23 +470,24 @@ public abstract class CompositeSessionCache extends SessionCache
     public Collection<SessionIF> getAll()
     {
       ArrayList<SessionIF> all = new ArrayList<SessionIF>();
-      
+
       all.addAll(firstIt.getAll());
       all.addAll(secondIt.getAll());
-      
+
       return all;
     }
   }
-  
+
   /**
-   * Returns the {@link SessionCache} which contains the {@link Session}
-   * with the corresponding id.  This method also provides the
-   * logic to determine which {@link SessionCache} to use for a given 
-   * {@link Session}.
+   * Returns the {@link SessionCache} which contains the {@link Session} with
+   * the corresponding id. This method also provides the logic to determine
+   * which {@link SessionCache} to use for a given {@link Session}.
    * 
-   * @param sessionId The session id 
+   * @param sessionId
+   *          The session id
    * 
-   * @return The {@link SessionCache} which contains the {@link Session} with the given id.
+   * @return The {@link SessionCache} which contains the {@link Session} with
+   *         the given id.
    */
   protected abstract SessionCache getCache(String sessionId);
 }

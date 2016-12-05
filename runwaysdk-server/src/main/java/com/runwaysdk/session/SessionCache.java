@@ -23,6 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.google.inject.ImplementedBy;
 import com.runwaysdk.business.Mutable;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.system.metadata.MdDimension;
@@ -69,6 +70,32 @@ public abstract class SessionCache
   protected abstract String logIn(String username, String password, String dimensionKey, Locale[] locales);
 
   /**
+   * Logs a {@link SingleActorDAOIF} into a new {@link Session} and loads the permissions of
+   * the {@link SingleActorDAOIF}. In addition, this method ensures that the {@link SingleActorDAOIF}
+   * is not at it's {@link Session} limit.
+   * 
+   * @param username Reference to the {@link SingleActorDAOIF} which is being logged in
+   * @param locales locale of the user.
+   * 
+   * @param id of the newly created {@link Session}.
+   */
+  protected abstract String logIn(SingleActorDAOIF user, Locale[] locales);
+  
+  /**
+   * Logs a {@link UserDAO} into a new {@link Session} and loads the permissions of
+   * the {@link UserDAO} and sets the dimesion for the session. In addition, this method ensures that the {@link UserDAO}
+   * is not at it's {@link Session} limit.
+   * 
+   * @param username The name of the {@link UserDAO}
+   * @param password The password of the {@link UserDAO}
+   * @param dimensionKey The dimension key of the dimension set to this session.
+   * @param locales locale of the user.
+   * 
+   * @param id of the newly created {@link Session}.
+   */
+  protected abstract String logIn(SingleActorDAOIF user, String dimensionKey, Locale[] locales);
+  
+  /**
    * Changes the {@link UserDAO} of an existing {@link Session} and loads the
    * permissions of the new {@link UserDAO}. In addition, this method ensures that
    * the {@link UserDAO} is not at it's {@link Session} limit. Furthermore, it
@@ -79,6 +106,18 @@ public abstract class SessionCache
    * @param sessionId The id of the {@link Session}
    */
   protected abstract void changeLogin(String username, String password, String sessionId);
+  
+  /**
+   * Changes the {@link UserDAO} of an existing {@link Session} and loads the
+   * permissions of the new {@link UserDAO}. In addition, this method ensures that
+   * the {@link UserDAO} is not at it's {@link Session} limit. Furthermore, it
+   * decrements the session count of the previous user.
+   * 
+   * @param username The name of the {@link UserDAO}
+   * @param password The password of the {@link UserDAO}
+   * @param sessionId The id of the {@link Session}
+   */
+  protected abstract void changeLogin(SingleActorDAOIF user, String sessionId);
 
   /**
    * Sets the dimension of an existing {@link Session}.

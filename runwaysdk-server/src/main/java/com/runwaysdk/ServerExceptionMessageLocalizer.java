@@ -31,6 +31,7 @@ import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.UnimplementedStubException;
 import com.runwaysdk.business.generation.CompilerException;
 import com.runwaysdk.business.rbac.Operation;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.business.state.DefaultStateExistsException;
 import com.runwaysdk.business.state.DuplicateStateDefinitionException;
@@ -112,6 +113,7 @@ import com.runwaysdk.session.GroovyQueryExecuteException;
 import com.runwaysdk.session.InactiveUserException;
 import com.runwaysdk.session.InvalidLoginException;
 import com.runwaysdk.session.InvalidSessionException;
+import com.runwaysdk.session.LoginNotSupportedException;
 import com.runwaysdk.session.MaximumSessionsException;
 import com.runwaysdk.session.PermissionException;
 import com.runwaysdk.session.RoleManagementException_ADD;
@@ -192,9 +194,9 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    * @param user
    * @return
    */
-  public static String adminScreenAccessException(Locale locale, UserDAOIF user)
+  public static String adminScreenAccessException(Locale locale, SingleActorDAOIF user)
   {
-    return getMessage(locale, "AdminScreenAccessException", user.getUsername());
+    return getMessage(locale, "AdminScreenAccessException", user.getSingleActorName());
   }
 
   /**
@@ -1773,7 +1775,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    *          The user attempting the operation
    * @return The localized error message
    */
-  public static String attributeWritePermissionException(Locale locale, ComponentIF componentIF, MdAttributeDAOIF mdAttribute, UserDAOIF user)
+  public static String attributeWritePermissionException(Locale locale, ComponentIF componentIF, MdAttributeDAOIF mdAttribute, SingleActorDAOIF user)
   {
     return getMessage(locale, "AttributeWritePermissionException", componentIF.toString(), mdAttribute.definesAttribute(), user.getSingleActorName());
   }
@@ -2151,7 +2153,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    *          The localized error message
    * @return
    */
-  public static String maximumSessionsException(Locale locale, UserDAOIF user)
+  public static String maximumSessionsException(Locale locale, SingleActorDAOIF user)
   {
     return getMessage(locale, "MaximumSessionsException", user.getSingleActorName());
   }
@@ -2638,7 +2640,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    * 
    * @return
    */
-  public static String noLocaleException(Locale locale, UserDAOIF user)
+  public static String noLocaleException(Locale locale, SingleActorDAOIF user)
   {
     return getMessage(locale, "NoLocaleException", user.getSingleActorName());
   }
@@ -2777,6 +2779,21 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   public static String expressionException(Locale locale, MdAttributeDAOIF mdAttributeDAOIF, String expressionExceptionMessage)
   {
     return getMessage(locale, "ExpressionException", mdAttributeDAOIF.getDisplayLabel(locale), expressionExceptionMessage);
+  }
+
+  /**
+   * Gets the localized {@link LoginNotSupportedException} message, which is
+   * thrown when a user tries to login in with an invalid class
+   * 
+   * @param locale
+   *          the desired locale
+   * @param mdBusinessIF
+   *          The localized error message
+   * @return
+   */
+  public static String loginNotSupportedException(Locale locale, SingleActorDAOIF user)
+  {
+    return getMessage(locale, "LoginNotSupportedException", user.getType());
   }
   
 }

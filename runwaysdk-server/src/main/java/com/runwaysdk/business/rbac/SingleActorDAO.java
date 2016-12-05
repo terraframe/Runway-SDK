@@ -23,14 +23,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.RelationshipTypes;
+import com.runwaysdk.constants.UserInfo;
+import com.runwaysdk.dataaccess.AttributeEnumerationIF;
+import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.session.PermissionMap;
 import com.runwaysdk.session.SingleActorPermissionBuilder;
 
-public abstract class SingleActorDAO extends ActorDAO implements SingleActorDAOIF
+public class SingleActorDAO extends ActorDAO implements SingleActorDAOIF
 {
   /**
    * 
@@ -46,11 +51,6 @@ public abstract class SingleActorDAO extends ActorDAO implements SingleActorDAOI
   {
     super(attributeMap, type);
   }
-  
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.rbac.SingleActorIF#getSingleActorName()
-   */
-  public abstract String getSingleActorName();
   
   @Override
   public String apply()
@@ -184,5 +184,41 @@ public abstract class SingleActorDAO extends ActorDAO implements SingleActorDAOI
     Set<RoleDAOIF> roles = this.authorizedRoles();
 
     return roles.contains(admin);
+  }
+  
+  
+  /* (non-Javadoc)
+   * @see com.runwaysdk.business.rbac.SingleActorIF#getSingleActorName()
+   */
+  public String getSingleActorName()
+  {
+    return this.getKey();
+  }
+  
+  @Override
+  public boolean isLoginSupported()
+  {
+    return true;
+  }
+  
+  @Override
+  public int getSessionLimit()
+  {
+    if(this.hasAttribute(UserInfo.SESSION_LIMIT))
+    {
+      return Integer.parseInt(super.getValue(UserInfo.SESSION_LIMIT));
+    }
+    
+    return -1;
+  }
+  
+  /**
+   * Returns the locale of the user
+   *
+   * @return the String name of of the locale
+   */
+  public String getLocale()
+  {
+    return CommonProperties.getDefaultLocaleString();
   }
 }

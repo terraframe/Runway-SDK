@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -34,6 +34,7 @@ import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.business.state.StateMasterDAOIF;
@@ -89,7 +90,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   /**
    * A reference to the user of the session
    */
-  private UserDAOIF              user;
+  private SingleActorDAOIF       user;
 
   /**
    * Locale used by the session.
@@ -249,7 +250,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     }
   }
 
-/**
+/**SingleActorDAOIF
    * returns the first {@link MdMethodDAOIF encountered in the request (if any).
    *
    * @return the first {@link MdMethodDAOIF encountered in the request (if any).
@@ -288,7 +289,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   }
 
   @Override
-  public UserDAOIF getUser()
+  public SingleActorDAOIF getUser()
   {
     this.permissionLock.lock();
     try
@@ -1348,7 +1349,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    * @param user
    *          The user assign the session to
    */
-  protected void setUser(UserDAOIF user)
+  protected void setUser(SingleActorDAOIF user)
   {
     this.permissionLock.lock();
 
@@ -1363,13 +1364,13 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       // was set.
       if (this.locale == null)
       {
-        if (this.user.getId().equals(UserDAOIF.PUBLIC_USER_ID))
+        if (!this.user.getId().equals(UserDAOIF.PUBLIC_USER_ID) && this.user instanceof UserDAOIF)
         {
-          this.setLocale(CommonProperties.getDefaultLocale());
+          this.setLocale(ConversionFacade.getLocale( ( (UserDAOIF) this.user ).getLocale()));
         }
         else
         {
-          this.setLocale(ConversionFacade.getLocale(this.user.getLocale()));
+          this.setLocale(CommonProperties.getDefaultLocale());
         }
       }
 

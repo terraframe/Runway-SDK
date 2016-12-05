@@ -25,7 +25,7 @@ import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
@@ -179,7 +179,7 @@ public interface SessionIF
   /**
    * @return The user of the session
    */
-  public UserDAOIF getUser();
+  public SingleActorDAOIF getUser();
 
   /**
    * Returns a Map representing all of the roles assigned to the given user,

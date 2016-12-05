@@ -44,6 +44,12 @@ public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
   {
     super();
   }
+  
+  @Override
+  public boolean isLoginSupported()
+  {
+    return false;
+  }
 
   /**
    * @param attributeMap

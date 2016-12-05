@@ -21,7 +21,7 @@ package com.runwaysdk.session;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 
 public class ReadPermissionException extends PermissionException
 {
@@ -43,7 +43,7 @@ public class ReadPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public ReadPermissionException(String devMessage, ComponentIF componentIF, UserDAOIF user)
+  public ReadPermissionException(String devMessage, ComponentIF componentIF, SingleActorDAOIF user)
   {
     super(devMessage, componentIF, Operation.READ, user);
   }
@@ -70,7 +70,7 @@ public class ReadPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public ReadPermissionException(String devMessage, Throwable cause, ComponentIF componentIF, UserDAOIF user)
+  public ReadPermissionException(String devMessage, Throwable cause, ComponentIF componentIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, componentIF, Operation.READ, user);
   }
@@ -90,7 +90,7 @@ public class ReadPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public ReadPermissionException(Throwable cause, ComponentIF componentIF, UserDAOIF user)
+  public ReadPermissionException(Throwable cause, ComponentIF componentIF, SingleActorDAOIF user)
   {
     super(cause, componentIF, Operation.READ, user);
   }

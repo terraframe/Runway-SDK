@@ -41,6 +41,7 @@ import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SDutyDAO;
 import com.runwaysdk.business.rbac.SDutyDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAO;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.StateMasterDAO;
@@ -129,6 +130,7 @@ import com.runwaysdk.constants.MdWebTextInfo;
 import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.RelationshipInfo;
+import com.runwaysdk.constants.SingleActorInfo;
 import com.runwaysdk.constants.SupportedLocaleInfo;
 import com.runwaysdk.constants.TransactionItemInfo;
 import com.runwaysdk.constants.TransactionRecordInfo;
@@ -421,17 +423,21 @@ public class BusinessDAOFactory
       return businessDAO.create(attributeMap, name);
     }
 
-    boolean isUser;
-
-    isUser = MdElementDAO.isSubEntity(type, UserInfo.CLASS);
+    boolean isUser = MdElementDAO.isSubEntity(type, UserInfo.CLASS);
+    
     if (isUser)
     {
       return new UserDAO(attributeMap, type);
     }
+    
+    boolean isSingleActor = MdElementDAO.isSubEntity(type, SingleActorInfo.CLASS);
+    
+    if (isSingleActor)
+    {
+      return new SingleActorDAO(attributeMap, type);
+    }
 
-    boolean isEnumItem;
-
-    isEnumItem = MdElementDAO.isSubEntity(type, EnumerationMasterInfo.CLASS);
+    boolean isEnumItem = MdElementDAO.isSubEntity(type, EnumerationMasterInfo.CLASS);
 
     if (isEnumItem)
     {
@@ -443,9 +449,7 @@ public class BusinessDAOFactory
       return new EnumerationItemDAO(attributeMap, type);
     }
 
-    boolean isStateItem;
-
-    isStateItem = MdElementDAO.isSubEntity(type, EntityTypes.STATE_MASTER.getType());
+    boolean isStateItem = MdElementDAO.isSubEntity(type, EntityTypes.STATE_MASTER.getType());
 
     if (isStateItem)
     {

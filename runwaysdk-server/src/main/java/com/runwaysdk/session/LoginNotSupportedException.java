@@ -24,7 +24,7 @@ import com.runwaysdk.business.rbac.SingleActorDAOIF;
 /**
  * Thrown when a user has the maximum number of sessions opened.
  */
-public class MaximumSessionsException extends LoginException
+public class LoginNotSupportedException extends LoginException
 {
   /**
    * Auto-generated serial id.
@@ -44,7 +44,7 @@ public class MaximumSessionsException extends LoginException
    *          layer information useful for application debugging. The developer message is
    *          saved for later retrieval by the {@link #getMessage()} method.
    */
-  public MaximumSessionsException(String devMessage, SingleActorDAOIF user)
+  public LoginNotSupportedException(String devMessage, SingleActorDAOIF user)
   {
     super(devMessage);
     this.user = user;
@@ -65,7 +65,7 @@ public class MaximumSessionsException extends LoginException
    *          method). (A <tt>null</tt> value is permitted, and indicates that the cause
    *          is nonexistent or unknown.)
    */
-  public MaximumSessionsException(String devMessage, Throwable cause, SingleActorDAOIF user)
+  public LoginNotSupportedException(String devMessage, Throwable cause, SingleActorDAOIF user)
   {
     super(devMessage, cause);
     this.user = user;
@@ -81,7 +81,7 @@ public class MaximumSessionsException extends LoginException
    *          method). (A <tt>null</tt> value is permitted, and indicates that the cause
    *          is nonexistent or unknown.)
    */
-  public MaximumSessionsException(Throwable cause, SingleActorDAOIF user)
+  public LoginNotSupportedException(Throwable cause, SingleActorDAOIF user)
   {
     super(cause);
     this.user = user;
@@ -94,6 +94,6 @@ public class MaximumSessionsException extends LoginException
    */
   public String getLocalizedMessage()
   {
-    return ServerExceptionMessageLocalizer.maximumSessionsException(this.getLocale(), this.user);
+    return ServerExceptionMessageLocalizer.loginNotSupportedException(this.getLocale(), this.user);
   }
 }

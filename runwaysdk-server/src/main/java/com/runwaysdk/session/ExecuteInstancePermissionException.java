@@ -21,6 +21,7 @@ package com.runwaysdk.session;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.Operation;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -49,7 +50,7 @@ public class ExecuteInstancePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public ExecuteInstancePermissionException(String devMessage, Mutable mutable, MdMethodDAOIF mdMethodIF, UserDAOIF user)
+  public ExecuteInstancePermissionException(String devMessage, Mutable mutable, MdMethodDAOIF mdMethodIF, SingleActorDAOIF user)
   {
     super(devMessage, mutable, Operation.EXECUTE, user);
 

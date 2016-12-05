@@ -20,7 +20,7 @@ package com.runwaysdk.web;
 
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 
 /**
  * Exception thrown when a user tries to access the admin screen who does not have
@@ -32,7 +32,7 @@ public class AdminScreenAccessException extends RunwayException
   /**
    * The User for which this exception has occured.
    */
-  private UserDAOIF user;
+  private SingleActorDAOIF user;
   
   /**
    * 
@@ -45,7 +45,7 @@ public class AdminScreenAccessException extends RunwayException
    * 
    * @param devMessage
    */
-  public AdminScreenAccessException(String devMessage, UserDAOIF user)
+  public AdminScreenAccessException(String devMessage, SingleActorDAOIF user)
   {
     super(devMessage);
     this.user = user;

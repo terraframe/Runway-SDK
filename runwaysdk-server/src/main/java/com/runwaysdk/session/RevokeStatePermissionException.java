@@ -20,7 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.state.StateMasterDAOIF;
 
 public class RevokeStatePermissionException extends PermissionException
@@ -43,7 +43,7 @@ public class RevokeStatePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public RevokeStatePermissionException(String devMessage, StateMasterDAOIF stateMasterIF, UserDAOIF user)
+  public RevokeStatePermissionException(String devMessage, StateMasterDAOIF stateMasterIF, SingleActorDAOIF user)
   {
     super(devMessage, stateMasterIF, Operation.GRANT, user);
   }
@@ -70,7 +70,7 @@ public class RevokeStatePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public RevokeStatePermissionException(String devMessage, Throwable cause, StateMasterDAOIF stateMasterIF, UserDAOIF user)
+  public RevokeStatePermissionException(String devMessage, Throwable cause, StateMasterDAOIF stateMasterIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, stateMasterIF, Operation.GRANT, user);
   }
@@ -90,7 +90,7 @@ public class RevokeStatePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public RevokeStatePermissionException(Throwable cause, StateMasterDAOIF stateMasterIF, UserDAOIF user)
+  public RevokeStatePermissionException(Throwable cause, StateMasterDAOIF stateMasterIF, SingleActorDAOIF user)
   {
     super(cause, stateMasterIF, Operation.GRANT, user);
   }

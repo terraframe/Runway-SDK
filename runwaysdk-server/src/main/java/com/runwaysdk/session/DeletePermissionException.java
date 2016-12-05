@@ -21,7 +21,7 @@ package com.runwaysdk.session;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 
 public class DeletePermissionException extends PermissionException
 {
@@ -44,7 +44,7 @@ public class DeletePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public DeletePermissionException(String devMessage, Mutable mutable, UserDAOIF user)
+  public DeletePermissionException(String devMessage, Mutable mutable, SingleActorDAOIF user)
   {
     super(devMessage, mutable, Operation.DELETE, user);
   }
@@ -71,7 +71,7 @@ public class DeletePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public DeletePermissionException(String devMessage, Throwable cause, Mutable mutable, UserDAOIF user)
+  public DeletePermissionException(String devMessage, Throwable cause, Mutable mutable, SingleActorDAOIF user)
   {
     super(devMessage, cause, mutable, Operation.DELETE, user);
   }
@@ -93,7 +93,7 @@ public class DeletePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public DeletePermissionException(Throwable cause, Mutable mutable,  UserDAOIF user)
+  public DeletePermissionException(Throwable cause, Mutable mutable,  SingleActorDAOIF user)
   {
     super(cause, mutable, Operation.DELETE, user);
   }

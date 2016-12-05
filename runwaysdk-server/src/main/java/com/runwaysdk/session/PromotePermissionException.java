@@ -22,7 +22,7 @@ import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.state.StateMasterDAOIF;
 
 public class PromotePermissionException extends PermissionException
@@ -49,7 +49,7 @@ public class PromotePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public PromotePermissionException(String devMessage, Business business, String transitionName, UserDAOIF user)
+  public PromotePermissionException(String devMessage, Business business, String transitionName, SingleActorDAOIF user)
   {
     super(devMessage, business, Operation.PROMOTE, user);
     this.business = business;
@@ -80,7 +80,7 @@ public class PromotePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public PromotePermissionException(String devMessage, Throwable cause, Business business, String transitionName, UserDAOIF user)
+  public PromotePermissionException(String devMessage, Throwable cause, Business business, String transitionName, SingleActorDAOIF user)
   {
     super(devMessage, cause, business, Operation.PROMOTE, user);
     this.business = business;
@@ -104,7 +104,7 @@ public class PromotePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public PromotePermissionException(Throwable cause, Business business, String transitionName, UserDAOIF user)
+  public PromotePermissionException(Throwable cause, Business business, String transitionName, SingleActorDAOIF user)
   {
     super(cause, business, Operation.PROMOTE, user);
     this.business = business;

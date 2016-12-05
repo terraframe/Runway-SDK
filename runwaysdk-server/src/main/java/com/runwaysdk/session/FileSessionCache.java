@@ -42,6 +42,7 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.runwaysdk.business.Mutable;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -344,6 +345,34 @@ public class FileSessionCache extends ManagedUserSessionCache
       Session session = this.getSession(sessionId);
 
       super.changeLogIn(username, password, session);
+
+      if (!sessions.containsKey(sessionId))
+      {
+        this.putSessionOnFileSystem(session, false);
+      }
+    }
+    finally
+    {
+      sessionCacheLock.unlock();
+    }
+  }
+  
+  @Override
+  protected void changeLogin(SingleActorDAOIF user, String sessionId)
+  {
+    sessionCacheLock.lock();
+
+    try
+    {
+      if (sessionId.equals(publicSessionId))
+      {
+        String msg = "Users are not permitted to log into the public session [" + sessionId + "]";
+        throw new InvalidLoginException(msg);
+      }
+
+      Session session = this.getSession(sessionId);
+
+      super.changeLogIn(user, session);
 
       if (!sessions.containsKey(sessionId))
       {

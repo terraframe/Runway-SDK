@@ -51,23 +51,9 @@ public interface UserDAOIF extends SingleActorDAOIF
   public String getUsername();
   
   /**
-   * Return the maximum number of sessions a user can have open concurrently
-   * 
-   * @return The maximum number of sessions a user can have open concurrently
-   */
-  public int getSessionLimit();
-
-  /**
    * Return the inactive flag of the user
    * 
    * @return
    */
   public boolean getInactive();
-  
-  /**
-   * Return the locale of the user.
-   * 
-   * @return A string representing the locale of the user.
-   */
-  public String getLocale();        
 }

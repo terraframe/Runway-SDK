@@ -19,7 +19,7 @@
 package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 
 /**
  * Thrown when a user did not supply a Locale.
@@ -33,7 +33,7 @@ public class NoLocaleException extends LoginException
   /**
    * The User for which this exception has occured.
    */
-  private UserDAOIF user;
+  private SingleActorDAOIF user;
 
   /**
    * Constructs a new NoLocaleException with the specified developer message.
@@ -43,7 +43,7 @@ public class NoLocaleException extends LoginException
    *          layer information useful for application debugging. The developer message is
    *          saved for later retrieval by the {@link #getMessage()} method.
    */
-  public NoLocaleException(String devMessage, UserDAOIF user)
+  public NoLocaleException(String devMessage, SingleActorDAOIF user)
   {
     super(devMessage);
     this.user = user;
@@ -64,7 +64,7 @@ public class NoLocaleException extends LoginException
    *          method). (A <tt>null</tt> value is permitted, and indicates that the cause
    *          is nonexistent or unknown.)
    */
-  public NoLocaleException(String devMessage, Throwable cause, UserDAOIF user)
+  public NoLocaleException(String devMessage, Throwable cause, SingleActorDAOIF user)
   {
     super(devMessage, cause);
     this.user = user;
@@ -80,7 +80,7 @@ public class NoLocaleException extends LoginException
    *          method). (A <tt>null</tt> value is permitted, and indicates that the cause
    *          is nonexistent or unknown.)
    */
-  public NoLocaleException(Throwable cause, UserDAOIF user)
+  public NoLocaleException(Throwable cause, SingleActorDAOIF user)
   {
     super(cause);
     this.user = user;

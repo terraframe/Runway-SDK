@@ -20,7 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 
@@ -49,7 +49,7 @@ public class GrantAttributePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public GrantAttributePermissionException(String devMessage, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, UserDAOIF user)
+  public GrantAttributePermissionException(String devMessage, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, SingleActorDAOIF user)
   {
     super(devMessage, mdClassIF, Operation.GRANT, user);
 
@@ -80,7 +80,7 @@ public class GrantAttributePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public GrantAttributePermissionException(String devMessage, Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, UserDAOIF user)
+  public GrantAttributePermissionException(String devMessage, Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, mdClassIF, Operation.GRANT, user);
 
@@ -104,7 +104,7 @@ public class GrantAttributePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public GrantAttributePermissionException(Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, UserDAOIF user)
+  public GrantAttributePermissionException(Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, SingleActorDAOIF user)
   {
     super(cause, mdClassIF, Operation.GRANT, user);
 

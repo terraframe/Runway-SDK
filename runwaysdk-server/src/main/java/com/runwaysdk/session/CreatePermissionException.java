@@ -21,7 +21,7 @@ package com.runwaysdk.session;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 
 public class CreatePermissionException extends PermissionException
 {
@@ -43,7 +43,7 @@ public class CreatePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public CreatePermissionException(String devMessage, Entity entity, UserDAOIF user)
+  public CreatePermissionException(String devMessage, Entity entity, SingleActorDAOIF user)
   {
     super(devMessage, entity, Operation.CREATE, user);
   }
@@ -70,7 +70,7 @@ public class CreatePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public CreatePermissionException(String devMessage, Throwable cause, Entity entity, UserDAOIF user)
+  public CreatePermissionException(String devMessage, Throwable cause, Entity entity, SingleActorDAOIF user)
   {
     super(devMessage, cause, entity, Operation.CREATE, user);
   }
@@ -90,7 +90,7 @@ public class CreatePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public CreatePermissionException(Throwable cause, Entity entity, UserDAOIF user)
+  public CreatePermissionException(Throwable cause, Entity entity, SingleActorDAOIF user)
   {
     super(cause, entity, Operation.CREATE, user);
   }

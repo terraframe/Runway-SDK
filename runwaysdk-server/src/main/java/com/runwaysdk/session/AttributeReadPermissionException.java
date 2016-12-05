@@ -21,7 +21,7 @@ package com.runwaysdk.session;
 import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -62,7 +62,7 @@ public class AttributeReadPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public AttributeReadPermissionException(String devMessage, MdAttributeDAOIF mdAttribute, UserDAOIF user)
+  public AttributeReadPermissionException(String devMessage, MdAttributeDAOIF mdAttribute, SingleActorDAOIF user)
   {
     super(devMessage, null, Operation.WRITE, user);
     this.mdAttribute = mdAttribute;
@@ -90,7 +90,7 @@ public class AttributeReadPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public AttributeReadPermissionException(String devMessage, Throwable cause, MdAttributeConcreteDAOIF mdAttribute, UserDAOIF user)
+  public AttributeReadPermissionException(String devMessage, Throwable cause, MdAttributeConcreteDAOIF mdAttribute, SingleActorDAOIF user)
   {
     super(devMessage, cause, null, Operation.WRITE, user);
     this.mdAttribute = mdAttribute;
@@ -111,7 +111,7 @@ public class AttributeReadPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public AttributeReadPermissionException(Throwable cause, MdAttributeConcreteDAOIF mdAttribute, UserDAOIF user)
+  public AttributeReadPermissionException(Throwable cause, MdAttributeConcreteDAOIF mdAttribute, SingleActorDAOIF user)
   {
     super(cause, null, Operation.WRITE, user);
     this.mdAttribute = mdAttribute;

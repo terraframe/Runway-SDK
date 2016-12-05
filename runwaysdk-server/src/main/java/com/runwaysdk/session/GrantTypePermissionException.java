@@ -20,7 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 
 public class GrantTypePermissionException extends PermissionException
@@ -43,7 +43,7 @@ public class GrantTypePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public GrantTypePermissionException(String devMessage, MdTypeDAOIF mdTypeIF, UserDAOIF user)
+  public GrantTypePermissionException(String devMessage, MdTypeDAOIF mdTypeIF, SingleActorDAOIF user)
   {
     super(devMessage, mdTypeIF, Operation.GRANT, user);
   }
@@ -70,7 +70,7 @@ public class GrantTypePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public GrantTypePermissionException(String devMessage, Throwable cause, MdTypeDAOIF mdTypeIF, UserDAOIF user)
+  public GrantTypePermissionException(String devMessage, Throwable cause, MdTypeDAOIF mdTypeIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, mdTypeIF, Operation.GRANT, user);
   }
@@ -90,7 +90,7 @@ public class GrantTypePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public GrantTypePermissionException(Throwable cause, MdTypeDAOIF mdTypeIF, UserDAOIF user)
+  public GrantTypePermissionException(Throwable cause, MdTypeDAOIF mdTypeIF, SingleActorDAOIF user)
   {
     super(cause, mdTypeIF, Operation.GRANT, user);
   }

@@ -48,6 +48,7 @@ import com.runwaysdk.business.Warning;
 import com.runwaysdk.business.rbac.Authenticate;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.business.rbac.Operation;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -378,7 +379,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
     else
     {
-      UserDAOIF userIF = this.getRequestState().getSession().getUser();
+      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
       this.checkMethodExecutePermission_INSTANCE(userIF, mutable, mdMethodToExecute);
     }
 
@@ -425,7 +426,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     {
       if (this.isSessionInitialized())
       {
-        UserDAOIF userIF = _session.getUser();
+        SingleActorDAOIF userIF = _session.getUser();
         this.checkMethodExecutePermission_STATIC(userIF, mdTypeIF, mdMethodToExecute);
       }
     }
@@ -472,7 +473,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
   }
 
-  private void checkMethodExecutePermission_INSTANCE(UserDAOIF userIF, Mutable mutable, MdMethodDAOIF mdMethodToExecute)
+  private void checkMethodExecutePermission_INSTANCE(SingleActorDAOIF userIF, Mutable mutable, MdMethodDAOIF mdMethodToExecute)
   {
     boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getId(), Operation.EXECUTE, mutable, mdMethodToExecute);
 
@@ -483,7 +484,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
   }
 
-  private void checkMethodExecutePermission_STATIC(UserDAOIF userIF, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodToExecute)
+  private void checkMethodExecutePermission_STATIC(SingleActorDAOIF userIF, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodToExecute)
   {
     boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getId(), Operation.EXECUTE, mdMethodToExecute);
 
@@ -576,7 +577,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     if (this.isSessionInitialized())
     {
       EntityDAO entityDAO = entity.entityDAO;
-      UserDAOIF userIF = this.getRequestState().getSession().getUser();
+      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
       // Check if userIF has a lock on the object.
       if (entity instanceof Element)
@@ -761,7 +762,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   private void checkAttributePermissions(Mutable mutable, String attributeName)
   {
-    UserDAOIF userIF = this.getRequestState().getSession().getUser();
+    SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
     // Write permissions are not checked when the containing object is new.
     if (mutable.isNew())
@@ -847,7 +848,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
         if (!access)
         {
-          UserDAOIF userIF = this.getRequestState().getSession().getUser();
+          SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
           String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + struct.getType() + "]";
           throw new AttributeWritePermissionException(errorMsg, struct, mdAttribute, userIF);
@@ -863,7 +864,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      UserDAOIF userIF = this.getRequestState().getSession().getUser();
+      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
       if (this.mdMethodIFStack.size() > 0)
       {
@@ -889,7 +890,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
   }
 
-  private boolean checkUserDeletePermissions(Mutable mutable, UserDAOIF userIF)
+  private boolean checkUserDeletePermissions(Mutable mutable, SingleActorDAOIF userIF)
   {
     // Check if userIF has a lock on the object.
     if (mutable.hasAttribute(ElementInfo.LOCKED_BY))
@@ -978,7 +979,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       if (!access)
       {
         Business childBusiness = Business.get(childId);
-        UserDAOIF userIF = this.getRequestState().getSession().getUser();
+        SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
         throw new AddChildPermissionException(errorMsg, parentBusiness, childBusiness, mdRelationshipIF, userIF);
@@ -1065,7 +1066,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
       if (!access)
       {
-        UserDAOIF userIF = this.getRequestState().getSession().getUser();
+        SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "Method [" + userIF.getSingleActorName() + "] does not have the delete_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
         throw new DomainErrorException(errorMsg);
@@ -1078,7 +1079,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       if (!access)
       {
         Business childBusiness = Business.get(childId);
-        UserDAOIF userIF = this.getRequestState().getSession().getUser();
+        SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the delete_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
         throw new DeleteChildPermissionException(errorMsg, parentBusiness, childBusiness, mdRelationshipIF, userIF);
@@ -1147,7 +1148,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       if (!access)
       {
         Business parentBusiness = Business.get(parentId);
-        UserDAOIF userIF = this.getRequestState().getSession().getUser();
+        SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_parent permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + childBusinessDAO.getType() + "]";
         throw new AddParentPermissionException(errorMsg, parentBusiness, childBusiness, mdRelationshipIF, userIF);
@@ -1244,7 +1245,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       if (!access)
       {
         Business parentBusiness = Business.get(parentId);
-        UserDAOIF userIF = this.getRequestState().getSession().getUser();
+        SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the delete_parent permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + childBusinessDAO.getType() + "]";
         throw new DeleteParentPermissionException(errorMsg, parentBusiness, childBusiness, mdRelationshipIF, userIF);
@@ -1283,7 +1284,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
         if (!access)
         {
           MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(business.getType());
-          UserDAOIF userIF = this.getRequestState().getSession().getUser();
+          SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
           String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to promote type [" + mdBusinessIF.definesType() + "] using transition [" + transitionName + "]";
           throw new PromotePermissionException(errorMsg, business, transitionName, userIF);
@@ -1325,7 +1326,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
     ( LockObject.getLockObject() ).appLock(element.getId());
 
-    UserDAOIF userIF = this.getRequestState().getSession().getUser();
+    SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
     // Check if the object is locked by another user.
     if (element.hasAttribute(ElementInfo.LOCKED_BY))
@@ -1363,7 +1364,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
     if (!access)
     {
-      UserDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
+      SingleActorDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
       String errorMsg = "User [" + sessionUserIF.getSingleActorName() + "] does not have permission to create [" + entity.getType() + "] instances.";
       throw new CreatePermissionException(errorMsg, entity, sessionUserIF);
     }
@@ -1398,7 +1399,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
     if (!access)
     {
-      UserDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
+      SingleActorDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
       String errorMsg = "User [" + sessionUserIF.getSingleActorName() + "] does not have permission to read [" + entity.getType() + "] instances.";
       throw new ReadPermissionException(errorMsg, entity, sessionUserIF);
     }
@@ -1433,7 +1434,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
     if (!access)
     {
-      UserDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
+      SingleActorDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
       String errorMsg = "User [" + sessionUserIF.getSingleActorName() + "] does not have permission to write to [" + entity.getType() + "] instances.";
       throw new WritePermissionException(errorMsg, entity, sessionUserIF);
     }

@@ -28,6 +28,7 @@ import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.rbac.Operation;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -135,6 +136,45 @@ public class SessionFacade
     return cache.logIn(username, password, dimensionKey, locales);
   }
 
+  /**
+   * Logs a {@link UserDAO} into a new {@link Session} and loads
+   * the permissions of the {@link UserDAO}.  In addition, this
+   * method ensures that the {@link UserDAO} is not at it's
+   * {@link Session} limit.
+   *
+   * @param username The name of the {@link UserDAO}
+   * @param password The password of the {@link UserDAO}
+   * @param locales locale of the user
+   *
+   * @return id of the newly created {@link Session}.
+   */
+  public static String logIn(SingleActorDAOIF user, Locale[] locales)
+  {
+    SessionCache cache = SessionFacade.getSessionCache();
+    
+    return cache.logIn(user, locales);
+  }
+  
+  /**
+   * Logs a {@link UserDAO} into a new {@link Session} and loads
+   * the permissions of the {@link UserDAO}.  In addition, this
+   * method ensures that the {@link UserDAO} is not at it's
+   * {@link Session} limit.
+   *
+   * @param username The name of the {@link UserDAO}
+   * @param password The password of the {@link UserDAO}
+   * @param dimensionKey The dimension key of the dimension set to this session.
+   * @param locales locale of the user
+   *
+   * @return id of the newly created {@link Session}.
+   */
+  public static String logIn(SingleActorDAOIF user, String dimensionKey, Locale[] locales)
+  {
+    SessionCache cache = SessionFacade.getSessionCache();
+    
+    return cache.logIn(user, dimensionKey, locales);
+  }
+  
   /**
    * Sets the dimension of an existing {@link Session}.
    * 
@@ -582,7 +622,7 @@ public class SessionFacade
    *
    * @return The {@link UserDAO} which has logged into the given {@link Session}.
    */
-  public static UserDAOIF getUser(String sessionId)
+  public static SingleActorDAOIF getUser(String sessionId)
   {
     SessionCache cache = SessionFacade.getSessionCache();
     Session session = cache.getSession(sessionId);

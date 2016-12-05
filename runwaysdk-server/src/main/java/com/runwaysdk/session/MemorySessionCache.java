@@ -28,6 +28,7 @@ import java.util.PriorityQueue;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -149,6 +150,30 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
       Session session = this.getSession(sessionId);
 
       super.changeLogIn(username, password, session);
+    }
+    finally
+    {
+      sessionCacheLock.unlock();
+    }
+  }
+  
+  @Override
+  protected void changeLogin(SingleActorDAOIF user, String sessionId)
+  {
+    sessionCacheLock.lock();
+
+    try
+    {
+      if (sessionId.equals(publicSession.getId()))
+      {
+        String msg = "Users are not permitted to log into the public session [" + sessionId + "]";
+        throw new InvalidLoginException(msg);
+      }
+
+      // Get the session
+      Session session = this.getSession(sessionId);
+
+      super.changeLogIn(user, session);
     }
     finally
     {

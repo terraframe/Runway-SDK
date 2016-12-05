@@ -77,4 +77,23 @@ public interface SingleActorDAOIF extends ActorDAOIF
    * @return If the user belongs to the administrator role
    */
   public boolean isAdministrator();
+  
+  /**
+   * @return Flag denoting if login of this class is supported.  Mostly overwritten by sub-types
+   */
+  public boolean isLoginSupported();
+  
+  /**
+   * Return the maximum number of sessions a user can have open concurrently
+   * 
+   * @return The maximum number of sessions a user can have open concurrently
+   */
+  public int getSessionLimit();
+  
+  /**
+   * Return the locale of the user.
+   * 
+   * @return A string representing the locale of the user.
+   */
+  public String getLocale();        
 }

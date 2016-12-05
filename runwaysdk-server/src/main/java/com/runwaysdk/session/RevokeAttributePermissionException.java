@@ -20,7 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 
@@ -48,7 +48,7 @@ public class RevokeAttributePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public RevokeAttributePermissionException(String devMessage, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, UserDAOIF user)
+  public RevokeAttributePermissionException(String devMessage, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, SingleActorDAOIF user)
   {
     super(devMessage, mdClassIF, Operation.GRANT, user);
 
@@ -79,7 +79,7 @@ public class RevokeAttributePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public RevokeAttributePermissionException(String devMessage, Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, UserDAOIF user)
+  public RevokeAttributePermissionException(String devMessage, Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, mdClassIF, Operation.GRANT, user);
 
@@ -103,7 +103,7 @@ public class RevokeAttributePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public RevokeAttributePermissionException(Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, UserDAOIF user)
+  public RevokeAttributePermissionException(Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, SingleActorDAOIF user)
   {
     super(cause, mdClassIF, Operation.GRANT, user);
 

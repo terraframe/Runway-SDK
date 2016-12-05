@@ -20,7 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 
 public abstract class RelationshipPermissionException extends PermissionException
@@ -55,7 +55,7 @@ public abstract class RelationshipPermissionException extends PermissionExceptio
    *          The user attempting the operation
    */
   public RelationshipPermissionException(String devMessage, Operation operation, Business parentBusiness, Business childBusiness, 
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
   {
     super(devMessage, parentBusiness, operation, user);
     
@@ -93,7 +93,7 @@ public abstract class RelationshipPermissionException extends PermissionExceptio
    *          The user attempting the operation
    */
   public RelationshipPermissionException(String devMessage, Throwable cause, Operation operation, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, parentBusiness, operation, user);
     
@@ -124,7 +124,7 @@ public abstract class RelationshipPermissionException extends PermissionExceptio
    *          The user attempting the operation
    */
   public RelationshipPermissionException(Throwable cause, Operation operation, Business parentBusiness, Business childBusiness, 
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
   {
     super(cause, parentBusiness, operation, user);
 

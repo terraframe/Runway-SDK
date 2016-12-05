@@ -20,7 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 
@@ -48,7 +48,7 @@ public class GrantMethodPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public GrantMethodPermissionException(String devMessage, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, UserDAOIF user)
+  public GrantMethodPermissionException(String devMessage, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, SingleActorDAOIF user)
   {
     super(devMessage, mdMethodIF, Operation.GRANT, user);
     this.mdTypeIF = mdTypeIF;
@@ -78,7 +78,7 @@ public class GrantMethodPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public GrantMethodPermissionException(String devMessage, Throwable cause, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, UserDAOIF user)
+  public GrantMethodPermissionException(String devMessage, Throwable cause, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, mdMethodIF, Operation.GRANT, user);
     this.mdTypeIF = mdTypeIF;
@@ -101,7 +101,7 @@ public class GrantMethodPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public GrantMethodPermissionException(Throwable cause, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, UserDAOIF user)
+  public GrantMethodPermissionException(Throwable cause, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, SingleActorDAOIF user)
   {
     super(cause, mdMethodIF, Operation.GRANT, user);
     this.mdTypeIF = mdTypeIF;

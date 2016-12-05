@@ -20,7 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 
@@ -48,7 +48,7 @@ public class ExecuteStaticPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public ExecuteStaticPermissionException(String devMessage, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, UserDAOIF user)
+  public ExecuteStaticPermissionException(String devMessage, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, SingleActorDAOIF user)
   {
     super(devMessage, mdMethodIF, Operation.EXECUTE, user);
 
@@ -80,7 +80,7 @@ public class ExecuteStaticPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public ExecuteStaticPermissionException(String devMessage, Throwable cause, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, UserDAOIF user)
+  public ExecuteStaticPermissionException(String devMessage, Throwable cause, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, mdMethodIF, Operation.EXECUTE, user);
 
@@ -105,7 +105,7 @@ public class ExecuteStaticPermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public ExecuteStaticPermissionException(Throwable cause, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, UserDAOIF user)
+  public ExecuteStaticPermissionException(Throwable cause, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, SingleActorDAOIF user)
   {
     super(cause, mdMethodIF, Operation.EXECUTE, user);
 

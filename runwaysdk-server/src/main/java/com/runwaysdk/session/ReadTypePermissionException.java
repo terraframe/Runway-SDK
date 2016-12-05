@@ -20,7 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.BusinessException;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 
 public class ReadTypePermissionException extends BusinessException
@@ -45,7 +45,7 @@ public class ReadTypePermissionException extends BusinessException
    * @param user
    *          The user attempting the operation
    */
-  public ReadTypePermissionException(String devMessage, MdTypeDAOIF mdTypeIF, UserDAOIF user)
+  public ReadTypePermissionException(String devMessage, MdTypeDAOIF mdTypeIF, SingleActorDAOIF user)
   {
     super(devMessage);
     this.mdTypeIF = mdTypeIF;
@@ -73,7 +73,7 @@ public class ReadTypePermissionException extends BusinessException
    * @param user
    *          The user attempting the operation
    */
-  public ReadTypePermissionException(String devMessage, Throwable cause, MdTypeDAOIF mdTypeIF, UserDAOIF user)
+  public ReadTypePermissionException(String devMessage, Throwable cause, MdTypeDAOIF mdTypeIF, SingleActorDAOIF user)
   {
     super(devMessage, cause);
     this.mdTypeIF = mdTypeIF;
@@ -94,7 +94,7 @@ public class ReadTypePermissionException extends BusinessException
    * @param user
    *          The user attempting the operation
    */
-  public ReadTypePermissionException(Throwable cause, MdTypeDAOIF mdTypeIF, UserDAOIF user)
+  public ReadTypePermissionException(Throwable cause, MdTypeDAOIF mdTypeIF, SingleActorDAOIF user)
   {
     super(cause);
     this.mdTypeIF = mdTypeIF;

@@ -20,7 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -52,7 +52,7 @@ public class RevokeAttributeStatePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public RevokeAttributeStatePermissionException(String devMessage, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, StateMasterDAOIF stateMasterIF, UserDAOIF user)
+  public RevokeAttributeStatePermissionException(String devMessage, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, StateMasterDAOIF stateMasterIF, SingleActorDAOIF user)
   {
     super(devMessage, mdClassIF, Operation.GRANT, user);
 
@@ -86,7 +86,7 @@ public class RevokeAttributeStatePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public RevokeAttributeStatePermissionException(String devMessage, Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, StateMasterDAOIF stateMasterIF, UserDAOIF user)
+  public RevokeAttributeStatePermissionException(String devMessage, Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, StateMasterDAOIF stateMasterIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, mdClassIF, Operation.GRANT, user);
 
@@ -113,7 +113,7 @@ public class RevokeAttributeStatePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation.
    */
-  public RevokeAttributeStatePermissionException(Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, StateMasterDAOIF stateMasterIF, UserDAOIF user)
+  public RevokeAttributeStatePermissionException(Throwable cause, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, StateMasterDAOIF stateMasterIF, SingleActorDAOIF user)
   {
     super(cause, mdClassIF, Operation.GRANT, user);
 

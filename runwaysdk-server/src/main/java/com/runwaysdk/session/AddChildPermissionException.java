@@ -21,6 +21,7 @@ package com.runwaysdk.session;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.rbac.Operation;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 
@@ -45,13 +46,13 @@ public class AddChildPermissionException extends RelationshipPermissionException
    *          The childBusiness being added to the parent
    * @param mdRelationshipIF
    *          Type of the relationship
-   * @param user
+   * @param userIF
    *          The user attempting the operation
    */
   public AddChildPermissionException(String devMessage, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF userIF)
   {
-    super(devMessage, Operation.ADD_CHILD, parentBusiness, childBusiness, mdRelationshipIF, user);
+    super(devMessage, Operation.ADD_CHILD, parentBusiness, childBusiness, mdRelationshipIF, userIF);
   }
 
   /**
@@ -81,7 +82,7 @@ public class AddChildPermissionException extends RelationshipPermissionException
    *          The user attempting the operation
    */
   public AddChildPermissionException(String devMessage, Throwable cause, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, Operation.ADD_CHILD, parentBusiness, childBusiness, mdRelationshipIF, user);
   }
@@ -106,7 +107,7 @@ public class AddChildPermissionException extends RelationshipPermissionException
    *          The user attempting the operation
    */
   public AddChildPermissionException(Throwable cause, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF,  UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF,  SingleActorDAOIF user)
   {
     super(cause, Operation.ADD_CHILD, parentBusiness, childBusiness, mdRelationshipIF, user);
   }

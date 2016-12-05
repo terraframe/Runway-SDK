@@ -21,7 +21,7 @@ package com.runwaysdk.session;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 
 public class ReadChildPermissionException extends RelationshipPermissionException
@@ -47,7 +47,7 @@ public class ReadChildPermissionException extends RelationshipPermissionExceptio
    *          The user attempting the operation
    */
   public ReadChildPermissionException(String devMessage, Business parentBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
   {
     super(devMessage, Operation.READ_CHILD, parentBusiness, null, mdRelationshipIF, user);
   }
@@ -77,7 +77,7 @@ public class ReadChildPermissionException extends RelationshipPermissionExceptio
    *          The user attempting the operation
    */
   public ReadChildPermissionException(String devMessage, Throwable cause, Business parentBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
   {
     super(devMessage, cause, Operation.READ_CHILD, parentBusiness, null, mdRelationshipIF, user);
   }
@@ -100,7 +100,7 @@ public class ReadChildPermissionException extends RelationshipPermissionExceptio
    *          The user attempting the operation
    */
   public ReadChildPermissionException(Throwable cause, Business parentBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, UserDAOIF user)
+      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
   {
     super(cause, Operation.READ_CHILD, parentBusiness, null, mdRelationshipIF, user);
   }

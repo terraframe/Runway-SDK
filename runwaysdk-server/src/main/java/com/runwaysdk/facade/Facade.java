@@ -72,6 +72,7 @@ import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.business.state.StateMasterDAO;
@@ -295,7 +296,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + mutable.getType() + "]";
       throw new ReadPermissionException(errorMsg, mutable, userIF);
@@ -402,7 +403,7 @@ public class Facade
   public static void checkAdminScreenAccess(String sessionId)
   {
     RoleDAOIF adminScreenRole = RoleDAO.findRole(RoleDAOIF.ADMIN_SCREEN_ROLE);
-    UserDAOIF user = SessionFacade.getUser(sessionId);
+    SingleActorDAOIF user = SessionFacade.getUser(sessionId);
 
     for (RoleDAOIF role : user.authorizedRoles())
     {
@@ -412,7 +413,7 @@ public class Facade
       }
     }
 
-    String error = "The user [" + user.getUsername() + "] cannot access the admin screen because " + "it does not belong to the [" + RoleDAOIF.ADMIN_SCREEN_ROLE + "] role.";
+    String error = "The user [" + user.getSingleActorName() + "] cannot access the admin screen because " + "it does not belong to the [" + RoleDAOIF.ADMIN_SCREEN_ROLE + "] role.";
     throw new AdminScreenAccessException(error, user);
   }
 
@@ -562,7 +563,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + mutable.getType() + "]";
       throw new ReadPermissionException(errorMsg, mutable, userIF);
@@ -580,7 +581,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + type + "]";
       throw new ReadTypePermissionException(errorMsg, mdEntity, userIF);
@@ -763,7 +764,7 @@ public class Facade
   @Request(RequestType.SESSION)
   public static BusinessDTO getSessionUser(String sessionId)
   {
-    UserDAOIF userDAO = SessionFacade.getUser(sessionId);
+    SingleActorDAOIF userDAO = SessionFacade.getUser(sessionId);
 
     Business userBusiness = BusinessFacade.get(userDAO);
 
@@ -1168,7 +1169,7 @@ public class Facade
     {
       SessionIF session = Session.getCurrentSession();
 
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       StateMasterDAOIF stateMasterIF = StateMasterDAO.get(stateId);
 
@@ -1198,7 +1199,7 @@ public class Facade
     {
       SessionIF session = Session.getCurrentSession();
 
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       MdClassDAOIF mdClassIF = mdAttributeIF.definedByClass();
 
@@ -1230,7 +1231,7 @@ public class Facade
     {
       SessionIF session = Session.getCurrentSession();
 
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       MdClassDAOIF mdClassIF = mdAttributeIF.definedByClass();
 
@@ -1267,7 +1268,7 @@ public class Facade
     {
       SessionIF session = Session.getCurrentSession();
 
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on type [" + mdTypeIF.definesType() + "]";
       throw new GrantTypePermissionException(errorMsg, mdTypeIF, userIF);
@@ -1300,7 +1301,7 @@ public class Facade
     {
       SessionIF session = Session.getCurrentSession();
 
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on type [" + mdMethodIF.getName() + "]";
       throw new GrantMethodPermissionException(errorMsg, mdMethodIF.getEnclosingMdTypeDAO(), mdMethodIF, userIF);
@@ -1334,7 +1335,7 @@ public class Facade
     {
       SessionIF session = Session.getCurrentSession();
 
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on type [" + mdTypeIF.definesType() + "]";
       throw new RevokeTypePermissionException(errorMsg, mdTypeIF, userIF);
@@ -1368,7 +1369,7 @@ public class Facade
     {
       SessionIF session = Session.getCurrentSession();
 
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on type [" + mdMethodIF.getName() + "]";
       throw new RevokeMethodPermissionException(errorMsg, mdMethodIF.getEnclosingMdTypeDAO(), mdMethodIF, userIF);
@@ -1394,7 +1395,7 @@ public class Facade
     {
       SessionIF session = Session.getCurrentSession();
 
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       StateMasterDAOIF stateMasterIF = StateMasterDAO.get(stateId);
 
@@ -1424,7 +1425,7 @@ public class Facade
     {
       SessionIF session = Session.getCurrentSession();
 
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       MdClassDAOIF mdClassIF = mdAttributeIF.definedByClass();
 
@@ -1455,7 +1456,7 @@ public class Facade
     {
       SessionIF session = Session.getCurrentSession();
 
-      UserDAOIF userIF = session.getUser();
+      SingleActorDAOIF userIF = session.getUser();
 
       MdClassDAOIF mdClassIF = mdAttributeIF.definedByClass();
 
@@ -1639,7 +1640,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read parents of type [" + mdRelationshipIF.definesType() + "] for parent object [" + id + "]";
       throw new ReadParentPermissionException(errorMsg, business, mdRelationshipIF, userIF);
@@ -1662,7 +1663,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read parents of type [" + mdRelationshipIF.definesType() + "] for parent object [" + id + "]";
       throw new ReadParentPermissionException(errorMsg, business, mdRelationshipIF, userIF);
@@ -1685,7 +1686,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read children of type [" + mdRelationshipIF.definesType() + "] for parent object [" + id + "]";
       throw new ReadChildPermissionException(errorMsg, business, mdRelationshipIF, userIF);
@@ -1718,7 +1719,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read children of type [" + mdRelationshipIF.definesType() + "] for parent object [" + id + "]";
       throw new ReadChildPermissionException(errorMsg, business, mdRelationshipIF, userIF);
@@ -1744,7 +1745,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       MdTypeDAOIF mdTypeIF = MdTypeDAO.getMdTypeDAO(queryDTO.getType());
 
@@ -1775,7 +1776,7 @@ public class Facade
 
     if (!SessionFacade.checkTypeAccess(sessionId, Operation.READ, type))
     {
-      UserDAOIF userIF = SessionFacade.getUser(sessionId);
+      SingleActorDAOIF userIF = SessionFacade.getUser(sessionId);
       String error = "User [" + userIF.getSingleActorName() + "] does not have read permission to query type [" + type + "].";
       throw new ReadTypePermissionException(error, mdClassIF, userIF);
     }
@@ -1799,7 +1800,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       MdTypeDAOIF mdTypeIF = MdTypeDAO.getMdTypeDAO(queryDTO.getType());
 
@@ -1846,7 +1847,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       MdTypeDAOIF mdTypeIF = MdTypeDAO.getMdTypeDAO(queryDTO.getType());
 
@@ -1877,7 +1878,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       MdTypeDAOIF mdTypeIF = MdTypeDAO.getMdTypeDAO(queryDTO.getType());
 
@@ -1908,7 +1909,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       MdTypeDAOIF mdTypeIF = MdTypeDAO.getMdTypeDAO(queryDTO.getType());
 
@@ -1945,7 +1946,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + entity.getType() + "]";
       throw new ReadPermissionException(errorMsg, entity, userIF);
@@ -2022,7 +2023,7 @@ public class Facade
 
           if (!access)
           {
-            UserDAOIF userIF = Session.getCurrentSession().getUser();
+            SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
             String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + entity.getType() + "]";
             throw new ReadPermissionException(errorMsg, entity, userIF);
@@ -2102,7 +2103,7 @@ public class Facade
 
       if (!access)
       {
-        UserDAOIF userIF = Session.getCurrentSession().getUser();
+        SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + entity.getType() + "]";
         throw new ReadPermissionException(errorMsg, entity, userIF);
@@ -2151,7 +2152,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF user = SessionFacade.getUser(sessionId);
+      SingleActorDAOIF user = SessionFacade.getUser(sessionId);
       String errorMsg = "User [" + user.getSingleActorName() + "] does not have permission to create the file [" + file.getFileName() + "] ";
       throw new CreatePermissionException(errorMsg, entity, user);
     }
@@ -2172,7 +2173,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF user = SessionFacade.getUser(sessionId);
+      SingleActorDAOIF user = SessionFacade.getUser(sessionId);
       String errorMsg = "User [" + user.getSingleActorName() + "] does not have permission to read the file [" + file.getFileName() + "] ";
       throw new ReadPermissionException(errorMsg, entity, user);
     }
@@ -2190,7 +2191,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + vaultFileBusiness.getType() + "]";
       throw new ReadPermissionException(errorMsg, vaultFileBusiness, userIF);
@@ -2211,7 +2212,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF userIF = Session.getCurrentSession().getUser();
+      SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + vaultFile.getType() + "]";
       throw new ReadPermissionException(errorMsg, vaultFile, userIF);
@@ -2236,7 +2237,7 @@ public class Facade
 
     if (!access)
     {
-      UserDAOIF user = SessionFacade.getUser(sessionId);
+      SingleActorDAOIF user = SessionFacade.getUser(sessionId);
       String errorMsg = "User [" + user.getSingleActorName() + "] does not have permission to create the file [" + file.getFileName() + "] ";
       throw new CreatePermissionException(errorMsg, entity, user);
     }
@@ -2274,7 +2275,7 @@ public class Facade
   @Request(RequestType.SESSION)
   public static void importDomainModel(String sessionId, String xml, String xsd)
   {
-    UserDAOIF user = SessionFacade.getUser(sessionId);
+    SingleActorDAOIF user = SessionFacade.getUser(sessionId);
 
     if (!user.isAdministrator())
     {
@@ -2294,7 +2295,7 @@ public class Facade
   @Request(RequestType.SESSION)
   public static void importInstanceXML(String sessionId, String xml)
   {
-    UserDAOIF user = SessionFacade.getUser(sessionId);
+    SingleActorDAOIF user = SessionFacade.getUser(sessionId);
 
     if (!user.isAdministrator())
     {

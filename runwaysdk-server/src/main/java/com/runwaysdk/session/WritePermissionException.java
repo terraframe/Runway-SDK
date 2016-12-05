@@ -21,7 +21,7 @@ package com.runwaysdk.session;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 
 public class WritePermissionException extends PermissionException
 {
@@ -43,7 +43,7 @@ public class WritePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public WritePermissionException(String devMessage, Entity entity, UserDAOIF user)
+  public WritePermissionException(String devMessage, Entity entity, SingleActorDAOIF user)
   {
     super(devMessage, entity, Operation.WRITE, user);
   }
@@ -70,7 +70,7 @@ public class WritePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public WritePermissionException(String devMessage, Throwable cause, Entity entity, UserDAOIF user)
+  public WritePermissionException(String devMessage, Throwable cause, Entity entity, SingleActorDAOIF user)
   {
     super(devMessage, cause, entity, Operation.WRITE, user);
   }
@@ -90,7 +90,7 @@ public class WritePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public WritePermissionException(Throwable cause, Entity entity, UserDAOIF user)
+  public WritePermissionException(Throwable cause, Entity entity, SingleActorDAOIF user)
   {
     super(cause, entity, Operation.WRITE, user);
   }
