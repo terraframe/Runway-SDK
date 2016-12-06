@@ -41,6 +41,7 @@ import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAO;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.StateMasterDAO;
@@ -54,6 +55,7 @@ import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.ServerConstants;
+import com.runwaysdk.constants.SingleActorInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
@@ -73,6 +75,7 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.facade.Facade;
 
 public class IntegratedSessionTest extends TestCase
@@ -99,6 +102,19 @@ public class IntegratedSessionTest extends TestCase
    */
   private static UserDAO                   newUser2;
 
+  /**
+   * Test metadata of SingleActor subtype
+   */
+  private static MdBusinessDAO             mdActor;
+
+  /**
+   * Subtype of SingleActorDAO test object
+   **/
+  private static SingleActorDAO            newActor1;
+
+  /**
+   * Test dimension
+   */
   private static MdDimensionDAO            mdDimension;
 
   /**
@@ -327,6 +343,13 @@ public class IntegratedSessionTest extends TestCase
     newUser2.setValue(UserInfo.SESSION_LIMIT, Integer.toString(sessionLimit));
     newUser2.apply();
 
+    mdActor = TestFixtureFactory.createMdBusiness("TestUser");
+    mdActor.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(SingleActorInfo.CLASS).getId());
+    mdActor.apply();
+
+    newActor1 = (SingleActorDAO) BusinessDAO.newInstance(mdActor.definesType());
+    newActor1.apply();
+
     mdDimension = TestFixtureFactory.createMdDimension();
     mdDimension.apply();
 
@@ -494,6 +517,9 @@ public class IntegratedSessionTest extends TestCase
     TestFixtureFactory.delete(mdDimension);
     TestFixtureFactory.delete(newUser1);
     TestFixtureFactory.delete(newUser2);
+
+    TestFixtureFactory.delete(newActor1);
+    TestFixtureFactory.delete(mdActor);
   }
 
   /**
@@ -3895,7 +3921,7 @@ public class IntegratedSessionTest extends TestCase
   public void testAttributeDimensionPermissions()
   {
     MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute.getMdAttributeDimension(mdDimension);
-    
+
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
     newUser1.grantPermission(Operation.WRITE, mdAttributeDimension.getId());
     newUser1.grantPermission(Operation.READ, mdAttributeDimension.getId());
@@ -4049,6 +4075,23 @@ public class IntegratedSessionTest extends TestCase
     finally
     {
       superRole.delete();
+    }
+  }
+
+  public void testSingleActorPermissions()
+  {
+    newActor1.grantPermission(Operation.WRITE, mdBusiness.getId());
+    newActor1.grantPermission(Operation.WRITE, mdAttribute.getId());
+
+    String sessionId = SessionFacade.logIn(newActor1, new Locale[] { CommonProperties.getDefaultLocale() });
+
+    try
+    {
+      writeTypePermissions(sessionId);
+    }
+    finally
+    {
+      Facade.logout(sessionId);
     }
   }
 }

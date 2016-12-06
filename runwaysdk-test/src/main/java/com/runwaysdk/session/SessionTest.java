@@ -35,6 +35,7 @@ import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.business.state.MdStateMachineDAO;
@@ -978,11 +979,11 @@ public class SessionTest extends TestCase
   {
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
-    UserDAOIF user = SessionFacade.getUser(sessionId);
+    SingleActorDAOIF user = SessionFacade.getUser(sessionId);
 
     UserDAOIF publicUser = UserDAO.getPublicUser();
 
-    assertEquals(publicUser, user);
+    assertEquals(publicUser.getId(), user.getId());
   }
 
   public void testForceCleanUp()

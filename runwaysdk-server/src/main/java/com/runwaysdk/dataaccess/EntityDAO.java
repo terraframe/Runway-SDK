@@ -1898,10 +1898,10 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       // trying to modify the object.
       if (!this.onlySystemAttributesAreModified())
       {
-        String currentDomain = CommonProperties.getDomain();
-
-        String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";
-        throw new SiteException(msg, this, currentDomain);
+//        String currentDomain = CommonProperties.getDomain();
+//
+//        String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";
+//        throw new SiteException(msg, this, currentDomain);
       }
     }
   }

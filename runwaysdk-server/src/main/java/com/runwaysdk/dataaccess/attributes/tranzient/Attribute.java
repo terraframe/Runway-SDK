@@ -477,11 +477,11 @@ public abstract class Attribute implements AttributeIF
     }
     else
     {
-      String error = "Cannot change the immutable attribute [" + getName() + "] on type ["
-          + getDefiningClassType() + "]";
-      ImmutableAttributeProblem problem =
-        new ImmutableAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttribute.definedByClass(), mdAttribute, error, this);
-      problem.throwIt();
+//      String error = "Cannot change the immutable attribute [" + getName() + "] on type ["
+//          + getDefiningClassType() + "]";
+//      ImmutableAttributeProblem problem =
+//        new ImmutableAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttribute.definedByClass(), mdAttribute, error, this);
+//      problem.throwIt();
     }
   }
 
