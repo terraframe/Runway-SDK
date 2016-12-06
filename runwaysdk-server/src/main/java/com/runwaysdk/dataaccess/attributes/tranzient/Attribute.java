@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.runwaysdk.constants.EntityInfo;
+import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -471,17 +472,17 @@ public abstract class Attribute implements AttributeIF
    */
   protected void validateMutable(MdAttributeDAOIF mdAttribute)
   {
-    if ( !mdAttribute.isImmutable() || this.containingTransientDAO.isNew())
+    if ( !mdAttribute.isImmutable() || this.containingTransientDAO.isNew() || ServerProperties.getAllowModificationOfMdAttribute())
     {
       return;
     }
     else
     {
-//      String error = "Cannot change the immutable attribute [" + getName() + "] on type ["
-//          + getDefiningClassType() + "]";
-//      ImmutableAttributeProblem problem =
-//        new ImmutableAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttribute.definedByClass(), mdAttribute, error, this);
-//      problem.throwIt();
+      String error = "Cannot change the immutable attribute [" + getName() + "] on type ["
+          + getDefiningClassType() + "]";
+      ImmutableAttributeProblem problem =
+        new ImmutableAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttribute.definedByClass(), mdAttribute, error, this);
+      problem.throwIt();
     }
   }
 

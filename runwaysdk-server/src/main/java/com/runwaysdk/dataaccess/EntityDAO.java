@@ -1892,16 +1892,16 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   protected void validateSite()
   {
     // Do not enforce the site master if this object is imported
-    if (!this.isImport() && !this.isImportResolution() && this.getMdClassDAO().getEnforceSiteMaster() && !this.isMasteredHere())
+    if (!this.isImport() && !this.isImportResolution() && this.getMdClassDAO().getEnforceSiteMaster() && !this.isMasteredHere() && !ServerProperties.getIgnoreSiteMaster())
     {
       // If only the system attributes are modified, then no user is directly
       // trying to modify the object.
       if (!this.onlySystemAttributesAreModified())
       {
-//        String currentDomain = CommonProperties.getDomain();
-//
-//        String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";
-//        throw new SiteException(msg, this, currentDomain);
+        String currentDomain = CommonProperties.getDomain();
+
+        String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";
+        throw new SiteException(msg, this, currentDomain);
       }
     }
   }

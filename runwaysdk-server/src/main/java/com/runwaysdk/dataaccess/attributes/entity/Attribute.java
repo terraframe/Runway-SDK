@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.runwaysdk.constants.EntityInfo;
+import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -538,15 +539,15 @@ public abstract class Attribute implements AttributeIF, Serializable
    */
   protected void validateMutable(MdAttributeDAOIF mdAttribute)
   {
-    if (!mdAttribute.isImmutable() || this.containingEntity.isNew())
+    if (!mdAttribute.isImmutable() || this.containingEntity.isNew() || ServerProperties.getAllowModificationOfMdAttribute())
     {
       return;
     }
     else
     {
-//      String error = "Cannot change the immutable attribute [" + getName() + "] on type [" + getDefiningClassType() + "]";
-//      ImmutableAttributeProblem problem = new ImmutableAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttribute.definedByClass(), mdAttribute, error, this);
-//      problem.throwIt();
+      String error = "Cannot change the immutable attribute [" + getName() + "] on type [" + getDefiningClassType() + "]";
+      ImmutableAttributeProblem problem = new ImmutableAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttribute.definedByClass(), mdAttribute, error, this);
+      problem.throwIt();
     }
   }
 

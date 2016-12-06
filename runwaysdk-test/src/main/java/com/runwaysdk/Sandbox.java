@@ -86,39 +86,43 @@ public class Sandbox implements Job
 {
   public static void main(String[] args) throws Exception
   {
-    // Sandbox.importWithDiff();
-    changeLockedByReference();
+    Sandbox.importWithDiff();
   }
 
   @Request
-  public static void changeLockedByReference()
+  public static void importWithDiff()
   {
-    Sandbox.changeLockedByReference_InTransaction();
+    Database.enableLoggingDMLAndDDLstatements(true);
+
+    // Sandbox.createGenerateSourceAttribute();
+//    Sandbox.deleteMdFacade();
+    
+    Sandbox.changeLockedByReference();
   }
 
   @Transaction
-  public static void changeLockedByReference_InTransaction()
+  public static void changeLockedByReference()
   {
     MdBusinessDAOIF mdSingleActor = MdBusinessDAO.getMdBusinessDAO(SingleActorInfo.CLASS);
 
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(MdAttributeReferenceInfo.CLASS);
     query.WHERE(query.aCharacter(MdAttributeConcreteInfo.NAME).EQ(MdElementInfo.LOCKED_BY));
-    query.AND(query.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(mdSingleActor));
+    query.AND(query.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).NE(mdSingleActor));
 
     OIterator<BusinessDAOIF> iterator = query.getIterator();
 
     while (iterator.hasNext())
     {
       MdAttributeConcreteDAO lockedBy = (MdAttributeConcreteDAO) iterator.next().getBusinessDAO();
-//      lockedBy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdSingleActor.getId());
-//      lockedBy.apply();
+      lockedBy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdSingleActor.getId());
+      lockedBy.apply();
       
-      MdClassDAOIF mdClass = lockedBy.definedByClass();
-      
-      System.out.println(mdClass.getKey());
-      
-      GenerationManager.generate(mdClass);
+//      MdClassDAOIF mdClass = lockedBy.definedByClass();
+//      
+//      System.out.println(mdClass.getKey());
+//      
+//      GenerationManager.generate(mdClass);
     }
 
     // MdBusinessDAOIF mdBusinessDAO =
@@ -160,15 +164,6 @@ public class Sandbox implements Job
     // System.out.println(mdElementDAOIF.definesType()+" "+cacheCode);
     // }
 
-  }
-
-  @Request
-  public static void importWithDiff()
-  {
-    Database.enableLoggingDMLAndDDLstatements(true);
-
-    // Sandbox.createGenerateSourceAttribute();
-    Sandbox.deleteMdFacade();
   }
 
   private static void deleteMdFacade()
