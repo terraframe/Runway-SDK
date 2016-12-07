@@ -312,10 +312,11 @@
                     <versionRange>[2.1,)</versionRange>
                     <goals>
                       <goal>copy-dependencies</goal>
+                      <goal>build-classpath</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <execute />
                   </action>
                 </pluginExecution>
                 <pluginExecution>
