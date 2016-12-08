@@ -54,8 +54,10 @@ import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.util.FileIO;
 
 /**
- * Concrete implementation of {@link FileSessionCache}. The {@link Session}s in this {@link SessionCache} are stored on the file system. In addition, this cache spawns a thread which automatically
- * checks and removes expired {@link Session}s from the cache.
+ * Concrete implementation of {@link FileSessionCache}. The {@link Session}s in
+ * this {@link SessionCache} are stored on the file system. In addition, this
+ * cache spawns a thread which automatically checks and removes expired
+ * {@link Session}s from the cache.
  *
  * @author Justin Smethie
  */
@@ -64,7 +66,8 @@ public class FileSessionCache extends ManagedUserSessionCache
   private static final int     MAX_DPETH = 6;
 
   /**
-   * The fully qualified path of the root directory for this {@link SessionCache}.
+   * The fully qualified path of the root directory for this
+   * {@link SessionCache}.
    */
   private String               rootDirectory;
 
@@ -84,8 +87,11 @@ public class FileSessionCache extends ManagedUserSessionCache
   private Map<String, Integer> requestCount;
 
   /**
-   * Creates a new {@link FileSessionCache}. This cache assumes that any file in the root directory or it's sub-directories is a serialized {@link Session} which belongs to the cache. Thus it is
-   * important that the root directory does not overlap another {@link FileSessionCache} or have exteranious files in it.
+   * Creates a new {@link FileSessionCache}. This cache assumes that any file in
+   * the root directory or it's sub-directories is a serialized {@link Session}
+   * which belongs to the cache. Thus it is important that the root directory
+   * does not overlap another {@link FileSessionCache} or have exteranious files
+   * in it.
    *
    * @param rootDirectory
    *          Fully qualified path of the root directory
@@ -128,13 +134,17 @@ public class FileSessionCache extends ManagedUserSessionCache
   }
 
   /**
-   * Serializes a {@link Session} to the file system. If the {@link Session} already exists on the file system then the content of the file is overwritten with the given {@link Session} object.
-   * Optionally, updates the session count of the {@link UserDAO} of the {@link Session} if the {@link Session} does not already exist on the file system.
+   * Serializes a {@link Session} to the file system. If the {@link Session}
+   * already exists on the file system then the content of the file is
+   * overwritten with the given {@link Session} object. Optionally, updates the
+   * session count of the {@link UserDAO} of the {@link Session} if the
+   * {@link Session} does not already exist on the file system.
    *
    * @param session
    *          The {@link Session} to serialize to the file system
    * @param updateUserCount
-   *          Flag indicating if the {@link UserDAO}'s session count should be checked and updated.
+   *          Flag indicating if the {@link UserDAO}'s session count should be
+   *          checked and updated.
    */
   private void putSessionOnFileSystem(Session session, boolean updateUserCount)
   {
@@ -315,9 +325,12 @@ public class FileSessionCache extends ManagedUserSessionCache
   protected String logIn(String username, String password, Locale[] locales)
   {
     Session session = new Session(locales);
-    // Heads up: Smethie: why is this supering up to a different method that does not add
-    // the session to the session cache. Also, why are you adding it anyway below?
-    // See if you can remove this method entirely and just have polymorphism call the super method.
+    // Heads up: Smethie: why is this supering up to a different method that
+    // does not add
+    // the session to the session cache. Also, why are you adding it anyway
+    // below?
+    // See if you can remove this method entirely and just have polymorphism
+    // call the super method.
     super.changeLogIn(username, password, session);
 
     // Update the session on the cache with the user logged in
@@ -356,7 +369,7 @@ public class FileSessionCache extends ManagedUserSessionCache
       sessionCacheLock.unlock();
     }
   }
-  
+
   @Override
   protected void changeLogin(SingleActorDAOIF user, String sessionId)
   {
@@ -378,6 +391,23 @@ public class FileSessionCache extends ManagedUserSessionCache
       {
         this.putSessionOnFileSystem(session, false);
       }
+    }
+    finally
+    {
+      sessionCacheLock.unlock();
+    }
+  }
+
+  @Override
+  protected void changeLogIn(SingleActorDAOIF user, Session session)
+  {
+    sessionCacheLock.lock();
+
+    try
+    {
+      super.changeLogIn(user, session);
+
+      this.putSessionOnFileSystem(session, false);
     }
     finally
     {
@@ -476,7 +506,8 @@ public class FileSessionCache extends ManagedUserSessionCache
   /**
    * @param sessionId
    *          The session id
-   * @return Fully qualified directory location of a Session with the given session id.
+   * @return Fully qualified directory location of a Session with the given
+   *         session id.
    */
   private String getDirectory(String sessionId)
   {
@@ -493,8 +524,11 @@ public class FileSessionCache extends ManagedUserSessionCache
   }
 
   /**
-   * Crawls through a directory and all sub directories removing any serialized {@link Session} which has expired. This method assumes that any file it finds on the file system is either a directory
-   * or a serialized {@link Session}. This method performs it crawl through the use of recursion. Do not use this method for a deep directory structure.
+   * Crawls through a directory and all sub directories removing any serialized
+   * {@link Session} which has expired. This method assumes that any file it
+   * finds on the file system is either a directory or a serialized
+   * {@link Session}. This method performs it crawl through the use of
+   * recursion. Do not use this method for a deep directory structure.
    *
    * @param directory
    *          The root directory.
@@ -640,7 +674,8 @@ public class FileSessionCache extends ManagedUserSessionCache
   }
 
   /**
-   * ObjectInputStream which delegates to LoaderDecorator when loading classes from the JVM.
+   * ObjectInputStream which delegates to LoaderDecorator when loading classes
+   * from the JVM.
    *
    * @author Justin Smethie
    */

@@ -1364,13 +1364,13 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       // was set.
       if (this.locale == null)
       {
-        if (!this.user.getId().equals(UserDAOIF.PUBLIC_USER_ID) && this.user instanceof UserDAOIF)
+        if (this.user.getId().equals(UserDAOIF.PUBLIC_USER_ID))
         {
-          this.setLocale(ConversionFacade.getLocale( ( (UserDAOIF) this.user ).getLocale()));
+          this.setLocale(CommonProperties.getDefaultLocale());
         }
         else
         {
-          this.setLocale(CommonProperties.getDefaultLocale());
+          this.setLocale(ConversionFacade.getLocale(this.user.getLocale()));
         }
       }
 
