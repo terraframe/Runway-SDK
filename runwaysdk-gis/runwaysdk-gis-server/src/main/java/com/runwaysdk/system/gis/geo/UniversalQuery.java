@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = 1053236605)
+@com.runwaysdk.business.ClassSignature(hash = -2045050489)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -239,27 +239,27 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.LASTUPDATEDBY, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy()
+  public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy()
   {
     return getLockedBy(null);
 
   }
  
-  public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy(String alias)
+  public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias)
   {
 
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY);
 
-    return (com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY, mdAttributeIF, this, alias, null);
+    return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY, mdAttributeIF, this, alias, null);
 
   }
  
-  public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy(String alias, String displayLabel)
+  public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel)
   {
 
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY);
 
-    return (com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY, mdAttributeIF, this, alias, displayLabel);
+    return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY, mdAttributeIF, this, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -371,7 +371,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     }
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY)) 
     {
-       return new com.runwaysdk.system.UsersQuery.UsersQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+       return new com.runwaysdk.system.SingleActorQuery.SingleActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.OWNER)) 
     {
@@ -660,119 +660,235 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   }
 
 
-  public com.runwaysdk.query.Condition universalAttributeRoots()
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
 
     return this.getBusinessQuery().isChildIn(relationshipQuery);
   }
 
 
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots()
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
 
     return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition universalAttributeRoots(com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
   {
-    return this.getBusinessQuery().isChildIn(universalAttributeRootQuery);
+    return this.getBusinessQuery().isChildIn(universalMultiTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots(com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
   {
-    return this.getBusinessQuery().isChildIn_SUBSELECT(universalAttributeRootQuery);
+    return this.getBusinessQuery().isChildIn_SUBSELECT(universalMultiTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeMultiTermQuery));
+
+    return this.getBusinessQuery().isChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeMultiTermQuery));
+
+    return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
+  {
+    universalMultiTermAttributeRootQuery.AND(universalMultiTermAttributeRootQuery.hasParent(mdAttributeMultiTermQuery));
+    return this.getBusinessQuery().isChildIn(universalMultiTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
+  {
+    universalMultiTermAttributeRootQuery.AND(universalMultiTermAttributeRootQuery.hasParent(mdAttributeMultiTermQuery));
+    return this.getBusinessQuery().isChildIn_SUBSELECT(universalMultiTermAttributeRootQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+
+    return this.getBusinessQuery().isNotChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
+  {
+    return this.getBusinessQuery().isNotChildIn(universalMultiTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
+  {
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(universalMultiTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeMultiTermQuery));
+
+    return this.getBusinessQuery().isNotChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeMultiTermQuery));
+
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
+  {
+    universalMultiTermAttributeRootQuery.AND(universalMultiTermAttributeRootQuery.hasParent(mdAttributeMultiTermQuery));
+    return this.getBusinessQuery().isNotChildIn(universalMultiTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
+  {
+    universalMultiTermAttributeRootQuery.AND(universalMultiTermAttributeRootQuery.hasParent(mdAttributeMultiTermQuery));
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(universalMultiTermAttributeRootQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition universalTermAttributeRoots()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+
+    return this.getBusinessQuery().isChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+
+    return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition universalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
+  {
+    return this.getBusinessQuery().isChildIn(universalTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
+  {
+    return this.getBusinessQuery().isChildIn_SUBSELECT(universalTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
     relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.getBusinessQuery().isChildIn(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
     relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
   {
-    universalAttributeRootQuery.AND(universalAttributeRootQuery.hasParent(mdAttributeTermQuery));
-    return this.getBusinessQuery().isChildIn(universalAttributeRootQuery);
+    universalTermAttributeRootQuery.AND(universalTermAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.getBusinessQuery().isChildIn(universalTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
   {
-    universalAttributeRootQuery.AND(universalAttributeRootQuery.hasParent(mdAttributeTermQuery));
-    return this.getBusinessQuery().isChildIn_SUBSELECT(universalAttributeRootQuery);
+    universalTermAttributeRootQuery.AND(universalTermAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.getBusinessQuery().isChildIn_SUBSELECT(universalTermAttributeRootQuery);
   }
 
 
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots()
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
 
     return this.getBusinessQuery().isNotChildIn(relationshipQuery);
   }
 
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots()
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
 
     return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots(com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
   {
-    return this.getBusinessQuery().isNotChildIn(universalAttributeRootQuery);
+    return this.getBusinessQuery().isNotChildIn(universalTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots(com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
   {
-    return this.getBusinessQuery().isNotChildIn_SUBSELECT(universalAttributeRootQuery);
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(universalTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
     relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.getBusinessQuery().isNotChildIn(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
     relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
   {
-    universalAttributeRootQuery.AND(universalAttributeRootQuery.hasParent(mdAttributeTermQuery));
-    return this.getBusinessQuery().isNotChildIn(universalAttributeRootQuery);
+    universalTermAttributeRootQuery.AND(universalTermAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.getBusinessQuery().isNotChildIn(universalTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
   {
-    universalAttributeRootQuery.AND(universalAttributeRootQuery.hasParent(mdAttributeTermQuery));
-    return this.getBusinessQuery().isNotChildIn_SUBSELECT(universalAttributeRootQuery);
+    universalTermAttributeRootQuery.AND(universalTermAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(universalTermAttributeRootQuery);
   }
 
 
@@ -1042,9 +1158,9 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLastUpdatedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLastUpdatedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLastUpdatedBy(String alias, String displayLabel);
-    public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy();
-    public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy(String alias);
-    public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy(String alias, String displayLabel);
+    public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
+    public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
+    public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -1146,16 +1262,28 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.Condition SUBSELECT_superType(com.runwaysdk.system.gis.geo.UniversalQuery universalQuery, com.runwaysdk.system.gis.geo.IsARelationshipQuery isARelationshipQuery);
 
 
-  public com.runwaysdk.query.Condition universalAttributeRoots();
-  public com.runwaysdk.query.Condition universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots();
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery);
 
-  public com.runwaysdk.query.Condition universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery);
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery);
 
 
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots();
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots();
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery);
 
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery);
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery);
+
+
+  public com.runwaysdk.query.Condition universalTermAttributeRoots();
+  public com.runwaysdk.query.Condition universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
+
+  public com.runwaysdk.query.Condition universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots();
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery);
 
 
   public com.runwaysdk.query.Condition NOT_IN_allowedIn();
@@ -1182,16 +1310,28 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superType(com.runwaysdk.system.gis.geo.UniversalQuery universalQuery, com.runwaysdk.system.gis.geo.IsARelationshipQuery isARelationshipQuery);
 
 
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots();
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots();
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery);
 
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery);
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery);
 
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots();
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots();
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery);
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery);
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery);
+
+
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots();
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
+
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots();
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery);
 
   }
 
@@ -1376,21 +1516,21 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LASTUPDATEDBY,  alias, displayLabel);
 
   }
-  public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy()
+  public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy()
   {
     return getLockedBy(null);
 
   }
  
-  public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy(String alias)
+  public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias)
   {
-    return (com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY, alias, null);
+    return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY, alias, null);
 
   }
  
-  public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy(String alias, String displayLabel)
+  public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel)
   {
-    return (com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY,  alias, displayLabel);
+    return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY,  alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -1827,61 +1967,119 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   }
 
 
-  public com.runwaysdk.query.Condition universalAttributeRoots()
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
 
     return this.isChildIn(relationshipQuery);
   }
 
 
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots()
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
 
     return this.isChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition universalAttributeRoots(com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
   {
-    return this.isChildIn(universalAttributeRootQuery);
+    return this.isChildIn(universalMultiTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots(com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
   {
-    return this.isChildIn_SUBSELECT(universalAttributeRootQuery);
+    return this.isChildIn_SUBSELECT(universalMultiTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeMultiTermQuery));
+
+    return this.isChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeMultiTermQuery));
+
+    return this.isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
+  {
+    universalMultiTermAttributeRootQuery.AND(universalMultiTermAttributeRootQuery.hasParent(mdAttributeMultiTermQuery));
+    return this.isChildIn(universalMultiTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
+  {
+    universalMultiTermAttributeRootQuery.AND(universalMultiTermAttributeRootQuery.hasParent(mdAttributeMultiTermQuery));
+    return this.isChildIn_SUBSELECT(universalMultiTermAttributeRootQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition universalTermAttributeRoots()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+
+    return this.isChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+
+    return this.isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition universalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
+  {
+    return this.isChildIn(universalTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
+  {
+    return this.isChildIn_SUBSELECT(universalTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
     relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.isChildIn(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
     relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.isChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
   {
-    universalAttributeRootQuery.AND(universalAttributeRootQuery.hasParent(mdAttributeTermQuery));
-    return this.isChildIn(universalAttributeRootQuery);
+    universalTermAttributeRootQuery.AND(universalTermAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.isChildIn(universalTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
   {
-    universalAttributeRootQuery.AND(universalAttributeRootQuery.hasParent(mdAttributeTermQuery));
-    return this.isChildIn_SUBSELECT(universalAttributeRootQuery);
+    universalTermAttributeRootQuery.AND(universalTermAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.isChildIn_SUBSELECT(universalTermAttributeRootQuery);
   }
 
 
@@ -2001,61 +2199,119 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   }
 
 
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots()
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
 
     return this.isNotChildIn(relationshipQuery);
   }
 
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots()
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
 
     return this.isNotChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots(com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
   {
-    return this.isNotChildIn(universalAttributeRootQuery);
+    return this.isNotChildIn(universalMultiTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots(com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
   {
-    return this.isNotChildIn_SUBSELECT(universalAttributeRootQuery);
+    return this.isNotChildIn_SUBSELECT(universalMultiTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeMultiTermQuery));
+
+    return this.isNotChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeMultiTermQuery));
+
+    return this.isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
+  {
+    universalMultiTermAttributeRootQuery.AND(universalMultiTermAttributeRootQuery.hasParent(mdAttributeMultiTermQuery));
+    return this.isNotChildIn(universalMultiTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermQuery mdAttributeMultiTermQuery, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQuery universalMultiTermAttributeRootQuery)
+  {
+    universalMultiTermAttributeRootQuery.AND(universalMultiTermAttributeRootQuery.hasParent(mdAttributeMultiTermQuery));
+    return this.isNotChildIn_SUBSELECT(universalMultiTermAttributeRootQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+
+    return this.isNotChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+
+    return this.isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
+  {
+    return this.isNotChildIn(universalTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
+  {
+    return this.isNotChildIn_SUBSELECT(universalTermAttributeRootQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
     relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.isNotChildIn(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
     relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.isNotChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
   {
-    universalAttributeRootQuery.AND(universalAttributeRootQuery.hasParent(mdAttributeTermQuery));
-    return this.isNotChildIn(universalAttributeRootQuery);
+    universalTermAttributeRootQuery.AND(universalTermAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.isNotChildIn(universalTermAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalAttributeRootQuery universalAttributeRootQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_universalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootQuery universalTermAttributeRootQuery)
   {
-    universalAttributeRootQuery.AND(universalAttributeRootQuery.hasParent(mdAttributeTermQuery));
-    return this.isNotChildIn_SUBSELECT(universalAttributeRootQuery);
+    universalTermAttributeRootQuery.AND(universalTermAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.isNotChildIn_SUBSELECT(universalTermAttributeRootQuery);
   }
 
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -2076,7 +2332,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     }
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY)) 
     {
-       return new com.runwaysdk.system.UsersQuery.UsersQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+       return new com.runwaysdk.system.SingleActorQuery.SingleActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.OWNER)) 
     {
@@ -2144,9 +2400,9 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLastUpdatedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLastUpdatedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLastUpdatedBy(String alias, String displayLabel);
-    public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy();
-    public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy(String alias);
-    public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy(String alias, String displayLabel);
+    public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
+    public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
+    public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -2399,21 +2655,21 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LASTUPDATEDBY,  alias, displayLabel);
 
   }
-  public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy()
+  public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy()
   {
     return getLockedBy(null);
 
   }
  
-  public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy(String alias)
+  public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias)
   {
-    return (com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY, alias, null);
+    return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY, alias, null);
 
   }
  
-  public com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF getLockedBy(String alias, String displayLabel)
+  public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel)
   {
-    return (com.runwaysdk.system.UsersQuery.UsersQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY,  alias, displayLabel);
+    return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY,  alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -2519,7 +2775,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     }
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY)) 
     {
-       return new com.runwaysdk.system.UsersQuery.UsersQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+       return new com.runwaysdk.system.SingleActorQuery.SingleActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.OWNER)) 
     {

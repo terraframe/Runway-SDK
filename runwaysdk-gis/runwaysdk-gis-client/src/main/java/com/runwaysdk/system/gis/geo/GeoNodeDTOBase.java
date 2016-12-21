@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -2100325224)
+@com.runwaysdk.business.ClassSignature(hash = -1492642893)
 public abstract class GeoNodeDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoNode";
-  private static final long serialVersionUID = -2100325224;
+  private static final long serialVersionUID = -1492642893;
   
   protected GeoNodeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -317,7 +317,7 @@ public abstract class GeoNodeDTOBase extends com.runwaysdk.business.BusinessDTO
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -325,7 +325,7 @@ public abstract class GeoNodeDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

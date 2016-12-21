@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -1845266989)
+@com.runwaysdk.business.ClassSignature(hash = -424844422)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -54,7 +54,7 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
   public static java.lang.String TYPE = "type";
   public static java.lang.String UNIVERSAL = "universal";
   public static java.lang.String WKT = "wkt";
-  private static final long serialVersionUID = -1845266989;
+  private static final long serialVersionUID = -424844422;
   
   public GeoEntityBase()
   {
@@ -72,10 +72,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(CREATEDATE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCreateDateMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF getCreateDateMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(CREATEDATE);
+    return (com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF)mdClassIF.definesAttribute(CREATEDATE);
   }
   
   public com.runwaysdk.system.SingleActor getCreatedBy()
@@ -100,10 +100,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(CREATEDBY);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCreatedByMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getCreatedByMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(CREATEDBY);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(CREATEDBY);
   }
   
   public com.runwaysdk.system.gis.geo.GeoEntityDisplayLabel getDisplayLabel()
@@ -116,10 +116,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(DISPLAYLABEL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDisplayLabelMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF getDisplayLabelMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(DISPLAYLABEL);
+    return (com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF)mdClassIF.definesAttribute(DISPLAYLABEL);
   }
   
   public com.runwaysdk.system.metadata.MdDomain getEntityDomain()
@@ -144,10 +144,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(ENTITYDOMAIN);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getEntityDomainMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getEntityDomainMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(ENTITYDOMAIN);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(ENTITYDOMAIN);
   }
   
   public void setEntityDomain(com.runwaysdk.system.metadata.MdDomain value)
@@ -172,10 +172,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(GEOID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getGeoIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getGeoIdMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(GEOID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(GEOID);
   }
   
   public void setGeoId(String value)
@@ -200,10 +200,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(GEOMULTIPOLYGON);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getGeoMultiPolygonMd()
+  public static com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF getGeoMultiPolygonMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(GEOMULTIPOLYGON);
+    return (com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF)mdClassIF.definesAttribute(GEOMULTIPOLYGON);
   }
   
   public void setGeoMultiPolygon(com.vividsolutions.jts.geom.MultiPolygon value)
@@ -228,10 +228,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(GEOPOINT);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getGeoPointMd()
+  public static com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF getGeoPointMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(GEOPOINT);
+    return (com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF)mdClassIF.definesAttribute(GEOPOINT);
   }
   
   public void setGeoPoint(com.vividsolutions.jts.geom.Point value)
@@ -256,10 +256,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
   }
   
   public String getKeyName()
@@ -272,10 +272,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(KEYNAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getKeyNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getKeyNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(KEYNAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(KEYNAME);
   }
   
   public void setKeyName(String value)
@@ -300,10 +300,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(LASTUPDATEDATE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getLastUpdateDateMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF getLastUpdateDateMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(LASTUPDATEDATE);
+    return (com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF)mdClassIF.definesAttribute(LASTUPDATEDATE);
   }
   
   public com.runwaysdk.system.SingleActor getLastUpdatedBy()
@@ -328,13 +328,13 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(LASTUPDATEDBY);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getLastUpdatedByMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getLastUpdatedByMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(LASTUPDATEDBY);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LASTUPDATEDBY);
   }
   
-  public com.runwaysdk.system.Users getLockedBy()
+  public com.runwaysdk.system.SingleActor getLockedBy()
   {
     if (getValue(LOCKEDBY).trim().equals(""))
     {
@@ -342,7 +342,7 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     }
     else
     {
-      return com.runwaysdk.system.Users.get(getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActor.get(getValue(LOCKEDBY));
     }
   }
   
@@ -356,10 +356,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(LOCKEDBY);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getLockedByMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getLockedByMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(LOCKEDBY);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LOCKEDBY);
   }
   
   public com.runwaysdk.system.Actor getOwner()
@@ -384,10 +384,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(OWNER);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOwnerMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getOwnerMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(OWNER);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(OWNER);
   }
   
   public void setOwner(com.runwaysdk.system.Actor value)
@@ -412,10 +412,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(SEQ);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSeqMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLongDAOIF getSeqMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(SEQ);
+    return (com.runwaysdk.dataaccess.MdAttributeLongDAOIF)mdClassIF.definesAttribute(SEQ);
   }
   
   public String getSiteMaster()
@@ -428,10 +428,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(SITEMASTER);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSiteMasterMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getSiteMasterMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(SITEMASTER);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SITEMASTER);
   }
   
   public String getType()
@@ -444,10 +444,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(TYPE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getTypeMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getTypeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(TYPE);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(TYPE);
   }
   
   public com.runwaysdk.system.gis.geo.Universal getUniversal()
@@ -472,10 +472,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(UNIVERSAL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getUniversalMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getUniversalMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(UNIVERSAL);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(UNIVERSAL);
   }
   
   public void setUniversal(com.runwaysdk.system.gis.geo.Universal value)
@@ -500,10 +500,10 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(WKT);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getWktMd()
+  public static com.runwaysdk.dataaccess.MdAttributeTextDAOIF getWktMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return mdClassIF.definesAttribute(WKT);
+    return (com.runwaysdk.dataaccess.MdAttributeTextDAOIF)mdClassIF.definesAttribute(WKT);
   }
   
   public void setWkt(String value)
@@ -609,32 +609,60 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot addGeoEntityAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  public com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot addGeoEntityMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTerm mdAttributeMultiTerm)
   {
-    return (com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot) addParent(mdAttributeTerm, com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot.CLASS);
+    return (com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot) addParent(mdAttributeMultiTerm, com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.CLASS);
   }
   
-  public void removeGeoEntityAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  public void removeGeoEntityMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTerm mdAttributeMultiTerm)
   {
-    removeAllParents(mdAttributeTerm, com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeTerm> getAllGeoEntityAttributeRoots()
-  {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeTerm>) getParents(com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot.CLASS);
+    removeAllParents(mdAttributeMultiTerm, com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot> getAllGeoEntityAttributeRootsRel()
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeMultiTerm> getAllGeoEntityMultiTermAttributeRoots()
   {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot>) getParentRelationships(com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot.CLASS);
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeMultiTerm>) getParents(com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot> getGeoEntityAttributeRootsRel(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot> getAllGeoEntityMultiTermAttributeRootsRel()
   {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot>) getRelationshipsWithParent(mdAttributeTerm, com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot.CLASS);
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot>) getParentRelationships(com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot> getGeoEntityMultiTermAttributeRootsRel(com.runwaysdk.system.metadata.MdAttributeMultiTerm mdAttributeMultiTerm)
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot>) getRelationshipsWithParent(mdAttributeMultiTerm, com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.CLASS);
+  }
+  
+  public com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot addGeoEntityTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  {
+    return (com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot) addParent(mdAttributeTerm, com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot.CLASS);
+  }
+  
+  public void removeGeoEntityTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  {
+    removeAllParents(mdAttributeTerm, com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeTerm> getAllGeoEntityTermAttributeRoots()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeTerm>) getParents(com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot> getAllGeoEntityTermAttributeRootsRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot>) getParentRelationships(com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot> getGeoEntityTermAttributeRootsRel(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot>) getRelationshipsWithParent(mdAttributeTerm, com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot.CLASS);
   }
   
   public com.runwaysdk.system.gis.geo.LocatedIn addLocatedIn(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)

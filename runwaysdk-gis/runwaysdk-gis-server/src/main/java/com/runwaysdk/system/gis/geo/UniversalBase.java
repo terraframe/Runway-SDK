@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = 1243219796)
+@com.runwaysdk.business.ClassSignature(hash = -1702054576)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -53,7 +53,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
   public static java.lang.String UNIVERSALID = "universalId";
-  private static final long serialVersionUID = 1243219796;
+  private static final long serialVersionUID = -1702054576;
   
   public UniversalBase()
   {
@@ -72,10 +72,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(CREATEDATE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCreateDateMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF getCreateDateMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(CREATEDATE);
+    return (com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF)mdClassIF.definesAttribute(CREATEDATE);
   }
   
   public com.runwaysdk.system.SingleActor getCreatedBy()
@@ -100,10 +100,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(CREATEDBY);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCreatedByMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getCreatedByMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(CREATEDBY);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(CREATEDBY);
   }
   
   public com.runwaysdk.system.gis.geo.UniversalDescription getDescription()
@@ -116,10 +116,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(DESCRIPTION);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDescriptionMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF getDescriptionMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(DESCRIPTION);
+    return (com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF)mdClassIF.definesAttribute(DESCRIPTION);
   }
   
   public com.runwaysdk.system.gis.geo.UniversalDisplayLabel getDisplayLabel()
@@ -132,10 +132,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(DISPLAYLABEL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDisplayLabelMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF getDisplayLabelMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(DISPLAYLABEL);
+    return (com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF)mdClassIF.definesAttribute(DISPLAYLABEL);
   }
   
   public com.runwaysdk.system.metadata.MdDomain getEntityDomain()
@@ -160,10 +160,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(ENTITYDOMAIN);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getEntityDomainMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getEntityDomainMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(ENTITYDOMAIN);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(ENTITYDOMAIN);
   }
   
   public void setEntityDomain(com.runwaysdk.system.metadata.MdDomain value)
@@ -188,10 +188,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
   }
   
   public String getKeyName()
@@ -204,10 +204,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(KEYNAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getKeyNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getKeyNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(KEYNAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(KEYNAME);
   }
   
   public void setKeyName(String value)
@@ -232,10 +232,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(LASTUPDATEDATE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getLastUpdateDateMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF getLastUpdateDateMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(LASTUPDATEDATE);
+    return (com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF)mdClassIF.definesAttribute(LASTUPDATEDATE);
   }
   
   public com.runwaysdk.system.SingleActor getLastUpdatedBy()
@@ -260,13 +260,13 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(LASTUPDATEDBY);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getLastUpdatedByMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getLastUpdatedByMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(LASTUPDATEDBY);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LASTUPDATEDBY);
   }
   
-  public com.runwaysdk.system.Users getLockedBy()
+  public com.runwaysdk.system.SingleActor getLockedBy()
   {
     if (getValue(LOCKEDBY).trim().equals(""))
     {
@@ -274,7 +274,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     }
     else
     {
-      return com.runwaysdk.system.Users.get(getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActor.get(getValue(LOCKEDBY));
     }
   }
   
@@ -288,10 +288,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(LOCKEDBY);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getLockedByMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getLockedByMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(LOCKEDBY);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LOCKEDBY);
   }
   
   public com.runwaysdk.system.Actor getOwner()
@@ -316,10 +316,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(OWNER);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOwnerMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getOwnerMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(OWNER);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(OWNER);
   }
   
   public void setOwner(com.runwaysdk.system.Actor value)
@@ -344,10 +344,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(SEQ);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSeqMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLongDAOIF getSeqMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(SEQ);
+    return (com.runwaysdk.dataaccess.MdAttributeLongDAOIF)mdClassIF.definesAttribute(SEQ);
   }
   
   public String getSiteMaster()
@@ -360,10 +360,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(SITEMASTER);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSiteMasterMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getSiteMasterMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(SITEMASTER);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SITEMASTER);
   }
   
   public String getType()
@@ -376,10 +376,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(TYPE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getTypeMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getTypeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(TYPE);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(TYPE);
   }
   
   public String getUniversalId()
@@ -392,10 +392,10 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     this.validateAttribute(UNIVERSALID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getUniversalIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getUniversalIdMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return mdClassIF.definesAttribute(UNIVERSALID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(UNIVERSALID);
   }
   
   public void setUniversalId(String value)
@@ -587,32 +587,60 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public com.runwaysdk.system.gis.geo.UniversalAttributeRoot addUniversalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  public com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot addUniversalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTerm mdAttributeMultiTerm)
   {
-    return (com.runwaysdk.system.gis.geo.UniversalAttributeRoot) addParent(mdAttributeTerm, com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot) addParent(mdAttributeMultiTerm, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
   }
   
-  public void removeUniversalAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  public void removeUniversalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTerm mdAttributeMultiTerm)
   {
-    removeAllParents(mdAttributeTerm, com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeTerm> getAllUniversalAttributeRoots()
-  {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeTerm>) getParents(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    removeAllParents(mdAttributeMultiTerm, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalAttributeRoot> getAllUniversalAttributeRootsRel()
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeMultiTerm> getAllUniversalMultiTermAttributeRoots()
   {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalAttributeRoot>) getParentRelationships(com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeMultiTerm>) getParents(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalAttributeRoot> getUniversalAttributeRootsRel(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot> getAllUniversalMultiTermAttributeRootsRel()
   {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalAttributeRoot>) getRelationshipsWithParent(mdAttributeTerm, com.runwaysdk.system.gis.geo.UniversalAttributeRoot.CLASS);
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot>) getParentRelationships(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot> getUniversalMultiTermAttributeRootsRel(com.runwaysdk.system.metadata.MdAttributeMultiTerm mdAttributeMultiTerm)
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot>) getRelationshipsWithParent(mdAttributeMultiTerm, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+  }
+  
+  public com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot addUniversalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  {
+    return (com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot) addParent(mdAttributeTerm, com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+  }
+  
+  public void removeUniversalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  {
+    removeAllParents(mdAttributeTerm, com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeTerm> getAllUniversalTermAttributeRoots()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeTerm>) getParents(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot> getAllUniversalTermAttributeRootsRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot>) getParentRelationships(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot> getUniversalTermAttributeRootsRel(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot>) getRelationshipsWithParent(mdAttributeTerm, com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
   }
   
   public static Universal get(String id)

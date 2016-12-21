@@ -16,17 +16,19 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.runwaysdk.gis.init.GISServerInitializer;
+import com.runwaysdk.business.generation.GenerationManager;
+import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.system.gis.geo.GeoEntityQuery;
+import com.runwaysdk.system.gis.geo.GeoEntity;
+import com.runwaysdk.system.gis.geo.Synonym;
+import com.runwaysdk.system.gis.geo.Universal;
+import com.runwaysdk.system.metadata.MdType;
+import com.runwaysdk.system.metadata.MdTypeQuery;
 
 public class Sandbox
 {
@@ -35,21 +37,28 @@ public class Sandbox
 
   private static boolean logging = true;
 
-  public static void main(String[] args) throws URISyntaxException
+  public static void main(String[] args) throws Exception
   {
-     URL url =
-     Sandbox.class.getResource("com/runwaysdk/resources/build/universal.xml");
-     URI uri = url.toURI();
-     String path = uri.getPath();
-     
-     System.out.println(path);
-    //
-//     SAXImporter.main(new String[] { path, TestConstants.DATATYPE_GIS_XSD });
-
-    new GISServerInitializer().rebuild();
+    test();
+  }
+  
+  @Request
+  private static void test()
+  {
+    System.out.println("Starting");
     
-    GeoEntityQuery query = new GeoEntityQuery(new QueryFactory());
-    query.WHERE(query.getDisplayLabel().EQ("Value"));
+    MdTypeQuery mtq = new MdTypeQuery(new QueryFactory());
+    mtq.WHERE(mtq.getPackageName().EQ("com.runwaysdk.system.gis.geo"));
+    OIterator<? extends MdType> it =  mtq.getIterator();
+    while (it.hasNext())
+    {
+      System.out.println("Regenerating " + mtq.getTypeName());
+      
+      MdType mdt = it.next();
+      GenerationManager.generate(MdTypeDAO.get(mdt.getId()));
+    }
+    
+    System.out.println("Ending");
   }
 
   @Request

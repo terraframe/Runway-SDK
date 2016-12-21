@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -1789018705)
+@com.runwaysdk.business.ClassSignature(hash = 1012420115)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system.gis.geo;
  */
 public class SynonymQueryDTO extends com.runwaysdk.business.BusinessQueryDTO
 {
-private static final long serialVersionUID = -1789018705;
+private static final long serialVersionUID = 1012420115;
 
   protected SynonymQueryDTO(String type)
   {

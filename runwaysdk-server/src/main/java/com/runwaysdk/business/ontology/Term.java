@@ -114,6 +114,14 @@ abstract public class Term extends Business
         exhaustiveDelete(relationship);
       }
     }
+    else
+    {
+      String[] rels = TermUtil.getAllChildRelationships(this.getId());
+      for (String relationship : rels)
+      {
+        this.getStrategyWithInstance().removeTerm(this, relationship);
+      }
+    }
     
     this.deletePerTerm();
     super.delete();

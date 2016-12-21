@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -1527618780)
+@com.runwaysdk.business.ClassSignature(hash = 207015487)
 public abstract class GeoEntityProblemDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityProblem";
-  private static final long serialVersionUID = -1527618780;
+  private static final long serialVersionUID = 207015487;
   
   protected GeoEntityProblemDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -318,7 +318,7 @@ public abstract class GeoEntityProblemDTOBase extends com.runwaysdk.business.Bus
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -326,7 +326,7 @@ public abstract class GeoEntityProblemDTOBase extends com.runwaysdk.business.Bus
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

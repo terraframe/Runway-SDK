@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -913278485)
-public abstract class IsARelationshipDTOBase extends com.runwaysdk.business.RelationshipDTO
+@com.runwaysdk.business.ClassSignature(hash = -1237072336)
+public abstract class IsARelationshipDTOBase extends com.runwaysdk.business.ontology.TermRelationshipDTO
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.IsARelationship";
-  private static final long serialVersionUID = -913278485;
+  private static final long serialVersionUID = -1237072336;
   
   public IsARelationshipDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
   {
@@ -268,7 +268,7 @@ public abstract class IsARelationshipDTOBase extends com.runwaysdk.business.Rela
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -276,7 +276,7 @@ public abstract class IsARelationshipDTOBase extends com.runwaysdk.business.Rela
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   

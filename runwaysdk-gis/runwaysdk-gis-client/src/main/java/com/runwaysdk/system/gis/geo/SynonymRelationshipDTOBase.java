@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = 902673358)
-public abstract class SynonymRelationshipDTOBase extends com.runwaysdk.business.RelationshipDTO
+@com.runwaysdk.business.ClassSignature(hash = 1902581843)
+public abstract class SynonymRelationshipDTOBase extends com.runwaysdk.business.ontology.TermRelationshipDTO
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.SynonymRelationship";
-  private static final long serialVersionUID = 902673358;
+  private static final long serialVersionUID = 1902581843;
   
   public SynonymRelationshipDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
   {
@@ -268,7 +268,7 @@ public abstract class SynonymRelationshipDTOBase extends com.runwaysdk.business.
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LASTUPDATEDBY).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.UsersDTO getLockedBy()
+  public com.runwaysdk.system.SingleActorDTO getLockedBy()
   {
     if(getValue(LOCKEDBY) == null || getValue(LOCKEDBY).trim().equals(""))
     {
@@ -276,7 +276,7 @@ public abstract class SynonymRelationshipDTOBase extends com.runwaysdk.business.
     }
     else
     {
-      return com.runwaysdk.system.UsersDTO.get(getRequest(), getValue(LOCKEDBY));
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(LOCKEDBY));
     }
   }
   
