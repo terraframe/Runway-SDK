@@ -18,7 +18,9 @@
  */
 package com.runwaysdk.gis.constants;
 
-import com.runwaysdk.configuration.ProfileManager;
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
 import com.runwaysdk.configuration.ProfileReader;
 
 public class RunwayGisProperties
@@ -26,7 +28,7 @@ public class RunwayGisProperties
   /**
    * The local.properties configuration file
    */
-  private ProfileReader props;
+  private ConfigurationReaderIF props;
 
   /**
    * A holder class for access to the singleton. Allows for lazy instantiation
@@ -44,7 +46,7 @@ public class RunwayGisProperties
    * 
    * @return
    */
-  private static ProfileReader instance()
+  private static ConfigurationReaderIF instance()
   {
     return RunwayGisProperties.Singleton.INSTANCE.props;
   }
@@ -54,7 +56,7 @@ public class RunwayGisProperties
    */
   private RunwayGisProperties()
   {
-    props = ProfileManager.getBundle("common/runwaygis.properties");
+    props = ConfigurationManager.getReader(ConfigGroup.COMMON, "runwaygis.properties");
   }
 
   /**
