@@ -22,7 +22,7 @@ public class RunwayMetadataVersion
 {
   static final Integer FIX_VERSION       = 0;
 
-  static final Integer MINOR_VERSION     = 20;
+  static final Integer MINOR_VERSION     = 21;
 
   static final Integer MAJOR_VERSION     = 1;
 
