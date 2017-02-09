@@ -26,6 +26,7 @@ import junit.framework.Test;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.Util;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.MdUtilInfo;
@@ -69,7 +70,7 @@ public class UtilDTOAdapterTest extends SessionDTOAdapterTest
   {
     source = "package com.test.controller;\n" + "public class " + parentMdSessionTypeName + " extends " + parentMdSessionTypeName + TypeGeneratorInfo.BASE_SUFFIX + " implements " + Reloadable.class.getName() + "\n" + "{\n" + "public " + parentMdSessionTypeName + "()" + "{" + "   super();" + "}\n"
         + "public static " + parentMdSessionTypeName + " get(String id)" + "{\n" + "  return (" + parentMdSessionTypeName + ") " + Util.class.getName() + ".get(id);" + "}\n" + "public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}\n" + "  public void apply()\n"
-        + "  {\n" + "    " + SessionIF.class.getName() + " session = " + Session.class.getName() + ".getCurrentSession();" + "    " + UserDAOIF.class.getName() + " userIF = session.getUser();" + "    this.setOwner(userIF);" + "    super.apply();" + "  }\n" + "}";
+        + "  {\n" + "    " + SessionIF.class.getName() + " session = " + Session.class.getName() + ".getCurrentSession();" + "    " +SingleActorDAOIF.class.getName()+" userIF = session.getUser();" + "    this.setOwner(userIF);" + "    super.apply();" + "  }\n" + "}";
 
     childMdSession = clientRequest.newBusiness(MdUtilInfo.CLASS);
     parentMdSession = clientRequest.newBusiness(MdUtilInfo.CLASS);

@@ -465,14 +465,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * The key is the new Id. The value is the old Id.
    */
   protected Map<String, String>                              changedIds;
-
-  /**
-   * A cache to the file system for storing ids of newly created entities from which 
-   */
-  protected PersistentUserManagedCache<String, String>       newEntityIdStringFileCache;
-  private String                                             entityIdFileCacheName;
-  private String                                             entityIdCacheFileLocation;
-  private LocalPersistenceService                            filePersistenceService;
   
   /**
    * Indicates whether the transaction cache has been closed. True if closed false if otherwise.
@@ -485,6 +477,13 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * to see if an object instance of the type has participated in the transaction.
    */
   protected Set<String>                                      typeRootIdsInTransaction;
+  
+  /**
+   * Used to store the ids of objects that have been newly created in the transaction but only 
+   * of a non-cached type.
+   */
+  protected NewEntityIdStringCache                           newEntityIdStringCache;
+  
   
   /**
    * Initializes all caches.
@@ -562,15 +561,12 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.mdBusinessChildMdRelationships = new HashMap<String, Set<String>>();
 
     this.changedIds = new HashMap<String, String>();
-    
-    this.newEntityIdStringFileCache = null;
-    this.entityIdFileCacheName = null;
-    this.entityIdCacheFileLocation = null;
-    this.filePersistenceService = null;
-    
+        
     this.isClosed = false;
     
     this.typeRootIdsInTransaction = new HashSet<String>();
+    
+    this.newEntityIdStringCache = new NewEntityIdStringCache();
   }
 
   /**
@@ -580,33 +576,33 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   {
     return isClosed;
   }
-  
-  /**
-   * If the file cache used to check whether an {@link EntityDAO} of a non-cached type is not initialized, then
-   * initialize it. Checks if the {@code this.newEntityIdStringFileCach} equals null. 
-   * 
-   */
-  private void checkAndInitializeEntityIdFileCache()
-  {
-    if (this.newEntityIdStringFileCache == null)
-    {
-      this.entityIdFileCacheName = IDGenerator.nextID();;
-      int diskSize = ServerProperties.getTransactionDiskstoreSize();
-      this.entityIdCacheFileLocation = ServerProperties.getTransactionCacheFileLocation();
- 
-      this.filePersistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(this.entityIdCacheFileLocation, this.entityIdFileCacheName)));
-    
-      this.newEntityIdStringFileCache = UserManagedCacheBuilder.newUserManagedCacheBuilder(String.class, String.class)
-          .with(new UserManagedPersistenceContext<String, String>(this.entityIdFileCacheName, this.filePersistenceService)) 
-          .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
-                    .heap(0, EntryUnit.ENTRIES)
-//                    .offheap(cacheMemorySize, MemoryUnit.MB)
-                    .disk(diskSize, MemoryUnit.MB, true)
-           )
-          .build(true);
-    }
-  }
- 
+//  Heads up: test
+//  /**
+//   * If the file cache used to check whether an {@link EntityDAO} of a non-cached type is not initialized, then
+//   * initialize it. Checks if the {@code this.newEntityIdStringFileCach} equals null. 
+//   * 
+//   */
+//  private void checkAndInitializeEntityIdFileCache()
+//  {
+//    if (this.newEntityIdStringFileCache == null)
+//    {
+//      this.entityIdFileCacheName = IDGenerator.nextID();;
+//      int diskSize = ServerProperties.getTransactionDiskstoreSize();
+//      this.entityIdCacheFileLocation = ServerProperties.getTransactionCacheFileLocation();
+// 
+//      this.filePersistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(this.entityIdCacheFileLocation, this.entityIdFileCacheName)));
+//    
+//      this.newEntityIdStringFileCache = UserManagedCacheBuilder.newUserManagedCacheBuilder(String.class, String.class)
+//          .with(new UserManagedPersistenceContext<String, String>(this.entityIdFileCacheName, this.filePersistenceService)) 
+//          .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
+//                    .heap(0, EntryUnit.ENTRIES)
+////                    .offheap(cacheMemorySize, MemoryUnit.MB)
+//                    .disk(diskSize, MemoryUnit.MB, true)
+//           )
+//          .build(true);
+//    }
+//  }
+// 
   /**
    * Records that the {@link EntityDAOIF} has been created during this
    * transaction.
@@ -619,7 +615,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    */
   public void recordNewlyCreatedNonCachedEntity(EntityDAOIF entityDAOIF)
   {
-    this.recordNewlyCreatedNonCachedEntity(entityDAOIF.getId());
+    this.newEntityIdStringCache.recordNewlyCreatedNonCachedEntity(entityDAOIF);
   }
 
   /**
@@ -634,8 +630,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    */
   public void recordNewlyCreatedNonCachedEntity(String entityId)
   {
-    this.checkAndInitializeEntityIdFileCache();
-    this.newEntityIdStringFileCache.put(entityId, "");
+    this.newEntityIdStringCache.recordNewlyCreatedNonCachedEntity(entityId);
   }
   
   /**
@@ -648,8 +643,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    */
   public boolean isNewUncachedEntity(String entityDAOid)
   {   
-    this.checkAndInitializeEntityIdFileCache();  
-    return this.newEntityIdStringFileCache.containsKey(entityDAOid);
+    return this.newEntityIdStringCache.isNewUncachedEntity(entityDAOid);
   }
 
   /**
@@ -660,9 +654,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    */
   protected void changeEntityIdInCache(String oldId, EntityDAO entityDAO)
   {
-    this.checkAndInitializeEntityIdFileCache();
-    this.newEntityIdStringFileCache.remove(oldId);
-    this.newEntityIdStringFileCache.put(entityDAO.getId(), "");
+    this.newEntityIdStringCache.changeEntityIdInCache(oldId, entityDAO);
     
     String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId()); 
     this.typeRootIdsInTransaction.add(mdTypeRootId);
@@ -673,22 +665,16 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * who's type are not cached.
    */
   public void close()
-  {
-    if (this.newEntityIdStringFileCache != null)
+  {   
+    try
     {
-      this.newEntityIdStringFileCache.close();
-      this.filePersistenceService.destroyAllPersistenceSpaces();
-      this.filePersistenceService.stop();
-      try
-      {
-        FileUtils.deleteDirectory(new File(this.entityIdCacheFileLocation, this.entityIdFileCacheName));
-      }
-      catch (IOException e)
-      {
-        logger.info("Error happened while deleting transaction cache directory. This probably shouldn't matter if ehcache shut down correctly.", e);
-      }
+      this.newEntityIdStringCache.close();
     }
-    
+    catch (IOException e)
+    {
+      logger.info("Error happened while deleting transaction cache directory. This probably shouldn't matter if ehcache shut down correctly.", e);
+    }
+     
     this.isClosed = true;
   } 
   

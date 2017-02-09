@@ -26,7 +26,7 @@ import junit.framework.Test;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.View;
-import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.ServerConstants;
@@ -82,7 +82,7 @@ public class ViewDTOAdapterTest extends SessionDTOAdapterTest
       + "  public void apply()\n"
       + "  {\n"
       + "    "+SessionIF.class.getName()+" session = "+Session.class.getName()+".getCurrentSession();"
-      + "    "+UserDAOIF.class.getName()+" userIF = session.getUser();"
+      + "    "+SingleActorDAOIF.class.getName()+" userIF = session.getUser();"
       + "    this.setOwner(userIF);"
       + "    super.apply();"
       + "  }\n"

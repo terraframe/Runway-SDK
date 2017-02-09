@@ -166,12 +166,12 @@ public class Sandbox implements Job
 
   }
 
-  private static void deleteMdFacade()
-  {
+//  private static void deleteMdFacade()
+//  {
     // MdBusinessDAO mdFacade =
     // MdBusinessDAO.getMdBusinessDAO(MdFacadeInfo.CLASS).getBusinessDAO();
     // mdFacade.delete();
-  }
+//  }
 
   private static int count = 0;
 

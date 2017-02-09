@@ -366,6 +366,17 @@ public class ServerProperties
     return Singleton.INSTANCE.props.getInteger("transactionCache.diskstore.size");
   }
 
+  /**
+   * Returns the size of the transaction cache that stores the ids of newly created objects that are of an uncached type.
+   * 
+   * @return Size of the transaction cache that stores the ids of newly created objects that are of an uncached type.
+   */
+  public static int getNewEntityIdMemorySize()
+  {
+    return Singleton.INSTANCE.props.getInteger("transactionCache.newEntityIdMemorySize");
+  }
+  
+  
   public static boolean memoryOnlyTransactionCache()
   {
     return Singleton.INSTANCE.props.getBoolean("transactionCache.memoryOnly");

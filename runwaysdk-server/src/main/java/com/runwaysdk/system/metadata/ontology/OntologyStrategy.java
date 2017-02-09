@@ -22,7 +22,7 @@ import com.runwaysdk.business.ontology.OntologyStrategyIF;
 
 /**
  * This is the abstract class that ontology strategies with state will extend.
- * The DefaultStrategy DOES NOT extend this class, so use OntologyStrategyIF to
+ * The DefaultStrategy DOES NOT extend this class, so use {@link OntologyStrategyIF} to
  * refer to a generic strategy. If you are trying to create a new strategy (with
  * state) then create a new Runway class that extends this or a sibling
  * (DatabaseAllPathsStrategy).

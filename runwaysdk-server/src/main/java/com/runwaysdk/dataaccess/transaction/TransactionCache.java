@@ -250,13 +250,13 @@ public class TransactionCache extends AbstractTransactionCache
       this.storeTransactionEntityDAO(entityDAO);
     }
     
-    if (threadTransactionCache.newEntityIdStringFileCache != null)
+    if (threadTransactionCache.newEntityIdStringCache != null)
     {
-      Iterator<Entry<String, String>> entryIterator = threadTransactionCache.newEntityIdStringFileCache.iterator();
+      Iterator<String> entryIterator = threadTransactionCache.newEntityIdStringCache.getIds();
       while (entryIterator.hasNext())
       {
-        Entry<String, String> entry = entryIterator.next();
-        this.recordNewlyCreatedNonCachedEntity(entry.getKey());
+        String entry = entryIterator.next();
+        this.recordNewlyCreatedNonCachedEntity(entry);
       }  
     }
     
