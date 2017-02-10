@@ -373,7 +373,17 @@ public class ServerProperties
    */
   public static int getNewEntityIdMemorySize()
   {
-    return Singleton.INSTANCE.props.getInteger("transactionCache.newEntityIdMemorySize");
+    Integer val = Singleton.INSTANCE.props.getInteger("transactionCache.newEntityIdMemorySize");
+    
+    if (val == null)
+    {
+      // http://stackoverflow.com/questions/31206851/how-much-memory-does-a-string-use-in-java-8
+      // 512000000 / (64 * 2) = 1000000
+      // This number should take up about 512MB in RAM
+      return 4000000;
+    }
+    
+    return val;
   }
   
   
