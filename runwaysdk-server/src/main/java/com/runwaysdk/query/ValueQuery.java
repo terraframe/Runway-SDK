@@ -3849,6 +3849,17 @@ public class ValueQuery extends ComponentQuery
 
     return attribute;
   }
+  
+  /**
+   * If you're actually calling this method, then you're probably doing something wrong. I'm exposing it for IRS because IRS is a nightmare, but
+   * if you actually need this method then check with Nathan/Smethie/Rich to make sure what you're doing makes sense (because it probably doesn't).
+   * 
+   * @return
+   */
+  public Set<LeftJoin> getLeftOuterJoins()
+  {
+    return leftOuterJoinSet;
+  }
 
   @Override
   protected Map<String, String> getFromTableMapInfoForQuery()

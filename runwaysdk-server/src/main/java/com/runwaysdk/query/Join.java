@@ -118,7 +118,7 @@ public abstract class Join implements Component
    *  
    * @return name of the table that defines attribute1.
    */
-  protected String getTableName1()
+  public String getTableName1()
   {
    return tableName1;
   }
@@ -128,7 +128,7 @@ public abstract class Join implements Component
    *  
    * @return name of the table that defines attribute2.
    */
-  protected String getTableName2()
+  public String getTableName2()
   {
     return tableName2;
   }
@@ -253,4 +253,23 @@ public abstract class Join implements Component
   }
 
   
+  /**
+   * You probably shouldn't be calling this method. I'm only exposing it for IRS (DDMS ticket 3459) because IRS is a mess.
+   * 
+   * @param name
+   */
+  public void setTableName1(String name)
+  {
+    this.tableName1 = name;
+  }
+  
+  /**
+   * You probably shouldn't be calling this method. I'm only exposing it for IRS (DDMS ticket 3459) because IRS is a mess.
+   * 
+   * @param name
+   */
+  public void setTableName2(String name)
+  {
+    this.tableName2 = name;
+  }
 }
