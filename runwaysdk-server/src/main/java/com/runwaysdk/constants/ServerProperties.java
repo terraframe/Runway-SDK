@@ -373,11 +373,7 @@ public class ServerProperties
    */
   public static int getNewEntityIdMemorySize()
   {
-    // http://stackoverflow.com/questions/31206851/how-much-memory-does-a-string-use-in-java-8
-    // 512000000 / (64 * 2) = 4000000
-    // The default number here should take up about 512MB in RAM
-    
-    return Singleton.INSTANCE.props.getInteger("transactionCache.newEntityIdMemorySize", 4000000);
+    return Singleton.INSTANCE.props.getInteger("transactionCache.newEntityIdMemorySize", 500);
   }
   
   
