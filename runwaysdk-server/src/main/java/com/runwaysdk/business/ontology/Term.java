@@ -88,8 +88,8 @@ abstract public class Term extends Business
    * TODO: Should the temp table logic be moved into the DeleteStrategyProvider?
    * TODO: If we ever start using multiple relationships, we'll need to use different temp tables per relationship otherwise there could be conflicts.
    */
-  @Override
   @Transaction
+  @Override
   public void delete()
   {
     this.delete(true);
@@ -123,7 +123,7 @@ abstract public class Term extends Business
       }
     }
     
-    this.deletePerTerm();
+    this.beforeDeleteTerm();
     super.delete();
   }
   
@@ -194,7 +194,7 @@ abstract public class Term extends Business
         strategy.removeTerm(current, relationship);
         if (s.size() != 0)
         {
-          current.deletePerTerm();
+          current.beforeDeleteTerm();
           EntityDAO.get(current.getId()).getEntityDAO().delete();
         }
       }
@@ -263,6 +263,9 @@ abstract public class Term extends Business
         Database.throwDatabaseException(sqlEx2);
       }
     }
+    
+    // When deleting with multiple relationships we won't have exited the transaction yet and thus this table will still exist.
+    Database.dropTables(Arrays.asList("runway_allpaths_multiparent_temp"));
   }
   private void insertIntoTemp(String termId, List<String> parentIds, Integer depth)
   {
@@ -283,7 +286,7 @@ abstract public class Term extends Business
    * If subtypes of Term want custom delete logic they have to override this method (and not the delete method). This is because when deleting a term and all children the override "delete"
    * method is not invoked for every child term.
    */
-  protected void deletePerTerm()
+  protected void beforeDeleteTerm()
   {
     
   }

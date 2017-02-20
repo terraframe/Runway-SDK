@@ -95,18 +95,12 @@ public class Universal extends UniversalBase
     return this.getUniversalId();
   }
 
-  /**
-   * Deletes this Universal, which removes the associated MdBusiness and all the
-   * GeoEntity objects defined by that type.
-   */
   @Override
   @Transaction
   @com.runwaysdk.logging.Log(level = LogLevel.DEBUG)
-  public void delete()
+  public void beforeDeleteTerm()
   {
-    boolean isLeaf = this.isLeaf(AllowedIn.CLASS);
-
-    // 1. Delete all GeoEntites that reference this Universal. This must be done before
+    // Delete all GeoEntites that reference this Universal. This must be done before
     // the Universal itself is deleted because each GeoEntity has a required
     // reference back to its defining Universal object (ie, *this*).
     GeoEntityQuery query = new GeoEntityQuery(new QueryFactory());
@@ -124,41 +118,6 @@ public class Universal extends UniversalBase
     finally
     {
       iter.close();
-    }
-
-    // 2. Delete this Universal from the all paths strategy
-//    this.removeTerm(AllowedIn.CLASS); // our super does this now
-
-    // 3. Delete the Universal itself.
-    super.delete(false);
-
-    // 5. Deleting a non-leaf node requires locating orphaned ex-children
-    // and placing them under the root so they don't free float.
-    if (!isLeaf)
-    {
-      Universal root = Universal.getRoot();
-
-      QueryFactory f = new QueryFactory();
-      UniversalQuery children = new UniversalQuery(f);
-      AllowedInQuery rel = new AllowedInQuery(f);
-
-      children.WHERE(children.SUBSELECT_NOT_IN_allowedIn(rel));
-      children.AND(children.getId().NE(root.getId()));
-
-      OIterator<? extends Universal> iter2 = children.getIterator();
-
-      try
-      {
-        while (iter2.hasNext())
-        {
-          Universal orphan = iter2.next();
-          orphan.addLink(root, AllowedIn.CLASS);
-        }
-      }
-      finally
-      {
-        iter2.close();
-      }
     }
   }
 

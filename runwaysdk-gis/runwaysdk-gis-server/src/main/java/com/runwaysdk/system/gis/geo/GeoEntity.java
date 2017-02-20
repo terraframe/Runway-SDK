@@ -80,11 +80,9 @@ public class GeoEntity extends GeoEntityBase
 
   @Override
   @Transaction
-  public void delete()
+  public void beforeDeleteTerm()
   {
     GeoEntityProblem.deleteProblems(this);
-
-    super.delete();
   }
 
   @Override

@@ -214,8 +214,8 @@ public class URLConfigurationManager
         }
       }
 
-      String info = "URL mappings successfully read from " + fileName + ":\n" + this.toString();
-      log.info(info);
+//      String info = "URL mappings successfully read from " + fileName + ":\n" + this.toString();
+//      log.info(info);
     }
   }
 
