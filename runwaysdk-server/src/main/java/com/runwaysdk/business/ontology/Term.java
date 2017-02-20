@@ -288,6 +288,10 @@ abstract public class Term extends Business
    */
   protected void beforeDeleteTerm()
   {
+    deletePerTerm();
+  }
+  protected void deletePerTerm()
+  {
     
   }
   
