@@ -189,7 +189,13 @@ abstract public class Term extends Business
       }
       else
       {
-        Database.deleteWhere(TEMP_TABLE, TEMP_TERM_ID_COL + " = '" + current.getId() + "' OR " + TEMP_PARENT_ID_COL + " = '" + current.getId() + "'");
+        String sql = Database.instance().buildSQLDeleteWhereStatement(TEMP_TABLE, Arrays.asList(TEMP_TERM_ID_COL + " = '" + current.getId() + "' OR " + TEMP_PARENT_ID_COL + " = '" + current.getId() + "'"));
+        Database.parseAndExecute(sql);
+        
+        // TODO: We can't do this with the standard deleteWhere because it causes:
+        // A SQL DDL operation was performed in a transaction on table [RUNWAY_ALLPATHS_MULTIPARENT_TEMP] after a SQL DML operation had been perfromed on the same table.  DDL statements cannot be performed if DML statements have aleady been performed on the same table within the same transaction.
+        // See ruway apps ticket 558 for more details.
+//        Database.deleteWhere(TEMP_TABLE, TEMP_TERM_ID_COL + " = '" + current.getId() + "' OR " + TEMP_PARENT_ID_COL + " = '" + current.getId() + "'");
         
         strategy.removeTerm(current, relationship);
         if (s.size() != 0)
