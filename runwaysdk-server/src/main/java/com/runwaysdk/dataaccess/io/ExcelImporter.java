@@ -315,7 +315,7 @@ public class ExcelImporter
     }
     catch (Exception e)
     {
-      RunwayLogUtil.logToLevel(LogLevel.ERROR, "Excel import exception", e);
+//      RunwayLogUtil.logToLevel(LogLevel.ERROR, "Excel import exception", e);
 
       context.addException(e);
     }
