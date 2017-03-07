@@ -375,7 +375,7 @@ public class Restore
       // files should overwrite.
     }
 
-    boolean success = FileIO.copyFolder(backupProfileLocationFile, webappRootFile, filenameFilter, this.logPrintStream);
+    boolean success = FileIO.copyFolder(backupProfileLocationFile, webappRootFile, filenameFilter);
     if (!success)
     {
       // TODO : This success stuff is garbage, I want the actual IOException why swallow it
