@@ -37,6 +37,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.RunwayException;
+import com.runwaysdk.StopTransactionException;
 import com.runwaysdk.SystemException;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.Entity;
@@ -342,7 +343,7 @@ public class ExcelImporter
 
       // We don't want the transaction to commit, so this is thrown to ensure
       // that it doesn't. It gets caught one layer up.
-      throw new StopTransactionException();
+      throw new StopTransactionException(true);
     }
   }
 
@@ -514,16 +515,6 @@ public class ExcelImporter
   public List<ImportContext> getContexts()
   {
     return contexts;
-  }
-
-  private class StopTransactionException extends RuntimeException
-  {
-    private static final long serialVersionUID = 158466258123L;
-
-    public StopTransactionException()
-    {
-      super();
-    }
   }
 
   public static class ImportContext

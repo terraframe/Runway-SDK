@@ -39,6 +39,7 @@ import org.aspectj.lang.annotation.SuppressAjWarnings;
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.RunwayException;
+import com.runwaysdk.StopTransactionException;
 import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.SmartException;
 import com.runwaysdk.business.rbac.ActorDAOIF;
@@ -1658,7 +1659,21 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       // procedures) has made a mistake
       ProgrammingErrorException programmingErrorException = new ProgrammingErrorException(ex);
       programmingErrorException.setStackTrace(ex.getStackTrace());
-      log.error(RunwayLogUtil.getExceptionLoggableMessage(ex), ex);
+      
+      if (ex instanceof StopTransactionException)
+      {
+        StopTransactionException stopEx = (StopTransactionException) ex;
+        
+        if (stopEx.shouldLog())
+        {
+          log.error(RunwayLogUtil.getExceptionLoggableMessage(ex), ex);
+        }
+      }
+      else
+      {
+        log.error(RunwayLogUtil.getExceptionLoggableMessage(ex), ex);
+      }
+      
       throw programmingErrorException;
     }
   }
