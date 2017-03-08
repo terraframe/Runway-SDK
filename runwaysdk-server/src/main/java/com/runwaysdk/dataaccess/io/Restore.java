@@ -422,7 +422,7 @@ public class Restore
         {
           logger.debug("Restoring vault [" + vaultName + "] from [" + vaultInsideBackup + "] to [" + vaultLocation + "].");
           
-          FileIO.copyFolder(vaultInsideBackupFile, vaultLocationFile, this.logPrintStream);
+          FileIO.copyFolder(vaultInsideBackupFile, vaultLocationFile);
         }
         else
         {
