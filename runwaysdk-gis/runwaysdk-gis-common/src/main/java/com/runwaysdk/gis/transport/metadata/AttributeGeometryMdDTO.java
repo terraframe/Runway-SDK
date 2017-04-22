@@ -23,6 +23,11 @@ import com.runwaysdk.transport.metadata.AttributeMdDTO;
 public abstract class AttributeGeometryMdDTO extends AttributeMdDTO
 {
   /**
+   * 
+   */
+  private static final long serialVersionUID = -2603600025197123289L;
+
+  /**
    * Dimension of the geometry attribute.
    */
   private int dimension;

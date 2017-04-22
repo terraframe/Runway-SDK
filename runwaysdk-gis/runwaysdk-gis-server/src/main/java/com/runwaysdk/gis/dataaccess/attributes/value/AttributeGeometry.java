@@ -29,6 +29,11 @@ public abstract class AttributeGeometry extends Attribute implements AttributeGe
 {
 
   /**
+   * 
+   */
+  private static final long serialVersionUID = 9116237174434934433L;
+
+  /**
    * Creates an attribute with the given name.
    *
    * <br>

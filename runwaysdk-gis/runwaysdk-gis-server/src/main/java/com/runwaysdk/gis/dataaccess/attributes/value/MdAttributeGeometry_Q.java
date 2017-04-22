@@ -25,6 +25,11 @@ import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 public abstract class MdAttributeGeometry_Q extends MdAttributeConcrete_Q implements MdAttributeGeometryDAOIF
 {
   /**
+   * 
+   */
+  private static final long serialVersionUID = -7761145100258404019L;
+
+  /**
    * Used in value objects with attributes that contain values that are the result of functions, where the function result
    * data type does not match the datatype of the column.
    * @param mdAttributeConcreteIF metadata that defines the column.

@@ -24,6 +24,11 @@ import com.vividsolutions.jts.geom.Geometry;
 public abstract class AttributeGeometryDTO extends AttributeDTO
 {
   /**
+   * 
+   */
+  private static final long serialVersionUID = -3295806562829192562L;
+
+  /**
    * Constructor to create a new Attribute.
    * 
    * @param name

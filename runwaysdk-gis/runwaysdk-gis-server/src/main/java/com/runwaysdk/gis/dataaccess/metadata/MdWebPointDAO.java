@@ -27,6 +27,11 @@ import com.runwaysdk.gis.dataaccess.MdWebPointDAOIF;
 
 public class MdWebPointDAO extends MdWebGeometryDAO implements MdWebPointDAOIF
 {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 4636342852312950231L;
+
   public MdWebPointDAO(Map<String, Attribute> attributeMap, String classType)
   {
     super(attributeMap, classType);

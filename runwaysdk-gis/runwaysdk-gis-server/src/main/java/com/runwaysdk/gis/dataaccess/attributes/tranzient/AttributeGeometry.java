@@ -26,6 +26,11 @@ import com.vividsolutions.jts.geom.Geometry;
 public abstract class AttributeGeometry extends Attribute implements AttributeGeometryIF
 {
   /**
+   * 
+   */
+  private static final long serialVersionUID = 2068540174015342254L;
+
+  /**
    * Creates an attribute with the given name and initializes the value to blank.
    * 
    * <br>

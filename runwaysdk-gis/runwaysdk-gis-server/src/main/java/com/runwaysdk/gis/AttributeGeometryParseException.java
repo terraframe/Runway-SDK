@@ -23,6 +23,11 @@ import com.runwaysdk.AttributeParseException;
 public abstract class AttributeGeometryParseException extends AttributeParseException
 {
   /**
+   * 
+   */
+  private static final long serialVersionUID = 7236580324521647795L;
+
+  /**
    * Constructs a new <code>AttributeGeometryParseException</code> with the specified developer message
    * and a default business message. Leaving the default business message is
    * discouraged, as it provides no context information for end users.

@@ -26,6 +26,11 @@ import com.vividsolutions.jts.geom.Geometry;
 public abstract class AttributeGeometry extends Attribute implements AttributeGeometryIF
 {
   /**
+   * 
+   */
+  private static final long serialVersionUID = -3028633335915503456L;
+
+  /**
    * Inherited constrcutor, sets <code>name</code> and <code>definingEntityType</code>.
    * 
    * @param name The name of this character attribute.
