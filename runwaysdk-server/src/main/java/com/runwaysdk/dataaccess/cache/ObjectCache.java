@@ -906,7 +906,12 @@ public class ObjectCache
       String dateTimeFormat = Constants.DATETIME_FORMAT;
       java.util.Date endTime = new java.util.Date();
       long totalTime = endTime.getTime() - startTime.getTime();
-      logger.info("The global cache has been initialized. Start Time: " + new SimpleDateFormat(dateTimeFormat).format(startTime) + " End Time: " + new SimpleDateFormat(dateTimeFormat).format(endTime) + " Total Time: " + totalTime + "\n");
+      
+      String logMessage = "The global cache has been initialized. Start Time: " + new SimpleDateFormat(dateTimeFormat).format(startTime) + " End Time: " + new SimpleDateFormat(dateTimeFormat).format(endTime) + " Total Time: " + totalTime + "\n";
+     
+//System.out.println("Heads up: Test: "+logMessage);      
+
+      logger.info(logMessage);
     }
     finally
     {

@@ -21,7 +21,7 @@ package com.runwaysdk.constants;
 public interface MdClassInfo extends MdTypeInfo
 {
   /**
-   * Class MdClassInfo.
+   * Class {@link MdClassInfo}.
    */
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdClass";
 

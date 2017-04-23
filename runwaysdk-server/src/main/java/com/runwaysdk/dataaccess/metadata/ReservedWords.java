@@ -498,7 +498,8 @@ public class ReservedWords
 			"style", "subclass_origin", "sublist",
 			"substring", "sum", "symmetric",
 			"sysid", "system", "system_user",
-			"table", "table_name", "temp",
+			// table_name was removed. It is only a reserved word in mysql
+			"table", "temp",
 			"template", "temporary", "terminate",
 			"than", "then", "time",
 			"timestamp", "timezone_hour", "timezone_minute",
