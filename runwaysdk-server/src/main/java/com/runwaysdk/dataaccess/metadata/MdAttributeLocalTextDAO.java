@@ -30,6 +30,7 @@ import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
+import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
 import com.runwaysdk.transport.metadata.AttributeLocalTextMdDTO;
@@ -78,9 +79,13 @@ public class MdAttributeLocalTextDAO extends MdAttributeLocalDAO implements MdAt
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeLocal_E(this));
     }
+    else if (this.definedByClass() instanceof MdTransientDAOIF)
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
+    }
     else
     {
-      this.getObjectState().setMdAttributeStrategy( new MdAttributeConcrete_S(this));
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
     }
   }
 

@@ -80,6 +80,7 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
@@ -114,6 +115,7 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -122,6 +124,7 @@ import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.metadata.AndFieldConditionDAO;
 import com.runwaysdk.dataaccess.metadata.CharacterConditionDAO;
 import com.runwaysdk.dataaccess.metadata.DateConditionDAO;
@@ -172,6 +175,7 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTableDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
@@ -227,6 +231,12 @@ public class TestFixtureFactory
     public static final String TEST_PACKAGE             = "test.xmlclasses";
 
     public static final String TEST_CLASS1              = "Class1";
+    
+    public static final String TEST_CLASS1_TYPE         = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_CLASS1);
+    
+    public static final String TEST_TABLE1              = "MdTable1";
+    
+    public static final String TEST_TABLE1_TYPE         = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_TABLE1);
 
     public static final String TEST_SESSION_LIMIT       = "10";
 
@@ -343,6 +353,24 @@ public class TestFixtureFactory
     return user;
   }
 
+  /**
+   * Assumes that the {@link MdBusinessDAOIF} with name {@link TestFixConst#TEST_CLASS1} has been created.
+   *
+   * @return newly created {@link MdTableDAO} that points to class table {@link TestFixConst#TEST_CLASS1}.
+   */
+  public static MdTableDAO createMdTableForMdBusiness1()
+  {
+    MdBusinessDAOIF testClassMdBusiness1 = MdBusinessDAO.getMdBusinessDAO(TestFixConst.TEST_CLASS1_TYPE);
+    
+    MdTableDAO mdTable = MdTableDAO.newInstance();
+    mdTable.setValue(MdTableInfo.NAME, TestFixConst.TEST_TABLE1);
+    mdTable.setValue(MdTableInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
+    mdTable.setStructValue(MdTableInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdTable 1 Test");
+    mdTable.setValue(MdTableInfo.TABLE_NAME, testClassMdBusiness1.getTableName());
+    
+    return mdTable;
+  }
+  
   public static MdBusinessDAO createMdBusiness1()
   {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
@@ -601,7 +629,7 @@ public class TestFixtureFactory
     return TestFixtureFactory.addCharacterAttribute(mdEntity, TestFixConst.ATTRIBUTE_CHARACTER);
   }
 
-  public static MdAttributeCharacterDAO addCharacterAttribute(MdClassDAO mdEntity, String attributeName)
+  public static MdAttributeCharacterDAO addCharacterAttribute(MdClassDAO mdClass, String attributeName)
   {
     MdAttributeCharacterDAO mdAttribute = MdAttributeCharacterDAO.newInstance();
     mdAttribute.setValue(MdAttributeCharacterInfo.NAME, attributeName);
@@ -609,7 +637,7 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
     mdAttribute.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttribute.setValue(MdAttributeCharacterInfo.SIZE, TestFixConst.ATTRIBUTE_SIZE);
-    mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdClass.getId());
 
     return mdAttribute;
   }

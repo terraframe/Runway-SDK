@@ -909,7 +909,7 @@ public class ObjectCache
       
       String logMessage = "The global cache has been initialized. Start Time: " + new SimpleDateFormat(dateTimeFormat).format(startTime) + " End Time: " + new SimpleDateFormat(dateTimeFormat).format(endTime) + " Total Time: " + totalTime + "\n";
      
-//System.out.println("Heads up: Test: "+logMessage);      
+System.out.println("Heads up: Test: "+logMessage);      
 
       logger.info(logMessage);
     }

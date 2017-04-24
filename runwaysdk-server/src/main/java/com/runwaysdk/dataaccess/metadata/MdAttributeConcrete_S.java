@@ -18,15 +18,9 @@
  */
 package com.runwaysdk.dataaccess.metadata;
 
-import java.util.List;
-
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
-import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory;
 
 public class MdAttributeConcrete_S extends MdAttributeConcreteStrategy
 {
@@ -44,34 +38,20 @@ public class MdAttributeConcrete_S extends MdAttributeConcreteStrategy
   } 
   
   /**
-   * Returns the MdTransientIF that defines this MdAttribute.
+   * Returns the {@link MdTransientDAOIF} that defines this {@link MdAttributeConcreteDAOIF}.
    * 
-   * @return the MdTransientIF that defines this MdAttribute.
+   * @return the {@link MdTransientDAOIF} that defines this {@link MdAttributeConcreteDAOIF}.
    */
   public MdTransientDAOIF definedByClass()
   { 
-    return (MdTransientDAOIF) this.getMdAttribute().definedByClass();    
+    return (MdTransientDAOIF) super.definedByClass();    
   }
   
   protected void preSaveValidate()
   {
     super.preSaveValidate();
  
-    if (this.getMdAttribute().isNew() && !this.getMdAttribute().isAppliedToDB())
-    {
-      MdTransientDAOIF definingTransient = this.definedByClass();
-
-      List<? extends MdAttributeDAOIF> attributeList = definingTransient.definesAttributes();
-      for (MdAttributeDAOIF attribute : attributeList)
-      {
-        if (this.getMdAttribute().definesAttribute().equals(attribute.definesAttribute()))
-        {
-          String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class ["
-              + definingTransient.definesType() + "] because that class already has defined an attribute with that name.";
-          throw new DuplicateAttributeDefinitionException(msg, this.getMdAttribute(), definingTransient);
-        }
-      }
-    }
+    this.nonMdEntityCheckExistingForAttributeOnCreate();
     
     if (this.getMdAttribute().isNew() && !this.appliedToDB)
     {
@@ -87,68 +67,7 @@ public class MdAttributeConcrete_S extends MdAttributeConcreteStrategy
   {
     this.validate();
     
-    if (this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.NAME).isModified())
-    {
-      MdTransientDAOIF definingTransient = this.definedByClass();
-      List<? extends MdAttributeDAOIF> attributeList = null;
-      List<? extends MdTransientDAOIF> parentsList = definingTransient.getSuperClasses();
-      
-      // loop through parents and check for an attribute of the same name
-      for (MdTransientDAOIF parent : parentsList)
-      {
-        attributeList = parent.definesAttributes();
-        for (MdAttributeDAOIF attribute : attributeList)
-        {
-          // compare for the same named attribute, BUT make sure it's not being compared with itself
-          if (this.getMdAttribute().definesAttribute().equals(attribute.definesAttribute()) && !parent.definesType().equals(definingTransient.definesType()))
-          {
-            String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class ["
-                + definingTransient.definesType() + "] because its parent class ["+parent.definesType()+"] already defines an attribute with that name.";
-            throw new DuplicateAttributeInInheritedHierarchyException(msg, this.getMdAttribute(), definingTransient, parent);
-          }
-        }
-      }
-      
-      List<? extends MdTransientDAOIF> childrenList = definingTransient.getAllSubClasses();
-      // loop through children and check for an attribute of the same name
-      for (MdTransientDAOIF child : childrenList)
-      {
-        attributeList = child.definesAttributes();
-        for (MdAttributeDAOIF attribute : attributeList)
-        {
-          // compare for the same named attribute, BUT make sure it's not being compared with itself
-          if (this.getMdAttribute().definesAttribute().equals(attribute.definesAttribute()) && !child.definesType().equals(definingTransient.definesType()))
-          {
-            String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class ["
-            + definingTransient.definesType() + "] because a child class ["+child.definesType()+"] already defines an attribute with that name.";
-            throw new DuplicateAttributeDefinedInSubclassException(msg, this.getMdAttribute(), definingTransient, child);
-          }
-        }
-      }      
-    }
-    
-    if (this.getMdAttribute().isNew())
-    {
-      //Do not create the CLASS_ATTRIBUTE relationship on imports,
-      //because the relationship is included in the import file
-      if(!this.getMdAttribute().isImport() && !this.appliedToDB)
-      {
-        // Get the defining parent type
-        MdTransientDAO parentMdTransient = this.definedByClass().getBusinessDAO();
-        parentMdTransient.addAttributeConcrete(this.getMdAttribute());
-      }
-    }
-
-    if (this.appliedToDB)
-    {
-      MdAttributeConcreteDAO mdAttributeConcreteDAO = this.getMdAttribute();
-      Attribute keyAttribute = mdAttributeConcreteDAO.getAttribute(ComponentInfo.KEY);
-      
-      if (keyAttribute.isModified())
-      {
-        mdAttributeConcreteDAO.changeClassAttributeRelationshipKey();
-      }
-    }
+    this.nonMdEntityPostSaveValidationOperations();
   }
 
   /**
@@ -156,26 +75,7 @@ public class MdAttributeConcrete_S extends MdAttributeConcreteStrategy
    */
   protected void validate() 
   {
-    if (this.getMdAttribute().hasAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE))
-    {
-      Attribute attributeIF = this.getMdAttribute().getAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
-    
-      String value = attributeIF.getValue();
-
-      if (attributeIF.isModified() && !value.trim().equals(""))
-      {
-        // Get the class that defines the MdAttribute class
-        MdClassDAOIF mdClassIF = this.getMdAttribute().getMdClassDAO();
-
-        Attribute spoofAttribute = 
-          AttributeFactory.createAttribute(this.getMdAttribute().getKey(), this.getMdAttribute().getType(), MdAttributeConcreteInfo.DEFAULT_VALUE, 
-              mdClassIF.definesType(), value);
-
-        spoofAttribute.setContainingComponent(this.getMdAttribute());
-
-        spoofAttribute.validate(this.getMdAttribute(), value);
-      }
-    }
+    this.nonMdEntityValidate();
   }
   
 }

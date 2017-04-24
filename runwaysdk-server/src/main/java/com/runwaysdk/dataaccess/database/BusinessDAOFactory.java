@@ -101,6 +101,7 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
@@ -214,6 +215,7 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTableDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
@@ -285,6 +287,7 @@ public class BusinessDAOFactory
   {
     Map<String, BusinessDAO> map = new ConcurrentHashMap<String, BusinessDAO>();
 
+    map.put(MdTableInfo.CLASS, new MdTableDAO());
     map.put(MdIndexInfo.CLASS, new MdIndexDAO());
     map.put(MdBusinessInfo.CLASS, new MdBusinessDAO());
     map.put(MdTermInfo.CLASS, new MdTermDAO());

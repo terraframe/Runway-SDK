@@ -51,6 +51,7 @@ import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -61,6 +62,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
+import com.runwaysdk.dataaccess.metadata.MdTableDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
@@ -97,9 +99,40 @@ public class Sandbox implements Job
     
 //    Sandbox.changeLockedByReference();
     
-    Sandbox.createMdTable();
+//    Sandbox.createMdTable();
+    
+    test();
   }
 
+  public static void test()
+  {
+//    MdTableDAO mdTable = MdTableDAO.newInstance();
+//    mdTable.setValue(MdTableInfo.NAME, "TestTable");
+//    mdTable.setValue(MdTableInfo.PACKAGE, "some.package");
+//    mdTable.setStructValue(MdTableInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdTable");
+//    mdTable.setValue(MdTableInfo.TABLE_NAME, "md_class");
+//    
+//    String id = mdTable.apply();
+//    
+//    System.out.println();
+    
+    
+//    MdBusinessDAO mdTable = MdBusinessDAO.getMdBusinessDAO(MdTableInfo.CLASS).getBusinessDAO();
+//    
+//    MdAttributeConcreteDAO mdAttribute = (MdAttributeConcreteDAO)mdTable.getMdAttributeDAO(MdTableInfo.TABLE_NAME).getBusinessDAO();
+//    mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+//    mdAttribute.apply();
+    
+//    mdTable.apply();
+//    mdTable.printAttributes();
+    
+    MdBusinessDAOIF mdClass = MdBusinessDAO.getMdBusinessDAO(MdClassInfo.CLASS);
+    
+    MdTableDAO mdTable = MdTableDAO.newInstance();
+    mdTable.printAttributes();
+    
+  }
+  
   @Transaction
   public static void createMdTable()
   {
@@ -131,9 +164,9 @@ public class Sandbox implements Job
     tableName.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Table Name");
     tableName.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Name of the table in the database");
     tableName.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    tableName.setValue(MdAttributeCharacterInfo.SYSTEM, MdAttributeBooleanInfo.TRUE);
+    tableName.setValue(MdAttributeCharacterInfo.SYSTEM, MdAttributeBooleanInfo.FALSE);
     tableName.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
-    tableName.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    tableName.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
     tableName.setValue(MdAttributeCharacterInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
     tableName.setValue(MdAttributeCharacterInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
     tableName.setValue(MdAttributeCharacterInfo.SIZE, MdTableInfo.MAX_TABLE_NAME);

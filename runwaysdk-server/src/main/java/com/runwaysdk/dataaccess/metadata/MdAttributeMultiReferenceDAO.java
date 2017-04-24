@@ -33,6 +33,7 @@ import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.session.Session;
@@ -136,9 +137,13 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeMultiReference_E(this));
     }
-    else
+    else if (this.definedByClass() instanceof MdTransientDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeMultiReference_S(this));
+    }
+    else
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
     }
   }
 

@@ -1038,8 +1038,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     return queryFactory.businessDAOQuery(this.definesType());
   }
 
-  /*
-   * (non-Javadoc)
+  /**
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
@@ -1057,7 +1056,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   }
 
   /**
-   * Returns a MdBusinessIF instance of the metadata for the given class.
+   * Returns a {@link MdBusinessDAOIF} instance of the metadata for the given class.
    * 
    * <br/>
    * <b>Precondition:</b> classType != null <br/>
@@ -1065,11 +1064,11 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
    * <b>Precondition:</b> classType is a valid class defined in the database <br/>
    * <b>Postcondition:</b> return value is not null <br/>
    * <b>Postcondition:</b> Returns a MdBusinessIF instance of the metadata for
-   * the given class (MdBusinessIF().definesType().equals(classType)
+   * the given class (MdBusinessDAOIF().definesType().equals(classType)
    * 
    * @param classType
    *          class type
-   * @return MdBusinessIF instance of the metadata for the given class type.
+   * @return {@link MdBusinessDAOIF} instance of the metadata for the given class type.
    */
   public static MdBusinessDAOIF getMdBusinessDAO(String classType)
   {

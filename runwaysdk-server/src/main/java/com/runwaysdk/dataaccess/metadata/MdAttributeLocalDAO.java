@@ -34,6 +34,7 @@ import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
+import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.session.Session;
@@ -62,9 +63,13 @@ public abstract class MdAttributeLocalDAO extends MdAttributeStructDAO implement
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeLocal_E(this));
     }
-    else
+    else if (this.definedByClass() instanceof MdTransientDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
+    }
+    else
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
     }
   }
 

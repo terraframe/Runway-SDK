@@ -31,6 +31,7 @@ import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeInteger;
@@ -83,9 +84,13 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeCharacter_E(this));
     }
-    else
+    else if (this.definedByClass() instanceof MdTransientDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
+    }
+    else
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
     }
   }
 
