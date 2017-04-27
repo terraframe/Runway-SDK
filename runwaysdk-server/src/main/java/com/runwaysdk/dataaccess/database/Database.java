@@ -3024,4 +3024,9 @@ public class Database
   {
     instance().validateClobLength(value, attributeIF);
   }
+
+  public static int getMaxColumnSize()
+  {
+    return instance().getMaxColumnSize();
+  }
 }

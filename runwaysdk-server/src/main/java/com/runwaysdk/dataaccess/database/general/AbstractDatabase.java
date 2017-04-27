@@ -5265,4 +5265,9 @@ public abstract class AbstractDatabase
     throw new UnsupportedOperationException();
   }
 
+  public int getMaxColumnSize()
+  {
+    return 28;
+  }
+
 }
