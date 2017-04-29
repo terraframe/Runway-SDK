@@ -44,6 +44,7 @@ public abstract class SelectableSQL implements SelectableSingle, SelectableAggre
   private String columnAlias;
   private boolean isAggregate;
   private String attributeNameSpace;
+  private Object data;
 
   // Reference to all MdAttributes that were involved in constructing this attribute;
   protected Set<MdAttributeConcreteDAOIF> entityMdAttributeIFset;
@@ -107,6 +108,18 @@ public abstract class SelectableSQL implements SelectableSingle, SelectableAggre
     }
     return displayLabel;
   }
+  
+  @Override
+  public Object getData()
+  {
+    return this.data;
+  }
+
+  @Override
+  public void setData(Object data)
+  {
+    this.data = data;
+  }  
 
   public void accept(Visitor visitor)
   {

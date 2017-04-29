@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -62,11 +62,9 @@ public class ValueQueryParser
    */
   public interface ParseInterceptor
   {
-    public void interceptCondition(InterceptorChain chain, ValueQuery valueQuery, String entityAlias,
-        Condition condition);
+    public void interceptCondition(InterceptorChain chain, ValueQuery valueQuery, String entityAlias, Condition condition);
 
-    public void interceptSelectable(InterceptorChain chain, ValueQuery valueQuery, String entityAlias,
-        Selectable selectable, String attributeName, AttributeDoesNotExistException t);
+    public void interceptSelectable(InterceptorChain chain, ValueQuery valueQuery, String entityAlias, Selectable selectable, String attributeName, AttributeDoesNotExistException t);
   }
 
   /**
@@ -151,8 +149,7 @@ public class ValueQueryParser
       current.getInterceptor().interceptCondition(this, valueQuery, entityAlias, condition);
     }
 
-    private void interceptSelectableBatch(ValueQuery valueQuery, String entityAlias,
-        Selectable selectable, String attributeName, AttributeDoesNotExistException t)
+    private void interceptSelectableBatch(ValueQuery valueQuery, String entityAlias, Selectable selectable, String attributeName, AttributeDoesNotExistException t)
     {
       Entry temp = this.mostRecent;
 
@@ -194,13 +191,15 @@ public class ValueQueryParser
 
     private String columnAlias;
 
-    private CustomAttributeSelect(String entityAlias, String attribute, String userAlias,
-        String columnAlias)
+    private Object data;
+
+    private CustomAttributeSelect(String entityAlias, String attribute, String userAlias, String columnAlias, Object data)
     {
       this.entityAlias = entityAlias;
       this.attribute = attribute;
       this.userAlias = userAlias;
       this.columnAlias = columnAlias;
+      this.data = data;
     }
   }
 
@@ -332,13 +331,16 @@ public class ValueQueryParser
   private Map<String, ValueQuery>           valueQueryMap;
 
   private InterceptorChain                  chain;
-  
+
   /**
-   * This is a hack for DDMS. We're doing this now because its easier than adding support to the ValueQuery API for WITH entries (which we need for adding geo columns, see DDMS ticket #3306)
+   * This is a hack for DDMS. We're doing this now because its easier than
+   * adding support to the ValueQuery API for WITH entries (which we need for
+   * adding geo columns, see DDMS ticket #3306)
    */
   private List<String>                      ignoreSelectables;
+
   private Map<String, String>               ignoreDisplayLabels;
-  
+
   public ValueQueryParser(Document document, ValueQuery valueQuery)
   {
     this.document = document;
@@ -351,15 +353,14 @@ public class ValueQueryParser
     this.customColumnAliases = new HashMap<String, CustomColumnAlias>();
     this.valueQueryMap = new HashMap<String, ValueQuery>();
     this.ignoreSelectables = new ArrayList<String>();
-    this.ignoreDisplayLabels = new HashMap<String,String>();
+    this.ignoreDisplayLabels = new HashMap<String, String>();
 
     // Create the chain and set the default interceptor
     this.chain = new InterceptorChain();
     this.chain.addInterceptor(new ParseInterceptor()
     {
       @Override
-      public void interceptCondition(InterceptorChain chain, ValueQuery valueQuery, String entityAlias,
-          Condition condition)
+      public void interceptCondition(InterceptorChain chain, ValueQuery valueQuery, String entityAlias, Condition condition)
       {
         valueQuery.AND(condition);
 
@@ -367,14 +368,15 @@ public class ValueQueryParser
       }
 
       /**
-       * This is the default interceptor for when an Attribute could not be found. Interceptors
-       * before this must attempt to rectify the AttributeDoesNotExistException, otherwise it will
-       * be thrown here. This method has Interceptor like behavior as it delegates in a chain, but it's
-       * really for the error case in which a Selectable cannot be resolved.
+       * This is the default interceptor for when an Attribute could not be
+       * found. Interceptors before this must attempt to rectify the
+       * AttributeDoesNotExistException, otherwise it will be thrown here. This
+       * method has Interceptor like behavior as it delegates in a chain, but
+       * it's really for the error case in which a Selectable cannot be
+       * resolved.
        */
       @Override
-      public void interceptSelectable(InterceptorChain chain, ValueQuery valueQuery, String entityAlias,
-          Selectable selectable, String attributeName, AttributeDoesNotExistException t)
+      public void interceptSelectable(InterceptorChain chain, ValueQuery valueQuery, String entityAlias, Selectable selectable, String attributeName, AttributeDoesNotExistException t)
       {
         throw t;
       }
@@ -448,8 +450,7 @@ public class ValueQueryParser
     // dump warnings too
     public void warning(SAXParseException exception) throws SAXParseException
     {
-      System.out.println("** Warning" + ", line " + exception.getLineNumber() + ", uri "
-          + exception.getSystemId());
+      System.out.println("** Warning" + ", line " + exception.getLineNumber() + ", uri " + exception.getSystemId());
       System.out.println("   " + exception.getMessage());
     }
   }
@@ -482,19 +483,22 @@ public class ValueQueryParser
    * @param attribute
    * @param userAlias
    */
-  public void addAttributeSelectable(String entityAlias, String attribute, String userAlias,
-      String columnAlias)
+  public void addAttributeSelectable(String entityAlias, String attribute, String userAlias, String columnAlias)
   {
-    this.customAttributeSelects.add(new CustomAttributeSelect(entityAlias, attribute, userAlias,
-        columnAlias));
+    this.addAttributeSelectable(entityAlias, attribute, userAlias, columnAlias, null);
   }
 
+  public void addAttributeSelectable(String entityAlias, String attribute, String userAlias, String columnAlias, Object data)
+  {
+    this.customAttributeSelects.add(new CustomAttributeSelect(entityAlias, attribute, userAlias, columnAlias, data));
+  }
+  
   public void setValueQuery(String alias, ValueQuery valueQuery)
   {
     // JN change
     this.valueQueryMap.put(alias, valueQuery);
   }
-  
+
   /**
    * Hack for DDMS
    */
@@ -502,9 +506,10 @@ public class ValueQueryParser
   {
     this.ignoreSelectables.add(alias);
   }
-  
+
   /**
-   * Hack for DDMS, needed because of the ignoreSelectables hack, see ticket #3313
+   * Hack for DDMS, needed because of the ignoreSelectables hack, see ticket
+   * #3313
    */
   public String getIgnoredDisplayLabel(String attrName)
   {
@@ -569,8 +574,7 @@ public class ValueQueryParser
 
       try
       {
-        GeneratedEntityQuery generatedEntityQuery = (GeneratedEntityQuery) queryClass.getConstructor(
-            QueryFactory.class).newInstance(this.queryFactory);
+        GeneratedEntityQuery generatedEntityQuery = (GeneratedEntityQuery) queryClass.getConstructor(QueryFactory.class).newInstance(this.queryFactory);
         generatedEntityQuery.setComponentQuery(entityQuery);
         this.generatedEntityQueryMap.put(alias, generatedEntityQuery);
       }
@@ -637,7 +641,8 @@ public class ValueQueryParser
         {
           Selectable selectable = getSelectable(selectableElement);
 
-          if (selectable != null) // This only happens if the selectable is part of the ignore list (DDMS hack)
+          if (selectable != null) // This only happens if the selectable is part
+                                  // of the ignore list (DDMS hack)
           {
             String key = selectable.getUserDefinedAlias();
             if (this.customColumnAliases.containsKey(key))
@@ -645,7 +650,7 @@ public class ValueQueryParser
               CustomColumnAlias entry = this.customColumnAliases.get(key);
               selectable.setColumnAlias(entry.columnAlias);
             }
-  
+
             String mapKey = selectable.getAttributeNameSpace() + "-" + selectable._getAttributeName();
             selectableMap.put(mapKey, selectable);
           }
@@ -679,6 +684,11 @@ public class ValueQueryParser
       if (custom.columnAlias.trim().length() > 0)
       {
         selectable.setColumnAlias(custom.columnAlias);
+      }
+      
+      if(custom.data != null)
+      {
+        selectable.setData(custom.data);
       }
 
       if (!exists)
@@ -721,8 +731,7 @@ public class ValueQueryParser
       }
     }
 
-    SelectableSingle[] selectableArray = selectableSingleList
-        .toArray(new SelectableSingle[selectableSingleList.size()]);
+    SelectableSingle[] selectableArray = selectableSingleList.toArray(new SelectableSingle[selectableSingleList.size()]);
 
     this.valueQuery.GROUP_BY(selectableArray);
   }
@@ -739,7 +748,7 @@ public class ValueQueryParser
     if (basicConditionNodeList.getLength() >= 1)
     {
       Element basicConditionElement = (Element) basicConditionNodeList.item(0);
-      
+
       Condition condition = getBasicCondition(basicConditionElement);
 
       if (condition instanceof BasicCondition)
@@ -955,13 +964,11 @@ public class ValueQueryParser
 
         if (tagName.equals(ATTRIBUTE_TAG))
         {
-          Element entityAliasElement = (Element) element
-              .getElementsByTagName(ATTRIBUTE_ENTITY_ALIAS_TAG).item(0);
+          Element entityAliasElement = (Element) element.getElementsByTagName(ATTRIBUTE_ENTITY_ALIAS_TAG).item(0);
           String entityAlias = entityAliasElement.getTextContent().trim();
 
           String userAlias = null;
-          Element userAliasElement = (Element) element.getElementsByTagName(SELECTABLE_USER_ALIAS_TAG)
-              .item(0);
+          Element userAliasElement = (Element) element.getElementsByTagName(SELECTABLE_USER_ALIAS_TAG).item(0);
           if (userAliasElement != null)
           {
             if (!userAliasElement.getTextContent().trim().equals(""))
@@ -971,8 +978,7 @@ public class ValueQueryParser
           }
 
           String userLabel = null;
-          Element userLabelElement = (Element) element.getElementsByTagName(SELECTABLE_USER_LABEL_TAG)
-              .item(0);
+          Element userLabelElement = (Element) element.getElementsByTagName(SELECTABLE_USER_LABEL_TAG).item(0);
           if (userLabelElement != null)
           {
             if (!userLabelElement.getTextContent().trim().equals(""))
@@ -981,8 +987,7 @@ public class ValueQueryParser
             }
           }
 
-          Element attributeNameElement = (Element) element.getElementsByTagName(ATTRIBUTENAME_TAG).item(
-              0);
+          Element attributeNameElement = (Element) element.getElementsByTagName(ATTRIBUTENAME_TAG).item(0);
           String attributeNameTagValue = attributeNameElement.getTextContent().trim();
 
           String[] attributeNames = attributeNameTagValue.split("\\.");
@@ -1007,8 +1012,7 @@ public class ValueQueryParser
             {
               try
               {
-                if (attribute != null && attribute instanceof AttributeLocal
-                    && attributeName.equals("currentValue"))
+                if (attribute != null && attribute instanceof AttributeLocal && attributeName.equals("currentValue"))
                 {
                   attribute = ( (AttributeLocal) attribute ).getSessionLocale(userAlias, userLabel);
                 }
@@ -1018,8 +1022,11 @@ public class ValueQueryParser
                   {
                     this.ignoreDisplayLabels.put(userAlias, userLabel);
                     return null;
-                  } 
-                  else if (valueQueryMap.containsKey(entityAlias)) // Probably another hack for DDMS
+                  }
+                  else if (valueQueryMap.containsKey(entityAlias)) // Probably
+                                                                   // another
+                                                                   // hack for
+                                                                   // DDMS
                   {
                     attribute = this.valueQueryMap.get(entityAlias).get(userAlias, userLabel);
                   }
@@ -1032,15 +1039,16 @@ public class ValueQueryParser
                 {
                   if (attribute instanceof HasAttributeFactory)
                   {
-                    attribute = ( (HasAttributeFactory) attribute ).get(attributeName, userAlias,
-                        userLabel);
+                    attribute = ( (HasAttributeFactory) attribute ).get(attributeName, userAlias, userLabel);
                   }
                 }
               }
               catch (AttributeDoesNotExistException ex)
               {
-                // This may not be the best place for the Interceptor but it allows
-                // calling code to make a last attempt to parse/manipulate the attribute
+                // This may not be the best place for the Interceptor but it
+                // allows
+                // calling code to make a last attempt to parse/manipulate the
+                // attribute
                 // as the above code has failed.
                 chain.interceptSelectableBatch(valueQuery, entityAlias, attribute, attributeName, ex);
               }
@@ -1048,20 +1056,13 @@ public class ValueQueryParser
           }
           return attribute;
         }
-        else if (tagName.equals(SQLBOOLEAN_TAG) || tagName.equals(SQLCHARACTER_TAG)
-            || tagName.equals(SQLTEXT_TAG) || tagName.equals(SQLCLOB_TAG) || tagName.equals(SQLDATE_TAG)
-            || tagName.equals(SQLDATETIME_TAG) || tagName.equals(SQLTIME_TAG)
-            || tagName.equals(SQLDECIMAL_TAG) || tagName.equals(SQLDOUBLE_TAG)
-            || tagName.equals(SQLFLOAT_TAG) || tagName.equals(SQLINTEGER_TAG)
-            || tagName.equals(SQLLONG_TAG))
+        else if (tagName.equals(SQLBOOLEAN_TAG) || tagName.equals(SQLCHARACTER_TAG) || tagName.equals(SQLTEXT_TAG) || tagName.equals(SQLCLOB_TAG) || tagName.equals(SQLDATE_TAG) || tagName.equals(SQLDATETIME_TAG) || tagName.equals(SQLTIME_TAG) || tagName.equals(SQLDECIMAL_TAG) || tagName.equals(SQLDOUBLE_TAG) || tagName.equals(SQLFLOAT_TAG) || tagName.equals(SQLINTEGER_TAG) || tagName.equals(SQLLONG_TAG))
         {
-          Element attributeNameElement = (Element) element.getElementsByTagName(ATTRIBUTENAME_TAG).item(
-              0);
+          Element attributeNameElement = (Element) element.getElementsByTagName(ATTRIBUTENAME_TAG).item(0);
           String attributeName = attributeNameElement.getTextContent().trim();
 
           String userAlias = null;
-          Element userAliasElement = (Element) element.getElementsByTagName(SELECTABLE_USER_ALIAS_TAG)
-              .item(0);
+          Element userAliasElement = (Element) element.getElementsByTagName(SELECTABLE_USER_ALIAS_TAG).item(0);
           if (userAliasElement != null)
           {
             if (!userAliasElement.getTextContent().trim().equals(""))
@@ -1081,8 +1082,7 @@ public class ValueQueryParser
           }
 
           String userLabel = null;
-          Element userLabelElement = (Element) element.getElementsByTagName(SELECTABLE_USER_LABEL_TAG)
-              .item(0);
+          Element userLabelElement = (Element) element.getElementsByTagName(SELECTABLE_USER_LABEL_TAG).item(0);
           if (userLabelElement != null)
           {
             if (!userLabelElement.getTextContent().trim().equals(""))
@@ -1102,93 +1102,80 @@ public class ValueQueryParser
           // to make querying on precalculatated views easier.
           if (tagName.equals(SQLBOOLEAN_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLBoolean(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLBoolean(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLCHARACTER_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLCharacter(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLCharacter(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLTEXT_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLText(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLText(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLCLOB_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLClob(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLClob(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLDATE_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLDate(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLDate(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLDATETIME_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLDateTime(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLDateTime(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLTIME_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLTime(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLTime(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLDECIMAL_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLDecimal(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLDecimal(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLDOUBLE_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLDouble(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLDouble(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLFLOAT_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLFloat(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLFloat(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLINTEGER_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLInteger(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLInteger(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
           else if (tagName.equals(SQLLONG_TAG))
           {
-            SelectableSQL selectableSQL = new SelectableSQLLong(isAggregate, this.valueQuery,
-                attributeName, attributeName, userAlias, userLabel);
+            SelectableSQL selectableSQL = new SelectableSQLLong(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }
         }
         else
         {
-          Element functionSelectableElement = (Element) element.getElementsByTagName(SELECTABLE_TAG)
-              .item(0);
+          Element functionSelectableElement = (Element) element.getElementsByTagName(SELECTABLE_TAG).item(0);
 
           String userAlias = null;
           String userLabel = null;
@@ -1199,8 +1186,7 @@ public class ValueQueryParser
           {
             Node childNode = functionChildNodes.item(k);
 
-            if (childNode instanceof Element
-                && ( (Element) childNode ).getTagName().equals(SELECTABLE_USER_ALIAS_TAG))
+            if (childNode instanceof Element && ( (Element) childNode ).getTagName().equals(SELECTABLE_USER_ALIAS_TAG))
             {
               if (! ( (Element) childNode ).getTextContent().trim().equals(""))
               {
@@ -1208,8 +1194,7 @@ public class ValueQueryParser
               }
             }
 
-            if (childNode instanceof Element
-                && ( (Element) childNode ).getTagName().equals(SELECTABLE_USER_LABEL_TAG))
+            if (childNode instanceof Element && ( (Element) childNode ).getTagName().equals(SELECTABLE_USER_LABEL_TAG))
             {
               if (! ( (Element) childNode ).getTextContent().trim().equals(""))
               {
