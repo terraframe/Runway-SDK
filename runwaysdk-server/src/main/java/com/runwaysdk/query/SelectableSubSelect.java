@@ -45,6 +45,8 @@ public class SelectableSubSelect implements SelectablePrimitive
   private String       attributeName;
 
   private String       columnName;
+  
+  private Object data;
 
   /**
    *
@@ -112,6 +114,18 @@ public class SelectableSubSelect implements SelectablePrimitive
   public Set<MdAttributeConcreteDAOIF> getAllEntityMdAttributes()
   {
     return this.selectable.getAllEntityMdAttributes();
+  }
+  
+  @Override
+  public Object getData()
+  {
+    return this.data;
+  }
+
+  @Override
+  public void setData(Object data)
+  {
+    this.data = data;
   }
 
   /**

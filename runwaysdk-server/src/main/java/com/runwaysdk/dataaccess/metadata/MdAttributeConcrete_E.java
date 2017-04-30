@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * Created on Aug 15, 2005
@@ -48,6 +48,8 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTableDAOIF;
+import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
@@ -63,7 +65,6 @@ import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 
-
 /**
  * @author nathan
  *
@@ -74,10 +75,11 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
    *
    */
   private static final long serialVersionUID = 4531802008791787181L;
+
   /**
    * The database vendor formated column datatype.
    */
-  protected String dbColumnType;
+  protected String          dbColumnType;
 
   /**
    * @param mdAttribute
@@ -89,11 +91,11 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   }
 
   /**
-   * Returns the formated DB column type used in the database in the syntax
-   * of the current DB vendor.
+   * Returns the formated DB column type used in the database in the syntax of
+   * the current DB vendor.
    *
-   * @return formated DB column type used in the database in the syntax of
-   *         the current DB vendor.
+   * @return formated DB column type used in the database in the syntax of the
+   *         current DB vendor.
    */
   protected String getDbColumnType()
   {
@@ -121,7 +123,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
       String attributeId = this.getMdAttribute().getId();
 
       boolean preExistingAttribute = false;
-      
+
       List<? extends MdAttributeConcreteDAOIF> attributeList = definingEntity.definesAttributes();
       for (MdAttributeConcreteDAOIF attribute : attributeList)
       {
@@ -130,21 +132,24 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
           preExistingAttribute = true;
         }
       }
-      
+
       if (!preExistingAttribute)
       {
-        // Check to see if there is an existing attribute definition with the identical id that may have been overwritten
-        // in the transaction cache with this newly created attribute, due to an identical key name value. We need to go to 
+        // Check to see if there is an existing attribute definition with the
+        // identical id that may have been overwritten
+        // in the transaction cache with this newly created attribute, due to an
+        // identical key name value. We need to go to
         // the database to see if an existing attribute definition exists.
-        MdAttributeDAOIF possibleExistingMdAttributeDAOIF = (MdAttributeDAOIF)BusinessDAOFactory.get(this.getMdAttribute().getId());
+        MdAttributeDAOIF possibleExistingMdAttributeDAOIF = (MdAttributeDAOIF) BusinessDAOFactory.get(this.getMdAttribute().getId());
 
         // A possible pre-existing attribute was found
         if (possibleExistingMdAttributeDAOIF != null)
         {
           String thisSequence = this.getMdAttribute().getAttributeIF(ElementInfo.SEQUENCE).getValue();
           String existingSequence = possibleExistingMdAttributeDAOIF.getAttributeIF(ElementInfo.SEQUENCE).getValue();
-          
-          // If the sequence numbers do not match, then there is a pre-existing attribute definition
+
+          // If the sequence numbers do not match, then there is a pre-existing
+          // attribute definition
           if (!thisSequence.equals(existingSequence))
           {
             preExistingAttribute = true;
@@ -154,11 +159,10 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
 
       if (preExistingAttribute)
       {
-        String msg = "Cannot add an attribute named [" + definesAttribute + "] to class ["
-            + definingEntity.definesType() + "] because that class already has defined an attribute with that name.";
+        String msg = "Cannot add an attribute named [" + definesAttribute + "] to class [" + definingEntity.definesType() + "] because that class already has defined an attribute with that name.";
         throw new DuplicateAttributeDefinitionException(msg, this.getMdAttribute(), definingEntity);
-      }       
-    }    
+      }
+    }
 
     if (this.getMdAttribute().isNew() && !this.appliedToDB)
     {
@@ -166,7 +170,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
       Attribute columnNameAttribute = this.getMdAttribute().getAttribute(MdAttributeConcreteInfo.COLUMN_NAME);
       if (!columnNameAttribute.isModified() || columnNameAttribute.getValue().trim().length() == 0)
       {
-          // Automatically create a column name
+        // Automatically create a column name
         columnNameAttribute.setValue(this.autoGenCreateColumnName(this.getMdAttribute().definesAttribute()));
       }
       else
@@ -178,9 +182,10 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   }
 
   /**
-   * Returns a column name generated from the given attribute name.  The attribute name is converted to
-   * underscore case and truncated to the maximum column size.  If a column with the resultant name
-   * already exists, then the last two characters are replaced with an underscore and a two digit number.
+   * Returns a column name generated from the given attribute name. The
+   * attribute name is converted to underscore case and truncated to the maximum
+   * column size. If a column with the resultant name already exists, then the
+   * last two characters are replaced with an underscore and a two digit number.
    *
    * @param attributeName
    *
@@ -201,14 +206,15 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
       columnName = columnName.substring(0, Database.MAX_ATTRIBUTE_NAME_SIZE);
     }
 
-    String tableName = ((MdEntityDAOIF)this.getMdAttribute().definedByClass()).getTableName();
+    String tableName = ( (MdEntityDAOIF) this.getMdAttribute().definedByClass() ).getTableName();
 
     if (!Database.columnExists(columnName, tableName))
     {
       return columnName;
     }
 
-    // The column exists, but check to see if it is marked to be deleted at the end of the transaction.
+    // The column exists, but check to see if it is marked to be deleted at the
+    // end of the transaction.
 
     TransactionState transactionState = TransactionState.getCurrentTransactionState();
     List<Command> notUndoableCommandList = transactionState.getNotUndoableCommandList();
@@ -217,17 +223,17 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     {
       if (command instanceof DropColumnDDLCommand)
       {
-        DropColumnDDLCommand dropColumnDDLCommand = (DropColumnDDLCommand)command;
+        DropColumnDDLCommand dropColumnDDLCommand = (DropColumnDDLCommand) command;
         if (ddlCommandDatabaseKey.equals(dropColumnDDLCommand.getCurrentDatabaseColumnNameKey()) ||
-            // A hashed column command may represent the a column of the same name
+        // A hashed column command may represent the a column of the same name
             ddlCommandDatabaseKey.equals(dropColumnDDLCommand.getDefinedColumnNameKey()))
         {
-          // We will use the given column name, because the existing column will be deleted
+          // We will use the given column name, because the existing column will
+          // be deleted
           return columnName;
         }
       }
     }
-
 
     int maxColumnPrefix = Database.MAX_DB_IDENTIFIER_SIZE - 3;
     if (columnName.length() > maxColumnPrefix)
@@ -264,9 +270,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   {
     if (this.getMdAttribute().isUnique() && !this.getMdAttribute().isRequired() && !Database.allowsUniqueNonRequiredColumns())
     {
-      String error = "Attribute [" + this.getMdAttribute().definesAttribute() + "] on type ["
-          + definedByClass().definesType()
-          + "] cannot participate in a uniqueness constraint because it isn't required.";
+      String error = "Attribute [" + this.getMdAttribute().definesAttribute() + "] on type [" + definedByClass().definesType() + "] cannot participate in a uniqueness constraint because it isn't required.";
       throw new RequiredUniquenessConstraintException(error, this.getMdAttribute());
     }
 
@@ -281,9 +285,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
         // Get the class that defines the MdAttribute class
         MdClassDAOIF mdClassIF = this.getMdAttribute().getMdClassDAO();
 
-        Attribute spoofAttribute =
-          AttributeFactory.createAttribute(this.getMdAttribute().getKey(), this.getMdAttribute().getType(), MdAttributeConcreteInfo.DEFAULT_VALUE,
-              mdClassIF.definesType(), value);
+        Attribute spoofAttribute = AttributeFactory.createAttribute(this.getMdAttribute().getKey(), this.getMdAttribute().getType(), MdAttributeConcreteInfo.DEFAULT_VALUE, mdClassIF.definesType(), value);
 
         spoofAttribute.setContainingComponent(this.getMdAttribute());
 
@@ -295,19 +297,20 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   /**
    * Adds a column in the database to the given table.
    *
-   * <br/><b>Precondition:</b> tableName != null
-   * <br/><b>Precondition:</b> !tableName.trim().equals("")
+   * <br/>
+   * <b>Precondition:</b> tableName != null <br/>
+   * <b>Precondition:</b> !tableName.trim().equals("")
    *
    */
   @AbortIfProblem
   protected void createDbColumn(String tableName)
   {
-    if(!this.appliedToDB)
+    if (!this.appliedToDB)
     {
-      // DDL cannot occur at runtime on the metadata display label table on databases that use a separate
+      // DDL cannot occur at runtime on the metadata display label table on
+      // databases that use a separate
       // DDL and DML connections.
-      if (this.definedByClass().definesType().equals(EntityTypes.METADATADISPLAYLABEL.getType()) &&
-          !Database.sharesDDLandDMLconnection())
+      if (this.definedByClass().definesType().equals(EntityTypes.METADATADISPLAYLABEL.getType()) && !Database.sharesDDLandDMLconnection())
       {
         new MetadataDisplayLabelDDLCommand(this.getMdAttribute()).doIt();
       }
@@ -322,11 +325,14 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
    * Modifies the column definition in the database to the given table, if such
    * a modification is necessary.
    *
-   * <br/><b>Precondition:</b> tableName != null
-   * <br/><b>Precondition:</b> !tableName.trim().equals("")
+   * <br/>
+   * <b>Precondition:</b> tableName != null <br/>
+   * <b>Precondition:</b> !tableName.trim().equals("")
    *
    */
-  protected void modifyDbColumn(String tableName) {}
+  protected void modifyDbColumn(String tableName)
+  {
+  }
 
   /**
    * Contains special logic for saving an attribute.
@@ -335,9 +341,10 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   {
     this.validate();
 
+    MdEntityDAOIF definingEntity = this.definedByClass();
+
     if (this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.NAME).isModified())
     {
-      MdEntityDAOIF definingEntity = this.definedByClass();
       List<? extends MdAttributeConcreteDAOIF> attributeList = null;
       List<? extends MdEntityDAOIF> parentsList = definingEntity.getSuperClasses();
 
@@ -347,11 +354,11 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
         attributeList = parent.definesAttributes();
         for (MdAttributeConcreteDAOIF attribute : attributeList)
         {
-          // compare for the same named attribute, BUT make sure it's not being compared with itself
+          // compare for the same named attribute, BUT make sure it's not being
+          // compared with itself
           if (this.getMdAttribute().definesAttribute().equals(attribute.definesAttribute()) && !parent.definesType().equals(definingEntity.definesType()))
           {
-            String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class ["
-                + definingEntity.definesType() + "] because its parent class ["+parent.definesType()+"] already defines an attribute with that name.";
+            String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class [" + definingEntity.definesType() + "] because its parent class [" + parent.definesType() + "] already defines an attribute with that name.";
             throw new DuplicateAttributeInInheritedHierarchyException(msg, this.getMdAttribute(), definingEntity, parent);
           }
         }
@@ -364,21 +371,32 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
         attributeList = child.definesAttributes();
         for (MdAttributeConcreteDAOIF attribute : attributeList)
         {
-          // compare for the same named attribute, BUT make sure it's not being compared with itself
+          // compare for the same named attribute, BUT make sure it's not being
+          // compared with itself
           if (this.getMdAttribute().definesAttribute().equals(attribute.definesAttribute()) && !child.definesType().equals(definingEntity.definesType()))
           {
-            String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class ["
-            + definingEntity.definesType() + "] because a child class ["+child.definesType()+"] already defines an attribute with that name.";
+            String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class [" + definingEntity.definesType() + "] because a child class [" + child.definesType() + "] already defines an attribute with that name.";
             throw new DuplicateAttributeDefinedInSubclassException(msg, this.getMdAttribute(), definingEntity, child);
           }
         }
       }
     }
-    
+
     Attribute columnAttribute = this.getMdAttribute().getAttribute(MdAttributeConcreteInfo.COLUMN_NAME);
 
-    if ((!this.getMdAttribute().isNew() || this.getMdAttribute().isAppliedToDB()) &&
-        columnAttribute.isModified())
+    if (! ( definingEntity instanceof MdTableDAOIF ))
+    {
+      int charLength = columnAttribute.getValue().length();
+      int maxCharLength = Database.getMaxColumnSize();
+
+      if (charLength > maxCharLength)
+      {
+        String error = "Attribute [" + columnAttribute.getName() + "] on type [" + columnAttribute.getDefiningClassType() + "] may not exceed " + maxCharLength + " characters in length.";
+        throw new AttributeLengthCharacterException(error, columnAttribute, maxCharLength);
+      }
+    }
+
+    if ( ( !this.getMdAttribute().isNew() || this.getMdAttribute().isAppliedToDB() ) && columnAttribute.isModified())
     {
       List<MdIndexDAOIF> mdIndexList = this.getMdAttribute().getMdIndecies();
 
@@ -388,41 +406,40 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
         mdIndexDAO.apply();
       }
     }
-    
-    
+
     if (this.getMdAttribute().isAppliedToDB())
     {
       MdAttributeConcreteDAO mdAttributeConcreteDAO = this.getMdAttribute();
       Attribute keyAttribute = mdAttributeConcreteDAO.getAttribute(ComponentInfo.KEY);
-      
+
       if (keyAttribute.isModified())
       {
         mdAttributeConcreteDAO.changeClassAttributeRelationshipKey();
       }
     }
-    
+
     if (!this.getMdAttribute().isNew())
     {
       this.modifyAttribute();
     }
     else
     {
-      //This attribute may have already been created
+      // This attribute may have already been created
       this.createAttribute();
       this.refreshReferencingCachedEntityTypes();
     }
   }
 
-
   /**
-   * Refreshes any cached types that reference a struct that defines this attribute.
+   * Refreshes any cached types that reference a struct that defines this
+   * attribute.
    */
   private void refreshReferencingCachedEntityTypes()
   {
     MdEntityDAOIF definingMdEntityDAOIF = this.definedByClass();
-    if (definingMdEntityDAOIF instanceof MdStructDAOIF )
+    if (definingMdEntityDAOIF instanceof MdStructDAOIF)
     {
-      MdStructDAOIF definingMdStructDAOIF = (MdStructDAOIF)definingMdEntityDAOIF;
+      MdStructDAOIF definingMdStructDAOIF = (MdStructDAOIF) definingMdEntityDAOIF;
 
       QueryFactory queryFactory = new QueryFactory();
       BusinessDAOQuery mdAttrStructQ = queryFactory.businessDAOQuery(MdAttributeStructInfo.CLASS);
@@ -440,7 +457,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
 
           if (attrStructDefiningClass instanceof MdEntityDAOIF)
           {
-            ObjectCache.updateParentCacheStrategy(((MdEntityDAO)attrStructDefiningClass).getBusinessDAO());
+            ObjectCache.updateParentCacheStrategy( ( (MdEntityDAO) attrStructDefiningClass ).getBusinessDAO());
           }
 
         }
@@ -457,11 +474,11 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
    * Makes corresponding DDL statements to the database for changes made to
    * attributes of an attribute BusinessDAO.
    *
-   * <br/><b>Postcondition:</b> database schema changes are made, if
-   * appropriate
+   * <br/>
+   * <b>Postcondition:</b> database schema changes are made, if appropriate
    */
   private void modifyAttribute()
-  {    
+  {
     // get the MdEntity that defines this attribute
     MdEntityDAOIF mdEntityIF = this.definedByClass();
 
@@ -506,8 +523,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     }
 
     // No need to build the index if it was already rebuilt above.
-    if (!rebuildIndexOnModifyColumn &&
-        this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE).isModified())
+    if (!rebuildIndexOnModifyColumn && this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE).isModified())
     {
       /* Clean all previous indices */
       cleanIndices(false);
@@ -543,7 +559,9 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
 
   /**
    * Cleans (erases) all current indices of this attribute.
-   * @param delete true if the index is being deleted, false otherwise.
+   * 
+   * @param delete
+   *          true if the index is being deleted, false otherwise.
    */
   private void cleanIndices(boolean delete)
   {
@@ -567,13 +585,14 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
       Database.dropNonUniqueIndex(mdEntityIF.getTableName(), this.getMdAttribute().getColumnName(), indexName, delete);
     }
   }
-  
+
   /**
    * Adds the appropriate column to and index (if appropriate) to the database.
-   * Creates a relationship between this MdAttribute object and the MdEntity that
-   * defines it.
+   * Creates a relationship between this MdAttribute object and the MdEntity
+   * that defines it.
    *
-   * <br/><b>Postcondition:</b> database schema changes are made
+   * <br/>
+   * <b>Postcondition:</b> database schema changes are made
    *
    */
   private void createAttribute()
@@ -583,13 +602,13 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
 
     this.createDbColumn(parentMdEntity.getTableName());
 
-    //Do not create the CLASS_ATTRIBUTE relationship on imports,
-    //because the relationship is included in the import file
-    if(!this.getMdAttribute().isImport() && !this.appliedToDB)
+    // Do not create the CLASS_ATTRIBUTE relationship on imports,
+    // because the relationship is included in the import file
+    if (!this.getMdAttribute().isImport() && !this.appliedToDB)
     {
       parentMdEntity.addAttributeConcrete(this.getMdAttribute());
     }
-   
+
     // Create a unique index on this attribute, if specified.
     if (this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE).isModified())
     {
@@ -603,21 +622,21 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     // Refresh all caches of classes that define or inherit this attribute
     ObjectCache.updateParentCacheStrategy(parentMdEntity);
 
-
-    // If this attribute belongs to a structs, then refersh the cache for all classes that reference
+    // If this attribute belongs to a structs, then refersh the cache for all
+    // classes that reference
     // the structs as a struct attribute.
     if (parentMdEntity instanceof MdStructDAOIF)
     {
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)parentMdEntity;
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) parentMdEntity;
       List<? extends MdAttributeStructDAOIF> mdAttributeStructIFList = mdStructIF.getMdAttributeStruct();
 
       for (MdAttributeStructDAOIF mdAttributeStructIF : mdAttributeStructIFList)
       {
         MdClassDAO mdClassDAO = mdAttributeStructIF.definedByClass().getBusinessDAO();
 
-        if(mdClassDAO instanceof MdEntityDAO)
+        if (mdClassDAO instanceof MdEntityDAO)
         {
-          ObjectCache.updateParentCacheStrategy((MdEntityDAO)mdClassDAO);
+          ObjectCache.updateParentCacheStrategy((MdEntityDAO) mdClassDAO);
         }
       }
 
@@ -626,20 +645,22 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   }
 
   /**
-   * Deletes an attribute from runway. The <code>BusinessDAO</code> is deleted from the
-   * database and removed from the cache. All relationships pertaining to this
-   * <code>BusinessDAO</code> are also removed as well.
+   * Deletes an attribute from runway. The <code>BusinessDAO</code> is deleted
+   * from the database and removed from the cache. All relationships pertaining
+   * to this <code>BusinessDAO</code> are also removed as well.
    *
-   * <br/><b>Postcondition: </b> BusinessDAO and all dependencies are removed
-   * from the runway <br/><b>Postcondition: </b> Coresponding column from
-   * the defining table is dropped
+   * <br/>
+   * <b>Postcondition: </b> BusinessDAO and all dependencies are removed from
+   * the runway <br/>
+   * <b>Postcondition: </b> Coresponding column from the defining table is
+   * dropped
    *
    * @param p_mdAttribute
    *          Attribute metadata BusinessDAO
    */
   public void delete()
   {
-    //Delete all tuples this MdAttribute is part of
+    // Delete all tuples this MdAttribute is part of
     this.dropTuples();
 
     boolean rebuildIndexOnModifyColumn = Database.rebuildIndexOnModifyColumn();
@@ -664,8 +685,10 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     MdEntityDAO mdEntity = mdEntityIF.getBusinessDAO();
 
     // Some dbs require that all tables have at least one column. Therefore, I
-    // am making the assumption that if you are deleting the ID field, then you are also
-    // dropping the defining type within the same transaction, which will drop the table.
+    // am making the assumption that if you are deleting the ID field, then you
+    // are also
+    // dropping the defining type within the same transaction, which will drop
+    // the table.
     if (!this.getMdAttribute().definesAttribute().equalsIgnoreCase(EntityInfo.ID))
     {
       // drop the attribute from the table
@@ -680,10 +703,8 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     // Reminder: Transaction management aspect will update the cache
   }
 
-
   /**
-   * Deletes any TypeTuples in which this MdAttribute
-   * is part of.
+   * Deletes any TypeTuples in which this MdAttribute is part of.
    */
   private void dropTuples()
   {
@@ -693,7 +714,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
 
     OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-    while(iterator.hasNext())
+    while (iterator.hasNext())
     {
       BusinessDAOIF businessDAOIF = iterator.next();
       businessDAOIF.getBusinessDAO().delete(false);
@@ -703,11 +724,13 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   /**
    * Drops the column of the given name from the given table.
    *
-   * <br/><b>Precondition:</b> tableName != null <br/><b>Precondition:</b>
-   * attrName != null
+   * <br/>
+   * <b>Precondition:</b> tableName != null <br/>
+   * <b>Precondition:</b> attrName != null
    *
-   * <br/><b>Postcondition:</b> All instances of the given class have the
-   * given attribute cleared
+   * <br/>
+   * <b>Postcondition:</b> All instances of the given class have the given
+   * attribute cleared
    *
    * @param tableName
    *          Name of the table the attribute belongs to.

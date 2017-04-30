@@ -43,6 +43,7 @@ public class SelectableSpoof implements SelectableAggregate, Selectable
   private String columnAlias;
   private boolean isAggregate;
   private String attributeNameSpace;
+  private Object data;
   
   protected SelectableSpoof(boolean isAggregate, ValueQuery rootQuery, String attributeName)
   {
@@ -78,6 +79,18 @@ public class SelectableSpoof implements SelectableAggregate, Selectable
     this.columnAlias = attributeName;
 
     this.attributeNameSpace = rootQuery.getTableAlias();
+  }
+  
+  @Override
+  public Object getData()
+  {
+    return this.data;
+  }
+
+  @Override
+  public void setData(Object data)
+  {
+    this.data = data;
   }
   
   /* (non-Javadoc)

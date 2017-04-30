@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata;
 
@@ -48,6 +48,7 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
+import com.runwaysdk.dataaccess.MdTableDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -65,7 +66,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   /**
    *
    */
-  private static final long             serialVersionUID = 7403740879364877525L;
+  private static final long serialVersionUID = 7403740879364877525L;
 
   /**
    * The default constructor, does not set any attributes
@@ -210,7 +211,6 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
     return this.getObjectState().getMdAttributeStrategy();
   }
-  
 
   /**
    * Returns the type of AttributeMdDTO this MdAttribute requires at the DTO
@@ -221,7 +221,8 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   public abstract String attributeMdDTOType();
 
   /**
-   * Returns a list of group <code>MdIndexDAOIF</code> that this attribute participates in.
+   * Returns a list of group <code>MdIndexDAOIF</code> that this attribute
+   * participates in.
    * 
    * @return
    */
@@ -349,7 +350,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   {
     return this.getObjectState().getHashedTempColumnName();
   }
-  
+
   /**
    * SEts the name of the column in the database.
    * 
@@ -553,6 +554,8 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    */
   protected void validate()
   {
+    MdClassDAOIF mdClass = this.definedByClass();
+
     AttributeIF attributeName = this.getAttributeIF(MdAttributeConcreteInfo.NAME);
     if (attributeName.isModified())
     {
@@ -560,7 +563,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     }
 
     AttributeIF columnName = this.getAttributeIF(MdAttributeConcreteInfo.COLUMN_NAME);
-    if (!this.isImport() && columnName.isModified())
+    if (!this.isImport() && columnName.isModified() && ! ( mdClass instanceof MdTableDAOIF ))
     {
       validateColumnName(columnName.getValue());
     }
@@ -572,7 +575,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     // make sure that no attributes are added to MdAttributes
     if (!allowModificationOnMdAttribute)
     {
-      MdClassDAOIF mdClassIF = this.definedByClass();
+      MdClassDAOIF mdClassIF = mdClass;
       List<? extends MdClassDAOIF> superClasses = mdClassIF.getSuperClasses();
       for (MdClassDAOIF superClass : superClasses)
       {
@@ -580,7 +583,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
         if (type.equals(MdAttributeConcreteInfo.CLASS))
         {
-          MdClassDAOIF definingClass = this.definedByClass();
+          MdClassDAOIF definingClass = mdClass;
           String error = "Attribute [" + definesAttribute() + "] cannot be modified because its defining type, [" + definingClass.definesType() + "], is an [" + MdAttributeConcreteInfo.CLASS + "].";
           throw new CannotAddAttriubteToClassException(error, this, definingClass);
         }
@@ -694,12 +697,12 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     MdClassDAOIF definingClass = this.definedByClass();
 
     if (this.isNew())
-    { 
+    {
       if (definingClass instanceof MdEntityDAOIF)
       {
         // If the index attribute is not specified, set a default if appropriate
-        this.setDefaultIndex();          
-          
+        this.setDefaultIndex();
+
         String indexName = Database.attributeIndexName( ( (MdEntityDAOIF) definingClass ).getTableName(), this.getColumnName());
 
         this.setIndexName(indexName);
@@ -723,16 +726,17 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   }
 
   /**
-   * Sets the default index for the attribute. Most attribute types do not have a default.
+   * Sets the default index for the attribute. Most attribute types do not have
+   * a default.
    * 
    * @Pre the index attribute has not been modified <br/>
    * @Pre this.isNew() = true <br/>
    */
   protected void setDefaultIndex()
   {
-    // do nothing.  
+    // do nothing.
   }
-  
+
   /**
    * Initializes the strategy object.
    */
@@ -790,8 +794,9 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   }
 
   /**
-   * Changes they key of the relationship object that binds the defining class with this metadata attribute.
-   * The key of the relationship is the same as the key of this object.
+   * Changes they key of the relationship object that binds the defining class
+   * with this metadata attribute. The key of the relationship is the same as
+   * the key of this object.
    * 
    * <br/>
    * <b>Precondition:</b> Assumes the key of this object has changed.
@@ -801,16 +806,16 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     Attribute keyAttribute = this.getAttribute(ComponentInfo.KEY);
 
     List<RelationshipDAOIF> relList = this.getParents(this.definedByClass(), RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
-      
+
     // Making assumptions that an attribute can only be defined by a class once
     for (RelationshipDAOIF relationshipDAOIF : relList)
     {
-      RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();   
+      RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
       relationshipDAO.setKey(keyAttribute.getValue());
       relationshipDAO.apply();
     }
   }
-  
+
   public static MdAttributeConcreteDAOIF get(String id)
   {
     return (MdAttributeConcreteDAOIF) BusinessDAO.get(id);
@@ -833,8 +838,9 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    * 
    * @param validateName
    *          name to validate
-   * @throws {@link InvalidColumnNameException} exception if the given name is
-   *         not a valid database column name.
+   * @throws {@link
+   *           InvalidColumnNameException} exception if the given name is not a
+   *           valid database column name.
    */
   public static void validateColumnName(String columnName)
   {
