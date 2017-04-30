@@ -30,6 +30,7 @@ import java.util.Set;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
@@ -775,6 +776,7 @@ public abstract class ComponentQuery
     }
   }
 
+
   /**
    * Adds the DISTINCT keyword to the select string, if required.
    * 
@@ -857,45 +859,6 @@ public abstract class ComponentQuery
         }
         sqlStmt.append(sqlQueryClauses.get(k));
       }
-    }
-  }
-
-  /**
-   * Each instance of this object represents an entity for which a SQL query is
-   * generated.
-   * 
-   * @author nathan
-   */
-  protected class QueryMdEntityInfo
-  {
-    private MdEntityDAOIF       mdEntityIF;
-
-    private List<MdEntityDAOIF> excludeEntityTypeList;
-
-    public QueryMdEntityInfo(MdEntityDAOIF mdEntityIF, List<MdEntityDAOIF> excludeEntityTypeList)
-    {
-      this.mdEntityIF = mdEntityIF;
-      this.excludeEntityTypeList = excludeEntityTypeList;
-    }
-
-    /**
-     * Returns the MdEntityIF object for which a query will be generated.
-     * 
-     * @return MdEntityIF object for which a query will be generated.
-     */
-    public MdEntityDAOIF getMdEntityIF()
-    {
-      return this.mdEntityIF;
-    }
-
-    /**
-     * List of strings representing types that will be excluded from the query.
-     * 
-     * @return strings representing types that will be excluded from the query.
-     */
-    public List<MdEntityDAOIF> getExcludeEntityTypeList()
-    {
-      return this.excludeEntityTypeList;
     }
   }
 
@@ -1068,48 +1031,48 @@ public abstract class ComponentQuery
    * 
    * @param name
    *          name of the attribute
-   * @param mdEntityIF
+   * @param mdClassDAOIF
    *          metadata that defines the entity that defines the given attribute.
-   * @param mdAttributeIF
+   * @param mdAttributeDAOIF
    *          attribute metadata. If null then the entity that this query object
    *          represents does not define the attribute.
    * @param requestedType
    *          the type that the caller believes the attribute with the given
    *          name to be.
    */
-  protected void checkValidAttributeRequest(String name, MdEntityDAOIF mdEntityIF, MdAttributeDAOIF mdAttributeIF, String requestedType)
+  protected void checkValidAttributeRequest(String name, MdClassDAOIF mdClassDAOIF, MdAttributeDAOIF mdAttributeDAOIF, String requestedType)
   {
-    if (mdAttributeIF == null)
+    if (mdAttributeDAOIF == null)
     {
-      String error = "Entity [" + mdEntityIF.definesType() + "] does not define attribute [" + name + "]";
+      String error = "Entity [" + mdClassDAOIF.definesType() + "] does not define attribute [" + name + "]";
       throw new QueryException(error);
     }
     
-    if (!requestedType.equals(mdAttributeIF.getType()))
+    if (!requestedType.equals(mdAttributeDAOIF.getType()))
     {
-      String error = "Attribute [" + name + "] is of type [" + mdAttributeIF.getType() + "], and not [" + requestedType + "] as requested";
+      String error = "Attribute [" + name + "] is of type [" + mdAttributeDAOIF.getType() + "], and not [" + requestedType + "] as requested";
       throw new QueryException(error);
     }
   }
 
   /**
-   * Returns an iterator of Comoponets that match the query criteria specified
+   * Returns an iterator of {@link ComponentIF} that match the query criteria specified
    * on this query object.
    * 
-   * @return iterator of Comoponets that match the query criteria specified on
+   * @return iterator of {@link ComponentIF} that match the query criteria specified on
    *         this query object.
    */
   public abstract OIterator<? extends ComponentIF> getIterator();
 
   /**
-   * Returns an iterator of Comoponets that match the query criteria specified
+   * Returns an iterator of {@link ComponentIF} that match the query criteria specified
    * on this query object.
    * 
    * @param pageSize
    *          number of results per page
    * @param pageNumber
    *          page number
-   * @return iterator of Comoponets that match the query criteria specified on
+   * @return iterator of {@link ComponentIF} that match the query criteria specified on
    *         this query object.
    */
   public abstract OIterator<? extends ComponentIF> getIterator(int pageSize, int pageNumber);

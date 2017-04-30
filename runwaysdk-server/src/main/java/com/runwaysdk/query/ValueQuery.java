@@ -75,6 +75,7 @@ import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 import com.runwaysdk.dataaccess.database.Database;
@@ -1313,8 +1314,8 @@ public class ValueQuery extends ComponentQuery
    */
   protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap)
   {
-    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
-    Map<String, MdEntityDAOIF> mdEntityMap = new HashMap<String, MdEntityDAOIF>();
+    // Key: ID of an MdAttribute Value: MdTableClass that defines the attribute;
+    Map<String, MdTableClassIF> mdTableClassMap = new HashMap<String, MdTableClassIF>();
 
     StringBuffer selectString = new StringBuffer("SELECT \n");
 
@@ -1342,18 +1343,18 @@ public class ValueQuery extends ComponentQuery
 
       this.buildSelectColumn(selectString, selectable, mdAttributeIF, columnInfo);
 
-      if (componentQuery instanceof EntityQuery)
+      if (componentQuery instanceof TableClassQuery)
       {
-        MdEntityDAOIF mdEntityIF = mdEntityMap.get(mdAttributeIF.getId());
-        if (mdEntityIF == null)
+        MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getId());
+        if (mdTableClassIF == null)
         {
-          mdEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
-          mdEntityMap.put(mdAttributeIF.getId(), mdEntityIF);
+          mdTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
+          mdTableClassMap.put(mdAttributeIF.getId(), mdTableClassIF);
         }
 
         fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());
 
-        String baseTableName = mdEntityIF.getTableName();
+        String baseTableName = mdTableClassIF.getTableName();
         if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName())
             // For functions, sometimes they are applying either to the ID or to the type itself, and therefore do not need to be joined with the table that defines the ID in metadata
             && !(selectable instanceof Function && ((Function)selectable).getSelectable().getDbColumnName().equals(EntityDAOIF.ID_COLUMN) && selectable.getDefiningTableName().equals(columnInfo.getTableName()) ))
@@ -1376,7 +1377,7 @@ public class ValueQuery extends ComponentQuery
       {
         SelectableStruct selectableStruct = (SelectableStruct)selectable;
 
-        if (componentQuery instanceof EntityQuery)
+        if (componentQuery instanceof TableClassQuery)
         {
           tableJoinSet.addAll(selectableStruct.getJoinStatements());
         }
@@ -1384,7 +1385,7 @@ public class ValueQuery extends ComponentQuery
         List<Attribute> structAttributeList = selectableStruct.getStructAttributes();
         for (Attribute structAttribute : structAttributeList)
         {
-          if (componentQuery instanceof EntityQuery)
+          if (componentQuery instanceof TableClassQuery)
           {
             fromTableMap.put(structAttribute.getDefiningTableAlias(), structAttribute.getDefiningTableName());
           }
@@ -3730,11 +3731,11 @@ public class ValueQuery extends ComponentQuery
       this.preprossesSelectableStructures();
     }
 
-    MdEntityDAOIF definingEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
+    MdTableClassIF definingTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
     String definingTableName = this.tableAlias;
     String definingTableAlias = this.tableAlias;
 
-    return attributeFactory(this, selectable, definingEntityIF, definingTableName, definingTableAlias, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return attributeFactory(this, selectable, definingTableClassIF, definingTableName, definingTableAlias, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
@@ -3742,7 +3743,7 @@ public class ValueQuery extends ComponentQuery
    * 
    * @return query Attribute object.
    */
-  protected static Attribute attributeFactory(ComponentQuery rootComponentQuery, Selectable selectable, MdEntityDAOIF definingEntityIF, String definingTableName, String definingTableAlias, MdAttributeConcreteDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected static Attribute attributeFactory(ComponentQuery rootComponentQuery, Selectable selectable, MdTableClassIF definingTableClassIF, String definingTableName, String definingTableAlias, MdAttributeConcreteDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel)
   {
 
     Set<Join> attrTableJoinSet = new HashSet<Join>();
@@ -3830,7 +3831,7 @@ public class ValueQuery extends ComponentQuery
     {
       for (PluginIF plugin : pluginMap.values())
       {
-        attribute = plugin.createAttribute(rootComponentQuery, selectable, definingEntityIF, definingTableName, definingTableAlias, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = plugin.createAttribute(rootComponentQuery, selectable, definingTableClassIF, definingTableName, definingTableAlias, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
 
         if (attribute != null)
         {
@@ -3923,7 +3924,7 @@ public class ValueQuery extends ComponentQuery
   {
     public String getModuleIdentifier();
 
-    public Attribute createAttribute(ComponentQuery rootComponentQuery, Selectable selectable, MdEntityDAOIF definingEntityIF, String definingTableName, String definingTableAlias, MdAttributeConcreteDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel);
+    public Attribute createAttribute(ComponentQuery rootComponentQuery, Selectable selectable, MdTableClassIF definingTableClassIF, String definingTableName, String definingTableAlias, MdAttributeConcreteDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel);
   }
 
 }

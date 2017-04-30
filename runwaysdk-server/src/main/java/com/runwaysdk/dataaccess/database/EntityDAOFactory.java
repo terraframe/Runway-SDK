@@ -47,6 +47,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -114,7 +115,7 @@ public class EntityDAOFactory
    * 
    * @param columnInfoMap
    *          contains information about attributes used in the query
-   * @param definedByMdEntityMap
+   * @param definedByTableClassMap
    *          sort of a hack. It is a map where the key is the id of an
    *          MdAttribute and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
@@ -123,23 +124,23 @@ public class EntityDAOFactory
    * @param resultSet
    *          ResultSet object from a query.
    */
-  protected static Map<String, Attribute> getAttributesFromQuery(Map<String, ColumnInfo> columnInfoMap, Map<String, MdEntityDAOIF> definedByMdEntityMap, List<? extends MdAttributeConcreteDAOIF> MdAttributeIFList, ResultSet resultSet)
+  protected static Map<String, Attribute> getAttributesFromQuery(Map<String, ColumnInfo> columnInfoMap, Map<String, MdTableClassIF> definedByTableClassMap, List<? extends MdAttributeConcreteDAOIF> MdAttributeIFList, ResultSet resultSet)
   {
 
     Map<String, Attribute> attributeMap = new HashMap<String, Attribute>();
 
     for (MdAttributeConcreteDAOIF mdAttributeIF : MdAttributeIFList)
     {
-      MdEntityDAOIF mdEntityIF = definedByMdEntityMap.get(mdAttributeIF.getId());
+      MdTableClassIF mdTableClassIF = definedByTableClassMap.get(mdAttributeIF.getId());
 
-      if (mdEntityIF == null)
+      if (mdTableClassIF == null)
       {
-        mdEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
-        definedByMdEntityMap.put(mdAttributeIF.getId(), mdEntityIF);
+        mdTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
+        definedByTableClassMap.put(mdAttributeIF.getId(), mdTableClassIF);
       }
 
       String attributeName = mdAttributeIF.definesAttribute();
-      String attributeNameSpace = mdEntityIF.definesType();
+      String attributeNameSpace = mdTableClassIF.definesType();
       String attributeQualifiedName = attributeNameSpace + "." + attributeName;
 
       ColumnInfo columnInfo = columnInfoMap.get(attributeQualifiedName);
@@ -149,7 +150,7 @@ public class EntityDAOFactory
         String columnAlias = columnInfo.getColumnAlias();
         Object columnValue = AttributeFactory.getColumnValueFromRow(resultSet, columnAlias, mdAttributeIF.getType(), false);
 
-        Attribute attribute = AttributeFactory.createAttribute(mdAttributeIF.getKey(), mdAttributeIF.getType(), attributeName, mdEntityIF.definesType(), columnValue);
+        Attribute attribute = AttributeFactory.createAttribute(mdAttributeIF.getKey(), mdAttributeIF.getType(), attributeName, mdTableClassIF.definesType(), columnValue);
 
         attributeMap.put(attributeName, attribute);
 

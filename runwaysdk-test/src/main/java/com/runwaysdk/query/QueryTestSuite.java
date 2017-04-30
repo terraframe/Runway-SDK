@@ -70,7 +70,9 @@ public class QueryTestSuite extends TestSuite
     suite.addTest(ValueQueryEnumTest.suite());
     suite.addTest(ValueQueryStructTest.suite());
     
-    suite.addTest(ViewQueryTest.suite());
+    suite.addTest(MdTableQueryTest.suite());
+    
+    suite.addTest(ViewQueryTest.suite());    
     suite.addTest(ExtraQueryTest.suite());
     suite.addTest(AttributeComparisonTest.suite());
     suite.addTest(AttributeQueryTest.suite());
@@ -86,6 +88,8 @@ public class QueryTestSuite extends TestSuite
     TestSuite childSuite = new TestSuite();
     childSuite.addTest(new QueryMasterSetup(suite, QueryMasterSetup.childQueryInfo.getType(), QueryMasterSetup.childRefQueryInfo.getType()));
     totalSuite.addTest(childSuite);
+    
+
 
     totalSuite.addTest(StandaloneStructQueryTest.suite());
     totalSuite.addTest(AggregateFunctionTestSuite.suite());

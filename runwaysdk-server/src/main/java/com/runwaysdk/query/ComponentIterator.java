@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 
@@ -37,11 +38,11 @@ public abstract class ComponentIterator<T> implements OIterator<T>
   protected boolean   hasNext;
   
   // ThreadRefactor: get rid of this map.
-  // Key: ID of an MdAttribute  Value: MdEntity that defines the attribute;
-  protected Map<String, MdEntityDAOIF> definedByMdEntityMap;
+  // Key: ID of an {@link MdAttriuteDAOIF}  Value: MdEntity that defines the attribute;
+  protected Map<String, MdTableClassIF> definedByTableClassTableMap;
   // This is map improves performance.  
   // Key: type Values: List of MdAttributeIF objects that an instance of the type has.
-  protected Map<String, List<? extends MdAttributeConcreteDAOIF>> mdEntityMdAttributeMap;
+  protected Map<String, List<? extends MdAttributeConcreteDAOIF>> mdTableClassMdAttributeMap;
 
   /**
    * Initializes the iterator.
@@ -55,8 +56,8 @@ public abstract class ComponentIterator<T> implements OIterator<T>
     this.columnInfoMap = columnInfoMap;
     this.resultSet     = resultSet;
     
-    this.definedByMdEntityMap = new HashMap<String, MdEntityDAOIF>();
-    this.mdEntityMdAttributeMap = new HashMap<String, List<? extends MdAttributeConcreteDAOIF>>();
+    this.definedByTableClassTableMap = new HashMap<String, MdTableClassIF>();
+    this.mdTableClassMdAttributeMap = new HashMap<String, List<? extends MdAttributeConcreteDAOIF>>();
     
     try
     {

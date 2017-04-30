@@ -151,6 +151,7 @@ import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
@@ -258,6 +259,7 @@ import com.runwaysdk.query.EntityQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.RelationshipDAOQuery;
+import com.runwaysdk.system.metadata.MdAttribute;
 import com.runwaysdk.util.IdParser;
 import com.runwaysdk.vault.VaultDAO;
 import com.runwaysdk.vault.VaultFileDAO;
@@ -567,7 +569,7 @@ public class BusinessDAOFactory
 
     // ThreadRefactor: get rid of this map.
     // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
-    Map<String, MdEntityDAOIF> definedByMdEntityMap = new HashMap<String, MdEntityDAOIF>();
+    Map<String, MdTableClassIF> definedByMdTableClassMap = new HashMap<String, MdTableClassIF>();
     // This is map improves performance.
     // Key: type Values: List of MdAttributeIF objects that an instance of the
     // type has.
@@ -591,7 +593,7 @@ public class BusinessDAOFactory
           mdEntityMdAttributeMap.put(businessDAOtype, mdAttributeIFList);
         }
 
-        BusinessDAO businessDAO = buildObjectFromQuery(businessDAOtype, columnInfoMap, definedByMdEntityMap, mdAttributeIFList, results);
+        BusinessDAO businessDAO = buildObjectFromQuery(businessDAOtype, columnInfoMap, definedByMdTableClassMap, mdAttributeIFList, results);
 
         if (cacheStrategy != null)
         {
@@ -625,27 +627,27 @@ public class BusinessDAOFactory
   }
 
   /**
-   * Builds a BusinessDAO from a row from the given resultset.
+   * Builds a {@link BusinessDAO} from a row from the given resultset.
    * 
    * @param type
    *          type of the object.
    * @param columnInfoMap
    *          contains information about attributes used in the query
-   * @param definedByMdEntityMap
+   * @param definedByTableClasMap
    *          sort of a hack. It is a map where the key is the id of an
-   *          MdAttribute and the value is the MdEntity that defines the
+   *          {@link MdAttribute} and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
-   *          contains MdAttribute objects for the attributes used in this query
+   *          contains {@link MdAttribute} objects for the attributes used in this query
    * @param resultSet
    *          ResultSet object from a query.
-   * @return BusinessDAO from a row from the given resultset
+   * @return {@link BusinessDAO}  from a row from the given resultset
    */
 
-  public static BusinessDAO buildObjectFromQuery(String type, Map<String, ColumnInfo> columnInfoMap, Map<String, MdEntityDAOIF> definedByMdEntityMap, List<? extends MdAttributeConcreteDAOIF> MdAttributeIFList, ResultSet results)
+  public static BusinessDAO buildObjectFromQuery(String type, Map<String, ColumnInfo> columnInfoMap, Map<String, MdTableClassIF> definedByTableClasMap, List<? extends MdAttributeConcreteDAOIF> MdAttributeIFList, ResultSet results)
   {
     // Get the attributes
-    Map<String, Attribute> attributeMap = EntityDAOFactory.getAttributesFromQuery(columnInfoMap, definedByMdEntityMap, MdAttributeIFList, results);
+    Map<String, Attribute> attributeMap = EntityDAOFactory.getAttributesFromQuery(columnInfoMap, definedByTableClasMap, MdAttributeIFList, results);
     BusinessDAO businessDAO = factoryMethod(attributeMap, type, true);
     return businessDAO;
   }

@@ -36,6 +36,7 @@ import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.system.metadata.MdTableQuery;
 
 public class QueryFactory
 {
@@ -59,11 +60,21 @@ public class QueryFactory
 
     this.columnAliasMap        = new HashMap<String, String>();
   }
+  
+  /**
+   * Returns a {@link TableQuery} object for querying BusinessDAOs.
+   * @param type type of the table.
+   * @return  {@link TableQuery}  object for querying data objects.
+   */
+  public TableQuery tableQuery(String type)
+  {
+    return new TableQuery(this, type);
+  }
 
   /**
-   * Returns a BusinessDAOQuery object for querying BusinessDAOs.
-   * @param type type of the BusinessDAO.
-   * @return BusinessDAOQuery object for querying data objects.
+   * Returns a {@link BusinessDAOQuery} object for querying BusinessDAOs.
+   * @param type type of the {@link BusinessDAO}.
+   * @return  {@link BusinessDAOQuery}  object for querying data objects.
    */
   public BusinessDAOQuery businessDAOQuery(String type)
   {

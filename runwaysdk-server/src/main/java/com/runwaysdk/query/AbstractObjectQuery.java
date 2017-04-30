@@ -42,9 +42,9 @@ public abstract class AbstractObjectQuery extends EntityQuery
 
   private void init()
   {
-    if ( !(this.mdEntityIF instanceof MdBusinessDAOIF))
+    if ( !(this.getMdEntityIF() instanceof MdBusinessDAOIF))
     {
-      String error = "AbstractObjectQuery can only query for Business object types, not [" + mdEntityIF.definesType() + "]s.";
+      String error = "AbstractObjectQuery can only query for Business object types, not [" + this.getMdEntityIF().definesType() + "]s.";
       throw new QueryException(error);
     }
   }
@@ -58,7 +58,7 @@ public abstract class AbstractObjectQuery extends EntityQuery
    */
   protected MdBusinessDAOIF getMdBusinessIF()
   {
-    return (MdBusinessDAOIF)this.mdEntityIF;
+    return (MdBusinessDAOIF)this.getMdEntityIF();
   }
 
   /**

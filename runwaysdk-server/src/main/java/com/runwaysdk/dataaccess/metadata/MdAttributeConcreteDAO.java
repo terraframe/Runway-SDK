@@ -45,6 +45,7 @@ import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -128,9 +129,9 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   }
 
   /**
-   * Returns the <code>MdClassDAOIF</code> that defines this <code>MdAttributeDAO</code>.
+   * Returns the {@link MdClassDAOIF} that defines this <code>MdAttributeConcreteDAO</code>.
    * 
-   * @return the <code>MdClassDAOIF</code> that defines this <code>MdAttributeDAO</code>.
+   * @return the {@link MdClassDAOIF} that defines this <code>MdAttributeConcreteDAO</code>.
    */
   public MdClassDAOIF definedByClass()
   {
@@ -172,7 +173,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   {
     return this;
   }
-
+  
   /**
    * Creates the relationship such that the given virtual attribute virtualizes
    * this attribute.

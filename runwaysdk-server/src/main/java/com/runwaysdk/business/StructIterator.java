@@ -62,14 +62,14 @@ public class StructIterator<T> extends ComponentIterator<T>
       {
         String structType = this.rootMdEntityIF.definesType();
 
-        List<? extends MdAttributeConcreteDAOIF> mdAttributeIFList = (List<? extends MdAttributeConcreteDAOIF>)this.mdEntityMdAttributeMap.get(structType);
+        List<? extends MdAttributeConcreteDAOIF> mdAttributeIFList = (List<? extends MdAttributeConcreteDAOIF>)this.mdTableClassMdAttributeMap.get(structType);
         if (mdAttributeIFList == null)
         {
           mdAttributeIFList = MdStructDAO.getMdStructDAO(structType).getAllDefinedMdAttributes();
-          this.mdEntityMdAttributeMap.put(structType, mdAttributeIFList);
+          this.mdTableClassMdAttributeMap.put(structType, mdAttributeIFList);
         }
 
-        StructDAO structDAO = (StructDAO)StructDAOFactory.buildObjectFromQuery(structType, this.columnInfoMap, this.definedByMdEntityMap, mdAttributeIFList, this.resultSet);
+        StructDAO structDAO = (StructDAO)StructDAOFactory.buildObjectFromQuery(structType, this.columnInfoMap, this.definedByTableClassTableMap, mdAttributeIFList, this.resultSet);
 
         if(BusinessFacade.isReservedType(structDAO.getType()))
         {

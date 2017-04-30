@@ -11,6 +11,7 @@ import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.Command;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdTableDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -76,6 +77,62 @@ public class MdTableDAO extends MdClassDAO implements MdTableDAOIF
     return super.apply();
   }
   
+  /**
+   * 
+   * @param businessContext
+   *          true if this is being called from a business context, false
+   *          otherwise. If true then cascading deletes of other Entity objects
+   *          will happen at the Business layer instead of the data access
+   *          layer.
+   * 
+   */
+  @Override
+  public void delete(boolean businessContext)
+  {
+    this.deleteAllChildClasses(businessContext);
+    
+    // Delete all attribute MdAttribue objects that this type defines
+    // delete all attribute metadata for this class
+    this.dropAllAttributes(businessContext);
+    
+    // Delete all permission tuples that this class participates in
+    this.dropTuples();
+    
+    // Delete all MdMethods defined by this type
+    this.dropAllMdMethods();
+    
+    // Delete this BusinessDAO
+    super.delete(businessContext);
+  }
+  
+  
+  /**
+   * @see com.runwaysdk.dataaccess.MdTableDAOIF#getTableName()
+   */
+  public String getTableName()
+  {
+    return this.getAttributeIF(MdTableInfo.TABLE_NAME).getValue();
+  }
+  
+  /**
+   * Returns a {@link MdTableDAOIF}  instance of the metadata for the given class.
+   * 
+   * <br/>
+   * <b>Precondition:</b> classType != null <br/>
+   * <b>Precondition:</b> !classType.trim().equals("") <br/>
+   * <b>Precondition:</b> classType is a valid class defined in the database <br/>
+   * <b>Postcondition:</b> return value is not null <br/>
+   * <b>Postcondition:</b> Returns a MdBusinessIF instance of the metadata for
+   * the given class (MdTableDAOIF().definesType().equals(classType)
+   * 
+   * @param classType
+   *          class type
+   * @return MdBusinessIF instance of the metadata for the given class type.
+   */
+  public static MdTableDAOIF getMdTableDAO(String classType)
+  {
+    return (MdTableDAOIF)ObjectCache.getMdClassDAO(classType);
+  }
   
   /**
    * No code is generated for instances of {@link MdTableDAO}.
@@ -132,6 +189,69 @@ public class MdTableDAO extends MdClassDAO implements MdTableDAOIF
   }
 
   /**
+   * Returns a complete list of MdAttributeDAOIF objects defined for this
+   * instance of Entity. This list includes attributes inherited from
+   * supertypes.
+   * 
+   * @return a list of MdAttributeDAOIF objects
+   */
+  @SuppressWarnings("unchecked")
+  public List<? extends MdAttributeConcreteDAOIF> getAllDefinedMdAttributes()
+  {
+    return (List<? extends MdAttributeConcreteDAOIF>) super.getAllDefinedMdAttributes();
+  }
+
+  /**
+   * Returns a map of MdAttributeDAOIF objects defined by this entity type plus
+   * all attributes defined by parent entities.
+   * <p/>
+   * <br/>
+   * Map Key: attribute name in lower case <br/>
+   * Map Value: MdAttributeDAOIF
+   * <p/>
+   * 
+   * @return map of MdAttributeDAOIF objects defined by this entity type plus
+   *         all attributes defined by parent entities.
+   */
+  @SuppressWarnings("unchecked")
+  public Map<String, ? extends MdAttributeConcreteDAOIF> getAllDefinedMdAttributeMap()
+  {
+    return (Map<String, ? extends MdAttributeConcreteDAOIF>) super.getAllDefinedMdAttributeMap();
+  }
+  
+  
+  /**
+   * Returns a map of MdAttributeDAOIF objects defined by this entity type plus
+   * all attributes defined by parent entities.
+   * <p/>
+   * <br/>
+   * Map Key: mdAttributeID <br/>
+   * Map Value: MdAttributeDAOIF
+   * <p/>
+   * 
+   * @return map of MdAttributeDAOIF objects defined by this entity type plus
+   *         all attributes defined by parent entities.
+   */
+  @SuppressWarnings("unchecked")
+  public Map<String, ? extends MdAttributeConcreteDAOIF> getAllDefinedMdAttributeIDMap()
+  {
+    return (Map<String, ? extends MdAttributeConcreteDAOIF>) super.getAllDefinedMdAttributeIDMap();
+  }
+
+
+  /**
+   * Returns a map of MdAttributeDAOIF objects defined by this entity. Key:
+   * attribute name in lower case Value: MdAttributeDAOIF
+   * 
+   * @return map of MdAttributeDAOIF objects defined by this entity.
+   */
+  @SuppressWarnings("unchecked")
+  public Map<String, ? extends MdAttributeConcreteDAOIF> getDefinedMdAttributeMap()
+  {
+    return (Map<String, ? extends MdAttributeConcreteDAOIF>) super.getDefinedMdAttributeMap();
+  }
+  
+  /**
    * No code is generated for instances of {@link MdTableDAO}.
    */
   @Override
@@ -167,53 +287,6 @@ public class MdTableDAO extends MdClassDAO implements MdTableDAOIF
     return (MdTableDAOIF) BusinessDAO.get(id);
   }
   
-  /**
-   * 
-   * @param businessContext
-   *          true if this is being called from a business context, false
-   *          otherwise. If true then cascading deletes of other Entity objects
-   *          will happen at the Business layer instead of the data access
-   *          layer.
-   * 
-   */
-  @Override
-  public void delete(boolean businessContext)
-  {
-    this.deleteAllChildClasses(businessContext);
-    
-    // Delete all attribute MdAttribue objects that this type defines
-    // delete all attribute metadata for this class
-    this.dropAllAttributes(businessContext);
-    
-    // Delete all permission tuples that this class participates in
-    this.dropTuples();
-    
-    // Delete all MdMethods defined by this type
-    this.dropAllMdMethods();
-    
-    // Delete this BusinessDAO
-    super.delete(businessContext);
-  }
-  
-  /**
-   * Returns a {@link MdTableDAOIF}  instance of the metadata for the given class.
-   * 
-   * <br/>
-   * <b>Precondition:</b> classType != null <br/>
-   * <b>Precondition:</b> !classType.trim().equals("") <br/>
-   * <b>Precondition:</b> classType is a valid class defined in the database <br/>
-   * <b>Postcondition:</b> return value is not null <br/>
-   * <b>Postcondition:</b> Returns a MdBusinessIF instance of the metadata for
-   * the given class (MdTableDAOIF().definesType().equals(classType)
-   * 
-   * @param classType
-   *          class type
-   * @return MdBusinessIF instance of the metadata for the given class type.
-   */
-  public static MdTableDAOIF getMdTableDAO(String classType)
-  {
-    return (MdTableDAOIF)ObjectCache.getMdClassDAO(classType);
-  }
 
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()

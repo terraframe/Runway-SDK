@@ -20,6 +20,8 @@ package com.runwaysdk.query;
 
 import java.util.Set;
 
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.gis.constants.GISConstants;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
@@ -27,9 +29,7 @@ import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
-import com.runwaysdk.query.EntityQuery.PluginIF;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.query.TableClassQuery.PluginIF;
 
 public class GISEntityQueryAttributeFactory implements PluginIF
 {
@@ -39,7 +39,7 @@ public class GISEntityQueryAttributeFactory implements PluginIF
   }
 
   public Attribute internalAttributeFactory(String name,
-      MdAttributeDAOIF mdAttributeIF, MdEntityDAOIF definingEntityIF,
+      MdAttributeDAOIF mdAttributeIF, MdTableClassIF definingEntityIF,
       String definingTableName, String definingTableAlias, ComponentQuery rootQuery,
       Set<Join> attrTableJoinSet , String userDefinedAlias, String userDefinedDisplayLabel)
   {

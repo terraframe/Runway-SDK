@@ -755,12 +755,12 @@ public class TestFixtureFactory
     return TestFixtureFactory.addDateAttribute(mdEntity, TestFixConst.ATTRIBUTE_DATE, indexType);
   }
 
-  public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeDateDAO addDateAttribute(MdClassDAO mdClass, String attributeName)
   {
-    return TestFixtureFactory.addDateAttribute(mdEntity, attributeName, IndexTypes.UNIQUE_INDEX);
+    return TestFixtureFactory.addDateAttribute(mdClass, attributeName, IndexTypes.UNIQUE_INDEX);
   }
 
-  public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, String attributeName, IndexTypes indexType)
+  public static MdAttributeDateDAO addDateAttribute(MdClassDAO mdClass, String attributeName, IndexTypes indexType)
   {
     MdAttributeDateDAO mdAttribute = MdAttributeDateDAO.newInstance();
     mdAttribute.setValue(MdAttributeDateInfo.NAME, attributeName);
@@ -769,7 +769,7 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "2006-02-11");
     mdAttribute.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setStructValue(MdAttributeDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Test");
-    mdAttribute.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdClass.getId());
 
     return mdAttribute;
   }
@@ -845,24 +845,24 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeReferenceDAO addReferenceAttribute(MdEntityDAOIF mdEntity, MdEntityDAOIF referenceEntity)
+  public static MdAttributeReferenceDAO addReferenceAttribute(MdClassDAOIF mdClass, MdEntityDAOIF referenceEntity)
   {
-    return addReferenceAttribute(mdEntity, referenceEntity, "testReference");
+    return addReferenceAttribute(mdClass, referenceEntity, "testReference");
   }
 
   /**
-   * @param mdEntity
+   * @param mdClass
    * @param referenceEntity
    * @param attributeName
    * @return
    */
-  public static MdAttributeReferenceDAO addReferenceAttribute(MdEntityDAOIF mdEntity, MdEntityDAOIF referenceEntity, String attributeName)
+  public static MdAttributeReferenceDAO addReferenceAttribute(MdClassDAOIF mdClass, MdEntityDAOIF referenceEntity, String attributeName)
   {
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Test");
     mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
-    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdClass.getId());
 
     return mdAttribute;
   }

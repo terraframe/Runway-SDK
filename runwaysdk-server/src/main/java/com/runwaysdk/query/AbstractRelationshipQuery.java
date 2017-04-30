@@ -27,6 +27,7 @@ import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -56,15 +57,15 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
 
   private void init()
   {
-    if ( !(this.mdEntityIF instanceof MdRelationshipDAOIF))
+    if ( !(this.getMdEntityIF() instanceof MdRelationshipDAOIF))
     {
       String error = "RelationshipQuery can only query for relationships, not ["
-          + mdEntityIF.definesType() + "]s.";
+          + this.getMdEntityIF().definesType() + "]s.";
       throw new QueryException(error);
     }
 
-    this.parentAttributeQualifiedName = this.mdEntityIF.definesType()+"."+RelationshipInfo.PARENT_ID;
-    this.childAttributeQualifiedName = this.mdEntityIF.definesType()+"."+RelationshipInfo.CHILD_ID;
+    this.parentAttributeQualifiedName = this.getMdEntityIF().definesType()+"."+RelationshipInfo.PARENT_ID;
+    this.childAttributeQualifiedName = this.getMdEntityIF().definesType()+"."+RelationshipInfo.CHILD_ID;
   }
 
   /**
@@ -76,18 +77,18 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
    */
   protected MdRelationshipDAOIF getMdRelationshipIF()
   {
-    return (MdRelationshipDAOIF)this.mdEntityIF;
+    return (MdRelationshipDAOIF)this.getMdEntityIF();
   }
 
   /**
    * Initializes the columnInfoMap to include all attributes required to build a select clause that includes all attributes
    * of the component.
    */
-  protected void getColumnInfoForSelectClause(MdEntityDAOIF _mdEntityIF, Map<String, ColumnInfo> columnInfoMap2, List<MdAttributeConcreteDAOIF> totalMdAttributeIFList)
+  protected void getColumnInfoForSelectClause(MdTableClassIF _mdTableClassIF, Map<String, ColumnInfo> columnInfoMap2, List<MdAttributeConcreteDAOIF> totalMdAttributeIFList)
   {
-    super.getColumnInfoForSelectClause(_mdEntityIF, columnInfoMap2, totalMdAttributeIFList);
+    super.getColumnInfoForSelectClause(_mdTableClassIF, columnInfoMap2, totalMdAttributeIFList);
 
-    String tableName = _mdEntityIF.getTableName();
+    String tableName = _mdTableClassIF.getTableName();
     String definingTableAlias = this.getTableAlias("", tableName);
 
     ColumnInfo columnInfo = new ColumnInfo(tableName, definingTableAlias,
@@ -105,11 +106,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
    * @param mdAttributeIDMap Key: MdAttribute.getId() Value: MdAttributeIF
    * @return select clause for this query.
    */
-  protected StringBuffer buildSelectClause(MdEntityDAOIF _mdEntityIF,  Set<Join> tableJoinSet2,
+  protected StringBuffer buildSelectClause(MdTableClassIF _mdTableClassIF,  Set<Join> tableJoinSet2,
       Map<String, String> fromTableMap, Map<String, ColumnInfo> columnInfoMap2,
       List<MdAttributeConcreteDAOIF> totalMdAttributeIFList, Map<String, ? extends MdAttributeConcreteDAOIF> mdAttributeIDMap)
   {
-    StringBuffer selectClause =  super.buildSelectClause(_mdEntityIF,  tableJoinSet2, fromTableMap, columnInfoMap2,
+    StringBuffer selectClause =  super.buildSelectClause(_mdTableClassIF,  tableJoinSet2, fromTableMap, columnInfoMap2,
         totalMdAttributeIFList, mdAttributeIDMap);
 
     ColumnInfo columnInfo = columnInfoMap2.get(this.parentAttributeQualifiedName);

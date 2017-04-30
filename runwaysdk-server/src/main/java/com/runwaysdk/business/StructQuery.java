@@ -57,10 +57,10 @@ public class StructQuery extends EntityQuery
     this.checkNotUsedInValueQuery();
 
     String sqlStmt = this.getSQL();
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+    Map<String, ColumnInfo> columnInfoMap = this.getColumnInfoMap();
 
     ResultSet results = Database.query(sqlStmt);
-    return new StructIterator<Struct>(this.mdEntityIF, columnInfoMap, results);
+    return new StructIterator<Struct>(this.getMdEntityIF(), columnInfoMap, results);
   }
 
   /**
@@ -79,10 +79,10 @@ public class StructQuery extends EntityQuery
     int skip = ComponentQuery.rowSkip(pageSize, pageNumber);
 
     String sqlStmt = this.getSQL(limit, skip);
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+    Map<String, ColumnInfo> columnInfoMap = this.getColumnInfoMap();
 
     ResultSet results = Database.query(sqlStmt);
-    return new StructIterator<Struct>(this.mdEntityIF, columnInfoMap, results);
+    return new StructIterator<Struct>(this.getMdEntityIF(), columnInfoMap, results);
   }
 
 }

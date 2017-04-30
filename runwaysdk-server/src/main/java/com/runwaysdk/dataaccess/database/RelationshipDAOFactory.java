@@ -46,6 +46,7 @@ import com.runwaysdk.dataaccess.EnumerationAttributeItem;
 import com.runwaysdk.dataaccess.GraphDAO;
 import com.runwaysdk.dataaccess.IndexAttributeDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdGraphDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
@@ -430,7 +431,7 @@ public class RelationshipDAOFactory
 
     // ThreadRefactor: get rid of this map.
     // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
-    Map<String, MdEntityDAOIF> definedByMdEntityMap = new HashMap<String, MdEntityDAOIF>();
+    Map<String, MdTableClassIF> definedByMdTableClassMap = new HashMap<String, MdTableClassIF>();
     // This is map improves performance.
     // Key: type Values: List of MdAttributeIF objects that an instance of the
     // type has.
@@ -455,7 +456,7 @@ public class RelationshipDAOFactory
           mdEntityMdAttributeMap.put(relationshipType, MdAttributeIFList);
         }
 
-        RelationshipDAO relationshipDAO = buildRelationshipFromQuery(relationshipType, relationshipQuery, columnInfoMap, definedByMdEntityMap, MdAttributeIFList, results);
+        RelationshipDAO relationshipDAO = buildRelationshipFromQuery(relationshipType, relationshipQuery, columnInfoMap, definedByMdTableClassMap, MdAttributeIFList, results);
         if (relationshipCollection != null)
         {
           relationshipCollection.updateCache(relationshipDAO);
@@ -494,7 +495,7 @@ public class RelationshipDAOFactory
    *          specifies criteria.
    * @param columnInfoMap
    *          contains information about attributes used in the query
-   * @param definedByMdEntityMap
+   * @param definedByMdTableClassMap
    *          sort of a hack. It is a map where the key is the id of an
    *          MdAttribute and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
@@ -504,10 +505,10 @@ public class RelationshipDAOFactory
    *          ResultSet object from a query.
    * @return
    */
-  public static RelationshipDAO buildRelationshipFromQuery(String type, AbstractRelationshipQuery relationshipQuery, Map<String, ColumnInfo> columnInfoMap, Map<String, MdEntityDAOIF> definedByMdEntityMap, List<? extends MdAttributeConcreteDAOIF> MdAttributeIFList, ResultSet results)
+  public static RelationshipDAO buildRelationshipFromQuery(String type, AbstractRelationshipQuery relationshipQuery, Map<String, ColumnInfo> columnInfoMap, Map<String, MdTableClassIF> definedByMdTableClassMap, List<? extends MdAttributeConcreteDAOIF> MdAttributeIFList, ResultSet results)
   {
     // Get the attributes
-    Map<String, Attribute> attributeMap = EntityDAOFactory.getAttributesFromQuery(columnInfoMap, definedByMdEntityMap, MdAttributeIFList, results);
+    Map<String, Attribute> attributeMap = EntityDAOFactory.getAttributesFromQuery(columnInfoMap, definedByMdTableClassMap, MdAttributeIFList, results);
 
     String parentAttributeQualifiedName = relationshipQuery.getMdEntityIF().definesType() + "." + RelationshipInfo.PARENT_ID;
     String childAttributeQualifiedName = relationshipQuery.getMdEntityIF().definesType() + "." + RelationshipInfo.CHILD_ID;

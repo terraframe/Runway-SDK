@@ -389,6 +389,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     return (MdAttributeConcreteDAOIF) super.definesAttribute(attributeName);
   }
 
+
   /**
    * Returns a complete list of MdAttributeDAOIF objects defined for this
    * instance of Entity. This list includes attributes inherited from
@@ -401,7 +402,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   {
     return (List<? extends MdAttributeConcreteDAOIF>) super.getAllDefinedMdAttributes();
   }
-
+  
   /**
    * Returns a map of MdAttributeDAOIF objects defined by this entity type plus
    * all attributes defined by parent entities.

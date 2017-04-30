@@ -71,15 +71,15 @@ public class RelationshipDAOIterator<T> extends ComponentIterator<T>
         String typeColumnAlias = columnInfoMap.get(this.rootMdEntityIF.definesType()+"."+EntityInfo.TYPE).getColumnAlias();
         String relationshipType = this.resultSet.getString(typeColumnAlias);
         
-        List<? extends MdAttributeConcreteDAOIF> mdAttributeIFList = (List<? extends MdAttributeConcreteDAOIF>)this.mdEntityMdAttributeMap.get(relationshipType);
+        List<? extends MdAttributeConcreteDAOIF> mdAttributeIFList = (List<? extends MdAttributeConcreteDAOIF>)this.mdTableClassMdAttributeMap.get(relationshipType);
         if (mdAttributeIFList == null)
         {
           mdAttributeIFList = MdElementDAO.getMdElementDAO(relationshipType).getAllDefinedMdAttributes();
-          this.mdEntityMdAttributeMap.put(relationshipType, mdAttributeIFList);
+          this.mdTableClassMdAttributeMap.put(relationshipType, mdAttributeIFList);
         }
                
         relationshipDAO = RelationshipDAOFactory.buildRelationshipFromQuery(relationshipType, this.relationshipQuery, this.columnInfoMap, 
-            this.definedByMdEntityMap, mdAttributeIFList, this.resultSet);
+            this.definedByTableClassTableMap, mdAttributeIFList, this.resultSet);
         
         this.hasNext = this.resultSet.next();
         if (!this.hasNext)

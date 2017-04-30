@@ -65,14 +65,14 @@ public class BusinessIterator<T> extends ComponentIterator<T>
         String typeColumnAlias = columnInfoMap.get(this.rootMdEntityIF.definesType()+"."+EntityInfo.TYPE).getColumnAlias();
         String businessDAOType = this.resultSet.getString(typeColumnAlias);
         
-        List<? extends MdAttributeConcreteDAOIF> mdAttributeIFList = (List<? extends MdAttributeConcreteDAOIF>)this.mdEntityMdAttributeMap.get(businessDAOType);
+        List<? extends MdAttributeConcreteDAOIF> mdAttributeIFList = (List<? extends MdAttributeConcreteDAOIF>)this.mdTableClassMdAttributeMap.get(businessDAOType);
         if (mdAttributeIFList == null)
         {
           mdAttributeIFList = MdElementDAO.getMdElementDAO(businessDAOType).getAllDefinedMdAttributes();
-          this.mdEntityMdAttributeMap.put(businessDAOType, mdAttributeIFList);
+          this.mdTableClassMdAttributeMap.put(businessDAOType, mdAttributeIFList);
         }
         
-        BusinessDAO businessDAO = BusinessDAOFactory.buildObjectFromQuery(businessDAOType, this.columnInfoMap, this.definedByMdEntityMap, mdAttributeIFList, this.resultSet);
+        BusinessDAO businessDAO = BusinessDAOFactory.buildObjectFromQuery(businessDAOType, this.columnInfoMap, this.definedByTableClassTableMap, mdAttributeIFList, this.resultSet);
         
         if(BusinessFacade.isReservedType(businessDAO.getType()))
         {

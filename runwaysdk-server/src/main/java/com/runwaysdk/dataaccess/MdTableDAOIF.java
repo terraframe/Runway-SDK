@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.runwaysdk.dataaccess.metadata.MdTableDAO;
 
-public interface MdTableDAOIF extends MdClassDAOIF
+public interface MdTableDAOIF extends MdTableClassIF
 {
   /**
    * Name of the table used to store instances of this class.
@@ -28,4 +28,9 @@ public interface MdTableDAOIF extends MdClassDAOIF
    */
   public MdTableDAO getBusinessDAO();
   
+  /**
+   * Returns the name of the table that this metadata represents.
+   * @return name of the table that this metadata represents.
+   */
+  public String getTableName();
 }
