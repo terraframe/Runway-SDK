@@ -174,6 +174,14 @@ public abstract class ComponentQuery
   }
 
   /**
+   * Returns the table alias used for the table that stores instances of this
+   * type.
+   * 
+   * @return table alias used for the table that stores instances of this type.
+   */
+  public abstract String getTableAlias();
+  
+  /**
    * @return returns a rank function 
    */
   public abstract RANK RANK();

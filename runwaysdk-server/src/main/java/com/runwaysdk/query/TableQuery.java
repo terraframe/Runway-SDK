@@ -71,22 +71,23 @@ public class TableQuery extends TableClassQuery
     throw new UnsupportedOperationException();
   }  
 
+
   /**
    * @return returns a rank function 
    */
-  @Override
   public RANK RANK()
   {
-    throw new UnsupportedOperationException();
+    SelectableSpoof selectableSpoof = new SelectableSpoof(false, this, "RankSpoof"); 
+    return new RANK(selectableSpoof);
   }
- 
+  
   /**
    * @return returns a rank function 
    */
-  @Override
   public RANK RANK(String userDefinedAlias)
   {
-    throw new UnsupportedOperationException();
+    SelectableSpoof selectableSpoof = new SelectableSpoof(false, this, "RankSpoof"); 
+    return new RANK(selectableSpoof, userDefinedAlias);
   }
   
   /**
