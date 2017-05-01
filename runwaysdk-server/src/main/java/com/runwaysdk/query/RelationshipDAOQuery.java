@@ -95,10 +95,10 @@ public class RelationshipDAOQuery extends AbstractRelationshipQuery
     this.checkNotUsedInValueQuery();
 
     String sqlStmt = this.getSQL();
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+    Map<String, ColumnInfo> columnInfoMap = this.getColumnInfoMap();
 
     ResultSet results = Database.query(sqlStmt);
-    return new RelationshipDAOIterator<RelationshipDAOIF>(this.mdEntityIF, this, columnInfoMap, results);
+    return new RelationshipDAOIterator<RelationshipDAOIF>(this.getMdEntityIF(), this, columnInfoMap, results);
   }
 
 
@@ -115,9 +115,9 @@ public class RelationshipDAOQuery extends AbstractRelationshipQuery
     this.checkNotUsedInValueQuery();
 
     String sqlStmt = this.getSQL();
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+    Map<String, ColumnInfo> columnInfoMap = this.getColumnInfoMap();
 
     ResultSet results = Database.query(sqlStmt);
-    return new RelationshipDAOIterator<RelationshipDAOIF>(this.mdEntityIF, this, columnInfoMap, results);
+    return new RelationshipDAOIterator<RelationshipDAOIF>(this.getMdEntityIF(), this, columnInfoMap, results);
   }
 }

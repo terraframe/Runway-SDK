@@ -51,7 +51,7 @@ public class ValueIterator<T> extends ComponentIterator<T>
     {
       try
       {
-        valueObject = ValueObjectFactory.buildObjectFromQuery(this.definedByMdEntityMap, this.selectableList, this.resultSet);
+        valueObject = ValueObjectFactory.buildObjectFromQuery(this.definedByTableClassTableMap, this.selectableList, this.resultSet);
 
         this.hasNext = this.resultSet.next();
         if (!this.hasNext)

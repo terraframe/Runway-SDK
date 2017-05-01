@@ -76,7 +76,7 @@ public interface MdAttributeConcreteDAOIF extends MdAttributeDAOIF
    * The enum cache of the attribute that specifies visibility of the getter methods for this attribute.
    */
   public static final String GETTER_VISIBILITY_CACHE  = MdAttributeConcreteDAOIF.GETTER_VISIBILITY_COLUMN+MdAttributeEnumerationDAOIF.CACHE_COLUMN_DELIMITER;
-
+  
   /**
    * Returns the name of the column in the database.
    *

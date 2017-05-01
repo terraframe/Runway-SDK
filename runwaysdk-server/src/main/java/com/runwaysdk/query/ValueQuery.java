@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -75,6 +75,7 @@ import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 import com.runwaysdk.dataaccess.database.Database;
@@ -210,7 +211,7 @@ public class ValueQuery extends ComponentQuery
 
     this.staleSelectables = true;
   }
-  
+
   /**
    * Restricts the query to return rows from the given page number where each
    * page has the given number of rows.
@@ -319,23 +320,23 @@ public class ValueQuery extends ComponentQuery
   }
 
   /**
-   * @return returns a rank function 
+   * @return returns a rank function
    */
   public RANK RANK()
   {
-    SelectableSpoof selectableSpoof = new SelectableSpoof(false, this, "RankSpoof"); 
+    SelectableSpoof selectableSpoof = new SelectableSpoof(false, this, "RankSpoof");
     return new RANK(selectableSpoof);
   }
-  
+
   /**
-   * @return returns a rank function 
+   * @return returns a rank function
    */
   public RANK RANK(String userDefinedAlias)
   {
-    SelectableSpoof selectableSpoof = new SelectableSpoof(false, this, "RankSpoof"); 
+    SelectableSpoof selectableSpoof = new SelectableSpoof(false, this, "RankSpoof");
     return new RANK(selectableSpoof, userDefinedAlias);
   }
-  
+
   /**
    * Replaces an existing Selectable with the same result attribute name from
    * the SELECT clause and returns the old value. If no match is found then the
@@ -382,11 +383,13 @@ public class ValueQuery extends ComponentQuery
 
     return replaced;
   }
-  
+
   /**
-   * Removes the provided selectable from the SELECT clause. If this ValueQuery does not contain the provided selectable null is returned.
+   * Removes the provided selectable from the SELECT clause. If this ValueQuery
+   * does not contain the provided selectable null is returned.
    * 
-   * @param removeMe The selectable to remove.
+   * @param removeMe
+   *          The selectable to remove.
    * @return The removed selectable.
    */
   public Selectable removeSelectable(Selectable removeMe)
@@ -395,7 +398,7 @@ public class ValueQuery extends ComponentQuery
     {
       return null;
     }
-    
+
     // preserve the custom FROM clauses
     Map<String, String> customFromBackup = new HashMap<String, String>();
     customFromBackup.putAll(this.customFromTableMap);
@@ -417,20 +420,25 @@ public class ValueQuery extends ComponentQuery
     {
       this.FROM(customFromBackup.get(alias), alias);
     }
-    
+
     return removeMe;
   }
-  
+
   /**
-   * Removes the selectable by attribute name, delegating to removeSelectable(Selectable).
+   * Removes the selectable by attribute name, delegating to
+   * removeSelectable(Selectable).
    * 
    * @param attribute
-   * @return Null if this ValueQuery does not contain a selectable by the given attribute name.
+   * @return Null if this ValueQuery does not contain a selectable by the given
+   *         attribute name.
    */
   public Selectable removeSelectable(String attribute)
   {
-    if (!this.hasSelectableRef(attribute)) { return null; }
-    
+    if (!this.hasSelectableRef(attribute))
+    {
+      return null;
+    }
+
     return removeSelectable(this.getSelectableRef(attribute));
   }
 
@@ -958,8 +966,10 @@ public class ValueQuery extends ComponentQuery
     {
       if (!this.groupByAttributeMap.containsKey(singleSelectable.getColumnAlias()))
       {
-        // If the selectable is not in the select list, then reference the qualified name instead of the
-        // column alias. Since the column alias is defined in the select clause, it cannot be referenced int
+        // If the selectable is not in the select list, then reference the
+        // qualified name instead of the
+        // column alias. Since the column alias is defined in the select clause,
+        // it cannot be referenced int
         // the group by clause if it is not defined in the select clause.
         if (!this.selectableSinglesInSelectMap.containsKey(singleSelectable.getDbQualifiedName()))
         {
@@ -1253,15 +1263,21 @@ public class ValueQuery extends ComponentQuery
 
       this.addToGroupByList(selectables);
 
-// JN Change: Databases allow queries to have columns in the SELECT clause that are not in GROUP BY and visa-versa
-//      for (SelectableSingle selectableSingle : this.groupByAttributeMap.values())
-//      {
-//        if (!this.selectableSinglesInSelectMap.containsKey(selectableSingle.getDbQualifiedName()))
-//        {
-//          String errMsg = "The attribute [" + selectableSingle._getAttributeName() + "] specified in the GROUP BY clause must also be specified in the SELECT clause.";
-//          throw new MissingAttributeInSelectForGroupByException(errMsg, selectableSingle);
-//        }
-//      }
+      // JN Change: Databases allow queries to have columns in the SELECT clause
+      // that are not in GROUP BY and visa-versa
+      // for (SelectableSingle selectableSingle :
+      // this.groupByAttributeMap.values())
+      // {
+      // if
+      // (!this.selectableSinglesInSelectMap.containsKey(selectableSingle.getDbQualifiedName()))
+      // {
+      // String errMsg = "The attribute [" +
+      // selectableSingle._getAttributeName() + "] specified in the GROUP BY
+      // clause must also be specified in the SELECT clause.";
+      // throw new MissingAttributeInSelectForGroupByException(errMsg,
+      // selectableSingle);
+      // }
+      // }
 
       // Make sure there are no single selectables in the select clause that are
       // not also
@@ -1302,7 +1318,7 @@ public class ValueQuery extends ComponentQuery
 
     return sqlStmt.toString();
   }
-  
+
   /**
    * Build the select clause for this query (without the SELECT keyword),
    * including all attributes required to instantiate instances of this object.
@@ -1313,8 +1329,8 @@ public class ValueQuery extends ComponentQuery
    */
   protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap)
   {
-    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
-    Map<String, MdEntityDAOIF> mdEntityMap = new HashMap<String, MdEntityDAOIF>();
+    // Key: ID of an MdAttribute Value: MdTableClass that defines the attribute;
+    Map<String, MdTableClassIF> mdTableClassMap = new HashMap<String, MdTableClassIF>();
 
     StringBuffer selectString = new StringBuffer("SELECT \n");
 
@@ -1332,7 +1348,7 @@ public class ValueQuery extends ComponentQuery
       MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
 
       ColumnInfo columnInfo = selectable.getColumnInfo();
-      
+
       hashSet.add(columnInfo.getColumnAlias());
 
       if (!firstIteration)
@@ -1342,41 +1358,54 @@ public class ValueQuery extends ComponentQuery
 
       this.buildSelectColumn(selectString, selectable, mdAttributeIF, columnInfo);
 
-      if (componentQuery instanceof EntityQuery)
+      if (componentQuery instanceof TableClassQuery)
       {
-        MdEntityDAOIF mdEntityIF = mdEntityMap.get(mdAttributeIF.getId());
-        if (mdEntityIF == null)
+        Selectable fSelectable = null;
+
+        if (selectable instanceof Function)
         {
-          mdEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
-          mdEntityMap.put(mdAttributeIF.getId(), mdEntityIF);
+          fSelectable = ( (Function) selectable ).getSelectable();
         }
 
-        fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());
-
-        String baseTableName = mdEntityIF.getTableName();
-        if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName())
-            // For functions, sometimes they are applying either to the ID or to the type itself, and therefore do not need to be joined with the table that defines the ID in metadata
-            && !(selectable instanceof Function && ((Function)selectable).getSelectable().getDbColumnName().equals(EntityDAOIF.ID_COLUMN) && selectable.getDefiningTableName().equals(columnInfo.getTableName()) ))
+        if (fSelectable == null || ! ( fSelectable instanceof SelectableSpoof ))
         {
-          String baseTableAlias = componentQuery.getTableAlias("", baseTableName);
-          Join tableJoin = new InnerJoinEq(EntityDAOIF.ID_COLUMN, baseTableName, baseTableAlias, EntityDAOIF.ID_COLUMN, columnInfo.getTableName(), columnInfo.getTableAlias());
-          tableJoinSet.add(tableJoin);
+          MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getId());
+          if (mdTableClassIF == null)
+          {
+            mdTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
+            mdTableClassMap.put(mdAttributeIF.getId(), mdTableClassIF);
+          }
+
+          fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());
+
+          String baseTableName = mdTableClassIF.getTableName();
+          if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName())
+          // For functions, sometimes they are applying either to the ID or to
+          // the
+          // type itself, and therefore do not need to be joined with the table
+          // that defines the ID in metadata
+              && ! ( selectable instanceof Function && fSelectable.getDbColumnName().equals(EntityDAOIF.ID_COLUMN) && selectable.getDefiningTableName().equals(columnInfo.getTableName()) ))
+          {
+            String baseTableAlias = componentQuery.getTableAlias("", baseTableName);
+            Join tableJoin = new InnerJoinEq(EntityDAOIF.ID_COLUMN, baseTableName, baseTableAlias, EntityDAOIF.ID_COLUMN, columnInfo.getTableName(), columnInfo.getTableAlias());
+            tableJoinSet.add(tableJoin);
+          }
         }
       }
 
       if (selectable instanceof SelectableEnumeration)
       {
-        ColumnInfo cacheColumnInfo = ((SelectableEnumeration)selectable).getCacheColumnInfo();
-        
+        ColumnInfo cacheColumnInfo = ( (SelectableEnumeration) selectable ).getCacheColumnInfo();
+
         selectString.append(",\n");
 
         this.buildSelectColumn(selectString, selectable, mdAttributeIF, cacheColumnInfo);
-      }    
+      }
       else if (selectable instanceof SelectableStruct)
       {
-        SelectableStruct selectableStruct = (SelectableStruct)selectable;
+        SelectableStruct selectableStruct = (SelectableStruct) selectable;
 
-        if (componentQuery instanceof EntityQuery)
+        if (componentQuery instanceof TableClassQuery)
         {
           tableJoinSet.addAll(selectableStruct.getJoinStatements());
         }
@@ -1384,25 +1413,25 @@ public class ValueQuery extends ComponentQuery
         List<Attribute> structAttributeList = selectableStruct.getStructAttributes();
         for (Attribute structAttribute : structAttributeList)
         {
-          if (componentQuery instanceof EntityQuery)
+          if (componentQuery instanceof TableClassQuery)
           {
             fromTableMap.put(structAttribute.getDefiningTableAlias(), structAttribute.getDefiningTableName());
           }
           selectString.append(",\n");
-          
+
           this.buildSelectColumn(selectString, structAttribute, structAttribute.getMdAttributeIF(), structAttribute.getColumnInfo());
-          
+
           if (structAttribute instanceof SelectableEnumeration)
           {
-            SelectableEnumeration selectableEnumeration = (SelectableEnumeration)structAttribute;
+            SelectableEnumeration selectableEnumeration = (SelectableEnumeration) structAttribute;
             ColumnInfo structEnumCacheColumnInfo = selectableEnumeration.getCacheColumnInfo();
-            
+
             if (componentQuery instanceof EntityQuery)
             {
               fromTableMap.put(structEnumCacheColumnInfo.getTableAlias(), structEnumCacheColumnInfo.getTableName());
             }
             selectString.append(",\n");
-            
+
             this.buildSelectColumn(selectString, structAttribute, structAttribute.getMdAttributeIF(), structEnumCacheColumnInfo);
           }
         }
@@ -1415,7 +1444,7 @@ public class ValueQuery extends ComponentQuery
 
     return selectString;
   }
-  
+
   /**
    * 
    * @param limitRowRange
@@ -1429,13 +1458,12 @@ public class ValueQuery extends ComponentQuery
   protected StringBuffer appendOderByClause(boolean limitRowRange, int limit, int skip, StringBuffer sqlStmt, List<Selectable> _selectableList, String orderByClause)
   {
     List<ColumnInfo> columnInfoList = new LinkedList<ColumnInfo>();
-    
+
     for (Selectable selectable : _selectableList)
     {
       columnInfoList.addAll(selectable.getColumnInfoList());
     }
-    
-    
+
     // Don't do anything if no columns were selected.
     if (columnInfoList.size() == 0)
     {
@@ -3730,11 +3758,11 @@ public class ValueQuery extends ComponentQuery
       this.preprossesSelectableStructures();
     }
 
-    MdEntityDAOIF definingEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
+    MdTableClassIF definingTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
     String definingTableName = this.tableAlias;
     String definingTableAlias = this.tableAlias;
 
-    return attributeFactory(this, selectable, definingEntityIF, definingTableName, definingTableAlias, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return attributeFactory(this, selectable, definingTableClassIF, definingTableName, definingTableAlias, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
@@ -3742,7 +3770,7 @@ public class ValueQuery extends ComponentQuery
    * 
    * @return query Attribute object.
    */
-  protected static Attribute attributeFactory(ComponentQuery rootComponentQuery, Selectable selectable, MdEntityDAOIF definingEntityIF, String definingTableName, String definingTableAlias, MdAttributeConcreteDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected static Attribute attributeFactory(ComponentQuery rootComponentQuery, Selectable selectable, MdTableClassIF definingTableClassIF, String definingTableName, String definingTableAlias, MdAttributeConcreteDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel)
   {
 
     Set<Join> attrTableJoinSet = new HashSet<Join>();
@@ -3830,7 +3858,7 @@ public class ValueQuery extends ComponentQuery
     {
       for (PluginIF plugin : pluginMap.values())
       {
-        attribute = plugin.createAttribute(rootComponentQuery, selectable, definingEntityIF, definingTableName, definingTableAlias, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = plugin.createAttribute(rootComponentQuery, selectable, definingTableClassIF, definingTableName, definingTableAlias, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
 
         if (attribute != null)
         {
@@ -3849,10 +3877,12 @@ public class ValueQuery extends ComponentQuery
 
     return attribute;
   }
-  
+
   /**
-   * If you're actually calling this method, then you're probably doing something wrong. I'm exposing it for IRS because IRS is a nightmare, but
-   * if you actually need this method then check with Nathan/Smethie/Rich to make sure what you're doing makes sense (because it probably doesn't).
+   * If you're actually calling this method, then you're probably doing
+   * something wrong. I'm exposing it for IRS because IRS is a nightmare, but if
+   * you actually need this method then check with Nathan/Smethie/Rich to make
+   * sure what you're doing makes sense (because it probably doesn't).
    * 
    * @return
    */
@@ -3887,7 +3917,7 @@ public class ValueQuery extends ComponentQuery
     {
       sqlStmt = this.getSQL();
     }
-   
+
     ResultSet results = Database.query(sqlStmt);
     return new ValueIterator<ValueObject>(this.selectableUsedInSelectClause, results);
   }
@@ -3907,11 +3937,11 @@ public class ValueQuery extends ComponentQuery
   {
     int limit = ComponentQuery.rowLimit(pageSize);
     int skip = ComponentQuery.rowSkip(pageSize, pageNumber);
-    
+
     String sqlStmt = this.getSQL(limit, skip);
     ResultSet results = Database.query(sqlStmt);
     return new ValueIterator<ValueObject>(this.selectableUsedInSelectClause, results);
-    
+
   }
 
   public String getOrderBySQL(OrderBy orderBy)
@@ -3923,7 +3953,7 @@ public class ValueQuery extends ComponentQuery
   {
     public String getModuleIdentifier();
 
-    public Attribute createAttribute(ComponentQuery rootComponentQuery, Selectable selectable, MdEntityDAOIF definingEntityIF, String definingTableName, String definingTableAlias, MdAttributeConcreteDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel);
+    public Attribute createAttribute(ComponentQuery rootComponentQuery, Selectable selectable, MdTableClassIF definingTableClassIF, String definingTableName, String definingTableAlias, MdAttributeConcreteDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel);
   }
 
 }

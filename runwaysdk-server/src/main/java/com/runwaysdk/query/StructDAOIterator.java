@@ -66,14 +66,14 @@ public class StructDAOIterator<T> extends ComponentIterator<T>
       {
         String structDAOtype = this.rootMdEntityIF.definesType();
       
-        List<? extends MdAttributeConcreteDAOIF> mdAttributeIFList = (List<? extends MdAttributeConcreteDAOIF>)this.mdEntityMdAttributeMap.get(structDAOtype);
+        List<? extends MdAttributeConcreteDAOIF> mdAttributeIFList = (List<? extends MdAttributeConcreteDAOIF>)this.mdTableClassMdAttributeMap.get(structDAOtype);
         if (mdAttributeIFList == null)
         {
           mdAttributeIFList = MdStructDAO.getMdStructDAO(structDAOtype).getAllDefinedMdAttributes();
-          this.mdEntityMdAttributeMap.put(structDAOtype, mdAttributeIFList);
+          this.mdTableClassMdAttributeMap.put(structDAOtype, mdAttributeIFList);
         }
         
-        sturctObjectIF = StructDAOFactory.buildObjectFromQuery(structDAOtype, this.columnInfoMap, this.definedByMdEntityMap, mdAttributeIFList, this.resultSet);
+        sturctObjectIF = StructDAOFactory.buildObjectFromQuery(structDAOtype, this.columnInfoMap, this.definedByTableClassTableMap, mdAttributeIFList, this.resultSet);
         
         this.hasNext = this.resultSet.next();
         if (!this.hasNext)

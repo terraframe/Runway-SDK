@@ -33,6 +33,7 @@ import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
@@ -97,9 +98,13 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeStruct_E(this));
     }
-    else
+    else if (this.definedByClass() instanceof MdTransientDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
+    }
+    else
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
     }
   }
 

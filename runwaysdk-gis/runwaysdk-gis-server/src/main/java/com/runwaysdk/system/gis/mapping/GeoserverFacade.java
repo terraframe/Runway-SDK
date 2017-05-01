@@ -146,7 +146,6 @@ public class GeoserverFacade extends GeoserverFacadeBase implements
    * FIXME could not find another API call to do this, but one must exist
    * that isn't deprecated. Look again later.
    */
-  @SuppressWarnings("deprecation")
   public static void publishStore()
   {
     GSPostGISDatastoreEncoder encoder = new GSPostGISDatastoreEncoder();

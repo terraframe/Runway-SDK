@@ -35,7 +35,7 @@ import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 // This class is used as a placeholder for where a selectable is expected, but not used.
 public class SelectableSpoof implements SelectableAggregate, Selectable
 {
-  private ValueQuery rootQuery;
+  private ComponentQuery rootQuery;
   
   private String attributeName;
   private String userDefinedAlias;
@@ -43,13 +43,14 @@ public class SelectableSpoof implements SelectableAggregate, Selectable
   private String columnAlias;
   private boolean isAggregate;
   private String attributeNameSpace;
+  private Object data;
   
-  protected SelectableSpoof(boolean isAggregate, ValueQuery rootQuery, String attributeName)
+  protected SelectableSpoof(boolean isAggregate, ComponentQuery rootQuery, String attributeName)
   {
     this(isAggregate, rootQuery, attributeName, null, null);
   }
 
-  protected SelectableSpoof(boolean isAggregate, ValueQuery rootQuery, String attributeName, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected SelectableSpoof(boolean isAggregate, ComponentQuery rootQuery, String attributeName, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     this.isAggregate = isAggregate;
     this.rootQuery = rootQuery;
@@ -78,6 +79,18 @@ public class SelectableSpoof implements SelectableAggregate, Selectable
     this.columnAlias = attributeName;
 
     this.attributeNameSpace = rootQuery.getTableAlias();
+  }
+  
+  @Override
+  public Object getData()
+  {
+    return this.data;
+  }
+
+  @Override
+  public void setData(Object data)
+  {
+    this.data = data;
   }
   
   /* (non-Javadoc)

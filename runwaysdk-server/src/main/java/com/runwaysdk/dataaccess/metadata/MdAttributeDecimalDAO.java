@@ -27,6 +27,7 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeDecimalDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.transport.metadata.caching.AttributeDecimalMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
@@ -68,9 +69,13 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeDec_E(this));
     }
-    else
+    else if (this.definedByClass() instanceof MdTransientDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
+    }
+    else
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
     }
   }
 

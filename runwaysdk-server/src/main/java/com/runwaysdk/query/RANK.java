@@ -70,6 +70,38 @@ public class RANK extends AggregateFunction
   
   /**
    *
+   * @param selectable
+   */
+  protected RANK(Selectable selectable)
+  {
+    this(selectable, null, null);
+  }
+
+  
+  /**
+   *
+   * @param selectable
+   * @param userDefinedAlias
+   */
+  protected RANK(Selectable selectable, String userDefinedAlias)
+  {
+    this(selectable, userDefinedAlias, null);
+  }
+ 
+  
+  /**
+   *
+   * @param selectable
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   */
+  protected RANK(Selectable selectable, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    super(selectable, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
+  /**
+   *
    * @param selectableSpoof 
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel

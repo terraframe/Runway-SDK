@@ -131,6 +131,8 @@ public abstract class Attribute implements SelectableSingle, Statement
   protected Map<String, String>           fromTableMap;
 
   protected Set<Join>                     tableJoinSet;
+  
+  private Object data;
 
   protected Attribute(MdAttributeConcreteDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
@@ -312,6 +314,18 @@ public abstract class Attribute implements SelectableSingle, Statement
       throw new ProgrammingErrorException(errMsg);
     }
   }
+  
+  @Override
+  public Object getData()
+  {
+    return this.data;
+  }
+
+  @Override
+  public void setData(Object data)
+  {
+    this.data = data;
+  }  
 
   /**
    * Returns the name of the attribute used in the resultant {@link ValueObject}

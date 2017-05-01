@@ -65,6 +65,7 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTransientInfo;
@@ -103,6 +104,7 @@ import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdProblemDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -906,7 +908,12 @@ public class ObjectCache
       String dateTimeFormat = Constants.DATETIME_FORMAT;
       java.util.Date endTime = new java.util.Date();
       long totalTime = endTime.getTime() - startTime.getTime();
-      logger.info("The global cache has been initialized. Start Time: " + new SimpleDateFormat(dateTimeFormat).format(startTime) + " End Time: " + new SimpleDateFormat(dateTimeFormat).format(endTime) + " Total Time: " + totalTime + "\n");
+      
+      String logMessage = "The global cache has been initialized. Start Time: " + new SimpleDateFormat(dateTimeFormat).format(startTime) + " End Time: " + new SimpleDateFormat(dateTimeFormat).format(endTime) + " Total Time: " + totalTime + "\n";
+     
+//System.out.println(logMessage);      
+
+      logger.info(logMessage);
     }
     finally
     {
@@ -1661,6 +1668,33 @@ public class ObjectCache
     }
 
     return mdType;
+  }
+  
+  /**
+   * Returns an {@link MdTableClassIF} instance of the metadata for the
+   * given type.
+   * 
+   * <br/>
+   * <b>Precondition:</b> entityType != null <br/>
+   * <b>Precondition:</b> !entityType.trim().equals("") <br/>
+   * <b>Precondition:</b> entityType is a valid class defined in the database <br/>
+   * <b>Postcondition:</b> Returns a MdEntityIF instance of the metadata for the
+   * given class ({@link MdTableClassIF#definesType()}.equals(tableClassType)}
+   * 
+   * @param tableClassType
+   * @return  {@link MdTableClassIF} instance of the metadata for the given type.
+   */
+  public static MdTableClassIF getMdTableClassIF(String tableClassType)
+  {
+    MdClassDAOIF mdTableClassIF = getMdClassDAO(tableClassType);
+
+    if (! ( mdTableClassIF instanceof MdTableClassIF ))
+    {
+      String errmsg = "Type [" + tableClassType + "] is not an [" + MdEntityInfo.CLASS + "] or an [" + MdTableInfo.CLASS + "] .";
+      throw new UnexpectedTypeException(errmsg);
+    }
+
+    return (MdTableClassIF) mdTableClassIF;
   }
 
   /**

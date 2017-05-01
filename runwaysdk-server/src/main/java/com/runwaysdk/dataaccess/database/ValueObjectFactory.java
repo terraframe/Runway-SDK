@@ -31,6 +31,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
@@ -54,20 +55,20 @@ public class ValueObjectFactory
   /**
    * Builds a ValueObject from a row from the given resultset.
    * 
-   * @param definedByMdEntityMap
+   * @param definedByTableClassMap
    *          sort of a hack. It is a map where the key is the id of an
-   *          MdAttribute and the value is the MdEntity that defines the
+   *          {@link MdAttributeDAOIF} and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
-   *          contains MdAttribute objects for the attributes used in this query
+   *          contains {@link MdAttributeDAOIF} objects for the attributes used in this query
    * @param resultSet
    *          ResultSet object from a query.
    * @return ValueObject from a row from the given resultset
    */
-  public static ValueObject buildObjectFromQuery(Map<String, MdEntityDAOIF> definedByMdEntityMap, List<Selectable> selectableList, ResultSet results)
+  public static ValueObject buildObjectFromQuery(Map<String, MdTableClassIF> definedByTableClassMap, List<Selectable> selectableList, ResultSet results)
   {
     // Get the attributes
-    Map<String, Attribute> attributeMap = ValueObjectFactory.getAttributesFromQuery(definedByMdEntityMap, selectableList, results);
+    Map<String, Attribute> attributeMap = ValueObjectFactory.getAttributesFromQuery(definedByTableClassMap, selectableList, results);
     ValueObject valueObject = new ValueObject(attributeMap, ValueObject.class.getName(), ServerIDGenerator.nextID());
     return valueObject;
   }
@@ -76,7 +77,7 @@ public class ValueObjectFactory
    * Returns the attribute objects from a single query row necessary to
    * instantiate an ValueObject object.
    * 
-   * @param definedByMdEntityMap
+   * @param definedByTableClassMap
    *          sort of a hack. It is a map where the key is the id of an
    *          MdAttribute and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
@@ -87,7 +88,7 @@ public class ValueObjectFactory
    * @param resultSet
    *          ResultSet object from a query.
    */
-  protected static Map<String, Attribute> getAttributesFromQuery(Map<String, MdEntityDAOIF> definedByMdEntityMap, List<Selectable> selectableList, ResultSet resultSet)
+  protected static Map<String, Attribute> getAttributesFromQuery(Map<String, MdTableClassIF> definedByTableClassMap, List<Selectable> selectableList, ResultSet resultSet)
   {
     Map<String, Attribute> attributeMap = new LinkedHashMap<String, Attribute>();
 
@@ -98,17 +99,17 @@ public class ValueObjectFactory
 
       if (! ( mdAttributeIF instanceof MdAttributeConcrete_SQL ))
       {
-        MdEntityDAOIF mdEntityIF = definedByMdEntityMap.get(mdAttributeIF.getId());
+        MdTableClassIF mdTableClassIF = definedByTableClassMap.get(mdAttributeIF.getId());
 
-        if (mdEntityIF == null)
+        if (mdTableClassIF == null)
         {
-          mdEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
+          mdTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
 
           // SQL pass through attributes do not have type metadata
-          if (mdEntityIF != null)
+          if (mdTableClassIF != null)
           {
-            definedByMdEntityMap.put(mdAttributeIF.getId(), mdEntityIF);
-            definingType = mdEntityIF.definesType();
+            definedByTableClassMap.put(mdAttributeIF.getId(), mdTableClassIF);
+            definingType = mdTableClassIF.definesType();
           }
         }
       }

@@ -21,6 +21,8 @@ package com.runwaysdk.query;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.gis.constants.GISConstants;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
@@ -29,8 +31,6 @@ import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
 import com.runwaysdk.query.ValueQuery.PluginIF;
-import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdEntityDAOIF;
 
 public class GISValueQueryAttributeFactory implements PluginIF
 {
@@ -40,7 +40,7 @@ public class GISValueQueryAttributeFactory implements PluginIF
   }
 
   public Attribute createAttribute(
-      ComponentQuery rootComponentQuery, Selectable selectable, MdEntityDAOIF definingEntityIF, String definingTableName,
+      ComponentQuery rootComponentQuery, Selectable selectable, MdTableClassIF definingTableClassIF, String definingTableName,
       String definingTableAlias, MdAttributeConcreteDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     Set<Join> attrTableJoinSet = new HashSet<Join>();
@@ -50,37 +50,37 @@ public class GISValueQueryAttributeFactory implements PluginIF
     if (mdAttributeIF instanceof MdAttributePointDAOIF)
     {
       attribute =
-        new AttributePoint((MdAttributePointDAOIF)mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
+        new AttributePoint((MdAttributePointDAOIF)mdAttributeIF, definingTableClassIF.definesType(), definingTableName, definingTableAlias,
             rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeLineStringDAOIF)
     {
       attribute =
-        new AttributeLineString((MdAttributeLineStringDAOIF)mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
+        new AttributeLineString((MdAttributeLineStringDAOIF)mdAttributeIF, definingTableClassIF.definesType(), definingTableName, definingTableAlias,
             rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributePolygonDAOIF)
     {
       attribute =
-        new AttributePolygon((MdAttributePolygonDAOIF)mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
+        new AttributePolygon((MdAttributePolygonDAOIF)mdAttributeIF, definingTableClassIF.definesType(), definingTableName, definingTableAlias,
             rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeMultiPointDAOIF)
     {
       attribute =
-        new AttributeMultiPoint((MdAttributeMultiPointDAOIF)mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
+        new AttributeMultiPoint((MdAttributeMultiPointDAOIF)mdAttributeIF, definingTableClassIF.definesType(), definingTableName, definingTableAlias,
             rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeMultiLineStringDAOIF)
     {
       attribute =
-        new AttributeMultiLineString((MdAttributeMultiLineStringDAOIF)mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
+        new AttributeMultiLineString((MdAttributeMultiLineStringDAOIF)mdAttributeIF, definingTableClassIF.definesType(), definingTableName, definingTableAlias,
             rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeMultiPolygonDAOIF)
     {
       attribute =
-        new AttributeMultiPolygon((MdAttributeMultiPolygonDAOIF)mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
+        new AttributeMultiPolygon((MdAttributeMultiPolygonDAOIF)mdAttributeIF, definingTableClassIF.definesType(), definingTableName, definingTableAlias,
             rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
 

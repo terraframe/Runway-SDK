@@ -26,7 +26,7 @@ import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 public interface MdClassDAOIF extends MdTypeDAOIF
 {
   /**
-   * Name of the table used to store intances of this class.
+   * Name of the table used to store instances of this class.
    */
   public static final String TABLE   = "md_class";
 

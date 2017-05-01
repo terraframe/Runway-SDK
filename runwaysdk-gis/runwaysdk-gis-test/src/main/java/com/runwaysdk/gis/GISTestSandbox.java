@@ -80,8 +80,8 @@ public class GISTestSandbox
     System.out.println(json.toString(2));
   }
 
-  private static void export(String id, Set<String> all)
-  {
+//  private static void export(String id, Set<String> all)
+//  {
     // if (!all.contains(id))
     // {
     // EntityDAOIF entity = EntityDAO.get(id);
@@ -116,7 +116,7 @@ public class GISTestSandbox
     // }
     // }
     // }
-  }
+//  }
 
   @Transaction
   public static void addPointField()

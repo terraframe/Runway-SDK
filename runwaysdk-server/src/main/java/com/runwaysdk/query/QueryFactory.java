@@ -30,9 +30,12 @@ import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.StructQuery;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
+import com.runwaysdk.dataaccess.MdTableDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.database.Database;
@@ -59,11 +62,21 @@ public class QueryFactory
 
     this.columnAliasMap        = new HashMap<String, String>();
   }
+  
+  /**
+   * Returns a {@link TableQuery} object for querying BusinessDAOs.
+   * @param type type of the table.
+   * @return  {@link TableQuery}  object for querying data objects.
+   */
+  public TableQuery tableQuery(String type)
+  {
+    return new TableQuery(this, type);
+  }
 
   /**
-   * Returns a BusinessDAOQuery object for querying BusinessDAOs.
-   * @param type type of the BusinessDAO.
-   * @return BusinessDAOQuery object for querying data objects.
+   * Returns a {@link BusinessDAOQuery} object for querying BusinessDAOs.
+   * @param type type of the {@link BusinessDAO}.
+   * @return  {@link BusinessDAOQuery}  object for querying data objects.
    */
   public BusinessDAOQuery businessDAOQuery(String type)
   {
@@ -195,53 +208,61 @@ public class QueryFactory
   }
 
   /**
-   * Returns a <code>EntityQuery</code> object that queries for business objects defined by the given <code>MdEntityDAOIF</code>.
-   * @param mdEntityIF
-   * @return <code>EntityQuery</code> object that queries for business objects defined by the given <code>MdEntityDAOIF</code>.
+   * Returns a {@link TableClassQuery} object that queries for business objects defined by the given {@link MdTableClassIF}.
+   * @param mdTableClassDAOIF
+   * @return {@link TableClassQuery} object that queries for business objects defined by the given {@link MdTableClassIF}.
    */
-  public EntityQuery entityQuery(MdEntityDAOIF mdEntityIF)
+  public TableClassQuery tableClassQuery(MdTableClassIF mdTableClassDAOIF)
   {
-    if (mdEntityIF instanceof MdBusinessDAOIF)
+    if (mdTableClassDAOIF instanceof MdBusinessDAOIF)
     {
-      return businessQuery(mdEntityIF.definesType());
+      return businessQuery(mdTableClassDAOIF.definesType());
     }
-    else if (mdEntityIF instanceof MdStructDAOIF)
+    else if (mdTableClassDAOIF instanceof MdStructDAOIF)
     {
-      return structQuery(mdEntityIF.definesType());
+      return structQuery(mdTableClassDAOIF.definesType());
     }
-    else if (mdEntityIF instanceof MdRelationshipDAOIF)
+    else if (mdTableClassDAOIF instanceof MdRelationshipDAOIF)
     {
-      return relationshipQuery(mdEntityIF.definesType());
+      return relationshipQuery(mdTableClassDAOIF.definesType());
+    }
+    else if (mdTableClassDAOIF instanceof MdTableDAOIF)
+    {
+      return tableQuery(mdTableClassDAOIF.definesType());
     }
     else
     {
-      String error = "[" + mdEntityIF.definesType() + "] is an invalid type for query";
+      String error = "[" + mdTableClassDAOIF.definesType() + "] is an invalid type for query";
       throw new QueryException(error);
     }
   }
 
   /**
-   * Returns a ComponentQuery object that queries for business objects defined by the given MdEntityIF.
+   * Returns a {@link ComponentQuery} object that queries for business objects defined by the given MdEntityIF.
    * @param mdEntityIF
-   * @return ComponentQuery object that queries for business objects defined by the given MdEntityIF.
+   * @return  {@link ComponentQuery} object that queries for business objects defined by the given MdEntityIF.
    */
-  public ComponentQuery componentQueryEntity(MdEntityDAOIF mdEntityIF)
+  public ComponentQuery componentQueryEntity(MdClassDAOIF mdClassDAOIF)
   {
-    if (mdEntityIF instanceof MdBusinessDAOIF)
+    if (mdClassDAOIF instanceof MdBusinessDAOIF)
     {
-      return businessQuery(mdEntityIF.definesType());
+      return businessQuery(mdClassDAOIF.definesType());
     }
-    else if (mdEntityIF instanceof MdStructDAOIF)
+    else if (mdClassDAOIF instanceof MdStructDAOIF)
     {
-      return structQuery(mdEntityIF.definesType());
+      return structQuery(mdClassDAOIF.definesType());
     }
-    else if (mdEntityIF instanceof MdRelationshipDAOIF)
+    else if (mdClassDAOIF instanceof MdRelationshipDAOIF)
     {
-      return relationshipQuery(mdEntityIF.definesType());
+      return relationshipQuery(mdClassDAOIF.definesType());
+    }
+    else if (mdClassDAOIF instanceof MdTableDAOIF)
+    {
+      return tableQuery(mdClassDAOIF.definesType());
     }
     else
     {
-      String error = "[" + mdEntityIF.definesType() + "] is an invalid type for query";
+      String error = "[" + mdClassDAOIF.definesType() + "] is an invalid type for query";
       throw new QueryException(error);
     }
   }

@@ -289,7 +289,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
 
   public static String buildKey(String packageName, String typeName)
   {
-    return packageName + "." + typeName;
+    return EntityDAOFactory.buildType(packageName, typeName);
   }
 
   /**
@@ -481,7 +481,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
 
   /**
    * Returns a command object that either creates or updates Java artifacts for
-   * this type.
+   * this type or returns null if there are no artifacts for this type.
    * 
    * @param conn
    *          database connection object.
@@ -492,7 +492,8 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   public abstract Command getCreateUpdateJavaArtifactCommand(Connection conn);
 
   /**
-   * Returns a command object that deletes Java artifacts for this type.
+   * Returns a command object that deletes Java artifacts for this type or returns null if there are no 
+   * artifacts for this type.
    * 
    * @param conn
    *          database connection object.

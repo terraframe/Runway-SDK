@@ -24,7 +24,7 @@ import java.util.Map;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.query.EntityQuery;
 
-public interface MdEntityDAOIF extends MdClassDAOIF
+public interface MdEntityDAOIF extends MdTableClassIF
 {
   /**
    * Name of the table used to store instances of this class.
@@ -89,15 +89,6 @@ public interface MdEntityDAOIF extends MdClassDAOIF
   public List<? extends MdAttributeConcreteDAOIF> definesAttributesOrdered();
 
   /**
-   * Returns a complete list of MdAttributeConcreteIF objects for this
-   * instance of MdBusiness. This list includes attributes inherited
-   * from supertypes.
-   *
-   * @return a list of MdAttributeIF objects
-   */
-  public List<? extends MdAttributeConcreteDAOIF> getAllDefinedMdAttributes();
-
-  /**
    * Returns a map of MdAttributeIF objects defined by this entity.
    * Key: attribute name in lower case Value: MdAttributeIF
    * @return map of MdAttributeIF objects defined by this entity.
@@ -115,17 +106,6 @@ public interface MdEntityDAOIF extends MdClassDAOIF
    * attributes defined by parent entities.
    */
   public Map<String, ? extends MdAttributeConcreteDAOIF> getAllDefinedMdAttributeIDMap();
-
-  /**
-   * Returns a map of MdAttributeIF objects defined by the given entity type plus all
-   * attributes defined by parent entities.  The key of the map is the attribute name
-   * in lower case.
-   *
-   * @param  type Name of the entity
-   * @return map of MdAttributeIF objects defined by the given entity type plus all
-   * attributes defined by parent entities.
-   */
-  public Map<String, ? extends MdAttributeConcreteDAOIF> getAllDefinedMdAttributeMap();
 
   /**
    * Returns the DataAccessIF object that specifies the cache algorithm used by this type.

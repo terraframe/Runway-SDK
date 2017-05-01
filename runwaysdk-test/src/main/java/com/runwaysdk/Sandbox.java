@@ -24,11 +24,8 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.runwaysdk.business.generation.GenerationManager;
 import com.runwaysdk.constants.Constants;
-import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
-import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.JobOperationInfo;
@@ -44,16 +41,18 @@ import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
+import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MdWebAttributeInfo;
 import com.runwaysdk.constants.SingleActorInfo;
 import com.runwaysdk.constants.VaultInfo;
+import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -63,6 +62,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
+import com.runwaysdk.dataaccess.metadata.MdTableDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
@@ -97,9 +97,83 @@ public class Sandbox implements Job
     // Sandbox.createGenerateSourceAttribute();
 //    Sandbox.deleteMdFacade();
     
-    Sandbox.changeLockedByReference();
+//    Sandbox.changeLockedByReference();
+    
+//    Sandbox.createMdTable();
+    
+    test();
   }
 
+  public static void test()
+  {
+//    MdTableDAO mdTable = MdTableDAO.newInstance();
+//    mdTable.setValue(MdTableInfo.NAME, "TestTable");
+//    mdTable.setValue(MdTableInfo.PACKAGE, "some.package");
+//    mdTable.setStructValue(MdTableInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdTable");
+//    mdTable.setValue(MdTableInfo.TABLE_NAME, "md_class");
+//    
+//    String id = mdTable.apply();
+//    
+//    System.out.println();
+    
+    
+//    MdBusinessDAO mdTable = MdBusinessDAO.getMdBusinessDAO(MdTableInfo.CLASS).getBusinessDAO();
+//    
+//    MdAttributeConcreteDAO mdAttribute = (MdAttributeConcreteDAO)mdTable.getMdAttributeDAO(MdTableInfo.TABLE_NAME).getBusinessDAO();
+//    mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+//    mdAttribute.apply();
+    
+//    mdTable.apply();
+//    mdTable.printAttributes();
+    
+    MdBusinessDAOIF mdClass = MdBusinessDAO.getMdBusinessDAO(MdClassInfo.CLASS);
+    
+    MdTableDAO mdTable = MdTableDAO.newInstance();
+    mdTable.printAttributes();
+    
+  }
+  
+  @Transaction
+  public static void createMdTable()
+  {
+    MdBusinessDAOIF mdClass = MdBusinessDAO.getMdBusinessDAO(MdClassInfo.CLASS);
+    
+    MdBusinessDAO mdTable = MdBusinessDAO.newInstance();
+    mdTable.setValue(MdBusinessInfo.NAME, "MdTable");
+    mdTable.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    mdTable.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdTable");
+    mdTable.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata for relational database tables for entities whose lifecylce is not direclty managed");
+    mdTable.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdClass.getId());
+    mdTable.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdTable.setValue(MdBusinessInfo.EXPORTED, MdAttributeBooleanInfo.TRUE);
+    mdTable.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.TRUE);
+    mdTable.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    mdTable.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    
+    String mdTableMdId = mdTable.apply();
+    
+    System.out.println("MdTable ID: "+mdTableMdId);
+   
+    
+    MdAttributeCharacter tableName = new MdAttributeCharacter();
+    tableName.setValue(MdAttributeCharacterInfo.NAME, MdTableInfo.TABLE_NAME);
+    tableName.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    tableName.setValue(MdAttributeCharacterInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.TRUE);
+    tableName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdTableMdId);
+    tableName.setValue(MdAttributeCharacterInfo.COLUMN_NAME, MdTableInfo.COLUMN_TABLE_NAME);
+    tableName.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Table Name");
+    tableName.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Name of the table in the database");
+    tableName.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+    tableName.setValue(MdAttributeCharacterInfo.SYSTEM, MdAttributeBooleanInfo.FALSE);
+    tableName.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
+    tableName.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+    tableName.setValue(MdAttributeCharacterInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+    tableName.setValue(MdAttributeCharacterInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+    tableName.setValue(MdAttributeCharacterInfo.SIZE, MdTableInfo.MAX_TABLE_NAME);
+    tableName.apply();
+  }
+  
+  
   @Transaction
   public static void changeLockedByReference()
   {
@@ -291,8 +365,8 @@ public class Sandbox implements Job
       MdBusinessDAO jobOperation = MdBusinessDAO.newInstance();
       jobOperation.setValue(MdBusinessInfo.NAME, "JobOperation");
       jobOperation.setValue(MdBusinessInfo.PACKAGE, Constants.SCHEDULER_PACKAGE);
-      jobOperation.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Job Operation");
-      jobOperation.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Job Operation");
+      jobOperation.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Job Operation");
+      jobOperation.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Job Operation");
       jobOperation.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
       jobOperation.setValue(MdBusinessInfo.EXTENDABLE, "false");
       String jobOperationMdId = jobOperation.apply();
@@ -317,8 +391,8 @@ public class Sandbox implements Job
       MdBusinessDAO abstractJob = MdBusinessDAO.newInstance();
       abstractJob.setValue(MdBusinessInfo.NAME, "AbstractJob");
       abstractJob.setValue(MdBusinessInfo.PACKAGE, Constants.SCHEDULER_PACKAGE);
-      abstractJob.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "AbstractJob");
-      abstractJob.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "AbstractJob");
+      abstractJob.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "AbstractJob");
+      abstractJob.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "AbstractJob");
       abstractJob.setValue(MdBusinessInfo.ABSTRACT, "true");
       abstractJob.setValue(MdBusinessInfo.EXTENDABLE, "true");
       abstractJob.apply();
@@ -536,8 +610,8 @@ public class Sandbox implements Job
       MdBusinessDAO executableJob = MdBusinessDAO.newInstance();
       executableJob.setValue(MdBusinessInfo.NAME, "ExecutableJob");
       executableJob.setValue(MdBusinessInfo.PACKAGE, Constants.SCHEDULER_PACKAGE);
-      executableJob.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Executable Job");
-      executableJob.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Executable Job");
+      executableJob.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Executable Job");
+      executableJob.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Executable Job");
       executableJob.setValue(MdBusinessInfo.ABSTRACT, "true");
       executableJob.setValue(MdBusinessInfo.EXTENDABLE, "true");
       /*
@@ -617,8 +691,8 @@ public class Sandbox implements Job
       MdBusinessDAO qualifiedTypeJob = MdBusinessDAO.newInstance();
       qualifiedTypeJob.setValue(MdBusinessInfo.NAME, "QualifiedTypeJob");
       qualifiedTypeJob.setValue(MdBusinessInfo.PACKAGE, Constants.SCHEDULER_PACKAGE);
-      qualifiedTypeJob.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Qualified Type Job");
-      qualifiedTypeJob.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Qualified Type Job");
+      qualifiedTypeJob.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Qualified Type Job");
+      qualifiedTypeJob.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Qualified Type Job");
       qualifiedTypeJob.setValue(MdBusinessInfo.ABSTRACT, "false");
       qualifiedTypeJob.setValue(MdBusinessInfo.EXTENDABLE, "true");
       qualifiedTypeJob.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, executableJobMdId);
@@ -652,8 +726,8 @@ public class Sandbox implements Job
       MdBusinessDAO snapshot = MdBusinessDAO.newInstance();
       snapshot.setValue(MdBusinessInfo.NAME, "JobSnapshot");
       snapshot.setValue(MdBusinessInfo.PACKAGE, Constants.SCHEDULER_PACKAGE);
-      snapshot.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "JobSnapshot");
-      snapshot.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "JobSnapshot");
+      snapshot.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JobSnapshot");
+      snapshot.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JobSnapshot");
       snapshot.setValue(MdBusinessInfo.ABSTRACT, "false");
       snapshot.setValue(MdBusinessInfo.EXTENDABLE, "true");
       snapshot.setValue(MdBusiness.SUPERMDBUSINESS, abstractJob.getId());
@@ -665,8 +739,8 @@ public class Sandbox implements Job
       MdBusinessDAO jobHistory = MdBusinessDAO.newInstance();
       jobHistory.setValue(MdBusinessInfo.NAME, "JobHistory");
       jobHistory.setValue(MdBusinessInfo.PACKAGE, Constants.SCHEDULER_PACKAGE);
-      jobHistory.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "JobHistory");
-      jobHistory.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "JobHistory");
+      jobHistory.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JobHistory");
+      jobHistory.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JobHistory");
       jobHistory.setValue(MdBusinessInfo.ABSTRACT, "false");
       jobHistory.setValue(MdBusinessInfo.EXTENDABLE, "true");
       jobHistory.apply();
@@ -768,8 +842,8 @@ public class Sandbox implements Job
     MdBusinessDAO strategyStateMaster = MdBusinessDAO.newInstance();
     strategyStateMaster.setValue(MdBusinessInfo.PACKAGE, Constants.ONTOLOGY_PACKAGE);
     strategyStateMaster.setValue(MdBusinessInfo.NAME, "StrategyStateMaster");
-    strategyStateMaster.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Strategy State Master");
-    strategyStateMaster.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Strategy State Master");
+    strategyStateMaster.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy State Master");
+    strategyStateMaster.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy State Master");
     strategyStateMaster.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     strategyStateMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
     strategyStateMaster.setGenerateMdController(false);
@@ -777,24 +851,24 @@ public class Sandbox implements Job
 
     BusinessDAO uninitialized = BusinessDAO.newInstance(strategyStateMaster.definesType());
     uninitialized.setValue(EnumerationMasterInfo.NAME, "UNINITIALIZED");
-    uninitialized.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, "defaultLocale", "Uninitialized");
+    uninitialized.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Uninitialized");
     uninitialized.apply();
 
     BusinessDAO initialized = BusinessDAO.newInstance(strategyStateMaster.definesType());
     initialized.setValue(EnumerationMasterInfo.NAME, "INITIALIZED");
-    initialized.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, "defaultLocale", "Initialized");
+    initialized.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Initialized");
     initialized.apply();
 
     BusinessDAO initializing = BusinessDAO.newInstance(strategyStateMaster.definesType());
     initializing.setValue(EnumerationMasterInfo.NAME, "INITIALIZING");
-    initializing.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, "defaultLocale", "Initializing");
+    initializing.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Initializing");
     initializing.apply();
 
     MdEnumerationDAO strategyState = MdEnumerationDAO.newInstance();
     strategyState.setValue(MdEnumerationInfo.PACKAGE, Constants.ONTOLOGY_PACKAGE);
     strategyState.setValue(MdEnumerationInfo.NAME, "StrategyState");
-    strategyState.setStructValue(MdEnumerationInfo.DESCRIPTION, "defaultLocale", "Strategy State");
-    strategyState.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, "defaultLocale", "Strategy State");
+    strategyState.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy State");
+    strategyState.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy State");
     strategyState.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, strategyStateMaster.getId());
     strategyState.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     strategyState.apply();
@@ -802,8 +876,8 @@ public class Sandbox implements Job
     MdBusinessDAO ontologyStrategy = MdBusinessDAO.newInstance();
     ontologyStrategy.setValue(MdBusinessInfo.PACKAGE, Constants.ONTOLOGY_PACKAGE);
     ontologyStrategy.setValue(MdBusinessInfo.NAME, "OntologyStrategy");
-    ontologyStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Ontology Strategy");
-    ontologyStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Ontology Strategy");
+    ontologyStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ontology Strategy");
+    ontologyStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ontology Strategy");
     ontologyStrategy.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
     ontologyStrategy.setGenerateMdController(false);
     ontologyStrategy.apply();
@@ -821,8 +895,8 @@ public class Sandbox implements Job
     MdBusinessDAO databaseAllPathsStrategy = MdBusinessDAO.newInstance();
     databaseAllPathsStrategy.setValue(MdBusinessInfo.PACKAGE, Constants.ONTOLOGY_PACKAGE);
     databaseAllPathsStrategy.setValue(MdBusinessInfo.NAME, "DatabaseAllPathsStrategy");
-    databaseAllPathsStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Database all paths strategy");
-    databaseAllPathsStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Database all paths strategy");
+    databaseAllPathsStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Database all paths strategy");
+    databaseAllPathsStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Database all paths strategy");
     databaseAllPathsStrategy.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
     databaseAllPathsStrategy.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, ontologyStrategy.getId());
     databaseAllPathsStrategy.setGenerateMdController(false);
@@ -831,8 +905,8 @@ public class Sandbox implements Job
     MdBusinessDAO postgresAllPathsStrategy = MdBusinessDAO.newInstance();
     postgresAllPathsStrategy.setValue(MdBusinessInfo.PACKAGE, Constants.ONTOLOGY_PACKAGE);
     postgresAllPathsStrategy.setValue(MdBusinessInfo.NAME, "PostgresAllPathsStrategy");
-    postgresAllPathsStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Postgres all paths strategy");
-    postgresAllPathsStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Postgres all paths strategy");
+    postgresAllPathsStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Postgres all paths strategy");
+    postgresAllPathsStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Postgres all paths strategy");
     postgresAllPathsStrategy.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     postgresAllPathsStrategy.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, databaseAllPathsStrategy.getId());
     postgresAllPathsStrategy.setGenerateMdController(false);
@@ -887,8 +961,8 @@ public class Sandbox implements Job
     MdBusinessDAO mdAttributeTerm = MdBusinessDAO.newInstance();
     mdAttributeTerm.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     mdAttributeTerm.setValue(MdBusinessInfo.NAME, "MdAttributeTerm");
-    mdAttributeTerm.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Metadata definition for term attributes");
-    mdAttributeTerm.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "MdAttributeTerm");
+    mdAttributeTerm.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata definition for term attributes");
+    mdAttributeTerm.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdAttributeTerm");
     mdAttributeTerm.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdAttributeTerm.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeReference.getId());
     mdAttributeTerm.setGenerateMdController(false);
@@ -915,8 +989,8 @@ public class Sandbox implements Job
     MdBusinessDAO mdAttributeMultiReference = MdBusinessDAO.newInstance();
     mdAttributeMultiReference.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     mdAttributeMultiReference.setValue(MdBusinessInfo.NAME, "MdAttributeMultiReference");
-    mdAttributeMultiReference.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Metadata definition for multi reference attributes");
-    mdAttributeMultiReference.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "MdAttributeMultiReference");
+    mdAttributeMultiReference.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata definition for multi reference attributes");
+    mdAttributeMultiReference.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdAttributeMultiReference");
     mdAttributeMultiReference.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdAttributeMultiReference.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeConcrete.getId());
     mdAttributeMultiReference.setGenerateMdController(false);
@@ -955,8 +1029,8 @@ public class Sandbox implements Job
     MdBusinessDAO mdAttributeMultiTerm = MdBusinessDAO.newInstance();
     mdAttributeMultiTerm.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     mdAttributeMultiTerm.setValue(MdBusinessInfo.NAME, "MdAttributeMultiTerm");
-    mdAttributeMultiTerm.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Metadata definition for multi term attributes");
-    mdAttributeMultiTerm.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "MdAttributeMultiTerm");
+    mdAttributeMultiTerm.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata definition for multi term attributes");
+    mdAttributeMultiTerm.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdAttributeMultiTerm");
     mdAttributeMultiTerm.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdAttributeMultiTerm.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeMultiReference.getId());
     mdAttributeMultiTerm.setGenerateMdController(false);

@@ -108,6 +108,8 @@ public class DataAccessTestSuite extends TestSuite
 
     // Test classes added here are only run once and are not wrapped by
     // MasterTestSetup
+    testSuite.addTest(MdTableTestSuite.suite());
+    
     testSuite.addTest(DeterministicIDTest.suite());
     testSuite.addTest(StaleObjectTest.suite());
     testSuite.addTest(MetaDataTest.suite());

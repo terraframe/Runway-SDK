@@ -58,10 +58,10 @@ public class BusinessQuery extends AbstractObjectQuery
     this.checkNotUsedInValueQuery();
 
     String sqlStmt = this.getSQL();
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+    Map<String, ColumnInfo> columnInfoMap = this.getColumnInfoMap();
 
     ResultSet results = Database.query(sqlStmt);
-    return new BusinessIterator<Business>(this.mdEntityIF, columnInfoMap, results);
+    return new BusinessIterator<Business>(this.getMdEntityIF(), columnInfoMap, results);
   }
 
   /**
@@ -80,9 +80,9 @@ public class BusinessQuery extends AbstractObjectQuery
     int skip = ComponentQuery.rowSkip(pageSize, pageNumber);
 
     String sqlStmt = this.getSQL(limit, skip);
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+    Map<String, ColumnInfo> columnInfoMap = this.getColumnInfoMap();
 
     ResultSet results = Database.query(sqlStmt);
-    return new BusinessIterator<Business>(this.mdEntityIF, columnInfoMap, results);
+    return new BusinessIterator<Business>(this.getMdEntityIF(), columnInfoMap, results);
   }
 }

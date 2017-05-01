@@ -32,7 +32,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -156,7 +156,7 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);
   }
 
-  public MdClassDAOIF definedByClass()
+  public MdTableClassIF definedByClass()
   {
     return null;
   }

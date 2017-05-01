@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -33,27 +33,31 @@ import com.runwaysdk.session.Session;
 
 public abstract class Function implements SelectablePrimitive, Statement
 {
-  private MdAttributeConcrete_Q mdAttributeConcrete_Q;
+  private MdAttributeConcrete_Q           mdAttributeConcrete_Q;
 
   /**
    * Attribute that is a parameter to the function.
    */
-  protected Selectable selectable;
+  protected Selectable                    selectable;
 
-  protected String     userDefinedAlias;
+  protected String                        userDefinedAlias;
 
-  protected String     userDefinedDisplayLabel;
+  protected String                        userDefinedDisplayLabel;
 
-  protected String     columnAlias;
+  protected String                        columnAlias;
 
-  private String       attributeName;
+  private String                          attributeName;
 
-  // Reference to all MdAttributes that were involved in constructing this attribute;
+  private Object                          data;
+
+  // Reference to all MdAttributes that were involved in constructing this
+  // attribute;
   protected Set<MdAttributeConcreteDAOIF> entityMdAttributeIFset;
 
   /**
    *
-   * @param selectable Selectable that is a parameter to the function.
+   * @param selectable
+   *          Selectable that is a parameter to the function.
    * @param userDefinedAlias
    */
   protected Function(Selectable selectable, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -71,7 +75,7 @@ public abstract class Function implements SelectablePrimitive, Statement
     else
     {
       MetadataDAO.validateName(userDefinedAlias.trim());
-      this.userDefinedAlias  = userDefinedAlias.trim();
+      this.userDefinedAlias = userDefinedAlias.trim();
     }
 
     if (userDefinedDisplayLabel == null)
@@ -80,20 +84,35 @@ public abstract class Function implements SelectablePrimitive, Statement
     }
     else
     {
-      this.userDefinedDisplayLabel  = userDefinedDisplayLabel.trim();
+      this.userDefinedDisplayLabel = userDefinedDisplayLabel.trim();
     }
 
-    this.columnAlias        = this.getRootQuery().getColumnAlias(this.getAttributeNameSpace(), this.getDbColumnName());
+    this.columnAlias = this.getRootQuery().getColumnAlias(this.getAttributeNameSpace(), this.getDbColumnName());
 
     this.entityMdAttributeIFset = new HashSet<MdAttributeConcreteDAOIF>();
 
     this.attributeName = null;
   }
 
+  @Override
+  public Object getData()
+  {
+    return this.data;
+  }
+
+  @Override
+  public void setData(Object data)
+  {
+    this.data = data;
+  }
+
   /**
-   * Returns the name of the attribute used in the resultant {@link ValueObject}.
-   * It is either the column alias or the user defined alias.
-   * @return Returns the name of the attribute used in the resultant {@link ValueObject}.
+   * Returns the name of the attribute used in the resultant
+   * {@link ValueObject}. It is either the column alias or the user defined
+   * alias.
+   * 
+   * @return Returns the name of the attribute used in the resultant
+   *         {@link ValueObject}.
    */
   public String getResultAttributeName()
   {
@@ -109,6 +128,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Returns the user defined alias for this attribute.
+   * 
    * @return user defined alias for this attribute.
    */
   public String getUserDefinedAlias()
@@ -126,6 +146,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Returns the user defined display label for this attribute.
+   * 
    * @return user defined display label for this attribute.
    */
   public String getUserDefinedDisplayLabel()
@@ -142,8 +163,11 @@ public abstract class Function implements SelectablePrimitive, Statement
   }
 
   /**
-   * Returns the alias used in the select clause for the database column for this attribute.
-   * @return alias used in the select clause for the database column for this attribute.
+   * Returns the alias used in the select clause for the database column for
+   * this attribute.
+   * 
+   * @return alias used in the select clause for the database column for this
+   *         attribute.
    */
   public String getColumnAlias()
   {
@@ -156,22 +180,28 @@ public abstract class Function implements SelectablePrimitive, Statement
   }
 
   /**
-   * Returns the a nested aggregate function in this composite function tree, if there is one, or return null;
-   * @return nested aggregate function in this composite function tree, if there is one, or return null;
+   * Returns the a nested aggregate function in this composite function tree, if
+   * there is one, or return null;
+   * 
+   * @return nested aggregate function in this composite function tree, if there
+   *         is one, or return null;
    */
   public SelectableAggregate getAggregateFunction()
   {
     if (this instanceof AggregateFunction)
     {
-      return (AggregateFunction)this;
+      return (AggregateFunction) this;
     }
 
     return selectable.getAggregateFunction();
   }
 
   /**
-   * Returns true if this selectable is an aggregate function or contains an aggregate function.  False otherwise.
-   * @return true if this selectable is an aggregate function or contains an aggregate function.  False otherwise.
+   * Returns true if this selectable is an aggregate function or contains an
+   * aggregate function. False otherwise.
+   * 
+   * @return true if this selectable is an aggregate function or contains an
+   *         aggregate function. False otherwise.
    */
   public boolean isAggregateFunction()
   {
@@ -187,6 +217,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Calculates a display label for the result set.
+   * 
    * @return display label for the result set.
    */
   protected String calculateDisplayLabel()
@@ -196,11 +227,11 @@ public abstract class Function implements SelectablePrimitive, Statement
     // Base case
     if (this.selectable instanceof Function)
     {
-      displayLabel = this.getFunctionName()+"("+((Function)this.selectable).calculateDisplayLabel()+")";
+      displayLabel = this.getFunctionName() + "(" + ( (Function) this.selectable ).calculateDisplayLabel() + ")";
     }
     else
     {
-      displayLabel = this.getFunctionName()+"("+this.mdAttributeConcrete_Q.getDisplayLabel(Session.getCurrentLocale())+")";
+      displayLabel = this.getFunctionName() + "(" + this.mdAttributeConcrete_Q.getDisplayLabel(Session.getCurrentLocale()) + ")";
     }
 
     return displayLabel;
@@ -208,20 +239,21 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Calculates a name for the result set.
+   * 
    * @return a name for the result set.
    */
   protected String calculateName()
   {
     String displayLabel;
 
-    //selectable is a function
+    // selectable is a function
     if (this.selectable instanceof Function)
     {
-      displayLabel = this.getFunctionName()+"("+((Function)this.selectable).calculateName()+")";
+      displayLabel = this.getFunctionName() + "(" + ( (Function) this.selectable ).calculateName() + ")";
     }
-    else //its an attribute or selectableSQL
+    else // its an attribute or selectableSQL
     {
-      displayLabel = this.getFunctionName()+"("+this.selectable._getAttributeName()+")";
+      displayLabel = this.getFunctionName() + "(" + this.selectable._getAttributeName() + ")";
     }
 
     return displayLabel;
@@ -229,6 +261,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Every Selectable eventually boils down to an attribute.
+   * 
    * @return bottom most attribute.
    */
   public Attribute getAttribute()
@@ -255,22 +288,24 @@ public abstract class Function implements SelectablePrimitive, Statement
   {
     if (this.attributeName == null)
     {
-      this.attributeName = this.getRootQuery().getColumnAlias(this.getAttributeNameSpace()+this.calculateName(), this.getFunctionName());
+      this.attributeName = this.getRootQuery().getColumnAlias(this.getAttributeNameSpace() + this.calculateName(), this.getFunctionName());
     }
     return this.attributeName;
   }
 
   /**
    * Returns the alias used in the select clause.
+   * 
    * @return alias used in the select clause.
    */
   public String getFullyQualifiedNameSpace()
   {
-    return this.getAttributeNameSpace()+"."+this._getAttributeName();
+    return this.getAttributeNameSpace() + "." + this._getAttributeName();
   }
 
   /**
    * Returns the Selectable that is a parameter to the function.
+   * 
    * @return Selectable that is a parameter to the function.
    */
   public Selectable getSelectable()
@@ -280,6 +315,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Returns the ComponentQuery from which this attribute was created.
+   * 
    * @return ComponentQuery from which this attribute was created.
    */
   public ComponentQuery getRootQuery()
@@ -289,6 +325,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Returns the namespace of the attribute.
+   * 
    * @return namespace of the attribute.
    */
   public String getAttributeNameSpace()
@@ -298,6 +335,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Returns the MdAttributeIF that defines the attribute.
+   * 
    * @return MdAttributeIF that defines the attribute.
    */
   public MdAttributeConcrete_Q getMdAttributeIF()
@@ -317,6 +355,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Returns all MdAttributes that are involved in building the select clause.
+   * 
    * @return all MdAttributes that are involved in building the select clause.
    */
   public Set<MdAttributeConcreteDAOIF> getAllEntityMdAttributes()
@@ -328,8 +367,11 @@ public abstract class Function implements SelectablePrimitive, Statement
   }
 
   /**
-   * Sets additional MdAttributes that are involved in building the select clause.
-   * @param mdAttributeConcreteDAOIFList additional MdAttributes
+   * Sets additional MdAttributes that are involved in building the select
+   * clause.
+   * 
+   * @param mdAttributeConcreteDAOIFList
+   *          additional MdAttributes
    */
   public void setAdditionalEntityMdAttributes(List<MdAttributeConcreteDAOIF> mdAttributeConcreteDAOIFList)
   {
@@ -337,8 +379,11 @@ public abstract class Function implements SelectablePrimitive, Statement
   }
 
   /**
-   * Returns the name of the database table that defines the column for this attribute.
-   * @return name of the database table that defines the column for this attribute.
+   * Returns the name of the database table that defines the column for this
+   * attribute.
+   * 
+   * @return name of the database table that defines the column for this
+   *         attribute.
    */
   public String getDefiningTableName()
   {
@@ -346,14 +391,17 @@ public abstract class Function implements SelectablePrimitive, Statement
   }
 
   /**
-   * Returns the name of the alias used for the database table that defines the column for this attribute.
-   * @return name of the alias used for the database table that defines the column for this attribute.
+   * Returns the name of the alias used for the database table that defines the
+   * column for this attribute.
+   * 
+   * @return name of the alias used for the database table that defines the
+   *         column for this attribute.
    */
   public String getDefiningTableAlias()
   {
     return this.selectable.getDefiningTableAlias();
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -362,7 +410,7 @@ public abstract class Function implements SelectablePrimitive, Statement
   {
     return new ColumnInfo(this.getDefiningTableName(), this.getDefiningTableAlias(), this.getDbColumnName(), this.getColumnAlias());
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -376,6 +424,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Returns the name of the database function.
+   * 
    * @return name of the database function.
    */
   protected abstract String getFunctionName();
@@ -385,7 +434,7 @@ public abstract class Function implements SelectablePrimitive, Statement
    */
   public String getSQL()
   {
-    return this.getFunctionName()+"("+this.selectable.getSQL()+this.appendSQL()+")";
+    return this.getFunctionName() + "(" + this.selectable.getSQL() + this.appendSQL() + ")";
   }
 
   /**
@@ -395,7 +444,7 @@ public abstract class Function implements SelectablePrimitive, Statement
   {
     return "";
   }
-  
+
   /**
    * Returns the qualified name of the attribute.
    */
@@ -405,8 +454,11 @@ public abstract class Function implements SelectablePrimitive, Statement
   }
 
   /**
-   * Returns the SQL required for this selectable in the lefthand side of a subselect clause.
-   * @return SQL required for this selectable in the lefthand side of a subselect clause.
+   * Returns the SQL required for this selectable in the lefthand side of a
+   * subselect clause.
+   * 
+   * @return SQL required for this selectable in the lefthand side of a
+   *         subselect clause.
    */
   public String getSubSelectSQL()
   {
@@ -418,14 +470,17 @@ public abstract class Function implements SelectablePrimitive, Statement
    */
   public String getSQLIgnoreCase()
   {
-    return this.getFunctionName()+"("+Database.toUpperFunction(this.selectable.getSQL())+")";
+    return this.getFunctionName() + "(" + Database.toUpperFunction(this.selectable.getSQL()) + ")";
   }
 
   /**
-   * Returns a Map representing tables that should be included in the from clause,
-   * where the key is the table alias and the value is the name of the table.
+   * Returns a Map representing tables that should be included in the from
+   * clause, where the key is the table alias and the value is the name of the
+   * table.
+   * 
    * @return Map representing tables that should be included in the from clause,
-   * where the key is the table alias and the value is the name of the table.
+   *         where the key is the table alias and the value is the name of the
+   *         table.
    */
   public Map<String, String> getFromTableMap()
   {
@@ -433,10 +488,11 @@ public abstract class Function implements SelectablePrimitive, Statement
   }
 
   /**
-   * Returns a Set of TableJoin objects that represent joins statements
-   * that are required for this expression.
-   * @return Set of TableJoin objects that represent joins statements
-   * that are required for this expression, or null of there are none.
+   * Returns a Set of TableJoin objects that represent joins statements that are
+   * required for this expression.
+   * 
+   * @return Set of TableJoin objects that represent joins statements that are
+   *         required for this expression, or null of there are none.
    */
   public Set<Join> getJoinStatements()
   {
@@ -445,6 +501,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Visitor to traverse the query object structure.
+   * 
    * @param visitor
    */
   public void accept(Visitor visitor)
@@ -452,11 +509,11 @@ public abstract class Function implements SelectablePrimitive, Statement
     this.selectable.accept(visitor);
   }
 
-
   // Equals
   /**
-   * Character = comparison case sensitive. This method accepts any Attribute because
-   * databases generally allow for comparisons between different types.
+   * Character = comparison case sensitive. This method accepts any Attribute
+   * because databases generally allow for comparisons between different types.
+   * 
    * @param selectable
    * @return Condition object
    */
@@ -465,10 +522,10 @@ public abstract class Function implements SelectablePrimitive, Statement
     return QueryUtil.EQ(this, selectable);
   }
 
-
   /**
-   * Character = comparison case sensitive. This method accepts any Attribute because
-   * databases generally allow for comparisons between different types.
+   * Character = comparison case sensitive. This method accepts any Attribute
+   * because databases generally allow for comparisons between different types.
+   * 
    * @param selectable
    * @return Condition object
    */
@@ -479,6 +536,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Not Equals.
+   * 
    * @param selectable
    * @return Basic Condition object
    */
@@ -489,6 +547,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Character != comparison case insensitive.
+   * 
    * @param selectable
    * @return Basic Condition object
    */
@@ -499,6 +558,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Moment Less Than.
+   * 
    * @param selectable
    * @return Basic Condition object
    */
@@ -509,6 +569,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Moment Less Than or Equal.
+   * 
    * @param selectable
    * @return Basic Condition object
    */
@@ -519,6 +580,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Greater Than.
+   * 
    * @param selectable
    * @return Basic Condition object
    */
@@ -529,6 +591,7 @@ public abstract class Function implements SelectablePrimitive, Statement
 
   /**
    * Greater Than or Equals.
+   * 
    * @param selectable
    * @return Basic Condition object
    */
@@ -538,7 +601,8 @@ public abstract class Function implements SelectablePrimitive, Statement
   }
 
   /**
-   * Creates a subselect IN condition where this attribute and the given ValueQuery.
+   * Creates a subselect IN condition where this attribute and the given
+   * ValueQuery.
    *
    * @param selectable
    * @return Conidtion to add to the query.
@@ -549,7 +613,8 @@ public abstract class Function implements SelectablePrimitive, Statement
   }
 
   /**
-   * Creates a subselect NOT IN condition where this attribute and the given ValueQuery.
+   * Creates a subselect NOT IN condition where this attribute and the given
+   * ValueQuery.
    *
    * @param selectable
    * @return Conidtion to add to the query.
@@ -559,9 +624,8 @@ public abstract class Function implements SelectablePrimitive, Statement
     return new SubSelectExplicit_NOT_IN_Condition(this, selectable);
   }
 
-
   public Function clone() throws CloneNotSupportedException
   {
-    return (Function)super.clone();
+    return (Function) super.clone();
   }
 }

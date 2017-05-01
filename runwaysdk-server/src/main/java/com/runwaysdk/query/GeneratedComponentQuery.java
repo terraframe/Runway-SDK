@@ -101,12 +101,13 @@ public abstract class GeneratedComponentQuery
    */
   protected abstract ComponentQuery getComponentQuery();
 
-  /**
-   * Returns an attribute character statement object.
-   * @param name name of the attribute.
-   * @return Attribute character statement object.
-   */
-  protected abstract SelectableChar getId();
+//  Heads up: Test: 
+//  /**
+//   * Returns an attribute character statement object.
+//   * @param name name of the attribute.
+//   * @return Attribute character statement object.
+//   */
+//  protected abstract SelectableChar getId();
 
   /**
    * Adds a condition to this query.  Will perform an AND

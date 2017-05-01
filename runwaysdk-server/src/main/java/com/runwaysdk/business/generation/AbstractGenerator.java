@@ -105,12 +105,15 @@ public abstract class AbstractGenerator implements GeneratorIF
 
   public static boolean hashEquals(long serialVersionUID, String file)
   {
+    DataInputStream in = null;
+    BufferedReader br = null;
+    
     try
     {
       FileInputStream fstream = new FileInputStream(file);
       // Get the object of DataInputStream
-      DataInputStream in = new DataInputStream(fstream);
-      BufferedReader br = new BufferedReader(new InputStreamReader(in));
+      in = new DataInputStream(fstream);
+      br = new BufferedReader(new InputStreamReader(in));
       String strLine;
       //Read File Line By Line
       while ((strLine = br.readLine()) != null)
@@ -139,10 +142,6 @@ public abstract class AbstractGenerator implements GeneratorIF
           return false;
         }
       }
-      br.close();
-      
-      //Close the input stream
-      in.close();
     }
     catch (FileNotFoundException e)
     {
@@ -152,6 +151,26 @@ public abstract class AbstractGenerator implements GeneratorIF
     catch (IOException e)
     {
       throw new ProgrammingErrorException(e);
+    }
+    finally
+    {
+      try
+      {
+        if (br != null)
+        {
+          br.close();
+        }
+      
+        if (in != null)
+        {
+          //Close the input stream
+          in.close();
+        }
+      }
+      catch (IOException e)
+      {
+        throw new ProgrammingErrorException(e);
+      }
     }
 
     return false;

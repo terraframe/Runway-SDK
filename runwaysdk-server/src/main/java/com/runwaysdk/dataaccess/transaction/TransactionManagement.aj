@@ -350,8 +350,11 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     for (MdTypeDAOIF mdTypeIF : mdTypeIFDeleteClasses)
     {
       Command command = ( (MdTypeDAO) mdTypeIF ).getDeleteJavaArtifactCommand(conn);
-      command.doIt();
-      this.getState().completedUndoableCommand(command);
+      if (command != null)
+      {
+        command.doIt();
+        this.getState().completedUndoableCommand(command);
+      }
     }
   }
 

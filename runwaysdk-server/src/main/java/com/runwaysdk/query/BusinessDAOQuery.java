@@ -72,10 +72,10 @@ public class BusinessDAOQuery extends AbstractObjectQuery
     this.checkNotUsedInValueQuery();
 
     String sqlStmt = this.getSQL();
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+    Map<String, ColumnInfo> columnInfoMap = this.getColumnInfoMap();
 
     ResultSet results = Database.query(sqlStmt);
-    BusinessDAOIterator<BusinessDAOIF> businessDAOiterator = new BusinessDAOIterator<BusinessDAOIF>(this.mdEntityIF, columnInfoMap, results);
+    BusinessDAOIterator<BusinessDAOIF> businessDAOiterator = new BusinessDAOIterator<BusinessDAOIF>(this.getMdEntityIF(), columnInfoMap, results);
 
     return businessDAOiterator;
   }
@@ -96,9 +96,9 @@ public class BusinessDAOQuery extends AbstractObjectQuery
     int skip = ComponentQuery.rowSkip(pageSize, pageNumber);
 
     String sqlStmt = this.getSQL(limit, skip);
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+    Map<String, ColumnInfo> columnInfoMap = this.getColumnInfoMap();
     ResultSet results = Database.query(sqlStmt);
-    BusinessDAOIterator<BusinessDAOIF> businessDAOiterator = new BusinessDAOIterator<BusinessDAOIF>(this.mdEntityIF, columnInfoMap, results);
+    BusinessDAOIterator<BusinessDAOIF> businessDAOiterator = new BusinessDAOIterator<BusinessDAOIF>(this.getMdEntityIF(), columnInfoMap, results);
 
     return businessDAOiterator;
   }

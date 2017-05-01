@@ -61,10 +61,10 @@ public class RelationshipQuery extends AbstractRelationshipQuery
     this.checkNotUsedInValueQuery();
 
     String sqlStmt = this.getSQL();
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+    Map<String, ColumnInfo> columnInfoMap = this.getColumnInfoMap();
 
     ResultSet results = Database.query(sqlStmt);
-    return new RelationshipIterator<Relationship>(this.mdEntityIF, this, columnInfoMap, results);
+    return new RelationshipIterator<Relationship>(this.getMdEntityIF(), this, columnInfoMap, results);
   }
 
   /**
@@ -81,9 +81,9 @@ public class RelationshipQuery extends AbstractRelationshipQuery
     int skip = ComponentQuery.rowSkip(pageSize, pageNumber);
 
     String sqlStmt = this.getSQL(limit, skip);
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+    Map<String, ColumnInfo> columnInfoMap = this.getColumnInfoMap();
 
     ResultSet results = Database.query(sqlStmt);
-    return new RelationshipIterator<Relationship>(this.mdEntityIF, this, columnInfoMap, results);
+    return new RelationshipIterator<Relationship>(this.getMdEntityIF(), this, columnInfoMap, results);
   }
 }

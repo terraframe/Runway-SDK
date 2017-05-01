@@ -31,6 +31,7 @@ import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
@@ -153,7 +154,7 @@ public class StructDAOFactory
 
     // ThreadRefactor: get rid of this map.
     // Key: ID of an MdAttribute  Value: MdEntity that defines the attribute;
-    Map<String, MdEntityDAOIF> definedByMdEntityMap = new HashMap<String, MdEntityDAOIF>();
+    Map<String, MdTableClassIF> definedByMdTableClassMap = new HashMap<String, MdTableClassIF>();
     // This is map improves performance.
     // Key: type Values: List of MdAttributeIF objects that an instance of the type has.
     Map<String, List<? extends MdAttributeConcreteDAOIF>> mdEntityMdAttributeMap = new HashMap<String, List<? extends MdAttributeConcreteDAOIF>>();
@@ -173,7 +174,7 @@ public class StructDAOFactory
           mdEntityMdAttributeMap.put(structDAOType, MdAttributeIFList);
         }
 
-        StructDAO structDAO = buildObjectFromQuery(structDAOType, columnInfoMap, definedByMdEntityMap, MdAttributeIFList, results);
+        StructDAO structDAO = buildObjectFromQuery(structDAOType, columnInfoMap, definedByMdTableClassMap, MdAttributeIFList, results);
 
         if (cacheStrategy != null)
         {
@@ -209,18 +210,18 @@ public class StructDAOFactory
    * Builds a StructDAO from a row from the given resultset.
    * @param type
    * @param columnInfoMap         contains information about attributes used in the query
-   * @param definedByMdEntityMap  sort of a hack.  It is a map where the key is the id of an MdAttribute and the value is the
+   * @param definedTableClassMap  sort of a hack.  It is a map where the key is the id of an MdAttribute and the value is the
    *                              MdEntity that defines the attribute.  This is used to improve performance.
    * @param MdAttributeIFList     contains MdAttribute objects for the attributes used in this query
    * @param resultSet             ResultSet object from a query.
    * @return StructDAO from a row from the given resultset
    */
 
-  public static StructDAO buildObjectFromQuery(String type, Map<String, ColumnInfo> columnInfoMap, Map<String, MdEntityDAOIF> definedByMdEntityMap,
+  public static StructDAO buildObjectFromQuery(String type, Map<String, ColumnInfo> columnInfoMap, Map<String, MdTableClassIF> definedTableClassMap,
       List<? extends MdAttributeConcreteDAOIF> MdAttributeIFList, ResultSet results)
   {
     // Get the attributes
-    Map<String, Attribute> attributeMap = EntityDAOFactory.getAttributesFromQuery(columnInfoMap, definedByMdEntityMap, MdAttributeIFList, results);
+    Map<String, Attribute> attributeMap = EntityDAOFactory.getAttributesFromQuery(columnInfoMap, definedTableClassMap, MdAttributeIFList, results);
     StructDAO structDAO = factoryMethod(attributeMap, type);
     return structDAO;
   }
