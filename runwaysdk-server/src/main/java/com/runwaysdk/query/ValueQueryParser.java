@@ -49,10 +49,11 @@ import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
-import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
+import com.runwaysdk.dataaccess.MdTableDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.io.XMLException;
-import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
+import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 
 public class ValueQueryParser
@@ -315,12 +316,12 @@ public class ValueQueryParser
   private ValueQuery                        valueQuery;
 
   // Key is the entity alias defined in the XML
-  private Map<String, EntityQuery>          entityQueryMap;
+  private Map<String, TableClassQuery>      tableQueryMap;
 
   // Key is the selectable name
   private Map<String, SelectableSQL>        selectableSQLMap;
 
-  private Map<String, GeneratedEntityQuery> generatedEntityQueryMap;
+  private Map<String, GeneratedTableClassQuery> generatedTableClassQueryMap;
 
   private QueryFactory                      queryFactory;
 
@@ -345,9 +346,9 @@ public class ValueQueryParser
   {
     this.document = document;
     this.valueQuery = valueQuery;
-    this.entityQueryMap = new HashMap<String, EntityQuery>();
+    this.tableQueryMap = new HashMap<String, TableClassQuery>();
     this.selectableSQLMap = new HashMap<String, SelectableSQL>();
-    this.generatedEntityQueryMap = new HashMap<String, GeneratedEntityQuery>();
+    this.generatedTableClassQueryMap = new HashMap<String, GeneratedTableClassQuery>();
     this.queryFactory = valueQuery.getQueryFactory();
     this.customAttributeSelects = new LinkedList<CustomAttributeSelect>();
     this.customColumnAliases = new HashMap<String, CustomColumnAlias>();
@@ -516,19 +517,19 @@ public class ValueQueryParser
     return this.ignoreDisplayLabels.get(attrName);
   }
 
-  public Map<String, GeneratedEntityQuery> parse()
+  public Map<String, GeneratedTableClassQuery> parse()
   {
-    this.entityQueryMap.clear();
+    this.tableQueryMap.clear();
     this.selectableSQLMap.clear();
-    this.generatedEntityQueryMap.clear();
+    this.generatedTableClassQueryMap.clear();
 
-    this.buildEntityMap();
+    this.buildTableClassMap();
 
     this.buildSelectClause();
 
-    for (EntityQuery entityQuery : entityQueryMap.values())
+    for (TableClassQuery tableClassQuery : tableQueryMap.values())
     {
-      this.valueQuery.FROM(entityQuery);
+      this.valueQuery.FROM(tableClassQuery);
     }
 
     this.buildEntityCriteria();
@@ -543,7 +544,7 @@ public class ValueQueryParser
 
     this.customAttributeSelects.clear();
 
-    return generatedEntityQueryMap;
+    return generatedTableClassQueryMap;
   }
 
   /**
@@ -564,29 +565,38 @@ public class ValueQueryParser
    */
   private void convertEntityMapToTypeSafe()
   {
-    for (String alias : this.entityQueryMap.keySet())
+    for (String alias : this.tableQueryMap.keySet())
     {
-      EntityQuery entityQuery = this.getEntityQuery(alias);
+      TableClassQuery tableClassQuery = this.getTableClassQuery(alias);
 
-      String queryType = EntityQueryAPIGenerator.getQueryClass(entityQuery.getType());
-
-      Class<?> queryClass = LoaderDecorator.load(queryType);
-
-      try
+      if (tableClassQuery instanceof EntityQuery)
       {
-        GeneratedEntityQuery generatedEntityQuery = (GeneratedEntityQuery) queryClass.getConstructor(QueryFactory.class).newInstance(this.queryFactory);
-        generatedEntityQuery.setComponentQuery(entityQuery);
-        this.generatedEntityQueryMap.put(alias, generatedEntityQuery);
+        String queryType = EntityQueryAPIGenerator.getQueryClass(tableClassQuery.getType());
+
+        Class<?> queryClass = LoaderDecorator.load(queryType);
+
+        try
+        {
+          GeneratedEntityQuery generatedEntityQuery = (GeneratedEntityQuery) queryClass.getConstructor(QueryFactory.class).newInstance(this.queryFactory);
+          generatedEntityQuery.setComponentQuery(tableClassQuery);
+          this.generatedTableClassQueryMap.put(alias, generatedEntityQuery);
+        }
+        catch (Throwable e)
+        {
+          throw new ProgrammingErrorException(e);
+        }
       }
-      catch (Throwable e)
+      else if (tableClassQuery instanceof TableQuery)
       {
-        throw new ProgrammingErrorException(e);
+        MdTableDAOIF mdTableDAOIF = (MdTableDAOIF)tableClassQuery.getMdTableClassIF();
+        this.generatedTableClassQueryMap.put(alias, new GenericTableQuery(mdTableDAOIF, this.queryFactory));
       }
+
     }
   }
 
   // Build the entities
-  private void buildEntityMap()
+  private void buildTableClassMap()
   {
     Element queryElement = this.document.getDocumentElement();
 
@@ -598,7 +608,7 @@ public class ValueQueryParser
     {
       Element entityElement = (Element) entityNodeList.item(i);
 
-      addEntity(entityElement);
+      addTableClass(entityElement);
     }
   }
 
@@ -614,7 +624,7 @@ public class ValueQueryParser
     {
       Element entityElement = (Element) entityNodeList.item(i);
 
-      addEntityCriteria(entityElement);
+      addTableClassCriteria(entityElement);
     }
   }
 
@@ -670,7 +680,7 @@ public class ValueQueryParser
       }
       else
       {
-        selectable = this.getEntityQuery(custom.entityAlias).get(custom.attribute, custom.userAlias);
+        selectable = this.getTableClassQuery(custom.entityAlias).get(custom.attribute, custom.userAlias);
       }
 
       String key = custom.userAlias;
@@ -803,12 +813,11 @@ public class ValueQueryParser
   }
 
   /**
-   * Creates an <code>EntityQuery</code> object from the given element.
+   * Creates an {@link TableClassQuery} object from the given element.
    * 
    * @param entityElement
-   * @param entityQueryMap
    */
-  private void addEntity(Element entityElement)
+  private void addTableClass(Element entityElement)
   {
     Element typeElement = (Element) entityElement.getElementsByTagName(ENTITY_TYPE_TAG).item(0);
     String type = typeElement.getTextContent().trim();
@@ -816,19 +825,17 @@ public class ValueQueryParser
     Element aliasElement = (Element) entityElement.getElementsByTagName(ENTITY_ALIAS_TAG).item(0);
     String alias = aliasElement.getTextContent().trim();
 
-    MdEntityDAOIF mdEntityDAOIF = MdEntityDAO.getMdEntityDAO(type);
-    EntityQuery entityQuery = this.queryFactory.entityQuery(mdEntityDAOIF);
+    MdTableClassIF mdTalbeClassIF = MdClassDAO.getMdTableClassIF(type);
+    TableClassQuery tableClassQuery = this.queryFactory.tableClassQuery(mdTalbeClassIF);
 
-    this.entityQueryMap.put(alias, entityQuery);
+    this.tableQueryMap.put(alias, tableClassQuery);
   }
 
   /**
-   * Creates an <code>EntityQuery</code> object from the given element.
    * 
    * @param entityElement
-   * @param entityQueryMap
    */
-  private void addEntityCriteria(Element entityElement)
+  private void addTableClassCriteria(Element entityElement)
   {
     String alias = entityElement.getElementsByTagName(ENTITY_ALIAS_TAG).item(0).getTextContent();
     Element criteriaElement = (Element) entityElement.getElementsByTagName(ENTITY_CRITERIA_TAG).item(0);
@@ -1003,7 +1010,7 @@ public class ValueQueryParser
             }
             else
             {
-              attribute = this.getEntityQuery(entityAlias).get("", userAlias, userLabel);
+              attribute = this.getTableClassQuery(entityAlias).get("", userAlias, userLabel);
             }
           }
           else
@@ -1032,7 +1039,7 @@ public class ValueQueryParser
                   }
                   else
                   {
-                    attribute = this.getEntityQuery(entityAlias).get(attributeName, userAlias, userLabel);
+                    attribute = this.getTableClassQuery(entityAlias).get(attributeName, userAlias, userLabel);
                   }
                 }
                 else
@@ -1239,16 +1246,16 @@ public class ValueQueryParser
     throw new QueryException(errMsg);
   }
 
-  private EntityQuery getEntityQuery(String alias)
+  private TableClassQuery getTableClassQuery(String alias)
   {
-    if (!this.entityQueryMap.containsKey(alias))
+    if (!this.tableQueryMap.containsKey(alias))
     {
       String errMesg = "Alias [" + alias + "] is not defined.";
       throw new QueryException(errMesg);
     }
     else
     {
-      return this.entityQueryMap.get(alias);
+      return this.tableQueryMap.get(alias);
     }
   }
 

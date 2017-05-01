@@ -55,6 +55,7 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -445,6 +446,25 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   public static MdClassDAOIF getMdClassDAO(String classType)
   {
     return ObjectCache.getMdClassDAO(classType);
+  }
+  
+  /**
+   * Returns an {@link MdTableClassIF} instance of the metadata for the
+   * given type.
+   * 
+   * <br/>
+   * <b>Precondition:</b> entityType != null <br/>
+   * <b>Precondition:</b> !entityType.trim().equals("") <br/>
+   * <b>Precondition:</b> entityType is a valid class defined in the database <br/>
+   * <b>Postcondition:</b> Returns a MdEntityIF instance of the metadata for the
+   * given class ({@link MdTableClassIF#definesType()}.equals(tableClassType)}
+   * 
+   * @param tableClassType
+   * @return  {@link MdTableClassIF} instance of the metadata for the given type.
+   */
+  public static MdTableClassIF getMdTableClassIF(String tableClassType)
+  {
+    return ObjectCache.getMdTableClassIF(tableClassType);
   }
 
   /**

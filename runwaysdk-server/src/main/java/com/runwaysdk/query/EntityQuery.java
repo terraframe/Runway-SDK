@@ -81,16 +81,6 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
   }
 
   /**
-   * Returns the type that this object queries.
-   * 
-   * @return type that this object queries.
-   */
-  public String getType()
-  {
-    return this.type;
-  }
-
-  /**
    * Returns the type of components that are queried by this object.
    * 
    * @return type of components that are queried by this object.

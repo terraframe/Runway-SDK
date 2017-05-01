@@ -57,12 +57,11 @@ import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
-import com.runwaysdk.dataaccess.MdTableDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.CacheAllRelationshipDAOStrategy;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
@@ -155,6 +154,16 @@ public abstract class TableClassQuery extends ComponentQuery
   public MdTableClassIF getMdTableClassIF()
   {
     return this.mdTableClassIF;
+  }
+
+  /**
+   * Returns the type that this object queries.
+   * 
+   * @return type that this object queries.
+   */
+  public String getType()
+  {
+    return this.type;
   }
   
   /**
@@ -2020,9 +2029,9 @@ public abstract class TableClassQuery extends ComponentQuery
    * 
    * @param name
    *          name of the attribute.
-   * @param mdAttributeIF
+   * @param {@link MdAttributeDAOIF}
    *          metadata that defines the attribute.
-   * @param genEntityQuery
+   * @param genTableClassQuery
    *          generated query class that is used to instantiate specific
    *          AttributeReference AttributeStruct and AttributeEnumeration
    *          objects.
@@ -2030,7 +2039,7 @@ public abstract class TableClassQuery extends ComponentQuery
    * @param userDefinedDisplayLabel
    * @return query Attribute object.
    */
-  public Attribute internalAttributeFactory(String name, MdAttributeDAOIF mdAttributeIF, GeneratedEntityQuery genEntityQuery, String userDefinedAlias, String userDefinedDisplayLabel)
+  public Attribute internalAttributeFactory(String name, MdAttributeDAOIF mdAttributeIF, GeneratedTableClassQuery genTableClassQuery, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     MdTableClassIF mdTableClass = (MdTableClassIF) mdAttributeIF.definedByClass();
     String definingTableName = mdTableClass.getTableName();
@@ -2109,9 +2118,9 @@ public abstract class TableClassQuery extends ComponentQuery
       String structTableName = mdLocalStructIF.getTableName();
       String structTableAlias = this.getTableAlias(name, structTableName);
 
-      if (genEntityQuery != null)
+      if (genTableClassQuery != null)
       {
-        attribute = genEntityQuery.localFactory(mdAttributeLocalIF, mdTableClass.definesType(), definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = genTableClassQuery.localFactory(mdAttributeLocalIF, mdTableClass.definesType(), definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
       else
       {
@@ -2125,9 +2134,9 @@ public abstract class TableClassQuery extends ComponentQuery
       String structTableName = mdStructIF.getTableName();
       String structTableAlias = this.getTableAlias(name, structTableName);
 
-      if (genEntityQuery != null)
+      if (genTableClassQuery != null)
       {
-        attribute = genEntityQuery.structFactory(mdAttributeStructIF, mdTableClass.definesType(), definingTableName, definingTableAlias, mdStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = genTableClassQuery.structFactory(mdAttributeStructIF, mdTableClass.definesType(), definingTableName, definingTableAlias, mdStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
       else
       {
@@ -2143,9 +2152,9 @@ public abstract class TableClassQuery extends ComponentQuery
       MdBusinessDAOIF masterListMdBusinessIF = mdEnumerationIF.getMasterListMdBusinessDAO();
       String masterListTalbeAlias = this.getTableAlias(name, masterListMdBusinessIF.getTableName());
 
-      if (genEntityQuery != null)
+      if (genTableClassQuery != null)
       {
-        attribute = genEntityQuery.enumerationFactory(mdAttributeEnumerationIF, mdTableClass.definesType(), definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = genTableClassQuery.enumerationFactory(mdAttributeEnumerationIF, mdTableClass.definesType(), definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
       else
       {
@@ -2160,9 +2169,9 @@ public abstract class TableClassQuery extends ComponentQuery
       MdBusinessDAOIF referenceMdBusinessIF = mdAttributeMultiReferenceIF.getReferenceMdBusinessDAO();
       String referenceTableName = referenceMdBusinessIF.getTableName();
 
-      if (genEntityQuery != null)
+      if (genTableClassQuery != null)
       {
-        attribute = genEntityQuery.multiReferenceFactory(mdAttributeMultiReferenceIF, mdTableClass.definesType(), definingTableName, definingTableAlias, attributeTableName, referenceMdBusinessIF, referenceTableName, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = genTableClassQuery.multiReferenceFactory(mdAttributeMultiReferenceIF, mdTableClass.definesType(), definingTableName, definingTableAlias, attributeTableName, referenceMdBusinessIF, referenceTableName, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
       else
       {
@@ -2180,9 +2189,9 @@ public abstract class TableClassQuery extends ComponentQuery
 
       // This is a special case where the ID field is treated like a reference. We want the generic attribute reference to be instantiated
       // as we do not have a concrete attribute reference class defined for treating IDs as references.
-      if (genEntityQuery != null && !mdAttributeIF.definesAttribute().equals(ComponentInfo.ID))
+      if (genTableClassQuery != null && !mdAttributeIF.definesAttribute().equals(ComponentInfo.ID))
       {
-        attribute = genEntityQuery.referenceFactory(mdAttributeRefIF, mdTableClass.definesType(), definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = genTableClassQuery.referenceFactory(mdAttributeRefIF, mdTableClass.definesType(), definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
       else
       {

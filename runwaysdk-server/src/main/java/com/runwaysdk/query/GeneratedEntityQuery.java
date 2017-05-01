@@ -18,19 +18,9 @@
  */
 package com.runwaysdk.query;
 
-import java.util.Set;
-
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
-import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
-import com.runwaysdk.dataaccess.MdStructDAOIF;
 
 /**
  * All generated query classes extend this class. It delegates to a type unsafe EntityQuery to hide all of the type unsafe query methods.
@@ -38,10 +28,8 @@ import com.runwaysdk.dataaccess.MdStructDAOIF;
  * @author nathan
  * 
  */
-public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
+public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
 {
-  private EntityQuery entityQuery = null;
-
   /**
    *
    */
@@ -51,34 +39,24 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
   }
 
   /**
-   * Returns the MdEntityIF of components that are queried by this object.
+   * Returns the {@link MdEntityDAOIF} of components that are queried by this object.
    * 
-   * @return MdEntityIF of components that are queried by this object.
-   */
-  public MdEntityDAOIF getMdClassIF()
-  {
-    return entityQuery.getMdEntityIF();
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.query.GeneratedComponentQuery#get(java.lang.String, java.lang.String)
+   * @return {@link MdEntityDAOIF} of components that are queried by this object.
    */
   @Override
-  public Attribute get(String attributeName, String userDefinedAlias)
+  public MdEntityDAOIF getMdClassIF()
   {
-    return this.getComponentQuery().get(attributeName, userDefinedAlias);
+    return (MdEntityDAOIF)super.getMdClassIF();
   }
-
-  public QueryFactory getQueryFactory()
+  
+  /**
+   * Returns the {@link MdEntityDAOIF} of components that are queried by this object.
+   * 
+   * @return {@link MdEntityDAOIF} of components that are queried by this object.
+   */
+  public MdEntityDAOIF getMdEntityIF()
   {
-    return entityQuery.getQueryFactory();
-  }
-
-  public Attribute get(String attributeName)
-  {
-    return this.getComponentQuery().get(attributeName);
+    return (MdEntityDAOIF)super.getMdClassIF();
   }
 
   public Attribute id()
@@ -86,6 +64,11 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
     return this.getComponentQuery().id();
   }
 
+  public SelectableChar getId()
+  {
+    return this.getComponentQuery().id();
+  }
+  
   /**
    * Compares this AttributeReference with another.
    * 
@@ -102,6 +85,34 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
     AttributeReference idReference = (AttributeReference) this.getComponentQuery().internalAttributeFactory(mdAttributeCharacterDAOIF.definesAttribute(), mdAttributeReferenceDAOIF, this, idCharacter.getUserDefinedAlias(), idCharacter.getUserDefinedDisplayLabel());
 
     return idReference.EQ(_attributeIF);
+  }
+
+
+  /**
+   * Returns {@link EntityQuery} that all generated query methods delegate to.
+   * 
+   * @return {@link EntityQuery} that all generated query methods delegate to.
+   */
+  @Override
+  protected EntityQuery getComponentQuery()
+  {
+    return (EntityQuery)super.getComponentQuery();
+  }
+
+  /**
+   * Throws <code>QueryException</code> if this <code>EntityQuery</code> is used in a <code>ValueQuery</code>.
+   */
+  protected void checkNotUsedInValueQuery()
+  {
+    this.getComponentQuery().checkNotUsedInValueQuery();
+  }
+
+  /**
+   * Sets the {@link EntityQuery} that all generated query methods delegate to.
+   */
+  protected void setComponentQuery(EntityQuery entityQuery)
+  {
+    super.setComponentQuery(entityQuery);
   }
 
   /**
@@ -224,139 +235,4 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
     return new LeftJoinLtEq(this.id(), selectableArray);
   }
 
-  /**
-   * Returns ComponentQuery that all generated query methods delegate to.
-   * 
-   * @return ComponentQuery that all generated query methods delegate to.
-   */
-  protected EntityQuery getComponentQuery()
-  {
-    return this.entityQuery;
-  }
-
-  /**
-   * Throws <code>QueryException</code> if this <code>EntityQuery</code> is used in a <code>ValueQuery</code>.
-   */
-  protected void checkNotUsedInValueQuery()
-  {
-    this.getComponentQuery().checkNotUsedInValueQuery();
-  }
-
-  /**
-   * Sets the EntityQuery that all generated query methods delegate to.
-   */
-  protected void setComponentQuery(EntityQuery entityQuery)
-  {
-    this.entityQuery = entityQuery;
-  }
-
-  /**
-   * Returns the table alias used for the table that stores instances of this type.
-   * 
-   * @return table alias used for the table that stores instances of this type.
-   */
-  public String getTableAlias()
-  {
-    return this.entityQuery.getTableAlias();
-  }
-
-  /**
-   * Returns an AttributeReference with the given values. Generated subclasses with override this method and return subclasses of AttributeReference.
-   * 
-   * @param mdAttributeIF
-   * @param attributeNamespace
-   * @param definingTableName
-   * @param definingTableAlias
-   * @param referenceMdBusinessIF
-   * @param referenceTableAlias
-   * @param rootEntityQuery
-   * @param tableJoinSet
-   * @param userDefinedAlias
-   * @param userDefinedDisplayLabel
-   * @return AttributeReference with the given values. Generated subclasses with override this method and return subclasses of AttributeReference.
-   */
-  protected AttributeReference referenceFactory(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    return this.getComponentQuery().referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-  }
-
-  /**
-   * Returns an <code>AttributeStruct</code> with the given values. Generated subclasses with override this method and return subclasses of <code>AttributeStruct</code>.
-   * 
-   * @param mdAttributeIF
-   * @param attributeNamespace
-   * @param definingTableName
-   * @param definingTableAlias
-   * @param mdStructIF
-   * @param structTableAlias
-   * @param rootEntityQuery
-   * @param tableJoinSet
-   * @param userDefinedAlias
-   * @param userDefinedDisplayLabel
-   * @return <code>AttributeStruct</code> with the given values. Generated subclasses with override this method and return subclasses of <code>AttributeStruct</code>.
-   */
-  protected AttributeStruct structFactory(MdAttributeStructDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    return this.getComponentQuery().structFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-  }
-
-  /**
-   * Returns an <code>AttributeLocal</code> with the given values. Generated subclasses with override this method and return subclasses of <code>AttributeLocal</code>.
-   * 
-   * @param mdAttributeIF
-   * @param attributeNamespace
-   * @param definingTableName
-   * @param definingTableAlias
-   * @param mdLocalStructIF
-   * @param structTableAlias
-   * @param rootEntityQuery
-   * @param tableJoinSet
-   * @param userDefinedAlias
-   * @param userDefinedDisplayLabel
-   * @return <code>AttributeLocal</code> with the given values. Generated subclasses with override this method and return subclasses of <code>AttributeLocal</code>.
-   */
-  protected AttributeLocal localFactory(MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    return this.getComponentQuery().localFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-  }
-
-  /**
-   * Returns an AttributeEnumeration with the given values. Generated subclasses with override this method and return subclasses of AttributeEnumeration.
-   * 
-   * @param mdAttributeIF
-   * @param attributeNamespace
-   * @param definingTableName
-   * @param definingTableAlias
-   * @param mdEnumerationTableName
-   * @param masterListMdBusinessIF
-   * @param masterListTalbeAlias
-   * @param rootEntityQuery
-   * @param tableJoinSet
-   * @param userDefinedAlias
-   * @param userDefinedDisplayLabel
-   * @return AttributeEnumeration with the given values. Generated subclasses with override this method and return subclasses of AttributeEnumeration.
-   */
-  protected AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    return this.getComponentQuery().enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-  }
-
-  /**
-   * @param mdAttributeMultiReferenceIF
-   * @param definesType
-   * @param definingTableName
-   * @param definingTableAlias
-   * @param attributeTableName
-   * @param referenceMdBusinessIF
-   * @param referenceTableAlias
-   * @param rootQuery
-   * @param tableJoinSet
-   * @param userDefinedAlias
-   * @param userDefinedDisplayLabel
-   * @return
-   */
-  protected Attribute multiReferenceFactory(MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String attributeTableName, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    return this.getComponentQuery().multiReferenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, attributeTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-  }
 }

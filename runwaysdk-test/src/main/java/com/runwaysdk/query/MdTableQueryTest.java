@@ -640,6 +640,55 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  /**
+   * The UNION ALL operator does not exclude duplicate rows so we test this through the API by UNION ALL a table with itself and ensuring there's twice the rows of a normal UNION
+   */
+  public void testUnionAll_Generated()
+  {
+    try
+    {
+      // UNION
+      QueryFactory qf = new QueryFactory();
+
+      ValueQuery vQ = qf.valueQuery();
+      ValueQuery vQ2 = qf.valueQuery();
+      ValueQuery vQ3 = qf.valueQuery();
+      GenericTableQuery childQuery1 = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);
+      GenericTableQuery childQuery2 = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);       
+      
+      vQ.SELECT(childQuery1.get("childObjId"));
+      vQ2.SELECT(childQuery2.get("childObjId"));
+
+      vQ3.UNION(vQ, vQ2);
+
+      long expected = 2 * vQ3.getCount();
+
+      // UNION ALL
+      qf = new QueryFactory();
+
+      vQ = qf.valueQuery();
+      vQ2 = qf.valueQuery();
+      vQ3 = qf.valueQuery();
+      childQuery1 = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);
+      childQuery2 = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);    
+
+      vQ.SELECT(childQuery1.get("childObjId"));
+      vQ2.SELECT(childQuery2.get("childObjId"));
+
+      vQ3.UNION_ALL(vQ, vQ2);
+
+      long count = vQ3.getCount();
+
+      if (expected != count)
+      {
+        fail("The value query UNION ALL did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
+      }
+    }
+    catch (Exception e)
+    {
+      fail(e.getMessage());
+    }
+  }
 
   public void testLeftJoinEqualSelectable()
   {
@@ -687,6 +736,52 @@ public class MdTableQueryTest extends TestCase
     }
   }
   
+  public void testLeftJoinEqualSelectable_Generated()
+  {
+    OIterator<ValueObject> i = null;
+
+    try
+    {
+      QueryFactory qf = new QueryFactory();
+
+      ValueQuery vQ = qf.valueQuery();
+      
+      GenericTableQuery childRefQuery = new GenericTableQuery(MdTableDAO.getMdTableDAO(childRefTableQueryInfo.getType()), qf);
+      GenericTableQuery childQuery = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);  
+
+      // 
+      vQ.SELECT(childRefQuery.get("refQueryCharacter"), childQuery.get("queryBoolean"), childQuery.get("reference"), childQuery.get("queryInteger"));
+      vQ.WHERE(childQuery.get("queryInteger").LEFT_JOIN_EQ(childRefQuery.get("refQueryInteger")));
+
+      i = vQ.getIterator();
+
+      if (!i.hasNext())
+      {
+        fail("The query did not return any results when it should have.");
+      }
+
+      while (i.hasNext())
+      {
+        ValueObject o = i.next();
+
+        if (!o.getValue("refQueryCharacter").equals("")) // this is an object
+        // from childRefQuery
+        {
+          if (!o.getValue("queryInteger").equals("200"))
+            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+        }
+      }
+    }
+    catch (Exception e)
+    {
+      fail(e.getMessage());
+    }
+    finally
+    {
+      if (i != null)
+        i.close();
+    }
+  }
 
   public void testLeftJoinEqualQuery()
   {
