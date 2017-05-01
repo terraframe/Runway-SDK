@@ -1,5 +1,6 @@
 package com.runwaysdk.query;
 
+import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.dataaccess.MdTableDAOIF;
 
 public class GenericTableQuery extends GeneratedTableClassQuery
@@ -15,6 +16,18 @@ public class GenericTableQuery extends GeneratedTableClassQuery
     if (this.getComponentQuery() == null)
     {
       this.setComponentQuery(_componentQueryFactory.tableQuery(_mdTableDAOIF.definesType()));
+    }
+  }
+  
+  public GenericTableQuery(MdTableDAOIF _mdTableDAOIF, ValueQuery _valueQuery)
+  {
+    super();
+    
+    this.mdTableDAOIF = _mdTableDAOIF;
+    
+    if (this.getComponentQuery() == null)
+    {
+      this.setComponentQuery(new BusinessQuery(_valueQuery, _mdTableDAOIF.definesType()));
     }
   }
   

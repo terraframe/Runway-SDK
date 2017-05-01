@@ -41,8 +41,6 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
   protected EntityQuery(QueryFactory queryFactory, String type)
   {
     super(queryFactory, type);
-// Heads up: Test
-//  this.init();
   }
 
   /**
@@ -53,15 +51,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
   protected EntityQuery(ValueQuery valueQuery, String type)
   {
     super(valueQuery, type);
-// Heads up: Test
-//    this.init();
   }
-
-//Heads up: Test
-//  private void init()
-//  {
-//
-//  }
 
   public Map<String, ColumnInfo> getColumnInfoMap()
   {
