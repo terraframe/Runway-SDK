@@ -126,6 +126,10 @@ public class ValueQuery extends ComponentQuery
   // this is a string that is appended before the query
   // used for with queries and the like
   private String                        sqlPrefix   = "";
+  
+  // There are very rare scenarios where it is useful to execute a list of sql statements before
+  //   the query can be invoked. For example, DDMS ticket #3577
+  private String                        dependentPreSqlStatements = "";
 
   private Condition                     havingCondition;
 
@@ -1085,6 +1089,28 @@ public class ValueQuery extends ComponentQuery
   {
     this.sqlPrefix = sql;
   }
+  
+  /**
+   * A "dependent pre sql statement" is a standalone sql statement that is required to be executed before the ValueQuery can be executed.
+   * This is useful for creating things like temp tables that are required for the ValueQuery to execute properly. DDMS ticket 3577 is a
+   * good example.
+   * 
+   * @param statements
+   */
+  public void setDependentPreSqlStatements(String statements)
+  {
+    this.dependentPreSqlStatements = statements;
+  }
+  
+  /**
+   * A "dependent pre sql statement" is a standalone sql statement that is required to be executed before the ValueQuery can be executed.
+   * This is useful for creating things like temp tables that are required for the ValueQuery to execute properly. DDMS ticket 3577 is a
+   * good example.
+   */
+  public String getDependentPreSqlStatements()
+  {
+    return this.dependentPreSqlStatements;
+  }
 
   /**
    * Builds a SQL query string to be used as a subselect in another query with
@@ -1119,6 +1145,18 @@ public class ValueQuery extends ComponentQuery
     this.selectableUsedInSelectClause = this.selectableList;
 
     String sql = this.getSQLInternal(this.selectableUsedInSelectClause, limitRowRange, limit, skip);
+    
+    return this.dependentPreSqlStatements + this.sqlPrefix + sql;
+  }
+  
+  /**
+   * Returns the Sql representation of this query, excluding the dependent pre sql statements.
+   */
+  public String getSQLWithoutDependentPreSql()
+  {
+    this.selectableUsedInSelectClause = this.selectableList;
+
+    String sql = this.getSQLInternal(this.selectableUsedInSelectClause, false, 0, 0);
 
     return this.sqlPrefix + sql;
   }
@@ -1146,7 +1184,7 @@ public class ValueQuery extends ComponentQuery
   {
     if (this.containsSelectableSQL() || this.havingCondition != null)
     {
-      return "SELECT COUNT(*) " + Database.formatColumnAlias("ct") + " FROM (\n" + this.getSQL() + "\n) AS UNION_COUNT";
+      return this.dependentPreSqlStatements + "SELECT COUNT(*) " + Database.formatColumnAlias("ct") + " FROM (\n" + this.getSQLWithoutDependentPreSql() + "\n) AS UNION_COUNT";
     }
 
     String sql;
@@ -1210,7 +1248,9 @@ public class ValueQuery extends ComponentQuery
         sql = selectStmt.toString();
       }
     }
-    return this.sqlPrefix + sql;
+    
+    // TODO : Shouldn't the prefix have been added inside of the FROM stuff above??
+    return this.dependentPreSqlStatements + this.sqlPrefix + sql;
   }
 
   /**
