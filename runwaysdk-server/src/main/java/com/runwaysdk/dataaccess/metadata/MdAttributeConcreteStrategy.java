@@ -90,7 +90,7 @@ public abstract class MdAttributeConcreteStrategy implements Serializable
       List<? extends MdAttributeDAOIF> attributeList = definingClass.definesAttributes();
       for (MdAttributeDAOIF attribute : attributeList)
       {
-        if (this.getMdAttribute().definesAttribute().equals(attribute.definesAttribute()))
+        if (this.getMdAttribute().definesAttribute().equalsIgnoreCase(attribute.definesAttribute()))
         {
           String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class ["
               + definingClass.definesType() + "] because that class already has defined an attribute with that name.";
