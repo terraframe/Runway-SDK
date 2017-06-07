@@ -3299,7 +3299,21 @@ public abstract class AbstractDatabase
     try
     {
       statement = conx.createStatement();
-      resultSet = statement.executeQuery(selectStatement);
+      
+      boolean isResultSet = statement.execute(selectStatement);
+
+      while(true) {
+        if(isResultSet) {
+          resultSet = statement.getResultSet();
+
+          return resultSet;
+        }
+        else if(statement.getUpdateCount() == -1) {
+          throw new SQLException("No results were returned by the query.");
+        }
+
+        isResultSet = statement.getMoreResults();
+      }
     }
     catch (SQLException ex)
     {
