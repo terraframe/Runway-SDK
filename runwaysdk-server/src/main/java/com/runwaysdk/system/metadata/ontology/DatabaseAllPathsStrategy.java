@@ -52,6 +52,8 @@ import com.runwaysdk.dataaccess.database.DuplicateDataDatabaseException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.ontology.strategy.database.OntologyDatabase;
+import com.runwaysdk.ontology.strategy.database.OntologyDatabaseFactory;
 import com.runwaysdk.query.AttributeReference;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
