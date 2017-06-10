@@ -25,8 +25,6 @@ public interface RatioInfo extends RatioElementInfo
    */
   public static final String OPERATOR          = "operator";
   
-  public static final String OPERATOR_COLUMN   = "math_operator";
-  
   /**
    * The right operand that references a {@link RatioElementInfo}
    */

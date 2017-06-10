@@ -19,13 +19,10 @@ public interface RatioPrimitiveInfo extends RatioElementInfo
    */
   public static final String MD_ATTRIBUTE_PRIMITIVE  = "mdAttributePrimitive";
   
-  
-  // Heads up: Test: Move to RatioPrimitiveDAOIF
   /**
-   * The column name on the defining type that stores the reference to the object instance. This is used to retrieve
-   * the attribute defined on this ratio on that object.
+   * This is the column that stores the references of the objects with the desired attribute.
    */
-  public static final String COLUMN_NAME             = "columnName";
+  public static final String COLUMN_NAME             = "column_name";
   
   /**
    * This is the sequence number of this ratio primitive within a ratio object.

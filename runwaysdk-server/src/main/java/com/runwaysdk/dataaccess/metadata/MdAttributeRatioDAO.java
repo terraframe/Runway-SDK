@@ -25,6 +25,11 @@ public class MdAttributeRatioDAO extends MdAttributeConcreteDAO implements MdAtt
   
 
   /**
+   * 
+   */
+  private static final long serialVersionUID = -854643054147455045L;
+
+  /**
    * The default constructor, does not set any attributes
    */
   public MdAttributeRatioDAO()
@@ -70,35 +75,12 @@ public class MdAttributeRatioDAO extends MdAttributeConcreteDAO implements MdAtt
   }
   
   /**
-   * @see MdAttributeRatioDAOIF#getLeftOperand
+   * @see MdAttributeRatioDAOIF#getRatio
    */
-  public MdAttributeConcreteDAOIF getLeftOperand()
+  public EnumerationItemDAOIF getRatio()
   {
-    return null;
-//    return (MdAttributeConcreteDAOIF)((AttributeReferenceIF)this.getAttributeIF(MdAttributeRatioInfo.LEFT_OPERAND)).dereference();
+    return (EnumerationItemDAOIF)((AttributeReferenceIF)this.getAttributeIF(MdAttributeRatioInfo.RATIO)).dereference();
   }
-  
-  /**
-   * @see MdAttributeRatioDAOIF#getOperator
-   */
-  public EnumerationItemDAOIF getOperator()
-  {
-    return null;
-//    EnumerationItemDAOIF[] enumerationItemArray = ((AttributeEnumerationIF)this.getAttributeIF(MdAttributeRatioInfo.OPERATOR)).dereference();
-//    
-//    return enumerationItemArray[0];
-  }
-
-  /**
-   * @see MdAttributeRatioDAOIF#getRightOperand
-   */
-  public MdAttributeConcreteDAOIF getRightOperand()
-  {
-    return null;
-//    return (MdAttributeConcreteDAOIF)((AttributeReferenceIF)this.getAttributeIF(MdAttributeRatioInfo.RIGHT_OPERAND)).dereference();
-  }
-  
-  
 
   /**
    * Validates this metadata object.
@@ -108,22 +90,7 @@ public class MdAttributeRatioDAO extends MdAttributeConcreteDAO implements MdAtt
    */
   protected void validate()
   {
-    super.validate();
-    
-    MdAttributeConcreteDAOIF leftOperand = getLeftOperand();
-    
-    MdAttributeConcreteDAOIF rightOperand = getRightOperand();
-    
-    // For now, we are only supporting numerical operands and not nested operands, but that should change
-    // in the future
-    if(leftOperand instanceof MdAttributeNumberDAOIF || 
-       rightOperand instanceof MdAttributeNumberDAOIF )
-    {
-      String devMessage = "InvalidRatioDefinition=The ratio attribute definition ["+this.getKey()+"] is invalid. "+
-      "A valid ratio consists of a number left operand, and operator, and a number right operand.";
-
-      throw new InvalidRatioDefinition(devMessage, this);
-    }    
+    super.validate();   
   }
   
   /**

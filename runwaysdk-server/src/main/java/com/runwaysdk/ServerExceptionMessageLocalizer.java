@@ -2802,13 +2802,13 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    * 
    * @param locale
    *          the desired locale
-   * @param mdBusinessIF
+   * @param _localizedRatioDisplayLabel
    *          The localized error message
    * @return
    */
-  public static String invalidRatioDefinition(Locale locale, MdAttributeDAOIF mdAttributeDAOIF)
+  public static String invalidRatioDefinition(Locale locale, String _localizedRatioDisplayLabel)
   {
-    return getMessage(locale, "InvalidRatioDefinition", mdAttributeDAOIF.getDisplayLabel(locale));
+    return getMessage(locale, "InvalidRatioDefinition", _localizedRatioDisplayLabel);
   }
 
 }
