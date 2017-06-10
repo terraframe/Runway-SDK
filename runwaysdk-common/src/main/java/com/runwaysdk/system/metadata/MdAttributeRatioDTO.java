@@ -2,7 +2,7 @@ package com.runwaysdk.system.metadata;
 
 public class MdAttributeRatioDTO extends MdAttributeRatioDTOBase
 {
-  private static final long serialVersionUID = 953375240;
+  private static final long serialVersionUID = 125477850;
   
   public MdAttributeRatioDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {

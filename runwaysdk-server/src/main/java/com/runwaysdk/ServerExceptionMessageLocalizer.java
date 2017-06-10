@@ -2796,4 +2796,19 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
     return getMessage(locale, "LoginNotSupportedException", user.getType());
   }
   
+  /**
+   * Gets the localized {@link InvalidRatioDefinition} message, which is
+   * thrown when an invalid ratio attribute is defined.
+   * 
+   * @param locale
+   *          the desired locale
+   * @param mdBusinessIF
+   *          The localized error message
+   * @return
+   */
+  public static String invalidRatioDefinition(Locale locale, MdAttributeDAOIF mdAttributeDAOIF)
+  {
+    return getMessage(locale, "InvalidRatioDefinition", mdAttributeDAOIF.getDisplayLabel(locale));
+  }
+
 }

@@ -12,14 +12,8 @@ public interface MdAttributeRatioInfo extends MdAttributeInfo
   /**
    * ID.
    */
-  // Heads up: Test: Change to the real ID
-  public static final String ID_VALUE          = "NM20081019000000000000000000000300000000000000000000000000000001";
+  public static final String ID_VALUE          = "i60dbot7mh1xwisrr1a6r0pfk9ew9r3600000000000000000000000000000001";
   
-  public static final String LEFT_OPERAND      = "leftOperand";
-  
-  public static final String OPERATOR          = "operator";
-  
-  public static final String OPERATOR_COLUMN   = "math_operator";
-  
-  public static final String RIGHT_OPERAND     = "rightOperand";
+  public static final String RATIO             = "ratio";
+
 }

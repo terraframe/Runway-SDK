@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -639242197)
+@com.runwaysdk.business.ClassSignature(hash = -991585513)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -11,131 +11,51 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeRatioBase extends com.runwaysdk.system.metadata.MdAttributeConcrete
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeRatio";
-  public static java.lang.String LEFTOPERAND = "leftOperand";
-  public static java.lang.String OPERATOR = "operator";
-  public static java.lang.String RIGHTOPERAND = "rightOperand";
-  private static final long serialVersionUID = -639242197;
+  public static java.lang.String RATIO = "ratio";
+  private static final long serialVersionUID = -991585513;
   
   public MdAttributeRatioBase()
   {
     super();
   }
   
-  public com.runwaysdk.system.metadata.MdAttribute getLeftOperand()
+  public com.runwaysdk.system.Ratio getRatio()
   {
-    if (getValue(LEFTOPERAND).trim().equals(""))
+    if (getValue(RATIO).trim().equals(""))
     {
       return null;
     }
     else
     {
-      return com.runwaysdk.system.metadata.MdAttribute.get(getValue(LEFTOPERAND));
+      return com.runwaysdk.system.Ratio.get(getValue(RATIO));
     }
   }
   
-  public String getLeftOperandId()
+  public String getRatioId()
   {
-    return getValue(LEFTOPERAND);
+    return getValue(RATIO);
   }
   
-  public void validateLeftOperand()
+  public void validateRatio()
   {
-    this.validateAttribute(LEFTOPERAND);
+    this.validateAttribute(RATIO);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getLeftOperandMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getRatioMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdAttributeRatio.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LEFTOPERAND);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(RATIO);
   }
   
-  public void setLeftOperand(com.runwaysdk.system.metadata.MdAttribute value)
+  public void setRatio(com.runwaysdk.system.Ratio value)
   {
     if(value == null)
     {
-      setValue(LEFTOPERAND, "");
+      setValue(RATIO, "");
     }
     else
     {
-      setValue(LEFTOPERAND, value.getId());
-    }
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<com.runwaysdk.system.RatioOperators> getOperator()
-  {
-    return (java.util.List<com.runwaysdk.system.RatioOperators>) getEnumValues(OPERATOR);
-  }
-  
-  public void addOperator(com.runwaysdk.system.RatioOperators value)
-  {
-    if(value != null)
-    {
-      addEnumItem(OPERATOR, value.getId());
-    }
-  }
-  
-  public void removeOperator(com.runwaysdk.system.RatioOperators value)
-  {
-    if(value != null)
-    {
-      removeEnumItem(OPERATOR, value.getId());
-    }
-  }
-  
-  public void clearOperator()
-  {
-    clearEnum(OPERATOR);
-  }
-  
-  public void validateOperator()
-  {
-    this.validateAttribute(OPERATOR);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF getOperatorMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdAttributeRatio.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdClassIF.definesAttribute(OPERATOR);
-  }
-  
-  public com.runwaysdk.system.metadata.MdAttribute getRightOperand()
-  {
-    if (getValue(RIGHTOPERAND).trim().equals(""))
-    {
-      return null;
-    }
-    else
-    {
-      return com.runwaysdk.system.metadata.MdAttribute.get(getValue(RIGHTOPERAND));
-    }
-  }
-  
-  public String getRightOperandId()
-  {
-    return getValue(RIGHTOPERAND);
-  }
-  
-  public void validateRightOperand()
-  {
-    this.validateAttribute(RIGHTOPERAND);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getRightOperandMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdAttributeRatio.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(RIGHTOPERAND);
-  }
-  
-  public void setRightOperand(com.runwaysdk.system.metadata.MdAttribute value)
-  {
-    if(value == null)
-    {
-      setValue(RIGHTOPERAND, "");
-    }
-    else
-    {
-      setValue(RIGHTOPERAND, value.getId());
+      setValue(RATIO, value.getId());
     }
   }
   

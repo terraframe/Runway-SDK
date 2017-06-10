@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1725456725)
+@com.runwaysdk.business.ClassSignature(hash = 380976279)
 public abstract class MdAttributeRatioDTOBase extends com.runwaysdk.system.metadata.MdAttributeConcreteDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeRatio";
-  private static final long serialVersionUID = -1725456725;
+  private static final long serialVersionUID = 380976279;
   
   protected MdAttributeRatioDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -27,151 +27,54 @@ public abstract class MdAttributeRatioDTOBase extends com.runwaysdk.system.metad
     return CLASS;
   }
   
-  public static java.lang.String LEFTOPERAND = "leftOperand";
-  public static java.lang.String OPERATOR = "operator";
-  public static java.lang.String RIGHTOPERAND = "rightOperand";
-  public com.runwaysdk.system.metadata.MdAttributeDTO getLeftOperand()
+  public static java.lang.String RATIO = "ratio";
+  public com.runwaysdk.system.RatioDTO getRatio()
   {
-    if(getValue(LEFTOPERAND) == null || getValue(LEFTOPERAND).trim().equals(""))
+    if(getValue(RATIO) == null || getValue(RATIO).trim().equals(""))
     {
       return null;
     }
     else
     {
-      return com.runwaysdk.system.metadata.MdAttributeDTO.get(getRequest(), getValue(LEFTOPERAND));
+      return com.runwaysdk.system.RatioDTO.get(getRequest(), getValue(RATIO));
     }
   }
   
-  public String getLeftOperandId()
+  public String getRatioId()
   {
-    return getValue(LEFTOPERAND);
+    return getValue(RATIO);
   }
   
-  public void setLeftOperand(com.runwaysdk.system.metadata.MdAttributeDTO value)
+  public void setRatio(com.runwaysdk.system.RatioDTO value)
   {
     if(value == null)
     {
-      setValue(LEFTOPERAND, "");
+      setValue(RATIO, "");
     }
     else
     {
-      setValue(LEFTOPERAND, value.getId());
+      setValue(RATIO, value.getId());
     }
   }
   
-  public boolean isLeftOperandWritable()
+  public boolean isRatioWritable()
   {
-    return isWritable(LEFTOPERAND);
+    return isWritable(RATIO);
   }
   
-  public boolean isLeftOperandReadable()
+  public boolean isRatioReadable()
   {
-    return isReadable(LEFTOPERAND);
+    return isReadable(RATIO);
   }
   
-  public boolean isLeftOperandModified()
+  public boolean isRatioModified()
   {
-    return isModified(LEFTOPERAND);
+    return isModified(RATIO);
   }
   
-  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getLeftOperandMd()
+  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getRatioMd()
   {
-    return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LEFTOPERAND).getAttributeMdDTO();
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<com.runwaysdk.system.RatioOperatorsDTO> getOperator()
-  {
-    return (java.util.List<com.runwaysdk.system.RatioOperatorsDTO>) com.runwaysdk.transport.conversion.ConversionFacade.convertEnumDTOsFromEnumNames(getRequest(), com.runwaysdk.system.RatioOperatorsDTO.CLASS, getEnumNames(OPERATOR));
-  }
-  
-  public java.util.List<String> getOperatorEnumNames()
-  {
-    return getEnumNames(OPERATOR);
-  }
-  
-  public void addOperator(com.runwaysdk.system.RatioOperatorsDTO enumDTO)
-  {
-    addEnumItem(OPERATOR, enumDTO.toString());
-  }
-  
-  public void removeOperator(com.runwaysdk.system.RatioOperatorsDTO enumDTO)
-  {
-    removeEnumItem(OPERATOR, enumDTO.toString());
-  }
-  
-  public void clearOperator()
-  {
-    clearEnum(OPERATOR);
-  }
-  
-  public boolean isOperatorWritable()
-  {
-    return isWritable(OPERATOR);
-  }
-  
-  public boolean isOperatorReadable()
-  {
-    return isReadable(OPERATOR);
-  }
-  
-  public boolean isOperatorModified()
-  {
-    return isModified(OPERATOR);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO getOperatorMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(OPERATOR).getAttributeMdDTO();
-  }
-  
-  public com.runwaysdk.system.metadata.MdAttributeDTO getRightOperand()
-  {
-    if(getValue(RIGHTOPERAND) == null || getValue(RIGHTOPERAND).trim().equals(""))
-    {
-      return null;
-    }
-    else
-    {
-      return com.runwaysdk.system.metadata.MdAttributeDTO.get(getRequest(), getValue(RIGHTOPERAND));
-    }
-  }
-  
-  public String getRightOperandId()
-  {
-    return getValue(RIGHTOPERAND);
-  }
-  
-  public void setRightOperand(com.runwaysdk.system.metadata.MdAttributeDTO value)
-  {
-    if(value == null)
-    {
-      setValue(RIGHTOPERAND, "");
-    }
-    else
-    {
-      setValue(RIGHTOPERAND, value.getId());
-    }
-  }
-  
-  public boolean isRightOperandWritable()
-  {
-    return isWritable(RIGHTOPERAND);
-  }
-  
-  public boolean isRightOperandReadable()
-  {
-    return isReadable(RIGHTOPERAND);
-  }
-  
-  public boolean isRightOperandModified()
-  {
-    return isModified(RIGHTOPERAND);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getRightOperandMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(RIGHTOPERAND).getAttributeMdDTO();
+    return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(RATIO).getAttributeMdDTO();
   }
   
   public static com.runwaysdk.system.metadata.MdAttributeRatioDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)

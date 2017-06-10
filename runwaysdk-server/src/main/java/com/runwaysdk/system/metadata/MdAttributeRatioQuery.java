@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1159469420)
+@com.runwaysdk.business.ClassSignature(hash = 1094896846)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -38,104 +38,40 @@ public  class MdAttributeRatioQuery extends com.runwaysdk.system.metadata.MdAttr
   {
     return com.runwaysdk.system.metadata.MdAttributeRatio.CLASS;
   }
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand()
+  public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio()
   {
-    return getLeftOperand(null);
+    return getRatio(null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand(String alias)
+  public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio(String alias)
   {
 
-    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND);
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO);
 
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND, mdAttributeIF, this, alias, null);
+    return (com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO, mdAttributeIF, this, alias, null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand(String alias, String displayLabel)
+  public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio(String alias, String displayLabel)
   {
 
-    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND);
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO);
 
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND, mdAttributeIF, this, alias, displayLabel);
-
-  }
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator()
-  {
-    return getOperator(null);
-
-  }
- 
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator(String alias)
-  {
-
-    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR);
-
-    return (com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR, mdAttributeIF, this, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator(String alias, String displayLabel)
-  {
-
-    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR);
-
-    return (com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR, mdAttributeIF, this, alias, displayLabel);
-
-  }
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand()
-  {
-    return getRightOperand(null);
-
-  }
- 
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand(String alias)
-  {
-
-    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND);
-
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND, mdAttributeIF, this, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand(String alias, String displayLabel)
-  {
-
-    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND);
-
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND, mdAttributeIF, this, alias, displayLabel);
+    return (com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO, mdAttributeIF, this, alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
     
-    if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND)) 
+    if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO)) 
     {
-       return new com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND)) 
-    {
-       return new com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+       return new com.runwaysdk.system.RatioQuery.RatioQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
       return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-  }
-
-  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    String name = mdAttributeIF.definesAttribute();
-    
-    if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR)) 
-    {
-       return new com.runwaysdk.system.OperatorsQuery.RatioOperatorsQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else 
-    {
-      return super.enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
   }
 
@@ -171,15 +107,9 @@ public  class MdAttributeRatioQuery extends com.runwaysdk.system.metadata.MdAttr
   public interface MdAttributeRatioQueryReferenceIF extends com.runwaysdk.system.metadata.MdAttributeConcreteQuery.MdAttributeConcreteQueryReferenceIF
   {
 
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand();
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand(String alias);
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand(String alias, String displayLabel);
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator();
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator(String alias);
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator(String alias, String displayLabel);
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand();
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand(String alias);
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand(String alias, String displayLabel);
+    public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio();
+    public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio(String alias);
+    public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeRatio mdAttributeRatio);
 
@@ -215,86 +145,34 @@ public  class MdAttributeRatioQuery extends com.runwaysdk.system.metadata.MdAttr
       return this.NE(mdAttributeRatio.getId());
     }
 
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand()
+  public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio()
   {
-    return getLeftOperand(null);
+    return getRatio(null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand(String alias)
+  public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio(String alias)
   {
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND, alias, null);
+    return (com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO, alias, null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand(String alias, String displayLabel)
+  public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio(String alias, String displayLabel)
   {
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND,  alias, displayLabel);
-
-  }
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator()
-  {
-    return getOperator(null);
-
-  }
- 
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator(String alias)
-  {
-    return (com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR, alias, displayLabel);
-
-  }
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand()
-  {
-    return getRightOperand(null);
-
-  }
- 
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand(String alias)
-  {
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND,  alias, displayLabel);
+    return (com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO,  alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
     
-    if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND)) 
+    if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO)) 
     {
-       return new com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND)) 
-    {
-       return new com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+       return new com.runwaysdk.system.RatioQuery.RatioQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
       return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-  }
-
-  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    String name = mdAttributeIF.definesAttribute();
-    
-    if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR)) 
-    {
-       return new com.runwaysdk.system.OperatorsQuery.RatioOperatorsQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else 
-    {
-      return super.enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
   }
 
@@ -307,15 +185,9 @@ public  class MdAttributeRatioQuery extends com.runwaysdk.system.metadata.MdAttr
   public interface MdAttributeRatioQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdAttributeConcreteQuery.MdAttributeConcreteQueryMultiReferenceIF
   {
 
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand();
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand(String alias);
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand(String alias, String displayLabel);
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator();
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator(String alias);
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator(String alias, String displayLabel);
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand();
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand(String alias);
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand(String alias, String displayLabel);
+    public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio();
+    public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio(String alias);
+    public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttributeRatio ... mdAttributeRatio);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttributeRatio ... mdAttributeRatio);
@@ -400,86 +272,34 @@ public  class MdAttributeRatioQuery extends com.runwaysdk.system.metadata.MdAttr
 
       return this.containsExactly(itemIdArray);
   }
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand()
+  public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio()
   {
-    return getLeftOperand(null);
+    return getRatio(null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand(String alias)
+  public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio(String alias)
   {
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND, alias, null);
+    return (com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO, alias, null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getLeftOperand(String alias, String displayLabel)
+  public com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF getRatio(String alias, String displayLabel)
   {
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND,  alias, displayLabel);
-
-  }
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator()
-  {
-    return getOperator(null);
-
-  }
- 
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator(String alias)
-  {
-    return (com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF getOperator(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.system.OperatorsQuery.RatioOperatorsQueryIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR, alias, displayLabel);
-
-  }
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand()
-  {
-    return getRightOperand(null);
-
-  }
- 
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand(String alias)
-  {
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getRightOperand(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND,  alias, displayLabel);
+    return (com.runwaysdk.system.RatioQuery.RatioQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO,  alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
     
-    if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.LEFTOPERAND)) 
+    if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.RATIO)) 
     {
-       return new com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.RIGHTOPERAND)) 
-    {
-       return new com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+       return new com.runwaysdk.system.RatioQuery.RatioQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
       return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-  }
-
-  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    String name = mdAttributeIF.definesAttribute();
-    
-    if (name.equals(com.runwaysdk.system.metadata.MdAttributeRatio.OPERATOR)) 
-    {
-       return new com.runwaysdk.system.OperatorsQuery.RatioOperatorsQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else 
-    {
-      return super.enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
   }
 
