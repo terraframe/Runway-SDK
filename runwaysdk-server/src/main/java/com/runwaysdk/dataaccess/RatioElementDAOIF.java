@@ -13,4 +13,11 @@ public interface RatioElementDAOIF extends BusinessDAOIF
    * @return a localized readable label of the ratio.
    */
   public String getLocalizedLabel();
+  
+  /**
+   * Returns the java type that is the return type of the ration equation.
+   * 
+   * @return the java type that is the return type of the ration equation.
+   */
+  public String javaType();
 }

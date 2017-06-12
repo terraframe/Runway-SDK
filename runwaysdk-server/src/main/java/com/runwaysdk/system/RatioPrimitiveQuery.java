@@ -1,6 +1,6 @@
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 1665648766)
+@com.runwaysdk.business.ClassSignature(hash = -672752156)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -37,40 +37,6 @@ public  class RatioPrimitiveQuery extends com.runwaysdk.system.RatioElementQuery
   public String getClassType()
   {
     return com.runwaysdk.system.RatioPrimitive.CLASS;
-  }
-  public com.runwaysdk.query.SelectableInteger getAttribute_seq()
-  {
-    return getAttribute_seq(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getAttribute_seq(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.RatioPrimitive.ATTRIBUTE_SEQ, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getAttribute_seq(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.RatioPrimitive.ATTRIBUTE_SEQ, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableChar getColumnName()
-  {
-    return getColumnName(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getColumnName(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.RatioPrimitive.COLUMNNAME, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getColumnName(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.RatioPrimitive.COLUMNNAME, alias, displayLabel);
-
   }
   public com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryReferenceIF getMdAttributePrimitive()
   {
@@ -141,12 +107,6 @@ public  class RatioPrimitiveQuery extends com.runwaysdk.system.RatioElementQuery
   public interface RatioPrimitiveQueryReferenceIF extends com.runwaysdk.system.RatioElementQuery.RatioElementQueryReferenceIF
   {
 
-    public com.runwaysdk.query.SelectableInteger getAttribute_seq();
-    public com.runwaysdk.query.SelectableInteger getAttribute_seq(String alias);
-    public com.runwaysdk.query.SelectableInteger getAttribute_seq(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getColumnName();
-    public com.runwaysdk.query.SelectableChar getColumnName(String alias);
-    public com.runwaysdk.query.SelectableChar getColumnName(String alias, String displayLabel);
     public com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryReferenceIF getMdAttributePrimitive();
     public com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryReferenceIF getMdAttributePrimitive(String alias);
     public com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryReferenceIF getMdAttributePrimitive(String alias, String displayLabel);
@@ -185,40 +145,6 @@ public  class RatioPrimitiveQuery extends com.runwaysdk.system.RatioElementQuery
       return this.NE(ratioPrimitive.getId());
     }
 
-  public com.runwaysdk.query.SelectableInteger getAttribute_seq()
-  {
-    return getAttribute_seq(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getAttribute_seq(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.RatioPrimitive.ATTRIBUTE_SEQ, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getAttribute_seq(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.RatioPrimitive.ATTRIBUTE_SEQ, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableChar getColumnName()
-  {
-    return getColumnName(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getColumnName(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.RatioPrimitive.COLUMNNAME, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getColumnName(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.RatioPrimitive.COLUMNNAME, alias, displayLabel);
-
-  }
   public com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryReferenceIF getMdAttributePrimitive()
   {
     return getMdAttributePrimitive(null);
@@ -259,12 +185,6 @@ public  class RatioPrimitiveQuery extends com.runwaysdk.system.RatioElementQuery
   public interface RatioPrimitiveQueryMultiReferenceIF extends com.runwaysdk.system.RatioElementQuery.RatioElementQueryMultiReferenceIF
   {
 
-    public com.runwaysdk.query.SelectableInteger getAttribute_seq();
-    public com.runwaysdk.query.SelectableInteger getAttribute_seq(String alias);
-    public com.runwaysdk.query.SelectableInteger getAttribute_seq(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getColumnName();
-    public com.runwaysdk.query.SelectableChar getColumnName(String alias);
-    public com.runwaysdk.query.SelectableChar getColumnName(String alias, String displayLabel);
     public com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryReferenceIF getMdAttributePrimitive();
     public com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryReferenceIF getMdAttributePrimitive(String alias);
     public com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryReferenceIF getMdAttributePrimitive(String alias, String displayLabel);
@@ -351,40 +271,6 @@ public  class RatioPrimitiveQuery extends com.runwaysdk.system.RatioElementQuery
       }
 
       return this.containsExactly(itemIdArray);
-  }
-  public com.runwaysdk.query.SelectableInteger getAttribute_seq()
-  {
-    return getAttribute_seq(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getAttribute_seq(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.RatioPrimitive.ATTRIBUTE_SEQ, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getAttribute_seq(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.RatioPrimitive.ATTRIBUTE_SEQ, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableChar getColumnName()
-  {
-    return getColumnName(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getColumnName(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.RatioPrimitive.COLUMNNAME, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getColumnName(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.RatioPrimitive.COLUMNNAME, alias, displayLabel);
-
   }
   public com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryReferenceIF getMdAttributePrimitive()
   {

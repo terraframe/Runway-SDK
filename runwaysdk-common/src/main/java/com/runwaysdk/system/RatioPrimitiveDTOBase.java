@@ -1,10 +1,10 @@
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1243352939)
+@com.runwaysdk.business.ClassSignature(hash = 36107821)
 public abstract class RatioPrimitiveDTOBase extends com.runwaysdk.system.RatioElementDTO
 {
   public final static String CLASS = "com.runwaysdk.system.RatioPrimitive";
-  private static final long serialVersionUID = -1243352939;
+  private static final long serialVersionUID = 36107821;
   
   protected RatioPrimitiveDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -27,83 +27,7 @@ public abstract class RatioPrimitiveDTOBase extends com.runwaysdk.system.RatioEl
     return CLASS;
   }
   
-  public static java.lang.String ATTRIBUTE_SEQ = "attribute_seq";
-  public static java.lang.String COLUMNNAME = "columnName";
   public static java.lang.String MDATTRIBUTEPRIMITIVE = "mdAttributePrimitive";
-  public Integer getAttribute_seq()
-  {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(ATTRIBUTE_SEQ));
-  }
-  
-  public void setAttribute_seq(Integer value)
-  {
-    if(value == null)
-    {
-      setValue(ATTRIBUTE_SEQ, "");
-    }
-    else
-    {
-      setValue(ATTRIBUTE_SEQ, java.lang.Integer.toString(value));
-    }
-  }
-  
-  public boolean isAttribute_seqWritable()
-  {
-    return isWritable(ATTRIBUTE_SEQ);
-  }
-  
-  public boolean isAttribute_seqReadable()
-  {
-    return isReadable(ATTRIBUTE_SEQ);
-  }
-  
-  public boolean isAttribute_seqModified()
-  {
-    return isModified(ATTRIBUTE_SEQ);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeNumberMdDTO getAttribute_seqMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(ATTRIBUTE_SEQ).getAttributeMdDTO();
-  }
-  
-  public String getColumnName()
-  {
-    return getValue(COLUMNNAME);
-  }
-  
-  public void setColumnName(String value)
-  {
-    if(value == null)
-    {
-      setValue(COLUMNNAME, "");
-    }
-    else
-    {
-      setValue(COLUMNNAME, value);
-    }
-  }
-  
-  public boolean isColumnNameWritable()
-  {
-    return isWritable(COLUMNNAME);
-  }
-  
-  public boolean isColumnNameReadable()
-  {
-    return isReadable(COLUMNNAME);
-  }
-  
-  public boolean isColumnNameModified()
-  {
-    return isModified(COLUMNNAME);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getColumnNameMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(COLUMNNAME).getAttributeMdDTO();
-  }
-  
   public com.runwaysdk.system.metadata.MdAttributePrimitiveDTO getMdAttributePrimitive()
   {
     if(getValue(MDATTRIBUTEPRIMITIVE) == null || getValue(MDATTRIBUTEPRIMITIVE).trim().equals(""))

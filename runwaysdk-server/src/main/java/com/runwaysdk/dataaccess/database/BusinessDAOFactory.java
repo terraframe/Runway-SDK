@@ -77,6 +77,7 @@ import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeMultiTermInfo;
+import com.runwaysdk.constants.MdAttributeRatioInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
@@ -130,6 +131,8 @@ import com.runwaysdk.constants.MdWebSingleTermInfo;
 import com.runwaysdk.constants.MdWebTextInfo;
 import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MethodActorInfo;
+import com.runwaysdk.constants.RatioInfo;
+import com.runwaysdk.constants.RatioPrimitiveInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.SingleActorInfo;
 import com.runwaysdk.constants.SupportedLocaleInfo;
@@ -151,10 +154,12 @@ import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
+import com.runwaysdk.dataaccess.RatioDAO;
+import com.runwaysdk.dataaccess.RatioPrimitiveDAO;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StaleEntityException;
@@ -191,6 +196,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeRatioDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
@@ -288,6 +294,11 @@ public class BusinessDAOFactory
   private static Map<String, BusinessDAO> loadFactory()
   {
     Map<String, BusinessDAO> map = new ConcurrentHashMap<String, BusinessDAO>();
+
+    // Ratios
+    map.put(RatioInfo.CLASS, new RatioDAO());
+    map.put(RatioPrimitiveInfo.CLASS, new RatioPrimitiveDAO());
+    map.put(MdAttributeRatioInfo.CLASS, new MdAttributeRatioDAO());
 
     map.put(MdTableInfo.CLASS, new MdTableDAO());
     map.put(MdIndexInfo.CLASS, new MdIndexDAO());

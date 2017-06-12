@@ -1,6 +1,6 @@
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 221921813)
+@com.runwaysdk.business.ClassSignature(hash = -2043636563)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -11,70 +11,12 @@ package com.runwaysdk.system;
 public abstract class RatioPrimitiveBase extends com.runwaysdk.system.RatioElement
 {
   public final static String CLASS = "com.runwaysdk.system.RatioPrimitive";
-  public static java.lang.String ATTRIBUTE_SEQ = "attribute_seq";
-  public static java.lang.String COLUMNNAME = "columnName";
   public static java.lang.String MDATTRIBUTEPRIMITIVE = "mdAttributePrimitive";
-  private static final long serialVersionUID = 221921813;
+  private static final long serialVersionUID = -2043636563;
   
   public RatioPrimitiveBase()
   {
     super();
-  }
-  
-  public Integer getAttribute_seq()
-  {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(ATTRIBUTE_SEQ));
-  }
-  
-  public void validateAttribute_seq()
-  {
-    this.validateAttribute(ATTRIBUTE_SEQ);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF getAttribute_seqMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.RatioPrimitive.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF)mdClassIF.definesAttribute(ATTRIBUTE_SEQ);
-  }
-  
-  public void setAttribute_seq(Integer value)
-  {
-    if(value == null)
-    {
-      setValue(ATTRIBUTE_SEQ, "");
-    }
-    else
-    {
-      setValue(ATTRIBUTE_SEQ, java.lang.Integer.toString(value));
-    }
-  }
-  
-  public String getColumnName()
-  {
-    return getValue(COLUMNNAME);
-  }
-  
-  public void validateColumnName()
-  {
-    this.validateAttribute(COLUMNNAME);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getColumnNameMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.RatioPrimitive.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(COLUMNNAME);
-  }
-  
-  public void setColumnName(String value)
-  {
-    if(value == null)
-    {
-      setValue(COLUMNNAME, "");
-    }
-    else
-    {
-      setValue(COLUMNNAME, value);
-    }
   }
   
   public com.runwaysdk.system.metadata.MdAttributePrimitive getMdAttributePrimitive()

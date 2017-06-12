@@ -22,7 +22,7 @@ public interface RatioPrimitiveInfo extends RatioElementInfo
   /**
    * This is the column that stores the references of the objects with the desired attribute.
    */
-  public static final String COLUMN_NAME             = "column_name";
+  public static final String COLUMN_NAME             = "columnName";
   
   /**
    * This is the sequence number of this ratio primitive within a ratio object.

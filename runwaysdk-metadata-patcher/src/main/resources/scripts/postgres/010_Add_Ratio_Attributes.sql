@@ -409,3 +409,40 @@ UPDATE md_entity SET table_name= 'ratio_primitive' , id= 'i3obk3gttdjxbk2ko1x7go
 UPDATE md_type SET type_name= 'RatioPrimitive' , display_label= '0ku6gdtgu83iwnm6uznhk4hcxdd2t096NM200904120000000000000000000030' , package_name= 'com.runwaysdk.system' , root_id= 'i3obk3gttdjxbk2ko1x7gor2e9y5zlig' , id= 'i3obk3gttdjxbk2ko1x7gor2e9y5zlig00000000000000000000000000000001'  WHERE id='i3obk3gttdjxbk2ko1x7gor2e9y5zlig00000000000000000000000000000001';
 UPDATE metadata SET create_date= '2017-06-09 21:41:20' , seq= 4910 , type= 'com.runwaysdk.system.metadata.MdBusiness' , created_by= '0000000000000000000000000000001000000000000000000000000000000003' , last_update_date= '2017-06-09 21:41:20' , last_updated_by= '0000000000000000000000000000001000000000000000000000000000000003' , description= '0hszwowi2itufq0arsi3ypl833s8r4gkNM200904120000000000000000000030' , remove= 0 , owner= '0000000000000000000000000000001000000000000000000000000000000003' , id= 'i3obk3gttdjxbk2ko1x7gor2e9y5zlig00000000000000000000000000000001' , key_name= 'com.runwaysdk.system.RatioPrimitive' , site_master= 'www.runwaysdk.com'  WHERE id='i3obk3gttdjxbk2ko1x7gor2e9y5zlig00000000000000000000000000000001';
 
+
+
+-- Remove the Column and Sequence columns from  RatioPrimitive
+
+DELETE FROM class_attribute_concrete WHERE id = 'i5b8n1wbppsx4yzqhv1xtfc9xiuw07ci00000000000000000000000000000073';
+DELETE FROM class_attribute WHERE id = 'i5b8n1wbppsx4yzqhv1xtfc9xiuw07ci00000000000000000000000000000073';
+DELETE FROM metadata_relationship WHERE id = 'i5b8n1wbppsx4yzqhv1xtfc9xiuw07ci00000000000000000000000000000073' AND seq = 2906;
+DELETE FROM md_attribute_indicies WHERE set_id='1ubd8no47a9zxmlyqghr9tcfiy7yt908';
+DELETE FROM visibilitymodifier WHERE set_id='2d82wyqimh4tdhyja3dptsdfxqywetrw';
+DELETE FROM visibilitymodifier WHERE set_id='qrh5r0jy58qxgby2gmg6af1zwebn2he0';
+DELETE FROM metadata_display_label WHERE id = '91svmk9mmabcm6vlcvuw8xhpnmkj9mvyNM200904120000000000000000000030';
+DELETE FROM metadata_display_label WHERE id = '0dg9ujnrvm1n3s9bfbwc66f0ny1pcl0kNM200904120000000000000000000030';
+DELETE FROM md_attribute_character WHERE id = 'i5b8n1wbppsx4yzqhv1xtfc9xiuw07ci00000000000000000000000000000138';
+DELETE FROM md_attribute_char WHERE id = 'i5b8n1wbppsx4yzqhv1xtfc9xiuw07ci00000000000000000000000000000138';
+DELETE FROM md_attribute_primitive WHERE id = 'i5b8n1wbppsx4yzqhv1xtfc9xiuw07ci00000000000000000000000000000138';
+DELETE FROM md_attribute_concrete WHERE id = 'i5b8n1wbppsx4yzqhv1xtfc9xiuw07ci00000000000000000000000000000138';
+DELETE FROM md_attribute WHERE id = 'i5b8n1wbppsx4yzqhv1xtfc9xiuw07ci00000000000000000000000000000138';
+DELETE FROM metadata WHERE id = 'i5b8n1wbppsx4yzqhv1xtfc9xiuw07ci00000000000000000000000000000138' AND seq = 3474;
+DELETE FROM class_attribute_concrete WHERE id = 'ie14vqtjpjbsi6glo4jktwhi9qnnhfsn00000000000000000000000000000073';
+DELETE FROM class_attribute WHERE id = 'ie14vqtjpjbsi6glo4jktwhi9qnnhfsn00000000000000000000000000000073';
+DELETE FROM metadata_relationship WHERE id = 'ie14vqtjpjbsi6glo4jktwhi9qnnhfsn00000000000000000000000000000073' AND seq = 2907;
+DELETE FROM md_attribute_indicies WHERE set_id='z3k5g723lmqpfvs7tj370wbmqqaejokl';
+DELETE FROM visibilitymodifier WHERE set_id='sviplah3rnlhcs0rvioobititoivhdfh';
+DELETE FROM visibilitymodifier WHERE set_id='xno8c1bkosc41ifuxkke7qtsq23n0ffz';
+DELETE FROM metadata_display_label WHERE id = 'xy7gbbjgmk7fxreh8csqugewsoqjvu2pNM200904120000000000000000000030';
+DELETE FROM metadata_display_label WHERE id = 't1anmahruj86wvuscct4bjca7z5ldzneNM200904120000000000000000000030';
+DELETE FROM md_attribute_integer WHERE id = 'ie14vqtjpjbsi6glo4jktwhi9qnnhfsn00000000000000000000000000000332';
+DELETE FROM md_attribute_int WHERE id = 'ie14vqtjpjbsi6glo4jktwhi9qnnhfsn00000000000000000000000000000332';
+DELETE FROM md_attribute_number WHERE id = 'ie14vqtjpjbsi6glo4jktwhi9qnnhfsn00000000000000000000000000000332';
+DELETE FROM md_attribute_primitive WHERE id = 'ie14vqtjpjbsi6glo4jktwhi9qnnhfsn00000000000000000000000000000332';
+DELETE FROM md_attribute_concrete WHERE id = 'ie14vqtjpjbsi6glo4jktwhi9qnnhfsn00000000000000000000000000000332';
+DELETE FROM md_attribute WHERE id = 'ie14vqtjpjbsi6glo4jktwhi9qnnhfsn00000000000000000000000000000332';
+DELETE FROM metadata WHERE id = 'ie14vqtjpjbsi6glo4jktwhi9qnnhfsn00000000000000000000000000000332' AND seq = 3472;
+UPDATE metadata SET seq= 4905  WHERE id='i3obk3gttdjxbk2ko1x7gor2e9y5zlig00000000000000000000000000000001';
+ALTER TABLE ratio_primitive DROP column_name;
+ALTER TABLE ratio_primitive DROP attribute_seq;
+

@@ -4,19 +4,15 @@ import java.util.Map;
 
 import com.runwaysdk.constants.MdAttributeRatioInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
-import com.runwaysdk.dataaccess.AttributeEnumerationIF;
+import com.runwaysdk.constants.RatioPrimitiveInfo;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDecimalDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRatioDAOIF;
+import com.runwaysdk.dataaccess.RatioDAOIF;
+import com.runwaysdk.dataaccess.RatioPrimitiveDAO;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
@@ -52,6 +48,15 @@ public class MdAttributeRatioDAO extends MdAttributeConcreteDAO implements MdAtt
     super(attributeMap, classType);
   }
   
+  /**
+   * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable,
+   *      java.util.String, ComponentDTOIF, Map)
+   */
+  public MdAttributeRatioDAO create(Map<String, Attribute> attributeMap, String classType)
+  {
+    return new MdAttributeRatioDAO(attributeMap, MdAttributeReferenceInfo.CLASS);
+  }
+  
   /*
    * (non-Javadoc)
    * 
@@ -77,20 +82,9 @@ public class MdAttributeRatioDAO extends MdAttributeConcreteDAO implements MdAtt
   /**
    * @see MdAttributeRatioDAOIF#getRatio
    */
-  public EnumerationItemDAOIF getRatio()
+  public RatioDAOIF getRatio()
   {
-    return (EnumerationItemDAOIF)((AttributeReferenceIF)this.getAttributeIF(MdAttributeRatioInfo.RATIO)).dereference();
-  }
-
-  /**
-   * Validates this metadata object.
-   * 
-   * @throws DataAccessException
-   *           when this MetaData object is not valid.
-   */
-  protected void validate()
-  {
-    super.validate();   
+    return (RatioDAOIF)((AttributeReferenceIF)this.getAttributeIF(MdAttributeRatioInfo.RATIO)).dereference();
   }
   
   /**
@@ -121,34 +115,8 @@ public class MdAttributeRatioDAO extends MdAttributeConcreteDAO implements MdAtt
   @Override
   public String javaType(boolean isDTO)
   {
-    MdAttributeConcreteDAOIF leftOperand = getLeftOperand();
+    return this.getRatio().javaType();
     
-    MdAttributeConcreteDAOIF rightOperand = getRightOperand();
-    
-    if(leftOperand instanceof MdAttributeDecimalDAOIF || 
-       rightOperand instanceof MdAttributeDecimalDAOIF)
-    {
-      return "java.math.BigDecimal";
-    }
-    else if (leftOperand instanceof MdAttributeDoubleDAOIF || 
-        rightOperand instanceof MdAttributeDoubleDAOIF)
-    {
-      return "Double";
-    }
-    else if (leftOperand instanceof MdAttributeFloatDAOIF || 
-        rightOperand instanceof MdAttributeFloatDAOIF)
-    {
-      return "Float";
-    }
-    else if (leftOperand instanceof MdAttributeLongDAOIF || 
-        rightOperand instanceof MdAttributeLongDAOIF)
-    {
-      return "Long";
-    }
-    else
-    {
-      return "Integer";
-    }
   }
 
   @Override

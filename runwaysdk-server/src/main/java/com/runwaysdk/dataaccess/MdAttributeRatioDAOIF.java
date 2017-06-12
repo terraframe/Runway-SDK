@@ -3,9 +3,9 @@ package com.runwaysdk.dataaccess;
 public interface MdAttributeRatioDAOIF extends MdAttributeConcreteDAOIF
 {   
   /**
-   * Returns the operator enumeration.
+   * Returns the {@link RatioDAOIF} object.
    * 
-   * @return the operator enumeration.
+   * @return the {@link RatioDAOIF} object.
    */
-  public EnumerationItemDAOIF getRatio();
+  public RatioDAOIF getRatio();
 }

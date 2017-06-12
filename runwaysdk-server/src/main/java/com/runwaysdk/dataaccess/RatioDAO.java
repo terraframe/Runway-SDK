@@ -1,14 +1,23 @@
 package com.runwaysdk.dataaccess;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import com.runwaysdk.constants.MathOperatorInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.RatioInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.metadata.InvalidRatioDefinition;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 
 public class RatioDAO extends BusinessDAO implements RatioDAOIF
 {
+
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 7013814284000552548L;
 
   public RatioDAO(Map<String, Attribute> attributeMap, String classType)
   {
@@ -18,6 +27,36 @@ public class RatioDAO extends BusinessDAO implements RatioDAOIF
   public RatioDAO()
   {
     super();
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable,
+   *      java.util.String, ComponentDTOIF, Map)
+   */
+  public RatioDAO create(Map<String, Attribute> attributeMap, String classType)
+  {
+    return new RatioDAO(attributeMap, RatioInfo.CLASS);
+  }
+  
+  /**
+   * Returns a new {@link RatioDAO}. Some attributes will contain
+   * default values, as defined in the attribute metadata. Otherwise, the
+   * attributes will be blank.
+   * 
+   * @return instance of {@link RatioDAO}>.
+   */
+  public static RatioDAO newInstance()
+  {
+    return (RatioDAO) BusinessDAO.newInstance(RatioInfo.CLASS);
+  }
+  
+  /**
+   * 
+   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
+   */
+  public static RatioDAOIF get(String id)
+  {
+    return (RatioDAOIF) BusinessDAO.get(id);
   }
   
   /**
@@ -107,6 +146,40 @@ public class RatioDAO extends BusinessDAO implements RatioDAOIF
     }
   }
   
+  /**
+   * @see RatioElementDAOIF#javaType
+   */
+  public String javaType()
+  {
+    String leftOperandType = this.getLeftOperand().javaType();
+    
+    String rightOperandType = this.getRightOperand().javaType();
+    
+    if(leftOperandType.equals(BigDecimal.class.getName()) || 
+       rightOperandType.equals(BigDecimal.class.getName()))
+    {
+      return BigDecimal.class.getName();
+    }
+    else if (leftOperandType.equals(Double.class.getName()) || 
+        rightOperandType.equals(Double.class.getName()))
+    {
+      return Double.class.getName();
+    }
+    else if (leftOperandType.equals(Float.class.getName()) || 
+        rightOperandType.equals(Float.class.getName()))
+    {
+      return Float.class.getName();
+    }
+    else if (leftOperandType.equals(Long.class.getName()) || 
+        rightOperandType.equals(Long.class.getName()))
+    {
+      return Long.class.getName();
+    }
+    else
+    {
+      return Integer.class.getName();
+    }
+  }
   
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
