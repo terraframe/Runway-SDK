@@ -1,6 +1,6 @@
 package com.runwaysdk.constants;
 
-public interface MdAttributeRatioInfo extends MdAttributeInfo
+public interface MdAttributeRatioInfo extends MdAttributeConcreteInfo
 {
   /**
    * Interface {@link MdAttributeRatioInfo}.

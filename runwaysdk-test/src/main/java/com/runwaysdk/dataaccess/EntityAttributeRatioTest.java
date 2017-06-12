@@ -9,10 +9,12 @@ import junit.framework.TestSuite;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
+import com.runwaysdk.constants.MdAttributeDoubleInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeRatioInfo;
 import com.runwaysdk.constants.RatioInfo;
 import com.runwaysdk.constants.RatioPrimitiveInfo;
 import com.runwaysdk.constants.TestConstants;
@@ -22,6 +24,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeRatioDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.system.RatioOperator;
 
@@ -38,20 +41,14 @@ public class EntityAttributeRatioTest extends TestCase
   {
     super.run(testResult);
   }
-  
-  /**
-   * <code>testObject</code> is a BusinessDAO that is mapped to a new instance
-   * of the MasterTestSetup.TEST_CLASS class for each test. Values are set and
-   * tested on it.
-   */
-  private BusinessDAO                                 testObject;
-  
 
   private static MdBusinessDAOIF                      testMdBusinessIF;
   
   private static final String                         TEST_INTEGER_1              = "testInteger1";
   
   private static final String                         TEST_INTEGER_2              = "testInteger2";
+  
+  private static final String                         TEST_INTEGER_RATIO          = "testIntegerRatio";
   
   private static final String                         TEST_LONG_1                 = "testLong1";
 
@@ -176,25 +173,25 @@ public class EntityAttributeRatioTest extends TestCase
     mdAttributeFloat2.apply();
     
     MdAttributeDoubleDAO mdAttributeDouble1 = MdAttributeDoubleDAO.newInstance();
-    mdAttributeDouble1.setValue(MdAttributeFloatInfo.NAME, TEST_DOUBLE_1);
-    mdAttributeDouble1.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double 1");
-    mdAttributeDouble1.setValue(MdAttributeFloatInfo.DEFAULT_VALUE, "");
-    mdAttributeDouble1.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttributeDouble1.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeDouble1.setValue(MdAttributeFloatInfo.LENGTH, "16");
-    mdAttributeDouble1.setValue(MdAttributeFloatInfo.DECIMAL, "4");
-    mdAttributeDouble1.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDouble1.setValue(MdAttributeDoubleInfo.NAME, TEST_DOUBLE_1);
+    mdAttributeDouble1.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double 1");
+    mdAttributeDouble1.setValue(MdAttributeDoubleInfo.DEFAULT_VALUE, "");
+    mdAttributeDouble1.setValue(MdAttributeDoubleInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeDouble1.setValue(MdAttributeDoubleInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdAttributeDouble1.setValue(MdAttributeDoubleInfo.LENGTH, "16");
+    mdAttributeDouble1.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
+    mdAttributeDouble1.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
     mdAttributeDouble1.apply();
     
     MdAttributeDoubleDAO mdAttributeDouble2 = MdAttributeDoubleDAO.newInstance();
-    mdAttributeDouble2.setValue(MdAttributeFloatInfo.NAME, TEST_DOUBLE_2);
-    mdAttributeDouble2.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double 2");
-    mdAttributeDouble2.setValue(MdAttributeFloatInfo.DEFAULT_VALUE, "");
-    mdAttributeDouble2.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttributeDouble2.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeDouble2.setValue(MdAttributeFloatInfo.LENGTH, "16");
-    mdAttributeDouble2.setValue(MdAttributeFloatInfo.DECIMAL, "4");
-    mdAttributeDouble2.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDouble2.setValue(MdAttributeDoubleInfo.NAME, TEST_DOUBLE_2);
+    mdAttributeDouble2.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double 2");
+    mdAttributeDouble2.setValue(MdAttributeDoubleInfo.DEFAULT_VALUE, "");
+    mdAttributeDouble2.setValue(MdAttributeDoubleInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeDouble2.setValue(MdAttributeDoubleInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdAttributeDouble2.setValue(MdAttributeDoubleInfo.LENGTH, "16");
+    mdAttributeDouble2.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
+    mdAttributeDouble2.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
     mdAttributeDouble2.apply();
     
     MdAttributeDecimalDAO mdAttributeDecimal1 = MdAttributeDecimalDAO.newInstance();
@@ -233,6 +230,14 @@ public class EntityAttributeRatioTest extends TestCase
     ratioInteger.setValue(RatioInfo.RIGHT_OPERAND, ratioPrimitiveInteger2.getId());
     ratioInteger.apply();
     
+    MdAttributeRatioDAO mdAttributeRatio1 = MdAttributeRatioDAO.newInstance();
+    mdAttributeRatio1.setValue(MdAttributeRatioInfo.NAME, TEST_INTEGER_RATIO);
+    mdAttributeRatio1.setStructValue(MdAttributeRatioInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Integer Ratio");
+    mdAttributeRatio1.setValue(MdAttributeRatioInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeRatio1.setValue(MdAttributeRatioInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdAttributeRatio1.setValue(MdAttributeRatioInfo.RATIO, ratioInteger.getId());
+    mdAttributeRatio1.setValue(MdAttributeRatioInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeRatio1.apply();
     
     BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
     bus1.setValue(TEST_INTEGER_1, "4");

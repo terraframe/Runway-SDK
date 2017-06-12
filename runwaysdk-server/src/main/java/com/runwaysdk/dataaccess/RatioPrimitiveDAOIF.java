@@ -19,18 +19,4 @@ public interface RatioPrimitiveDAOIF extends RatioElementDAOIF
    * @return the {@link MdAttributePrimitiveDAOIF} that defines the primitive attribute used in the ratio equation.
    */
   public MdAttributePrimitiveDAOIF getMdAttributePrimitive();
-  
-  /**
-   * Returns the column that stores the references of the objects with the desired attribute.
-   * 
-   * @return the column that stores the references of the objects with the desired attribute.
-   */
-  public String getColumnName();
-  
-  /**
-   * Returns the sequence number of this attribute in the ratio equation.
-   * 
-   * @return the sequence number of this attribute in the ratio equation.
-   */
-  public int getAttributeSequence();
 }

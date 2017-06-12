@@ -58,6 +58,13 @@ public class RatioPrimitiveDAO extends BusinessDAO implements RatioPrimitiveDAOI
     return (RatioPrimitiveDAO) BusinessDAO.get(id);
   }
   
+  
+  @Override
+  public void delete(boolean businessContext)
+  {
+    super.delete(businessContext);
+  }
+  
   /**
    * @see RatioPrimitiveInfo#MD_ATTRIBUTE_PRIMITIVE
    */
@@ -66,19 +73,6 @@ public class RatioPrimitiveDAO extends BusinessDAO implements RatioPrimitiveDAOI
   {
     AttributeReferenceIF attributeReferenceIF = (AttributeReferenceIF)this.getAttributeIF(RatioPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE);
     return (MdAttributePrimitiveDAOIF)attributeReferenceIF.dereference();
-  }
-
-  @Override
-  public String getColumnName()
-  {
-    return this.getAttributeIF(RatioPrimitiveInfo.COLUMN_NAME).getValue();
-  }
-
-  @Override
-  public int getAttributeSequence()
-  {
-    AttributeInteger attributeInteger = (AttributeInteger)this.getAttribute(RatioPrimitiveInfo.SEQUENCE);
-    return Integer.parseInt(attributeInteger.getValue());
   }
   
   /**

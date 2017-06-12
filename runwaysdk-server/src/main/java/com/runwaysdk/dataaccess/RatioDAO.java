@@ -1,15 +1,16 @@
 package com.runwaysdk.dataaccess;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.constants.MathOperatorInfo;
-import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.RatioInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.metadata.InvalidRatioDefinition;
-import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 
 public class RatioDAO extends BusinessDAO implements RatioDAOIF
 {
@@ -58,6 +59,19 @@ public class RatioDAO extends BusinessDAO implements RatioDAOIF
   {
     return (RatioDAOIF) BusinessDAO.get(id);
   }
+  
+  
+  @Override
+  public void delete(boolean businessContext)
+  {
+    // Delete the operands
+    this.getLeftOperand().getBusinessDAO().delete();
+    
+    this.getRightOperand().getBusinessDAO().delete();
+    
+    super.delete(businessContext);
+  }
+  
   
   /**
    * @see RatioDAOIF#getLeftOperand
@@ -121,9 +135,9 @@ public class RatioDAO extends BusinessDAO implements RatioDAOIF
   {
     super.validate();
     
-    RatioElementDAOIF leftOperand = getLeftOperand();
+    RatioElementDAOIF leftOperand = this.getLeftOperand();
     
-    RatioElementDAOIF rightOperand = getRightOperand();
+    RatioElementDAOIF rightOperand = this.getRightOperand();
     
     boolean isValid = false;
     // For now, we are only supporting numerical operands and not nested operands, but that should change
@@ -194,5 +208,34 @@ public class RatioDAO extends BusinessDAO implements RatioDAOIF
     return this.getLocalizedLabel();
   }
  
-  
+  public static class ClassRatioVisitor
+  {
+    /**
+     * Key: The key of the {@link MdAttributeRatioDAOIF}
+     * Object: {@link MdAttributeRatioDAOIF}
+     */
+    private Map<String, MdAttributeRatioDAOIF> attrRatioMap;
+    
+    public ClassRatioVisitor()
+    {
+      this.attrRatioMap = new HashMap<String, MdAttributeRatioDAOIF>();
+    }
+    
+    public void addMdAttributeRatio(MdAttributeRatioDAOIF mdAttributeRatio)
+    {
+      this.attrRatioMap.put(mdAttributeRatio.getKey(), mdAttributeRatio);
+    }
+    
+    public List<MdAttributeRatioDAOIF> getMdAttributeRatioList()
+    {
+      return this.attrRatioMap.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
+    }
+    
+    public void visit(RatioDAOIF ratioDAOIF)
+    {
+      
+    }
+  }
 }
+
+

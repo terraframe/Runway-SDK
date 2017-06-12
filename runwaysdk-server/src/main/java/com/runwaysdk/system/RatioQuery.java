@@ -1,6 +1,6 @@
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 562134237)
+@com.runwaysdk.business.ClassSignature(hash = -779525803)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -164,6 +164,122 @@ public  class RatioQuery extends com.runwaysdk.system.RatioElementQuery
   }
 
 
+  public com.runwaysdk.query.Condition getMdAttributeRatio()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+
+    return this.getBusinessQuery().isChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+
+    return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition getMdAttributeRatio(com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    return this.getBusinessQuery().isChildIn(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio(com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    return this.getBusinessQuery().isChildIn_SUBSELECT(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeRatioQuery));
+
+    return this.getBusinessQuery().isChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeRatioQuery));
+
+    return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    attributeRatioQuery.AND(attributeRatioQuery.hasParent(mdAttributeRatioQuery));
+    return this.getBusinessQuery().isChildIn(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    attributeRatioQuery.AND(attributeRatioQuery.hasParent(mdAttributeRatioQuery));
+    return this.getBusinessQuery().isChildIn_SUBSELECT(attributeRatioQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+
+    return this.getBusinessQuery().isNotChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    return this.getBusinessQuery().isNotChildIn(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeRatioQuery));
+
+    return this.getBusinessQuery().isNotChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeRatioQuery));
+
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    attributeRatioQuery.AND(attributeRatioQuery.hasParent(mdAttributeRatioQuery));
+    return this.getBusinessQuery().isNotChildIn(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    attributeRatioQuery.AND(attributeRatioQuery.hasParent(mdAttributeRatioQuery));
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(attributeRatioQuery);
+  }
+
+
 /**
  * Interface that masks all type unsafe query methods and defines all type safe methods.
  * This type is used when a join is performed on this class as a reference.
@@ -184,6 +300,30 @@ public  class RatioQuery extends com.runwaysdk.system.RatioElementQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.Ratio ratio);
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.Ratio ratio);
+
+
+  public com.runwaysdk.query.Condition getMdAttributeRatio();
+  public com.runwaysdk.query.Condition getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery);
+
+  public com.runwaysdk.query.Condition getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio();
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery);
+
+
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio();
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery);
+
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio();
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery);
 
   }
 
@@ -266,6 +406,122 @@ public  class RatioQuery extends com.runwaysdk.system.RatioElementQuery
     return (com.runwaysdk.system.RatioElementQuery.RatioElementQueryReferenceIF)this.get(com.runwaysdk.system.Ratio.RIGHTOPERAND,  alias, displayLabel);
 
   }
+
+  public com.runwaysdk.query.Condition getMdAttributeRatio()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+
+    return this.isChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+
+    return this.isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition getMdAttributeRatio(com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    return this.isChildIn(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio(com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    return this.isChildIn_SUBSELECT(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeRatioQuery));
+
+    return this.isChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeRatioQuery));
+
+    return this.isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    attributeRatioQuery.AND(attributeRatioQuery.hasParent(mdAttributeRatioQuery));
+    return this.isChildIn(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    attributeRatioQuery.AND(attributeRatioQuery.hasParent(mdAttributeRatioQuery));
+    return this.isChildIn_SUBSELECT(attributeRatioQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+
+    return this.isNotChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+
+    return this.isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    return this.isNotChildIn(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    return this.isNotChildIn_SUBSELECT(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeRatioQuery));
+
+    return this.isNotChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeRatioQuery));
+
+    return this.isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    attributeRatioQuery.AND(attributeRatioQuery.hasParent(mdAttributeRatioQuery));
+    return this.isNotChildIn(attributeRatioQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_getMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatioQuery mdAttributeRatioQuery, com.runwaysdk.system.metadata.AttributeRatioQuery attributeRatioQuery)
+  {
+    attributeRatioQuery.AND(attributeRatioQuery.hasParent(mdAttributeRatioQuery));
+    return this.isNotChildIn_SUBSELECT(attributeRatioQuery);
+  }
+
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();

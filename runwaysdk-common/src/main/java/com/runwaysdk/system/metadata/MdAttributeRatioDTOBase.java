@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 380976279)
+@com.runwaysdk.business.ClassSignature(hash = -1357308165)
 public abstract class MdAttributeRatioDTOBase extends com.runwaysdk.system.metadata.MdAttributeConcreteDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeRatio";
-  private static final long serialVersionUID = 380976279;
+  private static final long serialVersionUID = -1357308165;
   
   protected MdAttributeRatioDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -75,6 +75,60 @@ public abstract class MdAttributeRatioDTOBase extends com.runwaysdk.system.metad
   public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getRatioMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(RATIO).getAttributeMdDTO();
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.RatioDTO> getAllGetReferencedRatio()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.RatioDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.AttributeRatioDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.RatioDTO> getAllGetReferencedRatio(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.RatioDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.AttributeRatioDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.metadata.AttributeRatioDTO> getAllGetReferencedRatioRelationships()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.metadata.AttributeRatioDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.AttributeRatioDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.metadata.AttributeRatioDTO> getAllGetReferencedRatioRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.metadata.AttributeRatioDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.AttributeRatioDTO.CLASS);
+  }
+  
+  public com.runwaysdk.system.metadata.AttributeRatioDTO addGetReferencedRatio(com.runwaysdk.system.RatioDTO child)
+  {
+    return (com.runwaysdk.system.metadata.AttributeRatioDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.AttributeRatioDTO.CLASS);
+  }
+  
+  public static com.runwaysdk.system.metadata.AttributeRatioDTO addGetReferencedRatio(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.RatioDTO child)
+  {
+    return (com.runwaysdk.system.metadata.AttributeRatioDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.AttributeRatioDTO.CLASS);
+  }
+  
+  public void removeGetReferencedRatio(com.runwaysdk.system.metadata.AttributeRatioDTO relationship)
+  {
+    getRequest().deleteChild(relationship.getId());
+  }
+  
+  public static void removeGetReferencedRatio(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.AttributeRatioDTO relationship)
+  {
+    clientRequestIF.deleteChild(relationship.getId());
+  }
+  
+  public void removeAllGetReferencedRatio()
+  {
+    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.AttributeRatioDTO.CLASS);
+  }
+  
+  public static void removeAllGetReferencedRatio(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  {
+    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.AttributeRatioDTO.CLASS);
   }
   
   public static com.runwaysdk.system.metadata.MdAttributeRatioDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)

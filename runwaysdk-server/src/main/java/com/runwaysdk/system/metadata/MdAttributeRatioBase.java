@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -991585513)
+@com.runwaysdk.business.ClassSignature(hash = 1406860667)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -12,7 +12,7 @@ public abstract class MdAttributeRatioBase extends com.runwaysdk.system.metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeRatio";
   public static java.lang.String RATIO = "ratio";
-  private static final long serialVersionUID = -991585513;
+  private static final long serialVersionUID = 1406860667;
   
   public MdAttributeRatioBase()
   {
@@ -62,6 +62,49 @@ public abstract class MdAttributeRatioBase extends com.runwaysdk.system.metadata
   protected String getDeclaredType()
   {
     return CLASS;
+  }
+  
+  public com.runwaysdk.system.metadata.AttributeRatio addgetReferencedRatio(com.runwaysdk.system.Ratio ratio)
+  {
+    return (com.runwaysdk.system.metadata.AttributeRatio) addChild(ratio, com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+  }
+  
+  public void removegetReferencedRatio(com.runwaysdk.system.Ratio ratio)
+  {
+    removeAllChildren(ratio, com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.Ratio> getAllgetReferencedRatio()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.Ratio>) getChildren(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.AttributeRatio> getAllgetReferencedRatioRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.AttributeRatio>) getChildRelationships(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.system.metadata.AttributeRatio getgetReferencedRatioRel(com.runwaysdk.system.Ratio ratio)
+  {
+    com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.AttributeRatio> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.AttributeRatio>) getRelationshipsWithChild(ratio, com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+    try
+    {
+      if (iterator.hasNext())
+      {
+        return iterator.next();
+      }
+      else
+      {
+        return null;
+      }
+    }
+    finally
+    {
+      iterator.close();
+    }
   }
   
   public static MdAttributeRatio get(String id)

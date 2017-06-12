@@ -20,4 +20,5 @@ public interface RatioElementDAOIF extends BusinessDAOIF
    * @return the java type that is the return type of the ration equation.
    */
   public String javaType();
+
 }

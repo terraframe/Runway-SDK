@@ -1,6 +1,6 @@
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -300466513)
+@com.runwaysdk.business.ClassSignature(hash = -636188761)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -10,7 +10,7 @@ package com.runwaysdk.system;
  */
 public class RatioQueryDTO extends com.runwaysdk.system.RatioElementQueryDTO
 {
-private static final long serialVersionUID = -300466513;
+private static final long serialVersionUID = -636188761;
 
   protected RatioQueryDTO(String type)
   {

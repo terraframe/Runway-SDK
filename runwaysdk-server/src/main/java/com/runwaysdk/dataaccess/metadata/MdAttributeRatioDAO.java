@@ -72,11 +72,11 @@ public class MdAttributeRatioDAO extends MdAttributeConcreteDAO implements MdAtt
    * values, as defined in the attribute metadata. Otherwise, the attributes
    * will be blank.
    * 
-   * @return MdAttributeReference.
+   * @return {@link MdAttributeRatioDAO}.
    */
-  public static MdAttributeReferenceDAO newInstance()
+  public static MdAttributeRatioDAO newInstance()
   {
-    return (MdAttributeReferenceDAO) BusinessDAO.newInstance(MdAttributeReferenceInfo.CLASS);
+    return (MdAttributeRatioDAO) BusinessDAO.newInstance(MdAttributeRatioInfo.CLASS);
   }
   
   /**

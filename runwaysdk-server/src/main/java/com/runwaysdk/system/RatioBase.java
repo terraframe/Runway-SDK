@@ -1,6 +1,6 @@
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 433190118)
+@com.runwaysdk.business.ClassSignature(hash = 1329157022)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -14,7 +14,7 @@ public abstract class RatioBase extends com.runwaysdk.system.RatioElement
   public static java.lang.String LEFTOPERAND = "leftOperand";
   public static java.lang.String OPERATOR = "operator";
   public static java.lang.String RIGHTOPERAND = "rightOperand";
-  private static final long serialVersionUID = 433190118;
+  private static final long serialVersionUID = 1329157022;
   
   public RatioBase()
   {
@@ -142,6 +142,49 @@ public abstract class RatioBase extends com.runwaysdk.system.RatioElement
   protected String getDeclaredType()
   {
     return CLASS;
+  }
+  
+  public com.runwaysdk.system.metadata.AttributeRatio addgetMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatio mdAttributeRatio)
+  {
+    return (com.runwaysdk.system.metadata.AttributeRatio) addParent(mdAttributeRatio, com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+  }
+  
+  public void removegetMdAttributeRatio(com.runwaysdk.system.metadata.MdAttributeRatio mdAttributeRatio)
+  {
+    removeAllParents(mdAttributeRatio, com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeRatio> getAllgetMdAttributeRatio()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeRatio>) getParents(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.AttributeRatio> getAllgetMdAttributeRatioRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.AttributeRatio>) getParentRelationships(com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.system.metadata.AttributeRatio getgetMdAttributeRatioRel(com.runwaysdk.system.metadata.MdAttributeRatio mdAttributeRatio)
+  {
+    com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.AttributeRatio> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.AttributeRatio>) getRelationshipsWithParent(mdAttributeRatio, com.runwaysdk.system.metadata.AttributeRatio.CLASS);
+    try
+    {
+      if (iterator.hasNext())
+      {
+        return iterator.next();
+      }
+      else
+      {
+        return null;
+      }
+    }
+    finally
+    {
+      iterator.close();
+    }
   }
   
   public static Ratio get(String id)
