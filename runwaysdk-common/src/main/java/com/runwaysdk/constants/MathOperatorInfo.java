@@ -20,23 +20,23 @@ package com.runwaysdk.constants;
 
 public interface MathOperatorInfo extends EnumerationMasterInfo
 {
-  public static final String CLASS_NAME                  = "MathOperator";
+  public static final String CLASS_NAME                      = "MathOperator";
   
-  public static final String CLASS                       = Constants.SYSTEM_PACKAGE+"."+CLASS_NAME;
+  public static final String CLASS                           = Constants.METADATA_PACKAGE+"."+CLASS_NAME;
   
-  public static final String TABLE                       = "math_operators";
+  public static final String TABLE                           = "math_operators";
 
-  public static final String ID_VALUE                    = "iay1lnfv06jjggrwvp9eyiuh8nx9zugs00000000000000000000000000000001";
+  public static final String ID_VALUE                        = "iqumzzbqjmhyxor5e94ff0tpvop4msec00000000000000000000000000000001";
   
-  public static final String OPERATOR_SYMBOL             = "operatorSymbol";
+  public static final String OPERATOR_SYMBOL                 = "operatorSymbol";
   
   // The name of the enumeration used by ratios
-  public static final String RATIO_ENUM_CLASS_NAME       = "RatioOperator";
+  public static final String INDICATOR_ENUM_CLASS_NAME       = "IndicatorOperator";
   
-  public static final String RATIO_ENUM_CLASS            = Constants.SYSTEM_PACKAGE+"."+RATIO_ENUM_CLASS_NAME;
+  public static final String INDICATOR_ENUM_CLASS            = Constants.METADATA_PACKAGE+"."+INDICATOR_ENUM_CLASS_NAME;
   
-  public static final String RATIO_ENUM_CLASS_ID_VALUE   = "i1t3suqzdtm4k2jf5r616jj7puf95nmt00000000000000000000000000000196";
+  public static final String INDICATOR_ENUM_CLASS_ID_VALUE   = "i1p4wlz5q43qzcm2962gevo9gt62d4nt00000000000000000000000000000196";
   
-  public static final String DIVISION_OPERATION_ID       = "im3czccrvzgwf4eflchb7gd8c2d73bpriay1lnfv06jjggrwvp9eyiuh8nx9zugs";
+  public static final String DIVISION_OPERATION_ID           = "ic3pv3kklqp6habo6zbtt3pbwsdrsnkqiqumzzbqjmhyxor5e94ff0tpvop4msec";
   
 }

@@ -7,26 +7,25 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import com.runwaysdk.constants.DatabaseProperties;
+import com.runwaysdk.constants.IndicatorCompositeInfo;
+import com.runwaysdk.constants.IndicatorPrimitiveInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
 import com.runwaysdk.constants.MdAttributeDoubleInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
+import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
-import com.runwaysdk.constants.MdAttributeRatioInfo;
-import com.runwaysdk.constants.RatioInfo;
-import com.runwaysdk.constants.RatioPrimitiveInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeIndicatorDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeRatioDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.system.RatioOperator;
 
 public class EntityAttributeRatioTest extends TestCase
 {
@@ -216,33 +215,33 @@ public class EntityAttributeRatioTest extends TestCase
     mdAttributeDecimal2.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
     mdAttributeDecimal2.apply();
     
-    RatioPrimitiveDAO ratioPrimitiveInteger1 = RatioPrimitiveDAO.newInstance();
-    ratioPrimitiveInteger1.setValue(RatioPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger1.getId());
+    IndicatorPrimitiveDAO ratioPrimitiveInteger1 = IndicatorPrimitiveDAO.newInstance();
+    ratioPrimitiveInteger1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger1.getId());
     ratioPrimitiveInteger1.apply();
     
-    RatioPrimitiveDAO ratioPrimitiveInteger2 = RatioPrimitiveDAO.newInstance();
-    ratioPrimitiveInteger2.setValue(RatioPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger2.getId());
+    IndicatorPrimitiveDAO ratioPrimitiveInteger2 = IndicatorPrimitiveDAO.newInstance();
+    ratioPrimitiveInteger2.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger2.getId());
     ratioPrimitiveInteger2.apply();
-    
-    RatioDAO ratioInteger = RatioDAO.newInstance();
-    ratioInteger.setValue(RatioInfo.LEFT_OPERAND, ratioPrimitiveInteger1.getId());
-    ratioInteger.setValue(RatioInfo.OPERATOR, RatioOperator.DIV.getId());
-    ratioInteger.setValue(RatioInfo.RIGHT_OPERAND, ratioPrimitiveInteger2.getId());
-    ratioInteger.apply();
-    
-    MdAttributeRatioDAO mdAttributeRatio1 = MdAttributeRatioDAO.newInstance();
-    mdAttributeRatio1.setValue(MdAttributeRatioInfo.NAME, TEST_INTEGER_RATIO);
-    mdAttributeRatio1.setStructValue(MdAttributeRatioInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Integer Ratio");
-    mdAttributeRatio1.setValue(MdAttributeRatioInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttributeRatio1.setValue(MdAttributeRatioInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeRatio1.setValue(MdAttributeRatioInfo.RATIO, ratioInteger.getId());
-    mdAttributeRatio1.setValue(MdAttributeRatioInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-    mdAttributeRatio1.apply();
-    
-    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    bus1.setValue(TEST_INTEGER_1, "4");
-    bus1.setValue(TEST_INTEGER_2, "2");
-    bus1.apply();
+//    
+//    IndicatorDAO ratioInteger = IndicatorDAO.newInstance();
+//    ratioInteger.setValue(IndicatorInfo.LEFT_OPERAND, ratioPrimitiveInteger1.getId());
+//    ratioInteger.setValue(IndicatorInfo.OPERATOR, IndicatorOperator.DIV.getId());
+//    ratioInteger.setValue(IndicatorInfo.RIGHT_OPERAND, ratioPrimitiveInteger2.getId());
+//    ratioInteger.apply();
+//    
+//    MdAttributeIndicatorDAO mdAttributeRatio1 = MdAttributeIndicatorDAO.newInstance();
+//    mdAttributeRatio1.setValue(MdAttributeIndicatorInfo.NAME, TEST_INTEGER_RATIO);
+//    mdAttributeRatio1.setStructValue(MdAttributeIndicatorInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Integer Ratio");
+//    mdAttributeRatio1.setValue(MdAttributeIndicatorInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+//    mdAttributeRatio1.setValue(MdAttributeIndicatorInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+//    mdAttributeRatio1.setValue(MdAttributeIndicatorInfo.INDICATOR, ratioInteger.getId());
+//    mdAttributeRatio1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+//    mdAttributeRatio1.apply();
+//    
+//    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+//    bus1.setValue(TEST_INTEGER_1, "4");
+//    bus1.setValue(TEST_INTEGER_2, "2");
+//    bus1.apply();
     
     
   }

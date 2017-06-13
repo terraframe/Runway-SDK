@@ -2797,18 +2797,18 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   }
   
   /**
-   * Gets the localized {@link InvalidRatioDefinition} message, which is
-   * thrown when an invalid ratio attribute is defined.
+   * Gets the localized {@link InvalidIndicatorDefinition} message, which is
+   * thrown when an invalid indicator attribute is defined.
    * 
    * @param locale
    *          the desired locale
-   * @param _localizedRatioDisplayLabel
+   * @param _localizedIndicatorDisplayLabel
    *          The localized error message
    * @return
    */
-  public static String invalidRatioDefinition(Locale locale, String _localizedRatioDisplayLabel)
+  public static String invalidIndicatorDefinition(Locale locale, String _localizedIndicatorDisplayLabel)
   {
-    return getMessage(locale, "InvalidRatioDefinition", _localizedRatioDisplayLabel);
+    return getMessage(locale, "InvalidIndicatorDefinition", _localizedIndicatorDisplayLabel);
   }
 
 }

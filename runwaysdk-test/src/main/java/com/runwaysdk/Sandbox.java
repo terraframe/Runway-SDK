@@ -24,21 +24,24 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.runwaysdk.constants.BusinessInfo;
+import com.runwaysdk.constants.AggregationFunctionInfo;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.IndicatorElementInfo;
+import com.runwaysdk.constants.IndicatorCompositeInfo;
+import com.runwaysdk.constants.IndicatorPrimitiveInfo;
 import com.runwaysdk.constants.JobOperationInfo;
 import com.runwaysdk.constants.MathOperatorInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
+import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributePrimitiveInfo;
-import com.runwaysdk.constants.MdAttributeRatioInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
@@ -51,18 +54,15 @@ import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MdWebAttributeInfo;
-import com.runwaysdk.constants.RatioElementInfo;
-import com.runwaysdk.constants.RatioInfo;
-import com.runwaysdk.constants.RatioPrimitiveInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.SingleActorInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.dataaccess.IndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
-import com.runwaysdk.dataaccess.RatioDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -126,40 +126,8 @@ public class Sandbox implements Job
     
 //    testMdTable();
     
-    addRatioAttributes3();
+    addRatioAttributes1();
   }
-  
-  @Transaction
-  public static void addRatioAttributes3()
-  {
-    MdRelationshipDAOIF metadataMdRelationship = MdRelationshipDAO.getMdRelationshipDAO(RelationshipTypes.METADATA_RELATIONSHIP.getType());
-    
-    MdBusinessDAOIF mdAttrRatioMdBusiness = MdBusinessDAO.getMdBusinessDAO(MdAttributeRatioInfo.CLASS);
-    
-    MdBusinessDAOIF ratioMdBusiness = MdBusinessDAO.getMdBusinessDAO(RatioInfo.CLASS);
-    
-    MdTreeDAO mdTree = MdTreeDAO.newInstance();
-    mdTree.setValue(MdTreeInfo.NAME, "AttributeRatio");
-    mdTree.setValue(MdTreeInfo.PACKAGE, Constants.METADATA_PACKAGE);
-    mdTree.setValue(MdTreeInfo.COMPOSITION, MdAttributeBooleanInfo.TRUE);
-    mdTree.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Ratio");
-    mdTree.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    mdTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    mdTree.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdAttrRatioMdBusiness.getId());
-    mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
-    mdTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeRatioInfo.CLASS);
-    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, ratioMdBusiness.getId());
-    mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
-    mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, RatioInfo.CLASS);
-    mdTree.setValue(MdTreeInfo.PARENT_METHOD, "getMdAttributeRatio");
-    mdTree.setValue(MdTreeInfo.CHILD_METHOD, "getReferencedRatio");
-    mdTree.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, metadataMdRelationship.getId());
-    mdTree.setGenerateMdController(false);
-    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
-    mdTree.apply();
-  }
-  
   
   @Transaction
   public static void addRatioAttributes2()
@@ -178,15 +146,75 @@ public class Sandbox implements Job
   @Transaction
   public static void addRatioAttributes1()
   {
-    // Add the math operations Enumeration Type
+    // Add the math operators Enumeration Type
     MdBusinessDAOIF enumMasterMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS);
+    
+    MdBusinessDAO aggFuncEnumMdBus = MdBusinessDAO.newInstance();
+    aggFuncEnumMdBus.setValue(MdBusinessInfo.NAME, AggregationFunctionInfo.CLASS_NAME);
+    aggFuncEnumMdBus.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    aggFuncEnumMdBus.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    aggFuncEnumMdBus.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Aggregation Function Master");
+    aggFuncEnumMdBus.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Aggregation Function Enumeration Master List");
+    aggFuncEnumMdBus.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    aggFuncEnumMdBus.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    aggFuncEnumMdBus.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
+    aggFuncEnumMdBus.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    aggFuncEnumMdBus.setGenerateMdController(false);
+    aggFuncEnumMdBus.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    aggFuncEnumMdBus.apply();
+    
+    System.out.println("\n\n"+AggregationFunctionInfo.CLASS_NAME+": "+aggFuncEnumMdBus.getId()+"\n");
 
+    BusinessDAO sumFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
+    sumFunction.setValue(EnumerationMasterInfo.NAME, "SUM");
+    sumFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sum");
+    sumFunction.apply();
+    
+    BusinessDAO avgFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
+    avgFunction.setValue(EnumerationMasterInfo.NAME, "AVG");
+    avgFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Average");
+    avgFunction.apply();
+    
+    BusinessDAO countFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
+    countFunction.setValue(EnumerationMasterInfo.NAME, "COUNT");
+    countFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Count");
+    countFunction.apply();
+
+    BusinessDAO minFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
+    minFunction.setValue(EnumerationMasterInfo.NAME, "MIN");
+    minFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Minimum");
+    minFunction.apply();
+    
+    BusinessDAO maxFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
+    maxFunction.setValue(EnumerationMasterInfo.NAME, "MAX");
+    maxFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Maximum");
+    maxFunction.apply();
+    
+    BusinessDAO sdevFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
+    sdevFunction.setValue(EnumerationMasterInfo.NAME, "STDEV");
+    sdevFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Standard Deviation");
+    sdevFunction.apply();
+    
+    MdEnumerationDAO funcMdEnumeration = MdEnumerationDAO.newInstance();
+    funcMdEnumeration.setValue(MdEnumerationInfo.NAME, AggregationFunctionInfo.INDICATOR_FUNCTION_ENUM_CLASS_NAME);
+    funcMdEnumeration.setValue(MdEnumerationInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    funcMdEnumeration.setValue(MdEnumerationInfo.TABLE_NAME,"indicator_aggregate_function");
+    funcMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator Function");
+    funcMdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator Function Enumeration");
+    funcMdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    funcMdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
+    funcMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, aggFuncEnumMdBus.getId());
+    funcMdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    funcMdEnumeration.apply();
+    
+    System.out.println("\n\n"+AggregationFunctionInfo.INDICATOR_FUNCTION_ENUM_CLASS_NAME+": "+funcMdEnumeration.getId()+"\n");
+    
     MdBusinessDAO mathOpEnumMdBusiness = MdBusinessDAO.newInstance();
     mathOpEnumMdBusiness.setValue(MdBusinessInfo.NAME, MathOperatorInfo.CLASS_NAME);
-    mathOpEnumMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.SYSTEM_PACKAGE);
+    mathOpEnumMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     mathOpEnumMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    mathOpEnumMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operations");
-    mathOpEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Math Operations Enumeration Master List");
+    mathOpEnumMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operator Master");
+    mathOpEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Math Operators Enumeration Master List");
     mathOpEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mathOpEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mathOpEnumMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
@@ -198,84 +226,83 @@ public class Sandbox implements Job
     System.out.println("\n\n"+MathOperatorInfo.CLASS_NAME+": "+mathOpEnumMdBusiness.getId()+"\n");
     
     // Define attributes on the enumeration
-    MdAttributeCharacterDAO  mdAttrChar = MdAttributeCharacterDAO.newInstance();
-    mdAttrChar.setValue(MdAttributeCharacterInfo.NAME, MathOperatorInfo.OPERATOR_SYMBOL);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.SIZE, "1");
-    mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operation");
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
-    mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
-    mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mathOpEnumMdBusiness.getId());
-    mdAttrChar.apply();
+    MdAttributeCharacterDAO mdAttrCharOpSymbol = MdAttributeCharacterDAO.newInstance();
+    mdAttrCharOpSymbol.setValue(MdAttributeCharacterInfo.NAME, MathOperatorInfo.OPERATOR_SYMBOL);
+    mdAttrCharOpSymbol.setValue(MdAttributeCharacterInfo.SIZE, "1");
+    mdAttrCharOpSymbol.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operator");
+    mdAttrCharOpSymbol.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
+    mdAttrCharOpSymbol.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+    mdAttrCharOpSymbol.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrCharOpSymbol.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    mdAttrCharOpSymbol.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mathOpEnumMdBusiness.getId());
+    mdAttrCharOpSymbol.apply();
     
-    BusinessDAO businessDAO = BusinessDAO.newInstance(mathOpEnumMdBusiness.definesType());
-    businessDAO.setValue(MathOperatorInfo.OPERATOR_SYMBOL, "/");
-    businessDAO.setValue(EnumerationMasterInfo.NAME, "DIV");
-    businessDAO.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "California");
-    businessDAO.apply();
+    BusinessDAO divOp = BusinessDAO.newInstance(mathOpEnumMdBusiness.definesType());
+    divOp.setValue(MathOperatorInfo.OPERATOR_SYMBOL, "/");
+    divOp.setValue(EnumerationMasterInfo.NAME, "DIV");
+    divOp.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "California");
+    divOp.apply();
     
-    System.out.println("\n\n"+businessDAO.getId()+"\n");
-      
+    System.out.println("\n\nDIV Enum Item Id: "+divOp.getId()+"\n");
+  
     
+    MdEnumerationDAO opsMdEnumeration = MdEnumerationDAO.newInstance();
+    opsMdEnumeration.setValue(MdEnumerationInfo.NAME, MathOperatorInfo.INDICATOR_ENUM_CLASS_NAME);
+    opsMdEnumeration.setValue(MdEnumerationInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    opsMdEnumeration.setValue(MdEnumerationInfo.TABLE_NAME,"indicator_operator");
+    opsMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator Operator");
+    opsMdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator Operator Enumeration");
+    opsMdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    opsMdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
+    opsMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mathOpEnumMdBusiness.getId());
+    opsMdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    opsMdEnumeration.apply();
     
-    MdEnumerationDAO mdEnumeration = MdEnumerationDAO.newInstance();
-    mdEnumeration.setValue(MdEnumerationInfo.NAME, MathOperatorInfo.RATIO_ENUM_CLASS_NAME);
-    mdEnumeration.setValue(MdEnumerationInfo.PACKAGE, Constants.SYSTEM_PACKAGE);
-    mdEnumeration.setValue(MdEnumerationInfo.TABLE_NAME,"ratio_operations");
-    mdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ratio Operator");
-    mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ratio OperatorEnumeration");
-    mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mathOpEnumMdBusiness.getId());
-    mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.apply();
-    
-    System.out.println("\n\n"+MathOperatorInfo.RATIO_ENUM_CLASS_NAME+": "+mdEnumeration.getId()+"\n");
+    System.out.println("\n\n"+MathOperatorInfo.INDICATOR_ENUM_CLASS_NAME+": "+opsMdEnumeration.getId()+"\n");
     
 
     
-    // Define Abstract Ratio Element Type
-    MdBusinessDAO ratioElementMdBusiness = MdBusinessDAO.newInstance();
-    ratioElementMdBusiness.setValue(MdBusinessInfo.NAME, RatioElementInfo.CLASS_NAME);
-    ratioElementMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.SYSTEM_PACKAGE);
-    ratioElementMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    ratioElementMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ratio Element");
-    ratioElementMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "An abstract class representing components that make up a ratio definition. This is the abstract class in the composite pattern.");
-    ratioElementMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    ratioElementMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
-    ratioElementMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
-    ratioElementMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-    ratioElementMdBusiness.setGenerateMdController(false);
-    ratioElementMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
-    ratioElementMdBusiness.apply();
+    // Define Abstract Indicator Element Type
+    MdBusinessDAO indicatorElementMdBusiness = MdBusinessDAO.newInstance();
+    indicatorElementMdBusiness.setValue(MdBusinessInfo.NAME, IndicatorElementInfo.CLASS_NAME);
+    indicatorElementMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    indicatorElementMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    indicatorElementMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator Element");
+    indicatorElementMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "An abstract class representing components that make up an indicator definition. This is the abstract class in the composite pattern.");
+    indicatorElementMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    indicatorElementMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
+    indicatorElementMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
+    indicatorElementMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+    indicatorElementMdBusiness.setGenerateMdController(false);
+    indicatorElementMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    indicatorElementMdBusiness.apply();
     
-    System.out.println("\n\n"+RatioElementInfo.CLASS_NAME+": "+ratioElementMdBusiness.getId()+"\n");
+    System.out.println("\n\n"+IndicatorElementInfo.CLASS_NAME+": "+indicatorElementMdBusiness.getId()+"\n");
     
     
-    MdBusinessDAO ratioPrimitiveMdBusiness = MdBusinessDAO.newInstance();
-    ratioPrimitiveMdBusiness.setValue(MdBusinessInfo.NAME, RatioPrimitiveInfo.CLASS_NAME);
-    ratioPrimitiveMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.SYSTEM_PACKAGE);
-    ratioPrimitiveMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    ratioPrimitiveMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ratio Primitive");
-    ratioPrimitiveMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The element of a ratio that represents a primitive value. This is the concrete and non-aggregate class in the composite pattern.");
-    ratioPrimitiveMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    ratioPrimitiveMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    ratioPrimitiveMdBusiness.setGenerateMdController(false);
-    ratioPrimitiveMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
-    ratioPrimitiveMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, ratioElementMdBusiness.getId());
-    ratioPrimitiveMdBusiness.apply();
+    MdBusinessDAO indicatorPrimitiveMdBusiness = MdBusinessDAO.newInstance();
+    indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.NAME, IndicatorPrimitiveInfo.CLASS_NAME);
+    indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    indicatorPrimitiveMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator Primitive");
+    indicatorPrimitiveMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The element of an indicator that represents a primitive value. This is the concrete and non-aggregate class in the composite pattern.");
+    indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    indicatorPrimitiveMdBusiness.setGenerateMdController(false);
+    indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, indicatorElementMdBusiness.getId());
+    indicatorPrimitiveMdBusiness.apply();
     
-    System.out.println("\n\n"+RatioPrimitiveInfo.CLASS_NAME+": "+ratioPrimitiveMdBusiness.getId()+"\n");
+    System.out.println("\n\n"+IndicatorPrimitiveInfo.CLASS_NAME+": "+indicatorPrimitiveMdBusiness.getId()+"\n");
     
     
     MdBusinessDAOIF mdAttrPrimitiveMdBus = MdBusinessDAO.getMdBusinessDAO(MdAttributePrimitiveInfo.CLASS);
     
     MdAttributeReferenceDAO mdAttrPrimitive = MdAttributeReferenceDAO.newInstance();
-    mdAttrPrimitive.setValue(MdAttributeReferenceInfo.NAME, RatioPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE);
+    mdAttrPrimitive.setValue(MdAttributeReferenceInfo.NAME, IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE);
     mdAttrPrimitive.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdAttributePrimitive");
-    mdAttrPrimitive.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference to a primitive attribute metadata that defines the attribute that is used in this ratio element.");
-    mdAttrPrimitive.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, ratioPrimitiveMdBusiness.getId());
+    mdAttrPrimitive.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference to a primitive attribute metadata that defines the attribute that is used in this indicator element.");
+    mdAttrPrimitive.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, indicatorPrimitiveMdBusiness.getId());
     mdAttrPrimitive.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrPrimitive.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
     mdAttrPrimitive.setValue(MdAttributeReferenceInfo.SYSTEM, MdAttributeBooleanInfo.FALSE);
@@ -287,59 +314,40 @@ public class Sandbox implements Job
     mdAttrPrimitive.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdAttrPrimitiveMdBus.getId());
     mdAttrPrimitive.apply();
     
-//    MdAttributeCharacterDAO  mdAttrColName = MdAttributeCharacterDAO.newInstance();
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.NAME, RatioPrimitiveInfo.COLUMN_NAME);
-//    mdAttrColName.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Column Name");
-//    mdAttrColName.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Name of the column on the defining type that stores the reference to the object that has the attribute value used in the ratio.");
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.SIZE, Integer.toString(Database.MAX_DB_IDENTIFIER_SIZE));
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, ratioPrimitiveMdBusiness.getId());
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.SYSTEM, MdAttributeBooleanInfo.FALSE);
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.TRUE);
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-//    mdAttrColName.setValue(MdAttributeCharacterInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-//    mdAttrColName.apply();
-//    
-//    MdAttributeIntegerDAO  mdAttrSeq = MdAttributeIntegerDAO.newInstance();
-//    mdAttrSeq.setValue(MdAttributeIntegerInfo.NAME, RatioPrimitiveInfo.SEQUENCE);
-//    mdAttrSeq.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Sequence");
-//    mdAttrSeq.setStructValue(MdAttributeIntegerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sequence number of this ratio primitive within a ratio object.");
-//    mdAttrSeq.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, ratioPrimitiveMdBusiness.getId());
-//    mdAttrSeq.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-//    mdAttrSeq.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-//    mdAttrSeq.setValue(MdAttributeIntegerInfo.SYSTEM, MdAttributeBooleanInfo.FALSE);
-//    mdAttrSeq.setValue(MdAttributeIntegerInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-//    mdAttrSeq.setValue(MdAttributeIntegerInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
-//    mdAttrSeq.setValue(MdAttributeIntegerInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.TRUE);
-//    mdAttrSeq.setValue(MdAttributeIntegerInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-//    mdAttrSeq.setValue(MdAttributeIntegerInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-//    mdAttrSeq.apply();  
+    MdAttributeEnumerationDAO mdAttrFunction = MdAttributeEnumerationDAO.newInstance();
+    mdAttrFunction.setValue(MdAttributeEnumerationInfo.NAME, IndicatorPrimitiveInfo.INDICATOR_FUNCTION);
+    mdAttrFunction.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Aggregate Function");
+    mdAttrFunction.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The aggregate function that is applied to a primitive attribute type in the indicator equation");
+    mdAttrFunction.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+    mdAttrFunction.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    mdAttrFunction.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, indicatorPrimitiveMdBusiness.getId());
+    mdAttrFunction.setValue(MdAttributeReferenceInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.TRUE);
+    mdAttrFunction.setValue(MdAttributeReferenceInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+    mdAttrFunction.setValue(MdAttributeReferenceInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+    mdAttrFunction.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, funcMdEnumeration.getId());
+    mdAttrFunction.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
+    mdAttrFunction.apply();
     
+    MdBusinessDAO indicatorMdBusiness = MdBusinessDAO.newInstance();
+    indicatorMdBusiness.setValue(MdBusinessInfo.NAME, IndicatorCompositeInfo.CLASS_NAME);
+    indicatorMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    indicatorMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    indicatorMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator");
+    indicatorMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The indicator class with a left operand, operator, and right operand. This is the concrete and aggregate class in the composite pattern.");
+    indicatorMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    indicatorMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    indicatorMdBusiness.setGenerateMdController(false);
+    indicatorMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    indicatorMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, indicatorElementMdBusiness.getId());
+    indicatorMdBusiness.apply();
     
-    
-    MdBusinessDAO ratioMdBusiness = MdBusinessDAO.newInstance();
-    ratioMdBusiness.setValue(MdBusinessInfo.NAME, RatioInfo.CLASS_NAME);
-    ratioMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.SYSTEM_PACKAGE);
-    ratioMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    ratioMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ratio");
-    ratioMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The ratio class with a left operand, operator, and right operand. This is the concrete and aggregate class in the composite pattern.");
-    ratioMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    ratioMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    ratioMdBusiness.setGenerateMdController(false);
-    ratioMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
-    ratioMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, ratioElementMdBusiness.getId());
-    ratioMdBusiness.apply();
-    
-    System.out.println("\n\n"+RatioInfo.CLASS_NAME+": "+ratioMdBusiness.getId()+"\n");
+    System.out.println("\n\n"+IndicatorCompositeInfo.CLASS_NAME+": "+indicatorMdBusiness.getId()+"\n");
     
     MdAttributeReferenceDAO mdAttrLeftOperand = MdAttributeReferenceDAO.newInstance();
-    mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.NAME, RatioInfo.LEFT_OPERAND);
+    mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.NAME, IndicatorCompositeInfo.LEFT_OPERAND);
     mdAttrLeftOperand.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Left Operand");
-    mdAttrLeftOperand.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The left operand in the ratio equation");
-    mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, ratioMdBusiness.getId());
+    mdAttrLeftOperand.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The left operand in the indicator equation");
+    mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, indicatorMdBusiness.getId());
     mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
     mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.SYSTEM, MdAttributeBooleanInfo.FALSE);
@@ -348,29 +356,29 @@ public class Sandbox implements Job
     mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.TRUE);
     mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
     mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-    mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, ratioElementMdBusiness.getId());
+    mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, indicatorElementMdBusiness.getId());
     mdAttrLeftOperand.apply();
     
     MdAttributeEnumerationDAO mdAttrOperand = MdAttributeEnumerationDAO.newInstance();
-    mdAttrOperand.setValue(MdAttributeEnumerationInfo.NAME, RatioInfo.OPERATOR);
-    mdAttrOperand.setValue(MdAttributeEnumerationInfo.COLUMN_NAME, RatioDAOIF.OPERATOR_COLUMN);
+    mdAttrOperand.setValue(MdAttributeEnumerationInfo.NAME, IndicatorCompositeInfo.OPERATOR);
+    mdAttrOperand.setValue(MdAttributeEnumerationInfo.COLUMN_NAME, IndicatorDAOIF.OPERATOR_COLUMN);
     mdAttrOperand.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operator");
-    mdAttrOperand.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The operator in the ratio equation");
+    mdAttrOperand.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The operator in the indicator equation");
     mdAttrOperand.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrOperand.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    mdAttrOperand.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, ratioMdBusiness.getId());
+    mdAttrOperand.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, indicatorMdBusiness.getId());
     mdAttrOperand.setValue(MdAttributeReferenceInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.TRUE);
     mdAttrOperand.setValue(MdAttributeReferenceInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
     mdAttrOperand.setValue(MdAttributeReferenceInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-    mdAttrOperand.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getId());
+    mdAttrOperand.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, opsMdEnumeration.getId());
     mdAttrOperand.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     mdAttrOperand.apply();
     
     MdAttributeReferenceDAO mdAttrRightOperand = MdAttributeReferenceDAO.newInstance();
-    mdAttrRightOperand.setValue(MdAttributeReferenceInfo.NAME, RatioInfo.RIGHT_OPERAND);
+    mdAttrRightOperand.setValue(MdAttributeReferenceInfo.NAME, IndicatorCompositeInfo.RIGHT_OPERAND);
     mdAttrRightOperand.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Right Operand");
-    mdAttrRightOperand.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The right operand in the ratio equation");
-    mdAttrRightOperand.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, ratioMdBusiness.getId());
+    mdAttrRightOperand.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The right operand in the indicator equation");
+    mdAttrRightOperand.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, indicatorMdBusiness.getId());
     mdAttrRightOperand.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrRightOperand.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
     mdAttrRightOperand.setValue(MdAttributeReferenceInfo.SYSTEM, MdAttributeBooleanInfo.FALSE);
@@ -379,43 +387,73 @@ public class Sandbox implements Job
     mdAttrRightOperand.setValue(MdAttributeReferenceInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.TRUE);
     mdAttrRightOperand.setValue(MdAttributeReferenceInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
     mdAttrRightOperand.setValue(MdAttributeReferenceInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-    mdAttrRightOperand.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, ratioElementMdBusiness.getId());
+    mdAttrRightOperand.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, indicatorElementMdBusiness.getId());
     mdAttrRightOperand.apply();
     
-    // Add the the ratio Attribute Type
+    // Add the the indicator Attribute Type
     MdBusinessDAOIF mdAttrConcreteMdBus = MdBusinessDAO.getMdBusinessDAO(MdAttributeConcreteInfo.CLASS);
     
-    MdBusinessDAO mdAttrRatioMdBus = MdBusinessDAO.newInstance();
-    mdAttrRatioMdBus.setValue(MdBusinessInfo.NAME, MdAttributeRatioInfo.CLASS_NAME);
-    mdAttrRatioMdBus.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
-    mdAttrRatioMdBus.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    mdAttrRatioMdBus.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdAttributeRatio");
-    mdAttrRatioMdBus.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ratio attribute metadata");
-    mdAttrRatioMdBus.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdAttrRatioMdBus.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdAttrRatioMdBus.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
-    mdAttrRatioMdBus.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttrConcreteMdBus.getId());
-    mdAttrRatioMdBus.setGenerateMdController(false);
-    mdAttrRatioMdBus.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
-    mdAttrRatioMdBus.apply();
+    MdBusinessDAO mdAttrIndicatorMdBus = MdBusinessDAO.newInstance();
+    mdAttrIndicatorMdBus.setValue(MdBusinessInfo.NAME, MdAttributeIndicatorInfo.CLASS_NAME);
+    mdAttrIndicatorMdBus.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    mdAttrIndicatorMdBus.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    mdAttrIndicatorMdBus.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdAttributeIndicator");
+    mdAttrIndicatorMdBus.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator attribute metadata");
+    mdAttrIndicatorMdBus.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdAttrIndicatorMdBus.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdAttrIndicatorMdBus.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
+    mdAttrIndicatorMdBus.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttrConcreteMdBus.getId());
+    mdAttrIndicatorMdBus.setGenerateMdController(false);
+    mdAttrIndicatorMdBus.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    mdAttrIndicatorMdBus.apply();
     
-    System.out.println("\n\n"+MdAttributeRatioInfo.CLASS_NAME+": "+mdAttrRatioMdBus.getId()+"\n");
+    System.out.println("\n\n"+MdAttributeIndicatorInfo.CLASS_NAME+": "+mdAttrIndicatorMdBus.getId()+"\n");
     
-    MdAttributeReferenceDAO ratioAttribute = MdAttributeReferenceDAO.newInstance();
-    ratioAttribute.setValue(MdAttributeReferenceInfo.NAME, MdAttributeRatioInfo.RATIO);
-    ratioAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ratio");
-    ratioAttribute.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference to a Ratio object");
-    ratioAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdAttrRatioMdBus.getId());
-    ratioAttribute.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    ratioAttribute.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    ratioAttribute.setValue(MdAttributeReferenceInfo.SYSTEM, MdAttributeBooleanInfo.FALSE);
-    ratioAttribute.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    ratioAttribute.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
-    ratioAttribute.setValue(MdAttributeReferenceInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.TRUE);
-    ratioAttribute.setValue(MdAttributeReferenceInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-    ratioAttribute.setValue(MdAttributeReferenceInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-    ratioAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, ratioMdBusiness.getId());
-    ratioAttribute.apply();
+    MdAttributeReferenceDAO indicatorAttribute = MdAttributeReferenceDAO.newInstance();
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.NAME, MdAttributeIndicatorInfo.INDICATOR_ELEMENT);
+    indicatorAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator");
+    indicatorAttribute.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference to a Indicator object");
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdAttrIndicatorMdBus.getId());
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.SYSTEM, MdAttributeBooleanInfo.FALSE);
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.TRUE);
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+    indicatorAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, indicatorElementMdBusiness.getId());
+    indicatorAttribute.apply();
+    
+    
+    
+    MdRelationshipDAOIF metadataMdRelationship = MdRelationshipDAO.getMdRelationshipDAO(RelationshipTypes.METADATA_RELATIONSHIP.getType());
+   
+    
+    MdTreeDAO mdTree = MdTreeDAO.newInstance();
+    mdTree.setValue(MdTreeInfo.NAME, "AttributeIndicator");
+    mdTree.setValue(MdTreeInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    mdTree.setValue(MdTreeInfo.COMPOSITION, MdAttributeBooleanInfo.TRUE);
+    mdTree.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Indicator");
+    mdTree.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    mdTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdTree.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdAttrIndicatorMdBus.getId());
+    mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
+    mdTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeIndicatorInfo.CLASS);
+    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, indicatorMdBusiness.getId());
+    mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
+    mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, IndicatorCompositeInfo.CLASS);
+    mdTree.setValue(MdTreeInfo.PARENT_METHOD, "getMdAttributeIndicator");
+    mdTree.setValue(MdTreeInfo.CHILD_METHOD, "getReferencedIndicator");
+    mdTree.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, metadataMdRelationship.getId());
+    mdTree.setGenerateMdController(false);
+    mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
+    mdTree.apply();
+    
+    System.out.println("\n\n"+mdTree.definesType()+": "+mdTree.getId()+"\n");
+    
+    
 
 //    MdBusinessDAOIF mdAttrConcreteMdBus = MdBusinessDAO.getMdBusinessDAO(MdAttributeConcreteInfo.CLASS);
 //    

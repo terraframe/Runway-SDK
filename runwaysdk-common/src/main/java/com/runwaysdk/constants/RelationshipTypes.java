@@ -164,8 +164,8 @@ public enum RelationshipTypes {
   /**
    * {@link MdAttributeRatioDAOIF} references a {@linL RatioDAOIF}.
    */
-  // Heads up: Test: Enter in actual id
-  ATTRIBUTE_RATIO(Constants.METADATA_PACKAGE + "." + "AttributeRatio", "", "attribute_ratio");
+
+  ATTRIBUTE_INDICATOR(Constants.METADATA_PACKAGE + "." + "AttributeIndicator", "insw5s11o7uyyxpddw0mmv3v3rct7c1k20060824000000000000000000000011", "attribute_indicator");
   
   
   private String relationshipType;
