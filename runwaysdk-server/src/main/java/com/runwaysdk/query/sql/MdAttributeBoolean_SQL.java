@@ -49,6 +49,17 @@ public class MdAttributeBoolean_SQL extends MdAttributePrimitive_SQL implements 
   {
     return MdAttributeBooleanInfo.CLASS;
   }
+  
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Boolean.class;
+  }
 
   /**
    * Returns the positive display label of this metadata object

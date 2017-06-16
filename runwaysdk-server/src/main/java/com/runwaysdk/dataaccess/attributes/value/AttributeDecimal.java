@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.dataaccess.attributes.value;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import com.runwaysdk.dataaccess.AttributeDecimalIF;
@@ -68,6 +69,24 @@ public class AttributeDecimal extends AttributeNumber implements AttributeDecima
     this.value = com.runwaysdk.dataaccess.attributes.entity.AttributeDecimal.setDecimalAndLength(this);
   }
 
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public BigDecimal getObjectValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new BigDecimal(this.getValue());
+    }
+  }
+  
   /**
    * Returns the DisplayLength
    */

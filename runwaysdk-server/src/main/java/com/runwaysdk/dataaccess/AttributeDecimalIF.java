@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess;
 
+import java.math.BigDecimal;
+
 public interface AttributeDecimalIF extends AttributeIF
 {
   /**
@@ -29,4 +31,12 @@ public interface AttributeDecimalIF extends AttributeIF
    * Returns the decimalDigits
    */
   public int getDecimalDigits();
+  
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public BigDecimal getObjectValue();
 }

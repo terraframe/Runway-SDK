@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess.attributes.value;
 
+import java.math.BigDecimal;
+
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDecimalDAOIF;
@@ -50,6 +52,17 @@ public class MdAttributeDecimal_Q extends MdAttributeDec_Q implements MdAttribut
     return MdAttributeDecimalInfo.CLASS;
   }
 
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return BigDecimal.class;
+  }
+  
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */

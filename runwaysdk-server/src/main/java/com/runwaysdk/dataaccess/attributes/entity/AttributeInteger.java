@@ -67,6 +67,24 @@ public class AttributeInteger extends AttributeNumber
   }
 
   /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Integer getObjectValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return Integer.parseInt(this.getValue());
+    }
+  }
+  
+  /**
    * Test if the input String is a valid integer.
    * 
    * <br/>

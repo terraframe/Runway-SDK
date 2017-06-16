@@ -60,4 +60,22 @@ public class AttributeLong extends AttributeNumber
   {
     return com.runwaysdk.dataaccess.attributes.entity.AttributeLong.getLongValue(this.getValue());
   }
+  
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Long getObjectValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new Long(this.getValue());
+    }
+  }
 }

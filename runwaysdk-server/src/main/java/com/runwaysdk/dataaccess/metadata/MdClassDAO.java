@@ -49,6 +49,7 @@ import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -403,6 +404,20 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   {
     List<? extends MdAttributeDAOIF> mdAttributeList = this.definesAttributes();
 
+    // 1st drop all of the indicator attributes
+    for (MdAttributeDAOIF mdAttributeIF : mdAttributeList)
+    {
+      if (mdAttributeIF instanceof MdAttributeIndicatorDAOIF)
+      {
+        MdAttributeIndicatorDAO mdAttributeIndicator = (MdAttributeIndicatorDAO) mdAttributeIF.getBusinessDAO();
+        mdAttributeIndicator.getAttribute(MetadataInfo.REMOVE).setValue(MdAttributeBooleanInfo.TRUE);
+        mdAttributeIndicator.delete(businessContext);
+      }
+    }
+    
+    mdAttributeList = this.definesAttributes();
+    
+    // 2nd drop all of the other attributes
     for (MdAttributeDAOIF mdAttributeIF : mdAttributeList)
     {
       MdAttributeDAO mdAttribute = (MdAttributeDAO) mdAttributeIF.getBusinessDAO();

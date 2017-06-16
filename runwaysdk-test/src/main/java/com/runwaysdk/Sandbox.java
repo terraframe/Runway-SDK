@@ -60,7 +60,7 @@ import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
-import com.runwaysdk.dataaccess.IndicatorDAOIF;
+import com.runwaysdk.dataaccess.IndicatorCompositeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
@@ -361,7 +361,7 @@ public class Sandbox implements Job
     
     MdAttributeEnumerationDAO mdAttrOperand = MdAttributeEnumerationDAO.newInstance();
     mdAttrOperand.setValue(MdAttributeEnumerationInfo.NAME, IndicatorCompositeInfo.OPERATOR);
-    mdAttrOperand.setValue(MdAttributeEnumerationInfo.COLUMN_NAME, IndicatorDAOIF.OPERATOR_COLUMN);
+    mdAttrOperand.setValue(MdAttributeEnumerationInfo.COLUMN_NAME, IndicatorCompositeDAOIF.OPERATOR_COLUMN);
     mdAttrOperand.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operator");
     mdAttrOperand.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The operator in the indicator equation");
     mdAttrOperand.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
@@ -441,7 +441,7 @@ public class Sandbox implements Job
     mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdAttrIndicatorMdBus.getId());
     mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeIndicatorInfo.CLASS);
-    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, indicatorMdBusiness.getId());
+    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, indicatorMdBusiness.getId()); // should be indicatorElementMdBusiness.getId()
     mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, IndicatorCompositeInfo.CLASS);
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "getMdAttributeIndicator");

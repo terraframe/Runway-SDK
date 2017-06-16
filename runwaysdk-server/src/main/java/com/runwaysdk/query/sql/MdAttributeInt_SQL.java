@@ -39,4 +39,15 @@ public abstract class MdAttributeInt_SQL extends MdAttributeNumber_SQL implement
   {
     super(attributeName, displayLabel);
   }
+  
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Integer.class;
+  }
 }

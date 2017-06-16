@@ -61,7 +61,16 @@ public abstract class MdAttributeMomentDAO extends MdAttributePrimitiveDAO imple
   {
     return Date.class.getName();
   }
-
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Date.class;
+  }
 
   /**
    * Returns a string representing the query attribute class for attributes of this type.

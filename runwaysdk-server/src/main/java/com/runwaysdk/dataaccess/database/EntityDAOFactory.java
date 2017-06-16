@@ -45,11 +45,12 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
-import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -417,7 +418,8 @@ public class EntityDAOFactory
         // Only apply the attribute if it exists in the entityDAO and is
         // defined
         // by the metadata.
-        if (entityDAO.hasAttribute(fieldName))
+        // Indicator attributes have no column representation in the database
+        if (entityDAO.hasAttribute(fieldName) && !(mdAttribute instanceof MdAttributeIndicatorDAOIF))
         {
           columnNames.add(mdAttribute.getColumnName());
           attributeTypes.add(mdAttribute.getType());
@@ -454,7 +456,7 @@ public class EntityDAOFactory
           {
             addedId = true;
           }
-        } // if (entityDAO.hasAttribute(fieldName))
+        } // if (entityDAO.hasAttribute(fieldName) && !(mdAttribute instanceof MdAttributeIndicatorDAOIF))
       }
 
       if (addedId == false)
@@ -710,7 +712,8 @@ public class EntityDAOFactory
         // instantiated.
         // Only apply the attribute if it exists in the entityDAO and is defined
         // by the metadata.
-        if (entityDAO.hasAttribute(attrName))
+        // Indicator attributes have no column representation in the database
+        if (entityDAO.hasAttribute(attrName)  && !(mdAttribute instanceof MdAttributeIndicatorDAOIF))
         {
           Attribute attribute = entityDAO.getAttribute(attrName);
 

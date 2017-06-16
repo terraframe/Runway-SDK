@@ -3,9 +3,9 @@ package com.runwaysdk.dataaccess;
 public interface MdAttributeIndicatorDAOIF extends MdAttributeConcreteDAOIF
 {   
   /**
-   * Returns the {@link IndicatorDAOIF} object.
+   * Returns the {@link IndicatorElementDAOIF} object.
    * 
-   * @return the {@link IndicatorDAOIF} object.
+   * @return the {@link IndicatorElementDAOIF} object.
    */
-  public IndicatorDAOIF getIndicator();
+  public IndicatorElementDAOIF getIndicator();
 }

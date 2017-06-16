@@ -148,7 +148,7 @@ import com.runwaysdk.dataaccess.DuplicateGraphPathException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
-import com.runwaysdk.dataaccess.IndicatorDAO;
+import com.runwaysdk.dataaccess.IndicatorCompositeDAO;
 import com.runwaysdk.dataaccess.IndicatorPrimitiveDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
@@ -296,7 +296,7 @@ public class BusinessDAOFactory
     Map<String, BusinessDAO> map = new ConcurrentHashMap<String, BusinessDAO>();
 
     // Ratios
-    map.put(IndicatorCompositeInfo.CLASS, new IndicatorDAO());
+    map.put(IndicatorCompositeInfo.CLASS, new IndicatorCompositeDAO());
     map.put(IndicatorPrimitiveInfo.CLASS, new IndicatorPrimitiveDAO());
     map.put(MdAttributeIndicatorInfo.CLASS, new MdAttributeIndicatorDAO());
 

@@ -51,4 +51,22 @@ public class AttributeInteger extends AttributeNumber
   {
     super(name, value, definingEntityType, mdAttributeIF, entityMdAttributeIFset);
   }
+  
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Integer getObjectValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new Integer(this.getValue());
+    }
+  }
 }

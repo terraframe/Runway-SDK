@@ -1,10 +1,8 @@
 package com.runwaysdk.dataaccess;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.function.BiFunction;
 
 import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.constants.IndicatorCompositeInfo;
@@ -12,20 +10,19 @@ import com.runwaysdk.constants.MathOperatorInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.metadata.InvalidIndicatorDefinition;
 
-public class IndicatorDAO extends BusinessDAO implements IndicatorDAOIF
+public class IndicatorCompositeDAO extends IndicatorElementDAO implements IndicatorCompositeDAOIF
 {
-
   /**
    * 
    */
   private static final long serialVersionUID = 7013814284000552548L;
 
-  public IndicatorDAO(Map<String, Attribute> attributeMap, String classType)
+  public IndicatorCompositeDAO(Map<String, Attribute> attributeMap, String classType)
   {
     super(attributeMap, classType);
   }
 
-  public IndicatorDAO()
+  public IndicatorCompositeDAO()
   {
     super();
   }
@@ -34,47 +31,89 @@ public class IndicatorDAO extends BusinessDAO implements IndicatorDAOIF
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable,
    *      java.util.String, ComponentDTOIF, Map)
    */
-  public IndicatorDAO create(Map<String, Attribute> attributeMap, String classType)
+  public IndicatorCompositeDAO create(Map<String, Attribute> attributeMap, String classType)
   {
-    return new IndicatorDAO(attributeMap, IndicatorCompositeInfo.CLASS);
+    return new IndicatorCompositeDAO(attributeMap, IndicatorCompositeInfo.CLASS);
   }
   
   /**
-   * Returns a new {@link IndicatorDAO}. Some attributes will contain
+   * Returns a new {@link IndicatorCompositeDAO}. Some attributes will contain
    * default values, as defined in the attribute metadata. Otherwise, the
    * attributes will be blank.
    * 
-   * @return instance of {@link IndicatorDAO}>.
+   * @return instance of {@link IndicatorCompositeDAO}>.
    */
-  public static IndicatorDAO newInstance()
+  public static IndicatorCompositeDAO newInstance()
   {
-    return (IndicatorDAO) BusinessDAO.newInstance(IndicatorCompositeInfo.CLASS);
+    return (IndicatorCompositeDAO) BusinessDAO.newInstance(IndicatorCompositeInfo.CLASS);
   }
   
   /**
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static IndicatorDAOIF get(String id)
+  public static IndicatorCompositeDAOIF get(String id)
   {
-    return (IndicatorDAOIF) BusinessDAO.get(id);
+    return (IndicatorCompositeDAOIF) BusinessDAO.get(id);
   }
   
+
+  /**
+   * @see IndicatorCompositeDAOIF#evalNonAggregateValue
+   * 
+   * @return the object value of the attribute referenced by this {@link IndicatorPrimitiveDAO}
+   */
+  public Object evalNonAggregateValue(ComponentDAOIF _componentDAOIF)
+  {
+//    IndicatorElementDAOIF leftOperand = this.getLeftOperand();
+//    IndicatorElementDAOIF rightOperand = this.getRightOperand();
+//    
+//    EnumerationItemDAOIF operator = this.getOperator();
+//    
+//    Object leftObjectValue = leftOperand.evalNonAggregateValue(_componentDAOIF);
+//    Object rightObjectValue = rightOperand.evalNonAggregateValue(_componentDAOIF);
+//    
+//    BiFunction<String, String,String> bi = (x, y) -> {      
+//      return x + y;
+//    };
+//    
+//    BiFunction<Integer, Integer, Number> bi2 = (x, y) -> {      
+//      return x / y;
+//    };    
+//
+//    
+//    if (leftObjectValue instanceof Integer)
+//    {
+//      Integer leftIntValue = (Integer)leftObjectValue;
+//
+//      if (rightObjectValue instanceof Integer)
+//      {
+//        Integer rightIntValue = (Integer)rightObjectValue;
+//        
+//      }
+//    }
+    
+    Integer returnVal = 0;
+    
+    return returnVal;
+  }
   
   @Override
   public void delete(boolean businessContext)
   {
+    // Delete this from the database so that the reference checks on the operands do not prevent
+    // them from being deleted because they reference this object.
+    super.delete(businessContext);
+    
     // Delete the operands
     this.getLeftOperand().getBusinessDAO().delete();
     
     this.getRightOperand().getBusinessDAO().delete();
-    
-    super.delete(businessContext);
   }
   
   
   /**
-   * @see IndicatorDAOIF#getLeftOperand
+   * @see IndicatorCompositeDAOIF#getLeftOperand
    */
   public IndicatorElementDAOIF getLeftOperand()
   {
@@ -84,7 +123,7 @@ public class IndicatorDAO extends BusinessDAO implements IndicatorDAOIF
   }
   
   /**
-   * @see IndicatorDAOIF#getOperator
+   * @see IndicatorCompositeDAOIF#getOperator
    */
   public EnumerationItemDAOIF getOperator()
   {
@@ -96,7 +135,7 @@ public class IndicatorDAO extends BusinessDAO implements IndicatorDAOIF
   }
   
   /**
-   * @see IndicatorDAOIF#getRightOperand
+   * @see IndicatorCompositeDAOIF#getRightOperand
    */
   public IndicatorElementDAOIF getRightOperand()
   {
@@ -148,13 +187,19 @@ public class IndicatorDAO extends BusinessDAO implements IndicatorDAOIF
     {
       isValid = true;
     }    
+    else if ((leftOperand instanceof IndicatorPrimitiveDAOIF && ((IndicatorPrimitiveDAOIF)leftOperand).getMdAttributePrimitive() instanceof MdAttributeBooleanDAOIF)
+        &&
+        (rightOperand instanceof IndicatorPrimitiveDAOIF && ((IndicatorPrimitiveDAOIF)rightOperand).getMdAttributePrimitive() instanceof MdAttributeBooleanDAOIF))
+    {
+      isValid = true;
+    }
     
     if (isValid == false)
     {
       String localizedLabel = this.getLocalizedLabel();
       
-      String devMessage = "The ratio attribute definition is invalid ["+localizedLabel+"]. "+
-      "A valid ratio consists of a number left operand, and operator, and a number right operand.";
+      String devMessage = "The indicator attribute definition is invalid ["+localizedLabel+"]. "+
+      "The left and right operands must both be either a number or a boolean.";
 
       throw new InvalidIndicatorDefinition(devMessage, localizedLabel);
     }
@@ -164,10 +209,17 @@ public class IndicatorDAO extends BusinessDAO implements IndicatorDAOIF
    * @see IndicatorElementDAOIF#javaType
    */
   public String javaType()
-  {
+  { 
     String leftOperandType = this.getLeftOperand().javaType();
     
     String rightOperandType = this.getRightOperand().javaType();
+    
+    if (leftOperandType.equals(Boolean.class.getName()) && 
+        rightOperandType.equals(Boolean.class.getName()))
+    {
+      return Boolean.class.getName();
+    }
+    
     
     if(leftOperandType.equals(BigDecimal.class.getName()) || 
        rightOperandType.equals(BigDecimal.class.getName()))
@@ -196,45 +248,30 @@ public class IndicatorDAO extends BusinessDAO implements IndicatorDAOIF
   }
   
   /**
+   * @see IndicatorCompositeDAOIF#accept
+   */
+  public void accept(IndicatorVisitor indicatorVisitor)
+  {
+    indicatorVisitor.visit(this);
+    
+    IndicatorElementDAOIF leftOperand = getLeftOperand();
+    leftOperand.accept(indicatorVisitor);
+
+    IndicatorElementDAOIF rightOperand = getRightOperand();
+    rightOperand.accept(indicatorVisitor);
+  }
+  
+  /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
-  public IndicatorDAO getBusinessDAO()
+  public IndicatorCompositeDAO getBusinessDAO()
   {
-    return (IndicatorDAO) super.getBusinessDAO();
+    return (IndicatorCompositeDAO) super.getBusinessDAO();
   }
   
   public String toString()
   {
     return this.getLocalizedLabel();
-  }
- 
-  public static class ClassRatioVisitor
-  {
-    /**
-     * Key: The key of the {@link MdAttributeIndicatorDAOIF}
-     * Object: {@link MdAttributeIndicatorDAOIF}
-     */
-    private Map<String, MdAttributeIndicatorDAOIF> attrRatioMap;
-    
-    public ClassRatioVisitor()
-    {
-      this.attrRatioMap = new HashMap<String, MdAttributeIndicatorDAOIF>();
-    }
-    
-    public void addMdAttributeRatio(MdAttributeIndicatorDAOIF mdAttributeRatio)
-    {
-      this.attrRatioMap.put(mdAttributeRatio.getKey(), mdAttributeRatio);
-    }
-    
-    public List<MdAttributeIndicatorDAOIF> getMdAttributeRatioList()
-    {
-      return this.attrRatioMap.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
-    }
-    
-    public void visit(IndicatorDAOIF ratioDAOIF)
-    {
-      
-    }
   }
 }
 

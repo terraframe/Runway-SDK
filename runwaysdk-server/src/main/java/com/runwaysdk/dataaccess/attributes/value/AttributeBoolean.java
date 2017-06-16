@@ -90,6 +90,17 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   }
 
   /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Boolean getObjectValue()
+  {
+    return this.getBooleanValue();
+  }
+  
+  /**
    *Returns 1 if the given attributeBoolean is true, 0.
    *
    * @return 1 if the given attributeBoolean is true, 0.

@@ -20,4 +20,9 @@ public interface IndicatorPrimitiveDAOIF extends IndicatorElementDAOIF
    * @return the function enumeration item and assumes it is not null (precondition).
    */
   public EnumerationItemDAOIF getAggregateFunction();
+  
+  /**
+   * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
+   */
+  public IndicatorPrimitiveDAO getBusinessDAO();
 }

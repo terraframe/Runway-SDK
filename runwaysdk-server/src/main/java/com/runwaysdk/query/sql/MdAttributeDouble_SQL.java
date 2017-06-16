@@ -55,5 +55,16 @@ public class MdAttributeDouble_SQL extends MdAttributeDec_SQL implements MdAttri
   {
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);
   }
+  
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Double.class;
+  }
 
 }

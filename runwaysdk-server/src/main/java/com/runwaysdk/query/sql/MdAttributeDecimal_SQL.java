@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.query.sql;
 
+import java.math.BigDecimal;
+
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
 import com.runwaysdk.dataaccess.MdAttributeDecimalDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
@@ -54,5 +56,16 @@ public class MdAttributeDecimal_SQL extends MdAttributeDec_SQL implements MdAttr
   public MdAttributeDecimalDAO getBusinessDAO()
   {
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);
+  }
+  
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return BigDecimal.class;
   }
 }

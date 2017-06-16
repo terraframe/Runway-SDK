@@ -39,6 +39,7 @@ import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
+import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
@@ -268,7 +269,10 @@ public class AttributeFactory
     {
       attribute = new AttributeLocalText(attributeName, mdAttributeKey, definingType, (String) attributeValue);
     }
-
+    else if (attributeType.equals(MdAttributeIndicatorInfo.CLASS))
+    {
+      attribute = new AttributeIndicator(attributeName, mdAttributeKey, definingType, (String) attributeValue);
+    }
     if (attribute == null)
     {
       for (PluginIF plugin : pluginMap.values())

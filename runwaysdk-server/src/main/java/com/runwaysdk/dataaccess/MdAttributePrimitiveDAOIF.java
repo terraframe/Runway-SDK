@@ -39,4 +39,11 @@ public interface MdAttributePrimitiveDAOIF extends MdAttributeConcreteDAOIF
    * @return user defined expression string. If none is defined then an empty string is returned.
    */
   public String getExpression();
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass();
 }

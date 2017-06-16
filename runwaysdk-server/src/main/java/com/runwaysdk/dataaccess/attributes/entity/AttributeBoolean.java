@@ -121,6 +121,17 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   }
   
   /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Boolean getObjectValue()
+  {
+    return this.getBooleanValue();
+  }
+  
+  /**
    * @see com.runwaysdk.dataaccess.attributes.entity.Attribute#setValue(java.lang.String)
    */
   public void setValue(boolean value)

@@ -16,23 +16,17 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-/*
- * Created on Aug 8, 2005
- *
- */
 package com.runwaysdk.dataaccess;
 
 /**
  * @author nathan
- *
- * TODO To change the template for this generated comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public interface AttributeReferenceIF extends AttributeIF
 {
   /**
+   * Returns the {@link BusinessDAOIF} referenced by this attribute.
    * 
-   * @return
+   * @return the {@link BusinessDAOIF} referenced by this attribute.
    */
   public BusinessDAOIF dereference();
   

@@ -1,15 +1,13 @@
 package com.runwaysdk.dataaccess;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
-import com.runwaysdk.constants.IndicatorCompositeInfo;
 import com.runwaysdk.constants.IndicatorPrimitiveInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.session.Session;
 
-public class IndicatorPrimitiveDAO extends BusinessDAO implements IndicatorPrimitiveDAOIF
+public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements IndicatorPrimitiveDAOIF
 {
 
   /**
@@ -31,9 +29,9 @@ public class IndicatorPrimitiveDAO extends BusinessDAO implements IndicatorPrimi
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable,
    *      java.util.String, ComponentDTOIF, Map)
    */
-  public IndicatorPrimitiveDAO create(Map<String, Attribute> attributeMap, String classType)
+  public IndicatorPrimitiveDAO create(Map<String, Attribute> _attributeMap, String _classType)
   {
-    return new IndicatorPrimitiveDAO(attributeMap, IndicatorPrimitiveInfo.CLASS);
+    return new IndicatorPrimitiveDAO(_attributeMap, IndicatorPrimitiveInfo.CLASS);
   }
   
   /**
@@ -52,18 +50,11 @@ public class IndicatorPrimitiveDAO extends BusinessDAO implements IndicatorPrimi
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static IndicatorPrimitiveDAO get(String id)
+  public static IndicatorPrimitiveDAO get(String _id)
   {
-    return (IndicatorPrimitiveDAO) BusinessDAO.get(id);
+    return (IndicatorPrimitiveDAO) BusinessDAO.get(_id);
   }
-  
-  
-  @Override
-  public void delete(boolean businessContext)
-  {
-    super.delete(businessContext);
-  }
-  
+    
   /**
    * @see IndicatorPrimitiveInfo#getMdAttributePrimitive
    */
@@ -93,28 +84,32 @@ public class IndicatorPrimitiveDAO extends BusinessDAO implements IndicatorPrimi
   {
     MdAttributePrimitiveDAOIF mdAttribute = this.getMdAttributePrimitive();
     
-    if (mdAttribute instanceof MdAttributeDecimalDAOIF)
-    {
-      return BigDecimal.class.getName();
-    }
-    else if (mdAttribute instanceof MdAttributeDoubleDAOIF)
-    {
-      return Double.class.getName();
-    }
-    else if (mdAttribute instanceof MdAttributeFloatDAOIF)
-    {
-      return Float.class.getName();
-    }
-    else if (mdAttribute instanceof MdAttributeLongDAOIF)
-    {
-      return Long.class.getName();
-    }
-    else
-    {
-      return Integer.class.getName();
-    }
+    return mdAttribute.javaClass().getName();
+  }
+  
+  /**
+   * @see IndicatorCompositeDAOIF#accept
+   */
+  public void accept(IndicatorVisitor _indicatorVisitor)
+  {
+    _indicatorVisitor.visit(this);
   }
 
+  /**
+   * @see IndicatorCompositeDAOIF#evalNonAggregateValue
+   * 
+   * @return the object value of the attribute referenced by this {@link IndicatorPrimitiveDAO}
+   */
+  public Object evalNonAggregateValue(ComponentDAOIF _componentDAOIF)
+  {
+    MdAttributePrimitiveDAOIF mdAttrPrim = this.getMdAttributePrimitive();
+    
+    AttributeIF attribute = _componentDAOIF.getAttributeIF(mdAttrPrim.definesAttribute());
+    
+    return attribute.getObjectValue();
+  }
+  
+  
   /**
    * @see IndicatorElementDAOIF#getLocalizedLabel
    */

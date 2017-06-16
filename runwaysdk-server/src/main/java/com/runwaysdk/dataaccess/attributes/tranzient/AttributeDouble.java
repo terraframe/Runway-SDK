@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess.attributes.tranzient;
 
+import java.math.BigDecimal;
+
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
@@ -69,6 +71,24 @@ public class AttributeDouble extends AttributeNumber
   public MdAttributeDoubleDAOIF getMdAttributeConcrete()
   {
     return (MdAttributeDoubleDAOIF)super.getMdAttributeConcrete();
+  }
+  
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Double getObjectValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new Double(this.getValue());
+    }
   }
   
   /**

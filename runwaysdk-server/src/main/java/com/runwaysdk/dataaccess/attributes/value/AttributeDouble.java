@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.dataaccess.attributes.value;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -50,5 +51,23 @@ public class AttributeDouble extends AttributeNumber
   protected AttributeDouble(String name, String value, String definingEntityType, MdAttributeConcreteDAOIF mdAttributeIF, Set<MdAttributeConcreteDAOIF> entityMdAttributeIFset)
   {
     super(name, value, definingEntityType, mdAttributeIF, entityMdAttributeIFset);
+  }
+  
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Double getObjectValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new Double(this.getValue());
+    }
   }
 }

@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess.attributes.tranzient;
 
+import java.math.BigDecimal;
+
 import com.runwaysdk.dataaccess.AttributeDecimalIF;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -85,7 +87,25 @@ public class AttributeDecimal extends AttributeNumber implements AttributeDecima
   {
     return (MdAttributeDecimalDAOIF)super.getMdAttributeConcrete();
   }
-
+  
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public BigDecimal getObjectValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new BigDecimal(this.getValue());
+    }
+  }
+  
   /**
    * Checks the value, and sets it if it is valid.
    *

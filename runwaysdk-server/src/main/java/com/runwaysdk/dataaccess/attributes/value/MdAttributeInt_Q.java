@@ -37,4 +37,15 @@ public abstract class MdAttributeInt_Q extends MdAttributeNumber_Q implements Md
   {
     super(mdAttributeIF);
   }
+  
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Integer.class;
+  }
 }

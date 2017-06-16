@@ -106,6 +106,16 @@ public class MdAttributeTextDAO extends MdAttributePrimitiveDAO implements MdAtt
   {
     return "String";
   }
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return String.class;
+  }
 
   /**
    * Returns a string representing the query attribute class for attributes of

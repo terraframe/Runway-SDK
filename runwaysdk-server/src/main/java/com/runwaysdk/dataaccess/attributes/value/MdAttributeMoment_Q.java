@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess.attributes.value;
 
+import java.util.Date;
+
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMomentDAOIF;
 
@@ -44,5 +46,16 @@ public abstract class MdAttributeMoment_Q extends MdAttributePrimitive_Q impleme
    * @see com.runwaysdk.dataaccess.MdAttributeMomentDAOIF#getFormat()
    */
   public abstract String getFormat();
+  
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Date.class;
+  }
 
 }

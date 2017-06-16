@@ -104,6 +104,16 @@ public class MdAttributeLongDAO extends MdAttributeNumberDAO implements MdAttrib
   {
     return "Long";
   }
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Long.class;
+  }
 
   /**
    * Returns a string representing the query attribute class for attributes of this type.

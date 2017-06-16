@@ -59,4 +59,11 @@ public interface AttributeBooleanIF extends AttributeIF
    */
   public int getBooleanValueInt();
   
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Boolean getObjectValue();
 }

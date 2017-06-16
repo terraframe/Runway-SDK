@@ -151,6 +151,17 @@ public class MdAttributeBooleanDAO extends MdAttributePrimitiveDAO implements Md
   {
     return "Boolean";
   }
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Boolean.class;
+  }
+  
   /**
    * Returns a string representing the query attribute class for attributes of this type.
    *

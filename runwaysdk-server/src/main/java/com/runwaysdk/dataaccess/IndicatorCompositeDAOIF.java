@@ -1,6 +1,7 @@
 package com.runwaysdk.dataaccess;
 
-public interface IndicatorDAOIF extends IndicatorElementDAOIF
+
+public interface IndicatorCompositeDAOIF extends IndicatorElementDAOIF
 {
   /**
    * Name of the table used to store instances of this class.
@@ -30,4 +31,10 @@ public interface IndicatorDAOIF extends IndicatorElementDAOIF
    * @return the {@link IndicatorElementDAOIF} of the left hand operand.
    */
   public IndicatorElementDAOIF getRightOperand();
+  
+  /**
+   * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
+   */
+  public IndicatorCompositeDAO getBusinessDAO();
+  
 }

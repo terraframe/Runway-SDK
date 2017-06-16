@@ -83,6 +83,16 @@ public class MdAttributeFloatDAO extends MdAttributeDecDAO implements MdAttribut
   }
 
   /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Float.class;
+  }
+  
+  /**
    * Returns a string representing the query attribute class for attributes of this type.
    *
    * @return string representing the query attribute class for attributes of this type.

@@ -47,6 +47,16 @@ public class MdAttributeFloat_SQL extends MdAttributeDec_SQL implements MdAttrib
   {
     return MdAttributeFloatInfo.CLASS;
   }
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Float.class;
+  }
 
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()

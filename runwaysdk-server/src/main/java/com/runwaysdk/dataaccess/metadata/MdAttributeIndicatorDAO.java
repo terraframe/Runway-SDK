@@ -8,8 +8,11 @@ import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
-import com.runwaysdk.dataaccess.IndicatorDAOIF;
+import com.runwaysdk.dataaccess.IndicatorCompositeDAOIF;
+import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
@@ -51,7 +54,7 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
    */
   public MdAttributeIndicatorDAO create(Map<String, Attribute> attributeMap, String classType)
   {
-    return new MdAttributeIndicatorDAO(attributeMap, MdAttributeReferenceInfo.CLASS);
+    return new MdAttributeIndicatorDAO(attributeMap, MdAttributeIndicatorInfo.CLASS);
   }
   
   /*
@@ -79,9 +82,21 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
   /**
    * @see MdAttributeIndicatorDAOIF#getIndicator
    */
-  public IndicatorDAOIF getIndicator()
+  public IndicatorElementDAOIF getIndicator()
   {
-    return (IndicatorDAOIF)((AttributeReferenceIF)this.getAttributeIF(MdAttributeIndicatorInfo.INDICATOR)).dereference();
+    return (IndicatorElementDAOIF)((AttributeReferenceIF)this.getAttributeIF(MdAttributeIndicatorInfo.INDICATOR_ELEMENT)).dereference();
+  }
+
+  @Override
+  public void delete(boolean _businessContext)
+  {    
+    // Delete this from the database so that the reference check on the indicator do not prevent
+    // it from being deleted because they reference this object.
+    super.delete(_businessContext);
+    
+    // Delete referenced indicator
+    IndicatorElementDAOIF indicator = this.getIndicator();
+    indicator.getBusinessDAO().delete();
   }
   
   /**
@@ -119,8 +134,7 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
   @Override
   public void accept(MdAttributeDAOVisitor visitor)
   {
-    // TODO Auto-generated method stub
-
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -133,7 +147,18 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
   @Override
   protected void initializeStrategyObject()
   {
-    // TODO Auto-generated method stub
+    if (this.definedByClass() instanceof MdEntityDAOIF)
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeIndicator_E(this));
+    }
+    else if (this.definedByClass() instanceof MdTransientDAOIF)
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
+    }
+    else
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
+    }
 
   }
 

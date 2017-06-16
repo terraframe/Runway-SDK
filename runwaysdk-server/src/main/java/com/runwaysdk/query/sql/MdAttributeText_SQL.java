@@ -48,6 +48,17 @@ public class MdAttributeText_SQL extends MdAttributePrimitive_SQL implements MdA
     return MdAttributeTextInfo.CLASS;
   }
 
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return String.class;
+  }
+  
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */

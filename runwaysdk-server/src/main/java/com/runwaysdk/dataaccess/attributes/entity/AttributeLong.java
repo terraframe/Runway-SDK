@@ -68,6 +68,24 @@ public class AttributeLong extends AttributeNumber implements AttributeLongIF
   }
 
   /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Long getObjectValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return Long.parseLong(this.getValue());
+    }
+  }
+  
+  /**
    * Test if the input String is a valid Long
    * 
    * <br/>

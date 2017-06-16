@@ -129,6 +129,17 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   }
   
   /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Boolean getObjectValue()
+  {
+    return this.getBooleanValue();
+  }
+  
+  /**
    * Calls toLowerCase on the String before passing it back to the overridden abstract
    * parent method.
    * 

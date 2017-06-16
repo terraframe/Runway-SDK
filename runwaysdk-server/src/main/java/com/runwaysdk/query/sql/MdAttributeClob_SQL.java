@@ -47,7 +47,17 @@ public class MdAttributeClob_SQL extends MdAttributePrimitive_SQL implements MdA
   {
     return MdAttributeClobInfo.CLASS;
   }
-
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return String.class;
+  }
+  
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
