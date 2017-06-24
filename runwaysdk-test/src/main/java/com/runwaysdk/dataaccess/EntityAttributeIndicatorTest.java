@@ -333,7 +333,7 @@ public class EntityAttributeIndicatorTest extends TestCase
     mdAttrBooleanIndicator1.apply();
     
     IndicatorPrimitiveDAO indicatorPrimitiveCount1 = IndicatorPrimitiveDAO.newInstance();
-    indicatorPrimitiveCount1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, indicatorPrimitiveInteger1.getId());
+    indicatorPrimitiveCount1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger1.getId());
     indicatorPrimitiveCount1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.COUNT.getId());
     indicatorPrimitiveCount1.apply();
     

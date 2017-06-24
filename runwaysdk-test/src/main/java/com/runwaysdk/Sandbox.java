@@ -166,32 +166,32 @@ public class Sandbox implements Job
     System.out.println("\n\n"+AggregationFunctionInfo.CLASS_NAME+": "+aggFuncEnumMdBus.getId()+"\n");
 
     BusinessDAO sumFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
-    sumFunction.setValue(EnumerationMasterInfo.NAME, "SUM");
+    sumFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.SUM);
     sumFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sum");
     sumFunction.apply();
     
     BusinessDAO avgFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
-    avgFunction.setValue(EnumerationMasterInfo.NAME, "AVG");
+    avgFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.AVG);
     avgFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Average");
     avgFunction.apply();
     
     BusinessDAO countFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
-    countFunction.setValue(EnumerationMasterInfo.NAME, "COUNT");
+    countFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.COUNT);
     countFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Count");
     countFunction.apply();
 
     BusinessDAO minFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
-    minFunction.setValue(EnumerationMasterInfo.NAME, "MIN");
+    minFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.MIN);
     minFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Minimum");
     minFunction.apply();
     
     BusinessDAO maxFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
-    maxFunction.setValue(EnumerationMasterInfo.NAME, "MAX");
+    maxFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.MAX);
     maxFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Maximum");
     maxFunction.apply();
     
     BusinessDAO sdevFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
-    sdevFunction.setValue(EnumerationMasterInfo.NAME, "STDEV");
+    sdevFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.STDEV);
     sdevFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Standard Deviation");
     sdevFunction.apply();
     
