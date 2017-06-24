@@ -96,11 +96,9 @@ public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements Indica
   }
 
   /**
-   * @see IndicatorCompositeDAOIF#evalNonAggregateValue
-   * 
-   * @return the object value of the attribute referenced by this {@link IndicatorPrimitiveDAO}
+   * @see IndicatorElementDAOIF#evalNonAggregateValue
    */
-  public Object evalNonAggregateValue(ComponentDAOIF _componentDAOIF)
+  public Object evalNonAggregateValue(MdAttributeIndicatorDAOIF _mdAttributeIndicator, ComponentDAOIF _componentDAOIF)
   {
     MdAttributePrimitiveDAOIF mdAttrPrim = this.getMdAttributePrimitive();
     

@@ -605,7 +605,7 @@ public abstract class Function implements SelectablePrimitive, Statement
    * ValueQuery.
    *
    * @param selectable
-   * @return Conidtion to add to the query.
+   * @return Condition to add to the query.
    */
   public AttributeCondition SUBSELECT_IN(Selectable selectable)
   {

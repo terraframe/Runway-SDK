@@ -69,6 +69,23 @@ public class AttributeIndicator extends Attribute implements AttributeIndicatorI
   }
   
   /**
+   * @see com.runwaysdk.dataaccess.AttributeIF#getValue
+   */
+  public String getValue()
+  {
+    Object nonAggregatedExpressionValue = this.evalNonAggregateValue();
+    
+    if (nonAggregatedExpressionValue == null)
+    {
+      return "";
+    }
+    else
+    {
+      return this.evalNonAggregateValue().toString();
+    }
+  }
+  
+  /**
    * Returns the unaggregated value of the indicator for this single object.
    * 
    * @return the unaggregated value of the indicator for this single object.
@@ -81,7 +98,7 @@ public class AttributeIndicator extends Attribute implements AttributeIndicatorI
     
     IndicatorElementDAOIF indicatorElement = mdAttributeIndicator.getIndicator();
     
-    return indicatorElement.evalNonAggregateValue(entityDAO);
+    return indicatorElement.evalNonAggregateValue(mdAttributeIndicator, entityDAO);
   }
   
 

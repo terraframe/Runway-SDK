@@ -2,9 +2,16 @@ package com.runwaysdk.dataaccess;
 
 import java.math.BigDecimal;
 import java.util.Map;
-import java.util.function.BiFunction;
+
+import ognl.ExpressionSyntaxException;
+import ognl.Ognl;
+import ognl.OgnlClassResolver;
+import ognl.OgnlContext;
+import ognl.OgnlException;
 
 import com.runwaysdk.business.ComponentDTOIF;
+import com.runwaysdk.business.ExpressionException;
+import com.runwaysdk.business.InvalidExpressionSyntaxException;
 import com.runwaysdk.constants.IndicatorCompositeInfo;
 import com.runwaysdk.constants.MathOperatorInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -59,43 +66,147 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
   
 
   /**
-   * @see IndicatorCompositeDAOIF#evalNonAggregateValue
-   * 
-   * @return the object value of the attribute referenced by this {@link IndicatorPrimitiveDAO}
+   * @see IndicatorElementDAOIF#evalNonAggregateValue
    */
-  public Object evalNonAggregateValue(ComponentDAOIF _componentDAOIF)
+  public Object evalNonAggregateValue(MdAttributeIndicatorDAOIF _mdAttributeIndicator, ComponentDAOIF _componentDAOIF)
   {
-//    IndicatorElementDAOIF leftOperand = this.getLeftOperand();
-//    IndicatorElementDAOIF rightOperand = this.getRightOperand();
-//    
-//    EnumerationItemDAOIF operator = this.getOperator();
-//    
-//    Object leftObjectValue = leftOperand.evalNonAggregateValue(_componentDAOIF);
-//    Object rightObjectValue = rightOperand.evalNonAggregateValue(_componentDAOIF);
-//    
-//    BiFunction<String, String,String> bi = (x, y) -> {      
-//      return x + y;
-//    };
-//    
-//    BiFunction<Integer, Integer, Number> bi2 = (x, y) -> {      
-//      return x / y;
-//    };    
-//
-//    
-//    if (leftObjectValue instanceof Integer)
-//    {
-//      Integer leftIntValue = (Integer)leftObjectValue;
-//
-//      if (rightObjectValue instanceof Integer)
-//      {
-//        Integer rightIntValue = (Integer)rightObjectValue;
-//        
-//      }
-//    }
+    IndicatorElementDAOIF leftOperand = this.getLeftOperand();
+    IndicatorElementDAOIF rightOperand = this.getRightOperand();
     
-    Integer returnVal = 0;
+    Object leftObjectValue = leftOperand.evalNonAggregateValue(_mdAttributeIndicator, _componentDAOIF);
+    Object rightObjectValue = rightOperand.evalNonAggregateValue(_mdAttributeIndicator, _componentDAOIF);
     
+    EnumerationItemDAOIF operator = this.getOperator();
+    
+    String operatorSymbol = operator.getAttributeIF(MathOperatorInfo.OPERATOR_SYMBOL).getValue();
+    
+    String expressionString =  leftObjectValue.toString() + " " + operatorSymbol + " " + rightObjectValue.toString();
+    
+    Object returnVal;
+    
+    if (this.isZero(rightObjectValue))
+    {
+      returnVal = null;
+    }
+    else
+    {
+      try
+      {
+
+        Object expression;
+    
+        try
+        {
+          expression = Ognl.parseExpression(expressionString);
+        }
+        catch (ExpressionSyntaxException e)
+        {
+          String devMessage = "The attribute [" + _mdAttributeIndicator.definesAttribute() + "] has an invalid expression syntax:\n" + e.getLocalizedMessage();
+          throw new InvalidExpressionSyntaxException(devMessage, _mdAttributeIndicator, e);
+        }
+
+        OgnlContext ognlContext = new OgnlContext();
+
+        Object expressionValue;
+      
+        try
+        {
+          // I am offended that I even have to do this. OGNL stores reflection method definitions which cause
+          // problems when classes are reloaded.
+          OgnlClassResolver.clearOgnlRuntimeMethodCache();
+          expressionValue = Ognl.getValue(expression, ognlContext, this);
+        
+          returnVal = expressionValue;
+        }
+        catch (RuntimeException e)
+        {
+          String devMessage = "The expression on attribute [" + _mdAttributeIndicator.definesAttribute() + "] has an error:\n" + e.getLocalizedMessage();
+          throw new ExpressionException(devMessage, _mdAttributeIndicator, e);
+        }
+      }
+      catch (OgnlException e)
+      {
+        String devMessage = "The expression on attribute [" + _mdAttributeIndicator.definesAttribute() + "] has an error:\n" + e.getLocalizedMessage();
+        throw new ExpressionException(devMessage, _mdAttributeIndicator, e);
+      }
+    }
+
     return returnVal;
+  }
+  
+  private boolean isZero(Object rightObjectValue)
+  {
+    if (rightObjectValue instanceof BigDecimal)
+    {
+      BigDecimal bigDecimal = (BigDecimal)rightObjectValue;
+      Double doubleVal = bigDecimal.doubleValue();
+      
+      if (doubleVal == 0)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    else if (rightObjectValue instanceof Double)
+    {
+      Double doubleVal = (Double)rightObjectValue;
+      
+      if (doubleVal == 0)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    else if (rightObjectValue instanceof Float)
+    {
+      Float floatValue = (Float)rightObjectValue;
+      
+      if (floatValue == 0)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    else if (rightObjectValue instanceof Long)
+    {
+      Long longValue = (Long)rightObjectValue;
+      
+      if (longValue == 0)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    else if (rightObjectValue instanceof Integer)
+    {
+      Integer intValue = (Integer)rightObjectValue;
+      
+      if (intValue == 0)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    // Should never reach here
+    else
+    {
+      return false;
+    }
   }
   
   @Override
@@ -220,31 +331,16 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
       return Boolean.class.getName();
     }
     
-    
     if(leftOperandType.equals(BigDecimal.class.getName()) || 
        rightOperandType.equals(BigDecimal.class.getName()))
     {
       return BigDecimal.class.getName();
     }
-    else if (leftOperandType.equals(Double.class.getName()) || 
-        rightOperandType.equals(Double.class.getName()))
-    {
-      return Double.class.getName();
-    }
-    else if (leftOperandType.equals(Float.class.getName()) || 
-        rightOperandType.equals(Float.class.getName()))
-    {
-      return Float.class.getName();
-    }
-    else if (leftOperandType.equals(Long.class.getName()) || 
-        rightOperandType.equals(Long.class.getName()))
-    {
-      return Long.class.getName();
-    }
+    // When integers or longs are divided, the result is a double.
     else
     {
-      return Integer.class.getName();
-    }
+      return Double.class.getName();
+    }    
   }
   
   /**

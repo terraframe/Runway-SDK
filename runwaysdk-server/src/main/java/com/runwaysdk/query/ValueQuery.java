@@ -507,7 +507,7 @@ public class ValueQuery extends ComponentQuery
   }
 
   /**
-   * Updates internal prossesed selectable data structures for the given
+   * Updates internal processed selectable data structures for the given
    * selectable.
    * 
    * @param componentQuery

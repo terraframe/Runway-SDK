@@ -1,6 +1,5 @@
 package com.runwaysdk.dataaccess;
 
-import com.runwaysdk.ComponentIF;
 import com.runwaysdk.dataaccess.IndicatorElementDAO.IndicatorVisitor;
 
 public interface IndicatorElementDAOIF extends BusinessDAOIF
@@ -39,7 +38,10 @@ public interface IndicatorElementDAOIF extends BusinessDAOIF
   /**
    * Returns the unaggregated value of the indicator for the given {@link ComponentDAOIF}.
    * 
+   * @param _mdAttributeIndicator the attribute that defines the indicator.
+   * @param _componentDAOIF the component with the attributes to evaluate the indicator.
+   * 
    * @return the unaggregated value of the indicator for the given {@link ComponentDAOIF}.
    */
-  public Object evalNonAggregateValue(ComponentDAOIF _componentDAOIF);
+  public Object evalNonAggregateValue(MdAttributeIndicatorDAOIF _mdAttributeIndicator, ComponentDAOIF _componentDAOIF);
 }

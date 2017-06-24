@@ -8,8 +8,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.runwaysdk.constants.AggregationFunctionInfo;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
+import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -35,6 +37,9 @@ import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
+import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
+import com.runwaysdk.dataaccess.IndicatorPrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
@@ -47,11 +52,13 @@ import com.runwaysdk.dataaccess.MdAttributeDecimalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiTermDAOIF;
+import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
@@ -270,6 +277,97 @@ public abstract class TableClassQuery extends ComponentQuery
     }
 
     return this.internalAttributeFactory(attributeName, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
+  /**
+   * Returns a {@link Selectable} that is defined on this {@link TableClassDAOIF}.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param value
+   *          value to compare.
+   * @return Condition object representing an equals with the attribute with the
+   *         given name with the given value.
+   */
+  public Selectable getSelectable(String attributeName)
+  {
+    return getSelectable(attributeName, null, null);
+  }
+  
+  /**
+   * Returns a {@link Selectable} that is defined on this {@link TableClassDAOIF}.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
+   * @return Condition object representing an equals with the attribute with the
+   *         given name with the given value.
+   */
+  public Selectable getSelectable(String attributeName, String userDefinedAlias)
+  {
+    return getSelectable(attributeName, userDefinedAlias, null);
+  }
+
+  
+  /**
+   * Returns a {@link Selectable} that is defined on this {@link TableClassDAOIF}.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
+   * @param userDefinedDisplayLabel
+   * @return Condition object representing an equals with the attribute with the
+   *         given name with the given value.
+   */
+  public Selectable getSelectable(String attributeName, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
+    
+    if (mdAttributeIF instanceof MdAttributeIndicatorDAOIF)
+    {
+      MdAttributeIndicatorDAOIF mdAttributeIndicator = (MdAttributeIndicatorDAOIF)mdAttributeIF;
+    
+      IndicatorElementDAOIF indicatorElement = mdAttributeIndicator.getIndicator();
+    
+      if (indicatorElement instanceof IndicatorPrimitiveDAOIF)
+      {
+        IndicatorPrimitiveDAOIF indicatorPrimitive = (IndicatorPrimitiveDAOIF)indicatorElement;
+        
+        MdAttributePrimitiveDAOIF mdAttrPrimitive = indicatorPrimitive.getMdAttributePrimitive();
+
+        // String userDefinedAlias, String userDefinedDisplayLabel
+        Selectable attributeInIndictor = this.internalAttributeFactory(attributeName, mdAttrPrimitive, null, null);
+
+        // Get the aggregate function.
+        EnumerationItemDAOIF aggFuncEnumItem = indicatorPrimitive.getAggregateFunction();
+        
+        AggregateFunction aggregateFunction = null;
+        
+        if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.SUM))
+        {
+           aggregateFunction = new SUM(attributeInIndictor);
+           // , userDefinedAlias, userDefinedDisplayLabel
+        }
+        else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.COUNT))
+        {
+          aggregateFunction = new COUNT(attributeInIndictor);
+        }
+        
+        Selectable selectable = new AttributeIndicatorPrimitive(mdAttributeIndicator, aggregateFunction, userDefinedAlias, userDefinedDisplayLabel);
+        
+        return selectable;
+      }
+      else
+      {
+        return null;
+      }
+    }
+    else
+    {
+      return this.get(attributeName, userDefinedAlias, userDefinedDisplayLabel);
+    }
   }
 
   

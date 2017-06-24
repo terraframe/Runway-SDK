@@ -18,4 +18,16 @@ public interface AggregationFunctionInfo extends EnumerationMasterInfo
   public static final String INDICATOR_FUNCTION_ENUM_CLASS   = Constants.METADATA_PACKAGE+"."+INDICATOR_FUNCTION_ENUM_CLASS_NAME;
 
   public static final String INDICATOR_FUNCTION_ENUM_CLASS_ID_VALUE   = "i0mpeef4ubwk29ntr0po98lywhtzoi4m00000000000000000000000000000196";
+
+  public static final String SUM                             = "SUM";
+
+  public static final String AVG                             = "AVG";
+  
+  public static final String COUNT                           = "COUNT";
+  
+  public static final String MIN                             = "MIN";
+  
+  public static final String MAX                             = "MAX";
+  
+  public static final String STDEV                           = "STDEV";
 }
