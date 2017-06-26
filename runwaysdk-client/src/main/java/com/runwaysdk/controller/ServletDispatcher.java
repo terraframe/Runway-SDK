@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,8 +39,10 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.runwaysdk.AttributeNotificationDTO;
 import com.runwaysdk.ClientException;
@@ -299,8 +302,50 @@ public class ServletDispatcher extends HttpServlet implements DispatcherIF
       }
       else
       {
-        return this.getParameterMap(req.getParameterMap());
+        String contentType = req.getContentType();
+
+        if (contentType != null && contentType.contains("application/json"))
+        {
+          return this.getParamaterMap(req);
+        }
+        else
+        {
+          return this.getParameterMap(req.getParameterMap());
+        }
       }
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public Map<String, ParameterValue> getParamaterMap(HttpServletRequest request)
+  {
+    try
+    {
+      String body = IOUtils.toString(request.getReader());
+
+      JSONObject object = new JSONObject(body);
+
+      Map<String, ParameterValue> values = new HashMap<String, ParameterValue>();
+
+      Iterator<String> keys = object.keys();
+
+      while (keys.hasNext())
+      {
+        String key = keys.next();
+        String value = object.get(key).toString();
+
+        values.put(key, new BasicParameter(new String[] { value }));
+      }
+
+      return values;
+    }
+    catch (IOException e)
+    {
+      throw new RuntimeException(e);
+    }
+    catch (JSONException e)
+    {
+      throw new RuntimeException(e);
     }
   }
 
