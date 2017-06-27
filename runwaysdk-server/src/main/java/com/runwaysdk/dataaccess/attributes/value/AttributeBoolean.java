@@ -53,17 +53,6 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   protected AttributeBoolean(String name, String value, String definingEntityType, MdAttributeConcreteDAOIF mdAttributeIF, Set<MdAttributeConcreteDAOIF> entityMdAttributeIFset)
   {
     super(name, value, definingEntityType, mdAttributeIF, entityMdAttributeIFset);
-
-//    if (value.trim().equals(""))
-//    {
-//      this.value = "";
-//    }
-//    else
-//    {
-//      Float floatValue = new Float(value);
-//
-//      this.value = floatValue.intValue()+"";
-//    }
   }
 
   /**
@@ -90,17 +79,6 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   }
 
   /**
-   * Some attributes store objects instead of strings.
-   * 
-   * @param name
-   * @return object stored on the attribute.
-   */
-  public Boolean getObjectValue()
-  {
-    return this.getBooleanValue();
-  }
-  
-  /**
    *Returns 1 if the given attributeBoolean is true, 0.
    *
    * @return 1 if the given attributeBoolean is true, 0.
@@ -126,7 +104,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   }
 
   /**
-   * Tests the string value of the bolean, and returns a primitive
+   * Tests the string value of the boolean, and returns a primitive
    * <code><b>boolean</b></code>.  Equivalent to <code>!value</code>.
    *
    * @return <code><b>true</b></code> if the boolean attribute is MdAttributeBooleanIF.FALSE
@@ -139,20 +117,5 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
     }
     return true;
   }
-  
-  /**
-   * Returns the formatted value of the attribute.  Some attributes format
-   * this value to something other than what is stored in the database.
-   *
-   * <br>
-   * <b>Precondition: </b> true <br>
-   * <b>Postcondition: </b> return value != null
-   *
-   * @return value of the attribute.
-   */
-//  public String getValue()
-//  {
-//    return com.runwaysdk.constants.MdAttributeBooleanUtil.convertIntToString(this.value);
-//  }
 
 }
