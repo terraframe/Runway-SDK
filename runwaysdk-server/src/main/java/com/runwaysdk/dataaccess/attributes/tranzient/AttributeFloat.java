@@ -74,13 +74,13 @@ public class AttributeFloat extends AttributeNumber
     return (MdAttributeFloatDAOIF)super.getMdAttributeConcrete();
   }
   
+  
   /**
-   * Some attributes store objects instead of strings.
+   * Returns the Java primitive type of the value.
    * 
-   * @param name
-   * @return object stored on the attribute.
+   * @return the Java primitive type of the value.
    */
-  public Float getObjectValue()
+  public Float getTypeSafeValue()
   {
     if (this.getValue().trim().equals(""))
     {

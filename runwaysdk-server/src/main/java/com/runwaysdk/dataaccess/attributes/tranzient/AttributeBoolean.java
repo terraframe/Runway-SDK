@@ -32,7 +32,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   private static final long serialVersionUID = 4647945632263107144L;
 
   /**
-   * Inherited constrcutor, sets <code>name</code> and <code>definingTransientType</code>.
+   * Inherited constructor, sets <code>name</code> and <code>definingTransientType</code>.
    * 
    * @param name The name of this boolean attribute.
    * @param mdAttributeKey key of the defining metadata.
@@ -106,6 +106,16 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   }
 
   /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Boolean getTypeSafeValue()
+  {
+    return this.getBooleanValue();
+  }
+  
+  /**
    * Returns the boolean value of this attribute.
    * @return boolean value of this attribute.
    */
@@ -128,16 +138,6 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
     return Integer.parseInt(this.value);
   }
   
-  /**
-   * Some attributes store objects instead of strings.
-   * 
-   * @param name
-   * @return object stored on the attribute.
-   */
-  public Boolean getObjectValue()
-  {
-    return this.getBooleanValue();
-  }
   
   /**
    * Calls toLowerCase on the String before passing it back to the overridden abstract

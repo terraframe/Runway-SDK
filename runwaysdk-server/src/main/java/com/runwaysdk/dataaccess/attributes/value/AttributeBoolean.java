@@ -79,6 +79,16 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   }
 
   /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Boolean getTypeSafeValue()
+  {
+    return this.getBooleanValue();
+  }
+  
+  /**
    *Returns 1 if the given attributeBoolean is true, 0.
    *
    * @return 1 if the given attributeBoolean is true, 0.

@@ -104,7 +104,16 @@ public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements Indica
     
     AttributeIF attribute = _componentDAOIF.getAttributeIF(mdAttrPrim.definesAttribute());
     
-    return attribute.getObjectValue();
+    if (attribute instanceof AttributeNumericalIF)
+    {
+      AttributeNumericalIF attributeNumerical = (AttributeNumericalIF)attribute;
+
+      return attributeNumerical.getTypeSafeValue();
+    }
+    else
+    {
+      return null;
+    }
   }
   
   

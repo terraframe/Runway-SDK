@@ -20,7 +20,7 @@ package com.runwaysdk.dataaccess;
 
 import java.math.BigDecimal;
 
-public interface AttributeDecimalIF extends AttributeIF
+public interface AttributeDecimalIF extends AttributeNumericalIF
 {
   /**
    * Returns the DisplayLength
@@ -33,10 +33,9 @@ public interface AttributeDecimalIF extends AttributeIF
   public int getDecimalDigits();
   
   /**
-   * Some attributes store objects instead of strings.
+   * Returns the Java primitive type of the value.
    * 
-   * @param name
-   * @return object stored on the attribute.
+   * @return the Java primitive type of the value.
    */
-  public BigDecimal getObjectValue();
+  public BigDecimal getTypeSafeValue();
 }

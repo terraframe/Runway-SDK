@@ -33,7 +33,7 @@ public class AttributeLong extends AttributeNumber implements AttributeLongIF
   private static final long serialVersionUID = 608579832957982942L;
 
   /**
-   * Inherited constrcutor, sets <code>name</code> and
+   * Inherited constructor, sets <code>name</code> and
    * <code>definingEntityType</code>.
    * 
    * @param name
@@ -49,7 +49,7 @@ public class AttributeLong extends AttributeNumber implements AttributeLongIF
   }
 
   /**
-   * Inherited constrcutor, sets <code>name</code>,
+   * Inherited constructor, sets <code>name</code>,
    * <code>definingEntityType</code>, and <code>value</code>.
    * 
    * @param name
@@ -66,14 +66,13 @@ public class AttributeLong extends AttributeNumber implements AttributeLongIF
   {
     super(name, mdAttributeKey, definingEntityType, value);
   }
-
+  
   /**
-   * Some attributes store objects instead of strings.
+   * Returns the Java primitive type of the value.
    * 
-   * @param name
-   * @return object stored on the attribute.
+   * @return the Java primitive type of the value.
    */
-  public Long getObjectValue()
+  public Long getTypeSafeValue()
   {
     if (this.getValue().trim().equals(""))
     {

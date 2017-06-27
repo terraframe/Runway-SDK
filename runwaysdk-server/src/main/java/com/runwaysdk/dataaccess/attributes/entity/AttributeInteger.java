@@ -65,14 +65,13 @@ public class AttributeInteger extends AttributeNumber
   {
     super(name, mdAttributeKey, definingEntityType, value);
   }
-
+  
   /**
-   * Some attributes store objects instead of strings.
+   * Returns the Java primitive type of the value.
    * 
-   * @param name
-   * @return object stored on the attribute.
+   * @return the Java primitive type of the value.
    */
-  public Integer getObjectValue()
+  public Integer getTypeSafeValue()
   {
     if (this.getValue().trim().equals(""))
     {

@@ -21,6 +21,7 @@ package com.runwaysdk.dataaccess.attributes.entity;
 import java.util.Locale;
 
 import com.runwaysdk.dataaccess.AttributeIF;
+import com.runwaysdk.dataaccess.AttributeNumericalIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueAboveRangeProblem;
@@ -32,7 +33,7 @@ import com.runwaysdk.format.AbstractFormatFactory;
 import com.runwaysdk.format.Format;
 import com.runwaysdk.session.Session;
 
-public abstract class AttributeNumber extends Attribute
+public abstract class AttributeNumber extends Attribute implements AttributeNumericalIF
 {
   /**
    * 

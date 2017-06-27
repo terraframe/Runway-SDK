@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.dataaccess.attributes.value;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -54,12 +53,11 @@ public class AttributeDouble extends AttributeNumber
   }
   
   /**
-   * Some attributes store objects instead of strings.
+   * Returns the Java primitive type of the value.
    * 
-   * @param name
-   * @return object stored on the attribute.
+   * @return the Java primitive type of the value.
    */
-  public Double getObjectValue()
+  public Double getTypeSafeValue()
   {
     if (this.getValue().trim().equals(""))
     {

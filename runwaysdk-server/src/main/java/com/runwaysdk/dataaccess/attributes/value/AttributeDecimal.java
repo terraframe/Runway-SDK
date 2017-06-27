@@ -75,7 +75,7 @@ public class AttributeDecimal extends AttributeNumber implements AttributeDecima
    * @param name
    * @return object stored on the attribute.
    */
-  public BigDecimal getObjectValue()
+  public BigDecimal getTypeSafeValue()
   {
     if (this.getValue().trim().equals(""))
     {

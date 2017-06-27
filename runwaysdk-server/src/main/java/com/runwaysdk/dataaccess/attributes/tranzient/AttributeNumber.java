@@ -18,10 +18,11 @@
  */
 package com.runwaysdk.dataaccess.attributes.tranzient;
 
+import com.runwaysdk.dataaccess.AttributeNumericalIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 
-public class AttributeNumber extends Attribute
+public abstract class AttributeNumber extends Attribute implements AttributeNumericalIF
 {
   /**
    * 

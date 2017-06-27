@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.dataaccess.attributes.tranzient;
 
-import java.math.BigDecimal;
-
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
@@ -33,7 +31,7 @@ public class AttributeDouble extends AttributeNumber
 
 
   /**
-   * Inherited constrcutor, sets <code>name</code> and <code>definingTransientType</code>.
+   * Inherited constructor, sets <code>name</code> and <code>definingTransientType</code>.
    * 
    * @param name The name of this double attribute.
    * @param mdAttributeKey key of the defining metadata.
@@ -45,7 +43,7 @@ public class AttributeDouble extends AttributeNumber
   }
 
   /**
-   * Inherited constrcutor, sets <code>name</code>, <code>definingTransientType</code>, and
+   * Inherited constructor, sets <code>name</code>, <code>definingTransientType</code>, and
    * <code>value</code>.
    * 
    * @param name The name of this double attribute.
@@ -74,12 +72,11 @@ public class AttributeDouble extends AttributeNumber
   }
   
   /**
-   * Some attributes store objects instead of strings.
+   * Returns the Java primitive type of the value.
    * 
-   * @param name
-   * @return object stored on the attribute.
+   * @return the Java primitive type of the value.
    */
-  public Double getObjectValue()
+  public Double getTypeSafeValue()
   {
     if (this.getValue().trim().equals(""))
     {
