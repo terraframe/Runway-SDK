@@ -48,12 +48,12 @@ public abstract class GeneratedComponentQuery
    * @param attributeName
    * @return The query attribute correspond
    */
-  public abstract Attribute get(String attributeName);
+  public abstract Selectable get(String attributeName);
   
-  public abstract Attribute get(String attributeName, String userDefinedAlias);
+  public abstract Selectable get(String attributeName, String userDefinedAlias);
   
   /**
-   * Retricts the query to return rows from the given page number
+   * Restricts the query to return rows from the given page number
    * where each page has the given number of rows.
    * @param pageSize
    * @param pageNumber

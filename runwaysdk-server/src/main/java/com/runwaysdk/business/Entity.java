@@ -66,12 +66,12 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.transaction.LockObject;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.query.Attribute;
 import com.runwaysdk.query.AttributeEnumeration;
 import com.runwaysdk.query.AttributeLocal;
 import com.runwaysdk.query.AttributeReference;
 import com.runwaysdk.query.AttributeStruct;
 import com.runwaysdk.query.GeneratedEntityQuery;
+import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectablePrimitive;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
@@ -848,7 +848,7 @@ public abstract class Entity implements Mutable, Serializable
 
     if (sortAttribute != null)
     {
-      Attribute attribute;
+      Selectable attribute;
 
       if (sortAttribute.contains("-"))
       {

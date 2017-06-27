@@ -27,5 +27,5 @@ public interface HasAttributeFactory
    * @param userDefinedDisplayLabel
    * @return Condition object representing an equals with the attribute with the given name with the given value.
    */
-  public Attribute get(String attributeName, String userDefinedAlias, String userDefinedDisplayLabel);
+  public Selectable get(String attributeName, String userDefinedAlias, String userDefinedDisplayLabel);
 }

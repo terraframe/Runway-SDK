@@ -62,6 +62,7 @@ import com.runwaysdk.query.ConditionOperator;
 import com.runwaysdk.query.GeneratedViewQuery;
 import com.runwaysdk.query.QueryException;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableChar;
 import com.runwaysdk.query.SelectableNumber;
 import com.runwaysdk.query.SelectablePrimitive;
@@ -356,7 +357,7 @@ public class QueryTranslation
    */
   private static Condition translateCondition(ComponentQuery query, MdAttributeDAOIF mdAttribute, String condition, String conditionValue)
   {
-    Attribute attribute = null;
+    Selectable attribute = null;
 
     if (query instanceof ValueQuery)
     {
@@ -377,15 +378,15 @@ public class QueryTranslation
     }
     else if (attribute instanceof AttributeBoolean)
     {
-      return translateBooleanCondition(attribute, condition, conditionValue);
+      return translateBooleanCondition((AttributeBoolean)attribute, condition, conditionValue);
     }
     else if (attribute instanceof AttributeMoment)
     {
-      return translateMomentCondition(attribute, condition, conditionValue);
+      return translateMomentCondition((AttributeMoment)attribute, condition, conditionValue);
     }
     else if (attribute instanceof AttributeReference)
     {
-      return translateReferenceCondition(attribute, condition, conditionValue);
+      return translateReferenceCondition((AttributeReference)attribute, condition, conditionValue);
     }
     else
     {

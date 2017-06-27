@@ -1,9 +1,55 @@
 package com.runwaysdk.query;
 
+import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
+
 
 
 public abstract class AttributeIndicator implements SelectablePrimitive, Statement
 {
+  /**
+   * The {@link MdAttributeIndicatorDAOIF} metadata of the attribute defined on the class.
+   */
+  protected   MdAttributeIndicatorDAOIF     mdAttributeIndicator;
+  
+  protected String                          userDefinedAlias;
+
+  protected String                          userDefinedDisplayLabel;
+  
+  protected AttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator)
+  {
+    this.init(_mdAttributeIndicator, null, null);
+  }
+  
+  protected AttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _userDefinedAlias, String _userDefinedDisplayLabel)
+  {
+    this.init(_mdAttributeIndicator, _userDefinedAlias, _userDefinedDisplayLabel);
+  }
+  
+  
+  private void init(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _userDefinedAlias, String _userDefinedDisplayLabel)
+  {
+    this.mdAttributeIndicator    = _mdAttributeIndicator;
+    
+    if (_userDefinedAlias == null)
+    {
+      this.userDefinedAlias        = "";
+    }
+    else
+    {
+      this.userDefinedAlias        = _userDefinedAlias;
+    }
+
+    
+    if (_userDefinedDisplayLabel == null)
+    {
+      this.userDefinedDisplayLabel        = "";
+    }
+    else
+    {
+      this.userDefinedDisplayLabel        = _userDefinedDisplayLabel;
+    }
+  }
+  
 //
 //  @Override
 //  public Condition EQ(String statement)

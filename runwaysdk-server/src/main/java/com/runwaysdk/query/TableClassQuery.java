@@ -38,6 +38,7 @@ import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
+import com.runwaysdk.dataaccess.IndicatorCompositeDAOIF;
 import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
 import com.runwaysdk.dataaccess.IndicatorPrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
@@ -289,9 +290,9 @@ public abstract class TableClassQuery extends ComponentQuery
    * @return Condition object representing an equals with the attribute with the
    *         given name with the given value.
    */
-  public Selectable getSelectable(String attributeName)
+  public Selectable getS(String attributeName)
   {
-    return getSelectable(attributeName, null, null);
+    return getS(attributeName, null, null);
   }
   
   /**
@@ -304,9 +305,9 @@ public abstract class TableClassQuery extends ComponentQuery
    * @return Condition object representing an equals with the attribute with the
    *         given name with the given value.
    */
-  public Selectable getSelectable(String attributeName, String userDefinedAlias)
+  public Selectable getS(String attributeName, String userDefinedAlias)
   {
-    return getSelectable(attributeName, userDefinedAlias, null);
+    return getS(attributeName, userDefinedAlias, null);
   }
 
   
@@ -321,7 +322,7 @@ public abstract class TableClassQuery extends ComponentQuery
    * @return Condition object representing an equals with the attribute with the
    *         given name with the given value.
    */
-  public Selectable getSelectable(String attributeName, String userDefinedAlias, String userDefinedDisplayLabel)
+  public Selectable getS(String attributeName, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
     
@@ -331,44 +332,118 @@ public abstract class TableClassQuery extends ComponentQuery
     
       IndicatorElementDAOIF indicatorElement = mdAttributeIndicator.getIndicator();
     
-      if (indicatorElement instanceof IndicatorPrimitiveDAOIF)
-      {
-        IndicatorPrimitiveDAOIF indicatorPrimitive = (IndicatorPrimitiveDAOIF)indicatorElement;
-        
-        MdAttributePrimitiveDAOIF mdAttrPrimitive = indicatorPrimitive.getMdAttributePrimitive();
-
-        // String userDefinedAlias, String userDefinedDisplayLabel
-        Selectable attributeInIndictor = this.internalAttributeFactory(attributeName, mdAttrPrimitive, null, null);
-
-        // Get the aggregate function.
-        EnumerationItemDAOIF aggFuncEnumItem = indicatorPrimitive.getAggregateFunction();
-        
-        AggregateFunction aggregateFunction = null;
-        
-        if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.SUM))
-        {
-           aggregateFunction = new SUM(attributeInIndictor);
-           // , userDefinedAlias, userDefinedDisplayLabel
-        }
-        else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.COUNT))
-        {
-          aggregateFunction = new COUNT(attributeInIndictor);
-        }
-        
-        Selectable selectable = new AttributeIndicatorPrimitive(mdAttributeIndicator, aggregateFunction, userDefinedAlias, userDefinedDisplayLabel);
-        
-        return selectable;
-      }
-      else
-      {
-        return null;
-      }
+      return this.buildAttributeIndicator(mdAttributeIndicator, indicatorElement, attributeName, userDefinedAlias, userDefinedDisplayLabel);
     }
     else
     {
       return this.get(attributeName, userDefinedAlias, userDefinedDisplayLabel);
     }
   }
+
+  /**
+   * 
+   * @param _mdAttributeIndicator
+   * @param _indicatorElement
+   * @param _attributeName
+   * @param _userDefinedAlias
+   * @param _userDefinedDisplayLabel
+   * @return
+   */
+  private AttributeIndicator buildAttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, IndicatorElementDAOIF _indicatorElement, String _attributeName, String _userDefinedAlias,
+      String _userDefinedDisplayLabel)
+  {
+    if (_indicatorElement instanceof IndicatorPrimitiveDAOIF)
+    {
+      return this.buildAttributeIndicatorPrimitive(_mdAttributeIndicator, (IndicatorPrimitiveDAOIF)_indicatorElement, _attributeName, _userDefinedAlias,
+          _userDefinedDisplayLabel);
+    }
+    else // indicator composite
+    {
+      return this.buildAttributeIndicatorComposite(_mdAttributeIndicator, (IndicatorCompositeDAOIF)_indicatorElement, _attributeName, _userDefinedAlias,
+          _userDefinedDisplayLabel);
+    }
+  }
+
+
+  /**
+   * 
+   * @param _mdAttributeIndicator
+   * @param _indicatorComposite
+   * @param _attributeName
+   * @param _userDefinedAlias
+   * @param _userDefinedDisplayLabel
+   * @return
+   */
+  private AttributeIndicatorComposite buildAttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, IndicatorCompositeDAOIF _indicatorComposite, String _attributeName, String _userDefinedAlias,
+      String _userDefinedDisplayLabel)
+  {
+    
+    IndicatorElementDAOIF indicatorElementLeft = _indicatorComposite.getLeftOperand();
+    AttributeIndicator left = this.buildAttributeIndicator(_mdAttributeIndicator, indicatorElementLeft, _attributeName, _userDefinedAlias, _userDefinedDisplayLabel);
+    
+    EnumerationItemDAOIF operator = _indicatorComposite.getOperator();
+    
+    IndicatorElementDAOIF indicatorElementRight = _indicatorComposite.getRightOperand();
+    AttributeIndicator right = this.buildAttributeIndicator(_mdAttributeIndicator, indicatorElementRight, _attributeName, _userDefinedAlias, _userDefinedDisplayLabel);
+    
+    MdTableClassIF mdTableClass = (MdTableClassIF) _mdAttributeIndicator.definedByClass();
+    
+    return new AttributeIndicatorComposite(_mdAttributeIndicator, mdTableClass.definesType(), left, operator, right);
+  }
+  
+  /**
+   * 
+   * @param _mdAttributeIndicator
+   * @param _indicatorPrimitive
+   * @param _attributeName
+   * @param _userDefinedAlias
+   * @param _userDefinedDisplayLabel
+   * @return
+   */
+  private AttributeIndicatorPrimitive buildAttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, IndicatorPrimitiveDAOIF _indicatorPrimitive, String _attributeName, String _userDefinedAlias,
+      String _userDefinedDisplayLabel)
+  {
+
+    MdAttributePrimitiveDAOIF mdAttrPrimitive = _indicatorPrimitive.getMdAttributePrimitive();
+
+    // String userDefinedAlias, String userDefinedDisplayLabel
+    Selectable attributeInIndictor = this.internalAttributeFactory(_attributeName, mdAttrPrimitive, null, null);
+
+    // Get the aggregate function.
+    EnumerationItemDAOIF aggFuncEnumItem = _indicatorPrimitive.getAggregateFunction();
+    
+    AggregateFunction aggregateFunction = null;
+    
+    if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.SUM))
+    {
+       aggregateFunction = new SUM(attributeInIndictor);
+       // , userDefinedAlias, userDefinedDisplayLabel
+    }
+    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.COUNT))
+    {
+      aggregateFunction = new COUNT(attributeInIndictor);
+    }
+    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.MIN))
+    {
+      aggregateFunction = new MIN(attributeInIndictor);
+    }
+    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.MAX))
+    {
+      aggregateFunction = new MAX(attributeInIndictor);
+    }
+    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.AVG))
+    {
+      aggregateFunction = new AVG(attributeInIndictor);
+    }
+    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.STDEV))
+    {
+      aggregateFunction = new STDDEV(attributeInIndictor);
+    }
+    
+    return new AttributeIndicatorPrimitive(_mdAttributeIndicator, aggregateFunction, _userDefinedAlias, _userDefinedDisplayLabel);
+  }
+  
+  
 
   
   /**

@@ -430,7 +430,7 @@ public class EntityAttributeIndicatorTest extends TestCase
     ValueQuery vq = qf.valueQuery();
     BusinessDAOQuery bq = qf.businessDAOQuery(testMdBusinessIF.definesType());
     
-    vq.SELECT(bq.get(TEST_INTEGER_1), bq.get(TEST_INTEGER_2), bq.getSelectable(TEST_COUNT_INDICATOR));
+    vq.SELECT(bq.get(TEST_INTEGER_1), bq.get(TEST_INTEGER_2), bq.getS(TEST_COUNT_INDICATOR));
     
     OIterator<ValueObject> i = vq.getIterator();
 

@@ -12,17 +12,9 @@ import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 
 public class AttributeIndicatorPrimitive extends AttributeIndicator
 {
-  /**
-   * The {@link MdAttributeIndicatorDAOIF} metadata of the attribute defined on the class.
-   */
-  private   MdAttributeIndicatorDAOIF       mdAttributeIndicator;
   
   private   AggregateFunction               aggregateFunction;
-  
-  protected String                          userDefinedAlias;
-
-  protected String                          userDefinedDisplayLabel;
-  
+   
   private   Object                          data;
   
   // Reference to all MdAttributes that were involved in constructing this
@@ -31,39 +23,21 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
   
   protected AttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, AggregateFunction _aggregateFunction)
   {
-    this.init(_mdAttributeIndicator, _aggregateFunction, null, null);
+    super(_mdAttributeIndicator);
+    this.init(_aggregateFunction);
   }
   
   protected AttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, AggregateFunction _aggregateFunction, String _userDefinedAlias, String _userDefinedDisplayLabel)
   {
-    this.init(_mdAttributeIndicator, _aggregateFunction, _userDefinedAlias, _userDefinedDisplayLabel);
+    super(_mdAttributeIndicator, _userDefinedAlias, _userDefinedDisplayLabel);
+    this.init(_aggregateFunction);
   }
 
 
-  private void init(MdAttributeIndicatorDAOIF _mdAttributeIndicator, AggregateFunction _aggregateFunction,
-      String _userDefinedAlias, String _userDefinedDisplayLabel)
+  private void init(AggregateFunction _aggregateFunction)
   {
-    this.mdAttributeIndicator    = _mdAttributeIndicator;
     this.aggregateFunction       = _aggregateFunction;
     
-    if (_userDefinedAlias == null)
-    {
-      this.userDefinedAlias = "";
-    }
-    else
-    {
-      MetadataDAO.validateName(_userDefinedAlias.trim());
-      this.userDefinedAlias        = _userDefinedAlias;
-    }
-    
-    if (_userDefinedDisplayLabel == null)
-    {
-      this.userDefinedDisplayLabel = "";
-    }
-    else
-    {
-      this.userDefinedDisplayLabel = _userDefinedDisplayLabel.trim();
-    }
     
     this.entityMdAttributeIFset = new HashSet<MdAttributeConcreteDAOIF>();
   }
