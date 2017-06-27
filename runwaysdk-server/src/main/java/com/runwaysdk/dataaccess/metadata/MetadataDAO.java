@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * Created on Aug 12, 2005
@@ -107,7 +107,12 @@ public abstract class MetadataDAO extends BusinessDAO implements MetadataDAOIF, 
   @Override
   public void delete(boolean businessContext)
   {
-    if (!this.isRemovable() && !this.isImport())
+    this.delete(businessContext, true);
+  }
+
+  public void delete(boolean businessContext, boolean enforceRemovable)
+  {
+    if (enforceRemovable && !this.isRemovable() && !this.isImport())
     {
       String error = "Metadata [" + this.getId() + "] is not allowed to be deleted.";
       throw new MetadataCannotBeDeletedException(error, this);
@@ -147,8 +152,9 @@ public abstract class MetadataDAO extends BusinessDAO implements MetadataDAOIF, 
    * 
    * @param validateName
    *          name to validate
-   * @throws {@link InvalidIdentifierException} exception if the given name is
-   *         not a valid Java classifier name or attribute.
+   * @throws {@link
+   *           InvalidIdentifierException} exception if the given name is not a
+   *           valid Java classifier name or attribute.
    */
   public static void validateName(String validateName)
   {
@@ -261,8 +267,7 @@ public abstract class MetadataDAO extends BusinessDAO implements MetadataDAOIF, 
    */
   private static boolean casesMatch(char char1, char char2)
   {
-    if ( ( Character.isUpperCase(char1) && Character.isUpperCase(char2) ) || ( Character.isLowerCase(char1) && Character.isLowerCase(char2) ) || 
-            (!Character.isUpperCase(char1) && !Character.isLowerCase(char1) && !Character.isUpperCase(char2) && !Character.isLowerCase(char2) ))
+    if ( ( Character.isUpperCase(char1) && Character.isUpperCase(char2) ) || ( Character.isLowerCase(char1) && Character.isLowerCase(char2) ) || ( !Character.isUpperCase(char1) && !Character.isLowerCase(char1) && !Character.isUpperCase(char2) && !Character.isLowerCase(char2) ))
     {
       return true;
     }
