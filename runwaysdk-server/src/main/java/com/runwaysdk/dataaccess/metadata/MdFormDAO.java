@@ -135,7 +135,7 @@ public abstract class MdFormDAO extends MdTypeDAO implements MdFormDAOIF
       // there is a condition reference. At that point the field reference
       // becomes stale. As such before deleting a field we must retrieve a new
       // instance to ensure that the field is up to date.
-      field.getBusinessDAO().delete(businessContext);
+      field.getBusinessDAO().delete(businessContext, false);
     }
 
     super.delete(businessContext);
