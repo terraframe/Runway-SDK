@@ -98,7 +98,7 @@ public class EntityAttributeIndicatorTest extends TestCase
   }
   
   /**
-   * A suite() takes <b>this </b> <code>EntityAttributeRatio.class</code> and
+   * A suite() takes <b>this </b> <code>EntityAttributeIndicatorTest.class</code> and
    * wraps it in <code>MasterTestSetup</code>. The returned class is a suite of
    * all the tests in <code>AttributeTest</code>, with the global setUp() and
    * tearDown() methods from <code>MasterTestSetup</code>.
@@ -356,31 +356,31 @@ public class EntityAttributeIndicatorTest extends TestCase
   
   public static void classTearDown()
   {
-//    BusinessDAO temp = BusinessDAO.get(testMdBusinessIF.getId()).getBusinessDAO();
-//    temp.delete();
+
   }
   
-//  /**
-//   * Behavior of a divide by zero should be that the value should be blank or null.
-//   */
-//  public void testObjectDivideByZero()
-//  {
-//    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-//    bus1.setValue(TEST_INTEGER_1, "4");
-//    bus1.setValue(TEST_INTEGER_2, "0");
-//    bus1.apply();
-//    
-//    try
-//    {
-//      String value = bus1.getValue(TEST_INTEGER_INDICATOR);
-//      
-//      assertTrue("A divide by zero should return an empty string.", value.equals(""));
-//    }
-//    finally
-//    {
-//      bus1.delete();
-//    }
-//  }
+  /**
+   * Behavior of a divide by zero should be that the value should be blank or null.
+   */
+  public void testObjectDivideByZero()
+  {
+    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+    bus1.setValue(TEST_INTEGER_1, "4");
+    bus1.setValue(TEST_INTEGER_2, "0");
+    bus1.apply();
+    
+    try
+    {
+      String value = bus1.getValue(TEST_INTEGER_INDICATOR);
+      
+      assertTrue("A divide by zero should return an empty string.", value.equals(""));
+    }
+    finally
+    {
+      bus1.delete();
+    }
+  }
+  
   
   /**
    * Behavior of a divide by zero should be that the value should be blank or null.
@@ -425,35 +425,142 @@ public class EntityAttributeIndicatorTest extends TestCase
   
   public void testValueQuery()
   {
-    QueryFactory qf = new QueryFactory();
+    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+    bus1.setValue(TEST_INTEGER_1, "4");
+    bus1.setValue(TEST_INTEGER_2, "2");
+    bus1.apply();
     
-    ValueQuery vq = qf.valueQuery();
-    BusinessDAOQuery bq = qf.businessDAOQuery(testMdBusinessIF.definesType());
-    
-    vq.SELECT(bq.get(TEST_INTEGER_1), bq.get(TEST_INTEGER_2), bq.getS(TEST_COUNT_INDICATOR));
-    
-    OIterator<ValueObject> i = vq.getIterator();
-
-System.out.println(vq.getSQL());
-    
-    for (ValueObject valueObject : i)
+    try
     {
-      System.out.println(valueObject.getValue(TEST_INTEGER_1)+"  "+valueObject.getValue(TEST_INTEGER_2) + "  " + valueObject.getValue(TEST_COUNT_INDICATOR));
-    }
-      
-//  QueryFactory qf = new QueryFactory();
-//  
-//  BusinessDAOQuery q = qf.businessDAOQuery(testMdBusinessIF.definesType());
-//  
-//  OIterator<BusinessDAOIF> i = q.getIterator();
-//  
-//  for (BusinessDAOIF businessDAOIF : i)
-//  {
-////    System.out.print("\n"+businessDAOIF.getValue(TEST_INTEGER_1)+" / "+businessDAOIF.getValue(TEST_INTEGER_2) +" = " + businessDAOIF.getValue(TEST_INTEGER_INDICATOR));
-//    
-//    System.out.println("\nIndicator Value: "+businessDAOIF.getValue(TEST_INTEGER_INDICATOR));
-//  }
-    
-  }
+      QueryFactory qf = new QueryFactory();
 
+      ValueQuery vq = qf.valueQuery();
+      BusinessDAOQuery bq = qf.businessDAOQuery(testMdBusinessIF.definesType());
+    
+      vq.SELECT(bq.get(TEST_INTEGER_1), bq.get(TEST_INTEGER_2), bq.getS(TEST_COUNT_INDICATOR));
+    
+      OIterator<ValueObject> i = vq.getIterator(); 
+
+      try
+      {
+        assertEquals("Query did not return just one result - impropper aggregation of indicator.", 1, vq.getCount());
+        
+        for (ValueObject valueObject : i)
+        {
+          // System.out.println(valueObject.getValue(TEST_INTEGER_1)+"  "+valueObject.getValue(TEST_INTEGER_2) + "  " + valueObject.getValue(TEST_COUNT_INDICATOR));
+        
+          String stringCount = valueObject.getValue(TEST_COUNT_INDICATOR);
+         
+          Integer count = Integer.parseInt(stringCount);
+          
+          assertEquals("The query count should have returned a count of two.", (Integer)2, (Integer)count);
+        }
+      }
+      finally
+      {
+        i.close();
+      }
+    }
+    finally
+    {
+      bus1.delete();
+    }
+  }
+  
+  public void testFloatIndicator()
+  {
+    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+    bus1.setValue(TEST_FLOAT_1, "44.4");
+    bus1.setValue(TEST_FLOAT_2, "22.2");
+    bus1.apply();
+    
+    BusinessDAO bus2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+    bus2.setValue(TEST_FLOAT_1, "44.4");
+    bus2.setValue(TEST_FLOAT_2, "22.2");
+    bus2.apply();
+    
+    try
+    {
+      QueryFactory qf = new QueryFactory();
+      
+      ValueQuery vq = qf.valueQuery();
+      BusinessDAOQuery bq = qf.businessDAOQuery(testMdBusinessIF.definesType());
+      
+      vq.SELECT(bq.getS(TEST_FLOAT_INDICATOR));
+      
+      OIterator<ValueObject> i = vq.getIterator();
+          
+      try
+      {
+        assertEquals("Query did not return just one result - improper aggregation of indicator.", 1, vq.getCount());
+        
+        for (ValueObject valueObject : i)
+        {
+          
+          String floatIndicator = valueObject.getValue(TEST_FLOAT_INDICATOR);
+          
+          Double resultDouble = Double.parseDouble(floatIndicator);
+          
+          assertEquals("The query count should have returned a count of two.", (Double)2.0, (Double)resultDouble);
+        }
+      }
+      finally
+      {
+        i.close();
+      }
+    }
+    finally
+    {
+      bus1.delete();
+      bus2.delete();
+    }
+  }
+  
+  public void testFloatNullIndicator()
+  {
+    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+    bus1.setValue(TEST_FLOAT_1, "44.4");
+    bus1.setValue(TEST_FLOAT_2, "0");
+    bus1.apply();
+    
+    BusinessDAO bus2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+    bus2.setValue(TEST_FLOAT_1, "44.4");
+    bus2.setValue(TEST_FLOAT_2, "0");
+    bus2.apply();
+    
+    try
+    {
+      QueryFactory qf = new QueryFactory();
+      
+      ValueQuery vq = qf.valueQuery();
+      BusinessDAOQuery bq = qf.businessDAOQuery(testMdBusinessIF.definesType());
+      
+      vq.SELECT(bq.getS(TEST_FLOAT_INDICATOR));
+      
+      OIterator<ValueObject> i = vq.getIterator();
+          
+      try
+      {
+        assertEquals("Query did not return just one result - improper aggregation of indicator.", 1, vq.getCount());
+        
+        for (ValueObject valueObject : i)
+        {
+          String floatIndicator = valueObject.getValue(TEST_FLOAT_INDICATOR);
+          
+          assertEquals("The query count should have returned a count of two.", "", floatIndicator.trim());
+          
+          System.out.println("Value :"+valueObject.getValue(TEST_FLOAT_INDICATOR));
+        }
+      }
+      finally
+      {
+        i.close();
+      }
+    }
+    finally
+    {
+      bus1.delete();
+      bus2.delete();
+    }
+  }
 }

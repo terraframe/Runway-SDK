@@ -1175,6 +1175,27 @@ public class ValueQuery extends ComponentQuery
   }
 
   /**
+   * Returns a list of {@link AttributeIndicator} objects in the select clause. 
+   * 
+   * @return
+   */
+  protected List<AttributeIndicator> getIndicatorSelectables()
+  {
+    List<AttributeIndicator> selectables = new LinkedList<AttributeIndicator>();
+
+    // Make sure functions that are indicators are added to the select list.
+    for (Selectable selectable : this.selectableList)
+    {
+      if (selectable instanceof AttributeIndicator)
+      {
+        selectables.add((AttributeIndicator)selectable);
+      }
+    }
+    
+    return selectables;
+  }
+  
+  /**
    * Returns the SQL to count the objects that match the specified criteria.
    * 
    * @return sql for counting objects match the specified criteria.
@@ -1203,16 +1224,25 @@ public class ValueQuery extends ComponentQuery
         this.preprossesSelectableStructures();
       }
       this.addToGroupByList(this.selectableList);
-
+      
+      List<AttributeIndicator> indicatorList = this.getIndicatorSelectables();
+      
       // There are items in the group by clause
       // The select clause will contain everything that is a non aggregate.
-      if (this.groupByList.size() > 0)
+      if (this.groupByList.size() > 0 || indicatorList.size() > 0)
       {
         List<Selectable> selectables = new LinkedList<Selectable>();
         for (SelectableSingle selectable : groupByAttributeMap.values())
         {
           selectables.add(selectable);
         }
+        
+        // Make sure functions that are indicators are added to the select list.
+        for (AttributeIndicator selectable : indicatorList)
+        {
+          selectables.add(selectable);
+        }
+        
         sql = this.getSQLInternal(selectables, false, 0, 0);
         sql = "SELECT COUNT(*) " + Database.formatColumnAlias("ct") + " FROM (\n" + sql + "\n) AS UNION_COUNT";
       }
@@ -1637,18 +1667,18 @@ public class ValueQuery extends ComponentQuery
    */
   @Override
   protected String addGroupBySelectablesToSelectClauseForCount()
-  {
+  {    
     String sql = "";
 
     boolean firstIteration = true;
-    for (String groupBy : this.groupByList)
+    for (String selectable : this.groupByList)
     {
       if (!firstIteration)
       {
         sql += ", ";
       }
       firstIteration = false;
-      sql += groupBy;
+      sql += selectable;
     }
 
     return sql;

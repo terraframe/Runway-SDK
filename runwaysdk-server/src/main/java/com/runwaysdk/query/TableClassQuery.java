@@ -387,8 +387,10 @@ public abstract class TableClassQuery extends ComponentQuery
     AttributeIndicator right = this.buildAttributeIndicator(_mdAttributeIndicator, indicatorElementRight, _attributeName, _userDefinedAlias, _userDefinedDisplayLabel);
     
     MdTableClassIF mdTableClass = (MdTableClassIF) _mdAttributeIndicator.definedByClass();
-    
-    return new AttributeIndicatorComposite(_mdAttributeIndicator, mdTableClass.definesType(), left, operator, right);
+    String definingTableName = mdTableClass.getTableName();
+    String definingTableAlias = this.getTableAlias("", definingTableName);
+ 
+    return new AttributeIndicatorComposite(_mdAttributeIndicator, mdTableClass.definesType(), definingTableName, definingTableAlias, this, left, operator, right, _userDefinedAlias, _userDefinedDisplayLabel);    
   }
   
   /**
@@ -440,7 +442,12 @@ public abstract class TableClassQuery extends ComponentQuery
       aggregateFunction = new STDDEV(attributeInIndictor);
     }
     
-    return new AttributeIndicatorPrimitive(_mdAttributeIndicator, aggregateFunction, _userDefinedAlias, _userDefinedDisplayLabel);
+    MdTableClassIF mdTableClass = (MdTableClassIF) _mdAttributeIndicator.definedByClass();
+    String definingTableName = mdTableClass.getTableName();
+    String definingTableAlias = this.getTableAlias("", definingTableName);
+    
+    return new AttributeIndicatorPrimitive(_mdAttributeIndicator, definingTableName, definingTableAlias, this, aggregateFunction, _userDefinedAlias, _userDefinedDisplayLabel);
+
   }
   
   

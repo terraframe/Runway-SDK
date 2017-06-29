@@ -3,6 +3,8 @@ package com.runwaysdk.dataaccess;
 import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
+import com.runwaysdk.constants.AggregationFunctionInfo;
+import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndicatorPrimitiveInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.session.Session;
@@ -82,9 +84,34 @@ public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements Indica
    */
   public String javaType()
   {
-    MdAttributePrimitiveDAOIF mdAttribute = this.getMdAttributePrimitive();
+    EnumerationItemDAOIF function = this.getAggregateFunction();
     
-    return mdAttribute.javaClass().getName();
+    String functionName = function.getValue(AggregationFunctionInfo.NAME);
+
+    if (functionName.equals(AggregationFunctionInfo.COUNT))
+    {
+      return Long.class.getName();
+    }
+    else if (functionName.equals(AggregationFunctionInfo.SUM) ||
+        functionName.equals(AggregationFunctionInfo.MIN) ||
+        functionName.equals(AggregationFunctionInfo.MAX) )
+    {
+      MdAttributePrimitiveDAOIF mdAttribute = this.getMdAttributePrimitive();
+      return mdAttribute.javaClass().getName();
+    }
+    else // AggregationFunctionInfo.STDEV   AggregationFunctionInfo.AVG
+    {
+      MdAttributePrimitiveDAOIF mdAttribute = this.getMdAttributePrimitive();
+      
+      if (mdAttribute instanceof MdAttributeDecimalDAOIF)
+      {
+        return mdAttribute.javaClass().getName();
+      }
+      else
+      {
+        return Long.class.getName();
+      }
+    }
   }
   
   /**

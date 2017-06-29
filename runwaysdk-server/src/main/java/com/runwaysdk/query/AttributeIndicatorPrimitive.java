@@ -8,28 +8,22 @@ import java.util.Set;
 
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
-import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 
 public class AttributeIndicatorPrimitive extends AttributeIndicator
 {
   
   private   AggregateFunction               aggregateFunction;
-   
-  private   Object                          data;
   
-  // Reference to all MdAttributes that were involved in constructing this
-  // attribute;
-  protected Set<MdAttributeConcreteDAOIF> entityMdAttributeIFset;
   
-  protected AttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, AggregateFunction _aggregateFunction)
+  protected AttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AggregateFunction _aggregateFunction)
   {
-    super(_mdAttributeIndicator);
+    super(_mdAttributeIndicator, _definingTableName, _definingTableAlias, _rootQuery);
     this.init(_aggregateFunction);
   }
   
-  protected AttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, AggregateFunction _aggregateFunction, String _userDefinedAlias, String _userDefinedDisplayLabel)
+  protected AttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AggregateFunction _aggregateFunction, String _userDefinedAlias, String _userDefinedDisplayLabel)
   {
-    super(_mdAttributeIndicator, _userDefinedAlias, _userDefinedDisplayLabel);
+    super(_mdAttributeIndicator, _definingTableName, _definingTableAlias, _userDefinedAlias, _userDefinedDisplayLabel, _rootQuery);
     this.init(_aggregateFunction);
   }
 
@@ -42,18 +36,6 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
     this.entityMdAttributeIFset = new HashSet<MdAttributeConcreteDAOIF>();
   }
   
-  @Override
-  public Object getData()
-  {
-    return this.data;
-  }
-
-  @Override
-  public void setData(Object data)
-  {
-    this.data = data;
-  }
-  
   /**
    * Returns the database column name representing this attribute.
    *
@@ -64,7 +46,16 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
     return this.aggregateFunction.getDbColumnName();
   }
 
-
+  /**
+   * Calculates a name for the result set.
+   * 
+   * @return a name for the result set.
+   */
+  protected String calculateName()
+  {
+    return this.aggregateFunction.calculateName();
+  }
+  
   /**
    * Returns the namespace of the attribute.
    * 
@@ -143,30 +134,6 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
   }
 
   @Override
-  public String getUserDefinedAlias()
-  {
-    return this.userDefinedAlias;
-  }
-
-  @Override
-  public void setUserDefinedAlias(String _userDefinedAlias)
-  {
-    this.userDefinedAlias = _userDefinedAlias;
-  }
-
-  @Override
-  public String getUserDefinedDisplayLabel()
-  {
-    return this.getUserDefinedDisplayLabel();
-  }
-
-  @Override
-  public void setUserDefinedDisplayLabel(String _userDefinedDisplayLabel)
-  {
-    this.userDefinedDisplayLabel = _userDefinedDisplayLabel;
-  }
-
-  @Override
   public String getColumnAlias()
   {
     return this.aggregateFunction.getColumnAlias();
@@ -219,34 +186,11 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
     return mdAttributeList;
   }
 
-  @Override
-  public void setAdditionalEntityMdAttributes(List<MdAttributeConcreteDAOIF> mdAttributeConcreteDAOIFList)
-  {
-    this.entityMdAttributeIFset.addAll(mdAttributeConcreteDAOIFList);
-  }
-
-  @Override
-  public String getDefiningTableName()
-  {
-    return this.aggregateFunction.getDefiningTableName();
-  }
-
-  @Override
-  public String getDefiningTableAlias()
-  {
-    return this.aggregateFunction.getDefiningTableAlias();
-  }
 
   @Override
   public Attribute getAttribute()
   {
     return this.aggregateFunction.getAttribute();
-  }
-
-  @Override
-  public ComponentQuery getRootQuery()
-  {
-    return this.aggregateFunction.getRootQuery();
   }
 
   @Override
@@ -267,6 +211,14 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
     return this.aggregateFunction.getSQL();
   }
 
+  /**
+   *
+   */
+  public String getSQLIgnoreCase()
+  {
+    return this.aggregateFunction.getSQLIgnoreCase();
+  }
+  
   /**
    * Returns the SQL required for this selectable in the lefthand side of a
    * subselect clause.
@@ -341,5 +293,16 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
     columnInfoList.add(this.getColumnInfo());
     return columnInfoList;
   }
+  
+  /**
+   * Returns the Selectable that is a parameter to the function.
+   * 
+   * @return Selectable that is a parameter to the function.
+   */
+  public Selectable getSelectable()
+  {
+    return this.aggregateFunction.getSelectable();
+  }
+
   
 }

@@ -57,7 +57,7 @@ public abstract class Function implements SelectablePrimitive, Statement
   /**
    *
    * @param selectable
-   *          Selectable that is a parameter to the function.
+   *          {@link Selectable} that is a parameter to the function.
    * @param userDefinedAlias
    */
   protected Function(Selectable selectable, String userDefinedAlias, String userDefinedDisplayLabel)

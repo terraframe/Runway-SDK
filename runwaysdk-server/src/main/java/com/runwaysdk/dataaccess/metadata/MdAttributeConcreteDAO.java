@@ -462,7 +462,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   /**
    * Generates the code to format type unsafe input (A String) into the correct
    * type. The general case makes no changes, but children override to make
-   * changes. It is imporant to rememebr that this is for code generation -
+   * changes. It is important to remember that this is for code generation -
    * we're creating strings that contain java code that does the formatting.
    * 
    * @param formatMe

@@ -1,12 +1,16 @@
 package com.runwaysdk.query;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.MathOperatorInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
 import com.runwaysdk.constants.MdAttributeDoubleInfo;
-import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -29,15 +33,15 @@ public class AttributeIndicatorComposite extends AttributeIndicator
   protected String              columnAlias;
 
   
-  protected AttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeNamespace, AttributeIndicator _leftOperand, EnumerationItemDAOIF _operator, AttributeIndicator _rightOperand)
+  protected AttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeNamespace, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AttributeIndicator _leftOperand, EnumerationItemDAOIF _operator, AttributeIndicator _rightOperand)
   {
-    super(_mdAttributeIndicator);
+    super(_mdAttributeIndicator, _definingTableName, _definingTableAlias, _rootQuery);
     this.init(_attributeNamespace, _leftOperand, _operator, _rightOperand);
   }
   
-  protected AttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeNamespace, AttributeIndicator _leftOperand, EnumerationItemDAOIF _operator, AttributeIndicator _rightOperand, String _userDefinedAlias, String _userDefinedDisplayLabel)
+  protected AttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeNamespace, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AttributeIndicator _leftOperand, EnumerationItemDAOIF _operator, AttributeIndicator _rightOperand, String _userDefinedAlias, String _userDefinedDisplayLabel)
   {
-    super(_mdAttributeIndicator, _userDefinedAlias, _userDefinedDisplayLabel);
+    super(_mdAttributeIndicator, _definingTableName, _definingTableAlias, _userDefinedAlias, _userDefinedDisplayLabel, _rootQuery);
     this.init(_attributeNamespace, _leftOperand, _operator, _rightOperand);
   }
   
@@ -82,34 +86,24 @@ public class AttributeIndicatorComposite extends AttributeIndicator
   @Override
   public String getDbColumnName()
   {
-//    if (this.attributeName == null)
-//    {
-//      this.attributeName = this.getRootQuery().getColumnAlias(this.getAttributeNameSpace() + this.calculateName(), this.getFunctionName());
-//    }
+    if (this.attributeName == null)
+    {
+      this.attributeName = this.getRootQuery().getColumnAlias(this.getAttributeNameSpace() + this.calculateName(), this.getMdAttributeIF().definesAttribute());
+    }
     return this.attributeName;
   }
 
-//  /**
-//   * Calculates a name for the result set.
-//   * 
-//   * @return a name for the result set.
-//   */
-//  protected String calculateName()
-//  {
-//    String displayLabel;
-//
-//    // selectable is a function
-//    if (this.selectable instanceof Function)
-//    {
-//      displayLabel = this.getFunctionName() + "(" + ( (Function) this.selectable ).calculateName() + ")";
-//    }
-//    else // its an attribute or selectableSQL
-//    {
-//      displayLabel = this.getFunctionName() + "(" + this.selectable._getAttributeName() + ")";
-//    }
-//
-//    return displayLabel;
-//  }
+  /**
+   * Calculates a name for the result set.
+   * 
+   * @return a name for the result set.
+   */
+  protected String calculateName()
+  {
+    String displayLabel = this.leftOperand.calculateName()+operator.getAttributeIF(EnumerationMasterInfo.NAME)+this.rightOperand.calculateName();
+    
+    return displayLabel;
+  }
   
   @Override
   public String _getAttributeName()
@@ -117,60 +111,36 @@ public class AttributeIndicatorComposite extends AttributeIndicator
     return this.getDbColumnName();
   }
 
-  @Override
-  public String getUserDefinedAlias()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void setUserDefinedAlias(String userDefinedAlias)
-  {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public String getUserDefinedDisplayLabel()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void setUserDefinedDisplayLabel(String userDefinedDisplayLabel)
-  {
-    // TODO Auto-generated method stub
-
-  }
 
   @Override
   public String getColumnAlias()
   {
-    // TODO Auto-generated method stub
-    return null;
+    return this.columnAlias;
   }
 
   @Override
   public String getResultAttributeName()
   {
-    // TODO Auto-generated method stub
-    return null;
+    if (this.userDefinedAlias.trim().length() != 0)
+    {
+      return this.userDefinedAlias;
+    }
+    else
+    {
+      return this._getAttributeName();
+    }
   }
 
   @Override
   public void setColumnAlias(String alias)
   {
-    // TODO Auto-generated method stub
-
+    this.columnAlias = alias;
   }
 
   @Override
   public String getDbQualifiedName()
   {
-    // TODO Auto-generated method stub
-    return null;
+    return this.getDefiningTableAlias() + "." + this.getDbColumnName();
   }
 
   @Override
@@ -182,143 +152,151 @@ public class AttributeIndicatorComposite extends AttributeIndicator
   @Override
   public String getFullyQualifiedNameSpace()
   {
-    // TODO Auto-generated method stub
-    return null;
+    return this.getAttributeNameSpace() + "." + this._getAttributeName();
   }
 
   @Override
   public MdAttributeConcreteDAOIF getMdAttributeIF()
   {
     // TODO Auto-generated method stub
-    return null;
+    return this.mdAttributeIndicator;
   }
 
   @Override
   public Set<MdAttributeConcreteDAOIF> getAllEntityMdAttributes()
   {
-    // TODO Auto-generated method stub
-    return null;
+    Set<MdAttributeConcreteDAOIF> mdAttributeList = new HashSet<MdAttributeConcreteDAOIF>();
+    mdAttributeList.addAll(this.leftOperand.getAllEntityMdAttributes());
+    mdAttributeList.addAll(this.rightOperand.getAllEntityMdAttributes());
+    return mdAttributeList;
   }
 
-  @Override
-  public void setAdditionalEntityMdAttributes(List<MdAttributeConcreteDAOIF> mdAttributeConcreteDAOIFList)
-  {
-    // TODO Auto-generated method stub
 
-  }
-
-  @Override
-  public String getDefiningTableName()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public String getDefiningTableAlias()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
+  /**
+   * Every Selectable eventually boils down to an attribute.
+   * 
+   * @return bottom most attribute.
+   */
   @Override
   public Attribute getAttribute()
   {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public ComponentQuery getRootQuery()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public SelectableAggregate getAggregateFunction()
-  {
-    // TODO Auto-generated method stub
-    return null;
+    return this.leftOperand.getAttribute();
   }
 
   @Override
   public boolean isAggregateFunction()
   {
-    // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
+  @Override
+  public SelectableAggregate getAggregateFunction()
+  {
+    SelectableAggregate selectableAggregate1 = this.leftOperand.getAggregateFunction();
+
+    if (selectableAggregate1 != null)
+    {
+      return selectableAggregate1;
+    }
+
+    if (this.rightOperand != null)
+    {
+      SelectableAggregate selectableAggregate2 = this.rightOperand.getAggregateFunction();
+
+      if (selectableAggregate2 != null)
+      {
+        return selectableAggregate2;
+      }
+    }
+
+    // Base case
+    return null;
+  }
+  
   @Override
   public String getSQL()
   {
-    // TODO Auto-generated method stub
-    return null;
+    String sql = this.leftOperand.getSQL();
+    sql += " "+this.operator.getValue(MathOperatorInfo.OPERATOR_SYMBOL) + " ";
+    sql += "NULLIF("+this.rightOperand.getSQL()+", 0)";
+        
+    return sql;
   }
 
+  /**
+   *
+   */
+  public String getSQLIgnoreCase()
+  {
+    String sql = this.leftOperand.getSQLIgnoreCase();
+    sql += " "+this.operator.getValue(MathOperatorInfo.OPERATOR_SYMBOL) + " ";
+    sql += "NULLIF("+this.rightOperand.getSQLIgnoreCase()+", 0)";
+        
+    return sql;
+  }
+  
   @Override
   public String getSubSelectSQL()
   {
-    // TODO Auto-generated method stub
-    return null;
+    return this.getSQL();
   }
 
   @Override
   public Set<Join> getJoinStatements()
   {
-    // TODO Auto-generated method stub
-    return null;
+    Set<Join> joinSet = new HashSet<Join>();
+    joinSet.addAll(this.leftOperand.getJoinStatements());
+    joinSet.addAll(this.rightOperand.getJoinStatements());
+    return joinSet;
   }
 
   @Override
   public Map<String, String> getFromTableMap()
   {
-    // TODO Auto-generated method stub
-    return null;
+    Map<String, String> fromTableMap = new HashMap<String, String>();
+    fromTableMap.putAll(this.leftOperand.getFromTableMap());
+    fromTableMap.putAll(this.rightOperand.getFromTableMap());
+    return fromTableMap;
   }
 
   @Override
   public void accept(Visitor visitor)
   {
-    // TODO Auto-generated method stub
-
+    this.leftOperand.accept(visitor);
+    this.rightOperand.accept(visitor);
   }
 
   @Override
   public Condition getCondition(String operator, String value)
   {
-    // TODO Auto-generated method stub
-    return null;
+    return QueryUtil.getCondition(this, operator, value);
   }
 
   @Override
   public ColumnInfo getColumnInfo()
   {
-    // TODO Auto-generated method stub
-    return null;
+    return new ColumnInfo(this.getDefiningTableName(), this.getDefiningTableAlias(), this.getDbColumnName(), this.getColumnAlias());
   }
 
   @Override
   public List<ColumnInfo> getColumnInfoList()
   {
-    // TODO Auto-generated method stub
-    return null;
+    List<ColumnInfo> columnInfoList = new LinkedList<ColumnInfo>();
+    columnInfoList.add(this.getColumnInfo());
+    return columnInfoList;
   }
 
-  @Override
-  public void setData(Object data)
+  /**
+   * Returns the Selectable that is a parameter to the function.
+   * 
+   * @return Selectable that is a parameter to the function.
+   */
+  public Selectable getSelectable()
   {
-    // TODO Auto-generated method stub
-
+    return this.leftOperand.getSelectable();
   }
 
-  @Override
-  public Object getData()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
+  
   /**
    * Validates and formats the given string into an integer format for the
    * current database.

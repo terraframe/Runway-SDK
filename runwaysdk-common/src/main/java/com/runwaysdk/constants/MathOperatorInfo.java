@@ -39,4 +39,6 @@ public interface MathOperatorInfo extends EnumerationMasterInfo
   
   public static final String DIVISION_OPERATION_ID           = "ic3pv3kklqp6habo6zbtt3pbwsdrsnkqiqumzzbqjmhyxor5e94ff0tpvop4msec";
   
+  public static final String DIVISION_SYMBOL                 = "/";
+  
 }

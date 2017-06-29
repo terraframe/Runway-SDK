@@ -1,32 +1,49 @@
 package com.runwaysdk.query;
 
+import java.util.List;
+import java.util.Set;
+
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 
 
 
-public abstract class AttributeIndicator implements SelectablePrimitive, Statement
+public abstract class AttributeIndicator implements SelectableIndicator
 {
+  protected String                         definingTableName;
+
+  protected String                         definingTableAlias;
+  
   /**
    * The {@link MdAttributeIndicatorDAOIF} metadata of the attribute defined on the class.
    */
-  protected   MdAttributeIndicatorDAOIF     mdAttributeIndicator;
+  protected MdAttributeIndicatorDAOIF       mdAttributeIndicator;
   
   protected String                          userDefinedAlias;
 
   protected String                          userDefinedDisplayLabel;
   
-  protected AttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator)
+  protected ComponentQuery                  rootQuery;
+  
+  private   Object                          data;
+ 
+  
+  // Reference to all MdAttributes that were involved in constructing this
+  // attribute;
+  protected Set<MdAttributeConcreteDAOIF>   entityMdAttributeIFset;
+  
+  protected AttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery)
   {
-    this.init(_mdAttributeIndicator, null, null);
+    this.init(_mdAttributeIndicator, _definingTableName, _definingTableAlias, null, null, _rootQuery);
   }
   
-  protected AttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _userDefinedAlias, String _userDefinedDisplayLabel)
+  protected AttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _definingTableName, String _definingTableAlias, String _userDefinedAlias, String _userDefinedDisplayLabel, ComponentQuery _rootQuery)
   {
-    this.init(_mdAttributeIndicator, _userDefinedAlias, _userDefinedDisplayLabel);
+    this.init(_mdAttributeIndicator, _definingTableName, _definingTableAlias, _userDefinedAlias, _userDefinedDisplayLabel, _rootQuery);
   }
   
   
-  private void init(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _userDefinedAlias, String _userDefinedDisplayLabel)
+  private void init(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _definingTableName, String _definingTableAlias, String _userDefinedAlias, String _userDefinedDisplayLabel, ComponentQuery _rootQuery)
   {
     this.mdAttributeIndicator    = _mdAttributeIndicator;
     
@@ -42,259 +59,88 @@ public abstract class AttributeIndicator implements SelectablePrimitive, Stateme
     
     if (_userDefinedDisplayLabel == null)
     {
-      this.userDefinedDisplayLabel        = "";
+      this.userDefinedDisplayLabel   = "";
     }
     else
     {
-      this.userDefinedDisplayLabel        = _userDefinedDisplayLabel;
+      this.userDefinedDisplayLabel   = _userDefinedDisplayLabel;
     }
+    
+    this.definingTableName           = _definingTableName;
+    
+    this.definingTableAlias          = _definingTableAlias;
+    
+    this.rootQuery                   = _rootQuery;
+  }
+
+  @Override
+  public String getUserDefinedAlias()
+  {
+    return this.userDefinedAlias;
+  }
+
+  @Override
+  public void setUserDefinedAlias(String _userDefinedAlias)
+  {
+    this.userDefinedAlias = _userDefinedAlias;
+  }
+
+  @Override
+  public String getUserDefinedDisplayLabel()
+  {
+    return this.getUserDefinedDisplayLabel();
+  }
+
+  @Override
+  public void setUserDefinedDisplayLabel(String _userDefinedDisplayLabel)
+  {
+    this.userDefinedDisplayLabel = _userDefinedDisplayLabel;
+  }
+
+
+  public void setAdditionalEntityMdAttributes(List<MdAttributeConcreteDAOIF> mdAttributeConcreteDAOIFList)
+  {
+    this.entityMdAttributeIFset.addAll(mdAttributeConcreteDAOIFList);
+  }  
+  
+  @Override
+  public String getDefiningTableName()
+  {
+    return this.definingTableName;
   }
   
-//
-//  @Override
-//  public Condition EQ(String statement)
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public Condition NE(String statement)
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public AttributeCondition SUBSELECT_IN(Selectable selectable)
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public AttributeCondition SUBSELECT_NOT_IN(Selectable selectable)
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public String getDbColumnName()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public String _getAttributeName()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public String getUserDefinedAlias()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public void setUserDefinedAlias(String userDefinedAlias)
-//  {
-//    // TODO Auto-generated method stub
-//
-//  }
-//
-//  @Override
-//  public String getUserDefinedDisplayLabel()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public void setUserDefinedDisplayLabel(String userDefinedDisplayLabel)
-//  {
-//    // TODO Auto-generated method stub
-//
-//  }
-//
-//  @Override
-//  public String getColumnAlias()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public String getResultAttributeName()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public void setColumnAlias(String alias)
-//  {
-//    // TODO Auto-generated method stub
-//
-//  }
-//
-//  @Override
-//  public String getDbQualifiedName()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public String getAttributeNameSpace()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public String getFullyQualifiedNameSpace()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public MdAttributeConcreteDAOIF getMdAttributeIF()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public Set<MdAttributeConcreteDAOIF> getAllEntityMdAttributes()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public void setAdditionalEntityMdAttributes(List<MdAttributeConcreteDAOIF> mdAttributeConcreteDAOIFList)
-//  {
-//    // TODO Auto-generated method stub
-//
-//  }
-//
-//  @Override
-//  public String getDefiningTableName()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public String getDefiningTableAlias()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public Attribute getAttribute()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public ComponentQuery getRootQuery()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public SelectableAggregate getAggregateFunction()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public boolean isAggregateFunction()
-//  {
-//    // TODO Auto-generated method stub
-//    return false;
-//  }
-//
-//  @Override
-//  public String getSQL()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public String getSubSelectSQL()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public Set<Join> getJoinStatements()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public Map<String, String> getFromTableMap()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public void accept(Visitor visitor)
-//  {
-//    // TODO Auto-generated method stub
-//
-//  }
-//
-//  @Override
-//  public Condition getCondition(String operator, String value)
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public ColumnInfo getColumnInfo()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public List<ColumnInfo> getColumnInfoList()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-//
-//  @Override
-//  public void setData(Object data)
-//  {
-//    // TODO Auto-generated method stub
-//
-//  }
-//
-//  @Override
-//  public Object getData()
-//  {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
+  @Override
+  public String getDefiningTableAlias()
+  {
+    return this.definingTableAlias;
+  }
+  
+
+  @Override
+  public ComponentQuery getRootQuery()
+  {
+    return this.rootQuery;
+  }
+  
+  /**
+   * Calculates a name for the result set.
+   * 
+   * @return a name for the result set.
+   */
+  protected abstract String calculateName();
+  
+  
+  @Override
+  public Object getData()
+  {
+    return this.data;
+  }
+
+  @Override
+  public void setData(Object data)
+  {
+    this.data = data;
+  }
 
   @Override
   public Selectable clone() throws CloneNotSupportedException

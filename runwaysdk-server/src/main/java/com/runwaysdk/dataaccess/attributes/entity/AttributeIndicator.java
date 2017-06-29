@@ -1,11 +1,13 @@
 package com.runwaysdk.dataaccess.attributes.entity;
 
 import java.util.List;
+import java.util.Set;
 
 import com.runwaysdk.dataaccess.AttributeIndicatorIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.IndicatorElementDAO.IndicatorVisitor;
 import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -16,7 +18,6 @@ public class AttributeIndicator extends Attribute implements AttributeIndicatorI
    * 
    */
   private static final long serialVersionUID = 2846107532196065437L;
-
 
   public AttributeIndicator(String name, String mdAttributeKey, String definingEntityType)
   {
@@ -100,7 +101,6 @@ public class AttributeIndicator extends Attribute implements AttributeIndicatorI
     
     return indicatorElement.evalNonAggregateValue(mdAttributeIndicator, entityDAO);
   }
-  
 
   /**
    * Returns a deep clone of this attribute.

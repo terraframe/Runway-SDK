@@ -325,11 +325,11 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
     
     String rightOperandType = this.getRightOperand().javaType();
     
-    if (leftOperandType.equals(Boolean.class.getName()) && 
-        rightOperandType.equals(Boolean.class.getName()))
-    {
-      return Boolean.class.getName();
-    }
+//    if (leftOperandType.equals(Boolean.class.getName()) && 
+//        rightOperandType.equals(Boolean.class.getName()))
+//    {
+//      return Boolean.class.getName();
+//    }
     
     if(leftOperandType.equals(BigDecimal.class.getName()) || 
        rightOperandType.equals(BigDecimal.class.getName()))
@@ -341,6 +341,43 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
     {
       return Double.class.getName();
     }    
+    
+//    if (leftOperandType.equals(Boolean.class.getName()) && 
+//        rightOperandType.equals(Boolean.class.getName()))
+//    {
+//      return Boolean.class.getName();
+//    }
+//    
+//    if(leftOperandType.equals(BigDecimal.class.getName()) || 
+//       rightOperandType.equals(BigDecimal.class.getName()))
+//    {
+//      return BigDecimal.class.getName();
+//    }
+//    else if(leftOperandType.equals(Double.class.getName()) || 
+//        rightOperandType.equals(Double.class.getName()))
+//    {
+//      return Double.class.getName();
+//    }
+//    else if(leftOperandType.equals(Float.class.getName()) || 
+//        rightOperandType.equals(Float.class.getName()))
+//    {
+//      return Float.class.getName();
+//    }
+//    else if(leftOperandType.equals(Long.class.getName()) || 
+//        rightOperandType.equals(Long.class.getName()))
+//    {
+//      return Long.class.getName();
+//    }
+//    else if(leftOperandType.equals(Integer.class.getName()) || 
+//        rightOperandType.equals(Integer.class.getName()))
+//    {
+//      return Integer.class.getName();
+//    }
+//    // When integers or longs are divided, the result is a double.
+//    else
+//    {
+//      return Double.class.getName();
+//    }    
   }
   
   /**

@@ -1,19 +1,26 @@
 package com.runwaysdk.dataaccess.metadata;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
+import com.runwaysdk.constants.MdAttributeBooleanUtil;
+import com.runwaysdk.constants.MdAttributeDecimalUtil;
+import com.runwaysdk.constants.MdAttributeDoubleUtil;
+import com.runwaysdk.constants.MdAttributeFloatUtil;
 import com.runwaysdk.constants.MdAttributeIndicatorInfo;
-import com.runwaysdk.constants.MdAttributeReferenceInfo;
+import com.runwaysdk.constants.MdAttributeIntegerUtil;
+import com.runwaysdk.constants.MdAttributeLongUtil;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
-import com.runwaysdk.dataaccess.IndicatorCompositeDAOIF;
 import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.transport.metadata.AttributeBooleanMdDTO;
+import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
 public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements MdAttributeIndicatorDAOIF
@@ -121,7 +128,7 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
   @Override
   public String queryAttributeClass()
   {
-    return com.runwaysdk.query.SelectableReference.class.getName();
+    return com.runwaysdk.query.SelectableIndicator.class.getName();
   }
 
   @Override
@@ -129,6 +136,47 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
   {
     return this.getIndicator().javaType();
     
+  }
+  
+  /* (non-Javadoc)
+   * @see com.runwaysdk.dataaccess.metadata.MdAttribute#generateTypesafeFormatting(java.lang.String)
+   */
+  protected String generateTypesafeFormatting(String formatMe)
+  {
+    String util;
+    
+    String type = this.getIndicator().javaType();
+    
+    if (type.equals(Boolean.class.getName()))
+    {
+      util = MdAttributeBooleanUtil.class.getName();
+    }
+    else if (type.equals(BigDecimal.class.getName()))
+    {
+      util = MdAttributeDecimalUtil.class.getName();
+    }
+    else if (type.equals(Double.class.getName()))
+    {
+      util = MdAttributeDoubleUtil.class.getName();
+    }
+    else if (type.equals(Float.class.getName()))
+    {
+      util = MdAttributeFloatUtil.class.getName();
+    }
+    else if (type.equals(Long.class.getName()))
+    {
+      util = MdAttributeLongUtil.class.getName();
+    }
+    else if (type.equals(Integer.class.getName()))
+    {
+      util = MdAttributeIntegerUtil.class.getName();
+    }
+    else
+    {
+      util = MdAttributeDoubleUtil.class.getName();
+    }
+    
+    return util + ".getTypeSafeValue(" + formatMe + ")";
   }
 
   @Override
@@ -140,8 +188,16 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
   @Override
   public String attributeMdDTOType()
   {
-    // TODO Auto-generated method stub
-    return null;
+    String type = this.getIndicator().javaType();
+
+    if (type.equals(Boolean.class.getName()))
+    {
+      return AttributeBooleanMdDTO.class.getName();
+    }
+    else
+    {
+      return AttributeNumberMdDTO.class.getName();
+    }
   }
 
   @Override
