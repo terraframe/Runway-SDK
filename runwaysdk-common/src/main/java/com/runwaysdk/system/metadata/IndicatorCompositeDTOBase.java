@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1691807497)
+@com.runwaysdk.business.ClassSignature(hash = -1079557914)
 public abstract class IndicatorCompositeDTOBase extends com.runwaysdk.system.metadata.IndicatorElementDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.IndicatorComposite";
-  private static final long serialVersionUID = 1691807497;
+  private static final long serialVersionUID = -1079557914;
   
   protected IndicatorCompositeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -29,6 +29,7 @@ public abstract class IndicatorCompositeDTOBase extends com.runwaysdk.system.met
   
   public static java.lang.String LEFTOPERAND = "leftOperand";
   public static java.lang.String OPERATOR = "operator";
+  public static java.lang.String PERCENTAGE = "percentage";
   public static java.lang.String RIGHTOPERAND = "rightOperand";
   public com.runwaysdk.system.metadata.IndicatorElementDTO getLeftOperand()
   {
@@ -123,6 +124,43 @@ public abstract class IndicatorCompositeDTOBase extends com.runwaysdk.system.met
   public final com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO getOperatorMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(OPERATOR).getAttributeMdDTO();
+  }
+  
+  public Boolean getPercentage()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(PERCENTAGE));
+  }
+  
+  public void setPercentage(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(PERCENTAGE, "");
+    }
+    else
+    {
+      setValue(PERCENTAGE, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  public boolean isPercentageWritable()
+  {
+    return isWritable(PERCENTAGE);
+  }
+  
+  public boolean isPercentageReadable()
+  {
+    return isReadable(PERCENTAGE);
+  }
+  
+  public boolean isPercentageModified()
+  {
+    return isModified(PERCENTAGE);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getPercentageMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(PERCENTAGE).getAttributeMdDTO();
   }
   
   public com.runwaysdk.system.metadata.IndicatorElementDTO getRightOperand()

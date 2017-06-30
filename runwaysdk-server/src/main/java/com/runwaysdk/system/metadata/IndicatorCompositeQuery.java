@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1578419506)
+@com.runwaysdk.business.ClassSignature(hash = 883194397)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -82,6 +82,23 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.IndicatorComposite.OPERATOR);
 
     return (com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.IndicatorComposite.OPERATOR, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getPercentage()
+  {
+    return getPercentage(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getPercentage(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.IndicatorComposite.PERCENTAGE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getPercentage(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.IndicatorComposite.PERCENTAGE, alias, displayLabel);
 
   }
   public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getRightOperand()
@@ -293,6 +310,9 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
   public com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF getOperator();
   public com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF getOperator(String alias);
   public com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF getOperator(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getPercentage();
+    public com.runwaysdk.query.SelectableBoolean getPercentage(String alias);
+    public com.runwaysdk.query.SelectableBoolean getPercentage(String alias, String displayLabel);
     public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getRightOperand();
     public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getRightOperand(String alias);
     public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getRightOperand(String alias, String displayLabel);
@@ -387,6 +407,23 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
   public com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF getOperator(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF)this.get(com.runwaysdk.system.metadata.IndicatorComposite.OPERATOR, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getPercentage()
+  {
+    return getPercentage(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getPercentage(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.IndicatorComposite.PERCENTAGE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getPercentage(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.IndicatorComposite.PERCENTAGE, alias, displayLabel);
 
   }
   public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getRightOperand()
@@ -569,6 +606,9 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
   public com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF getOperator();
   public com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF getOperator(String alias);
   public com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF getOperator(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getPercentage();
+    public com.runwaysdk.query.SelectableBoolean getPercentage(String alias);
+    public com.runwaysdk.query.SelectableBoolean getPercentage(String alias, String displayLabel);
     public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getRightOperand();
     public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getRightOperand(String alias);
     public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getRightOperand(String alias, String displayLabel);
@@ -688,6 +728,23 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
   public com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF getOperator(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.metadata.MathOperatorQuery.IndicatorOperatorQueryIF)this.get(com.runwaysdk.system.metadata.IndicatorComposite.OPERATOR, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getPercentage()
+  {
+    return getPercentage(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getPercentage(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.IndicatorComposite.PERCENTAGE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getPercentage(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.IndicatorComposite.PERCENTAGE, alias, displayLabel);
 
   }
   public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getRightOperand()
