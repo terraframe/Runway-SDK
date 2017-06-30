@@ -125,25 +125,26 @@ public class ValueQuery extends ComponentQuery
 
   // this is a string that is appended before the query
   // used for with queries and the like
-  private String                        sqlPrefix   = "";
-  
-  // There are very rare scenarios where it is useful to execute a list of sql statements before
-  //   the query can be invoked. For example, DDMS ticket #3577
+  private String                        sqlPrefix                 = "";
+
+  // There are very rare scenarios where it is useful to execute a list of sql
+  // statements before
+  // the query can be invoked. For example, DDMS ticket #3577
   private String                        dependentPreSqlStatements = "";
 
   private Condition                     havingCondition;
 
   private String                        tableAlias;
 
-  private static Map<String, PluginIF>  pluginMap   = new ConcurrentHashMap<String, PluginIF>();
+  private static Map<String, PluginIF>  pluginMap                 = new ConcurrentHashMap<String, PluginIF>();
 
-  protected Integer                     _pageSize   = null;
+  protected Integer                     _pageSize                 = null;
 
-  protected Integer                     _pageNumber = null;
+  protected Integer                     _pageNumber               = null;
 
-  protected Integer                     _limit      = null;
+  protected Integer                     _limit                    = null;
 
-  protected Integer                     _skip       = null;
+  protected Integer                     _skip                     = null;
 
   private ValueQuery[]                  combineValueQueryArray;
 
@@ -1089,11 +1090,12 @@ public class ValueQuery extends ComponentQuery
   {
     this.sqlPrefix = sql;
   }
-  
+
   /**
-   * A "dependent pre sql statement" is a standalone sql statement that is required to be executed before the ValueQuery can be executed.
-   * This is useful for creating things like temp tables that are required for the ValueQuery to execute properly. DDMS ticket 3577 is a
-   * good example.
+   * A "dependent pre sql statement" is a standalone sql statement that is
+   * required to be executed before the ValueQuery can be executed. This is
+   * useful for creating things like temp tables that are required for the
+   * ValueQuery to execute properly. DDMS ticket 3577 is a good example.
    * 
    * @param statements
    */
@@ -1101,11 +1103,12 @@ public class ValueQuery extends ComponentQuery
   {
     this.dependentPreSqlStatements = statements;
   }
-  
+
   /**
-   * A "dependent pre sql statement" is a standalone sql statement that is required to be executed before the ValueQuery can be executed.
-   * This is useful for creating things like temp tables that are required for the ValueQuery to execute properly. DDMS ticket 3577 is a
-   * good example.
+   * A "dependent pre sql statement" is a standalone sql statement that is
+   * required to be executed before the ValueQuery can be executed. This is
+   * useful for creating things like temp tables that are required for the
+   * ValueQuery to execute properly. DDMS ticket 3577 is a good example.
    */
   public String getDependentPreSqlStatements()
   {
@@ -1145,12 +1148,13 @@ public class ValueQuery extends ComponentQuery
     this.selectableUsedInSelectClause = this.selectableList;
 
     String sql = this.getSQLInternal(this.selectableUsedInSelectClause, limitRowRange, limit, skip);
-    
+
     return this.dependentPreSqlStatements + this.sqlPrefix + sql;
   }
-  
+
   /**
-   * Returns the Sql representation of this query, excluding the dependent pre sql statements.
+   * Returns the Sql representation of this query, excluding the dependent pre
+   * sql statements.
    */
   public String getSQLWithoutDependentPreSql()
   {
@@ -1175,7 +1179,7 @@ public class ValueQuery extends ComponentQuery
   }
 
   /**
-   * Returns a list of {@link AttributeIndicator} objects in the select clause. 
+   * Returns a list of {@link AttributeIndicator} objects in the select clause.
    * 
    * @return
    */
@@ -1188,13 +1192,13 @@ public class ValueQuery extends ComponentQuery
     {
       if (selectable instanceof AttributeIndicator)
       {
-        selectables.add((AttributeIndicator)selectable);
+        selectables.add((AttributeIndicator) selectable);
       }
     }
-    
+
     return selectables;
   }
-  
+
   /**
    * Returns the SQL to count the objects that match the specified criteria.
    * 
@@ -1224,9 +1228,9 @@ public class ValueQuery extends ComponentQuery
         this.preprossesSelectableStructures();
       }
       this.addToGroupByList(this.selectableList);
-      
+
       List<AttributeIndicator> indicatorList = this.getIndicatorSelectables();
-      
+
       // There are items in the group by clause
       // The select clause will contain everything that is a non aggregate.
       if (this.groupByList.size() > 0 || indicatorList.size() > 0)
@@ -1236,13 +1240,13 @@ public class ValueQuery extends ComponentQuery
         {
           selectables.add(selectable);
         }
-        
+
         // Make sure functions that are indicators are added to the select list.
         for (AttributeIndicator selectable : indicatorList)
         {
           selectables.add(selectable);
         }
-        
+
         sql = this.getSQLInternal(selectables, false, 0, 0);
         sql = "SELECT COUNT(*) " + Database.formatColumnAlias("ct") + " FROM (\n" + sql + "\n) AS UNION_COUNT";
       }
@@ -1278,8 +1282,9 @@ public class ValueQuery extends ComponentQuery
         sql = selectStmt.toString();
       }
     }
-    
-    // TODO : Shouldn't the prefix have been added inside of the FROM stuff above??
+
+    // TODO : Shouldn't the prefix have been added inside of the FROM stuff
+    // above??
     return this.dependentPreSqlStatements + this.sqlPrefix + sql;
   }
 
@@ -1667,7 +1672,7 @@ public class ValueQuery extends ComponentQuery
    */
   @Override
   protected String addGroupBySelectablesToSelectClauseForCount()
-  {    
+  {
     String sql = "";
 
     boolean firstIteration = true;
@@ -1820,6 +1825,12 @@ public class ValueQuery extends ComponentQuery
     MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
 
     return this.internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  @Override
+  public Selectable getS(String name)
+  {
+    throw new UnsupportedOperationException();
   }
 
   /**

@@ -110,6 +110,11 @@ public abstract class GeneratedComponentQuery
   {
     this.getComponentQuery().WHERE(condition);
   }
+  
+  public Selectable getS(String name)
+  {
+    return this.getComponentQuery().getS(name);
+  }
 
   /**
    * Adds a condition to this query.  Will perform an AND
