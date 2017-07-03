@@ -219,6 +219,11 @@ public class AttributeIndicatorComposite extends AttributeIndicator
     String sql = this.leftOperand.getSQL();
     sql += " "+this.operator.getValue(MathOperatorInfo.OPERATOR_SYMBOL) + " ";
     sql += "NULLIF("+this.rightOperand.getSQL()+", 0)";
+    
+    if(this.mdAttributeIndicator.getIndicator().isPercentage())
+    {
+      sql += " * 100";      
+    }
         
     return sql;
   }
@@ -231,6 +236,11 @@ public class AttributeIndicatorComposite extends AttributeIndicator
     String sql = this.leftOperand.getSQLIgnoreCase();
     sql += " "+this.operator.getValue(MathOperatorInfo.OPERATOR_SYMBOL) + " ";
     sql += "NULLIF("+this.rightOperand.getSQLIgnoreCase()+", 0)";
+    
+    if(this.mdAttributeIndicator.getIndicator().isPercentage())
+    {
+      sql += " * 100";      
+    }            
         
     return sql;
   }

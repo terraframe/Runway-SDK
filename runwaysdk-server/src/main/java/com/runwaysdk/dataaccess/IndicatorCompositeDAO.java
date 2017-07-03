@@ -82,6 +82,11 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
     
     String expressionString =  leftObjectValue.toString() + " " + operatorSymbol + " " + rightObjectValue.toString();
     
+    if(this.isPercentage())
+    {
+      expressionString = expressionString + " * 100";
+    }
+    
     Object returnVal;
     
     if (this.isZero(rightObjectValue))
@@ -405,6 +410,12 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
   public String toString()
   {
     return this.getLocalizedLabel();
+  }
+  
+  @Override
+  public boolean isPercentage()
+  {
+    return Boolean.parseBoolean(this.getValue(IndicatorCompositeInfo.PERCENTAGE));
   }
 }
 

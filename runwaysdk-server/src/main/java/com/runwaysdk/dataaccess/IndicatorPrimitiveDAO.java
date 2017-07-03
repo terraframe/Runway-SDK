@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.constants.AggregationFunctionInfo;
-import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndicatorPrimitiveInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.session.Session;
@@ -164,6 +163,12 @@ public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements Indica
   public IndicatorPrimitiveDAO getBusinessDAO()
   {
     return (IndicatorPrimitiveDAO) super.getBusinessDAO();
+  }
+
+  @Override
+  public boolean isPercentage()
+  {
+    return false;
   }
 
 }
