@@ -21,9 +21,11 @@ package com.runwaysdk.constants;
 public interface MdAttributeInfo extends MetadataInfo
 {
   /**
-   * Class MetaData.
+   * Interface {@link MdAttributeInfo}.
    */
-  public static final String CLASS             = Constants.METADATA_PACKAGE + ".MdAttribute";
+  public static final String CLASS_NAME        = "MdAttribute";
+  
+  public static final String CLASS             = Constants.METADATA_PACKAGE + "." + CLASS_NAME;
 
   /**
    * ID.

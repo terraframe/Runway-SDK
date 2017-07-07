@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.dataaccess.attributes.entity;
 
+
 public abstract class AttributeMoment extends Attribute
 {
   /**
@@ -51,7 +52,7 @@ public abstract class AttributeMoment extends Attribute
   protected static final String DATE_DELIM = "-";
   
   /**
-   * Inherited constrcutor, sets <code>name</code> and <code>definingEntityType</code>.
+   * Inherited constructor, sets <code>name</code> and <code>definingEntityType</code>.
    * 
    * @param name The name of this integer attribute.
    * @param mdAttributeKey key of the defining attribute metadata

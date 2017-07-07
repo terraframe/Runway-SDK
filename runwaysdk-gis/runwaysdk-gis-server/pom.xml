@@ -51,6 +51,13 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <!-- Solr dependencies 
+    <dependency>
+      <groupId>org.apache.solr</groupId>
+      <artifactId>solr-solrj</artifactId>
+      <version>6.2.1</version>
+    </dependency>
+    -->
   </dependencies>
 
   <build>

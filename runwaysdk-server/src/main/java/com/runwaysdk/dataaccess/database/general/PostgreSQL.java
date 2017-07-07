@@ -63,6 +63,7 @@ import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
+import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
@@ -1769,11 +1770,25 @@ public class PostgreSQL extends AbstractDatabase
 
     // Format quotes
     if ( // Primitives
-    dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeDateTimeInfo.CLASS) || dataType.equals(MdAttributeDateInfo.CLASS) || dataType.equals(MdAttributeTimeInfo.CLASS) || dataType.equals(MdAttributeTextInfo.CLASS) || dataType.equals(MdAttributeClobInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
+          dataType.equals(MdAttributeCharacterInfo.CLASS) || 
+          dataType.equals(MdAttributeDateTimeInfo.CLASS) || 
+          dataType.equals(MdAttributeDateInfo.CLASS) || 
+          dataType.equals(MdAttributeTimeInfo.CLASS) || 
+          dataType.equals(MdAttributeTextInfo.CLASS) || 
+          dataType.equals(MdAttributeClobInfo.CLASS) || 
+          dataType.equals(MdAttributeStructInfo.CLASS) || 
+          dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || 
+          dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
     // Encryption
-        dataType.equals(MdAttributeHashInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
+          dataType.equals(MdAttributeHashInfo.CLASS) || 
+          dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
         // References
-        dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS))
+          dataType.equals(MdAttributeReferenceInfo.CLASS) || 
+          dataType.equals(MdAttributeTermInfo.CLASS) || 
+          dataType.equals(MdAttributeFileInfo.CLASS) || 
+          dataType.equals(MdAttributeEnumerationInfo.CLASS) || 
+          dataType.equals(MdAttributeMultiReferenceInfo.CLASS) ||
+          dataType.equals(MdAttributeIndicatorInfo.CLASS))
     {
       sqlStmt = "'" + sqlStmt + "'";
 
@@ -1785,7 +1800,12 @@ public class PostgreSQL extends AbstractDatabase
     }
     // Don't format attributes of these types.
     else if (// Primitive
-    dataType.equals(MdAttributeBooleanInfo.CLASS) || dataType.equals(MdAttributeIntegerInfo.CLASS) || dataType.equals(MdAttributeLongInfo.CLASS) || dataType.equals(MdAttributeFloatInfo.CLASS) || dataType.equals(MdAttributeDoubleInfo.CLASS) || dataType.equals(MdAttributeDecimalInfo.CLASS) ||
+       dataType.equals(MdAttributeBooleanInfo.CLASS) || 
+       dataType.equals(MdAttributeIntegerInfo.CLASS) || 
+       dataType.equals(MdAttributeLongInfo.CLASS) || 
+       dataType.equals(MdAttributeFloatInfo.CLASS) || 
+       dataType.equals(MdAttributeDoubleInfo.CLASS) || 
+       dataType.equals(MdAttributeDecimalInfo.CLASS) ||
     // Non Primitives
         dataType.equals(MdAttributeBlobInfo.CLASS))
     {
@@ -1831,11 +1851,21 @@ public class PostgreSQL extends AbstractDatabase
 
     // Format quotes
     if ( // Primitives
-    dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeTextInfo.CLASS) || dataType.equals(MdAttributeClobInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
+       dataType.equals(MdAttributeCharacterInfo.CLASS) || 
+       dataType.equals(MdAttributeTextInfo.CLASS) || 
+       dataType.equals(MdAttributeClobInfo.CLASS) || 
+       dataType.equals(MdAttributeStructInfo.CLASS) || 
+       dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || 
+       dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
     // Encryption
-        dataType.equals(MdAttributeHashInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
+        dataType.equals(MdAttributeHashInfo.CLASS) || 
+        dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
         // References
-        dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS)
+        dataType.equals(MdAttributeReferenceInfo.CLASS) || 
+        dataType.equals(MdAttributeTermInfo.CLASS) || 
+        dataType.equals(MdAttributeFileInfo.CLASS) || 
+        dataType.equals(MdAttributeEnumerationInfo.CLASS) ||
+        dataType.equals(MdAttributeIndicatorInfo.CLASS)
     // Non Primitives
     )
     {

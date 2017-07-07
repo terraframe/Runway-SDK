@@ -51,4 +51,21 @@ public class AttributeInteger extends AttributeNumber
   {
     super(name, value, definingEntityType, mdAttributeIF, entityMdAttributeIFset);
   }
+
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Integer getTypeSafeValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new Integer(this.getValue());
+    }
+  }
 }

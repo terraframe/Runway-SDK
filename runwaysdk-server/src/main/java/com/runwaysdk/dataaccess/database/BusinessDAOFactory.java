@@ -55,6 +55,8 @@ import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.ImportLogInfo;
+import com.runwaysdk.constants.IndicatorCompositeInfo;
+import com.runwaysdk.constants.IndicatorPrimitiveInfo;
 import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
@@ -71,6 +73,7 @@ import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
+import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
@@ -145,16 +148,18 @@ import com.runwaysdk.dataaccess.DuplicateGraphPathException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
+import com.runwaysdk.dataaccess.IndicatorCompositeDAO;
+import com.runwaysdk.dataaccess.IndicatorPrimitiveDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StaleEntityException;
@@ -185,6 +190,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeIndicatorDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
@@ -288,6 +294,11 @@ public class BusinessDAOFactory
   private static Map<String, BusinessDAO> loadFactory()
   {
     Map<String, BusinessDAO> map = new ConcurrentHashMap<String, BusinessDAO>();
+
+    // Ratios
+    map.put(IndicatorCompositeInfo.CLASS, new IndicatorCompositeDAO());
+    map.put(IndicatorPrimitiveInfo.CLASS, new IndicatorPrimitiveDAO());
+    map.put(MdAttributeIndicatorInfo.CLASS, new MdAttributeIndicatorDAO());
 
     map.put(MdTableInfo.CLASS, new MdTableDAO());
     map.put(MdIndexInfo.CLASS, new MdIndexDAO());

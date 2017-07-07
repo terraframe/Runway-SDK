@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.query.sql;
 
+import java.util.Date;
+
 import com.runwaysdk.dataaccess.MdAttributeMomentDAOIF;
 import com.runwaysdk.query.ValueQuery;
 
@@ -50,4 +52,15 @@ public abstract class MdAttributeMoment_SQL extends MdAttributePrimitive_SQL imp
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);
   }
 
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Date.class;
+  }
+  
 }

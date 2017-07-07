@@ -3375,25 +3375,4 @@ public class MdTableQueryTest extends TestCase
     }
   }
   
-//  public static void testViewQuery()
-//  {
-//    QueryFactory factory = new QueryFactory();
-//    
-//    ValueQuery vq = factory.valueQuery();
-//    TableQuery tq = factory.tableQuery(TestFixConst.TEST_TABLE1_TYPE);
-//    
-//    vq.SELECT(tq.aCharacter(TestFixConst.ATTRIBUTE_CHARACTER, TestFixConst.ATTRIBUTE_CHARACTER));
-//    
-// System.out.println("Heads up: Test: Query:----------------------------------------\n");
-//    System.out.println(vq.getSQL());
-//    
-//    OIterator<ValueObject> i = vq.getIterator();
-//    
-//    for (ValueObject valueObject : i)
-//    {
-//      System.out.println("");
-//      valueObject.printAttributes();
-//    }
-//    
-//  }
 }

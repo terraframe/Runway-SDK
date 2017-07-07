@@ -89,6 +89,16 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
   {
     return "Integer";
   }
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Integer.class;
+  }
 
   /**
    * Returns a string representing the query attribute class for attributes of this type.

@@ -30,7 +30,7 @@ import com.runwaysdk.session.Session;
 import com.runwaysdk.util.IdParser;
 
 
-public abstract class ComponentDAO implements Comparable<ComponentDAO>, ComponentIF, Serializable
+public abstract class ComponentDAO implements Comparable<ComponentDAO>, ComponentDAOIF, Serializable
 {
   /**
    * 

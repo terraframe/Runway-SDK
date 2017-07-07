@@ -82,6 +82,24 @@ public class AttributeDecimal extends AttributeNumber implements AttributeDecima
     // Oracle seems to prepend some numbers with a black space
     this.value = this.value.trim();
   }
+  
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public BigDecimal getTypeSafeValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new BigDecimal(this.getValue());
+    }
+  }
 
   /**
    * Checks the value, and sets it if it is valid.

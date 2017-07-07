@@ -20,9 +20,10 @@ package com.runwaysdk.dataaccess.attributes.value;
 
 import java.util.Set;
 
+import com.runwaysdk.dataaccess.AttributeNumericalIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 
-public abstract class AttributeNumber extends Attribute
+public abstract class AttributeNumber extends Attribute implements AttributeNumericalIF
 {
   /**
    * 

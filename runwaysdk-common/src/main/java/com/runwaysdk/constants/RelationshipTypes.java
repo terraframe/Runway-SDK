@@ -159,8 +159,15 @@ public enum RelationshipTypes {
 
   MOBILE_GROUP_FIELD(Constants.METADATA_PACKAGE + "." + "MobileGroupField", "7b45xkrb8yskw2d2b4birvy400wbo1pr20060824000000000000000000000011", "mobile_group_field"),
 
-  WEB_GRID_FIELD(Constants.METADATA_PACKAGE + "." + "WebGridField", "z4gu2leptmskoe7v4lk68izcvc15k3j400000000000000000000000000000061", "web_grid_field");
+  WEB_GRID_FIELD(Constants.METADATA_PACKAGE + "." + "WebGridField", "z4gu2leptmskoe7v4lk68izcvc15k3j400000000000000000000000000000061", "web_grid_field"),
 
+  /**
+   * {@link MdAttributeRatioDAOIF} references a {@linL RatioDAOIF}.
+   */
+
+  ATTRIBUTE_INDICATOR(Constants.METADATA_PACKAGE + "." + "AttributeIndicator", "insw5s11o7uyyxpddw0mmv3v3rct7c1k20060824000000000000000000000011", "attribute_indicator");
+  
+  
   private String relationshipType;
 
   private String id;

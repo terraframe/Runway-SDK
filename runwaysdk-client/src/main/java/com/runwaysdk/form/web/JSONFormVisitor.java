@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.form.web;
 
@@ -171,6 +171,16 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       String msg = "Could not initialize conversion from a FormObject to JSON";
       throw new ConversionExceptionDTO(msg, e);
     }
+  }
+
+  public FormatFactory getFormatFactory()
+  {
+    return formatFactory;
+  }
+
+  public Locale getLocale()
+  {
+    return locale;
   }
 
   public JSONObject getRoot()
@@ -359,7 +369,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     obj.put(key, value != null ? value : JSONObject.NULL);
   }
 
-  public abstract class WebFormComponentToJSON
+  public static abstract class WebFormComponentToJSON
   {
     private JSONFormVisitor visitor;
 
@@ -376,7 +386,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private abstract class WebFieldToJSON extends WebFormComponentToJSON
+  public static abstract class WebFieldToJSON extends WebFormComponentToJSON
   {
     private WebField field;
 
@@ -407,7 +417,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
         if (value != null)
         {
           Class<?> clazz = primitive.getJavaType();
-          return formatFactory.getFormat(clazz).format(value, locale);
+          return this.getVisitor().getFormatFactory().getFormat(clazz).format(value, this.getVisitor().getLocale());
         }
         else
         {
@@ -425,26 +435,26 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       WebField webField = this.getField();
 
       String formatted = this.formatValue();
-      put(obj, VALUE, formatted);
+      this.getVisitor().put(obj, VALUE, formatted);
 
-      put(obj, JS_CLASS, webField.getClass().getName());
-      put(obj, TYPE, webField.getType());
-      put(obj, READABLE, webField.isReadable());
-      put(obj, WRITABLE, webField.isWritable());
-      put(obj, MODIFIED, webField.isModified());
+      this.getVisitor().put(obj, JS_CLASS, webField.getClass().getName());
+      this.getVisitor().put(obj, TYPE, webField.getType());
+      this.getVisitor().put(obj, READABLE, webField.isReadable());
+      this.getVisitor().put(obj, WRITABLE, webField.isWritable());
+      this.getVisitor().put(obj, MODIFIED, webField.isModified());
     }
 
     protected void initFieldMd(JSONObject obj) throws JSONException
     {
       WebFieldMd md = this.getField().getFieldMd();
 
-      put(obj, JS_CLASS, md.getClass().getName());
-      put(obj, MdWebFieldInfo.FIELD_NAME, md.getFieldName());
-      put(obj, MdWebFieldInfo.FIELD_ORDER, md.getFieldOrder());
-      put(obj, MdWebFieldInfo.DISPLAY_LABEL, md.getDisplayLabel());
-      put(obj, MdWebFieldInfo.DESCRIPTION, md.getDescription());
-      put(obj, MdWebFieldInfo.ID, md.getId());
-      put(obj, MdWebFieldInfo.REQUIRED, md.isRequired());
+      this.getVisitor().put(obj, JS_CLASS, md.getClass().getName());
+      this.getVisitor().put(obj, MdWebFieldInfo.FIELD_NAME, md.getFieldName());
+      this.getVisitor().put(obj, MdWebFieldInfo.FIELD_ORDER, md.getFieldOrder());
+      this.getVisitor().put(obj, MdWebFieldInfo.DISPLAY_LABEL, md.getDisplayLabel());
+      this.getVisitor().put(obj, MdWebFieldInfo.DESCRIPTION, md.getDescription());
+      this.getVisitor().put(obj, MdWebFieldInfo.ID, md.getId());
+      this.getVisitor().put(obj, MdWebFieldInfo.REQUIRED, md.isRequired());
 
     }
 
@@ -459,18 +469,18 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
         initFieldMd(md);
 
         // grab the condition if there is one
-        if (!JSONFormVisitor.this.stack.isEmpty())
+        if (!this.getVisitor().getStack().isEmpty())
         {
-          JSONObject condition = JSONFormVisitor.this.stack.pop();
-          put(field, CONDITION, condition);
+          JSONObject condition = this.getVisitor().getStack().pop();
+          this.getVisitor().put(field, CONDITION, condition);
         }
         else
         {
-          put(field, CONDITION, null);
+          this.getVisitor().put(field, CONDITION, null);
         }
 
-        put(field, FIELD_MD, md);
-        fields.put(field);
+        this.getVisitor().put(field, FIELD_MD, md);
+        this.getVisitor().getFields().put(field);
       }
       catch (JSONException e)
       {
@@ -480,7 +490,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private class WebHeaderToJSON extends WebFieldToJSON
+  private static class WebHeaderToJSON extends WebFieldToJSON
   {
 
     protected WebHeaderToJSON(WebHeader header, JSONFormVisitor visitor)
@@ -495,7 +505,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private class WebCommentToJSON extends WebFieldToJSON
+  private static class WebCommentToJSON extends WebFieldToJSON
   {
 
     protected WebCommentToJSON(WebComment comment, JSONFormVisitor visitor)
@@ -510,7 +520,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private class WebReferenceToJSON extends WebAttributeToJSON
+  private static class WebReferenceToJSON extends WebAttributeToJSON
   {
     protected WebReferenceToJSON(WebReference webReference, JSONFormVisitor visitor)
     {
@@ -529,12 +539,12 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       super.initFieldMd(obj);
 
       WebReferenceMd fMd = this.getField().getFieldMd();
-      put(obj, MdWebReferenceInfo.REFERENCED_MD_BUSINESS, fMd.getReferencedMdBusiness());
-      put(obj, MdWebReferenceInfo.REFERENCED_DISPLAY_LABEL, fMd.getReferencedDisplayLabel());
+      this.getVisitor().put(obj, MdWebReferenceInfo.REFERENCED_MD_BUSINESS, fMd.getReferencedMdBusiness());
+      this.getVisitor().put(obj, MdWebReferenceInfo.REFERENCED_DISPLAY_LABEL, fMd.getReferencedDisplayLabel());
     }
   }
 
-  private class WebGeoToJSON extends WebAttributeToJSON
+  private static class WebGeoToJSON extends WebAttributeToJSON
   {
     protected WebGeoToJSON(WebGeo webGeo, JSONFormVisitor visitor)
     {
@@ -553,11 +563,11 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       super.initFieldMd(obj);
 
       WebGeoMd fMd = this.getField().getFieldMd();
-      put(obj, MdWebGeoInfo.GEO_DISPLAY_LABEL, fMd.getGeoDisplayLabel());
+      this.getVisitor().put(obj, MdWebGeoInfo.GEO_DISPLAY_LABEL, fMd.getGeoDisplayLabel());
     }
   }
 
-  private class WebSingleTermToJSON extends WebAttributeToJSON
+  private static class WebSingleTermToJSON extends WebAttributeToJSON
   {
     protected WebSingleTermToJSON(WebSingleTerm webSingleTerm, JSONFormVisitor visitor)
     {
@@ -576,11 +586,11 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       super.initFieldMd(obj);
 
       WebSingleTermMd fMd = this.getField().getFieldMd();
-      put(obj, MdWebSingleTermInfo.TERM_DISPLAY_LABEL, fMd.getTermDisplayLabel());
+      this.getVisitor().put(obj, MdWebSingleTermInfo.TERM_DISPLAY_LABEL, fMd.getTermDisplayLabel());
     }
   }
 
-  private class WebMultipleTermToJSON extends WebAttributeToJSON
+  private static class WebMultipleTermToJSON extends WebAttributeToJSON
   {
     protected WebMultipleTermToJSON(WebMultipleTerm webMultipleTerm, JSONFormVisitor visitor)
     {
@@ -598,12 +608,12 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     {
       super.initFieldMd(obj);
 
-//      WebMultipleTermMd fMd = this.getField().getFieldMd();
+      // WebMultipleTermMd fMd = this.getField().getFieldMd();
       this.getField().getFieldMd();
     }
   }
 
-  private class WebSingleTermGridToJSON extends WebAttributeToJSON
+  private static class WebSingleTermGridToJSON extends WebAttributeToJSON
   {
     protected WebSingleTermGridToJSON(WebSingleTermGrid grid, JSONFormVisitor visitor)
     {
@@ -621,12 +631,12 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     {
       super.initFieldMd(obj);
 
-//      WebSingleTermGridMd fMd = this.getField().getFieldMd();
+      // WebSingleTermGridMd fMd = this.getField().getFieldMd();
       this.getField().getFieldMd();
     }
   }
 
-  private class WebBreakToJSON extends WebFieldToJSON
+  private static class WebBreakToJSON extends WebFieldToJSON
   {
 
     protected WebBreakToJSON(WebBreak webBreak, JSONFormVisitor visitor)
@@ -641,7 +651,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  public abstract class WebAttributeToJSON extends WebFieldToJSON
+  public static abstract class WebAttributeToJSON extends WebFieldToJSON
   {
     public WebAttributeToJSON(WebAttribute webAttribute, JSONFormVisitor visitor)
     {
@@ -660,15 +670,15 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       super.initFieldMd(obj);
 
       WebAttributeMd primMd = this.getField().getFieldMd();
-      put(obj, MdWebAttributeInfo.DEFINING_MD_ATTRIBUTE, primMd.getDefiningMdAttribute());
-      put(obj, MdWebAttributeInfo.DEFINING_ATTRIBUTE, primMd.getDefiningAttribute());
-      put(obj, MdWebAttributeInfo.DEFINING_CLASS, primMd.getDefiningClass());
-      put(obj, MdWebAttributeInfo.SHOW_ON_SEARCH, primMd.getShowOnSearch());
-      put(obj, MdWebAttributeInfo.SHOW_ON_VIEW_ALL, primMd.getShowOnViewAll());
+      this.getVisitor().put(obj, MdWebAttributeInfo.DEFINING_MD_ATTRIBUTE, primMd.getDefiningMdAttribute());
+      this.getVisitor().put(obj, MdWebAttributeInfo.DEFINING_ATTRIBUTE, primMd.getDefiningAttribute());
+      this.getVisitor().put(obj, MdWebAttributeInfo.DEFINING_CLASS, primMd.getDefiningClass());
+      this.getVisitor().put(obj, MdWebAttributeInfo.SHOW_ON_SEARCH, primMd.getShowOnSearch());
+      this.getVisitor().put(obj, MdWebAttributeInfo.SHOW_ON_VIEW_ALL, primMd.getShowOnViewAll());
     }
   }
 
-  private abstract class WebPrimitiveToJSON extends WebAttributeToJSON
+  private static abstract class WebPrimitiveToJSON extends WebAttributeToJSON
   {
     public WebPrimitiveToJSON(WebPrimitive webPrimitive, JSONFormVisitor visitor)
     {
@@ -688,12 +698,12 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
 
       WebPrimitiveMd md = this.getField().getFieldMd();
 
-      put(obj, MdWebPrimitiveInfo.IS_EXPRESSION, md.getIsExpression());
-      put(obj, MdWebPrimitiveInfo.EXPRESSION, md.getExpression());
+      this.getVisitor().put(obj, MdWebPrimitiveInfo.IS_EXPRESSION, md.getIsExpression());
+      this.getVisitor().put(obj, MdWebPrimitiveInfo.EXPRESSION, md.getExpression());
     }
   }
 
-  private class WebCharacterToJSON extends WebPrimitiveToJSON
+  private static class WebCharacterToJSON extends WebPrimitiveToJSON
   {
 
     protected WebCharacterToJSON(WebCharacter webCharacter, JSONFormVisitor visitor)
@@ -714,12 +724,12 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
 
       WebCharacterMd md = this.getField().getFieldMd();
 
-      put(obj, MdWebCharacterInfo.DISPLAY_LENGTH, md.getDisplayLength());
-      put(obj, MdWebCharacterInfo.MAX_LENGTH, md.getMaxLength());
+      this.getVisitor().put(obj, MdWebCharacterInfo.DISPLAY_LENGTH, md.getDisplayLength());
+      this.getVisitor().put(obj, MdWebCharacterInfo.MAX_LENGTH, md.getMaxLength());
     }
   }
 
-  private class WebTextToJSON extends WebPrimitiveToJSON
+  private static class WebTextToJSON extends WebPrimitiveToJSON
   {
 
     protected WebTextToJSON(WebText webText, JSONFormVisitor visitor)
@@ -740,12 +750,12 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
 
       WebTextMd md = this.getField().getFieldMd();
 
-      put(obj, MdWebTextInfo.WIDTH, md.getWidth());
-      put(obj, MdWebTextInfo.HEIGHT, md.getHeight());
+      this.getVisitor().put(obj, MdWebTextInfo.WIDTH, md.getWidth());
+      this.getVisitor().put(obj, MdWebTextInfo.HEIGHT, md.getHeight());
     }
   }
 
-  private class WebBooleanToJSON extends WebPrimitiveToJSON
+  private static class WebBooleanToJSON extends WebPrimitiveToJSON
   {
 
     public WebBooleanToJSON(WebBoolean webBoolean, JSONFormVisitor visitor)
@@ -766,12 +776,12 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
 
       WebBooleanMd md = this.getField().getFieldMd();
 
-      put(obj, MdWebBooleanInfo.POSITIVE_DISPLAY_LABEL, md.getPositiveDisplayLabel());
-      put(obj, MdWebBooleanInfo.NEGATIVE_DISPLAY_LABEL, md.getNegativeDisplayLabel());
+      this.getVisitor().put(obj, MdWebBooleanInfo.POSITIVE_DISPLAY_LABEL, md.getPositiveDisplayLabel());
+      this.getVisitor().put(obj, MdWebBooleanInfo.NEGATIVE_DISPLAY_LABEL, md.getNegativeDisplayLabel());
     }
   }
 
-  private class WebDateToJSON extends WebPrimitiveToJSON
+  private static class WebDateToJSON extends WebPrimitiveToJSON
   {
 
     public WebDateToJSON(WebDate webDate, JSONFormVisitor visitor)
@@ -792,16 +802,16 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
 
       WebDateMd md = this.getField().getFieldMd();
 
-      put(obj, MdWebDateInfo.AFTER_TODAY_EXCLUSIVE, md.getAfterTodayExclusive());
-      put(obj, MdWebDateInfo.AFTER_TODAY_INCLUSIVE, md.getAfterTodayInclusive());
-      put(obj, MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE, md.getBeforeTodayExclusive());
-      put(obj, MdWebDateInfo.BEFORE_TODAY_INCLUSIVE, md.getBeforeTodayInclusive());
-      put(obj, MdWebDateInfo.START_DATE, md.getStartDate());
-      put(obj, MdWebDateInfo.END_DATE, md.getEndDate());
+      this.getVisitor().put(obj, MdWebDateInfo.AFTER_TODAY_EXCLUSIVE, md.getAfterTodayExclusive());
+      this.getVisitor().put(obj, MdWebDateInfo.AFTER_TODAY_INCLUSIVE, md.getAfterTodayInclusive());
+      this.getVisitor().put(obj, MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE, md.getBeforeTodayExclusive());
+      this.getVisitor().put(obj, MdWebDateInfo.BEFORE_TODAY_INCLUSIVE, md.getBeforeTodayInclusive());
+      this.getVisitor().put(obj, MdWebDateInfo.START_DATE, md.getStartDate());
+      this.getVisitor().put(obj, MdWebDateInfo.END_DATE, md.getEndDate());
     }
   }
 
-  private class WebDateTimeToJSON extends WebPrimitiveToJSON
+  private static class WebDateTimeToJSON extends WebPrimitiveToJSON
   {
 
     public WebDateTimeToJSON(WebDateTime webDateTime, JSONFormVisitor visitor)
@@ -816,7 +826,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private class WebTimeToJSON extends WebPrimitiveToJSON
+  private static class WebTimeToJSON extends WebPrimitiveToJSON
   {
 
     public WebTimeToJSON(WebTime webTime, JSONFormVisitor visitor)
@@ -831,7 +841,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private abstract class WebNumberToJSON extends WebPrimitiveToJSON
+  private static abstract class WebNumberToJSON extends WebPrimitiveToJSON
   {
     public WebNumberToJSON(WebNumber webNumber, JSONFormVisitor visitor)
     {
@@ -851,12 +861,12 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
 
       WebNumberMd md = this.getField().getFieldMd();
 
-      put(obj, MdWebNumberInfo.STARTRANGE, md.getStartRange());
-      put(obj, MdWebNumberInfo.ENDRANGE, md.getEndRange());
+      this.getVisitor().put(obj, MdWebNumberInfo.STARTRANGE, md.getStartRange());
+      this.getVisitor().put(obj, MdWebNumberInfo.ENDRANGE, md.getEndRange());
     }
   }
 
-  private abstract class WebDecToJSON extends WebNumberToJSON
+  private static abstract class WebDecToJSON extends WebNumberToJSON
   {
     public WebDecToJSON(WebDec webDec, JSONFormVisitor visitor)
     {
@@ -876,12 +886,12 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
 
       WebDecMd md = this.getField().getFieldMd();
 
-      put(obj, MdWebDecInfo.DECPRECISION, md.getDecPrecision());
-      put(obj, MdWebDecInfo.DECSCALE, md.getDecScale());
+      this.getVisitor().put(obj, MdWebDecInfo.DECPRECISION, md.getDecPrecision());
+      this.getVisitor().put(obj, MdWebDecInfo.DECSCALE, md.getDecScale());
     }
   }
 
-  private class WebDoubleToJSON extends WebDecToJSON
+  private static class WebDoubleToJSON extends WebDecToJSON
   {
 
     public WebDoubleToJSON(WebDouble webDouble, JSONFormVisitor visitor)
@@ -896,7 +906,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private class WebDecimalToJSON extends WebDecToJSON
+  private static class WebDecimalToJSON extends WebDecToJSON
   {
 
     public WebDecimalToJSON(WebDecimal webDecimal, JSONFormVisitor visitor)
@@ -911,7 +921,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private class WebFloatToJSON extends WebDecToJSON
+  private static class WebFloatToJSON extends WebDecToJSON
   {
 
     public WebFloatToJSON(WebFloat webFloat, JSONFormVisitor visitor)
@@ -926,7 +936,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private class WebIntegerToJSON extends WebNumberToJSON
+  private static class WebIntegerToJSON extends WebNumberToJSON
   {
 
     public WebIntegerToJSON(WebInteger webInteger, JSONFormVisitor visitor)
@@ -941,7 +951,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private class WebLongToJSON extends WebNumberToJSON
+  private static class WebLongToJSON extends WebNumberToJSON
   {
 
     public WebLongToJSON(WebLong webLong, JSONFormVisitor visitor)
@@ -956,7 +966,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     }
   }
 
-  private abstract class ConditionToJSON extends WebFormComponentToJSON
+  private static abstract class ConditionToJSON extends WebFormComponentToJSON
   {
     protected Condition condition;
 
@@ -976,7 +986,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     protected abstract void initConditionMd(JSONObject obj) throws JSONException;
   }
 
-  private abstract class BasicConditionToJSON extends ConditionToJSON
+  private static abstract class BasicConditionToJSON extends ConditionToJSON
   {
     public BasicConditionToJSON(Condition condition, JSONFormVisitor visitor)
     {
@@ -988,20 +998,20 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       Condition condition = this.getCondition();
       BasicCondition basicCondition = (BasicCondition) condition;
 
-      put(obj, JS_CLASS, basicCondition.getClass().getName());
-      put(obj, BasicConditionInfo.DEFINING_MD_FIELD, basicCondition.getDefiningMdField());
-      put(obj, BasicConditionInfo.OPERATION, basicCondition.getOperation());
-      put(obj, BasicConditionInfo.ID, basicCondition.getId());
+      this.getVisitor().put(obj, JS_CLASS, basicCondition.getClass().getName());
+      this.getVisitor().put(obj, BasicConditionInfo.DEFINING_MD_FIELD, basicCondition.getDefiningMdField());
+      this.getVisitor().put(obj, BasicConditionInfo.OPERATION, basicCondition.getOperation());
+      this.getVisitor().put(obj, BasicConditionInfo.ID, basicCondition.getId());
     }
 
     protected void initConditionMd(JSONObject obj) throws JSONException
     {
       ConditionMd md = this.getCondition().getConditionMd();
 
-      put(obj, JS_CLASS, md.getClass().getName());
-      put(obj, BasicConditionInfo.ID, md.getId());
-      put(obj, BasicConditionInfo.REFERENCING_MD_FIELD, md.getReferencingMdField());
-      put(obj, BasicConditionInfo.REFERENCING_MD_FORM, md.getReferencingMdForm());
+      this.getVisitor().put(obj, JS_CLASS, md.getClass().getName());
+      this.getVisitor().put(obj, BasicConditionInfo.ID, md.getId());
+      this.getVisitor().put(obj, BasicConditionInfo.REFERENCING_MD_FIELD, md.getReferencingMdField());
+      this.getVisitor().put(obj, BasicConditionInfo.REFERENCING_MD_FORM, md.getReferencingMdForm());
     }
 
     protected void populate()
@@ -1010,20 +1020,20 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       {
         // check to see if we're a leaf/child node
         JSONObject condition;
-        if (!JSONFormVisitor.this.stack.isEmpty())
-          condition = JSONFormVisitor.this.stack.peek();
+        if (!this.getVisitor().getStack().isEmpty())
+          condition = this.getVisitor().getStack().peek();
         else
         {
           // add to the stack so field will find us
           condition = new JSONObject();
-          JSONFormVisitor.this.stack.push(condition);
+          this.getVisitor().getStack().push(condition);
         }
         JSONObject md = new JSONObject();
 
         initCondition(condition);
         initConditionMd(md);
 
-        put(condition, CONDITION_MD, md);
+        this.getVisitor().put(condition, CONDITION_MD, md);
       }
       catch (JSONException e)
       {
@@ -1046,17 +1056,17 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       Condition condition = this.getCondition();
       CompositeFieldCondition composite = (CompositeFieldCondition) condition;
 
-      put(obj, JS_CLASS, composite.getClass().getName());
-      put(obj, CompositeFieldConditionInfo.OPERATION, condition.getOperation());
-      put(obj, CompositeFieldConditionInfo.DEFINING_MD_FIELD, condition.getDefiningMdField());
+      this.getVisitor().put(obj, JS_CLASS, composite.getClass().getName());
+      this.getVisitor().put(obj, CompositeFieldConditionInfo.OPERATION, condition.getOperation());
+      this.getVisitor().put(obj, CompositeFieldConditionInfo.DEFINING_MD_FIELD, condition.getDefiningMdField());
     }
 
     protected void initConditionMd(JSONObject obj) throws JSONException
     {
       ConditionMd md = this.getCondition().getConditionMd();
 
-      put(obj, JS_CLASS, md.getClass().getName());
-      put(obj, BasicConditionInfo.ID, md.getId());
+      this.getVisitor().put(obj, JS_CLASS, md.getClass().getName());
+      this.getVisitor().put(obj, BasicConditionInfo.ID, md.getId());
     }
 
     protected void populate()
@@ -1133,7 +1143,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     {
       super.initCondition(obj);
       CharacterCondition condition = this.getCondition();
-      put(obj, CharacterConditionInfo.VALUE, condition.getValue());
+      this.getVisitor().put(obj, CharacterConditionInfo.VALUE, condition.getValue());
     }
   }
 
@@ -1155,7 +1165,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     {
       super.initCondition(obj);
       DateCondition condition = this.getCondition();
-      put(obj, DateConditionInfo.VALUE, condition.getObjectValue().toString());
+      this.getVisitor().put(obj, DateConditionInfo.VALUE, condition.getObjectValue().toString());
     }
   }
 
@@ -1177,7 +1187,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     {
       super.initCondition(obj);
       DoubleCondition condition = this.getCondition();
-      put(obj, DoubleConditionInfo.VALUE, condition.getObjectValue().doubleValue());
+      this.getVisitor().put(obj, DoubleConditionInfo.VALUE, condition.getObjectValue().doubleValue());
     }
   }
 
@@ -1199,7 +1209,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     {
       super.initCondition(obj);
       LongCondition condition = this.getCondition();
-      put(obj, LongConditionInfo.VALUE, condition.getObjectValue().longValue());
+      this.getVisitor().put(obj, LongConditionInfo.VALUE, condition.getObjectValue().longValue());
     }
   }
 

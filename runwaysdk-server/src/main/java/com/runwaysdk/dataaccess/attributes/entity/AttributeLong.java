@@ -33,7 +33,7 @@ public class AttributeLong extends AttributeNumber implements AttributeLongIF
   private static final long serialVersionUID = 608579832957982942L;
 
   /**
-   * Inherited constrcutor, sets <code>name</code> and
+   * Inherited constructor, sets <code>name</code> and
    * <code>definingEntityType</code>.
    * 
    * @param name
@@ -49,7 +49,7 @@ public class AttributeLong extends AttributeNumber implements AttributeLongIF
   }
 
   /**
-   * Inherited constrcutor, sets <code>name</code>,
+   * Inherited constructor, sets <code>name</code>,
    * <code>definingEntityType</code>, and <code>value</code>.
    * 
    * @param name
@@ -66,7 +66,24 @@ public class AttributeLong extends AttributeNumber implements AttributeLongIF
   {
     super(name, mdAttributeKey, definingEntityType, value);
   }
-
+  
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Long getTypeSafeValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return Long.parseLong(this.getValue());
+    }
+  }
+  
   /**
    * Test if the input String is a valid Long
    * 

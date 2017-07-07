@@ -39,10 +39,10 @@ public abstract class AttributePrimitive extends Attribute implements Selectable
   }
 
   /**
-   * Returns a primitive statement object that may represent a null comparrison.
+   * Returns a primitive statement object that may represent a null comparison.
    * Assumes the given object is a reference to a primitive wrapper class.
    * @param statement
-   * @return primitive statement object that may represent a null comparrison.
+   * @return primitive statement object that may represent a null comparison.
    */
   protected StatementPrimitive getNullPrimitiveStatement(Object statement)
   {

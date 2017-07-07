@@ -35,6 +35,7 @@ import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
@@ -176,7 +177,12 @@ public class AttributeFactory
     {
       attribute = new AttributeStruct(attributeName, (String) attributeValue, definingType, mdAttributeIF, entityMdAttributeIFset);
     }
-
+    else if (mdAttributeIF instanceof MdAttributeIndicatorDAOIF)
+    {
+      attribute = new AttributeIndicator(attributeName, (String) attributeValue, definingType, mdAttributeIF, entityMdAttributeIFset);
+    }
+    
+    
     if (attribute == null)
     {
       for (PluginIF plugin : pluginMap.values())

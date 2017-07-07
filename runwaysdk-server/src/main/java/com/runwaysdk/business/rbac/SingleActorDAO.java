@@ -28,6 +28,7 @@ import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -68,6 +69,14 @@ public class SingleActorDAO extends ActorDAO implements SingleActorDAOIF
     
     
     return id;
+  }
+  
+  /* (non-Javadoc)
+   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
+   */
+  public static SingleActorDAOIF get(String id)
+  {
+    return (SingleActorDAOIF) BusinessDAO.get(id);
   }
   
   /**

@@ -60,6 +60,17 @@ public class MdAttributeBoolean_Q extends MdAttributePrimitive_Q implements MdAt
   {
     return MdAttributeBooleanInfo.CLASS;
   }
+  
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Boolean.class;
+  }
 
   /**
    * Returns the concrete attribute representing this attribute.  This is a concrete attribute so itself

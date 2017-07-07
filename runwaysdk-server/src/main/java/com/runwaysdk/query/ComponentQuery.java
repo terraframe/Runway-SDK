@@ -425,6 +425,9 @@ public abstract class ComponentQuery
    * @return Attribute statement object.
    */
   public abstract Attribute get(String name);
+  
+  public abstract Selectable getS(String name);
+
 
   /**
    * Sort in ascending order.
@@ -771,7 +774,7 @@ public abstract class ComponentQuery
   
   protected void buildSelectColumn(StringBuffer selectString, Selectable selectable, MdAttributeConcreteDAOIF mdAttributeIF, ColumnInfo columnInfo)
   {
-    if (selectable instanceof AggregateFunction || selectable instanceof SimpleFunction || selectable instanceof SelectableSubSelect || selectable instanceof SelectableSQL)
+    if (selectable instanceof AttributeIndicator || selectable instanceof AggregateFunction || selectable instanceof SimpleFunction || selectable instanceof SelectableSubSelect || selectable instanceof SelectableSQL)
     {
       String columnAlias = Database.formatColumnAlias(columnInfo.getColumnAlias());
 
@@ -817,7 +820,7 @@ public abstract class ComponentQuery
    * @param selectString
    * @param hashSet
    *          used to determine if an attribute has already been added to the
-   *          selet clause
+   *          select clause
    * @param _orderByList
    * @param firstIteration
    */
@@ -1052,7 +1055,7 @@ public abstract class ComponentQuery
   {
     if (mdAttributeDAOIF == null)
     {
-      String error = "Entity [" + mdClassDAOIF.definesType() + "] does not define attribute [" + name + "]";
+      String error = "Class [" + mdClassDAOIF.definesType() + "] does not define attribute [" + name + "]";
       throw new QueryException(error);
     }
     

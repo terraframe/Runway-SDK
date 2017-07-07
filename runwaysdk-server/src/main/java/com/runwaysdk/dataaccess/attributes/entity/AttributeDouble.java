@@ -21,6 +21,8 @@
  */
 package com.runwaysdk.dataaccess.attributes.entity;
 
+import java.math.BigDecimal;
+
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 
@@ -58,6 +60,23 @@ public class AttributeDouble extends AttributeNumber
     
     // Oracle seems to prepend some numbers with a black space 
     this.value = this.value.trim();
+  }
+  
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Double getTypeSafeValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return Double.parseDouble(this.getValue());
+    }
   }
   
   /**

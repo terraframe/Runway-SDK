@@ -49,6 +49,17 @@ public class MdAttributeCharacter_SQL extends MdAttributePrimitive_SQL implement
   {
     return MdAttributeCharacterInfo.CLASS;
   }
+  
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return String.class;
+  }
 
   /**
    * @throws UnsupportedOperationException

@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess.attributes.tranzient;
 
+import java.math.BigDecimal;
+
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
@@ -70,6 +72,24 @@ public class AttributeFloat extends AttributeNumber
   public MdAttributeFloatDAOIF getMdAttributeConcrete()
   {
     return (MdAttributeFloatDAOIF)super.getMdAttributeConcrete();
+  }
+  
+  
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Float getTypeSafeValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new Float(this.getValue());
+    }
   }
   
   /**

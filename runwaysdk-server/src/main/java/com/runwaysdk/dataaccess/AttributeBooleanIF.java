@@ -28,7 +28,7 @@ package com.runwaysdk.dataaccess;
  * TODO To change the template for this generated comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public interface AttributeBooleanIF extends AttributeIF
+public interface AttributeBooleanIF extends AttributeNumericalIF
 {
   /**
    * Tests the string value of the bolean, and returns a primitive
@@ -59,4 +59,10 @@ public interface AttributeBooleanIF extends AttributeIF
    */
   public int getBooleanValueInt();
   
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Boolean getTypeSafeValue();
 }

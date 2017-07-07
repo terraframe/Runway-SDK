@@ -51,4 +51,21 @@ public class AttributeDouble extends AttributeNumber
   {
     super(name, value, definingEntityType, mdAttributeIF, entityMdAttributeIFset);
   }
+  
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Double getTypeSafeValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new Double(this.getValue());
+    }
+  }
 }

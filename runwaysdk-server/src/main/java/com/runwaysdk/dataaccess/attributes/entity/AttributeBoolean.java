@@ -24,6 +24,7 @@ package com.runwaysdk.dataaccess.attributes.entity;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeBooleanUtil;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
+import com.runwaysdk.dataaccess.AttributeNumericalIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 
@@ -107,6 +108,16 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
     return true;
   }
 
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Boolean getTypeSafeValue()
+  {
+    return this.getBooleanValue();
+  }
+  
   /**
    * Returns the boolean value of this attribute.
    * @return boolean value of this attribute.

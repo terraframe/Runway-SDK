@@ -2,12 +2,10 @@ package com.runwaysdk.query;
 
 import java.util.Set;
 
-import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
@@ -75,7 +73,7 @@ public abstract class GeneratedTableClassQuery extends GeneratedComponentQuery
    * @see com.runwaysdk.query.GeneratedComponentQuery#get(java.lang.String, java.lang.String)
    */
   @Override
-  public Attribute get(String attributeName, String userDefinedAlias)
+  public Selectable get(String attributeName, String userDefinedAlias)
   {
     return this.getComponentQuery().get(attributeName, userDefinedAlias);
   }

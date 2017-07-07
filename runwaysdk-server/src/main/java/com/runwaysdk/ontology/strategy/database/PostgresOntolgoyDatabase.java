@@ -19,7 +19,7 @@
 /**
  * 
  */
-package com.runwaysdk.system.metadata.ontology;
+package com.runwaysdk.ontology.strategy.database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -54,6 +54,7 @@ import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdEntity;
 import com.runwaysdk.system.metadata.MdRelationship;
 import com.runwaysdk.system.metadata.MdTerm;
+import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 import com.runwaysdk.util.IdParser;
 
 /*******************************************************************************

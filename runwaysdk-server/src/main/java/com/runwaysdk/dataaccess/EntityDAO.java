@@ -1140,6 +1140,11 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     for (MdAttributeConcreteDAOIF mdAttribute : this.getMdAttributeDAOs())
     {
+      if (mdAttribute instanceof MdAttributeIndicatorDAOIF)
+      {
+        continue;
+      }
+      
       // A new attribute may have been added since this object was instantiated.
       if (this.hasAttribute(mdAttribute.definesAttribute()))
       {
@@ -1192,6 +1197,11 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     for (MdAttributeConcreteDAOIF mdAttribute : this.getMdAttributeDAOs())
     {
+      if (mdAttribute instanceof MdAttributeIndicatorDAOIF)
+      {
+        continue;
+      }
+      
       // A new attribute may have been added since this object was instantiated.
       if (this.hasAttribute(mdAttribute.definesAttribute()))
       {

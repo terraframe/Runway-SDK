@@ -197,6 +197,7 @@ public class AttributeReference extends Attribute implements AttributeReferenceI
    * 
    * @return a deep clone of this Attribute
    */
+  @Override
   public Attribute attributeClone()
   {
     return new AttributeReference(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));

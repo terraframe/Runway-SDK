@@ -34,7 +34,7 @@ public class MdAttributeLongUtil extends MdAttributeUtil
    */
   public static Long getTypeSafeValue(String toParse)
   {
-    if (toParse.trim().equals(""))
+    if (toParse == null ||toParse.trim().equals(""))
     {
       return null;
     }

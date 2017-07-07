@@ -48,12 +48,12 @@ public abstract class GeneratedComponentQuery
    * @param attributeName
    * @return The query attribute correspond
    */
-  public abstract Attribute get(String attributeName);
+  public abstract Selectable get(String attributeName);
   
-  public abstract Attribute get(String attributeName, String userDefinedAlias);
+  public abstract Selectable get(String attributeName, String userDefinedAlias);
   
   /**
-   * Retricts the query to return rows from the given page number
+   * Restricts the query to return rows from the given page number
    * where each page has the given number of rows.
    * @param pageSize
    * @param pageNumber
@@ -101,14 +101,6 @@ public abstract class GeneratedComponentQuery
    */
   protected abstract ComponentQuery getComponentQuery();
 
-//  Heads up: Test: 
-//  /**
-//   * Returns an attribute character statement object.
-//   * @param name name of the attribute.
-//   * @return Attribute character statement object.
-//   */
-//  protected abstract SelectableChar getId();
-
   /**
    * Adds a condition to this query.  Will perform an AND
    * with any prior condition previously added.
@@ -117,6 +109,11 @@ public abstract class GeneratedComponentQuery
   public void WHERE(Condition condition)
   {
     this.getComponentQuery().WHERE(condition);
+  }
+  
+  public Selectable getS(String name)
+  {
+    return this.getComponentQuery().getS(name);
   }
 
   /**

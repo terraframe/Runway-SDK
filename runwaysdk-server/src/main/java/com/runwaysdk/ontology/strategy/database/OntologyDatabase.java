@@ -19,7 +19,7 @@
 /**
  * 
  */
-package com.runwaysdk.system.metadata.ontology;
+package com.runwaysdk.ontology.strategy.database;
 
 import java.util.Map;
 

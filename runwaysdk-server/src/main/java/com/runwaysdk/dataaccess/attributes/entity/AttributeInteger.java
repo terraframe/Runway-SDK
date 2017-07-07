@@ -65,7 +65,24 @@ public class AttributeInteger extends AttributeNumber
   {
     super(name, mdAttributeKey, definingEntityType, value);
   }
-
+  
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Integer getTypeSafeValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return Integer.parseInt(this.getValue());
+    }
+  }
+  
   /**
    * Test if the input String is a valid integer.
    * 

@@ -45,7 +45,7 @@ public class AttributeFloat extends AttributeNumber
   }
 
   /**
-   * Inherited constrcutor, sets <code>name</code>, <code>definingEntityType</code>, and
+   * Inherited constructor, sets <code>name</code>, <code>definingEntityType</code>, and
    * <code>value</code>.
    * 
    * @param name The name of this float attribute.
@@ -59,6 +59,23 @@ public class AttributeFloat extends AttributeNumber
     
     // Oracle seems to prepend some numbers with a black space 
     this.value = this.value.trim();
+  }
+  
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Float getTypeSafeValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return Float.parseFloat(this.getValue());
+    }
   }
   
   /**

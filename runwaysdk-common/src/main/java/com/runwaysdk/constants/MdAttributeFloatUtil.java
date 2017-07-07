@@ -34,7 +34,7 @@ public class MdAttributeFloatUtil
    */
   public static Float getTypeSafeValue(String toParse)
   {
-    if (toParse.trim().equals(""))
+    if (toParse == null ||toParse.trim().equals(""))
     {
       return null;
     }

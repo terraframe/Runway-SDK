@@ -2796,4 +2796,19 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
     return getMessage(locale, "LoginNotSupportedException", user.getType());
   }
   
+  /**
+   * Gets the localized {@link InvalidIndicatorDefinition} message, which is
+   * thrown when an invalid indicator attribute is defined.
+   * 
+   * @param locale
+   *          the desired locale
+   * @param _localizedIndicatorDisplayLabel
+   *          The localized error message
+   * @return
+   */
+  public static String invalidIndicatorDefinition(Locale locale, String _localizedIndicatorDisplayLabel)
+  {
+    return getMessage(locale, "InvalidIndicatorDefinition", _localizedIndicatorDisplayLabel);
+  }
+
 }

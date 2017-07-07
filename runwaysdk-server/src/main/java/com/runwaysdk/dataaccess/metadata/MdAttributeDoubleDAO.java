@@ -87,6 +87,16 @@ public class MdAttributeDoubleDAO extends MdAttributeDecDAO implements MdAttribu
   {
     return "Double";
   }
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Double.class;
+  }
 
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.metadata.MdAttribute#generateTypesafeFormatting(java.lang.String)

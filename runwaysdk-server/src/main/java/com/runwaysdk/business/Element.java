@@ -25,9 +25,9 @@ import java.util.Locale;
 import java.util.Set;
 
 import com.runwaysdk.business.rbac.ActorDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAO;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
-import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
@@ -313,7 +313,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
       String errMsg = "User [" + UserDAO.get(userId).getSingleActorName() + "] cannot lock entity ["
           + this.getId() + "] because it is already locked by user ["
-          + UserDAO.get(lockedBy).getSingleActorName() + "]";
+          + SingleActorDAO.get(lockedBy).getSingleActorName() + "]";
       throw new LockException(errMsg, this, "ExistingLockException");
     }
 

@@ -104,6 +104,16 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   {
     return "String";
   }
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return String.class;
+  }
 
   @Override
   public String attributeMdDTOType()

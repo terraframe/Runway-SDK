@@ -57,7 +57,7 @@ public abstract class Function implements SelectablePrimitive, Statement
   /**
    *
    * @param selectable
-   *          Selectable that is a parameter to the function.
+   *          {@link Selectable} that is a parameter to the function.
    * @param userDefinedAlias
    */
   protected Function(Selectable selectable, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -605,7 +605,7 @@ public abstract class Function implements SelectablePrimitive, Statement
    * ValueQuery.
    *
    * @param selectable
-   * @return Conidtion to add to the query.
+   * @return Condition to add to the query.
    */
   public AttributeCondition SUBSELECT_IN(Selectable selectable)
   {

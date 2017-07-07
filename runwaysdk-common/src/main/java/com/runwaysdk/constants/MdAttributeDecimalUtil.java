@@ -36,7 +36,7 @@ public class MdAttributeDecimalUtil extends MdAttributeUtil
    */
   public static BigDecimal getTypeSafeValue(String toParse)
   {
-    if (toParse.trim().equals(""))
+    if (toParse == null ||toParse.trim().equals(""))
     {
       return null;
     }

@@ -999,7 +999,7 @@ public class ValueQueryParser
 
           String[] attributeNames = attributeNameTagValue.split("\\.");
 
-          Attribute attribute = null;
+          Selectable attribute = null;
 
           if (attributeNames.length == 0)
           {

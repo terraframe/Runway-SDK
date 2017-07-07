@@ -19,12 +19,13 @@
 /**
  * 
  */
-package com.runwaysdk.system.metadata.ontology;
+package com.runwaysdk.ontology.strategy.database;
 
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
 import com.runwaysdk.dataaccess.database.general.PostgreSQL;
+import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.

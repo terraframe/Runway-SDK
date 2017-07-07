@@ -18,7 +18,9 @@
  */
 package com.runwaysdk.dataaccess;
 
-public interface AttributeDecimalIF extends AttributeIF
+import java.math.BigDecimal;
+
+public interface AttributeDecimalIF extends AttributeNumericalIF
 {
   /**
    * Returns the DisplayLength
@@ -29,4 +31,11 @@ public interface AttributeDecimalIF extends AttributeIF
    * Returns the decimalDigits
    */
   public int getDecimalDigits();
+  
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public BigDecimal getTypeSafeValue();
 }

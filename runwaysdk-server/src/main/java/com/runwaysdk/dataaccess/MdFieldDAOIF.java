@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.runwaysdk.constants.MdFieldInfo;
+import com.runwaysdk.dataaccess.metadata.MdFieldDAO;
 
 public interface MdFieldDAOIF extends MetadataDAOIF
 {
@@ -59,7 +60,7 @@ public interface MdFieldDAOIF extends MetadataDAOIF
    * 
    * @return
    */
-  public BusinessDAO getBusinessDAO();
+  public MdFieldDAO getBusinessDAO();
 
   public String isRequired();
 

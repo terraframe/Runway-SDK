@@ -73,10 +73,15 @@ public abstract class MdFieldDAO extends MetadataDAO implements MdFieldDAOIF
   @Override
   public void delete(boolean businessContext)
   {
+    this.delete(businessContext, true);
+  }
+
+  public void delete(boolean businessContext, boolean enforceRemovable)
+  {
     String conditionId = this.getAttribute(MdFieldInfo.FIELD_CONDITION).getValue();
     
-    super.delete(businessContext);
-
+    super.delete(businessContext, enforceRemovable);
+    
     // If there is a condition on the field then delete the condition also
     if (conditionId != null && conditionId.length() > 0)
     {
@@ -84,7 +89,7 @@ public abstract class MdFieldDAO extends MetadataDAO implements MdFieldDAOIF
     }
     
   }
-
+  
   public List<FieldConditionDAOIF> getConditions()
   {
     List<FieldConditionDAOIF> conditions = new LinkedList<FieldConditionDAOIF>();

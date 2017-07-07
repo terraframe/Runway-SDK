@@ -175,7 +175,7 @@ public class EntityAttributeTest extends TestCase
 
   /**
    * Contains the MdAttribute for each attribute defined in classSetUp(). Is
-   * referenced by the classTearDown() method, where all attribtues are deleted
+   * referenced by the classTearDown() method, where all attributes are deleted
    */
   private static LinkedList<MdAttributeConcreteDAOIF> definitions;
 

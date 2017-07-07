@@ -52,6 +52,17 @@ public class MdAttributeClob_Q extends MdAttributePrimitive_Q implements MdAttri
   {
     return MdAttributeClobInfo.CLASS;
   }
+  
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return String.class;
+  }
 
   @Override
   public String attributeMdDTOType()

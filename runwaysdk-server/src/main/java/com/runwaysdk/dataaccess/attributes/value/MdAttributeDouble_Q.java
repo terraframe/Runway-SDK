@@ -50,6 +50,17 @@ public class MdAttributeDouble_Q extends MdAttributeDec_Q implements MdAttribute
     return MdAttributeDoubleInfo.CLASS;
   }
 
+  
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return Double.class;
+  }
+  
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */

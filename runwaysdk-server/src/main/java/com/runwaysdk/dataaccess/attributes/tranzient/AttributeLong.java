@@ -77,6 +77,24 @@ public class AttributeLong extends AttributeNumber
     return com.runwaysdk.dataaccess.attributes.entity.AttributeLong.getLongValue(this.getValue());
   }
   
+  
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Long getTypeSafeValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new Long(this.getValue());
+    }
+  }
+  
   /**
    * Test if the input String is a valid Long
    * 

@@ -91,6 +91,7 @@ public class DataAccessTestSuite extends TestSuite
     suite.addTest(EntityAttributeTest.suite());
     suite.addTest(EntityAttributeMultiReferenceTest.suite());
     suite.addTest(EntityAttributeMultiTermTest.suite());
+    suite.addTest(EntityAttributeIndicatorTest.suite());
     suite.addTest(EnumerationTest.suite());
     suite.addTest(RelationshipTest.suite());
     suite.addTest(MdRelationshipTest.suite());

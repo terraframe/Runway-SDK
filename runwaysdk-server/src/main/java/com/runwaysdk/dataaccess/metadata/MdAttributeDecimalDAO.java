@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.dataaccess.metadata;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
@@ -90,6 +91,16 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
     return "java.math.BigDecimal";
   }
 
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return BigDecimal.class;
+  }
+  
   /**
    * Returns a string representing the query attribute class for attributes of this type.
    *

@@ -49,6 +49,7 @@ import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
+import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
@@ -1252,6 +1253,7 @@ public class SQLServer extends AbstractDatabase
         dataType.equals(MdAttributeTermInfo.CLASS)            ||
         dataType.equals(MdAttributeFileInfo.CLASS)            ||
         dataType.equals(MdAttributeEnumerationInfo.CLASS)     ||
+        dataType.equals(MdAttributeIndicatorInfo.CLASS)       ||
         // Non Primitives
         dataType.equals(MdAttributeBlobInfo.CLASS))
     {
@@ -1324,7 +1326,8 @@ public class SQLServer extends AbstractDatabase
         // References
         dataType.equals(MdAttributeReferenceInfo.CLASS)       ||
         dataType.equals(MdAttributeTermInfo.CLASS)            ||
-        dataType.equals(MdAttributeEnumerationInfo.CLASS))
+        dataType.equals(MdAttributeEnumerationInfo.CLASS)     ||
+        dataType.equals(MdAttributeIndicatorInfo.CLASS))
     {
       sqlStmt = "'" + sqlStmt + "'";
 

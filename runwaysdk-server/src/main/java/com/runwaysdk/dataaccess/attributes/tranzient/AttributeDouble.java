@@ -31,7 +31,7 @@ public class AttributeDouble extends AttributeNumber
 
 
   /**
-   * Inherited constrcutor, sets <code>name</code> and <code>definingTransientType</code>.
+   * Inherited constructor, sets <code>name</code> and <code>definingTransientType</code>.
    * 
    * @param name The name of this double attribute.
    * @param mdAttributeKey key of the defining metadata.
@@ -43,7 +43,7 @@ public class AttributeDouble extends AttributeNumber
   }
 
   /**
-   * Inherited constrcutor, sets <code>name</code>, <code>definingTransientType</code>, and
+   * Inherited constructor, sets <code>name</code>, <code>definingTransientType</code>, and
    * <code>value</code>.
    * 
    * @param name The name of this double attribute.
@@ -69,6 +69,23 @@ public class AttributeDouble extends AttributeNumber
   public MdAttributeDoubleDAOIF getMdAttributeConcrete()
   {
     return (MdAttributeDoubleDAOIF)super.getMdAttributeConcrete();
+  }
+  
+  /**
+   * Returns the Java primitive type of the value.
+   * 
+   * @return the Java primitive type of the value.
+   */
+  public Double getTypeSafeValue()
+  {
+    if (this.getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return new Double(this.getValue());
+    }
   }
   
   /**
