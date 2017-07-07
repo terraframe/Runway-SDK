@@ -16,31 +16,32 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.constants;
+package com.runwaysdk.transport.metadata;
+
 
 /**
- * A common util class for MdAttributeDouble objects
- * @author jsmethie
- *
+ * Describes metadata for an Attribute Indicator.
  */
-public class MdAttributeDoubleUtil extends MdAttributeUtil
+public class AttributeIndicatorMdDTO extends AttributeMdDTO
 {
   /**
-   * Returns the type safe object with the given value for this attribute type.  Returns
-   * null iff the value is an empty string.  Assumes the value is not null and represents
-   * a valid value of the return type.
-   * @param toParse
-   * @return type safe object with the given value for this attribute type. 
+   *
    */
-  public static Double getTypeSafeValue(String toParse)
+  private static final long serialVersionUID = -5380283345818203444L;
+
+  /**
+   * Default constructor.
+   */
+  protected AttributeIndicatorMdDTO()
   {
-    if (toParse == null || toParse.trim().equals(""))
-    {
-      return null;
-    }
-    else
-    {
-      return Double.parseDouble(toParse);
-    }
+    super();
   }
+
+
+  @Override
+  public Class<?> getJavaType()
+  {
+    return Number.class;
+  }
+
 }

@@ -34,7 +34,7 @@ public class MdAttributeIntegerUtil extends MdAttributeUtil
    */
   public static Integer getTypeSafeValue(String toParse)
   {
-    if (toParse.trim().equals(""))
+    if (toParse == null ||toParse.trim().equals(""))
     {
       return null;
     }

@@ -89,14 +89,14 @@ public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements Indica
 
     if (functionName.equals(AggregationFunctionInfo.COUNT))
     {
-      return Long.class.getName();
+      return Long.class.getSimpleName();
     }
     else if (functionName.equals(AggregationFunctionInfo.SUM) ||
         functionName.equals(AggregationFunctionInfo.MIN) ||
         functionName.equals(AggregationFunctionInfo.MAX) )
     {
       MdAttributePrimitiveDAOIF mdAttribute = this.getMdAttributePrimitive();
-      return mdAttribute.javaClass().getName();
+      return mdAttribute.javaType(false);
     }
     else // AggregationFunctionInfo.STDEV   AggregationFunctionInfo.AVG
     {
@@ -108,7 +108,7 @@ public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements Indica
       }
       else
       {
-        return Long.class.getName();
+        return Long.class.getSimpleName();
       }
     }
   }

@@ -147,7 +147,7 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
     
     String type = this.getIndicator().javaType();
     
-    if (type.equals(Boolean.class.getName()))
+    if (type.equals(Boolean.class.getSimpleName()))
     {
       util = MdAttributeBooleanUtil.class.getName();
     }
@@ -155,19 +155,19 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
     {
       util = MdAttributeDecimalUtil.class.getName();
     }
-    else if (type.equals(Double.class.getName()))
+    else if (type.equals(Double.class.getSimpleName()))
     {
       util = MdAttributeDoubleUtil.class.getName();
     }
-    else if (type.equals(Float.class.getName()))
+    else if (type.equals(Float.class.getSimpleName()))
     {
       util = MdAttributeFloatUtil.class.getName();
     }
-    else if (type.equals(Long.class.getName()))
+    else if (type.equals(Long.class.getSimpleName()))
     {
       util = MdAttributeLongUtil.class.getName();
     }
-    else if (type.equals(Integer.class.getName()))
+    else if (type.equals(Integer.class.getSimpleName()))
     {
       util = MdAttributeIntegerUtil.class.getName();
     }

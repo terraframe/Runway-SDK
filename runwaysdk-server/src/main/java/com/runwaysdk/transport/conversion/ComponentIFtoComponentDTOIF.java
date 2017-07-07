@@ -57,6 +57,7 @@ import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDecDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
@@ -83,6 +84,7 @@ import com.runwaysdk.transport.attributes.AttributeDateTimeDTO;
 import com.runwaysdk.transport.attributes.AttributeDecDTO;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeHashDTO;
+import com.runwaysdk.transport.attributes.AttributeIndicatorDTO;
 import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
@@ -362,6 +364,10 @@ public abstract class ComponentIFtoComponentDTOIF
       {
         attributeDTO = getAttributeBoolean(mdAttribute);
       }
+      else if (mdAttributeConcreteIF instanceof MdAttributeIndicatorDAOIF)
+      {
+        attributeDTO = getAttributeIndicator(mdAttribute);
+      }
       else
       {
         attributeDTO = getAttribute(mdAttribute);
@@ -499,7 +505,7 @@ public abstract class ComponentIFtoComponentDTOIF
     Object value = null;
     if (oValue != null)
     {
-      value = oValue;
+      value = oValue.toString();
     }
 
     AttributeDTO attributeDTO = createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
@@ -538,6 +544,34 @@ public abstract class ComponentIFtoComponentDTOIF
     return attributeDTO;
   }
 
+  /**
+   * Sets an attribute given an mdAttribute.
+   * 
+   * @param mdAttributeIF
+   */
+  private AttributeIndicatorDTO getAttributeIndicator(MdAttributeDAOIF mdAttributeIF)
+  {
+    String attributeName = mdAttributeIF.definesAttribute();
+    boolean readable = hasAttributeReadAccess(mdAttributeIF);
+    boolean writable = hasAttributeWriteAccess(mdAttributeIF);
+    
+    Object oValue = invokeGetter(mdAttributeIF);
+    String value = null;
+    if (oValue != null)
+    {
+      value = oValue.toString();
+    }
+    
+    AttributeIndicatorDTO attributeDTO = (AttributeIndicatorDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    
+    if (this.convertMetaData())
+    {
+      ServerAttributeFacade.setAttributeMetadata(mdAttributeIF, attributeDTO.getAttributeMdDTO());
+    }
+    
+    return attributeDTO;
+  }
+  
   private AttributeSymmetricDTO getAttributeSymmetric(MdAttributeDAOIF mdAttributeIF)
   {
     String attributeName = mdAttributeIF.definesAttribute();
