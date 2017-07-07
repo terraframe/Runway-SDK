@@ -1,7 +1,3 @@
-import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
-
-import com.runwaysdk.gis.constants.ServerGISproperties;
 import com.runwaysdk.session.Request;
 
 
