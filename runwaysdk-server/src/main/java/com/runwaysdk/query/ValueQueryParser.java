@@ -1039,7 +1039,7 @@ public class ValueQueryParser
                   }
                   else
                   {
-                    attribute = this.getTableClassQuery(entityAlias).get(attributeName, userAlias, userLabel);
+                    attribute = this.getTableClassQuery(entityAlias).getS(attributeName, userAlias, userLabel);
                   }
                 }
                 else
