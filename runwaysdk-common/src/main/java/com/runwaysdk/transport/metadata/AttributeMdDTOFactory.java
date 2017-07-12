@@ -35,6 +35,7 @@ import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
+import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
@@ -166,6 +167,10 @@ public class AttributeMdDTOFactory
     else if (attributeType.equals(MdAttributeBooleanInfo.CLASS))
     {
       attributeMdDTO = new AttributeBooleanMdDTO();
+    }
+    else if (attributeType.equals(MdAttributeIndicatorInfo.CLASS))
+    {
+      attributeMdDTO = new AttributeIndicatorMdDTO();
     }
 
     if (attributeMdDTO == null)

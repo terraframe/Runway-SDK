@@ -34,7 +34,7 @@ public class MdAttributeDoubleUtil extends MdAttributeUtil
    */
   public static Double getTypeSafeValue(String toParse)
   {
-    if (toParse.trim().equals(""))
+    if (toParse == null || toParse.trim().equals(""))
     {
       return null;
     }

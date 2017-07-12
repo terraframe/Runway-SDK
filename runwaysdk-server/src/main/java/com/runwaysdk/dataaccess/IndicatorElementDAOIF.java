@@ -44,4 +44,6 @@ public interface IndicatorElementDAOIF extends BusinessDAOIF
    * @return the unaggregated value of the indicator for the given {@link ComponentDAOIF}.
    */
   public Object evalNonAggregateValue(MdAttributeIndicatorDAOIF _mdAttributeIndicator, ComponentDAOIF _componentDAOIF);
+
+  public boolean isPercentage();
 }

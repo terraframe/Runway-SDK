@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.constants.AggregationFunctionInfo;
-import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndicatorPrimitiveInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.session.Session;
@@ -90,14 +89,14 @@ public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements Indica
 
     if (functionName.equals(AggregationFunctionInfo.COUNT))
     {
-      return Long.class.getName();
+      return Long.class.getSimpleName();
     }
     else if (functionName.equals(AggregationFunctionInfo.SUM) ||
         functionName.equals(AggregationFunctionInfo.MIN) ||
         functionName.equals(AggregationFunctionInfo.MAX) )
     {
       MdAttributePrimitiveDAOIF mdAttribute = this.getMdAttributePrimitive();
-      return mdAttribute.javaClass().getName();
+      return mdAttribute.javaType(false);
     }
     else // AggregationFunctionInfo.STDEV   AggregationFunctionInfo.AVG
     {
@@ -109,7 +108,7 @@ public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements Indica
       }
       else
       {
-        return Long.class.getName();
+        return Long.class.getSimpleName();
       }
     }
   }
@@ -164,6 +163,12 @@ public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements Indica
   public IndicatorPrimitiveDAO getBusinessDAO()
   {
     return (IndicatorPrimitiveDAO) super.getBusinessDAO();
+  }
+
+  @Override
+  public boolean isPercentage()
+  {
+    return false;
   }
 
 }

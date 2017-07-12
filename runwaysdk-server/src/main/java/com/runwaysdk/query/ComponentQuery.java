@@ -425,6 +425,9 @@ public abstract class ComponentQuery
    * @return Attribute statement object.
    */
   public abstract Attribute get(String name);
+  
+  public abstract Selectable getS(String name);
+
 
   /**
    * Sort in ascending order.
