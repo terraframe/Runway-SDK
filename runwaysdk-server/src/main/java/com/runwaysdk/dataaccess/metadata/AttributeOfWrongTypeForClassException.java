@@ -57,7 +57,7 @@ public class AttributeOfWrongTypeForClassException extends AttributeDefinitionEx
    */
   protected MdAttributeConcreteDAOIF getMdAttribute()
   {
-    return (MdAttributeConcreteDAOIF)this.getMdAttribute();
+    return (MdAttributeConcreteDAOIF)super.getMdAttribute();
   }
   
   /**

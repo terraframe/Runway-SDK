@@ -57,7 +57,7 @@ public class ReferenceAttributeNotReferencingClassException extends AttributeDef
    */
   protected MdAttributeConcreteDAOIF getMdAttribute()
   {
-    return (MdAttributeConcreteDAOIF)this.getMdAttribute();
+    return (MdAttributeConcreteDAOIF)super.getMdAttribute();
   }
 
   /**

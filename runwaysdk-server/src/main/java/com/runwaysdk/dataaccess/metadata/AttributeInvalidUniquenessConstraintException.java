@@ -52,7 +52,7 @@ public class AttributeInvalidUniquenessConstraintException extends AttributeDefi
    */
   protected MdAttributeConcreteDAOIF getMdAttribute()
   {
-    return (MdAttributeConcreteDAOIF)this.getMdAttribute();
+    return (MdAttributeConcreteDAOIF)super.getMdAttribute();
   }
   
   /**

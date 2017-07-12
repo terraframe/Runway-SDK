@@ -59,7 +59,7 @@ public class CannotAddAttriubteToClassException extends AttributeDefinitionExcep
    */
   protected MdAttributeConcreteDAOIF getMdAttribute()
   {
-    return (MdAttributeConcreteDAOIF)this.getMdAttribute();
+    return (MdAttributeConcreteDAOIF)super.getMdAttribute();
   }
   
   /**
