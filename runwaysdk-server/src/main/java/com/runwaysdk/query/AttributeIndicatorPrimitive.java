@@ -127,19 +127,12 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
   {
     return this.aggregateFunction.SUBSELECT_NOT_IN(_selectable);
   }
-
-  @Override
-  public String _getAttributeName()
-  {
-    return this.aggregateFunction._getAttributeName();
-  }
-
+  
   @Override
   public String getColumnAlias()
   {
     return this.aggregateFunction.getColumnAlias();
   }
-
 
   @Override
   public void setColumnAlias(String _alias)
