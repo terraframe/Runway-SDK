@@ -136,7 +136,7 @@ public class IndicatorPrimitiveDAO extends IndicatorElementDAO implements Indica
 
       if (functionName.equals(AggregationFunctionInfo.COUNT))
       {
-        return new Integer(1);
+        return new Double(1);
       }
       else
       {
