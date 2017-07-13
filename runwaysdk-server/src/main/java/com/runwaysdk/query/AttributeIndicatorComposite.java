@@ -26,22 +26,20 @@ public class AttributeIndicatorComposite extends AttributeIndicator
   
   private AttributeIndicator    rightOperand;
   
-  private String                attributeName;
-  
   private String                attributeNamespace;
   
   protected String              columnAlias;
 
   
-  protected AttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeNamespace, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AttributeIndicator _leftOperand, EnumerationItemDAOIF _operator, AttributeIndicator _rightOperand)
+  protected AttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeName, String _attributeNamespace, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AttributeIndicator _leftOperand, EnumerationItemDAOIF _operator, AttributeIndicator _rightOperand)
   {
-    super(_mdAttributeIndicator, _definingTableName, _definingTableAlias, _rootQuery);
+    super(_mdAttributeIndicator, _attributeName, _definingTableName, _definingTableAlias, _rootQuery);
     this.init(_attributeNamespace, _leftOperand, _operator, _rightOperand);
   }
   
-  protected AttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeNamespace, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AttributeIndicator _leftOperand, EnumerationItemDAOIF _operator, AttributeIndicator _rightOperand, String _userDefinedAlias, String _userDefinedDisplayLabel)
+  protected AttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeName, String _attributeNamespace, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AttributeIndicator _leftOperand, EnumerationItemDAOIF _operator, AttributeIndicator _rightOperand, String _userDefinedAlias, String _userDefinedDisplayLabel)
   {
-    super(_mdAttributeIndicator, _definingTableName, _definingTableAlias, _userDefinedAlias, _userDefinedDisplayLabel, _rootQuery);
+    super(_mdAttributeIndicator, _attributeName, _definingTableName, _definingTableAlias, _userDefinedAlias, _userDefinedDisplayLabel, _rootQuery);
     this.init(_attributeNamespace, _leftOperand, _operator, _rightOperand);
   }
   
@@ -83,16 +81,6 @@ public class AttributeIndicatorComposite extends AttributeIndicator
     return new SubSelectExplicit_NOT_IN_Condition(this, selectable);
   }
 
-  @Override
-  public String getDbColumnName()
-  {
-    if (this.attributeName == null)
-    {
-      this.attributeName = this.getRootQuery().getColumnAlias(this.getAttributeNameSpace() + this.calculateName(), this.getMdAttributeIF().definesAttribute());
-    }
-    return this.attributeName;
-  }
-
   /**
    * Calculates a name for the result set.
    * 
@@ -104,31 +92,11 @@ public class AttributeIndicatorComposite extends AttributeIndicator
     
     return displayLabel;
   }
-  
-  @Override
-  public String _getAttributeName()
-  {
-    return this.getDbColumnName();
-  }
-
 
   @Override
   public String getColumnAlias()
   {
     return this.columnAlias;
-  }
-
-  @Override
-  public String getResultAttributeName()
-  {
-    if (this.userDefinedAlias.trim().length() != 0)
-    {
-      return this.userDefinedAlias;
-    }
-    else
-    {
-      return this._getAttributeName();
-    }
   }
 
   @Override

@@ -332,125 +332,13 @@ public abstract class TableClassQuery extends ComponentQuery
     
       IndicatorElementDAOIF indicatorElement = mdAttributeIndicator.getIndicator();
     
-      return this.buildAttributeIndicator(mdAttributeIndicator, indicatorElement, attributeName, userDefinedAlias, userDefinedDisplayLabel);
+      return this.buildAttributeIndicator(mdAttributeIndicator, attributeName, indicatorElement, userDefinedAlias, userDefinedDisplayLabel);
     }
     else
     {
       return this.get(attributeName, userDefinedAlias, userDefinedDisplayLabel);
     }
   }
-
-  /**
-   * 
-   * @param _mdAttributeIndicator
-   * @param _indicatorElement
-   * @param _attributeName
-   * @param _userDefinedAlias
-   * @param _userDefinedDisplayLabel
-   * @return
-   */
-  private AttributeIndicator buildAttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, IndicatorElementDAOIF _indicatorElement, String _attributeName, String _userDefinedAlias,
-      String _userDefinedDisplayLabel)
-  {
-    if (_indicatorElement instanceof IndicatorPrimitiveDAOIF)
-    {
-      return this.buildAttributeIndicatorPrimitive(_mdAttributeIndicator, (IndicatorPrimitiveDAOIF)_indicatorElement, _attributeName, _userDefinedAlias,
-          _userDefinedDisplayLabel);
-    }
-    else // indicator composite
-    {
-      return this.buildAttributeIndicatorComposite(_mdAttributeIndicator, (IndicatorCompositeDAOIF)_indicatorElement, _attributeName, _userDefinedAlias,
-          _userDefinedDisplayLabel);
-    }
-  }
-
-
-  /**
-   * 
-   * @param _mdAttributeIndicator
-   * @param _indicatorComposite
-   * @param _attributeName
-   * @param _userDefinedAlias
-   * @param _userDefinedDisplayLabel
-   * @return
-   */
-  private AttributeIndicatorComposite buildAttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, IndicatorCompositeDAOIF _indicatorComposite, String _attributeName, String _userDefinedAlias,
-      String _userDefinedDisplayLabel)
-  {
-    
-    IndicatorElementDAOIF indicatorElementLeft = _indicatorComposite.getLeftOperand();
-    AttributeIndicator left = this.buildAttributeIndicator(_mdAttributeIndicator, indicatorElementLeft, _attributeName, _userDefinedAlias, _userDefinedDisplayLabel);
-    
-    EnumerationItemDAOIF operator = _indicatorComposite.getOperator();
-    
-    IndicatorElementDAOIF indicatorElementRight = _indicatorComposite.getRightOperand();
-    AttributeIndicator right = this.buildAttributeIndicator(_mdAttributeIndicator, indicatorElementRight, _attributeName, _userDefinedAlias, _userDefinedDisplayLabel);
-    
-    MdTableClassIF mdTableClass = (MdTableClassIF) _mdAttributeIndicator.definedByClass();
-    String definingTableName = mdTableClass.getTableName();
-    String definingTableAlias = this.getTableAlias("", definingTableName);
- 
-    return new AttributeIndicatorComposite(_mdAttributeIndicator, mdTableClass.definesType(), definingTableName, definingTableAlias, this, left, operator, right, _userDefinedAlias, _userDefinedDisplayLabel);    
-  }
-  
-  /**
-   * 
-   * @param _mdAttributeIndicator
-   * @param _indicatorPrimitive
-   * @param _attributeName
-   * @param _userDefinedAlias
-   * @param _userDefinedDisplayLabel
-   * @return
-   */
-  private AttributeIndicatorPrimitive buildAttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, IndicatorPrimitiveDAOIF _indicatorPrimitive, String _attributeName, String _userDefinedAlias,
-      String _userDefinedDisplayLabel)
-  {
-
-    MdAttributePrimitiveDAOIF mdAttrPrimitive = _indicatorPrimitive.getMdAttributePrimitive();
-
-    // String userDefinedAlias, String userDefinedDisplayLabel
-    Selectable attributeInIndictor = this.internalAttributeFactory(_attributeName, mdAttrPrimitive, null, null);
-
-    // Get the aggregate function.
-    EnumerationItemDAOIF aggFuncEnumItem = _indicatorPrimitive.getAggregateFunction();
-    
-    AggregateFunction aggregateFunction = null;
-    
-    if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.SUM))
-    {
-       aggregateFunction = new SUM(attributeInIndictor);
-       // , userDefinedAlias, userDefinedDisplayLabel
-    }
-    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.COUNT))
-    {
-      aggregateFunction = new COUNT(attributeInIndictor);
-    }
-    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.MIN))
-    {
-      aggregateFunction = new MIN(attributeInIndictor);
-    }
-    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.MAX))
-    {
-      aggregateFunction = new MAX(attributeInIndictor);
-    }
-    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.AVG))
-    {
-      aggregateFunction = new AVG(attributeInIndictor);
-    }
-    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.STDEV))
-    {
-      aggregateFunction = new STDDEV(attributeInIndictor);
-    }
-    
-    MdTableClassIF mdTableClass = (MdTableClassIF) _mdAttributeIndicator.definedByClass();
-    String definingTableName = mdTableClass.getTableName();
-    String definingTableAlias = this.getTableAlias("", definingTableName);
-    
-    return new AttributeIndicatorPrimitive(_mdAttributeIndicator, definingTableName, definingTableAlias, this, aggregateFunction, _userDefinedAlias, _userDefinedDisplayLabel);
-
-  }
-  
-  
 
   
   /**
@@ -2072,7 +1960,7 @@ public abstract class TableClassQuery extends ComponentQuery
    * @param userDefinedDisplayLabel
    * @return query Attribute object.
    */
-  private Attribute internalAttributeFactory(String name, MdAttributeDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected Attribute internalAttributeFactory(String name, MdAttributeDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     return this.internalAttributeFactory(name, mdAttributeIF, null, userDefinedAlias, userDefinedDisplayLabel);
   }
@@ -2201,6 +2089,91 @@ public abstract class TableClassQuery extends ComponentQuery
     return new AttributeMultiReference(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, masterListMdBusinessIF, masterListTalbeAlias, this, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
+  
+  /**
+   * 
+   * @param _mdAttributeIndicator
+   * @param _indicatorElement
+   * @param _attributeName
+   * @param _userDefinedAlias
+   * @param _userDefinedDisplayLabel
+   * @return
+   */
+  protected AttributeIndicator buildAttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeName, IndicatorElementDAOIF _indicatorElement, String _userDefinedAlias,
+      String _userDefinedDisplayLabel)
+  {
+    if (_indicatorElement instanceof IndicatorPrimitiveDAOIF)
+    {
+      return this.buildAttributeIndicatorPrimitive(_mdAttributeIndicator, _attributeName, (IndicatorPrimitiveDAOIF)_indicatorElement, _userDefinedAlias,
+          _userDefinedDisplayLabel);
+    }
+    else // indicator composite
+    {
+      return this.buildAttributeIndicatorComposite(_mdAttributeIndicator, _attributeName, (IndicatorCompositeDAOIF)_indicatorElement, _userDefinedAlias,
+          _userDefinedDisplayLabel);
+    }
+  }
+
+
+  /**
+   * 
+   * @param _mdAttributeIndicator
+   * @param _indicatorComposite
+   * @param _attributeName
+   * @param _userDefinedAlias
+   * @param _userDefinedDisplayLabel
+   * @return
+   */
+  protected AttributeIndicatorComposite buildAttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeName, IndicatorCompositeDAOIF _indicatorComposite, String _userDefinedAlias,
+      String _userDefinedDisplayLabel)
+  {
+    
+    IndicatorElementDAOIF indicatorElementLeft = _indicatorComposite.getLeftOperand();
+    AttributeIndicator left = this.buildAttributeIndicator(_mdAttributeIndicator, _attributeName, indicatorElementLeft, _userDefinedAlias, _userDefinedDisplayLabel);
+    
+    EnumerationItemDAOIF operator = _indicatorComposite.getOperator();
+    
+    IndicatorElementDAOIF indicatorElementRight = _indicatorComposite.getRightOperand();
+    AttributeIndicator right = this.buildAttributeIndicator(_mdAttributeIndicator, _attributeName, indicatorElementRight, _userDefinedAlias, _userDefinedDisplayLabel);
+    
+    MdTableClassIF mdTableClass = (MdTableClassIF) _mdAttributeIndicator.definedByClass();
+    String definingTableName = mdTableClass.getTableName();
+    String definingTableAlias = this.getTableAlias("", definingTableName);
+ 
+    return new AttributeIndicatorComposite(_mdAttributeIndicator, _attributeName, mdTableClass.definesType(), definingTableName, definingTableAlias, this, left, operator, right, _userDefinedAlias, _userDefinedDisplayLabel);    
+  }
+ 
+  /**
+   * 
+   * @param _mdAttributeIndicator
+   * @param _indicatorPrimitive
+   * @param _attributeName
+   * @param _userDefinedAlias
+   * @param _userDefinedDisplayLabel
+   * @return
+   */
+  protected AttributeIndicatorPrimitive buildAttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeName, IndicatorPrimitiveDAOIF _indicatorPrimitive, String _userDefinedAlias,
+      String _userDefinedDisplayLabel)
+  {
+
+    MdAttributePrimitiveDAOIF mdAttrPrimitive = _indicatorPrimitive.getMdAttributePrimitive();
+
+    // String userDefinedAlias, String userDefinedDisplayLabel
+    Selectable attributeInIndictor = this.internalAttributeFactory(_attributeName, mdAttrPrimitive, null, null);
+
+    // Get the aggregate function.
+    EnumerationItemDAOIF aggFuncEnumItem = _indicatorPrimitive.getAggregateFunction();
+    
+    AggregateFunction aggregateFunction = null;
+    
+    aggregateFunction = this.createIndicatorFunction(attributeInIndictor, aggFuncEnumItem, aggregateFunction);
+    
+    MdTableClassIF mdTableClass = (MdTableClassIF) _mdAttributeIndicator.definedByClass();
+    String definingTableName = mdTableClass.getTableName();
+    String definingTableAlias = this.getTableAlias("", definingTableName);
+    
+    return new AttributeIndicatorPrimitive(_mdAttributeIndicator, _attributeName, definingTableName, definingTableAlias, this, aggregateFunction, _userDefinedAlias, _userDefinedDisplayLabel);
+  }
   
   /**
    * Used internally by this class. It does the actual work of constructing a

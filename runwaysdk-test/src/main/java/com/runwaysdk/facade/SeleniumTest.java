@@ -25,6 +25,7 @@ import junit.framework.TestCase;
 import org.openqa.selenium.server.SeleniumServer;
 
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.Util;
@@ -76,7 +77,7 @@ import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.session.InvalidLoginException;
 import com.thoughtworks.selenium.DefaultSelenium;
 
-public class SeleniumTest extends TestCase
+public class SeleniumTest extends TestCase implements DoNotWeave
 {
 
   private ClientSession systemSession;

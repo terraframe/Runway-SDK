@@ -28,6 +28,7 @@ import java.util.List;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 
+import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;

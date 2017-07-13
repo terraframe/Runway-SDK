@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import junit.framework.TestCase;
 
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.TypeGenerator;
@@ -56,7 +57,7 @@ import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.GeneratedComponentQuery;
 import com.runwaysdk.query.QueryFactory;
 
-public class InvokeMethodTestBase extends TestCase
+public class InvokeMethodTestBase extends TestCase implements DoNotWeave
 {
   protected static ClientSession   systemSession        = null;
 

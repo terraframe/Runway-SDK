@@ -8,4 +8,6 @@ public interface MdAttributeIndicatorDAOIF extends MdAttributeConcreteDAOIF
    * @return the {@link IndicatorElementDAOIF} object.
    */
   public IndicatorElementDAOIF getIndicator();
+  
+  public String javaType(boolean isDTO);
 }

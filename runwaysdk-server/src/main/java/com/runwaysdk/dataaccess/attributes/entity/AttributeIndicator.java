@@ -1,13 +1,11 @@
 package com.runwaysdk.dataaccess.attributes.entity;
 
 import java.util.List;
-import java.util.Set;
 
 import com.runwaysdk.dataaccess.AttributeIndicatorIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.IndicatorElementDAO.IndicatorVisitor;
 import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;

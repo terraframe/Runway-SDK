@@ -25,6 +25,8 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestResult;
 
+import com.runwaysdk.ClientSession;
+import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;

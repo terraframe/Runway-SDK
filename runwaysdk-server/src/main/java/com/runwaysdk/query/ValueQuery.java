@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.query;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +50,10 @@ import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
+import com.runwaysdk.dataaccess.IndicatorCompositeDAOIF;
+import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
+import com.runwaysdk.dataaccess.IndicatorPrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
@@ -62,11 +67,13 @@ import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
+import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
@@ -468,7 +475,7 @@ public class ValueQuery extends ComponentQuery
   }
 
   /**
-   * Updates unternal selectable data structures for the given selectable.
+   * Updates internal selectable data structures for the given selectable.
    * 
    * @param componentQuery
    * @param selectable
@@ -1806,7 +1813,7 @@ public class ValueQuery extends ComponentQuery
 
     MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
 
-    return this.internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, selectable.getUserDefinedDisplayLabel());
+    return (Attribute)this.internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, selectable.getUserDefinedDisplayLabel());
   }
 
   /**
@@ -1826,12 +1833,50 @@ public class ValueQuery extends ComponentQuery
 
     return this.internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
-
-  @Override
-  public Selectable getS(String name)
+  
+  /**
+   * Returns a {@link Selectable} that is defined on this {@link TableClassDAOIF}.
+   * 
+   * @param userDefinedAlias
+   *          name of the attribute.
+   * @param value
+   *          value to compare.
+   * @return Condition object representing an equals with the attribute with the
+   *         given name with the given value.
+   */
+  public Selectable getS(String userDefinedAlias)
   {
-    throw new UnsupportedOperationException();
+    return get(userDefinedAlias, null);
   }
+// Heads up: Test
+//  /**
+//   * Returns a {@link Selectable} that is defined on this {@link TableClassDAOIF}.
+//   * 
+//   * @param userDefinedAlias
+//   *          user defined alias.
+//   * @param userDefinedDisplayLabel
+//   * @return Condition object representing an equals with the attribute with the
+//   *         given name with the given value.
+//   */
+//  public Selectable getS(String userDefinedAlias, String userDefinedDisplayLabel)
+//  {
+//    Selectable selectable = this.getSelectableRef(userDefinedAlias);
+//    
+//    MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
+//    
+//    if (mdAttributeIF instanceof MdAttributeIndicatorDAOIF)
+//    {
+//      MdAttributeIndicatorDAOIF mdAttributeIndicator = (MdAttributeIndicatorDAOIF)mdAttributeIF;
+//    
+//      IndicatorElementDAOIF indicatorElement = mdAttributeIndicator.getIndicator();
+//    
+//      return this.buildAttributeIndicator(mdAttributeIndicator, indicatorElement, selectable, userDefinedAlias, userDefinedDisplayLabel);
+//    }
+//    else
+//    {
+//      return this.get(userDefinedAlias, userDefinedDisplayLabel);
+//    }
+//  }
 
   /**
    * Returns an attribute character statement object.
@@ -3827,6 +3872,92 @@ public class ValueQuery extends ComponentQuery
     return this.selectableList;
   }
 
+// Heads up: Test  
+//  /**
+//   * 
+//   * @param _mdAttributeIndicator
+//   * @param _indicatorElement
+//   * @param _attributeName
+//   * @param _userDefinedAlias
+//   * @param _userDefinedDisplayLabel
+//   * @return
+//   */
+//  protected AttributeIndicator buildAttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, IndicatorElementDAOIF _indicatorElement, Selectable _selectable, String _userDefinedAlias,
+//      String _userDefinedDisplayLabel)
+//  {
+//    if (_indicatorElement instanceof IndicatorPrimitiveDAOIF)
+//    {
+//      return this.buildAttributeIndicatorPrimitive(_mdAttributeIndicator, (IndicatorPrimitiveDAOIF)_indicatorElement, _selectable, _userDefinedAlias,
+//          _userDefinedDisplayLabel);
+//    }
+//    else // indicator composite
+//    {
+//      return this.buildAttributeIndicatorComposite(_mdAttributeIndicator, (IndicatorCompositeDAOIF)_indicatorElement, _selectable, _userDefinedAlias,
+//          _userDefinedDisplayLabel);
+//    }
+//  }
+//
+//
+//  /**
+//   * 
+//   * @param _mdAttributeIndicator
+//   * @param _indicatorComposite
+//   * @param _attributeName
+//   * @param _userDefinedAlias
+//   * @param _userDefinedDisplayLabel
+//   * @return
+//   */
+//  protected AttributeIndicatorComposite buildAttributeIndicatorComposite(MdAttributeIndicatorDAOIF _mdAttributeIndicator, IndicatorCompositeDAOIF _indicatorComposite, Selectable _selectable, String _userDefinedAlias,
+//      String _userDefinedDisplayLabel)
+//  {
+//    
+//    IndicatorElementDAOIF indicatorElementLeft = _indicatorComposite.getLeftOperand();
+//    AttributeIndicator left = this.buildAttributeIndicator(_mdAttributeIndicator, indicatorElementLeft, _selectable, _userDefinedAlias, _userDefinedDisplayLabel);
+//    
+//    EnumerationItemDAOIF operator = _indicatorComposite.getOperator();
+//    
+//    IndicatorElementDAOIF indicatorElementRight = _indicatorComposite.getRightOperand();
+//    AttributeIndicator right = this.buildAttributeIndicator(_mdAttributeIndicator, indicatorElementRight, _selectable, _userDefinedAlias, _userDefinedDisplayLabel);
+//    
+//    MdTableClassIF mdTableClass = (MdTableClassIF) _mdAttributeIndicator.definedByClass();
+//    String definingTableName = mdTableClass.getTableName();
+//    String definingTableAlias = this.getTableAlias("", definingTableName);
+// 
+//    return new AttributeIndicatorComposite(_mdAttributeIndicator, mdTableClass.definesType(), definingTableName, definingTableAlias, this, left, operator, right, _userDefinedAlias, _userDefinedDisplayLabel);    
+//  }
+// 
+//  /**
+//   * 
+//   * @param _mdAttributeIndicator
+//   * @param _indicatorPrimitive
+//   * @param _attributeName
+//   * @param _userDefinedAlias
+//   * @param _userDefinedDisplayLabel
+//   * @return
+//   */
+//  protected AttributeIndicatorPrimitive buildAttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, IndicatorPrimitiveDAOIF _indicatorPrimitive, Selectable _selectable, String _userDefinedAlias,
+//      String _userDefinedDisplayLabel)
+//  {
+//
+//    MdAttributePrimitiveDAOIF mdAttrPrimitive = _indicatorPrimitive.getMdAttributePrimitive();
+//
+//    // String userDefinedAlias, String userDefinedDisplayLabel
+//    Selectable attributeInIndictor = this.internalAttributeFactory(_selectable, mdAttrPrimitive, null, null);
+//
+//    // Get the aggregate function.
+//    EnumerationItemDAOIF aggFuncEnumItem = _indicatorPrimitive.getAggregateFunction();
+//    
+//    AggregateFunction aggregateFunction = null;
+//    
+//    aggregateFunction = this.createIndicatorFunction(attributeInIndictor, aggFuncEnumItem, aggregateFunction);
+//    
+//    MdTableClassIF mdTableClass = (MdTableClassIF) _mdAttributeIndicator.definedByClass();
+//    String definingTableName = mdTableClass.getTableName();
+//    String definingTableAlias = this.getTableAlias("", definingTableName);
+//    
+//    return new AttributeIndicatorPrimitive(_mdAttributeIndicator, definingTableName, definingTableAlias, this, aggregateFunction, _userDefinedAlias, _userDefinedDisplayLabel);
+//  }
+  
   /**
    * Used internally by this class.
    * 
@@ -3934,6 +4065,20 @@ public class ValueQuery extends ComponentQuery
     {
       attribute = new AttributeEnumeration((MdAttributeEnumerationDAOIF) mdAttributeIF, selectable.getAttributeNameSpace(), definingTableName, definingTableAlias, ( (AttributeEnumeration) selectable ).mdEnumerationTableName, ( (AttributeEnumeration) selectable ).referenceMdBusinessIF, ( (AttributeEnumeration) selectable ).referenceTableAlias, rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
+//    else if (mdAttributeIF instanceof MdAttributeIndicatorDAOIF)
+//    {
+//      MdAttributeIndicatorDAOIF mdAttributeIndicatorDAOIF = (MdAttributeIndicatorDAOIF)mdAttributeIF;
+//      
+//      if (mdAttributeIndicatorDAOIF.javaType(false).equals(BigDecimal.class.getName()))
+//      {
+//        attribute = new AttributeDecimal((MdAttributeDecimalDAOIF) mdAttributeIF, selectable.getAttributeNameSpace(), definingTableName, definingTableAlias, rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+//      }
+//      else
+//      {
+//        attribute = new AttributeDouble((MdAttributeDoubleDAOIF) mdAttributeIF, selectable.getAttributeNameSpace(), definingTableName, definingTableAlias, rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+//       
+//      }
+//    }
 
     if (attribute == null)
     {

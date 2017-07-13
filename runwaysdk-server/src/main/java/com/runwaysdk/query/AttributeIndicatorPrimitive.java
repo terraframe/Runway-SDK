@@ -13,25 +13,24 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
 {
   
   private   AggregateFunction               aggregateFunction;
+ 
   
-  
-  protected AttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AggregateFunction _aggregateFunction)
+  protected AttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeName, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AggregateFunction _aggregateFunction)
   {
-    super(_mdAttributeIndicator, _definingTableName, _definingTableAlias, _rootQuery);
+    super(_mdAttributeIndicator, _attributeName, _definingTableName, _definingTableAlias, _rootQuery);
     this.init(_aggregateFunction);
   }
   
-  protected AttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AggregateFunction _aggregateFunction, String _userDefinedAlias, String _userDefinedDisplayLabel)
+  protected AttributeIndicatorPrimitive(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeName, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery, AggregateFunction _aggregateFunction, String _userDefinedAlias, String _userDefinedDisplayLabel)
   {
-    super(_mdAttributeIndicator, _definingTableName, _definingTableAlias, _userDefinedAlias, _userDefinedDisplayLabel, _rootQuery);
+    super(_mdAttributeIndicator, _attributeName, _definingTableName, _definingTableAlias, _userDefinedAlias, _userDefinedDisplayLabel, _rootQuery);
     this.init(_aggregateFunction);
   }
 
 
   private void init(AggregateFunction _aggregateFunction)
-  {
+  { 
     this.aggregateFunction       = _aggregateFunction;
-    
     
     this.entityMdAttributeIFset = new HashSet<MdAttributeConcreteDAOIF>();
   }
@@ -41,10 +40,11 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
    *
    * @return database column name representing this attribute.
    */
-  public String getDbColumnName()
-  {
-    return this.aggregateFunction.getDbColumnName();
-  }
+// Heads Up: Test
+//  public String getDbColumnName()
+//  {
+//    return this.aggregateFunction.getDbColumnName();
+//  }
 
   /**
    * Calculates a name for the result set.
@@ -139,18 +139,6 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
     return this.aggregateFunction.getColumnAlias();
   }
 
-  @Override
-  public String getResultAttributeName()
-  {
-    if (this.userDefinedAlias.trim().length() != 0)
-    {
-      return this.userDefinedAlias;
-    }
-    else
-    {
-      return this._getAttributeName();
-    }
-  }
 
   @Override
   public void setColumnAlias(String _alias)
@@ -220,11 +208,11 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
   }
   
   /**
-   * Returns the SQL required for this selectable in the lefthand side of a
-   * subselect clause.
+   * Returns the SQL required for this {@link Selectable} in the lefthand side of a
+   * {@link Selectable} clause.
    * 
-   * @return SQL required for this selectable in the lefthand side of a
-   *         subselect clause.
+   * @return SQL required for this {@link Selectable} in the lefthand side of a
+   *         {@link Selectable} clause.
    */
   @Override
   public String getSubSelectSQL()

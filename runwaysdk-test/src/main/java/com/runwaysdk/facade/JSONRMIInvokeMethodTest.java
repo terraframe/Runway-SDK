@@ -25,12 +25,13 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.request.RMIClientRequest;
 import com.runwaysdk.web.json.JSONRMIClientRequest;
 
-public class JSONRMIInvokeMethodTest extends JSONInvokeMethodTest
+public class JSONRMIInvokeMethodTest extends JSONInvokeMethodTest implements DoNotWeave
 {
   public static void main(String[] args)
   {

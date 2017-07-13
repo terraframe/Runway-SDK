@@ -28,10 +28,19 @@ import java.util.Map;
 import java.util.Set;
 
 import com.runwaysdk.ComponentIF;
+import com.runwaysdk.constants.AggregationFunctionInfo;
+import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
+import com.runwaysdk.dataaccess.IndicatorCompositeDAOIF;
+import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
+import com.runwaysdk.dataaccess.IndicatorPrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
+import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 
@@ -1128,4 +1137,35 @@ public abstract class ComponentQuery
     return this.aliasSeed.hashCode();
   }
 
+  protected AggregateFunction createIndicatorFunction(Selectable attributeInIndictor,
+      EnumerationItemDAOIF aggFuncEnumItem, AggregateFunction aggregateFunction)
+  {
+    if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.SUM))
+    {
+       aggregateFunction = new SUM(attributeInIndictor);
+       // , userDefinedAlias, userDefinedDisplayLabel
+    }
+    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.COUNT))
+    {
+      aggregateFunction = new COUNT(attributeInIndictor);
+    }
+    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.MIN))
+    {
+      aggregateFunction = new MIN(attributeInIndictor);
+    }
+    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.MAX))
+    {
+      aggregateFunction = new MAX(attributeInIndictor);
+    }
+    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.AVG))
+    {
+      aggregateFunction = new AVG(attributeInIndictor);
+    }
+    else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.STDEV))
+    {
+      aggregateFunction = new STDDEV(attributeInIndictor);
+    }
+    return aggregateFunction;
+  }  
+  
 }

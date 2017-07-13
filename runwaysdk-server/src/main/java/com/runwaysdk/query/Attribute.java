@@ -39,6 +39,7 @@ import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
@@ -65,6 +66,7 @@ import com.runwaysdk.dataaccess.attributes.value.MdAttributeEnumeration_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeFile_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeFloat_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeHash_Q;
+import com.runwaysdk.dataaccess.attributes.value.MdAttributeIndicator_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeInteger_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeLocalCharacter_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeLocalText_Q;
@@ -290,7 +292,12 @@ public abstract class Attribute implements SelectableSingle, Statement
     {
       mdAttribute_Q = new MdAttributeStruct_Q((MdAttributeStructDAOIF) _mdAttributeIF);
     }
-
+    else if (_mdAttributeIF instanceof MdAttributeIndicatorDAOIF)
+    {
+      mdAttribute_Q = new MdAttributeIndicator_Q((MdAttributeIndicatorDAOIF)_mdAttributeIF);
+    }
+    
+    
     if (mdAttribute_Q == null)
     {
       for (PluginIF plugin : pluginMap.values())

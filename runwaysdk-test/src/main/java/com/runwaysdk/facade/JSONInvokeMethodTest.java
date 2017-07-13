@@ -32,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.MethodMetaData;
 import com.runwaysdk.business.generation.json.JSONFacade;
@@ -49,7 +50,7 @@ import com.runwaysdk.transport.conversion.json.JSONUtil;
 import com.runwaysdk.util.DTOConversionUtilInfo;
 import com.runwaysdk.web.json.JSONJavaClientRequest;
 
-public class JSONInvokeMethodTest extends InvokeMethodTestBase
+public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotWeave
 {
   protected static volatile JSONClientRequestIF jsonProxy = null;
   

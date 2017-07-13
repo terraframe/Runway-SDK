@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
+import com.runwaysdk.dataaccess.attributes.value.MdAttributeIndicator_Q;
 
 
 
@@ -26,26 +27,30 @@ public abstract class AttributeIndicator implements SelectableIndicator
   protected ComponentQuery                  rootQuery;
   
   private   Object                          data;
+  
+  private   String                          attributeName;
  
   
   // Reference to all MdAttributes that were involved in constructing this
   // attribute;
   protected Set<MdAttributeConcreteDAOIF>   entityMdAttributeIFset;
   
-  protected AttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery)
+  protected AttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeName, String _definingTableName, String _definingTableAlias, ComponentQuery _rootQuery)
   {
-    this.init(_mdAttributeIndicator, _definingTableName, _definingTableAlias, null, null, _rootQuery);
+    this.init(_mdAttributeIndicator, _attributeName, _definingTableName, _definingTableAlias, null, null, _rootQuery);
   }
   
-  protected AttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _definingTableName, String _definingTableAlias, String _userDefinedAlias, String _userDefinedDisplayLabel, ComponentQuery _rootQuery)
+  protected AttributeIndicator(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeName, String _definingTableName, String _definingTableAlias, String _userDefinedAlias, String _userDefinedDisplayLabel, ComponentQuery _rootQuery)
   {
-    this.init(_mdAttributeIndicator, _definingTableName, _definingTableAlias, _userDefinedAlias, _userDefinedDisplayLabel, _rootQuery);
+    this.init(_mdAttributeIndicator, _attributeName, _definingTableName, _definingTableAlias, _userDefinedAlias, _userDefinedDisplayLabel, _rootQuery);
   }
   
   
-  private void init(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _definingTableName, String _definingTableAlias, String _userDefinedAlias, String _userDefinedDisplayLabel, ComponentQuery _rootQuery)
+  private void init(MdAttributeIndicatorDAOIF _mdAttributeIndicator, String _attributeName, String _definingTableName, String _definingTableAlias, String _userDefinedAlias, String _userDefinedDisplayLabel, ComponentQuery _rootQuery)
   {
-    this.mdAttributeIndicator    = _mdAttributeIndicator;
+    this.attributeName           = _attributeName;
+  
+    this.mdAttributeIndicator    =  (MdAttributeIndicator_Q)Attribute.convertMdAttribute(_mdAttributeIndicator);
     
     if (_userDefinedAlias == null)
     {
@@ -73,6 +78,36 @@ public abstract class AttributeIndicator implements SelectableIndicator
     this.rootQuery                   = _rootQuery;
   }
 
+  
+  @Override
+  public String getDbColumnName()
+  {
+    if (this.attributeName == null)
+    {
+      this.attributeName = this.getRootQuery().getColumnAlias(this.getAttributeNameSpace() + this.calculateName(), this.getMdAttributeIF().definesAttribute());
+    }
+    return this.attributeName;
+  }
+  
+  @Override
+  public String _getAttributeName()
+  {
+    return this.attributeName;
+  }
+  
+  @Override
+  public String getResultAttributeName()
+  {
+    if (this.userDefinedAlias.trim().length() != 0)
+    {
+      return this.userDefinedAlias;
+    }
+    else
+    {
+      return this._getAttributeName();
+    }
+  }
+  
   @Override
   public String getUserDefinedAlias()
   {
@@ -88,7 +123,7 @@ public abstract class AttributeIndicator implements SelectableIndicator
   @Override
   public String getUserDefinedDisplayLabel()
   {
-    return this.getUserDefinedDisplayLabel();
+    return this.userDefinedDisplayLabel;
   }
 
   @Override

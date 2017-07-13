@@ -54,6 +54,9 @@ public class BusinessTestSuite extends TestSuite
     suite.addTest(EntityGenTest.suite());
     suite.addTest(EntityMultiReferenceGenTest.suite());
     suite.addTest(EntityMultiTermGenTest.suite());
+  
+    suite.addTest(EntityAttributeIndicatorGenTest.suite());
+    
     suite.addTest(TransientMultiReferenceGenTest.suite());
     suite.addTest(TransientMultiTermGenTest.suite());
     suite.addTest(UtilGenTest.suite());

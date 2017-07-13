@@ -22,6 +22,9 @@ import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
+import com.runwaysdk.constants.EntityCacheMaster;
+import com.runwaysdk.dataaccess.EntityAttributeIndicatorTest;
+import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.query.function.AggregateFunctionTestSuite;
 
 public class QueryTestSuite extends TestSuite
@@ -43,6 +46,7 @@ public class QueryTestSuite extends TestSuite
 
     TestSuite suite = new TestSuite();
 
+    
     // run all tests using the defined parent entity
     suite.addTest(ViewQueryTest.suite());
     suite.addTest(ExtraQueryTest.suite());
@@ -88,11 +92,14 @@ public class QueryTestSuite extends TestSuite
     TestSuite childSuite = new TestSuite();
     childSuite.addTest(new QueryMasterSetup(suite, QueryMasterSetup.childQueryInfo.getType(), QueryMasterSetup.childRefQueryInfo.getType()));
     totalSuite.addTest(childSuite);
-    
-
 
     totalSuite.addTest(StandaloneStructQueryTest.suite());
     totalSuite.addTest(AggregateFunctionTestSuite.suite());
+    
+    TestSuite noCaching = new TestSuite("Not Cached Tests");
+    noCaching.addTest(EntityAttributeIndicatorTest.suite());
+    totalSuite.addTest(new EntityMasterTestSetup(noCaching, EntityCacheMaster.CACHE_NOTHING.getCacheCode()));
+
 
     return totalSuite;
   }

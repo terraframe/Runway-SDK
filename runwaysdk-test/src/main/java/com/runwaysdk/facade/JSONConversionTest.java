@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import org.junit.Assert;
 
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.generation.json.JSONFacade;
@@ -57,7 +58,7 @@ import com.runwaysdk.transport.metadata.AttributeMultiTermMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.web.json.JSONController;
 
-public class JSONConversionTest extends TestCase
+public class JSONConversionTest extends TestCase implements DoNotWeave
 {
   protected static String          pack                         = "com.test.controller";
 

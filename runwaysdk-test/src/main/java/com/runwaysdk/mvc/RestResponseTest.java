@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import org.junit.Assert;
 
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.RelationshipDTO;
 import com.runwaysdk.constants.ClientRequestIF;
@@ -48,11 +49,10 @@ import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.controller.ServletMethod;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
-import com.runwaysdk.mvc.RestResponse;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
 
-public class RestResponseTest extends TestCase
+public class RestResponseTest extends TestCase implements DoNotWeave
 {
   private static ClientSession session;
 

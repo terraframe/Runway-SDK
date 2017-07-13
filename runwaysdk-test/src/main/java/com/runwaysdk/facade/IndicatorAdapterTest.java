@@ -1,12 +1,18 @@
-package com.runwaysdk.dataaccess;
+package com.runwaysdk.facade;
+
+import java.util.Locale;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
 
-import com.runwaysdk.constants.DatabaseProperties;
+import com.runwaysdk.ClientSession;
+import com.runwaysdk.DoNotWeave;
+import com.runwaysdk.TestSuiteTF;
+import com.runwaysdk.business.ValueObjectDTO;
+import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.IndicatorCompositeInfo;
 import com.runwaysdk.constants.IndicatorPrimitiveInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -17,8 +23,16 @@ import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
-import com.runwaysdk.constants.TestConstants;
-import com.runwaysdk.dataaccess.io.XMLImporter;
+import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdElementInfo;
+import com.runwaysdk.constants.ServerConstants;
+import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.EntityMasterTestSetup;
+import com.runwaysdk.dataaccess.IndicatorCompositeDAO;
+import com.runwaysdk.dataaccess.IndicatorPrimitiveDAO;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.ValueObject;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
@@ -27,27 +41,23 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIndicatorDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.ValueQuery;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.IndicatorAggregateFunction;
 import com.runwaysdk.system.metadata.IndicatorOperator;
+import com.runwaysdk.transport.conversion.ValueObjectToValueObjectDTO;
 
-public class EntityAttributeIndicatorTest extends TestCase
+public class IndicatorAdapterTest extends TestCase implements DoNotWeave
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
+  
+  protected static ClientSession     systemSession                  = null;
 
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
+  protected static ClientRequestIF   clientRequest                  = null;
+  
   private static MdBusinessDAOIF                      testMdBusinessIF;
   
   private static final String                         TEST_INTEGER_1              = "testInteger1";
@@ -83,37 +93,32 @@ public class EntityAttributeIndicatorTest extends TestCase
   private static final String                         TEST_COUNT_INDICATOR        = "testCountIndicator";
   
   /**
-   * The launch point for the Junit tests.
-   * 
-   * @param args
+   * <code>testMdBusinessId</code> is the ID for the metadata object that
+   * describes the Test class. It's used to delete the type after tests are
+   * completed.
    */
-  public static void main(String[] args)
-  {
-
-    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
-
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(EntityAttributeIndicatorTest.suite()));
-
-  }
+  private static String               testMdBusinessId;
   
   /**
-   * A suite() takes <b>this </b> <code>EntityAttributeIndicatorTest.class</code> and
-   * wraps it in <code>MasterTestSetup</code>. The returned class is a suite of
-   * all the tests in <code>AttributeTest</code>, with the global setUp() and
-   * tearDown() methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
+   * <code>referenceMdBusinessId</code> is the ID for the metadata object that
+   * describes the MasterTestSetup.REFERENCE_CLASS class. It's used to delete
+   * the type after tests are completed.
    */
+  private static String               referenceMdBusinessId;
+
+  private static int                  cache_code;
+  
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(EntityAttributeIndicatorTest.class);
+    TestSuiteTF suite = new TestSuiteTF();
+    suite.addTestSuite(IndicatorAdapterTest.class);
 
     TestSetup wrapper = new TestSetup(suite)
     {
       protected void setUp()
       {
+        systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+        clientRequest = systemSession.getRequest();
         classSetUp();
       }
 
@@ -126,8 +131,73 @@ public class EntityAttributeIndicatorTest extends TestCase
     return wrapper;
   }
   
+  
   public static void classSetUp()
   {
+    classSetupRequest();
+  }
+  
+  @Request
+  public static void classSetupRequest()
+  {
+    classSetupTransaction();
+  }
+  
+  @Transaction
+  public static void classSetupTransaction()
+  {
+    try
+    {
+      // Create an new class (MasterTestSetup.REFERENCE_CLASS) that we can
+      // reference with Reference Fields
+      MdBusinessDAO referenceBusiness = MdBusinessDAO.newInstance();
+      referenceBusiness.setValue(MdBusinessInfo.NAME, EntityMasterTestSetup.REFERENCE_CLASS.getTypeName());
+      referenceBusiness.setValue(MdBusinessInfo.PACKAGE, EntityMasterTestSetup.REFERENCE_CLASS.getPackageName());
+      referenceBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+      referenceBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnitRefType");
+      referenceBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Reference Type");
+      referenceBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+      referenceBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      referenceBusiness.setGenerateMdController(false);
+      referenceBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+
+      referenceMdBusinessId = referenceBusiness.apply();
+
+      // Create the MasterTestSetup.TEST_CLASS class.
+      MdBusinessDAO testMdBusiness = MdBusinessDAO.newInstance();
+      testMdBusiness.setValue(MdBusinessInfo.NAME, EntityMasterTestSetup.TEST_CLASS.getTypeName());
+      testMdBusiness.setValue(MdBusinessInfo.PACKAGE, EntityMasterTestSetup.TEST_CLASS.getPackageName());
+      testMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+      testMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Type");
+      testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
+      testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+      testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      testMdBusiness.setGenerateMdController(false);
+      testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+
+      // Switching on cache_code determines the caching of the class
+      if (cache_code == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode())
+      {
+        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      }
+      else if (cache_code == EntityCacheMaster.CACHE_NOTHING.getCacheCode())
+      {
+        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      }
+      else if (cache_code == EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getCacheCode())
+      {
+        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+      }
+      testMdBusinessId = testMdBusiness.apply();
+    }
+    catch (Exception e)
+    {
+      System.err.println(e.getMessage());
+      e.printStackTrace();
+
+      throw new RuntimeException(e);
+    }
+    
     testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
     
     MdAttributeIntegerDAO mdAttributeInteger1 = MdAttributeIntegerDAO.newInstance();
@@ -345,225 +415,57 @@ public class EntityAttributeIndicatorTest extends TestCase
     mdAttrCountIndicator1.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorPrimitiveCount1.getId());
     mdAttrCountIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
     mdAttrCountIndicator1.apply();
-    
-    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    bus1.setValue(TEST_INTEGER_1, "4");
-    bus1.setValue(TEST_INTEGER_2, "2");
-    bus1.apply();
-    
-    
   }
   
   public static void classTearDown()
   {
-
+    classTearDownRequest();
+    
+    systemSession.logout();
   }
   
-  /**
-   * Behavior of a divide by zero should be that the value should be blank or null.
-   */
-  public void testObjectDivideByZero()
+  @Request
+  public static void classTearDownRequest()
   {
-    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    bus1.setValue(TEST_INTEGER_1, "4");
-    bus1.setValue(TEST_INTEGER_2, "0");
-    bus1.apply();
-    
+    classTearDownTransaction();
+  }
+  
+  @Transaction
+  public static void classTearDownTransaction()
+  {
     try
     {
-      String value = bus1.getValue(TEST_INTEGER_INDICATOR);
-      
-      assertTrue("A divide by zero should return an empty string.", value.equals(""));
+      TestFixtureFactory.delete(MdBusinessDAO.get(referenceMdBusinessId));
+      TestFixtureFactory.delete(MdBusinessDAO.get(testMdBusinessId));
     }
-    finally
+    catch (Exception e)
     {
-      bus1.delete();
+      System.err.println(e.getMessage());
+      e.printStackTrace();
+
+      throw new RuntimeException(e);
     }
   }
   
-  
-  /**
-   * Behavior of a divide by zero should be that the value should be blank or null.
-   */
-  public void testObjectDivision()
+  public void testIndicatorValueDTO()
   {
-    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    bus1.setValue(TEST_INTEGER_1, "4");
-    bus1.setValue(TEST_INTEGER_2, "2");
-    bus1.apply();
+    ValueObject valueObject = _testIndicatorValueDTO();
     
-    try
-    {
-      String value = bus1.getValue(TEST_INTEGER_INDICATOR);
-      
-      assertTrue("Division function should have returned the value 2", value.equals("2"));
-    }
-    finally
-    {
-      bus1.delete();
-    }
+    String sessionId = systemSession.getSessionId();
+    
+    ValueObjectToValueObjectDTO converter = new ValueObjectToValueObjectDTO(sessionId, valueObject);
+    
+    ValueObjectDTO valueObjectDTO = converter.populate();
+    
+    String floatIndicator = valueObjectDTO.getValue("indicatorAlias");
+    
+    Double resultDouble = Double.parseDouble(floatIndicator);
+    
+    assertEquals("The query count should have returned a count of three.", (Double)3.0, (Double)resultDouble);
   }
   
-  /**
-   * Heads up: Test: Write test to check for different indicator types. such as float divided by int should return double, etc.
-   */
-  public void testIntegerReturnType()
-  {
-    // Test Integer Java Type
-    MdAttributeIndicatorDAOIF mdAttrIntIndicator = (MdAttributeIndicatorDAOIF)testMdBusinessIF.definesAttribute(TEST_INTEGER_INDICATOR);
-    assertEquals("Return type of an integer indicator should be "+Double.class.getName(), Double.class.getSimpleName(), mdAttrIntIndicator.javaType(false));
-
-    // Test Float Java Type
-    MdAttributeIndicatorDAOIF mdAttrFloatIndicator = (MdAttributeIndicatorDAOIF)testMdBusinessIF.definesAttribute(TEST_FLOAT_INDICATOR);
-    assertEquals("Return type of an float indicator should be "+Double.class.getName(), Double.class.getSimpleName(), mdAttrFloatIndicator.javaType(false));
-
-    // Test Boolean Java Type
-    MdAttributeIndicatorDAOIF mdAttrBooleanIndicator = (MdAttributeIndicatorDAOIF)testMdBusinessIF.definesAttribute(TEST_BOOLEAN_INDICATOR);
-    assertEquals("Return type of an boolean indicator should be "+Boolean.class.getName(), Double.class.getSimpleName(), mdAttrBooleanIndicator.javaType(false));
-
-  }
-  
-  public void testValueQuery()
-  {
-    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    bus1.setValue(TEST_INTEGER_1, "4");
-    bus1.setValue(TEST_INTEGER_2, "2");
-    bus1.apply();
-    
-    try
-    {
-      QueryFactory qf = new QueryFactory();
-
-      ValueQuery vq = qf.valueQuery();
-      BusinessDAOQuery bq = qf.businessDAOQuery(testMdBusinessIF.definesType());
-    
-      vq.SELECT(bq.get(TEST_INTEGER_1), bq.get(TEST_INTEGER_2), bq.getS(TEST_COUNT_INDICATOR));
-    
-      OIterator<ValueObject> i = vq.getIterator(); 
-
-      try
-      {
-        assertEquals("Query did not return just one result - impropper aggregation of indicator.", 1, vq.getCount());
-        
-        for (ValueObject valueObject : i)
-        {
-          // System.out.println(valueObject.getValue(TEST_INTEGER_1)+"  "+valueObject.getValue(TEST_INTEGER_2) + "  " + valueObject.getValue(TEST_COUNT_INDICATOR));
-        
-          String stringCount = valueObject.getValue(TEST_COUNT_INDICATOR);
-         
-          Integer count = Integer.parseInt(stringCount);
-          
-          assertEquals("The query count should have returned a count of two.", (Integer)2, (Integer)count);
-        }
-      }
-      finally
-      {
-        i.close();
-      }
-    }
-    finally
-    {
-      bus1.delete();
-    }
-  }
-  
-  public void testFloatIndicator()
-  {
-    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    bus1.setValue(TEST_FLOAT_1, "44.4");
-    bus1.setValue(TEST_FLOAT_2, "22.2");
-    bus1.apply();
-    
-    BusinessDAO bus2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    bus2.setValue(TEST_FLOAT_1, "44.4");
-    bus2.setValue(TEST_FLOAT_2, "22.2");
-    bus2.apply();
-    
-    try
-    {
-      QueryFactory qf = new QueryFactory();
-      
-      ValueQuery vq = qf.valueQuery();
-      BusinessDAOQuery bq = qf.businessDAOQuery(testMdBusinessIF.definesType());
-      
-      vq.SELECT(bq.getS(TEST_FLOAT_INDICATOR));
-      
-      OIterator<ValueObject> i = vq.getIterator();
-          
-      try
-      {
-        assertEquals("Query did not return just one result - improper aggregation of indicator.", 1, vq.getCount());
-        
-        for (ValueObject valueObject : i)
-        {
-          
-          String floatIndicator = valueObject.getValue(TEST_FLOAT_INDICATOR);
-          
-          Double resultDouble = Double.parseDouble(floatIndicator);
-          
-          assertEquals("The query count should have returned a count of two.", (Double)2.0, (Double)resultDouble);
-        }
-      }
-      finally
-      {
-        i.close();
-      }
-    }
-    finally
-    {
-      bus1.delete();
-      bus2.delete();
-    }
-  }
-  
-  public void testFloatDivideByZeroIndicator()
-  {
-    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    bus1.setValue(TEST_FLOAT_1, "44.4");
-    bus1.setValue(TEST_FLOAT_2, "0");
-    bus1.apply();
-    
-    BusinessDAO bus2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    bus2.setValue(TEST_FLOAT_1, "44.4");
-    bus2.setValue(TEST_FLOAT_2, "0");
-    bus2.apply();
-    
-    try
-    {
-      QueryFactory qf = new QueryFactory();
-      
-      ValueQuery vq = qf.valueQuery();
-      BusinessDAOQuery bq = qf.businessDAOQuery(testMdBusinessIF.definesType());
-      
-      vq.SELECT(bq.getS(TEST_FLOAT_INDICATOR));
-      
-      OIterator<ValueObject> i = vq.getIterator();
-          
-      try
-      {
-        assertEquals("Query did not return just one result - improper aggregation of indicator.", 1, vq.getCount());
-        
-        for (ValueObject valueObject : i)
-        {
-          String floatIndicator = valueObject.getValue(TEST_FLOAT_INDICATOR);
-          
-          assertEquals("The query count should have returned a count of two.", "", floatIndicator.trim());
-
-        }
-      }
-      finally
-      {
-        i.close();
-      }
-    }
-    finally
-    {
-      bus1.delete();
-      bus2.delete();
-    }
-  }
-  
-  public void testDoubleDTOIndicator()
+  @Request
+  public ValueObject _testIndicatorValueDTO()
   {
     BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
     bus1.setValue(TEST_FLOAT_1, "99.9");
@@ -575,14 +477,15 @@ public class EntityAttributeIndicatorTest extends TestCase
     bus2.setValue(TEST_FLOAT_2, "33.3");
     bus2.apply();
     
+    ValueObject returnObject = null;
+    
     try
     {
       QueryFactory qf = new QueryFactory();
       
       ValueQuery vq = qf.valueQuery();
       BusinessDAOQuery bq = qf.businessDAOQuery(testMdBusinessIF.definesType());
-      
-      vq.SELECT(bq.getS(TEST_FLOAT_INDICATOR));
+      vq.SELECT(bq.getS(TEST_FLOAT_INDICATOR, "indicatorAlias"));      
       
       OIterator<ValueObject> i = vq.getIterator();
           
@@ -592,18 +495,17 @@ public class EntityAttributeIndicatorTest extends TestCase
         
         for (ValueObject valueObject : i)
         {
+          returnObject = valueObject;
           
-          String floatIndicator = valueObject.getValue(TEST_FLOAT_INDICATOR);
-          
-          Double resultDouble = Double.parseDouble(floatIndicator);
-          
-          assertEquals("The query count should have returned a value of three.", (Double)3.0, (Double)resultDouble);
+          break;
         }
       }
       finally
       {
         i.close();
       }
+      
+      return returnObject;
     }
     finally
     {
@@ -611,4 +513,5 @@ public class EntityAttributeIndicatorTest extends TestCase
       bus2.delete();
     }
   }
+
 }

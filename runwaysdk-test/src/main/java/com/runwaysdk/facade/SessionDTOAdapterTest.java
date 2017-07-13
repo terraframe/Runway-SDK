@@ -26,6 +26,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.ProblemExceptionDTO;
 import com.runwaysdk.business.AttributeProblemDTO;
 import com.runwaysdk.business.BusinessDTO;
@@ -91,7 +92,7 @@ import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 
-public abstract class SessionDTOAdapterTest extends TestCase
+public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWeave
 {
   protected static String            label;
 

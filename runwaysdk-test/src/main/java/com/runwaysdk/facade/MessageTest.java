@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 import com.runwaysdk.AttributeNotification;
 import com.runwaysdk.AttributeNotificationDTO;
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.ProblemExceptionDTO;
 import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.BusinessDTO;
@@ -81,7 +82,7 @@ import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 
-public class MessageTest extends TestCase
+public class MessageTest extends TestCase implements DoNotWeave
 {
   protected static String          label;
 

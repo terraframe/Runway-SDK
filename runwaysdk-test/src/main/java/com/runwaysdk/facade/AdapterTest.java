@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.ProblemExceptionDTO;
 import com.runwaysdk.ServerSideException;
 import com.runwaysdk.TestSuiteTF;
@@ -189,7 +190,7 @@ import com.runwaysdk.util.FileIO;
 import com.runwaysdk.util.IDGenerator;
 import com.runwaysdk.web.AdminScreenAccessExceptionDTO;
 
-public class AdapterTest extends TestCase
+public class AdapterTest extends TestCase implements DoNotWeave
 {
   protected static String            pack                           = "com.test.controller";
 
