@@ -5283,5 +5283,18 @@ public abstract class AbstractDatabase
   {
     return 28;
   }
+  
+  /**
+   * Casts the given sql to a decimal. 
+   * 
+   * Note, this has only been tested against Postgres
+   * 
+   * @param sql
+   * @return Casts the given sql to a decimal. 
+   */
+  public String castToDecimal(String sql)
+  {
+    return sql+"::dec";
+  }
 
 }

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
+import com.runwaysdk.dataaccess.database.Database;
 
 public class AttributeIndicatorPrimitive extends AttributeIndicator
 {
@@ -196,7 +197,14 @@ public class AttributeIndicatorPrimitive extends AttributeIndicator
   @Override
   public String getSQL()
   {
-    return this.aggregateFunction.getSQL();
+    String sql = this.aggregateFunction.getSQL();
+    
+    if (this.aggregateFunction.getClass().equals(COUNT.class))
+    {
+      sql = Database.castToDecimal(sql);
+    }
+
+    return sql;
   }
 
   /**

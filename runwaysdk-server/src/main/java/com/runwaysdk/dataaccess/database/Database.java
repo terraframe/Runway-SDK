@@ -3029,4 +3029,17 @@ public class Database
   {
     return instance().getMaxColumnSize();
   }
+  
+  /**
+   * Casts the given sql to a decimal. 
+   * 
+   * Note, this has only been tested against Postgres
+   * 
+   * @param sql
+   * @return Casts the given sql to a decimal. 
+   */
+  public static String castToDecimal(String sql)
+  {
+    return instance().castToDecimal(sql);
+  }
 }

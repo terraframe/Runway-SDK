@@ -4065,6 +4065,7 @@ public class ValueQuery extends ComponentQuery
     {
       attribute = new AttributeEnumeration((MdAttributeEnumerationDAOIF) mdAttributeIF, selectable.getAttributeNameSpace(), definingTableName, definingTableAlias, ( (AttributeEnumeration) selectable ).mdEnumerationTableName, ( (AttributeEnumeration) selectable ).referenceMdBusinessIF, ( (AttributeEnumeration) selectable ).referenceTableAlias, rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
+// A potential work in progress. Not sure the best way to convert the MdAttributeIndicator 
 //    else if (mdAttributeIF instanceof MdAttributeIndicatorDAOIF)
 //    {
 //      MdAttributeIndicatorDAOIF mdAttributeIndicatorDAOIF = (MdAttributeIndicatorDAOIF)mdAttributeIF;
