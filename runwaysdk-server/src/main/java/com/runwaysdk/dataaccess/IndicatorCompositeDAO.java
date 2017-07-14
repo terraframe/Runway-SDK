@@ -174,6 +174,19 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
         return false;
       }
     }
+    else if (rightObjectValue instanceof Boolean)
+    {
+      Boolean doubleVal = (Boolean) rightObjectValue;
+      
+      if (!doubleVal)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
     else if (rightObjectValue instanceof Float)
     {
       Float floatValue = (Float) rightObjectValue;
