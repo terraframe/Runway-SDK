@@ -40,10 +40,11 @@ public class MdAttributeIndicator_E extends MdAttributeConcrete_E
    */
   protected void createDbColumn(String tableName)
   {
-    if(!this.appliedToDB)
-    {
-      Database.addField(tableName, this.getMdAttribute().getColumnName(), this.dbColumnType, this.getMdAttribute());
-    }
+// Heads up: Test
+//    if(!this.appliedToDB)
+//    {
+//      Database.addField(tableName, this.getMdAttribute().getColumnName(), this.dbColumnType, this.getMdAttribute());
+//    }
   }
   
   /**

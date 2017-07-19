@@ -213,7 +213,7 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
     }
     else
     {
-      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeIndicator_T(this));
     }
 
   }

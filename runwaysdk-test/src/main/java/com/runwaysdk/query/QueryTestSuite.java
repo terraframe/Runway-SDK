@@ -46,7 +46,6 @@ public class QueryTestSuite extends TestSuite
 
     TestSuite suite = new TestSuite();
 
-    
     // run all tests using the defined parent entity
     suite.addTest(ViewQueryTest.suite());
     suite.addTest(ExtraQueryTest.suite());

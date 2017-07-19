@@ -17,7 +17,10 @@ import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.TestConstants;
+import com.runwaysdk.constants.TypeInfo;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
@@ -27,9 +30,11 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIndicatorDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdTableDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.TableQuery;
 import com.runwaysdk.query.ValueQuery;
 import com.runwaysdk.system.metadata.IndicatorAggregateFunction;
 import com.runwaysdk.system.metadata.IndicatorOperator;
@@ -48,7 +53,12 @@ public class EntityAttributeIndicatorTest extends TestCase
     super.run(testResult);
   }
 
+  protected static final TypeInfo                     tableQueryInfo              = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "RefQueryTable");
+
+  
   private static MdBusinessDAOIF                      testMdBusinessIF;
+  
+  private static MdTableDAOIF                         mdTableIF;
   
   private static final String                         TEST_INTEGER_1              = "testInteger1";
   
@@ -280,7 +290,7 @@ public class EntityAttributeIndicatorTest extends TestCase
     mdAttrIntegerIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
     mdAttrIntegerIndicator1.apply();
     
-    // Float Indicator
+    // Float Indicator for MdBusiness
     IndicatorPrimitiveDAO indicatorPrimitiveFloat1 = IndicatorPrimitiveDAO.newInstance();
     indicatorPrimitiveFloat1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeFloat1.getId());
     indicatorPrimitiveFloat1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
@@ -346,6 +356,72 @@ public class EntityAttributeIndicatorTest extends TestCase
     mdAttrCountIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
     mdAttrCountIndicator1.apply();
     
+    
+    MdTableDAO mdTable = MdTableDAO.newInstance();
+    mdTable.setValue(MdTableInfo.NAME, tableQueryInfo.getTypeName());
+    mdTable.setValue(MdTableInfo.PACKAGE, tableQueryInfo.getPackageName());
+    mdTable.setStructValue(MdTableInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Class Table");
+    mdTable.setValue(MdTableInfo.TABLE_NAME, testMdBusinessIF.getTableName());
+    mdTable.setValue(MdTableInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdTable.apply();
+    mdTableIF = mdTable;
+    
+    MdAttributeFloatDAO mdAttributeFloat3 = TestFixtureFactory.addFloatAttribute(mdTableIF, TEST_FLOAT_1);
+    mdAttributeFloat3.setValue(MdAttributeFloatInfo.COLUMN_NAME, mdAttributeFloat1.getColumnName());
+    mdAttributeFloat3.apply();
+        
+    MdAttributeFloatDAO mdAttributeFloat4 = TestFixtureFactory.addFloatAttribute(mdTableIF, TEST_FLOAT_2);
+    mdAttributeFloat4.setValue(MdAttributeFloatInfo.COLUMN_NAME, mdAttributeFloat2.getColumnName());
+    mdAttributeFloat4.apply();
+    
+    // Float Indicator for MdBusiness
+    IndicatorPrimitiveDAO indicatorPrimitiveFloat3 = IndicatorPrimitiveDAO.newInstance();
+    indicatorPrimitiveFloat3.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeFloat3.getId());
+    indicatorPrimitiveFloat3.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
+    indicatorPrimitiveFloat3.apply();
+    
+    IndicatorPrimitiveDAO indicatorPrimitiveFloat4 = IndicatorPrimitiveDAO.newInstance();
+    indicatorPrimitiveFloat4.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeFloat4.getId());
+    indicatorPrimitiveFloat4.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
+    indicatorPrimitiveFloat4.apply();
+    
+    IndicatorCompositeDAO indicatorFloatComposite2 = IndicatorCompositeDAO.newInstance();
+    indicatorFloatComposite2.setValue(IndicatorCompositeInfo.LEFT_OPERAND, indicatorPrimitiveFloat3.getId());
+    indicatorFloatComposite2.setValue(IndicatorCompositeInfo.OPERATOR, IndicatorOperator.DIV.getId());
+    indicatorFloatComposite2.setValue(IndicatorCompositeInfo.RIGHT_OPERAND, indicatorPrimitiveFloat4.getId());
+    indicatorFloatComposite2.apply();
+    
+    MdAttributeIndicatorDAO mdAttrFloatIndicator2 = MdAttributeIndicatorDAO.newInstance();
+    mdAttrFloatIndicator2.setValue(MdAttributeIndicatorInfo.NAME, TEST_FLOAT_INDICATOR);
+    mdAttrFloatIndicator2.setStructValue(MdAttributeIndicatorInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Float Indicator");
+    mdAttrFloatIndicator2.setValue(MdAttributeIndicatorInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttrFloatIndicator2.setValue(MdAttributeIndicatorInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdAttrFloatIndicator2.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorFloatComposite2.getId());
+    mdAttrFloatIndicator2.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, mdTableIF.getId());
+    mdAttrFloatIndicator2.apply();
+    
+    MdAttributeIntegerDAO mdAttributeInteger3 = TestFixtureFactory.addIntegerAttribute(mdTableIF, TEST_INTEGER_1);
+    mdAttributeInteger3.setValue(MdAttributeFloatInfo.COLUMN_NAME, mdAttributeInteger1.getColumnName());
+    mdAttributeInteger3.apply();
+        
+    MdAttributeIntegerDAO mdAttributeInteger4 = TestFixtureFactory.addIntegerAttribute(mdTableIF, TEST_INTEGER_2);
+    mdAttributeInteger4.setValue(MdAttributeFloatInfo.COLUMN_NAME, mdAttributeInteger2.getColumnName());
+    mdAttributeInteger4.apply();
+    
+    IndicatorPrimitiveDAO indicatorPrimitiveCount2 = IndicatorPrimitiveDAO.newInstance();
+    indicatorPrimitiveCount2.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger3.getId());
+    indicatorPrimitiveCount2.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.COUNT.getId());
+    indicatorPrimitiveCount2.apply();
+    
+    MdAttributeIndicatorDAO mdAttrCountIndicator2 = MdAttributeIndicatorDAO.newInstance();
+    mdAttrCountIndicator2.setValue(MdAttributeIndicatorInfo.NAME, TEST_COUNT_INDICATOR);
+    mdAttrCountIndicator2.setStructValue(MdAttributeIndicatorInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Count Indicator");
+    mdAttrCountIndicator2.setValue(MdAttributeIndicatorInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttrCountIndicator2.setValue(MdAttributeIndicatorInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdAttrCountIndicator2.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorPrimitiveCount2.getId());
+    mdAttrCountIndicator2.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, mdTableIF.getId());
+    mdAttrCountIndicator2.apply();
+    
     BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
     bus1.setValue(TEST_INTEGER_1, "4");
     bus1.setValue(TEST_INTEGER_2, "2");
@@ -356,7 +432,7 @@ public class EntityAttributeIndicatorTest extends TestCase
   
   public static void classTearDown()
   {
-
+    mdTableIF.getBusinessDAO().delete();
   }
   
   /**
@@ -405,7 +481,7 @@ public class EntityAttributeIndicatorTest extends TestCase
   }
   
   /**
-   * Heads up: Test: Write test to check for different indicator types. such as float divided by int should return double, etc.
+   * Write test to check for different indicator types. such as float divided by int should return double, etc.
    */
   public void testIntegerReturnType()
   {
@@ -423,7 +499,7 @@ public class EntityAttributeIndicatorTest extends TestCase
 
   }
   
-  public void testValueQuery()
+  public void testCountIndicator()
   {
     BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
     bus1.setValue(TEST_INTEGER_1, "4");
@@ -438,7 +514,8 @@ public class EntityAttributeIndicatorTest extends TestCase
       BusinessDAOQuery bq = qf.businessDAOQuery(testMdBusinessIF.definesType());
     
       vq.SELECT(bq.get(TEST_INTEGER_1), bq.get(TEST_INTEGER_2), bq.getS(TEST_COUNT_INDICATOR));
-    
+      
+      
       OIterator<ValueObject> i = vq.getIterator(); 
 
       try
@@ -446,9 +523,7 @@ public class EntityAttributeIndicatorTest extends TestCase
         assertEquals("Query did not return just one result - impropper aggregation of indicator.", 1, vq.getCount());
         
         for (ValueObject valueObject : i)
-        {
-          // System.out.println(valueObject.getValue(TEST_INTEGER_1)+"  "+valueObject.getValue(TEST_INTEGER_2) + "  " + valueObject.getValue(TEST_COUNT_INDICATOR));
-        
+        {        
           String stringCount = valueObject.getValue(TEST_COUNT_INDICATOR);
          
           Integer count = Integer.parseInt(stringCount);
@@ -466,6 +541,99 @@ public class EntityAttributeIndicatorTest extends TestCase
       bus1.delete();
     }
   }
+  
+  public void testCountIndicatorTable()
+  {
+    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+    bus1.setValue(TEST_INTEGER_1, "4");
+    bus1.setValue(TEST_INTEGER_2, "2");
+    bus1.apply();
+    
+    try
+    {
+      QueryFactory qf = new QueryFactory();
+
+      ValueQuery vq = qf.valueQuery();
+      TableQuery tq = qf.tableQuery(mdTableIF.definesType());
+    
+      vq.SELECT(tq.get(TEST_INTEGER_1), tq.get(TEST_INTEGER_2), tq.getS(TEST_COUNT_INDICATOR));
+      
+      
+      OIterator<ValueObject> i = vq.getIterator(); 
+
+      try
+      {
+        assertEquals("Query did not return just one result - impropper aggregation of indicator.", 1, vq.getCount());
+        
+        for (ValueObject valueObject : i)
+        {        
+          String stringCount = valueObject.getValue(TEST_COUNT_INDICATOR);
+         
+          Integer count = Integer.parseInt(stringCount);
+          
+          assertEquals("The query count should have returned a count of two.", (Integer)2, (Integer)count);
+        }
+      }
+      finally
+      {
+        i.close();
+      }
+    }
+    finally
+    {
+      bus1.delete();
+    }
+  }
+  
+  public void testFloatIndicatorTable()
+  {
+    BusinessDAO bus1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+    bus1.setValue(TEST_FLOAT_1, "44.4");
+    bus1.setValue(TEST_FLOAT_2, "22.2");
+    bus1.apply();
+    
+    BusinessDAO bus2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+    bus2.setValue(TEST_FLOAT_1, "44.4");
+    bus2.setValue(TEST_FLOAT_2, "22.2");
+    bus2.apply();
+    
+    try
+    {
+      QueryFactory qf = new QueryFactory();
+      
+      ValueQuery vq = qf.valueQuery();
+      TableQuery tq = qf.tableQuery(mdTableIF.definesType());
+      
+      vq.SELECT(tq.getS(TEST_FLOAT_INDICATOR));
+      
+      OIterator<ValueObject> i = vq.getIterator();
+          
+      try
+      {
+        assertEquals("Query did not return just one result - improper aggregation of indicator.", 1, vq.getCount());
+        
+        for (ValueObject valueObject : i)
+        {
+          
+          String floatIndicator = valueObject.getValue(TEST_FLOAT_INDICATOR);
+          
+          Double resultDouble = Double.parseDouble(floatIndicator);
+          
+          assertEquals("The query count should have returned a count of two.", (Double)2.0, (Double)resultDouble);
+        }
+      }
+      finally
+      {
+        i.close();
+      }
+    }
+    finally
+    {
+      bus1.delete();
+      bus2.delete();
+    }
+  }
+  
   
   public void testFloatIndicator()
   {

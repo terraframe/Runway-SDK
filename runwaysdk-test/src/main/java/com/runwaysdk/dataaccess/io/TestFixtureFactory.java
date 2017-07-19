@@ -826,12 +826,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeFloatDAO addFloatAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeFloatDAO addFloatAttribute(MdClassDAOIF mdClass)
   {
-    return TestFixtureFactory.addFloatAttribute(mdEntity, TestFixConst.ATTRIBUTE_FLOAT);
+    return TestFixtureFactory.addFloatAttribute(mdClass, TestFixConst.ATTRIBUTE_FLOAT);
   }
 
-  public static MdAttributeFloatDAO addFloatAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeFloatDAO addFloatAttribute(MdClassDAOIF mdClass, String attributeName)
   {
     MdAttributeFloatDAO mdAttribute = MdAttributeFloatDAO.newInstance();
     mdAttribute.setValue(MdAttributeFloatInfo.NAME, attributeName);
@@ -840,7 +840,7 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeFloatInfo.DECIMAL, "2");
     mdAttribute.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setValue(MdAttributeFloatInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.TRUE);
-    mdAttribute.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdClass.getId());
 
     return mdAttribute;
   }

@@ -99,30 +99,6 @@ public class MdTableQueryTest extends TestCase
    */
   public static void classSetUp()
   { 
-//    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
-//    mdBusiness1.setGenerateMdController(false);
-//    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-//    mdBusiness1.apply();
-//    
-//    MdAttributeCharacterDAO mdAttrCharMdBusiness = TestFixtureFactory.addCharacterAttribute(mdBusiness1, TestFixConst.ATTRIBUTE_CHARACTER);
-//    mdAttrCharMdBusiness.apply();
-//    
-//    MdTableDAO mdTable = TestFixtureFactory.createMdTableForMdBusiness1();
-//    mdTable.apply();
-//    
-//    MdAttributeCharacterDAO mdAttrCharMdTable = TestFixtureFactory.addCharacterAttribute(mdTable, TestFixConst.ATTRIBUTE_CHARACTER);
-//    mdAttrCharMdTable.setValue(MdAttributeCharacterInfo.COLUMN_NAME, mdAttrCharMdBusiness.getColumnName());
-//    mdAttrCharMdTable.apply();
-//    
-//    // create some data
-//    BusinessDAO busObj1 = BusinessDAO.newInstance(TestFixConst.TEST_CLASS1_TYPE);
-//    busObj1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "char 1");
-//    busObj1.apply();
-//    
-//    BusinessDAO busObj2 = BusinessDAO.newInstance(TestFixConst.TEST_CLASS1_TYPE);
-//    busObj2.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "char 2");
-//    busObj2.apply();
-    
     BusinessDAO testQueryObject1 = BusinessDAO.newInstance(QueryMasterSetup.childMdBusiness.definesType());
     testQueryObject1.setValue("queryBoolean", MdAttributeBooleanInfo.TRUE);
     testQueryObject1.setValue("queryInteger", "200");
@@ -197,7 +173,7 @@ public class MdTableQueryTest extends TestCase
     mdTableChildRefAttr.setValue(MdAttributeReferenceInfo.COLUMN_NAME, mdClassRefAttr.getColumnName());
     mdTableChildRefAttr.apply();
     
-    // Table pointing to child reference chance
+    // Table pointing to child reference class
     MdTableDAO mdTableChildRef = MdTableDAO.newInstance();
     mdTableChildRef.setValue(MdTableInfo.NAME, childRefTableQueryInfo.getTypeName());
     mdTableChildRef.setValue(MdTableInfo.PACKAGE, childRefTableQueryInfo.getPackageName());
