@@ -40,12 +40,33 @@ public class MdAttributeIndicator_E extends MdAttributeConcrete_E
    */
   protected void createDbColumn(String tableName)
   {
-// Heads up: Test
-//    if(!this.appliedToDB)
-//    {
-//      Database.addField(tableName, this.getMdAttribute().getColumnName(), this.dbColumnType, this.getMdAttribute());
-//    }
+    // Don't do anything (balking pattern), as the indicator has no database column.
   }
+  
+  /**
+   * Drops the column of the given name from the given table.
+   *
+   * <br/>
+   * <b>Precondition:</b> tableName != null <br/>
+   * <b>Precondition:</b> attrName != null
+   *
+   * <br/>
+   * <b>Postcondition:</b> All instances of the given class have the given
+   * attribute cleared
+   *
+   * @param tableName
+   *          Name of the table the attribute belongs to.
+   * @param columnName
+   *          Column name of the attribute to drop from the database.
+   * @param the
+   *          database column type formatted to the database vendor syntax.
+   */
+  protected void dropAttribute(String tableName, String columnName, String dbColumnType)
+  {
+// Heads up: Test
+//    Database.dropField(tableName, columnName, dbColumnType, this.getMdAttribute());
+  }
+
   
   /**
    *Validates this metadata object.

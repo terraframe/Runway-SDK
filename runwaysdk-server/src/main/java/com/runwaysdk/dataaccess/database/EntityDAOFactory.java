@@ -42,6 +42,7 @@ import com.runwaysdk.dataaccess.ElementDAO;
 import com.runwaysdk.dataaccess.ElementDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.HasNoDatabaseColumn;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
@@ -143,7 +144,7 @@ public class EntityDAOFactory
       String attributeName = mdAttributeIF.definesAttribute();
       String attributeNameSpace = mdTableClassIF.definesType();
       String attributeQualifiedName = attributeNameSpace + "." + attributeName;
-
+      
       ColumnInfo columnInfo = columnInfoMap.get(attributeQualifiedName);
 
       if (columnInfo != null)
@@ -223,6 +224,12 @@ public class EntityDAOFactory
           ( (AttributeStruct) attribute ).setStructDAO(structDAO);
         }
       } // if (columnInfo != null)
+      else if (mdAttributeIF instanceof HasNoDatabaseColumn)
+      {
+        Attribute attribute = AttributeFactory.createAttribute(mdAttributeIF.getKey(), mdAttributeIF.getType(), attributeName, mdTableClassIF.definesType(), "");
+        attributeMap.put(attributeName, attribute);
+      }
+        
     }
     return attributeMap;
   }
@@ -411,6 +418,11 @@ public class EntityDAOFactory
 
       for (MdAttributeConcreteDAOIF mdAttribute : mdAttributeList)
       {
+        if (mdAttribute instanceof HasNoDatabaseColumn)
+        {
+          continue;
+        }
+        
         String fieldName = mdAttribute.definesAttribute();
 
         // A new attribute may have been added since this object was
@@ -706,6 +718,11 @@ public class EntityDAOFactory
 
       for (MdAttributeConcreteDAOIF mdAttribute : mdAttributeList)
       {
+        if (mdAttribute instanceof HasNoDatabaseColumn)
+        {
+          continue;
+        }
+        
         String attrName = mdAttribute.definesAttribute();
 
         // A new attribute may have been added since this object was

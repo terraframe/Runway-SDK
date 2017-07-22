@@ -8,10 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.runwaysdk.constants.AggregationFunctionInfo;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
-import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -38,6 +36,7 @@ import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
+import com.runwaysdk.dataaccess.HasNoDatabaseColumn;
 import com.runwaysdk.dataaccess.IndicatorCompositeDAOIF;
 import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
 import com.runwaysdk.dataaccess.IndicatorPrimitiveDAOIF;
@@ -1490,6 +1489,12 @@ public abstract class TableClassQuery extends ComponentQuery
 
     for (MdAttributeConcreteDAOIF mdAttributeIF : totalMdAttributeIFList)
     {
+   // Heads up: Test:
+      if (mdAttributeIF instanceof HasNoDatabaseColumn)
+      {
+        continue;
+      }
+      
       MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getId());
       if (mdTableClassIF == null)
       {
@@ -1697,9 +1702,14 @@ public abstract class TableClassQuery extends ComponentQuery
    */
   protected void buildColumnInfoForAttribute(Map<String, ColumnInfo> _columnInfoMap, String attributeName, String columnName, String attributeDefiningTableName, String attributeDefiningTableAlias, String attributeNamespace, String columnAlias, String fullyQualifiedAttributeNamespace, ComponentQuery componentQuery, MdAttributeDAOIF mdAttributeIF)
   {
+    if (mdAttributeIF instanceof HasNoDatabaseColumn)
+    {
+      return;
+    }
+    
     ColumnInfo columnInfo = new ColumnInfo(attributeDefiningTableName, attributeDefiningTableAlias, columnName, columnAlias);
     _columnInfoMap.put(fullyQualifiedAttributeNamespace, columnInfo);
-
+    
     if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
     {
       String cacheColumnName = ( (MdAttributeEnumerationDAOIF) mdAttributeIF ).getCacheColumnName();

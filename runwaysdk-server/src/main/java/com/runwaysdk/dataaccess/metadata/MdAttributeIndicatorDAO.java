@@ -14,6 +14,7 @@ import com.runwaysdk.constants.MdAttributeLongUtil;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
+import com.runwaysdk.dataaccess.HasNoDatabaseColumn;
 import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -23,7 +24,7 @@ import com.runwaysdk.transport.metadata.AttributeBooleanMdDTO;
 import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
-public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements MdAttributeIndicatorDAOIF
+public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements MdAttributeIndicatorDAOIF, HasNoDatabaseColumn
 {
   
 

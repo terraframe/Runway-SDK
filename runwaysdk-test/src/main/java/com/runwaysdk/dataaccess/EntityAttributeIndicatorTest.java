@@ -20,6 +20,7 @@ import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.TypeInfo;
+import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -59,6 +60,10 @@ public class EntityAttributeIndicatorTest extends TestCase
   private static MdBusinessDAOIF                      testMdBusinessIF;
   
   private static MdTableDAOIF                         mdTableIF;
+  
+  private static MdAttributeFloatDAOIF                mdAttributeFloatIF1;
+  
+  private static MdAttributeFloatDAOIF                mdAttributeFloatIF2;
   
   private static final String                         TEST_INTEGER_1              = "testInteger1";
   
@@ -186,6 +191,7 @@ public class EntityAttributeIndicatorTest extends TestCase
     mdAttributeFloat1.setValue(MdAttributeFloatInfo.DECIMAL, "2");
     mdAttributeFloat1.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
     mdAttributeFloat1.apply();
+    mdAttributeFloatIF1 = mdAttributeFloat1;
     
     MdAttributeFloatDAO mdAttributeFloat2 = MdAttributeFloatDAO.newInstance();
     mdAttributeFloat2.setValue(MdAttributeFloatInfo.NAME, TEST_FLOAT_2);
@@ -197,6 +203,7 @@ public class EntityAttributeIndicatorTest extends TestCase
     mdAttributeFloat2.setValue(MdAttributeFloatInfo.DECIMAL, "2");
     mdAttributeFloat2.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
     mdAttributeFloat2.apply();
+    mdAttributeFloatIF2 = mdAttributeFloat2;
     
     MdAttributeDoubleDAO mdAttributeDouble1 = MdAttributeDoubleDAO.newInstance();
     mdAttributeDouble1.setValue(MdAttributeDoubleInfo.NAME, TEST_DOUBLE_1);
@@ -433,6 +440,78 @@ public class EntityAttributeIndicatorTest extends TestCase
   public static void classTearDown()
   {
     mdTableIF.getBusinessDAO().delete();
+  }
+
+  
+  /**
+   * This test is to make sure a bug is fixed where deleting an indicator attribute resulted in the attempt to drop a column
+   * that does not exist.
+   */
+  public void testDeleteMdIndicatorDefinition()
+  {
+    
+    IndicatorPrimitiveDAO indicatorPrimitiveFloat1 = IndicatorPrimitiveDAO.newInstance();
+    indicatorPrimitiveFloat1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeFloatIF1.getId());
+    indicatorPrimitiveFloat1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
+    indicatorPrimitiveFloat1.apply();
+    String indicatorPrimitiveFloat1Id = indicatorPrimitiveFloat1.getId();
+    
+    IndicatorPrimitiveDAO indicatorPrimitiveFloat2 = IndicatorPrimitiveDAO.newInstance();
+    indicatorPrimitiveFloat2.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeFloatIF2.getId());
+    indicatorPrimitiveFloat2.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
+    indicatorPrimitiveFloat2.apply();
+    String indicatorPrimitiveFloat2Id = indicatorPrimitiveFloat2.getId();
+    
+    IndicatorCompositeDAO indicatorFloatComposite = IndicatorCompositeDAO.newInstance();
+    indicatorFloatComposite.setValue(IndicatorCompositeInfo.LEFT_OPERAND, indicatorPrimitiveFloat1.getId());
+    indicatorFloatComposite.setValue(IndicatorCompositeInfo.OPERATOR, IndicatorOperator.DIV.getId());
+    indicatorFloatComposite.setValue(IndicatorCompositeInfo.RIGHT_OPERAND, indicatorPrimitiveFloat2.getId());
+    indicatorFloatComposite.apply();
+    String indicatorFloatCompositeId = indicatorFloatComposite.getId();
+    
+    String indicatorName = TEST_FLOAT_INDICATOR+"_Temp";
+    
+    MdAttributeIndicatorDAO mdAttrFloatIndicatorTemp = MdAttributeIndicatorDAO.newInstance();
+    mdAttrFloatIndicatorTemp.setValue(MdAttributeIndicatorInfo.NAME, indicatorName);
+    mdAttrFloatIndicatorTemp.setStructValue(MdAttributeIndicatorInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Float Indicator");
+    mdAttrFloatIndicatorTemp.setValue(MdAttributeIndicatorInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttrFloatIndicatorTemp.setValue(MdAttributeIndicatorInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdAttrFloatIndicatorTemp.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorFloatComposite.getId());
+    mdAttrFloatIndicatorTemp.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloatIndicatorTemp.apply();
+
+    // now delete it
+    mdAttrFloatIndicatorTemp.delete();
+    
+    try
+    {
+      IndicatorPrimitiveDAO.get(indicatorPrimitiveFloat1Id);
+      fail("Indicator was not deleted");
+    }
+    catch (DataNotFoundException ex)
+    {
+      // We want to land here.
+    }
+    
+    try
+    {
+      IndicatorPrimitiveDAO.get(indicatorPrimitiveFloat2Id);
+      fail("Indicator was not deleted");
+    }
+    catch (DataNotFoundException ex)
+    {
+      // We want to land here.
+    }
+    
+    try
+    {
+      IndicatorCompositeDAO.get(indicatorFloatCompositeId);
+      fail("Indicator was not deleted");
+    }
+    catch (DataNotFoundException ex)
+    {
+      // We want to land here.
+    }
   }
   
   /**
