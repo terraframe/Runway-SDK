@@ -110,17 +110,17 @@ public class ProblemExceptionDTO extends RuntimeException implements RunwayExcep
     return messages;
   }
 
-  public String getLocalizedMessage()
-  {
-    String message = super.getLocalizedMessage() + ": ";
-    
-    List<? extends ProblemDTOIF> problems = this.getProblems();
-    
-    for(ProblemDTOIF problem : problems)
-    {
-      message += ", " + problem.getMessage();
-    }
-    
-    return message.replaceFirst(", ", "");    
-  }
+//  public String getLocalizedMessage()
+//  {
+//    String message = super.getLocalizedMessage() + ": ";
+//    
+//    List<? extends ProblemDTOIF> problems = this.getProblems();
+//    
+//    for(ProblemDTOIF problem : problems)
+//    {
+//      message += ", " + problem.getMessage();
+//    }
+//    
+//    return message.replaceFirst(", ", "");    
+//  }
 }
