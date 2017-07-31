@@ -552,6 +552,13 @@ public class EntityAttributeIndicatorTest extends TestCase
       String value = bus1.getValue(TEST_INTEGER_INDICATOR);
       
       assertTrue("Division function should have returned the value 2", value.equals("2"));
+      
+      // Test fetching the object anew from the DB
+      BusinessDAOIF bus1IF = BusinessDAO.get(bus1.getId());
+      
+      value = bus1IF.getValue(TEST_INTEGER_INDICATOR);
+      
+      assertTrue("Division function should have returned the value 2", value.equals("2"));
     }
     finally
     {
