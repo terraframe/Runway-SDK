@@ -3,34 +3,40 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
+import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeStructIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdLocalizableDAOIF;
 import com.runwaysdk.dataaccess.TransientDAO;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
+import com.runwaysdk.generation.CommonGenerationUtil;
+import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Session;
 
 public abstract class Notification implements MutableWithStructs, LocalizableIF, Serializable
@@ -77,6 +83,12 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   {
     return this.transientDAO;
   }
+  
+  void setTransientDAO(TransientDAO transientDAO)
+  {
+    this.transientDAO = transientDAO;
+  }
+
 
   /**
    * Sets the locale used for the localized message.
@@ -652,5 +664,42 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   public void clearMultiItems(String name)
   {
     transientDAO.clearItems(name);
+  }
+
+  public static Notification instantiate(TransientDAO transientDAO)
+  {
+    Notification object;
+    try
+    {
+      Class<?> clazz = LoaderDecorator.load(transientDAO.getType());
+      Constructor<?> con = clazz.getConstructor();
+      object = (Notification) con.newInstance();
+
+      object.setTransientDAO(transientDAO);
+
+      // Set the private variables of the runtime type
+      for (AttributeIF attribute : transientDAO.getAttributeArrayIF())
+      {
+        if (attribute instanceof AttributeStructIF)
+        {
+          AttributeStructIF attributeStruct = (AttributeStructIF) attribute;
+          Struct struct = Struct.instantiate(object, attributeStruct.getName());
+          String typeName = attributeStruct.getDefiningClassType() + TypeGeneratorInfo.BASE_SUFFIX;
+
+          Class<?> c = LoaderDecorator.load(typeName);
+          String structName = CommonGenerationUtil.lowerFirstCharacter(attribute.getName());
+
+          Field field = c.getDeclaredField(structName);
+          field.setAccessible(true);
+          field.set(object, struct);
+        }
+      }
+    }
+    catch (Exception e)
+    {
+      throw new ClassLoaderException(transientDAO.getMdClassDAO(), e);
+    }
+
+    return object;
   }
 }

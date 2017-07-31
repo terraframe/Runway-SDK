@@ -28,7 +28,6 @@ import com.runwaysdk.RunwayException;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -282,6 +281,17 @@ public class BusinessFacade
   {
     return problem.getTransientDAO();
   }
+  
+  /**
+   * Returns the TransientdDAO from the DataAccess layer used by the given problem object. Absolutely do not call this method unless you know what you are doing.
+   * 
+   * @param problem
+   * @return Session from the DataAccess layer used by the given problem object.
+   */
+  public static TransientDAO getTransientDAO(Message message)
+  {
+    return message.getTransientDAO();
+  }
 
   /**
    * Provides a way to construct a typesafe {@link Entity} from an {@link EntityDAO}.
@@ -322,6 +332,11 @@ public class BusinessFacade
     return SessionComponent.instantiate(transientDAO);
   }
 
+  public static Notification getNotification(TransientDAO transientDAO)
+  {
+    return Notification.instantiate(transientDAO);
+  }
+  
   /**
    * Returns a View class whoes attributes are derived from the given <param>valueObject</param>.
    * 
