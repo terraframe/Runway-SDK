@@ -495,7 +495,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
 
     protected WebHeaderToJSON(WebHeader header, JSONFormVisitor visitor)
     {
-      super(header, null);
+      super(header, visitor);
     }
 
     @Override
@@ -510,7 +510,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
 
     protected WebCommentToJSON(WebComment comment, JSONFormVisitor visitor)
     {
-      super(comment, null);
+      super(comment, visitor);
     }
 
     @Override
@@ -641,7 +641,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
 
     protected WebBreakToJSON(WebBreak webBreak, JSONFormVisitor visitor)
     {
-      super(webBreak, null);
+      super(webBreak, visitor);
     }
 
     @Override
