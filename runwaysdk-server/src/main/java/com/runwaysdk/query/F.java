@@ -94,6 +94,17 @@ public class F
   {
     return new Coalesce(selectable, optionalSelectableArray);
   }
+  
+  /**
+   * Coalesce function
+   *
+   * @param selectable  need at least one selectable
+   * @param optionalSelectableArray optional additional selectables
+   */
+  public static Coalesce COALESCE(SelectableSingle selectable, String other, SelectableSingle...optionalSelectableArray)
+  {
+    return new Coalesce(selectable, other, optionalSelectableArray);
+  }
 
   /**
    * Coalesce function

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -27,17 +27,28 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 {
   private SelectableSingle[] optionalSelectableArray;
 
+  private String             other;
+
   /**
    * Coalesce function
    *
-   * @param selectable  need at least one selectable
-   * @param optionalSelectableArray optional additional selectables
+   * @param selectable
+   *          need at least one selectable
+   * @param optionalSelectableArray
+   *          optional additional selectables
    */
-  protected Coalesce(SelectableSingle selectable, SelectableSingle...optionalSelectableArray)
+  protected Coalesce(SelectableSingle selectable, SelectableSingle... optionalSelectableArray)
   {
     super(selectable, null, null);
 
-    this.init(selectable, optionalSelectableArray);
+    this.init(selectable, null, optionalSelectableArray);
+  }
+
+  protected Coalesce(SelectableSingle selectable, String other, SelectableSingle... optionalSelectableArray)
+  {
+    super(selectable, null, null);
+
+    this.init(selectable, other, optionalSelectableArray);
   }
 
   /**
@@ -45,27 +56,32 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
    *
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
-   * @param selectable  need at least one selectable
-   * @param optionalSelectableArray optional additional selectables
+   * @param selectable
+   *          need at least one selectable
+   * @param optionalSelectableArray
+   *          optional additional selectables
    */
-  protected Coalesce(String userDefinedAlias, String userDefinedDisplayLabel, SelectableSingle selectable, SelectableSingle...optionalSelectableArray)
+  protected Coalesce(String userDefinedAlias, String userDefinedDisplayLabel, SelectableSingle selectable, SelectableSingle... optionalSelectableArray)
   {
     super(selectable, userDefinedAlias, userDefinedDisplayLabel);
 
-    this.init(selectable, optionalSelectableArray);
+    this.init(selectable, null, optionalSelectableArray);
   }
 
   /**
    * Common constructor method.
    *
    * @param selectable
+   * @param other
+   *          TODO
    * @param optionalSelectableArray
    */
-  private void init(SelectableSingle selectable, SelectableSingle... optionalSelectableArray)
+  private void init(SelectableSingle selectable, String other, SelectableSingle... optionalSelectableArray)
   {
     this.optionalSelectableArray = optionalSelectableArray;
+    this.other = other;
 
-    this.setMdAttributeIF((MdAttributeConcrete_Q)Attribute.convertMdAttribute(selectable.getMdAttributeIF()));
+    this.setMdAttributeIF((MdAttributeConcrete_Q) Attribute.convertMdAttribute(selectable.getMdAttributeIF()));
 
     String attributeType = selectable.getMdAttributeIF().getMdAttributeConcrete().getType();
 
@@ -73,8 +89,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
     {
       if (!attributeType.equals(optionalSelectable.getMdAttributeIF().getMdAttributeConcrete().getType()))
       {
-        String errMsg =
-          "All selectables in the [Coalesce] function must be of the same type";
+        String errMsg = "All selectables in the [Coalesce] function must be of the same type";
         throw new QueryException(errMsg);
       }
     }
@@ -88,17 +103,23 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Calculates a display label for the result set.
+   * 
    * @return display label for the result set.
    */
   protected String calculateDisplayLabel()
   {
-    String displayLabel = this.getFunctionName()+"(";
+    String displayLabel = this.getFunctionName() + "(";
 
     displayLabel += this.calculateDisplayLabel(this.selectable);
 
     for (Selectable optionalSelectable : this.optionalSelectableArray)
     {
-      displayLabel += ","+this.calculateDisplayLabel(optionalSelectable);
+      displayLabel += "," + this.calculateDisplayLabel(optionalSelectable);
+    }
+
+    if (other != null)
+    {
+      displayLabel += "," + other;
     }
 
     displayLabel += ")";
@@ -114,19 +135,24 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
     }
     else
     {
-      return ((Function)optionalSelectable).calculateDisplayLabel();
+      return ( (Function) optionalSelectable ).calculateDisplayLabel();
     }
   }
 
   @Override
   public String getSQL()
   {
-    String sql = this.getFunctionName()+"(";
+    String sql = this.getFunctionName() + "(";
     sql += this.selectable.getSQL();
 
     for (Selectable optionalSelectable : this.optionalSelectableArray)
     {
-      sql += ", "+optionalSelectable.getSQL();
+      sql += ", " + optionalSelectable.getSQL();
+    }
+
+    if (this.other != null)
+    {
+      sql += ", " + this.other;
     }
 
     sql += ")";
@@ -141,8 +167,11 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   }
 
   /**
-   * Returns the a nested aggregate function in this composite function tree, if there is one, or return null;
-   * @return nested aggregate function in this composite function tree, if there is one, or return null;
+   * Returns the a nested aggregate function in this composite function tree, if
+   * there is one, or return null;
+   * 
+   * @return nested aggregate function in this composite function tree, if there
+   *         is one, or return null;
    */
   public SelectableAggregate getAggregateFunction()
   {
@@ -175,9 +204,9 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   public SelectableSingle[] getSelectables()
   {
     SelectableSingle[] allSelectables = new SelectableSingle[this.optionalSelectableArray.length + 1];
-    allSelectables[0] = (SelectableSingle)this.getSelectable();
+    allSelectables[0] = (SelectableSingle) this.getSelectable();
 
-    for (int i = 1; i<allSelectables.length; i++)
+    for (int i = 1; i < allSelectables.length; i++)
     {
       allSelectables[i] = this.optionalSelectableArray[i];
     }
@@ -188,6 +217,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   // Equals
   /**
    * Character = comparison case sensitive.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -209,6 +239,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * boolean equal comparison.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -254,6 +285,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Equals.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -265,6 +297,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Equals.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -276,6 +309,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Equals.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -287,6 +321,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Equals.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -296,9 +331,9 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
     return new BasicConditionEq(this, statementPrimitive);
   }
 
-
   /**
    * Same as <code>getDateTime</code> Equals.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -309,6 +344,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Equals.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -320,6 +356,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Equals.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -332,6 +369,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   // Equals IgnoreCase
   /**
    * Character = comparison case sensitive.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -353,8 +391,10 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Character comparison of statements.
+   * 
    * @param statement
-   * @param ignoreCase true if case sensitive or case insensitive comparison.
+   * @param ignoreCase
+   *          true if case sensitive or case insensitive comparison.
    * @return Basic Condition object
    */
   private Condition privateEq(String statement, boolean ignoreCase)
@@ -366,6 +406,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   // Not Equals
   /**
    * Character = comparison case sensitive.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -398,6 +439,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * boolean not equal comparison.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -421,6 +463,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Not Equals.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -432,6 +475,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Same as <code>notEqDateTime</code>.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -442,6 +486,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Not Equals.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -453,6 +498,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Not Equals.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -464,6 +510,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Not Equals.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -475,6 +522,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Not Equals.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -486,6 +534,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Not Equals.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -506,9 +555,9 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
     return QueryUtil.NE(this, selectable);
   }
 
-
   /**
    * Character = comparison case sensitive.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -530,8 +579,10 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Character LIKE comparison of statements.
+   * 
    * @param statementArray
-   * @param ignoreCase true if case sensitive or case insensitive comparison.
+   * @param ignoreCase
+   *          true if case sensitive or case insensitive comparison.
    * @return Basic Condition object
    */
   private BasicCondition privateNotEq(String statement, boolean ignoreCase)
@@ -543,6 +594,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   // LIKE
   /**
    * Character LIKE comparison case sensitive.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -550,8 +602,10 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   {
     return this.privateLike(statement, false);
   }
+
   /**
    * Character LIKE comparison case insensitive.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -562,8 +616,10 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Character LIKE comparison of statements.
+   * 
    * @param statementArray
-   * @param ignoreCase true if case sensitive or case insensitive comparison.
+   * @param ignoreCase
+   *          true if case sensitive or case insensitive comparison.
    * @return Basic Condition object
    */
   private BasicCondition privateLike(String statement, boolean ignoreCase)
@@ -576,6 +632,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   // NOT LIKE
   /**
    * Character NOT LIKE comparison case sensitive.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -583,8 +640,10 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   {
     return this.privateNotLike(statement, false);
   }
+
   /**
    * Character NOT LIKE comparison case insensitive.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -595,8 +654,10 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Character NOT LIKE comparison of statements.
+   * 
    * @param statementArray
-   * @param ignoreCase true if case sensitive or case insensitive comparison.
+   * @param ignoreCase
+   *          true if case sensitive or case insensitive comparison.
    * @return Basic Condition object
    */
   private BasicCondition privateNotLike(String statement, boolean ignoreCase)
@@ -609,33 +670,38 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   // IN
   /**
    * Character IN case sensitive comparison of statements.
+   * 
    * @param statementArray
    * @return Basic Condition object
    */
-  public BasicCondition IN(String ... statementArray)
+  public BasicCondition IN(String... statementArray)
   {
     return this.privateIn(statementArray, false);
   }
+
   /**
    * Character IN case insensitive comparison of statements.
+   * 
    * @param statementArray
    * @return Basic Condition object
    */
-  public BasicCondition INi(String ... statementArray)
+  public BasicCondition INi(String... statementArray)
   {
     return this.privateIn(statementArray, true);
   }
 
   /**
    * Character IN comparison of statements.
+   * 
    * @param statementArray
-   * @param ignoreCase true if case sensitive or case insensitive comparison.
+   * @param ignoreCase
+   *          true if case sensitive or case insensitive comparison.
    * @return Basic Condition object
    */
   private BasicCondition privateIn(String[] statementArray, boolean ignoreCase)
   {
     StatementPrimitive[] tempStatementArray = new StatementPrimitive[statementArray.length];
-    for (int i=0; i<statementArray.length; i++)
+    for (int i = 0; i < statementArray.length; i++)
     {
       tempStatementArray[i] = QueryUtil.getCharacterPrimitiveStatement(statementArray[i]);
     }
@@ -645,33 +711,38 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   // NOT IN
   /**
    * Character NOT IN case sensitive comparison of statements.
+   * 
    * @param statementArray
    * @return Basic Condition object
    */
-  public BasicCondition NI(String ... statementArray)
+  public BasicCondition NI(String... statementArray)
   {
     return this.privateNotIn(statementArray, false);
   }
+
   /**
    * Character IN case insensitive comparison of statements.
+   * 
    * @param statementArray
    * @return Basic Condition object
    */
-  public BasicCondition NIi(String ... statementArray)
+  public BasicCondition NIi(String... statementArray)
   {
     return this.privateNotIn(statementArray, true);
   }
 
   /**
    * Character NOT IN comparison of statements.
+   * 
    * @param statementArray
-   * @param ignoreCase true if case sensitive or case insensitive comparison.
+   * @param ignoreCase
+   *          true if case sensitive or case insensitive comparison.
    * @return Basic Condition object
    */
   private BasicCondition privateNotIn(String[] statementArray, boolean ignoreCase)
   {
     StatementPrimitive[] tempStatementArray = new StatementPrimitive[statementArray.length];
-    for (int i=0; i<statementArray.length; i++)
+    for (int i = 0; i < statementArray.length; i++)
     {
       tempStatementArray[i] = QueryUtil.getCharacterPrimitiveStatement(statementArray[i]);
     }
@@ -702,6 +773,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Greater than.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -713,6 +785,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Greater than.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -724,6 +797,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Greater than.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -735,6 +809,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Greater than.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -746,6 +821,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Same as <code>gtDateTime</code> Greater than.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -789,6 +865,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Greater than.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -800,6 +877,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Greater than.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -831,9 +909,9 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
     return QueryUtil.GE(this, selectable);
   }
 
-
   /**
    * Date Greater than Eq.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -845,6 +923,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Greater than Eq.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -856,6 +935,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Greater than Eq.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -867,6 +947,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Greater than Eq.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -878,6 +959,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Same as <code>gtEqDateTime</code>.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -888,6 +970,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Greater than Eq.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -899,6 +982,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Greater than Eq.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -965,6 +1049,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Less than.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -976,6 +1061,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Less than.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -987,6 +1073,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Less than.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -998,6 +1085,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Less than.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -1009,6 +1097,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Same as <code>ltDateTime</code>
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -1017,9 +1106,9 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
     return LTdateTime(date);
   }
 
-
   /**
    * DateTime Less than.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -1031,6 +1120,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Less than.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -1097,6 +1187,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Less than Eq.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -1108,6 +1199,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Less than Eq.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -1119,6 +1211,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Less than Eq.
+   * 
    * @param statement
    * @return Basic Condition object
    */
@@ -1130,6 +1223,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Date Less than Eq.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -1141,6 +1235,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Same as <code>ltEqDateTime</code>.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -1151,6 +1246,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * DateTime Less than Eq.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -1162,6 +1258,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
 
   /**
    * Time Less than Eq.
+   * 
    * @param date
    * @return Basic Condition object
    */
@@ -1192,6 +1289,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   {
     return QueryUtil.LE(this, selectable);
   }
+
   /**
    * Less Than or Equal.
    *
@@ -1206,6 +1304,7 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   /**
    * Returns a primitive statement object that may represent a null comparrison.
    * Assumes the given object is a reference to a primitive wrapper class.
+   * 
    * @param statement
    * @return primitive statement object that may represent a null comparrison.
    */
@@ -1215,27 +1314,29 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   }
 
   /**
-   * Returns a condition based on the String version of the operator
-   * and the String version of the value.
+   * Returns a condition based on the String version of the operator and the
+   * String version of the value.
+   * 
    * @param operator
    * @param value
-   * @return condition based on the String version of the operator
-   * and the String version of the value.
+   * @return condition based on the String version of the operator and the
+   *         String version of the value.
    */
   public Condition getCondition(String operator, String value)
   {
     try
     {
-      return QueryUtil.getCondition((Selectable)this, operator, value);
+      return QueryUtil.getCondition((Selectable) this, operator, value);
     }
     catch (InvalidComparisonOperator e)
     {
-      return QueryUtil.getCondition((SelectableChar)this, operator, value);
+      return QueryUtil.getCondition((SelectableChar) this, operator, value);
     }
   }
 
   /**
    * Visitor to traverse the query object structure.
+   * 
    * @param visitor
    */
   public void accept(Visitor visitor)

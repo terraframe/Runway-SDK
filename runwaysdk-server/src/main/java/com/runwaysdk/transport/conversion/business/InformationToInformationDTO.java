@@ -20,6 +20,7 @@ package com.runwaysdk.transport.conversion.business;
 
 import java.util.Map;
 
+import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.ComponentDTOFacade;
 import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.business.Information;
@@ -41,7 +42,7 @@ public class InformationToInformationDTO extends MessageToMessageDTO
    */
   public InformationToInformationDTO(String sessionId, Information information, boolean convertMetaData)
   {
-    super(sessionId, information, convertMetaData);
+    super(sessionId, ((Information) BusinessFacade.getNotification(BusinessFacade.getTransientDAO(information))), convertMetaData);
 
     if (!GenerationUtil.isSkipCompileAndCodeGeneration(this.getMdTypeIF()))
     {
