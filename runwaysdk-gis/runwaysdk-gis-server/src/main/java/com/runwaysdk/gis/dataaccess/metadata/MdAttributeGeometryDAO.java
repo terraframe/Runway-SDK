@@ -20,16 +20,18 @@ package com.runwaysdk.gis.dataaccess.metadata;
 
 import java.util.Map;
 
+import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdTransientDAOIF;
+import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_S;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_T;
 import com.runwaysdk.gis.constants.MdAttributeGeometryInfo;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
 import com.runwaysdk.system.gis.metadata.InvalidDimensionException;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
-import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdEntityDAOIF;
-import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_S;
 
 public abstract class MdAttributeGeometryDAO extends MdAttributeConcreteDAO implements MdAttributeGeometryDAOIF
 {
@@ -80,18 +82,25 @@ public abstract class MdAttributeGeometryDAO extends MdAttributeConcreteDAO impl
     return super.save(validateRequired);
   }
 
-  @Override
+  /**
+   * Initializes the strategy object.
+   */
   protected void initializeStrategyObject()
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeGeometry_E(this));
     }
-    else
+    else if (this.definedByClass() instanceof MdTransientDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
     }
+    else
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
+    }
   }
+  
 
   /**
    * Returns the projection ID used for this geometry attribute;
