@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 INSERT INTO class_cache (set_id, item_id)  VALUES  ('xsqnptbxmoci7iuhlceqbowg7t2n2ow6', '0000000000000000000000000000023100000000000000000000000000000222');
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('y1p2txb94sumjupq78wiqt69y98oduzsNM200904120000000000000000000030', 'y1p2txb94sumjupq78wiqt69y98oduzsNM200904120000000000000000000030', 'www.runwaysdk.com', 'Aggregation Function Master');
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('1rgs3ixrnz0aup0g2u1pa8f0uel97tfbNM200904120000000000000000000030', '1rgs3ixrnz0aup0g2u1pa8f0uel97tfbNM200904120000000000000000000030', 'www.runwaysdk.com', 'Aggregation Function Enumeration Master List');
