@@ -2770,6 +2770,15 @@ public class Database
 
     return tables;
   }
+  
+  /**
+   * Drops and then remakes the application schema, effectively dropping all tables. If the database is spatially 
+   * enabled and the application schema is 'public' then PostGIS will be recreated as well.
+   */
+  public static void dropAll()
+  {
+    instance().dropAll();
+  }
 
   /**
    * Gets the namespace for the Runway application

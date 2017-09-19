@@ -163,6 +163,24 @@ public class PostGIS extends PostgreSQL
 
     return pgConn;
   }
+  
+  /**
+   * Drops and then remakes the application schema, effectively dropping all tables. If the database is spatially 
+   * enabled and the application schema is 'public' then PostGIS will be recreated as well.
+   */
+  public void dropAll()
+  {
+    String schema = this.getApplicationNamespace();
+    
+    this.parseAndExecute("DROP SCHEMA " + schema + " CASCADE;\n" + 
+        "CREATE SCHEMA " + schema + ";\n" + 
+        "GRANT ALL ON SCHEMA " + schema + " TO postgres;");
+    
+    if (schema.equals("public"))
+    {
+      this.parseAndExecute("CREATE EXTENSION postgis");
+    }
+  }
 
   /**
    * Creates a geometry column in the database.
