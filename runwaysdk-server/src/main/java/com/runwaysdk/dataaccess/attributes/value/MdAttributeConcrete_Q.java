@@ -423,6 +423,11 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
   {
     return this.displayLabel;
   }
+  
+  public String getMdAttributeDisplayLabel(Locale locale)
+  {
+    return this.mdAttributeConcreteIF.getDisplayLabel(locale);
+  }
 
   /**
    * Returns a map where the key is the locale and the value is the localized
