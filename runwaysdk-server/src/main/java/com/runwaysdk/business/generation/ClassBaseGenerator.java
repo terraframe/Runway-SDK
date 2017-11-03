@@ -413,6 +413,11 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       if (!GenerationUtil.isSpecialCaseSetter(m))
       {
         addSetter(m);
+        
+        if (m.getMdAttributeConcrete() instanceof MdAttributeReferenceDAOIF)
+        {
+          addReferenceSetter(m);
+        }
       }
     }
   }
@@ -526,6 +531,37 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     getWriter().writeLine("");
   }
 
+  /**
+   * Generates a setter for the given attribute in the base .java file
+   * 
+   * @param m
+   *          MdAttribute to generate
+   */
+  private void addReferenceSetter(MdAttributeDAOIF m)
+  {
+    // do not generate a setter for a system attribute.
+    if (m.isSystem())
+    {
+      return;
+    }
+    
+    VisibilityModifier setterVisibility = m.getSetterVisibility();
+    
+    String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
+    getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "(" + String.class.getName() + " id)");
+    getWriter().openBracket();
+    getWriter().writeLine("if(id == null)");
+    getWriter().openBracket();
+    getWriter().writeLine(m.setterWrapper("\"\"") + ";");
+    getWriter().closeBracket();
+    getWriter().writeLine("else");
+    getWriter().openBracket();
+    getWriter().writeLine(m.setterWrapper("id") + ";");
+    getWriter().closeBracket();
+    getWriter().closeBracket();
+    getWriter().writeLine("");
+  }
+  
   /**
    * Generates a Validate method for the given attribute in the base .java file
    * 

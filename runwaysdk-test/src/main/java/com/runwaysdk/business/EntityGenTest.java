@@ -1851,6 +1851,26 @@ public class EntityGenTest extends TestCase
       fail("Stored and Retrieved References are different.");
   }
 
+  public void testSetReferenceById() throws Exception
+  {
+    Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
+    Business in = (Business) referenceClass.getConstructor().newInstance();
+    referenceClass.getMethod("apply").invoke(in);
+    
+    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Object object = collectionClass.getConstructor().newInstance();
+    
+    collectionClass.getMethod("setAReference", String.class).invoke(object, in.getId());
+    collectionClass.getMethod("apply").invoke(object);
+    
+    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    BusinessDAOIF out = ( (AttributeReferenceIF) businessDAO.getAttributeIF("aReference") ).dereference();
+    
+    if (!in.getId().equalsIgnoreCase(out.getId()))
+      fail("Stored and Retrieved References are different.");
+  }
+  
   public void testGetReference() throws Exception
   {
     BusinessDAO in = BusinessDAO.newInstance(reference.definesType());
