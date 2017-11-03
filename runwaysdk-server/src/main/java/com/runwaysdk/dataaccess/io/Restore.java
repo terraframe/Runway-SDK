@@ -120,7 +120,7 @@ public class Restore
     this.validateRestore();
     
     this.logPrintStream.println("\n" + ServerExceptionMessageLocalizer.droppingTablesMessage(Session.getCurrentLocale()));
-    this.dropApplicationTabels();
+    Database.dropAll();
 
     this.logPrintStream.println("\n" + ServerExceptionMessageLocalizer.importingDatabaseRecords(Session.getCurrentLocale()));
     this.importSQL();
@@ -197,24 +197,24 @@ public class Restore
     }
   }
 
-  private void dropApplicationTabels()
-  {
-    List<String> tableNames = null;
-    try
-    {
-      tableNames = Database.getAllApplicationTables();
-    }
-    catch (Throwable e)
-    {
-      // The framework has already been dropped.
-    }
-
-    if (tableNames != null)
-    {
-      Database.cascadeDropTables(tableNames);
-    }
-  }
-
+//  private void dropApplicationTabels()
+//  {
+//    List<String> tableNames = null;
+//    try
+//    {
+//      tableNames = Database.getAllApplicationTables();
+//    }
+//    catch (Throwable e)
+//    {
+//      // The framework has already been dropped.
+//    }
+//
+//    if (tableNames != null)
+//    {
+//      Database.cascadeDropTables(tableNames);
+//    }
+//  }
+  
   private void unzipFile()
   {
     this.logPrintStream.println(ServerExceptionMessageLocalizer.extractingFileMessage(Session.getCurrentLocale(), this.zipFileLocation));

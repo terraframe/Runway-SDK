@@ -504,6 +504,11 @@ public abstract class AbstractDatabase
 
     return superTypeMap;
   }
+  
+  public void dropAll()
+  {
+    throw new UnsupportedOperationException();
+  }
 
   /**
    * Returns the id to the MdEntity that defines the given type. given ID.
@@ -3301,17 +3306,17 @@ public abstract class AbstractDatabase
       statement = conx.createStatement();
       
       boolean isResultSet = statement.execute(selectStatement);
-
+      
       while(true) {
-        if(isResultSet) {
+        if (isResultSet) {
           resultSet = statement.getResultSet();
 
           return resultSet;
         }
-        else if(statement.getUpdateCount() == -1) {
+        else if (statement.getUpdateCount() == -1) {
           throw new SQLException("No results were returned by the query.");
         }
-
+        
         isResultSet = statement.getMoreResults();
       }
     }
