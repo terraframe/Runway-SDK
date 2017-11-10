@@ -27,12 +27,11 @@ import java.util.Set;
 
 import javax.servlet.ServletException;
 
-import com.runwaysdk.controller.JSPFetcher;
 import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
 
-public class ViewResponse implements ResponseIF
+public class ViewResponse implements AttributeResponseIF
 {
   private Map<String, Object> attributes;
 
