@@ -203,7 +203,7 @@ public abstract class BasicJSONToDTO
 
     protected boolean isValid(String attributeName)
     {
-      return this.mutableDTO.isReadable(attributeName) && !this.attributeMd.isSystem() && this.object.has(attributeName);
+      return this.mutableDTO.isWritable(attributeName) && !this.attributeMd.isSystem() && this.object.has(attributeName);
     }
 
     /**
