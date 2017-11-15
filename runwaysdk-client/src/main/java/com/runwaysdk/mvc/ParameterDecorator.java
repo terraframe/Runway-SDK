@@ -20,8 +20,10 @@ package com.runwaysdk.mvc;
 
 import java.lang.reflect.Parameter;
 
+import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.controller.ParameterIF;
+import com.runwaysdk.request.ServletRequestIF;
 
 public class ParameterDecorator implements ParameterIF
 {
@@ -53,6 +55,14 @@ public class ParameterDecorator implements ParameterIF
       else if (ClientRequestIF.class.isAssignableFrom(type))
       {
         this.name = "#request";
+      }
+      else if (ClientSession.class.isAssignableFrom(type))
+      {
+        this.name = "#session";
+      }
+      else if (ServletRequestIF.class.isAssignableFrom(type))
+      {
+        this.name = "#servletrequest";
       }
       else
       {

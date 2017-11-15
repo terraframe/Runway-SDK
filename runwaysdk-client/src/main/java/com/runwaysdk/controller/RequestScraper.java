@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
@@ -30,6 +30,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.LocalStructDTO;
 import com.runwaysdk.business.MutableDTO;
@@ -43,6 +44,7 @@ import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.mvc.ParseType;
 import com.runwaysdk.mvc.conversion.BasicJSONToComponentDTO;
+import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.transport.conversion.json.JSONToComponentDTO;
 import com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO;
 import com.runwaysdk.transport.metadata.AttributeLocalMdDTO;
@@ -223,6 +225,14 @@ public class RequestScraper
     else if (ClientRequestIF.class.isAssignableFrom(c))
     {
       return (T) this.manager.getClientRequest();
+    }
+    else if (ClientSession.class.isAssignableFrom(c))
+    {
+      return (T) this.manager.getClientSession();
+    }
+    else if (ServletRequestIF.class.isAssignableFrom(c))
+    {
+      return (T) this.manager.getReq();
     }
     else if (this.parameter.getParseType().equals(ParseType.RUNWAY_JSON))
     {
