@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import javax.servlet.http.Cookie;
+
 public interface ServletResponseIF
 {
   public PrintWriter getWriter() throws IOException;
@@ -39,4 +41,14 @@ public interface ServletResponseIF
   public String getContentType();
 
   public void setHeader(String name, String value);
+  
+
+  /**
+   * Adds the specified cookie to the response.  This method can be called
+   * multiple times to set more than one cookie.
+   *
+   * @param cookie the Cookie to return to the client
+   *
+   */
+  public void addCookie(Cookie cookie);
 }

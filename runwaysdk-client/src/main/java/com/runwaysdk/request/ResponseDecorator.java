@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 public class ResponseDecorator implements ServletResponseIF
@@ -83,5 +84,11 @@ public class ResponseDecorator implements ServletResponseIF
   public void setHeader(String name, String value)
   {
     this.response.setHeader(name, value);
+  }
+  
+  @Override
+  public void addCookie(Cookie cookie)
+  {
+    this.response.addCookie(cookie);
   }
 }
