@@ -43,7 +43,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.runwaysdk.business.email.EmailProperties;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.ServerProperties;
 
@@ -99,15 +98,5 @@ abstract public class AbstractTestConfiguration
     assertEquals(5432, DatabaseProperties.getPort());
     assertEquals("127.0.0.1", DatabaseProperties.getServerName());
     assertEquals("runwaydb", DatabaseProperties.getUser());
-  }
-  
-  @Test
-  public void testEmailProperties()
-  {
-    assertEquals("your.smtp.host", EmailProperties.getSmtpHost());
-    assertEquals("from@your.address.com", EmailProperties.getFromAddress());
-    assertEquals("emailUser", EmailProperties.getLoginUser());
-    assertEquals("emailPass", EmailProperties.getLoginPass());
-    assertEquals(30, EmailProperties.getKeyExpire());
-  }
+  }  
 }
