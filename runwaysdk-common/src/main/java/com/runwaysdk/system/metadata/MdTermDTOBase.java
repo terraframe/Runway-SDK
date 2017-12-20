@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1244418031)
+@com.runwaysdk.business.ClassSignature(hash = 138611638)
 public abstract class MdTermDTOBase extends com.runwaysdk.system.metadata.MdBusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdTerm";
-  private static final long serialVersionUID = -1244418031;
+  private static final long serialVersionUID = 138611638;
   
   protected MdTermDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -43,56 +25,6 @@ public abstract class MdTermDTOBase extends com.runwaysdk.system.metadata.MdBusi
   protected java.lang.String getDeclaredType()
   {
     return CLASS;
-  }
-  
-  public static java.lang.String STRATEGY = "strategy";
-  public com.runwaysdk.system.metadata.ontology.OntologyStrategyDTO getStrategy()
-  {
-    if(getValue(STRATEGY) == null || getValue(STRATEGY).trim().equals(""))
-    {
-      return null;
-    }
-    else
-    {
-      return com.runwaysdk.system.metadata.ontology.OntologyStrategyDTO.get(getRequest(), getValue(STRATEGY));
-    }
-  }
-  
-  public String getStrategyId()
-  {
-    return getValue(STRATEGY);
-  }
-  
-  public void setStrategy(com.runwaysdk.system.metadata.ontology.OntologyStrategyDTO value)
-  {
-    if(value == null)
-    {
-      setValue(STRATEGY, "");
-    }
-    else
-    {
-      setValue(STRATEGY, value.getId());
-    }
-  }
-  
-  public boolean isStrategyWritable()
-  {
-    return isWritable(STRATEGY);
-  }
-  
-  public boolean isStrategyReadable()
-  {
-    return isReadable(STRATEGY);
-  }
-  
-  public boolean isStrategyModified()
-  {
-    return isModified(STRATEGY);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getStrategyMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(STRATEGY).getAttributeMdDTO();
   }
   
   public static com.runwaysdk.system.metadata.MdTermDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)

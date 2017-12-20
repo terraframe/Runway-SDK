@@ -173,13 +173,13 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
 
     if (keyAttribute.isModified())
     {
-      AttributeReference stratagyRef = (AttributeReference) this.getAttribute(MdTermInfo.STRATEGY);
-
-      // Update the key of the Strategy
-      if (stratagyRef.getValue() != null && !stratagyRef.getValue().trim().equals(""))
-      {
-        stratagyRef.dereference().getBusinessDAO().apply();
-      }
+//      AttributeReference stratagyRef = (AttributeReference) this.getAttribute(MdTermInfo.STRATEGY);
+//
+//      // Update the key of the Strategy
+//      if (stratagyRef.getValue() != null && !stratagyRef.getValue().trim().equals(""))
+//      {
+//        stratagyRef.dereference().getBusinessDAO().apply();
+//      }
     }
 
     // If its a Term that extends a Term then we don't want to create all this stuff again because it will already exist on the super Term.

@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -1818956702)
+@com.runwaysdk.business.ClassSignature(hash = 622087256)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -41,8 +23,9 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String STRATEGYSTATE = "strategyState";
+  public static java.lang.String TERMCLASS = "termClass";
   public static java.lang.String TYPE = "type";
-  private static final long serialVersionUID = -1818956702;
+  private static final long serialVersionUID = 622087256;
   
   public OntologyStrategyBase()
   {
@@ -130,6 +113,18 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
     else
     {
       setValue(ENTITYDOMAIN, value.getId());
+    }
+  }
+  
+  public void setEntityDomain(java.lang.String id)
+  {
+    if(id == null)
+    {
+      setValue(ENTITYDOMAIN, "");
+    }
+    else
+    {
+      setValue(ENTITYDOMAIN, id);
     }
   }
   
@@ -289,6 +284,18 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
     }
   }
   
+  public void setOwner(java.lang.String id)
+  {
+    if(id == null)
+    {
+      setValue(OWNER, "");
+    }
+    else
+    {
+      setValue(OWNER, id);
+    }
+  }
+  
   public Long getSeq()
   {
     return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(SEQ));
@@ -357,6 +364,34 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.ontology.OntologyStrategy.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdClassIF.definesAttribute(STRATEGYSTATE);
+  }
+  
+  public String getTermClass()
+  {
+    return getValue(TERMCLASS);
+  }
+  
+  public void validateTermClass()
+  {
+    this.validateAttribute(TERMCLASS);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getTermClassMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.ontology.OntologyStrategy.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(TERMCLASS);
+  }
+  
+  public void setTermClass(String value)
+  {
+    if(value == null)
+    {
+      setValue(TERMCLASS, "");
+    }
+    else
+    {
+      setValue(TERMCLASS, value);
+    }
   }
   
   public String getType()

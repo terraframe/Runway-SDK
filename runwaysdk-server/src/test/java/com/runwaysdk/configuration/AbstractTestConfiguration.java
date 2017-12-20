@@ -82,21 +82,21 @@ abstract public class AbstractTestConfiguration
     assertEquals(200, ServerProperties.getTransationIdBucketSize());
   }
   
-  @Test
-  public void testDatabaseProperties()
-  {
-    assertEquals("/usr/lib/postgresql/9.1/bin/", DatabaseProperties.getDatabaseBinDirectory());
-    assertEquals("pg_dump", DatabaseProperties.getDataDumpExecutable());
-    assertEquals("pg_restore", DatabaseProperties.getDataImportExecutable());
-    assertEquals(true, DatabaseProperties.getConnectionPooling());
-    assertEquals("runwaydb", DatabaseProperties.getDatabaseName());
-    assertEquals("runwaynamespace", DatabaseProperties.getNamespace());
-    assertEquals(10, DatabaseProperties.getInitialConnections());
-    assertEquals("jdbc/TestDB", DatabaseProperties.getJNDIDataSource());
-    assertEquals(15, DatabaseProperties.getMaxConnections());
-    assertEquals("runwaydb", DatabaseProperties.getPassword());
-    assertEquals(5432, DatabaseProperties.getPort());
-    assertEquals("127.0.0.1", DatabaseProperties.getServerName());
-    assertEquals("runwaydb", DatabaseProperties.getUser());
-  }  
+//  @Test
+//  public void testDatabaseProperties()
+//  {
+//    assertEquals("/usr/lib/postgresql/9.1/bin/", DatabaseProperties.getDatabaseBinDirectory());
+//    assertEquals("pg_dump", DatabaseProperties.getDataDumpExecutable());
+//    assertEquals("pg_restore", DatabaseProperties.getDataImportExecutable());
+//    assertEquals(true, DatabaseProperties.getConnectionPooling());
+//    assertEquals("runwaydb", DatabaseProperties.getDatabaseName());
+//    assertEquals("runwaynamespace", DatabaseProperties.getNamespace());
+//    assertEquals(10, DatabaseProperties.getInitialConnections());
+//    assertEquals("jdbc/TestDB", DatabaseProperties.getJNDIDataSource());
+//    assertEquals(15, DatabaseProperties.getMaxConnections());
+//    assertEquals("runwaydb", DatabaseProperties.getPassword());
+//    assertEquals(5432, DatabaseProperties.getPort());
+//    assertEquals("127.0.0.1", DatabaseProperties.getServerName());
+//    assertEquals("runwaydb", DatabaseProperties.getUser());
+//  }  
 }

@@ -3,30 +3,27 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.system.metadata.ontology;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
-import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Stack;
 
 import org.apache.commons.logging.Log;
@@ -37,6 +34,8 @@ import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.ontology.DDMSAllpathsLogic;
 import com.runwaysdk.business.ontology.DefaultStrategy;
 import com.runwaysdk.business.ontology.DeleteStrategyProviderIF;
+import com.runwaysdk.business.ontology.OntologyStrategyIF;
+import com.runwaysdk.business.ontology.OntologyEntryIF;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.IndexTypes;
@@ -100,7 +99,9 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     if (this.termAllPaths == null)
     {
       // MdTerm mdTerm = this.getMdTerm();
-      // String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
+      // String packageName =
+      // mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE,
+      // Constants.ROOT_PACKAGE + ".generated.system");
       // String typeName = mdTerm.getTypeName() + "AllPathsTable";
       //
       // this.termAllPaths = MdBusiness.getMdBusiness(typeName);
@@ -231,7 +232,9 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#reinitialize(java.lang.String)
+   * @see
+   * com.runwaysdk.business.ontology.OntologyStrategyIF#reinitialize(java.lang.
+   * String)
    */
   @Override
   public void reinitialize(String relationshipType)
@@ -311,13 +314,15 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#addLink(com.runwaysdk .business.ontology.Term, com.runwaysdk.business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#addLink(com.runwaysdk
+   *      .business.ontology.Term, com.runwaysdk.business.ontology.Term,
+   *      java.lang.String)
    */
   @Override
   public void addLink(Term parent, Term child, String relationshipType)
   {
     this.add(child, relationshipType);
-    
+
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(PARENT_PARAMETER, parent);
     parameters.put(CHILD_PARAMETER, child);
@@ -328,7 +333,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#isLeaf(com.runwaysdk .business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#isLeaf(com.runwaysdk
+   *      .business.ontology.Term, java.lang.String)
    */
   @Override
   public boolean isLeaf(Term term, String relationshipType)
@@ -354,7 +360,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllAncestors (com.runwaysdk.business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllAncestors
+   *      (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @SuppressWarnings("unchecked")
   @Override
@@ -404,7 +411,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllDescendants (com.runwaysdk.business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllDescendants
+   *      (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @SuppressWarnings("unchecked")
   @Override
@@ -453,7 +461,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectAncestors (com.runwaysdk.business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectAncestors
+   *      (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @Override
   public OIterator<Term> getDirectAncestors(Term term, String relationshipType)
@@ -470,7 +479,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectDescendants (com.runwaysdk.business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectDescendants
+   *      (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @Override
   public OIterator<Term> getDirectDescendants(Term term, String relationshipType)
@@ -479,7 +489,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk .business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
+   *      .business.ontology.Term, java.lang.String)
    */
   @Override
   public void removeTerm(Term term, String relationshipType)
@@ -507,31 +518,36 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk .business.ontology.Term, com.runwaysdk.business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
+   *      .business.ontology.Term, com.runwaysdk.business.ontology.Term,
+   *      java.lang.String)
    */
   @Override
   public void removeLink(Term parent, Term term, String relationshipType)
   {
     DDMSAllpathsLogic helper = new DDMSAllpathsLogic(this, relationshipType);
-    
+
     // First, remove the term and all children from the allpaths table.
     helper.deleteTermAndChildrenFromAllPaths(term.getId(), relationshipType);
-    
-    // Now we update the term and all its children. This will rebuild the allpaths to what it should be.
+
+    // Now we update the term and all its children. This will rebuild the
+    // allpaths to what it should be.
     helper.updateAllPathForTerm(term.getId(), null, true);
   }
 
   /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#add(com.runwaysdk.business .ontology.Term, java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#add(com.runwaysdk.business
+   *      .ontology.Term, java.lang.String)
    */
   @Override
   public void add(Term term, String relationshipType)
   {
     Savepoint savepoint = Database.setSavepoint();
-    
+
     try
     {
-      // Create a new entry into the all paths table between where the term is the
+      // Create a new entry into the all paths table between where the term is
+      // the
       // parent and the child
       BusinessDAO instance = BusinessDAO.newInstance(this.getAllPaths().definesType());
       instance.setValue(PARENT_TERM_ATTR, term.getId());
@@ -557,18 +573,19 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   public class AllPathsDeleteStrategyProvider implements DeleteStrategyProviderIF
   {
     private String allpaths_table_name;
-    
+
     private String relationshipType;
-    
-    private Long delRootACount;
-    
+
+    private Long   delRootACount;
+
     private AllPathsDeleteStrategyProvider(Term deleteRoot, String relationshipType)
     {
       allpaths_table_name = termAllPaths.getTableName();
-      
+
       this.relationshipType = relationshipType;
-      
-      // Count how many ancestors this term has. This will be used for later calculations
+
+      // Count how many ancestors this term has. This will be used for later
+      // calculations
       QueryFactory f = new QueryFactory();
       String allPathsType = DatabaseAllPathsStrategy.this.getAllPaths().definesType();
       BusinessQuery pathsQ = f.businessQuery(allPathsType);
@@ -581,19 +598,19 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     {
       String childCol = MdBusinessDAO.get(DatabaseAllPathsStrategy.this.getAllPaths().getId()).definesAttribute(CHILD_TERM_ATTR).getColumnName();
       String allpathsAncestorsSql = Database.selectClause(Arrays.asList("count(*)"), Arrays.asList(allpaths_table_name), Arrays.asList(childCol + " = '" + child.getId() + "'"));
-      ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getId() + "' AND (" + allpathsAncestorsSql + ") > " + (2 + s.size() + delRootACount));
+      ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getId() + "' AND (" + allpathsAncestorsSql + ") > " + ( 2 + s.size() + delRootACount ));
       try
       {
         if (resultSet.next())
         {
           int count = resultSet.getInt("count");
-          
+
           if (count > 0)
           {
             return true;
           }
         }
-        
+
         return false;
       }
       catch (SQLException sqlEx1)
@@ -613,26 +630,80 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
           Database.throwDatabaseException(sqlEx2);
         }
       }
-      
+
       return true;
     }
 
     @Override
     public boolean doesAncestorHaveMultipleParents(Term child, Stack<Term> s)
     {
-      // Count how many ancestors this term has. This will be used for later calculations
+      // Count how many ancestors this term has. This will be used for later
+      // calculations
       QueryFactory f = new QueryFactory();
       String allPathsType = DatabaseAllPathsStrategy.this.getAllPaths().definesType();
       BusinessQuery pathsQ = f.businessQuery(allPathsType);
       pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(child.getId()));
       long ancestorCount = pathsQ.getCount() - 1;
-      
+
       return s.size() + delRootACount < ancestorCount;
     }
   }
-  
+
   public DeleteStrategyProviderIF getDeleteStrategyProvider(Term deleteRoot, String relationshipType)
   {
     return new AllPathsDeleteStrategyProvider(deleteRoot, relationshipType);
+  }
+
+  public static OntologyStrategyIF factory(String termClass)
+  {
+    DatabaseAllPathsStrategyQuery query = new DatabaseAllPathsStrategyQuery(new QueryFactory());
+    query.WHERE(query.getTermClass().EQ(termClass));
+    OIterator<? extends DatabaseAllPathsStrategy> it = query.getIterator();
+
+    try
+    {
+      if(it.hasNext())
+      {
+        DatabaseAllPathsStrategy strategy = it.next();        
+        return strategy;
+      }
+    }
+    finally
+    {
+      it.close();
+    }
+
+    DatabaseAllPathsStrategy strategy = new DatabaseAllPathsStrategy();
+    strategy.setTermClass(termClass);
+    
+    return strategy;
+  }
+  
+  @Override
+  public void addSynonym(Term term, OntologyEntryIF synonym)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+  
+  @Override
+  public void updateSynonym(OntologyEntryIF synonym)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+  
+  @Override
+  public void removeSynonym(OntologyEntryIF synonym)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+  
+  @Override
+  public void updateLabel(Term term, String label)
+  {
+    // TODO Auto-generated method stub
+    
   }
 }

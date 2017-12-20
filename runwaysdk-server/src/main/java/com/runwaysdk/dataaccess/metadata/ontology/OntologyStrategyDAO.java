@@ -112,24 +112,24 @@ public class OntologyStrategyDAO extends BusinessDAO
    */
   public String apply()
   {
-    QueryFactory qf = new QueryFactory();
-    BusinessDAOQuery q = qf.businessDAOQuery(MdTermInfo.CLASS);
-    q.WHERE(q.aReference(MdTermInfo.STRATEGY).EQ(this));
-    
-    OIterator<BusinessDAOIF> i = q.getIterator();
-    
-    boolean keyHasBeenSet = false;
-    // Update this key
-    while(i.hasNext())
-    {
-      MdTermDAOIF mdTermDAOIF = (MdTermDAOIF)i.next();
-      this.setKey(mdTermDAOIF.getKey());
-    }
-    
-    if (!keyHasBeenSet)
-    {
+//    QueryFactory qf = new QueryFactory();
+//    BusinessDAOQuery q = qf.businessDAOQuery(MdTermInfo.CLASS);
+//    q.WHERE(q.aReference(MdTermInfo.STRATEGY).EQ(this));
+//    
+//    OIterator<BusinessDAOIF> i = q.getIterator();
+//    
+//    boolean keyHasBeenSet = false;
+//    // Update this key
+//    while(i.hasNext())
+//    {
+//      MdTermDAOIF mdTermDAOIF = (MdTermDAOIF)i.next();
+//      this.setKey(mdTermDAOIF.getKey());
+//    }
+//    
+//    if (!keyHasBeenSet)
+//    {
       this.setKey(this.getId());
-    }
+//    }
     
     return super.apply();
   }

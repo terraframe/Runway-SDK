@@ -24,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -33,23 +34,19 @@ import com.runwaysdk.business.Relationship;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
-import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
-import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
-import com.runwaysdk.system.metadata.ontology.StrategyState;
 import com.runwaysdk.system.ontology.ImmutableRootException;
 import com.runwaysdk.system.ontology.TermUtil;
 
-abstract public class Term extends Business
+abstract public class Term extends Business implements QualifiedOntologyEntryIF
 {
   public static final String CLASS            = "com.runwaysdk.business.ontology.Term";
 
@@ -459,38 +456,38 @@ abstract public class Term extends Business
   @Transaction
   private static OntologyStrategyIF assignStrategyTrasaction(String termType)
   {
-    MdTermDAOIF mdTermDAOIF = MdTermDAO.getMdTermDAO(termType);
-
-    String strategyId = mdTermDAOIF.getValue(MdTermInfo.STRATEGY);
-
-    OntologyStrategyIF strategy = null;
+//    MdTermDAOIF mdTermDAOIF = MdTermDAO.getMdTermDAO(termType);
+//
+//    String strategyId = mdTermDAOIF.getValue(MdTermInfo.STRATEGY);
 
     // 1) Get an instance of the Strategy.
-    if (strategyId == null || strategyId.equals(""))
-    {
-      // Instantiate an instance of the Strategy
-      strategy = Term.callCreateStrategy(termType);
+    OntologyStrategyIF strategy = Term.callCreateStrategy(termType);
 
-      // Ensure correct values of attributes, if its a stateful strategy
-      if (strategy instanceof OntologyStrategy)
-      {
-        OntologyStrategy statefulStrat = (OntologyStrategy) strategy;
-
-        if (statefulStrat.isNew())
-        {
-          statefulStrat.addStrategyState(StrategyState.UNINITIALIZED);
-          statefulStrat.apply();
-        }
-
-        MdTermDAO mdTermDAO = MdTermDAO.get(mdTermDAOIF.getId()).getBusinessDAO();
-        mdTermDAO.setValue(MdTermInfo.STRATEGY, statefulStrat.getId());
-        mdTermDAO.apply();
-      }
-    }
-    else
-    {
-      strategy = OntologyStrategy.get(strategyId);
-    }
+//    if (strategyId == null || strategyId.equals(""))
+//    {
+//      // Instantiate an instance of the Strategy
+//      strategy = Term.callCreateStrategy(termType);
+//
+//      // Ensure correct values of attributes, if its a stateful strategy
+//      if (strategy instanceof OntologyStrategy)
+//      {
+//        OntologyStrategy statefulStrat = (OntologyStrategy) strategy;
+//
+//        if (statefulStrat.isNew())
+//        {
+//          statefulStrat.addStrategyState(StrategyState.UNINITIALIZED);
+//          statefulStrat.apply();
+//        }
+//
+////        MdTermDAO mdTermDAO = MdTermDAO.get(mdTermDAOIF.getId()).getBusinessDAO();
+////        mdTermDAO.setValue(MdTermInfo.STRATEGY, statefulStrat.getId());
+////        mdTermDAO.apply();
+//      }
+//    }
+//    else
+//    {
+//      strategy = OntologyStrategy.get(strategyId);
+//    }
 
     // 2) Configure the strategy
     Term.callConfigureStrategy(termType, strategy);
@@ -646,4 +643,13 @@ abstract public class Term extends Business
     return String.format(template, args);
   }
 
+  public String getQualifier()
+  {
+    return "";
+  }
+
+  public List<OntologyEntryIF> getSynonyms()
+  {
+    return new LinkedList<OntologyEntryIF>();
+  }
 }

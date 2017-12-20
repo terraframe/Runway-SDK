@@ -51,7 +51,7 @@ public interface OntologyStrategyIF
    * @param child
    */
   public void addLink(Term parent, Term child, String relationshipType);
-
+  
   /**
    * Returns true if the term is a leaf node. Leaf nodes have no children.
    * 
@@ -122,4 +122,12 @@ public interface OntologyStrategyIF
   public void configure(String termClass);
   
   public DeleteStrategyProviderIF getDeleteStrategyProvider(Term deleteRoot, String relationshipType);
+  
+  public void addSynonym(Term term, OntologyEntryIF synonym);
+  
+  public void updateSynonym(OntologyEntryIF synonym);
+  
+  public void removeSynonym(OntologyEntryIF  synonym);
+  
+  public void updateLabel(Term term, String label);
 }

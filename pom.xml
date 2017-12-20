@@ -38,6 +38,7 @@
     <module>runwaysdk-web</module>
     <module>runwaysdk-archetype</module>
     <module>runwaysdk-gis</module>
+    <module>runwaysdk-solr</module>
   </modules>
   
   <inceptionYear>2004</inceptionYear>

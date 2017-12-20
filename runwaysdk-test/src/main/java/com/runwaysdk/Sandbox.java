@@ -1,20 +1,20 @@
 /**
-"/" * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ * "/" * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk;
 
@@ -61,6 +61,7 @@ import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.IndicatorCompositeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
@@ -93,62 +94,89 @@ import com.runwaysdk.system.metadata.MdAttributeLong;
 import com.runwaysdk.system.metadata.MdAttributeReference;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
+import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
 
 public class Sandbox implements Job
 {
   public static void main(String[] args) throws Exception
   {
-//    ratioTest();
+    // ratioTest();
     importWithDiff();
-    
-//    System.out.println(Integer.class.getName());
+
+    // System.out.println(Integer.class.getName());
   }
-  
+
   @Request
   public static void ratioTest()
   {
-//    RatioDAO ratioDAO = RatioDAO.newInstance();
+    // RatioDAO ratioDAO = RatioDAO.newInstance();
   }
 
   @Request
   public static void importWithDiff()
   {
     Database.enableLoggingDMLAndDDLstatements(true);
-    
-//    ServerProperties.setAllowModificationOfMdAttribute(true);
+
+    // ServerProperties.setAllowModificationOfMdAttribute(true);
 
     // Sandbox.createGenerateSourceAttribute();
-//    Sandbox.deleteMdFacade();
+    // Sandbox.deleteMdFacade();
+
+    // Sandbox.changeLockedByReference();
+
+    // Sandbox.createMdTable();
+
+    // testMdTable();
+
+    // addRatioAttributes1();
     
-//    Sandbox.changeLockedByReference();
-    
-//    Sandbox.createMdTable();
-    
-//    testMdTable();
-    
-    addRatioAttributes1();
+    updateOntologyStrategy();
   }
-  
+
+  @Transaction
+  public static void updateOntologyStrategy()
+  {
+    MdBusinessDAOIF mdTerm = MdBusinessDAO.getMdBusinessDAO(MdTermInfo.CLASS);
+    MdAttributeConcreteDAOIF mdAttribute = mdTerm.definesAttribute("strategy");
+    mdAttribute.getBusinessDAO().delete();
+    
+    MdBusinessDAOIF ontologyStrategy = MdBusinessDAO.getMdBusinessDAO(OntologyStrategy.CLASS);
+    
+    MdAttributeCharacterDAO termClass = MdAttributeCharacterDAO.newInstance();
+    termClass.setValue(MdAttributeCharacterInfo.NAME, "termClass");
+    termClass.setValue(MdAttributeCharacterInfo.SIZE, "6000");
+    termClass.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Class");
+    termClass.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+    termClass.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    termClass.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, ontologyStrategy.getId());
+    termClass.apply();
+  }
+
   @Transaction
   public static void addRatioAttributes2()
   {
-//    MdBusinessDAOIF ratioPrimitiveMdBus = MdBusinessDAO.getMdBusinessDAO(RatioPrimitiveInfo.CLASS);
-//
-//    MdAttributeConcreteDAO columNameMdAttr = (MdAttributeConcreteDAO)((MdAttributeConcreteDAOIF)ratioPrimitiveMdBus.definesAttribute(RatioPrimitiveInfo.COLUMN_NAME)).getBusinessDAO();
-//    columNameMdAttr.setValue(MdAttributeConcrete.REMOVE, MdAttributeBooleanInfo.TRUE);
-//    columNameMdAttr.delete();
-//    
-//    MdAttributeConcreteDAO seqMdAttr = (MdAttributeConcreteDAO)((MdAttributeConcreteDAOIF)ratioPrimitiveMdBus.definesAttribute(RatioPrimitiveInfo.SEQUENCE)).getBusinessDAO();
-//    seqMdAttr.setValue(MdAttributeConcrete.REMOVE, MdAttributeBooleanInfo.TRUE);
-//    seqMdAttr.delete();
+    // MdBusinessDAOIF ratioPrimitiveMdBus =
+    // MdBusinessDAO.getMdBusinessDAO(RatioPrimitiveInfo.CLASS);
+    //
+    // MdAttributeConcreteDAO columNameMdAttr =
+    // (MdAttributeConcreteDAO)((MdAttributeConcreteDAOIF)ratioPrimitiveMdBus.definesAttribute(RatioPrimitiveInfo.COLUMN_NAME)).getBusinessDAO();
+    // columNameMdAttr.setValue(MdAttributeConcrete.REMOVE,
+    // MdAttributeBooleanInfo.TRUE);
+    // columNameMdAttr.delete();
+    //
+    // MdAttributeConcreteDAO seqMdAttr =
+    // (MdAttributeConcreteDAO)((MdAttributeConcreteDAOIF)ratioPrimitiveMdBus.definesAttribute(RatioPrimitiveInfo.SEQUENCE)).getBusinessDAO();
+    // seqMdAttr.setValue(MdAttributeConcrete.REMOVE,
+    // MdAttributeBooleanInfo.TRUE);
+    // seqMdAttr.delete();
   }
-  
+
   @Transaction
   public static void addRatioAttributes1()
   {
     // Add the math operators Enumeration Type
     MdBusinessDAOIF enumMasterMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS);
-    
+
     MdBusinessDAO aggFuncEnumMdBus = MdBusinessDAO.newInstance();
     aggFuncEnumMdBus.setValue(MdBusinessInfo.NAME, AggregationFunctionInfo.CLASS_NAME);
     aggFuncEnumMdBus.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
@@ -162,19 +190,19 @@ public class Sandbox implements Job
     aggFuncEnumMdBus.setGenerateMdController(false);
     aggFuncEnumMdBus.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     aggFuncEnumMdBus.apply();
-    
-    System.out.println("\n\n"+AggregationFunctionInfo.CLASS_NAME+": "+aggFuncEnumMdBus.getId()+"\n");
+
+    System.out.println("\n\n" + AggregationFunctionInfo.CLASS_NAME + ": " + aggFuncEnumMdBus.getId() + "\n");
 
     BusinessDAO sumFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
     sumFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.SUM);
     sumFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sum");
     sumFunction.apply();
-    
+
     BusinessDAO avgFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
     avgFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.AVG);
     avgFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Average");
     avgFunction.apply();
-    
+
     BusinessDAO countFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
     countFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.COUNT);
     countFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Count");
@@ -184,21 +212,21 @@ public class Sandbox implements Job
     minFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.MIN);
     minFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Minimum");
     minFunction.apply();
-    
+
     BusinessDAO maxFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
     maxFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.MAX);
     maxFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Maximum");
     maxFunction.apply();
-    
+
     BusinessDAO sdevFunction = BusinessDAO.newInstance(aggFuncEnumMdBus.definesType());
     sdevFunction.setValue(EnumerationMasterInfo.NAME, AggregationFunctionInfo.STDEV);
     sdevFunction.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Standard Deviation");
     sdevFunction.apply();
-    
+
     MdEnumerationDAO funcMdEnumeration = MdEnumerationDAO.newInstance();
     funcMdEnumeration.setValue(MdEnumerationInfo.NAME, AggregationFunctionInfo.INDICATOR_FUNCTION_ENUM_CLASS_NAME);
     funcMdEnumeration.setValue(MdEnumerationInfo.PACKAGE, Constants.METADATA_PACKAGE);
-    funcMdEnumeration.setValue(MdEnumerationInfo.TABLE_NAME,"indicator_aggregate_function");
+    funcMdEnumeration.setValue(MdEnumerationInfo.TABLE_NAME, "indicator_aggregate_function");
     funcMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator Function");
     funcMdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator Function Enumeration");
     funcMdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
@@ -206,9 +234,9 @@ public class Sandbox implements Job
     funcMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, aggFuncEnumMdBus.getId());
     funcMdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     funcMdEnumeration.apply();
-    
-    System.out.println("\n\n"+AggregationFunctionInfo.INDICATOR_FUNCTION_ENUM_CLASS_NAME+": "+funcMdEnumeration.getId()+"\n");
-    
+
+    System.out.println("\n\n" + AggregationFunctionInfo.INDICATOR_FUNCTION_ENUM_CLASS_NAME + ": " + funcMdEnumeration.getId() + "\n");
+
     MdBusinessDAO mathOpEnumMdBusiness = MdBusinessDAO.newInstance();
     mathOpEnumMdBusiness.setValue(MdBusinessInfo.NAME, MathOperatorInfo.CLASS_NAME);
     mathOpEnumMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
@@ -222,9 +250,9 @@ public class Sandbox implements Job
     mathOpEnumMdBusiness.setGenerateMdController(false);
     mathOpEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     mathOpEnumMdBusiness.apply();
-  
-    System.out.println("\n\n"+MathOperatorInfo.CLASS_NAME+": "+mathOpEnumMdBusiness.getId()+"\n");
-    
+
+    System.out.println("\n\n" + MathOperatorInfo.CLASS_NAME + ": " + mathOpEnumMdBusiness.getId() + "\n");
+
     // Define attributes on the enumeration
     MdAttributeCharacterDAO mdAttrCharOpSymbol = MdAttributeCharacterDAO.newInstance();
     mdAttrCharOpSymbol.setValue(MdAttributeCharacterInfo.NAME, MathOperatorInfo.OPERATOR_SYMBOL);
@@ -236,20 +264,19 @@ public class Sandbox implements Job
     mdAttrCharOpSymbol.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
     mdAttrCharOpSymbol.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mathOpEnumMdBusiness.getId());
     mdAttrCharOpSymbol.apply();
-    
+
     BusinessDAO divOp = BusinessDAO.newInstance(mathOpEnumMdBusiness.definesType());
     divOp.setValue(MathOperatorInfo.OPERATOR_SYMBOL, "/");
     divOp.setValue(EnumerationMasterInfo.NAME, "DIV");
     divOp.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "California");
     divOp.apply();
-    
-    System.out.println("\n\nDIV Enum Item Id: "+divOp.getId()+"\n");
-  
-    
+
+    System.out.println("\n\nDIV Enum Item Id: " + divOp.getId() + "\n");
+
     MdEnumerationDAO opsMdEnumeration = MdEnumerationDAO.newInstance();
     opsMdEnumeration.setValue(MdEnumerationInfo.NAME, MathOperatorInfo.INDICATOR_ENUM_CLASS_NAME);
     opsMdEnumeration.setValue(MdEnumerationInfo.PACKAGE, Constants.METADATA_PACKAGE);
-    opsMdEnumeration.setValue(MdEnumerationInfo.TABLE_NAME,"indicator_operator");
+    opsMdEnumeration.setValue(MdEnumerationInfo.TABLE_NAME, "indicator_operator");
     opsMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator Operator");
     opsMdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator Operator Enumeration");
     opsMdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
@@ -257,11 +284,9 @@ public class Sandbox implements Job
     opsMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mathOpEnumMdBusiness.getId());
     opsMdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     opsMdEnumeration.apply();
-    
-    System.out.println("\n\n"+MathOperatorInfo.INDICATOR_ENUM_CLASS_NAME+": "+opsMdEnumeration.getId()+"\n");
-    
 
-    
+    System.out.println("\n\n" + MathOperatorInfo.INDICATOR_ENUM_CLASS_NAME + ": " + opsMdEnumeration.getId() + "\n");
+
     // Define Abstract Indicator Element Type
     MdBusinessDAO indicatorElementMdBusiness = MdBusinessDAO.newInstance();
     indicatorElementMdBusiness.setValue(MdBusinessInfo.NAME, IndicatorElementInfo.CLASS_NAME);
@@ -276,10 +301,9 @@ public class Sandbox implements Job
     indicatorElementMdBusiness.setGenerateMdController(false);
     indicatorElementMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     indicatorElementMdBusiness.apply();
-    
-    System.out.println("\n\n"+IndicatorElementInfo.CLASS_NAME+": "+indicatorElementMdBusiness.getId()+"\n");
-    
-    
+
+    System.out.println("\n\n" + IndicatorElementInfo.CLASS_NAME + ": " + indicatorElementMdBusiness.getId() + "\n");
+
     MdBusinessDAO indicatorPrimitiveMdBusiness = MdBusinessDAO.newInstance();
     indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.NAME, IndicatorPrimitiveInfo.CLASS_NAME);
     indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
@@ -292,12 +316,11 @@ public class Sandbox implements Job
     indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     indicatorPrimitiveMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, indicatorElementMdBusiness.getId());
     indicatorPrimitiveMdBusiness.apply();
-    
-    System.out.println("\n\n"+IndicatorPrimitiveInfo.CLASS_NAME+": "+indicatorPrimitiveMdBusiness.getId()+"\n");
-    
-    
+
+    System.out.println("\n\n" + IndicatorPrimitiveInfo.CLASS_NAME + ": " + indicatorPrimitiveMdBusiness.getId() + "\n");
+
     MdBusinessDAOIF mdAttrPrimitiveMdBus = MdBusinessDAO.getMdBusinessDAO(MdAttributePrimitiveInfo.CLASS);
-    
+
     MdAttributeReferenceDAO mdAttrPrimitive = MdAttributeReferenceDAO.newInstance();
     mdAttrPrimitive.setValue(MdAttributeReferenceInfo.NAME, IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE);
     mdAttrPrimitive.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdAttributePrimitive");
@@ -313,7 +336,7 @@ public class Sandbox implements Job
     mdAttrPrimitive.setValue(MdAttributeReferenceInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
     mdAttrPrimitive.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdAttrPrimitiveMdBus.getId());
     mdAttrPrimitive.apply();
-    
+
     MdAttributeEnumerationDAO mdAttrFunction = MdAttributeEnumerationDAO.newInstance();
     mdAttrFunction.setValue(MdAttributeEnumerationInfo.NAME, IndicatorPrimitiveInfo.INDICATOR_FUNCTION);
     mdAttrFunction.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Aggregate Function");
@@ -327,7 +350,7 @@ public class Sandbox implements Job
     mdAttrFunction.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, funcMdEnumeration.getId());
     mdAttrFunction.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     mdAttrFunction.apply();
-    
+
     MdBusinessDAO indicatorMdBusiness = MdBusinessDAO.newInstance();
     indicatorMdBusiness.setValue(MdBusinessInfo.NAME, IndicatorCompositeInfo.CLASS_NAME);
     indicatorMdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
@@ -340,9 +363,9 @@ public class Sandbox implements Job
     indicatorMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     indicatorMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, indicatorElementMdBusiness.getId());
     indicatorMdBusiness.apply();
-    
-    System.out.println("\n\n"+IndicatorCompositeInfo.CLASS_NAME+": "+indicatorMdBusiness.getId()+"\n");
-    
+
+    System.out.println("\n\n" + IndicatorCompositeInfo.CLASS_NAME + ": " + indicatorMdBusiness.getId() + "\n");
+
     MdAttributeReferenceDAO mdAttrLeftOperand = MdAttributeReferenceDAO.newInstance();
     mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.NAME, IndicatorCompositeInfo.LEFT_OPERAND);
     mdAttrLeftOperand.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Left Operand");
@@ -358,7 +381,7 @@ public class Sandbox implements Job
     mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
     mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, indicatorElementMdBusiness.getId());
     mdAttrLeftOperand.apply();
-    
+
     MdAttributeEnumerationDAO mdAttrOperand = MdAttributeEnumerationDAO.newInstance();
     mdAttrOperand.setValue(MdAttributeEnumerationInfo.NAME, IndicatorCompositeInfo.OPERATOR);
     mdAttrOperand.setValue(MdAttributeEnumerationInfo.COLUMN_NAME, IndicatorCompositeDAOIF.OPERATOR_COLUMN);
@@ -373,7 +396,7 @@ public class Sandbox implements Job
     mdAttrOperand.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, opsMdEnumeration.getId());
     mdAttrOperand.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     mdAttrOperand.apply();
-    
+
     MdAttributeReferenceDAO mdAttrRightOperand = MdAttributeReferenceDAO.newInstance();
     mdAttrRightOperand.setValue(MdAttributeReferenceInfo.NAME, IndicatorCompositeInfo.RIGHT_OPERAND);
     mdAttrRightOperand.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Right Operand");
@@ -389,10 +412,10 @@ public class Sandbox implements Job
     mdAttrRightOperand.setValue(MdAttributeReferenceInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
     mdAttrRightOperand.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, indicatorElementMdBusiness.getId());
     mdAttrRightOperand.apply();
-    
+
     // Add the the indicator Attribute Type
     MdBusinessDAOIF mdAttrConcreteMdBus = MdBusinessDAO.getMdBusinessDAO(MdAttributeConcreteInfo.CLASS);
-    
+
     MdBusinessDAO mdAttrIndicatorMdBus = MdBusinessDAO.newInstance();
     mdAttrIndicatorMdBus.setValue(MdBusinessInfo.NAME, MdAttributeIndicatorInfo.CLASS_NAME);
     mdAttrIndicatorMdBus.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
@@ -406,9 +429,9 @@ public class Sandbox implements Job
     mdAttrIndicatorMdBus.setGenerateMdController(false);
     mdAttrIndicatorMdBus.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     mdAttrIndicatorMdBus.apply();
-    
-    System.out.println("\n\n"+MdAttributeIndicatorInfo.CLASS_NAME+": "+mdAttrIndicatorMdBus.getId()+"\n");
-    
+
+    System.out.println("\n\n" + MdAttributeIndicatorInfo.CLASS_NAME + ": " + mdAttrIndicatorMdBus.getId() + "\n");
+
     MdAttributeReferenceDAO indicatorAttribute = MdAttributeReferenceDAO.newInstance();
     indicatorAttribute.setValue(MdAttributeReferenceInfo.NAME, MdAttributeIndicatorInfo.INDICATOR_ELEMENT);
     indicatorAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Indicator");
@@ -424,12 +447,9 @@ public class Sandbox implements Job
     indicatorAttribute.setValue(MdAttributeReferenceInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
     indicatorAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, indicatorElementMdBusiness.getId());
     indicatorAttribute.apply();
-    
-    
-    
+
     MdRelationshipDAOIF metadataMdRelationship = MdRelationshipDAO.getMdRelationshipDAO(RelationshipTypes.METADATA_RELATIONSHIP.getType());
-   
-    
+
     MdTreeDAO mdTree = MdTreeDAO.newInstance();
     mdTree.setValue(MdTreeInfo.NAME, "AttributeIndicator");
     mdTree.setValue(MdTreeInfo.PACKAGE, Constants.METADATA_PACKAGE);
@@ -441,7 +461,9 @@ public class Sandbox implements Job
     mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdAttrIndicatorMdBus.getId());
     mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeIndicatorInfo.CLASS);
-    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, indicatorMdBusiness.getId()); // should be indicatorElementMdBusiness.getId()
+    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, indicatorMdBusiness.getId()); // should
+                                                                                // be
+                                                                                // indicatorElementMdBusiness.getId()
     mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, IndicatorCompositeInfo.CLASS);
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "getMdAttributeIndicator");
@@ -450,63 +472,71 @@ public class Sandbox implements Job
     mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     mdTree.apply();
-    
-    System.out.println("\n\n"+mdTree.definesType()+": "+mdTree.getId()+"\n");
-    
-    
 
-//    MdBusinessDAOIF mdAttrConcreteMdBus = MdBusinessDAO.getMdBusinessDAO(MdAttributeConcreteInfo.CLASS);
-//    
-//    MdBusinessDAOIF mdAttrRatioMdBus = MdBusinessDAO.getMdBusinessDAO(MdAttributeRatioInfo.CLASS);
-//
-//    MdAttributeReferenceDAO mdAttrLeftOperand = ((MdAttributeReferenceDAOIF)mdAttrRatioMdBus.definesAttribute(MdAttributeRatioInfo.LEFT_OPERAND)).getBusinessDAO();
-//    mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdAttrConcreteMdBus.getId());
-//    mdAttrLeftOperand.apply();
-//    
-//    MdAttributeReferenceDAO mdAttrRightOperand = ((MdAttributeReferenceDAOIF)mdAttrRatioMdBus.definesAttribute(MdAttributeRatioInfo.RIGHT_OPERAND)).getBusinessDAO();
-//    mdAttrRightOperand.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdAttrConcreteMdBus.getId());
-//    mdAttrRightOperand.apply();
-    
-    
-//    MdBusinessDAOIF mdAttrConcreteMdBus = MdBusinessDAO.getMdBusinessDAO(MdAttributeConcreteInfo.CLASS);
-//    mdAttrConcreteMdBus.printAttributes();
+    System.out.println("\n\n" + mdTree.definesType() + ": " + mdTree.getId() + "\n");
+
+    // MdBusinessDAOIF mdAttrConcreteMdBus =
+    // MdBusinessDAO.getMdBusinessDAO(MdAttributeConcreteInfo.CLASS);
+    //
+    // MdBusinessDAOIF mdAttrRatioMdBus =
+    // MdBusinessDAO.getMdBusinessDAO(MdAttributeRatioInfo.CLASS);
+    //
+    // MdAttributeReferenceDAO mdAttrLeftOperand =
+    // ((MdAttributeReferenceDAOIF)mdAttrRatioMdBus.definesAttribute(MdAttributeRatioInfo.LEFT_OPERAND)).getBusinessDAO();
+    // mdAttrLeftOperand.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,
+    // mdAttrConcreteMdBus.getId());
+    // mdAttrLeftOperand.apply();
+    //
+    // MdAttributeReferenceDAO mdAttrRightOperand =
+    // ((MdAttributeReferenceDAOIF)mdAttrRatioMdBus.definesAttribute(MdAttributeRatioInfo.RIGHT_OPERAND)).getBusinessDAO();
+    // mdAttrRightOperand.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,
+    // mdAttrConcreteMdBus.getId());
+    // mdAttrRightOperand.apply();
+
+    // MdBusinessDAOIF mdAttrConcreteMdBus =
+    // MdBusinessDAO.getMdBusinessDAO(MdAttributeConcreteInfo.CLASS);
+    // mdAttrConcreteMdBus.printAttributes();
 
   }
-  
+
   public static void testMdTable()
   {
-//    MdTableDAO mdTable = MdTableDAO.newInstance();
-//    mdTable.setValue(MdTableInfo.NAME, "TestTable");
-//    mdTable.setValue(MdTableInfo.PACKAGE, "some.package");
-//    mdTable.setStructValue(MdTableInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdTable");
-//    mdTable.setValue(MdTableInfo.TABLE_NAME, "md_class");
-//    
-//    String id = mdTable.apply();
-//    
-//    System.out.println();
-    
-    
-//    MdBusinessDAO mdTable = MdBusinessDAO.getMdBusinessDAO(MdTableInfo.CLASS).getBusinessDAO();
-//    
-//    MdAttributeConcreteDAO mdAttribute = (MdAttributeConcreteDAO)mdTable.getMdAttributeDAO(MdTableInfo.TABLE_NAME).getBusinessDAO();
-//    mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
-//    mdAttribute.apply();
-    
-//    mdTable.apply();
-//    mdTable.printAttributes();
-//    
-//    MdBusinessDAOIF mdClass = MdBusinessDAO.getMdBusinessDAO(MdClassInfo.CLASS);
-    
+    // MdTableDAO mdTable = MdTableDAO.newInstance();
+    // mdTable.setValue(MdTableInfo.NAME, "TestTable");
+    // mdTable.setValue(MdTableInfo.PACKAGE, "some.package");
+    // mdTable.setStructValue(MdTableInfo.DISPLAY_LABEL,
+    // MdAttributeLocalInfo.DEFAULT_LOCALE, "MdTable");
+    // mdTable.setValue(MdTableInfo.TABLE_NAME, "md_class");
+    //
+    // String id = mdTable.apply();
+    //
+    // System.out.println();
+
+    // MdBusinessDAO mdTable =
+    // MdBusinessDAO.getMdBusinessDAO(MdTableInfo.CLASS).getBusinessDAO();
+    //
+    // MdAttributeConcreteDAO mdAttribute =
+    // (MdAttributeConcreteDAO)mdTable.getMdAttributeDAO(MdTableInfo.TABLE_NAME).getBusinessDAO();
+    // mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE,
+    // IndexTypes.NON_UNIQUE_INDEX.getId());
+    // mdAttribute.apply();
+
+    // mdTable.apply();
+    // mdTable.printAttributes();
+    //
+    // MdBusinessDAOIF mdClass =
+    // MdBusinessDAO.getMdBusinessDAO(MdClassInfo.CLASS);
+
     MdTableDAO mdTable = MdTableDAO.newInstance();
     mdTable.printAttributes();
-    
+
   }
-  
+
   @Transaction
   public static void createMdTable()
   {
     MdBusinessDAOIF mdClass = MdBusinessDAO.getMdBusinessDAO(MdClassInfo.CLASS);
-    
+
     MdBusinessDAO mdTable = MdBusinessDAO.newInstance();
     mdTable.setValue(MdBusinessInfo.NAME, "MdTable");
     mdTable.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
@@ -518,12 +548,11 @@ public class Sandbox implements Job
     mdTable.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.TRUE);
     mdTable.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     mdTable.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    
+
     String mdTableMdId = mdTable.apply();
-    
-    System.out.println("MdTable ID: "+mdTableMdId);
-   
-    
+
+    System.out.println("MdTable ID: " + mdTableMdId);
+
     MdAttributeCharacter tableName = new MdAttributeCharacter();
     tableName.setValue(MdAttributeCharacterInfo.NAME, MdTableInfo.TABLE_NAME);
     tableName.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
@@ -541,8 +570,7 @@ public class Sandbox implements Job
     tableName.setValue(MdAttributeCharacterInfo.SIZE, MdTableInfo.MAX_TABLE_NAME);
     tableName.apply();
   }
-  
-  
+
   @Transaction
   public static void changeLockedByReference()
   {
@@ -560,12 +588,12 @@ public class Sandbox implements Job
       MdAttributeConcreteDAO lockedBy = (MdAttributeConcreteDAO) iterator.next().getBusinessDAO();
       lockedBy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdSingleActor.getId());
       lockedBy.apply();
-      
-//      MdClassDAOIF mdClass = lockedBy.definedByClass();
-//      
-//      System.out.println(mdClass.getKey());
-//      
-//      GenerationManager.generate(mdClass);
+
+      // MdClassDAOIF mdClass = lockedBy.definedByClass();
+      //
+      // System.out.println(mdClass.getKey());
+      //
+      // GenerationManager.generate(mdClass);
     }
 
     // MdBusinessDAOIF mdBusinessDAO =
@@ -609,12 +637,12 @@ public class Sandbox implements Job
 
   }
 
-//  private static void deleteMdFacade()
-//  {
-    // MdBusinessDAO mdFacade =
-    // MdBusinessDAO.getMdBusinessDAO(MdFacadeInfo.CLASS).getBusinessDAO();
-    // mdFacade.delete();
-//  }
+  // private static void deleteMdFacade()
+  // {
+  // MdBusinessDAO mdFacade =
+  // MdBusinessDAO.getMdBusinessDAO(MdFacadeInfo.CLASS).getBusinessDAO();
+  // mdFacade.delete();
+  // }
 
   private static int count = 0;
 

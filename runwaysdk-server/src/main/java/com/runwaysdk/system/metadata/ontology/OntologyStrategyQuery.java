@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = 1285187481)
+@com.runwaysdk.business.ClassSignature(hash = 1716355087)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -296,6 +278,23 @@ public  class OntologyStrategyQuery extends com.runwaysdk.query.GeneratedBusines
     return (com.runwaysdk.system.metadata.ontology.StrategyStateMasterQuery.StrategyStateQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.ontology.OntologyStrategy.STRATEGYSTATE, mdAttributeIF, this, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableChar getTermClass()
+  {
+    return getTermClass(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getTermClass(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.metadata.ontology.OntologyStrategy.TERMCLASS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getTermClass(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.metadata.ontology.OntologyStrategy.TERMCLASS, alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableChar getType()
   {
     return getType(null);
@@ -427,6 +426,9 @@ public  class OntologyStrategyQuery extends com.runwaysdk.query.GeneratedBusines
   public com.runwaysdk.system.metadata.ontology.StrategyStateMasterQuery.StrategyStateQueryIF getStrategyState();
   public com.runwaysdk.system.metadata.ontology.StrategyStateMasterQuery.StrategyStateQueryIF getStrategyState(String alias);
   public com.runwaysdk.system.metadata.ontology.StrategyStateMasterQuery.StrategyStateQueryIF getStrategyState(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getTermClass();
+    public com.runwaysdk.query.SelectableChar getTermClass(String alias);
+    public com.runwaysdk.query.SelectableChar getTermClass(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getType();
     public com.runwaysdk.query.SelectableChar getType(String alias);
     public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel);
@@ -669,6 +671,23 @@ public  class OntologyStrategyQuery extends com.runwaysdk.query.GeneratedBusines
     return (com.runwaysdk.system.metadata.ontology.StrategyStateMasterQuery.StrategyStateQueryIF)this.get(com.runwaysdk.system.metadata.ontology.OntologyStrategy.STRATEGYSTATE, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableChar getTermClass()
+  {
+    return getTermClass(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getTermClass(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.ontology.OntologyStrategy.TERMCLASS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getTermClass(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.ontology.OntologyStrategy.TERMCLASS, alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableChar getType()
   {
     return getType(null);
@@ -777,6 +796,9 @@ public  class OntologyStrategyQuery extends com.runwaysdk.query.GeneratedBusines
   public com.runwaysdk.system.metadata.ontology.StrategyStateMasterQuery.StrategyStateQueryIF getStrategyState();
   public com.runwaysdk.system.metadata.ontology.StrategyStateMasterQuery.StrategyStateQueryIF getStrategyState(String alias);
   public com.runwaysdk.system.metadata.ontology.StrategyStateMasterQuery.StrategyStateQueryIF getStrategyState(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getTermClass();
+    public com.runwaysdk.query.SelectableChar getTermClass(String alias);
+    public com.runwaysdk.query.SelectableChar getTermClass(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getType();
     public com.runwaysdk.query.SelectableChar getType(String alias);
     public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel);
@@ -1066,6 +1088,23 @@ public  class OntologyStrategyQuery extends com.runwaysdk.query.GeneratedBusines
   public com.runwaysdk.system.metadata.ontology.StrategyStateMasterQuery.StrategyStateQueryIF getStrategyState(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.metadata.ontology.StrategyStateMasterQuery.StrategyStateQueryIF)this.get(com.runwaysdk.system.metadata.ontology.OntologyStrategy.STRATEGYSTATE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getTermClass()
+  {
+    return getTermClass(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getTermClass(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.ontology.OntologyStrategy.TERMCLASS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getTermClass(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.ontology.OntologyStrategy.TERMCLASS, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getType()

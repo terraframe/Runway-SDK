@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = 2054704610)
+@com.runwaysdk.business.ClassSignature(hash = -877072936)
 public abstract class OntologyStrategyDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.ontology.OntologyStrategy";
-  private static final long serialVersionUID = 2054704610;
+  private static final long serialVersionUID = -877072936;
   
   protected OntologyStrategyDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -57,6 +39,7 @@ public abstract class OntologyStrategyDTOBase extends com.runwaysdk.business.Bus
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String STRATEGYSTATE = "strategyState";
+  public static java.lang.String TERMCLASS = "termClass";
   public static java.lang.String TYPE = "type";
   public java.util.Date getCreateDate()
   {
@@ -448,6 +431,43 @@ public abstract class OntologyStrategyDTOBase extends com.runwaysdk.business.Bus
   public final com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO getStrategyStateMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(STRATEGYSTATE).getAttributeMdDTO();
+  }
+  
+  public String getTermClass()
+  {
+    return getValue(TERMCLASS);
+  }
+  
+  public void setTermClass(String value)
+  {
+    if(value == null)
+    {
+      setValue(TERMCLASS, "");
+    }
+    else
+    {
+      setValue(TERMCLASS, value);
+    }
+  }
+  
+  public boolean isTermClassWritable()
+  {
+    return isWritable(TERMCLASS);
+  }
+  
+  public boolean isTermClassReadable()
+  {
+    return isReadable(TERMCLASS);
+  }
+  
+  public boolean isTermClassModified()
+  {
+    return isModified(TERMCLASS);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getTermClassMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(TERMCLASS).getAttributeMdDTO();
   }
   
   public static com.runwaysdk.system.metadata.ontology.OntologyStrategyDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)

@@ -170,7 +170,7 @@ public class OntologyStrategyTest extends TestCase
       mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-      mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
+//      mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
       mdTerm.apply();
 
       try
@@ -178,7 +178,7 @@ public class OntologyStrategyTest extends TestCase
         MdTermDAOIF result = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.getValue(MdTermInfo.STRATEGY), mdTerm.getValue(MdTermInfo.STRATEGY));
+//        Assert.assertEquals(result.getValue(MdTermInfo.STRATEGY), mdTerm.getValue(MdTermInfo.STRATEGY));
       }
       finally
       {

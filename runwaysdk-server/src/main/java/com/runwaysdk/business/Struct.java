@@ -468,6 +468,11 @@ public class Struct extends Entity implements StructInfo
 
     super.apply();
   }
+  
+  public MutableWithStructs getParent()
+  {
+    return parent;
+  }
 
   /**
    * Deletes this entity from the database. Any attempt to {@link Entity#apply()} this entity will throw an exception, so it is the responsibility of the developer to remove references to deleted

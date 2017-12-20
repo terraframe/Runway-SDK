@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.ontology;
 
@@ -32,18 +32,17 @@ import com.runwaysdk.query.OIterator;
 public class DefaultStrategy implements OntologyStrategyIF
 {
   protected String termClass;
-  
-//  private String relationshipType;
-  
+
+  // private String relationshipType;
+
   public static class Singleton
   {
     public static DefaultStrategy INSTANCE = new DefaultStrategy();
   }
 
   /**
-   * @see
-   * com.runwaysdk.business.ontology.OntologyStrategyIF#isInitialized(java.lang
-   * .String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isInitialized(java.lang
+   *      .String)
    */
   @Override
   public boolean isInitialized()
@@ -161,9 +160,8 @@ public class DefaultStrategy implements OntologyStrategyIF
   }
 
   /**
-   * @see
-   * com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
-   * .business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
+   *      .business.ontology.Term, java.lang.String)
    */
   @Override
   public void removeTerm(Term term, String relationshipType)
@@ -172,10 +170,9 @@ public class DefaultStrategy implements OntologyStrategyIF
   }
 
   /**
-   * @see
-   * com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
-   * .business.ontology.Term, com.runwaysdk.business.ontology.Term,
-   * java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
+   *      .business.ontology.Term, com.runwaysdk.business.ontology.Term,
+   *      java.lang.String)
    */
   @Override
   public void removeLink(Term parent, Term term, String relationshipType)
@@ -184,16 +181,15 @@ public class DefaultStrategy implements OntologyStrategyIF
   }
 
   /**
-   * @see
-   * com.runwaysdk.business.ontology.OntologyStrategyIF#add(com.runwaysdk.business
-   * .ontology.Term, java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#add(com.runwaysdk.business
+   *      .ontology.Term, java.lang.String)
    */
   @Override
   public void add(Term term, String relationshipType)
   {
     // NO OP
   }
-  
+
   @Override
   public void configure(String termClass)
   {
@@ -202,10 +198,10 @@ public class DefaultStrategy implements OntologyStrategyIF
 
   private class InMemoryObjectIterator<T> implements OIterator<T>
   {
-    List<T> list;
-    
+    List<T>     list;
+
     Iterator<T> it;
-    
+
     private InMemoryObjectIterator(List<T> list)
     {
       this.list = list;
@@ -213,41 +209,47 @@ public class DefaultStrategy implements OntologyStrategyIF
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public Iterator<T> iterator()
+    {
       return it;
     }
 
     @Override
-    public T next() {
+    public T next()
+    {
       return it.next();
     }
 
     @Override
-    public void remove() {
+    public void remove()
+    {
       it.remove();
     }
 
     @Override
-    public boolean hasNext() {
+    public boolean hasNext()
+    {
       return it.hasNext();
     }
 
     @Override
-    public void close() {
-      
+    public void close()
+    {
+
     }
 
     @Override
-    public List<T> getAll() {
+    public List<T> getAll()
+    {
       return list;
     }
-    
+
   }
-  
+
   public class DefaultDeleteStrategyProvider implements DeleteStrategyProviderIF
   {
     private String relationshipType;
-    
+
     private DefaultDeleteStrategyProvider(Term deleteRoot, String relationshipType)
     {
       this.relationshipType = relationshipType;
@@ -257,7 +259,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     public boolean isTermAlreadyProcessed(Term child, Stack<Term> s)
     {
       int count = 0;
-      
+
       ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getId() + "'");
       try
       {
@@ -283,7 +285,7 @@ public class DefaultStrategy implements OntologyStrategyIF
           Database.throwDatabaseException(sqlEx2);
         }
       }
-      
+
       return count > 0 && this.doesAncestorHaveMultipleParents(child, s);
     }
 
@@ -291,7 +293,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     public boolean doesAncestorHaveMultipleParents(Term child, Stack<Term> s)
     {
       List<Term> ancestors = DefaultStrategy.this.getDirectAncestors(child, relationshipType).getAll();
-      
+
       if (ancestors.size() > 1)
       {
         return true;
@@ -300,7 +302,7 @@ public class DefaultStrategy implements OntologyStrategyIF
       for (Iterator<Term> i = ancestors.iterator(); i.hasNext();)
       {
         boolean doesParent = doesAncestorHaveMultipleParents(i.next(), s);
-        
+
         if (doesParent)
         {
           return true;
@@ -310,10 +312,34 @@ public class DefaultStrategy implements OntologyStrategyIF
       return false;
     }
   }
-  
+
   @Override
   public DeleteStrategyProviderIF getDeleteStrategyProvider(Term deleteRoot, String relationshipType)
   {
     return new DefaultDeleteStrategyProvider(deleteRoot, relationshipType);
+  }
+
+  @Override
+  public void addSynonym(Term term, OntologyEntryIF synonym)
+  {
+    // Do nothing
+  }
+
+  @Override
+  public void updateSynonym(OntologyEntryIF synonym)
+  {
+    // Do nothing
+  }
+
+  @Override
+  public void removeSynonym(OntologyEntryIF synonym)
+  {
+    // Do nothing
+  }
+
+  @Override
+  public void updateLabel(Term term, String label)
+  {
+    // Do nothing
   }
 }
