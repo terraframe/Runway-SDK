@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" ">
+<title>Road Map | Runway SDK documentation</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<link rel="stylesheet" href="css/lavish-bootstrap.css">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/theme-black.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="" href="http://localhost:4000feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Runway SDK Documentation</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- entries without drop-downs appear here -->
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Terraframe Resources<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://github.com/terraframe/Runway-SDK" target="_blank">RunwaySDK on Github</a></li>
+                        
+                        
+                        
+                        <li><a href="https://github.com/terraframe/Runway-SDK-GIS" target="_blank">RunwaySDK-GIS on Github</a></li>
+                        
+                        
+                        
+                        <li><a href="http://terraframe.com/" target="_blank">TerraFrame</a></li>
+                        
+                        
+                        
+                        <li><a href="https://github.com/terraframe/geoprism" target="_blank">GeoPrism on Github</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+			<li>
+
+
+
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Road Map page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+
+</li>
+
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Road Map">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+    <div class="col-lg-12">&nbsp;</div>
+    <!-- Content Row -->
+    <div class="row">
+        <!-- Sidebar Column -->
+        <div class="col-md-3">
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="mysidebar" class="nav">
+    <li class="sidebarTitle">Runway SDK latest</li>
+    
+    
+    
+        
+    
+    <li>
+        <a href="#">Overview</a>
+        <ul>
+            
+            
+            
+            <li><a href="index.html">Introduction</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_about.html">About the team behind Runway SDK</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Metadata</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_metadata_getting_started.html">Getting started</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_mdbusiness.html">MdBusiness</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+        
+        <!-- if you aren't using the accordion, uncomment this block:
+           <p class="external">
+               <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+           </p>
+           -->
+    </li>
+</ul>
+</div>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+    <!-- Content Column -->
+    <div class="col-md-9">
+        <div class="post-header">
+   <h1 class="post-title-main">Road Map</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_future_roadmap.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+
+    
+
+  <h2 id="road-map-overview">Road Map Overview</h2>
+
+<p>GeoPrism has it’s roots in providing intuitive solutions for people with limited technical resources to better manage, aggregate, and visualize their data.  The user stories used to define functionality for these purposes are expanding over time and so is the collection of features built to support those user stories.  Because of this, GeoPrism is undergoing regular changes designed to help improve usability and flexibility.  With every feature considered the GeoPrism dev team carefully considers software design, extensibility, and scalability.</p>
+
+<h2 id="considerations-for-software-integrations">Considerations For Software Integrations</h2>
+
+<p>GeoPrism relies heavily on the incredible software resources provided by the open source community. GeoPrism is provided under an open source license that helps to continue the evolution of the product by enabling it’s usage by multiple organizations. As such, any software integrated into GeoPrism MUST have an open source license that allows for royalty free usage by any company choosing to deploy GeoPrism for commercial purposes.  These tools must also exhibit reasonable levels of stability, contributor base, and momentum.  While any project may have varying levels of any one of those categories a reasonable judgment and testing must be used to ensure the usage of that software adheres to the high standards of the GeoPrism project.</p>
+
+<h2 id="kaleidoscope">Kaleidoscope</h2>
+
+<p>GeoPrism Kaleidoscopes are the primary data analysis tools for building and sharing stories from data.  The Kaleidoscope engine is intended to be a robust analysis suite requiring a moderate technical skill level.  Currently the Kaleidoscope engine is fully featured for basic mapping, charting, and analysis.  However, future enhancements are being considered for increasing functionality and optimizing pain points.</p>
+
+<p>High Level Future Goals (not-exhaustive or final):</p>
+
+<ul>
+  <li>Combining multiple indicators as a single combined indicator.</li>
+  <li>In-line chart builder that enables a more tightly integrated chart design environment.</li>
+  <li>Ability to save snapshots of a Kaleidoscope to a snapshot report (see next topic area).</li>
+</ul>
+
+<h2 id="snapshot-reports-future-addition">Snapshot Reports (future addition)</h2>
+
+<p>Snapshot reports are web-based simplified versions of a Kaleidoscope that tells a clear story from data.  The idea is to enable analysts to disseminate reports to any device that are performant and help decision makers make decisions fast.</p>
+
+<p>High Level Future Goals (not-exhaustive or final):</p>
+
+<ul>
+  <li>Easily sharable via URLs.</li>
+  <li>Highly performant and interactive when viewed on a digital device.</li>
+  <li>Viewable on desktop or mobile devices.</li>
+  <li>Easily created from a Kaleidoscope.</li>
+  <li>Exportable to PDF for additional dissemination support.</li>
+</ul>
+
+<h2 id="geo-ontology-management-system-data">Geo-Ontology Management (system data)</h2>
+
+<p>Ontologies are the core of the underlying technology (RunwaySDK) used to power GeoPrism.  They provide a formal structure for data in the sytem.  Geo-Ontologies are the core objects used to model location as ontologies.  Management of these locations are currently supported through two primary mechanisms (GeoEntity tree and Location Manager).  However, these tools are being improved to better support large ontologies.</p>
+
+<p>High Level Future Goals (not-exhaustive or final):</p>
+
+<ul>
+  <li>Better navigation through a GeoEntity tree with more than 100,000 location nodes.</li>
+  <li>Better performance for location lookups when querying the GeoEntity tree.</li>
+  <li>More robust widgets for managing ontology relationships and geometric attribution.</li>
+</ul>
+
+<h2 id="user-data-management">User Data Management</h2>
+
+<p>User data includes any data integrated to GeoPrism through either GeoPrism data up-loader tools or directly by a GeoPrism expert.  User data does not include Geo-Ontology data which is considered system data.  An example would be a spreadsheet uploaded through the spreadsheet up-loader.</p>
+
+<p>High Level Future Goals (not-exhaustive or final):</p>
+
+<ul>
+  <li>In-line configuration of integrations with web-based data sources (i.e. Fulcrum, US Census, etc…).</li>
+  <li>Shapefile up-loader.</li>
+</ul>
+
+<h2 id="system-management">System Management</h2>
+
+<p>Coming soon…</p>
+
+<h2 id="theming">Theming</h2>
+
+<p>Basic theming is currently possible for integrating custom logos.</p>
+
+<p>High Level Future Goals (not-exhaustive or final):</p>
+
+<ul>
+  <li>Better configuration of page color pallets.</li>
+</ul>
+
+<h2 id="performance">Performance</h2>
+
+<p>Performance in general is an on-going consideration for various areas of the platform.  The unique nature of how data is managed in GeoPrism and RunwaySDK enables robust query flexibility sometimes at the cost of performance.  That said, there are multiple areas where improvements can be made.</p>
+
+<p>High Level Future Goals (not-exhaustive or final):</p>
+
+<ul>
+  <li>Geo-Ontology lookups when assigning location to user data.</li>
+  <li>Querying the GeoEntity tree with large Geo-Ontology models.</li>
+  <li>Rendering of large layers in a Kaleidoscope.</li>
+  <li>Rendering large geographic data sets in the browser.</li>
+</ul>
+
+<h2 id="mobile-support">Mobile Support</h2>
+
+<p>Some parts of GeoPrism are more mobile friendly than others based on the nature of the widget being used.  For example, managing geographic data isn’t as practical on mobile devices as viewing a snapshot report.  For this reason tools where chosen and pages where build with the underlying ability to support mobile operations.  However, some improvements are needed to improve the mobile experience.</p>
+
+<h2 id="off-line-support">Off-line Support</h2>
+
+<p>Coming soon…</p>
+
+<h2 id="developer-operations">Developer Operations</h2>
+
+<p>Coming soon…</p>
+
+<h2 id="deployment-environments">Deployment Environments</h2>
+<p>GeoPrism can be deployed to a number of environments both local or in the cloud.  This is possible through the use of Maven, Jenkins, Ansible, and Docker which all can be used to deploy with a relatively easy process.  However, this is a very large and robust platform environment and so should not be expected to be an “easy install” even if being done by an experienced developer familiar with these tools.</p>
+
+<p>The most common environments used are:</p>
+
+<ul>
+  <li>Linux on AWS EC2</li>
+  <li>Linux on AWS Elastic Beanstalk</li>
+  <li>Linux on Switch</li>
+</ul>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+    
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2017 TerraFrame. All rights reserved. <br />
+ Site last generated: Dec 21, 2017 <br />
+<p>
+<!--
+<img src="images/company_logo.png" alt="Company logo"/>
+-->
+</p>
+                </div>
+            </div>
+</footer>
+
+
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+    </div>
+
+</body>
+
+</html>
