@@ -20,4 +20,4 @@ Key Runway modules include the Integrated ORM Module, Security Module, AJAX Modu
 
 More complete documentation can be found here:
 
-http://terraframe.github.io/Runway-SDK/1.8.0
+http://terraframe.github.io/Runway-SDK
