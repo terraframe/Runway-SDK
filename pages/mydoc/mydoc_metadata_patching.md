@@ -1,5 +1,5 @@
 ---
-title: Basic Authoring
+title: Patching
 keywords: terraframe, runway, metadata
 last_updated: December 21, 2017
 tags: [metadata, patching]

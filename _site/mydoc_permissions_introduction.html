@@ -262,12 +262,12 @@
         
     
     <li>
-        <a href="#">Aspect Oriented Programming</a>
+        <a href="#">Permissions (RBAC)</a>
         <ul>
             
             
             
-            <li><a href="mydoc_aspects_introduction.html">Introduction</a></li>
+            <li class="active"><a href="mydoc_permissions_introduction.html">Introduction</a></li>
             
             
             
@@ -277,12 +277,12 @@
         
     
     <li>
-        <a href="#">Permissions (RBAC)</a>
+        <a href="#">Localization</a>
         <ul>
             
             
             
-            <li class="active"><a href="mydoc_permissions_introduction.html">Introduction</a></li>
+            <li><a href="mydoc_localization_introduction.html">Introduction</a></li>
             
             
             
@@ -350,6 +350,12 @@ $('#toc').on('click', 'a', function() {
     
 
   <h2 id="overview">Overview</h2>
+
+<p>Runway provides role based access control for metadata-driven components. The permissions model is restrictive, meaning that unless explicitly allowed, the action is restricted. The permissions are configurable all the way down to the attribute. The permissions for domain types are configured by the developers for a particular role, and then the users are assigned to a role. This allows developers to define roles that are specific to the application’s needs, and then the admins of the app can assign users to these roles. This allows for a very high level of configurability and reusability.</p>
+
+<p>When defining a permission on a component, the operation is also specified. This provides a distinction between reading and writing, allowing for the creation of a read-only role.</p>
+
+<p>Just like metadata, permissions can also be defined in an XML schema.</p>
 
 
 

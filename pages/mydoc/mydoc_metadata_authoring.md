@@ -96,6 +96,11 @@ An XML schema can be either imported or unimported. The `doIt` tag defines what 
 As you progress in experience writing schema files, you may be tempted to ignore the `undoIt` section and simply comment out metadata that already exists, allowing you to skip unimporting the schema and running the import again (with only that which has changed). Resist the urge to do this! When the time comes to finally commit your metadata file, you will have never run the schema file in its entirety, which means you are committing untested code. In addition, you will start to lose track of the actual state of your database. All of these things will cost you time. Get in the good habit now of writing your `undoIt` section along-side your `doIt` code.
 
 
+## Create, update, delete
+
+The `create` tag just says that we're creating new metadata. This is in contrast to `update`, `createOrUpdate`, `delete` or `permissions`. The most common use-case is to create some metadata in the `doIt`, and then delete that metadata in the `undoIt`. For `update` tags, there may be a `create` tag within the `update` tag.
+
+
 ## File conventions
 
 Metadata is typically stored at the path 'src/main/domain' in the server project. In this directory you will see a list of files with an unusual naming convention. As an example:

@@ -214,6 +214,12 @@
   
   
   <url>
+    <loc>http://localhost:4000/mydoc_localization_introduction.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://localhost:4000/mydoc_mdbusiness.html</loc>
   </url>
   
@@ -292,13 +298,13 @@
   
   
   <url>
-    <loc>http://localhost:4000/mydoc_scroll.html</loc>
+    <loc>http://localhost:4000/js/mydoc_scroll.html</loc>
   </url>
   
   
   
   <url>
-    <loc>http://localhost:4000/js/mydoc_scroll.html</loc>
+    <loc>http://localhost:4000/mydoc_scroll.html</loc>
   </url>
   
   

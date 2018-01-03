@@ -347,6 +347,17 @@
 
 
 {
+"title": "Introduction to localization",
+"tags": "metadata",
+"keywords": "terraframe, runway, localization",
+"url": "mydoc_localization_introduction.html",
+"summary": "Covers the basics of using localization in Runway"
+}
+,
+
+
+
+{
 "title": "MdBusiness",
 "tags": "mdbusiness",
 "keywords": "terraframe, runway, mdbusiness",
@@ -391,7 +402,7 @@
 
 
 {
-"title": "Basic Authoring",
+"title": "Patching",
 "tags": "metadatapatching",
 "keywords": "terraframe, runway, metadata",
 "url": "mydoc_metadata_patching.html",
@@ -493,7 +504,7 @@
 "title": "Scroll layout",
 "tags": "special_layouts",
 "keywords": "json, scrolling, scrollto, jquery plugin",
-"url": "mydoc_scroll.html",
+"url": "jsmydoc_scroll.html",
 "summary": "This page demonstrates how you the integration of a script called ScrollTo, which is used here to link definitions of a JSON code sample to a list of definitions for that particular term. The scenario here is that the JSON blocks are really long, with extensive nesting and subnesting, which makes it difficult for tables below the JSON to adequately explain the term in a usable way."
 }
 ,
@@ -504,7 +515,7 @@
 "title": "Scroll layout",
 "tags": "special_layouts",
 "keywords": "json, scrolling, scrollto, jquery plugin",
-"url": "jsmydoc_scroll.html",
+"url": "mydoc_scroll.html",
 "summary": "This page demonstrates how you the integration of a script called ScrollTo, which is used here to link definitions of a JSON code sample to a list of definitions for that particular term. The scenario here is that the JSON blocks are really long, with extensive nesting and subnesting, which makes it difficult for tables below the JSON to adequately explain the term in a usable way."
 }
 ,

@@ -262,12 +262,12 @@
         
     
     <li>
-        <a href="#">Aspect Oriented Programming</a>
+        <a href="#">Permissions (RBAC)</a>
         <ul>
             
             
             
-            <li><a href="mydoc_aspects_introduction.html">Introduction</a></li>
+            <li><a href="mydoc_permissions_introduction.html">Introduction</a></li>
             
             
             
@@ -277,12 +277,12 @@
         
     
     <li>
-        <a href="#">Permissions (RBAC)</a>
+        <a href="#">Localization</a>
         <ul>
             
             
             
-            <li><a href="mydoc_permissions_introduction.html">Introduction</a></li>
+            <li><a href="mydoc_localization_introduction.html">Introduction</a></li>
             
             
             
@@ -432,6 +432,10 @@ $('#toc').on('click', 'a', function() {
 <p>An XML schema can be either imported or unimported. The <code class="highlighter-rouge">doIt</code> tag defines what happens when the schema is imported. The <code class="highlighter-rouge">undoIt</code> tag defines what happens when the schema is unimported. Thus, the <code class="highlighter-rouge">doIt</code> section defines the domain for whatever feature you are implementing, and the <code class="highlighter-rouge">undoIt</code> section removes the feature. This is useful in a development context because your feature is in a state of flux. If the metadata already exists in the database from the last time you imported this schema, you must first delete all the metadata before you can import the schema again to redefine your model.</p>
 
 <p>As you progress in experience writing schema files, you may be tempted to ignore the <code class="highlighter-rouge">undoIt</code> section and simply comment out metadata that already exists, allowing you to skip unimporting the schema and running the import again (with only that which has changed). Resist the urge to do this! When the time comes to finally commit your metadata file, you will have never run the schema file in its entirety, which means you are committing untested code. In addition, you will start to lose track of the actual state of your database. All of these things will cost you time. Get in the good habit now of writing your <code class="highlighter-rouge">undoIt</code> section along-side your <code class="highlighter-rouge">doIt</code> code.</p>
+
+<h2 id="create-update-delete">Create, update, delete</h2>
+
+<p>The <code class="highlighter-rouge">create</code> tag just says that we’re creating new metadata. This is in contrast to <code class="highlighter-rouge">update</code>, <code class="highlighter-rouge">createOrUpdate</code>, <code class="highlighter-rouge">delete</code> or <code class="highlighter-rouge">permissions</code>. The most common use-case is to create some metadata in the <code class="highlighter-rouge">doIt</code>, and then delete that metadata in the <code class="highlighter-rouge">undoIt</code>. For <code class="highlighter-rouge">update</code> tags, there may be a <code class="highlighter-rouge">create</code> tag within the <code class="highlighter-rouge">update</code> tag.</p>
 
 <h2 id="file-conventions">File conventions</h2>
 

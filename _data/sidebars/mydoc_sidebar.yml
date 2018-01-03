@@ -89,13 +89,13 @@ entries:
       url: /mydoc_metadata_patching.html
       output: web, pdf
       
-  - title: Aspect Oriented Programming
-    output: web, pdf
-    folderitems:
+  #- title: Aspect Oriented Programming
+  #  output: web, pdf
+  #  folderitems:
     
-    - title: Introduction
-      url: /mydoc_aspects_introduction.html
-      output: web, pdf
+  #  - title: Introduction
+  #    url: /mydoc_aspects_introduction.html
+  #    output: web, pdf
       
   - title: Permissions (RBAC)
     output: web, pdf
@@ -103,6 +103,14 @@ entries:
     
     - title: Introduction
       url: /mydoc_permissions_introduction.html
+      output: web, pdf
+      
+  - title: Localization
+    output: web, pdf
+    folderitems:
+    
+    - title: Introduction
+      url: /mydoc_localization_introduction.html
       output: web, pdf
 
   # - title: Release Notes
