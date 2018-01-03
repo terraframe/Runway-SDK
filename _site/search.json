@@ -61,6 +61,17 @@
 
 
 {
+"title": "Aspect Oriented Programming (AOP)",
+"tags": "aspects",
+"keywords": "terraframe, runway, aspects",
+"url": "mydoc_aspects_introduction.html",
+"summary": "Covers the basics of using aspects within Runway"
+}
+,
+
+
+
+{
 "title": "Atom Text Editor",
 "tags": "",
 "keywords": "atom, text editor,",
@@ -347,11 +358,44 @@
 
 
 {
-"title": "Getting started with metadata",
+"title": "MdBusiness",
+"tags": "mdrelationship",
+"keywords": "terraframe, runway, mdrelationship",
+"url": "mydoc_mdrelationship.html",
+"summary": "MdRelationship, defines a custom relationship type."
+}
+,
+
+
+
+{
+"title": "Basic Authoring",
+"tags": "metadata",
+"keywords": "terraframe, runway, metadata",
+"url": "mydoc_metadata_authoring.html",
+"summary": "Covers the basics of authoring metadata in Runway"
+}
+,
+
+
+
+{
+"title": "Introduction to Runway metadata",
 "tags": "mdbusiness",
 "keywords": "terraframe, runway, mdbusiness",
 "url": "mydoc_metadata_getting_started.html",
-"summary": "The basics of using metadata in a Runway driven application"
+"summary": "Covers topics of model driven engineering and the theory of metadata"
+}
+,
+
+
+
+{
+"title": "Basic Authoring",
+"tags": "metadatapatching",
+"keywords": "terraframe, runway, metadata",
+"url": "mydoc_metadata_patching.html",
+"summary": "Covers the basics of patching metadata in Runway"
 }
 ,
 
@@ -385,6 +429,17 @@
 "keywords": "pages, authoring, exclusion, frontmatter",
 "url": "mydoc_pages.html",
 "summary": "This theme primarily uses pages. You need to make sure your pages have the appropriate frontmatter. One frontmatter tag your users might find helpful is the summary tag. This functions similar in purpose to the shortdesc element in DITA."
+}
+,
+
+
+
+{
+"title": "Introduction to Runway permissions",
+"tags": "aspects",
+"keywords": "terraframe, runway, permissions",
+"url": "mydoc_permissions_introduction.html",
+"summary": "Covers the basics of using permissions within Runway"
 }
 ,
 
@@ -438,7 +493,7 @@
 "title": "Scroll layout",
 "tags": "special_layouts",
 "keywords": "json, scrolling, scrollto, jquery plugin",
-"url": "jsmydoc_scroll.html",
+"url": "mydoc_scroll.html",
 "summary": "This page demonstrates how you the integration of a script called ScrollTo, which is used here to link definitions of a JSON code sample to a list of definitions for that particular term. The scenario here is that the JSON blocks are really long, with extensive nesting and subnesting, which makes it difficult for tables below the JSON to adequately explain the term in a usable way."
 }
 ,
@@ -449,7 +504,7 @@
 "title": "Scroll layout",
 "tags": "special_layouts",
 "keywords": "json, scrolling, scrollto, jquery plugin",
-"url": "mydoc_scroll.html",
+"url": "jsmydoc_scroll.html",
 "summary": "This page demonstrates how you the integration of a script called ScrollTo, which is used here to link definitions of a JSON code sample to a list of definitions for that particular term. The scenario here is that the JSON blocks are really long, with extensive nesting and subnesting, which makes it difficult for tables below the JSON to adequately explain the term in a usable way."
 }
 ,

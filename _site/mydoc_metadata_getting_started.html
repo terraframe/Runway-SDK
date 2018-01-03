@@ -3,9 +3,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The basics of using metadata in a Runway driven application">
+<meta name="description" content="Covers topics of model driven engineering and the theory of metadata">
 <meta name="keywords" content="mdbusiness,  terraframe, runway, mdbusiness">
-<title>Getting started with metadata | Runway SDK documentation</title>
+<title>Introduction to Runway metadata | Runway SDK documentation</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -129,7 +129,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Getting started with metadata page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Introduction to Runway metadata page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -147,7 +147,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Getting started with metadata">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Introduction to Runway metadata">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -212,19 +212,77 @@
         
     
     <li>
-        <a href="#">Metadata</a>
+        <a href="#">Working with Metadata</a>
         <ul>
             
             
             
-            <li class="active"><a href="mydoc_metadata_getting_started.html">Getting started</a></li>
+            <li class="active"><a href="mydoc_metadata_getting_started.html">Introduction</a></li>
             
             
             
             
             
             
-            <li><a href="mydoc_mdbusiness.html">MdBusiness</a></li>
+            <li><a href="mydoc_metadata_authoring.html">Basic authoring</a></li>
+            
+            
+            
+            <li class="subfolders">
+                <a href="#">Types of metadata</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_mdbusiness.html">MdBusiness</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="mydoc_mdrelationship.html">MdRelationship</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_metadata_patching.html">Patching</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Aspect Oriented Programming</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_aspects_introduction.html">Introduction</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Permissions (RBAC)</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_permissions_introduction.html">Introduction</a></li>
             
             
             
@@ -248,7 +306,7 @@
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Getting started with metadata</h1>
+   <h1 class="post-title-main">Introduction to Runway metadata</h1>
 </div>
 
 
@@ -256,7 +314,7 @@
 <div class="post-content">
 
    
-    <div class="summary">The basics of using metadata in a Runway driven application</div>
+    <div class="summary">Covers topics of model driven engineering and the theory of metadata</div>
    
 
     
@@ -291,7 +349,24 @@ $('#toc').on('click', 'a', function() {
 
     
 
-  <p>This page will cover the basics of using metadata in a Runway driven application.</p>
+  <h2 id="overview">Overview</h2>
+
+<p>When your domain is written down and formalized using Runway SDK’s revolutionary xml syntax, it can be better managed and maintained and it serves as a single point of truth across your application. A single xml tag can tell Runway to automatically create for you:</p>
+
+<ul>
+  <li>A table in the database with the appropriate columns.</li>
+  <li>Generated Java stub and base classes across both client and server including RMI communication infrastructure which separates presentation and business tiers</li>
+  <li>Generated Java query classes to make retrieving your data easy</li>
+</ul>
+
+<p>And because your generated domain classes automatically extend Runway core classes, your domain classes expose a wealth of out-of-the-box functionality like:</p>
+
+<ul>
+  <li>The ‘apply’ method. Simply call apply on an instance of your domain class and it will save the instance as a row in your generated table.</li>
+  <li>‘lock’ or ‘applock’ which is required when updating existing data to ensure data integrity</li>
+  <li>Attribute getters/setters which allow you to read/modify the columns of your database record.</li>
+  <li>‘delete’ which removes the row from the database. Runway performs lots of validation for you to ensure data integrity.</li>
+</ul>
 
 
 
@@ -314,8 +389,8 @@ $('#toc').on('click', 'a', function() {
 <footer>
             <div class="row">
                 <div class="col-lg-12 footer">
-               &copy;2017 TerraFrame. All rights reserved. <br />
-<span>Page last updated:</span> December 21, 2017<br/> Site last generated: Dec 21, 2017 <br />
+               &copy;2018 TerraFrame. All rights reserved. <br />
+<span>Page last updated:</span> December 21, 2017<br/> Site last generated: Jan 2, 2018 <br />
 <p>
 <!--
 <img src="images/company_logo.png" alt="Company logo"/>

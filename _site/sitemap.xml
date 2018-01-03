@@ -58,6 +58,12 @@
   
   
   <url>
+    <loc>http://localhost:4000/mydoc_aspects_introduction.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://localhost:4000/mydoc_atom_text_editor.html</loc>
   </url>
   
@@ -214,7 +220,25 @@
   
   
   <url>
+    <loc>http://localhost:4000/mydoc_mdrelationship.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_metadata_authoring.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://localhost:4000/mydoc_metadata_getting_started.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_metadata_patching.html</loc>
   </url>
   
   
@@ -233,6 +257,12 @@
   
   <url>
     <loc>http://localhost:4000/mydoc_pages.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_permissions_introduction.html</loc>
   </url>
   
   
@@ -262,13 +292,13 @@
   
   
   <url>
-    <loc>http://localhost:4000/js/mydoc_scroll.html</loc>
+    <loc>http://localhost:4000/mydoc_scroll.html</loc>
   </url>
   
   
   
   <url>
-    <loc>http://localhost:4000/mydoc_scroll.html</loc>
+    <loc>http://localhost:4000/js/mydoc_scroll.html</loc>
   </url>
   
   

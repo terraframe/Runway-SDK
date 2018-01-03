@@ -47,17 +47,62 @@ entries:
     # - title: Support
     #   url: /mydoc_support.html
     #   output: web, pdf
-      
-  - title: Metadata
+  
+  
+#       subfolders:
+#       - title: Tag archive pages
+#         output: web
+#         subfolderitems:
+#
+#         - title: Formatting pages
+#           url: /tag_formatting.html
+#           output: web
+  
+  
+  
+  - title: Working with Metadata
     output: web, pdf
     folderitems:
      
-    - title: Getting started
+    - title: Introduction
       url: /mydoc_metadata_getting_started.html
       output: web, pdf
-     
-    - title: MdBusiness
-      url: /mydoc_mdbusiness.html
+      
+    - title: Basic authoring
+      url: /mydoc_metadata_authoring.html
+      output: web, pdf
+    
+      subfolders: 
+      - title: Types of metadata
+        output: web, pdf
+        subfolderitems:
+       
+        - title: MdBusiness
+          url: /mydoc_mdbusiness.html
+          output: web, pdf
+          
+        - title: MdRelationship
+          url: /mydoc_mdrelationship.html
+          output: web, pdf
+          
+    - title: Patching
+      url: /mydoc_metadata_patching.html
+      output: web, pdf
+      
+  - title: Aspect Oriented Programming
+    output: web, pdf
+    folderitems:
+    
+    - title: Introduction
+      url: /mydoc_aspects_introduction.html
+      output: web, pdf
+      
+  - title: Permissions (RBAC)
+    output: web, pdf
+    folderitems:
+    
+    - title: Introduction
+      url: /mydoc_permissions_introduction.html
       output: web, pdf
 
   # - title: Release Notes
