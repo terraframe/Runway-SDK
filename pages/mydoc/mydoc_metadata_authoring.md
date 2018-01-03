@@ -1,9 +1,9 @@
 ---
-title: Basic Authoring
+title: Defining metadata through XML
 keywords: terraframe, runway, metadata
 last_updated: December 21, 2017
 tags: [metadata]
-summary: "Covers the basics of authoring metadata in Runway"
+summary: "Covers the basics of defining metadata in Runway via XML"
 sidebar: mydoc_sidebar
 permalink: mydoc_metadata_authoring.html
 folder: mydoc
@@ -11,9 +11,39 @@ folder: mydoc
 
 ## Overview
 
-The most common way to modify the domain model is through Runway's custom XML schema.  This XML allows for developers to intuitively manipulate metadata, which includes creating new metadata definitions, updating and deleting existing definitions, and defining permissions for metadata definitions.  Along these lines the XML is broken up into five major sections: Referencing existing definitions, deleting definitions, creating definitions, updating definitions, and defining permissions.
+The most common way to create metadata is through Runway's custom XML schema.  This XML allows for developers to intuitively manipulate metadata, which includes creating new metadata definitions, updating and deleting existing definitions, and defining permissions for metadata definitions.  Along these lines the XML is broken up into five major sections: Referencing existing definitions, deleting definitions, creating definitions, updating definitions, and defining permissions.
 
-The XML syntax for creating a new definition and updating an existing definition are (almost) identical.  The <create> tag is used to create a new definition while the <update> tag is used to update existing definitions.  There are a few key differences between creates and updates, however we will go into this later. First let us take a look at creating new definitions.
+The XML syntax for creating a new definition and updating an existing definition are (almost) identical.  The `create` tag is used to create a new definition while the `update` tag is used to update existing definitions.  There are a few key differences between creates and updates, however we will go into this later.
+
+## Creating an MdBusiness
+
+The following XML defines a new type of User called a GeoprismUser. Because users in Runway are defined via an MdBusiness, they can be extended to create custom user types that more accurately reflect the needs of the application.
+
+```
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdBusiness name="net.geoprism.GeoprismUser" label="User" extends="com.runwaysdk.system.Users">
+        <attributes>
+          <char name="firstName" label="First name" size="255" required="true" />
+          <char name="lastName" label="Last name" size="255" required="true" />
+          <char name="phoneNumber" label="Phone number" size="255" required="false" />
+          <char name="email" label="Email" size="255" required="true" />
+        </attributes>
+      </mdBusiness>
+    </create>
+  </doIt>
+  <undoIt>
+    <delete>
+      <object key="net.geoprism.GeoprismUser" type="com.runwaysdk.system.metadata.MdBusiness" />
+    </delete>
+  </undoIt>
+</version>
+```
+
+Lets break down this XML line by line.
+
+## The version tag
 
 All metadata files start with this line:
 
@@ -21,7 +51,7 @@ All metadata files start with this line:
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 ```
 
-The `version` tag lets us know that we are defining verisoned metadata. The `xsi:noNamespaceSchemaLocation` attribute is a little complicated, [click here](#classpathNotation) for more information, but in general you can leave it as is. The `xmlns:xsi` attribute defines the XML format for the w3 standard we will be using. You don't need to change this either. 
+The `version` tag lets us know that we are defining verisoned metadata and is associated with the particular Runway importer we will be using ([com.runwaysdk.dataaccess.io.Versioning](https://github.com/terraframe/Runway-SDK/blob/master/runwaysdk-server/src/main/java/com/runwaysdk/dataaccess/io/Versioning.java)).
 
 
 ## The classpath notation {#classpathNotation}
@@ -43,6 +73,27 @@ xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/terraframe/Runw
 ```
 
 As a workaround for development, but when the file is committed you should use the classpath notation.
+
+
+## doIt and undoIt
+
+```
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+     ...
+    </create>
+  </doIt>
+  <undoIt>
+    <delete>
+     ...
+    </delete>
+  </undoIt>
+```
+
+An XML schema can be either imported or unimported. The `doIt` tag defines what happens when the schema is imported. The `undoIt` tag defines what happens when the schema is unimported. Thus, the `doIt` section defines the domain for whatever feature you are implementing, and the `undoIt` section removes the feature. This is useful in a development context because your feature is in a state of flux. If the metadata already exists in the database from the last time you imported this schema, you must first delete all the metadata before you can import the schema again to redefine your model.
+
+As you progress in experience writing schema files, you may be tempted to ignore the `undoIt` section and simply comment out metadata that already exists, allowing you to skip unimporting the schema and running the import again (with only that which has changed). Resist the urge to do this! When the time comes to finally commit your metadata file, you will have never run the schema file in its entirety, which means you are committing untested code. In addition, you will start to lose track of the actual state of your database. All of these things will cost you time. Get in the good habit now of writing your `undoIt` section along-side your `doIt` code.
 
 
 ## File conventions

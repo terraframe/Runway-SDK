@@ -68,7 +68,7 @@ entries:
       url: /mydoc_metadata_getting_started.html
       output: web, pdf
       
-    - title: Basic authoring
+    - title: Defining metadata through XML
       url: /mydoc_metadata_authoring.html
       output: web, pdf
     

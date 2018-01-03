@@ -3,9 +3,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="This shows a sample layout for a knowledge base. Each square could link to a tag archive page. In this example, font icons from Font Awesome are used for the...">
-<meta name="keywords" content="special_layouts,  knowledge base, support portal, grid, doc portal">
-<title>Knowledge-base layout | Runway SDK documentation</title>
+<meta name="description" content="Covers the basics of patching metadata in Runway">
+<meta name="keywords" content="metadatapatching,  terraframe, runway, metadata">
+<title>Basic Authoring | Runway SDK documentation</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -129,7 +129,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Knowledge-base layout page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Basic Authoring page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -147,7 +147,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Knowledge-base layout">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Basic Authoring">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -252,7 +252,7 @@
             
             
             
-            <li><a href="mydoc_metadata_patching.html">Patching</a></li>
+            <li class="active"><a href="mydoc_metadata_patching.html">Patching</a></li>
             
             
             
@@ -306,7 +306,7 @@
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Knowledge-base layout</h1>
+   <h1 class="post-title-main">Basic Authoring</h1>
 </div>
 
 
@@ -314,498 +314,42 @@
 <div class="post-content">
 
    
-    <div class="summary">This shows a sample layout for a knowledge base. Each square could link to a tag archive page. In this example, font icons from Font Awesome are used for the graphics, and the layout is pulled from the Modern Business theme. .</div>
+    <div class="summary">Covers the basics of patching metadata in Runway</div>
    
 
     
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
 
 
     
 
-    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_kb_layout.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_metadata_patching.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
 
     
 
-  <p>Here’s the sample knowledge-base style layout:</p>
-
-<div class="row">
-         <div class="col-lg-12">
-             <h2 class="page-header">Knowledge Base Categories</h2>
-         </div>
-         <div class="col-md-3 col-sm-6">
-             <div class="panel panel-default text-center">
-                 <div class="panel-heading">
-                     <span class="fa-stack fa-5x">
-                           <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                           <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
-                     </span>
-                 </div>
-                 <div class="panel-body">
-                     <h4>Getting started</h4>
-                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                     <a href="tag_getting_started.html" class="btn btn-primary">Learn More</a>
-                 </div>
-             </div>
-         </div>
-         <div class="col-md-3 col-sm-6">
-             <div class="panel panel-default text-center">
-                 <div class="panel-heading">
-                     <span class="fa-stack fa-5x">
-                           <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                           <i class="fa fa-car fa-stack-1x fa-inverse"></i>
-                     </span>
-                 </div>
-                 <div class="panel-body">
-                     <h4>Navigation</h4>
-                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                     <a href="tag_navigation.html" class="btn btn-primary">Learn More</a>
-                 </div>
-             </div>
-         </div>
-         <div class="col-md-3 col-sm-6">
-             <div class="panel panel-default text-center">
-                 <div class="panel-heading">
-                     <span class="fa-stack fa-5x">
-                           <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                           <i class="fa fa-support fa-stack-1x fa-inverse"></i>
-                     </span>
-                 </div>
-                 <div class="panel-body">
-                     <h4>Single sourcing</h4>
-                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                     <a href="tag_single_sourcing.html" class="btn btn-primary">Learn More</a>
-                 </div>
-             </div>
-         </div>
-         <div class="col-md-3 col-sm-6">
-             <div class="panel panel-default text-center">
-                 <div class="panel-heading">
-                     <span class="fa-stack fa-5x">
-                           <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                           <i class="fa fa-database fa-stack-1x fa-inverse"></i>
-                     </span>
-                 </div>
-                 <div class="panel-body">
-                     <h4>Formatting</h4>
-                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                     <a href="tag_formatting.html" class="btn btn-primary">Learn More</a>
-                 </div>
-             </div>
-         </div>
-</div>
-
-<h2 id="generating-a-list-of-all-pages-with-a-certain-tag">Generating a list of all pages with a certain tag</h2>
-
-<p>If you don’t want to link to a tag archive index, but instead want to list all pages that have a certain tag, you could use this code:</p>
-
-<div class="language-html highlighter-rouge"><pre class="highlight"><code>Getting started pages:
-<span class="nt">&lt;ul&gt;</span>
-{% assign sorted_pages = (site.pages | sort: 'title') %}
-{% for page in sorted_pages %}
-{% for tag in page.tags %}
-{% if tag == "getting_started" %}
-<span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"{{ page.url | remove: "</span><span class="err">/"</span> <span class="err">}}"</span><span class="nt">&gt;</span>{{page.title}}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-{% endif %}
-{% endfor %}
-{% endfor %}
-<span class="nt">&lt;/ul&gt;</span>
-</code></pre>
-</div>
-
-<p>Here’s the result:</p>
-
-<p>Getting started pages:</p>
-
-<ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_about_ruby_gems_etc.html">About Ruby, Gems, Bundler, and other prerequisites</a></li>
-
-
-
-
-
-
-
-<li><a href="mydoc_about.html">About the team</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_getting_started.html">Getting started with GeoPrism</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_install_geoprism_on_mac.html">Install GeoPrism on Mac</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_pages.html">Pages</a></li>
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_posts.html">Posts</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_release_notes.html">Release notes</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_sidebar_navigation.html">Sidebar Navigation</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_support.html">Support</a></li>
-
-
-
-
-
-
-
-<li><a href="mydoc_supported_features.html">Supported features</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</ul>
+  <h2 id="overview">Overview</h2>
 
 
 
@@ -815,7 +359,7 @@
         
         
         
-        <a href="tag_special_layouts.html" class="btn btn-default navbar-btn cursorNorm" role="button">special_layouts</a>
+        
         
         
         
@@ -831,7 +375,7 @@
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2018 TerraFrame. All rights reserved. <br />
-<span>Page last updated:</span> July 3, 2016<br/> Site last generated: Jan 3, 2018 <br />
+<span>Page last updated:</span> December 21, 2017<br/> Site last generated: Jan 3, 2018 <br />
 <p>
 <!--
 <img src="images/company_logo.png" alt="Company logo"/>

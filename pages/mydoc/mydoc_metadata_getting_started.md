@@ -3,7 +3,7 @@ title: Introduction to Runway metadata
 keywords: terraframe, runway, mdbusiness
 last_updated: December 21, 2017
 tags: [mdbusiness]
-summary: "Covers topics of model driven engineering and the theory of metadata"
+summary: "Covers the basics of Runway metadata"
 sidebar: mydoc_sidebar
 permalink: mydoc_metadata_getting_started.html
 folder: mydoc
@@ -11,17 +11,10 @@ folder: mydoc
 
 ## Overview
 
-When your domain is written down and formalized using Runway SDK's revolutionary xml syntax, it can be better managed and maintained and it serves as a single point of truth across your application. A single xml tag can tell Runway to automatically create for you:
+Metadata is a term that simply means 'data about data'. In the context of Runway, metadata refers to data which describes the structure of your data. This metadata is stored in the database, primarily in the form of MdBusiness and MdAttributes. These two types can be thought of as the building blocks of your domain, which in turn is the building block of your entire application. To oversimplify, an MdBusiness can be thought of as the database table and MdAttributes are the columns.
 
-* A table in the database with the appropriate columns.
-* Generated Java stub and base classes across both client and server including RMI communication infrastructure which separates presentation and business tiers
-* Generated Java query classes to make retrieving your data easy
+MdAttribute is subclassed by metadata types which mirror all of your standard computer science data types. For example, there exists MdAttributeBoolean for defining a boolean type, MdAttributeInteger for defining an integer, etc. When an MdAttribute is applied to an MdBusiness, that piece of data becomes available throughout the entire stack. Getters and setters are generated at the Java level and the appropriate column(s) are automatically created in your database. In addition, type safety is enforced. If for some reason an integer is attempted to be set to a boolean, Runway will throw a localizable error. There is also some additional constraints you can enforce. For example, you can specify that your integers must always be positive. All of this logic is handled by Runway in a clean, structured way so that you don't have to repeat these rules time and time again. This is the benefit of metadata.
 
-And because your generated domain classes automatically extend Runway core classes, your domain classes expose a wealth of out-of-the-box functionality like:
-
-* The 'apply' method. Simply call apply on an instance of your domain class and it will save the instance as a row in your generated table.
-* 'lock' or 'applock' which is required when updating existing data to ensure data integrity
-* Attribute getters/setters which allow you to read/modify the columns of your database record.
-* 'delete' which removes the row from the database. Runway performs lots of validation for you to ensure data integrity.
+Over time, you will begin to see the full picture of how much reusable logic is contained within Runway.
 
 {% include links.html %}

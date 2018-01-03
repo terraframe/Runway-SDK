@@ -3,9 +3,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="This shows a sample layout for a knowledge base. Each square could link to a tag archive page. In this example, font icons from Font Awesome are used for the...">
-<meta name="keywords" content="special_layouts,  knowledge base, support portal, grid, doc portal">
-<title>Knowledge-base layout | Runway SDK documentation</title>
+<meta name="description" content="Covers the basics of defining metadata in Runway via XML">
+<meta name="keywords" content="metadata,  terraframe, runway, metadata">
+<title>Defining metadata through XML | Runway SDK documentation</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -129,7 +129,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Knowledge-base layout page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Defining metadata through XML page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -147,7 +147,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Knowledge-base layout">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Defining metadata through XML">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -224,7 +224,7 @@
             
             
             
-            <li><a href="mydoc_metadata_authoring.html">Defining metadata through XML</a></li>
+            <li class="active"><a href="mydoc_metadata_authoring.html">Defining metadata through XML</a></li>
             
             
             
@@ -306,7 +306,7 @@
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Knowledge-base layout</h1>
+   <h1 class="post-title-main">Defining metadata through XML</h1>
 </div>
 
 
@@ -314,498 +314,134 @@
 <div class="post-content">
 
    
-    <div class="summary">This shows a sample layout for a knowledge base. Each square could link to a tag archive page. In this example, font icons from Font Awesome are used for the graphics, and the layout is pulled from the Modern Business theme. .</div>
+    <div class="summary">Covers the basics of defining metadata in Runway via XML</div>
    
 
     
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
 
 
     
 
-    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_kb_layout.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_metadata_authoring.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
 
     
 
-  <p>Here’s the sample knowledge-base style layout:</p>
+  <h2 id="overview">Overview</h2>
 
-<div class="row">
-         <div class="col-lg-12">
-             <h2 class="page-header">Knowledge Base Categories</h2>
-         </div>
-         <div class="col-md-3 col-sm-6">
-             <div class="panel panel-default text-center">
-                 <div class="panel-heading">
-                     <span class="fa-stack fa-5x">
-                           <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                           <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
-                     </span>
-                 </div>
-                 <div class="panel-body">
-                     <h4>Getting started</h4>
-                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                     <a href="tag_getting_started.html" class="btn btn-primary">Learn More</a>
-                 </div>
-             </div>
-         </div>
-         <div class="col-md-3 col-sm-6">
-             <div class="panel panel-default text-center">
-                 <div class="panel-heading">
-                     <span class="fa-stack fa-5x">
-                           <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                           <i class="fa fa-car fa-stack-1x fa-inverse"></i>
-                     </span>
-                 </div>
-                 <div class="panel-body">
-                     <h4>Navigation</h4>
-                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                     <a href="tag_navigation.html" class="btn btn-primary">Learn More</a>
-                 </div>
-             </div>
-         </div>
-         <div class="col-md-3 col-sm-6">
-             <div class="panel panel-default text-center">
-                 <div class="panel-heading">
-                     <span class="fa-stack fa-5x">
-                           <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                           <i class="fa fa-support fa-stack-1x fa-inverse"></i>
-                     </span>
-                 </div>
-                 <div class="panel-body">
-                     <h4>Single sourcing</h4>
-                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                     <a href="tag_single_sourcing.html" class="btn btn-primary">Learn More</a>
-                 </div>
-             </div>
-         </div>
-         <div class="col-md-3 col-sm-6">
-             <div class="panel panel-default text-center">
-                 <div class="panel-heading">
-                     <span class="fa-stack fa-5x">
-                           <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                           <i class="fa fa-database fa-stack-1x fa-inverse"></i>
-                     </span>
-                 </div>
-                 <div class="panel-body">
-                     <h4>Formatting</h4>
-                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                     <a href="tag_formatting.html" class="btn btn-primary">Learn More</a>
-                 </div>
-             </div>
-         </div>
-</div>
+<p>The most common way to create metadata is through Runway’s custom XML schema.  This XML allows for developers to intuitively manipulate metadata, which includes creating new metadata definitions, updating and deleting existing definitions, and defining permissions for metadata definitions.  Along these lines the XML is broken up into five major sections: Referencing existing definitions, deleting definitions, creating definitions, updating definitions, and defining permissions.</p>
 
-<h2 id="generating-a-list-of-all-pages-with-a-certain-tag">Generating a list of all pages with a certain tag</h2>
+<p>The XML syntax for creating a new definition and updating an existing definition are (almost) identical.  The <code class="highlighter-rouge">create</code> tag is used to create a new definition while the <code class="highlighter-rouge">update</code> tag is used to update existing definitions.  There are a few key differences between creates and updates, however we will go into this later.</p>
 
-<p>If you don’t want to link to a tag archive index, but instead want to list all pages that have a certain tag, you could use this code:</p>
+<h2 id="creating-an-mdbusiness">Creating an MdBusiness</h2>
 
-<div class="language-html highlighter-rouge"><pre class="highlight"><code>Getting started pages:
-<span class="nt">&lt;ul&gt;</span>
-{% assign sorted_pages = (site.pages | sort: 'title') %}
-{% for page in sorted_pages %}
-{% for tag in page.tags %}
-{% if tag == "getting_started" %}
-<span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"{{ page.url | remove: "</span><span class="err">/"</span> <span class="err">}}"</span><span class="nt">&gt;</span>{{page.title}}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-{% endif %}
-{% endfor %}
-{% endfor %}
-<span class="nt">&lt;/ul&gt;</span>
+<p>The following XML defines a new type of User called a GeoprismUser. Because users in Runway are defined via an MdBusiness, they can be extended to create custom user types that more accurately reflect the needs of the application.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;doIt&gt;
+    &lt;create&gt;
+      &lt;mdBusiness name="net.geoprism.GeoprismUser" label="User" extends="com.runwaysdk.system.Users"&gt;
+        &lt;attributes&gt;
+          &lt;char name="firstName" label="First name" size="255" required="true" /&gt;
+          &lt;char name="lastName" label="Last name" size="255" required="true" /&gt;
+          &lt;char name="phoneNumber" label="Phone number" size="255" required="false" /&gt;
+          &lt;char name="email" label="Email" size="255" required="true" /&gt;
+        &lt;/attributes&gt;
+      &lt;/mdBusiness&gt;
+    &lt;/create&gt;
+  &lt;/doIt&gt;
+  &lt;undoIt&gt;
+    &lt;delete&gt;
+      &lt;object key="net.geoprism.GeoprismUser" type="com.runwaysdk.system.metadata.MdBusiness" /&gt;
+    &lt;/delete&gt;
+  &lt;/undoIt&gt;
+&lt;/version&gt;
 </code></pre>
 </div>
 
-<p>Here’s the result:</p>
+<p>Lets break down this XML line by line.</p>
 
-<p>Getting started pages:</p>
+<h2 id="the-version-tag">The version tag</h2>
 
-<ul>
+<p>All metadata files start with this line:</p>
 
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+</code></pre>
+</div>
 
+<p>The <code class="highlighter-rouge">version</code> tag lets us know that we are defining verisoned metadata and is associated with the particular Runway importer we will be using (<a href="https://github.com/terraframe/Runway-SDK/blob/master/runwaysdk-server/src/main/java/com/runwaysdk/dataaccess/io/Versioning.java">com.runwaysdk.dataaccess.io.Versioning</a>).</p>
 
+<h2 id="classpathNotation">The classpath notation</h2>
 
+<p>At the top of every schema file you will see this:</p>
 
+<div class="highlighter-rouge"><pre class="highlight"><code>xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd"
+</code></pre>
+</div>
 
+<p>The <code class="highlighter-rouge">xsi:noNamespaceSchemaLocation</code> is a standard way in XML to define an XSD schema definition, which we set to our <code class="highlighter-rouge">version.xsd</code> file. However, <code class="highlighter-rouge">classpath:</code> is non-standard, and is a concept we created. This allows us to read the XSD schema from the classpath. Our XSD schema file is included within the runway server jar. You can view this file on the web here:</p>
 
+<p><a href="https://raw.githubusercontent.com/terraframe/Runway-SDK/master/runwaysdk-server/src/main/resources/com/runwaysdk/resources/xsd/version.xsd">https://raw.githubusercontent.com/terraframe/Runway-SDK/master/runwaysdk-server/src/main/resources/com/runwaysdk/resources/xsd/version.xsd</a></p>
 
+<p>This custom classpath modifier has many advantages when used at runtime, however IDE’s like Eclipse cannot read the XSD file to provide auto-complete. You can place this URL into the <code class="highlighter-rouge">xsi:noNamespaceSchemaLocation</code> attribute like so:</p>
 
+<div class="highlighter-rouge"><pre class="highlight"><code>xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/terraframe/Runway-SDK/master/runwaysdk-server/src/main/resources/com/runwaysdk/resources/xsd/version.xsd"
+</code></pre>
+</div>
 
+<p>As a workaround for development, but when the file is committed you should use the classpath notation.</p>
 
+<h2 id="doit-and-undoit">doIt and undoIt</h2>
 
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;doIt&gt;
+    &lt;create&gt;
+     ...
+    &lt;/create&gt;
+  &lt;/doIt&gt;
+  &lt;undoIt&gt;
+    &lt;delete&gt;
+     ...
+    &lt;/delete&gt;
+  &lt;/undoIt&gt;
+</code></pre>
+</div>
 
+<p>An XML schema can be either imported or unimported. The <code class="highlighter-rouge">doIt</code> tag defines what happens when the schema is imported. The <code class="highlighter-rouge">undoIt</code> tag defines what happens when the schema is unimported. Thus, the <code class="highlighter-rouge">doIt</code> section defines the domain for whatever feature you are implementing, and the <code class="highlighter-rouge">undoIt</code> section removes the feature. This is useful in a development context because your feature is in a state of flux. If the metadata already exists in the database from the last time you imported this schema, you must first delete all the metadata before you can import the schema again to redefine your model.</p>
 
+<p>As you progress in experience writing schema files, you may be tempted to ignore the <code class="highlighter-rouge">undoIt</code> section and simply comment out metadata that already exists, allowing you to skip unimporting the schema and running the import again (with only that which has changed). Resist the urge to do this! When the time comes to finally commit your metadata file, you will have never run the schema file in its entirety, which means you are committing untested code. In addition, you will start to lose track of the actual state of your database. All of these things will cost you time. Get in the good habit now of writing your <code class="highlighter-rouge">undoIt</code> section along-side your <code class="highlighter-rouge">doIt</code> code.</p>
 
+<h2 id="file-conventions">File conventions</h2>
 
+<p>Metadata is typically stored at the path ‘src/main/domain’ in the server project. In this directory you will see a list of files with an unusual naming convention. As an example:</p>
 
+<div class="highlighter-rouge"><pre class="highlight"><code>(0001466352372715)CategoryIconImage.xml
+</code></pre>
+</div>
 
-
-
-
-
-<li><a href="mydoc_about_ruby_gems_etc.html">About Ruby, Gems, Bundler, and other prerequisites</a></li>
-
-
-
-
-
-
-
-<li><a href="mydoc_about.html">About the team</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_getting_started.html">Getting started with GeoPrism</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_install_geoprism_on_mac.html">Install GeoPrism on Mac</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_pages.html">Pages</a></li>
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_posts.html">Posts</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_release_notes.html">Release notes</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_sidebar_navigation.html">Sidebar Navigation</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="mydoc_support.html">Support</a></li>
-
-
-
-
-
-
-
-<li><a href="mydoc_supported_features.html">Supported features</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</ul>
+<p>The number enclosed within the parenthesis is a timestamp, generated by Runway. We like to put it first because when you view the files alphabetically (as is default in eclipse or a filesystem navigator) the files are ordered by their creation date. The second part, ‘CategoryIconImage’ is a name that you the developer create to describe the feature or grouping of features that this metadata schema contains. When the schemas are processed by Runway, the timestamp must be isolated from the filename. Runway uses a regex expression to do this. This regex expression can be found in TimestampFile.java, and although your timestamp must be numbers, your description can be alpanumeric characters as well as dashes, underscores, periods and whitespaces.</p>
 
 
 
@@ -814,8 +450,6 @@
         <b>Tags: </b>
         
         
-        
-        <a href="tag_special_layouts.html" class="btn btn-default navbar-btn cursorNorm" role="button">special_layouts</a>
         
         
         
@@ -831,7 +465,7 @@
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2018 TerraFrame. All rights reserved. <br />
-<span>Page last updated:</span> July 3, 2016<br/> Site last generated: Jan 3, 2018 <br />
+<span>Page last updated:</span> December 21, 2017<br/> Site last generated: Jan 3, 2018 <br />
 <p>
 <!--
 <img src="images/company_logo.png" alt="Company logo"/>

@@ -369,11 +369,11 @@
 
 
 {
-"title": "Basic Authoring",
+"title": "Defining metadata through XML",
 "tags": "metadata",
 "keywords": "terraframe, runway, metadata",
 "url": "mydoc_metadata_authoring.html",
-"summary": "Covers the basics of authoring metadata in Runway"
+"summary": "Covers the basics of defining metadata in Runway via XML"
 }
 ,
 
@@ -384,7 +384,7 @@
 "tags": "mdbusiness",
 "keywords": "terraframe, runway, mdbusiness",
 "url": "mydoc_metadata_getting_started.html",
-"summary": "Covers topics of model driven engineering and the theory of metadata"
+"summary": "Covers the basics of Runway metadata"
 }
 ,
 
