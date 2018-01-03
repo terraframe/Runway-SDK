@@ -3,9 +3,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="keywords" content=" ">
-<title>Single sourcing pages | Runway SDK documentation</title>
+<meta name="description" content="Covers the basics of using localization in Runway">
+<meta name="keywords" content="metadata,  terraframe, runway, localization">
+<title>Introduction to localization | Runway SDK documentation</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -129,7 +129,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Single sourcing pages page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Introduction to localization page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -147,7 +147,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Single sourcing pages">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Introduction to localization">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -261,7 +261,7 @@
             
             
             
-            <li><a href="mydoc_localization_introduction.html">Introduction</a></li>
+            <li class="active"><a href="mydoc_localization_introduction.html">Introduction</a></li>
             
             
             
@@ -285,13 +285,15 @@
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Single sourcing pages</h1>
+   <h1 class="post-title-main">Introduction to localization</h1>
 </div>
 
 
 
 <div class="post-content">
 
+   
+    <div class="summary">Covers the basics of using localization in Runway</div>
    
 
     
@@ -322,443 +324,45 @@ $('#toc').on('click', 'a', function() {
 
     
 
-    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/tags/tag_single_sourcing.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_localization_introduction.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
 
     
 
-  <p>The following pages and posts are tagged with <button type="button" style="cursor: default" class="btn btn-default navbar-btn">single_sourcing</button></p>
-<table><thead><tr><th>Title</th><th>Type</th><th>Excerpt</th></tr></thead>
-    <tbody>
-    
-  
-    
-   
-    
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
+  <h2 id="overview">Overview</h2>
 
-        <tr><td><a href="mydoc_conditional_logic.html">Conditional logic</a></td>
-            <td><span class="label label-default">Page</span></td>
-          <td> You can implement advanced conditional logic that includes if statements, or statements, unless, and more. This conditional logic facilitates single sourcing... </td>
-        </tr>
-        
-     
-   
-    
-        
+<p>Runway metadata provides a built-in, enterprise ready localization solution. Defining a default value is as simple as setting the <code class="highlighter-rouge">label</code> attribute on a metadata component:</p>
 
-        <tr><td><a href="mydoc_content_reuse.html">Content reuse</a></td>
-            <td><span class="label label-default">Page</span></td>
-          <td> You can reuse chunks of content by storing these files in the includes folder. You then choose to include the file where you need it. This works similar to c... </td>
-        </tr>
-        
-     
-   
-    
-        
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;mdBusiness name="net.geoprism.GeoprismUser" label="User" ...
+</code></pre>
+</div>
 
-        <tr><td><a href="mydoc_exluding_files.html">Excluding files</a></td>
-            <td><span class="label label-default">Page</span></td>
-          <td> By default, all the files in your Jekyll project are included in the output (this differs from DITA projects, which don't include files unless noted on the m... </td>
-        </tr>
-        
-     
-   
-    
-        
-     
-   
-    
-   
-    
-        
-     
-        
+<p>This label can then be read from the metadata:</p>
 
-        <tr><td><a href="mydoc_generating_pdfs.html">Generating PDFs</a></td>
-            <td><span class="label label-default">Page</span></td>
-          <td> You can generate a PDF from your Jekyll project. You do this by creating a web version of your project that is printer friendly. You then use utility called ... </td>
-        </tr>
-        
-     
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-        
-     
-   
-    
-        
-     
-        
+<div class="highlighter-rouge"><pre class="highlight"><code>MdBusiness userMdBiz = MdBusiness.getMdBusiness("net.geoprism.GeoprismUser");
 
-        <tr><td><a href="mydoc_help_api.html">Help APIs and UI tooltips</a></td>
-            <td><span class="label label-default">Page</span></td>
-          <td> You can loop through files and generate a JSON file that developers can consume like a help API. Developers can pull in values from the JSON into interface e... </td>
-        </tr>
-        
-     
-        
-     
-   
-    
-        
-     
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-   
-    
-        
-     
-        
-     
-   
-    
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-        
-     
-   
-    
-        
-     
-        
-     
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-        
-     
-        
-     
-   
-    
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-        
-     
-   
-    
-        
-     
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-   
-    
-        
-     
-   
-    
-        
-     
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
-    
-   
+userMdBiz.getDisplayLabel().getDefaultValue();
+</code></pre>
+</div>
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+<p>Display labels can be thought of as a sort of hash map where the key is the Locale and the value is the localized label for that locale. The example above writes and reads from the default locale. Other locales can be written to and read from like so:</p>
 
-   </tbody>
-</table>
+<div class="highlighter-rouge"><pre class="highlight"><code>MdBusiness userMdBiz = MdBusiness.getMdBusiness("net.geoprism.GeoprismUser");
+
+userMdBiz.getDisplayLabel().setValue(Locale.CANADA, "User");
+
+userMdBiz.getDisplayLabel().getValue(Locale.CANADA);
+</code></pre>
+</div>
 
 
 
     <div class="tags">
+        
+        <b>Tags: </b>
+        
+        
+        
+        
         
     </div>
 
@@ -772,7 +376,7 @@ $('#toc').on('click', 'a', function() {
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2018 TerraFrame. All rights reserved. <br />
- Site last generated: Jan 3, 2018 <br />
+<span>Page last updated:</span> December 21, 2017<br/> Site last generated: Jan 3, 2018 <br />
 <p>
 <!--
 <img src="images/company_logo.png" alt="Company logo"/>

@@ -402,6 +402,17 @@
 
 
 {
+"title": "Reading metadata at runtime",
+"tags": "metadata",
+"keywords": "terraframe, runway, metadata",
+"url": "mydoc_metadata_java_reading.html",
+"summary": "Some examples of how to read metadata at runtime using Java"
+}
+,
+
+
+
+{
 "title": "Patching",
 "tags": "metadatapatching",
 "keywords": "terraframe, runway, metadata",

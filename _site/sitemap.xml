@@ -244,6 +244,12 @@
   
   
   <url>
+    <loc>http://localhost:4000/mydoc_metadata_java_reading.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://localhost:4000/mydoc_metadata_patching.html</loc>
   </url>
   
