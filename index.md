@@ -23,7 +23,7 @@ Runway provides the foundation for your application. When your application's dom
 * Can read and modify their domain model at runtime.
 * and more ...
 
-## The power of metadata
+## The Power of Metadata
 
 In Runway SDK, an entire domain model can be created, updated, and deleted all within a transaction at runtime, providing a capability that makes it ideal for dynamic applications where the domain model needs to be formally managed but cannot be defined programmatically or up-front. In addition, an executable implementation of the domain model at all levels of the software stack is generated with intelligent defaults and automatically kept in-sync with the model definition at runtime. By generating and maintaining an API for interacting with the domain model, developers have an abstraction across the entire software stack, including database tables, object oriented classes, and JavaScript classes with which they can implement business domain rules and enforce business integrity constraints. This increases developer productivity and helps ensure data integrity.
 
@@ -37,7 +37,7 @@ All applications utilize domain models, regardless of whether they are formally 
 
 Runway SDK was built from the ground up to use the MDE paradigm, which treats classes, class attributes, and associations in a domain model as first-order objects through an expressive metamodel API to dynamically manage models and to formally define data integrity and access constraints. This is ideal for applications that require a formal abstraction to manage a dynamic domain model where the datasets modeled in the application cannot be known and programmed up-front and need to continually change. For example, data analysis and integration applications work with datasets that are introduced at runtime, such as spreadsheets and database tables, and those applications needs a formal method, such as the metamodel, for modeling their metadata dynamically. Users also have the ability to define new dataset types on the fly, to specify data integrity constraints on those types, and to specify what user roles are allowed to perform operations on them. The users themselves at runtime are defining and modifying dataset definitions according to the needs of the application. An executable implementation of the model is generated to both decrease software development time and also ensure correctness.
 
-## Model transactions and versioning
+## Model Transactions and Versioning
 
 In Runway SDK, model definitions can be created, updated, and deleted within a single transaction, including all generated code artifacts. This means that, when importing a new model definition into the application consisting of several class, attribute, and association definitions, the entire transaction will rollback should an error occur and not leave the application in a corrupted state. Source code and even changes to database tables are rolled back. This capability is provided out of the box to provide version update and patch management of the domain model for enterprise applications.
 
