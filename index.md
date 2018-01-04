@@ -9,17 +9,17 @@ summary: Runway SDK is an enterprise, data intelligence web application framewor
 
 ## Overview
 
-Runway SDK is a model-driven engineering (MDE) software development toolkit for building robust and scalable enterprise applications faster, better, and cheaper. Runway SDK was designed from day one to manage the complexity of enterprise applications, such as ERP, with large business domain models, complex integrity rules, and stringent data governance requirements.
+Runway SDK® is a model-driven engineering (MDE) software development toolkit for building robust and scalable enterprise applications faster, better, and cheaper. Runway SDK was designed from day one to manage the complexity of enterprise applications, such as Enterprise Resource Planning (ERP), with large business domain models, complex integrity rules, and stringent data governance requirements.
 
-Runway provides the foundation that the rest of your application is built upon. When your application's domain model is defined using the concepts provided by Runway, you are leveraging decades of industry expertise and gently guided into doing things in scalable, efficient, reusable ways. Applications built using Runway SDK:
+Runway provides the foundation for your application. When your application's domain model is defined using the concepts provided by Runway, you are leveraging decades of industry expertise and gently guided into doing things in scalable, efficient, reusable ways. Applications built using Runway SDK:
 
 * Play nice with others. Your data is stored using predictable, globally unique ids. This makes sharing data between different applications a breeze.
 * Support a variety of different front-ends. Want to provide access to your app through both mobile and web interfaces? No problem.
-* Can define the entire lifecycle of a transaction with a single annotation
+* Define the entire lifecycle of a transaction with a single annotation.
 * Have robust security models via role-based access control.
-* Are able to leverage advanced relationship modeling and ontological features.
+* Leverage advanced relationship modeling and ontological features.
 * Make GIS easy with industry proven, cutting-edge techniques.
-* Have access to Runway's built-in ORM which makes advanced queries simple and intuitive.
+* Have access to Runway's built-in object relational mapping (ORM) which makes advanced queries simple and intuitive.
 * Can read and modify their domain model at runtime.
 * .. and more ..
 
