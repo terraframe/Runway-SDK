@@ -28,11 +28,11 @@ entries:
       output: web, pdf
       type: homepage
 
-    - title: Our manifesto
+    - title: Our Manifesto
       url: /mydoc_manifesto.html
       output: web, pdf
 
-    - title: About the team behind Runway SDK
+    - title: About the Team Behind Runway SDK
       url: /mydoc_about.html
       output: web, pdf
 
@@ -72,13 +72,21 @@ entries:
       url: /mydoc_metadata_getting_started.html
       output: web, pdf
       
-    - title: Defining metadata through XML
+    - title: Manipulating Metadata in XML
       url: /mydoc_metadata_authoring.html
       output: web, pdf
       
-    - title: Reading metadata at runtime
+    - title: Manipulating Metadata in Java
       url: /mydoc_metadata_java_reading.html
       output: web, pdf
+      
+    #- title: Data transfer objects (DTO)
+    #  url: /mydoc_metadata_dtos.html
+    #  output: web, pdf
+      
+    #- title: Data access objects (DAO)
+    #  url: /mydoc_metadata_daos.html
+    #  output: web, pdf
     
       #subfolders: 
       #- title: Types of metadata

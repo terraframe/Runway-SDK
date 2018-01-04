@@ -1,9 +1,9 @@
 ---
-title: Defining metadata through XML
+title: Manipulating Metadata in XML
 keywords: terraframe, runway, metadata
 last_updated: December 21, 2017
 tags: [metadata]
-summary: "Covers the basics of defining metadata in Runway via XML"
+summary: "Covers the basics of manipulating metadata in Runway via XML"
 sidebar: mydoc_sidebar
 permalink: mydoc_metadata_authoring.html
 folder: mydoc
@@ -80,6 +80,23 @@ As a workaround for development, but when the file is committed you should use t
 ```
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doIt>
+    ...
+  </doIt>
+  <undoIt>
+    ...
+  </undoIt>
+```
+
+An XML schema can be either imported or unimported. The `doIt` tag defines what happens when the schema is imported. The `undoIt` tag defines what happens when the schema is unimported. Thus, the `doIt` section defines the domain for whatever feature you are implementing, and the `undoIt` section removes the feature. This is useful in a development context because your feature is in a state of flux. If the metadata already exists in the database from the last time you imported this schema, you must first delete all the metadata before you can import the schema again to redefine your model.
+
+As you progress in experience writing schema files, you may be tempted to ignore the `undoIt` section and simply comment out metadata that already exists, allowing you to skip unimporting the schema and running the import again (with only that which has changed). Resist the urge to do this! When the time comes to finally commit your metadata file, you will have never run the schema file in its entirety, which means you are committing untested code. In addition, you will start to lose track of the actual state of your database. All of these things will cost you time. Get in the good habit now of writing your `undoIt` section along-side your `doIt` code.
+
+
+## Import action tags
+
+```
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
     <create>
      ...
     </create>
@@ -91,15 +108,23 @@ As a workaround for development, but when the file is committed you should use t
   </undoIt>
 ```
 
-An XML schema can be either imported or unimported. The `doIt` tag defines what happens when the schema is imported. The `undoIt` tag defines what happens when the schema is unimported. Thus, the `doIt` section defines the domain for whatever feature you are implementing, and the `undoIt` section removes the feature. This is useful in a development context because your feature is in a state of flux. If the metadata already exists in the database from the last time you imported this schema, you must first delete all the metadata before you can import the schema again to redefine your model.
+The import action tag is a required tag that comes immediately after the `doIt` or `undoIt` tag and it specifies what action to perform with the metadata that we're defining. In our GeoprismUser example, we are using the `create` import action tag because we simply want to define new metadata from scratch. In the `undoIt` section, you see an example of the `delete` action, and it functions much the same as the `create` action. Simply place your metadata within the action tag and your action will be performed on the specified metadata.
 
-As you progress in experience writing schema files, you may be tempted to ignore the `undoIt` section and simply comment out metadata that already exists, allowing you to skip unimporting the schema and running the import again (with only that which has changed). Resist the urge to do this! When the time comes to finally commit your metadata file, you will have never run the schema file in its entirety, which means you are committing untested code. In addition, you will start to lose track of the actual state of your database. All of these things will cost you time. Get in the good habit now of writing your `undoIt` section along-side your `doIt` code.
+The `update` tag is however a little different.
 
+## mdBusiness tag
 
-## Create, update, delete
+```
+      <mdBusiness name="net.geoprism.GeoprismUser" label="User" extends="com.runwaysdk.system.Users">
+        <attributes>
+          ...
+        </attributes>
+      </mdBusiness>
+```
 
-The `create` tag just says that we're creating new metadata. This is in contrast to `update`, `createOrUpdate`, `delete` or `permissions`. The most common use-case is to create some metadata in the `doIt`, and then delete that metadata in the `undoIt`. For `update` tags, there may be a `create` tag within the `update` tag.
+The `mdBusiness` tag tells the system that we are referring to an MdBusiness. When inside a `create` action, the system will create a new mdBusiness. During an update, it will be used as context to fetch an MdBusiness to update. Any additional attributes will be updated to their provided values in the XML. The following attributes are available on an `mdBusiness` tag:
 
+An MdBusiness may also include a list of MdAttributes, which is specified via an inner `attributes` tag.
 
 ## File conventions
 
