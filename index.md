@@ -21,7 +21,7 @@ Runway provides the foundation for your application. When your application's dom
 * Make GIS easy with industry proven, cutting-edge techniques.
 * Have access to Runway's built-in object relational mapping (ORM) which makes advanced queries simple and intuitive.
 * Can read and modify their domain model at runtime.
-* .. and more ..
+* and more ...
 
 ## The power of metadata
 
