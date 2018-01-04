@@ -13,7 +13,7 @@ folder: mydoc
 
 One of the biggest strengths of Runway is that the domain model can be manipulated at runtime. One the applications we developed uses this functionality extensively through a robust feature known as the form generator. The DDMS form generator allows users to create MdBusinesses (classes with a business contect) and MdAttributes at runtime for the purpose of exposing new datatypes for collection and reporting. This functionality exists in some of the industry's most popular applications such as SalesForce®.
 
-## Creating metadata
+## Creating Metadata
 
 Suppose you wanted to write your own form generator. To keep things simple, lets assume for now that all they can do is create new datatypes with a name that they are allowed to specify. You may have a method somewhere on the server that looks like this:
 
@@ -39,7 +39,7 @@ The `@Transaction` annotation tells Runway's transaction aspects to weave into t
 
 `apply` tells Runway that our MdBusiness is fully configured and the changes are ready to be applied. Because we are in a transaction, the MdBusiness is added to Runway's transaction cache. At the end of the transaction (which happens at the end of our `createMetadata` method), all changes will be applied. This includes all database changes as well as Java code changes.
 
-## Reading and modifying metadata
+## Reading and Modifying Metadata
 
 The defining MdBusiness of a domain class can be fetched in a single line using the keyname:
 
