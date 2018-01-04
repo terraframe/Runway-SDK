@@ -28,6 +28,10 @@ entries:
       output: web, pdf
       type: homepage
 
+    - title: Our manifesto
+      url: /mydoc_manifesto.html
+      output: web, pdf
+
     - title: About the team behind Runway SDK
       url: /mydoc_about.html
       output: web, pdf
