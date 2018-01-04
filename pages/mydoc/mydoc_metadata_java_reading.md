@@ -33,13 +33,15 @@ The `@Transaction` annotation tells Runway's transaction aspects to weave into t
 
 `setPackageName` is a method that configures the package of your new MdBusiness. Because applying a new MdBusiness generates Java code, all MdBusinesses must have a unique keyname. The keyname of a MdBusiness is the concatenated package name and type name of the format: `packageName` + "." + `typeName`.
 
-`setTypeName` configures the MdBusiness's type name. The type name is the class name of the generated Java type and it also is used when creating your database table.
+`setTypeName` configures the MdBusiness's type name. The type name is the class name of the generated Java type and it also is used when creating your database table. Because the user is specifying the name, I also included `this.convertToTypename`, which is another method we would need to implement to sanitize and convert the user input into something suitable for a Runway typename.
+
+`getDisplayLabel` and `setDefaultValue` sets the default locale of the display label of the MdBusiness. [Click here](/mydoc_localization_introduction.html) to learn more about localization.
 
 `apply` tells Runway that our MdBusiness is fully configured and the changes are ready to be applied. Because we are in a transaction, the MdBusiness is added to Runway's transaction cache. At the end of the transaction (which happens at the end of our `createMetadata` method), all changes will be applied. This includes all database changes as well as Java code changes.
 
 ## Reading and modifying metadata
 
-The defining MdBusiness of a domain class can be fetched in a single line using the fully qualified typename:
+The defining MdBusiness of a domain class can be fetched in a single line using the keyname:
 
 ```
 MdBusiness mdBiz = MdBusiness.getMdBusiness("net.geoprism.GeoprismUser");
