@@ -220,6 +220,12 @@
   
   
   <url>
+    <loc>http://localhost:4000/mydoc_manifesto.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://localhost:4000/mydoc_mdbusiness.html</loc>
   </url>
   
@@ -233,6 +239,18 @@
   
   <url>
     <loc>http://localhost:4000/mydoc_metadata_authoring.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_metadata_daos.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_metadata_dtos.html</loc>
   </url>
   
   

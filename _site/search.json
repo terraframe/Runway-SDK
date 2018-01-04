@@ -358,6 +358,17 @@
 
 
 {
+"title": "Our Software Engineering Manifesto",
+"tags": "manifesto",
+"keywords": "terraframe, gis, manifesto",
+"url": "mydoc_manifesto.html",
+"summary": "Our software engineering manifesto"
+}
+,
+
+
+
+{
 "title": "MdBusiness",
 "tags": "mdbusiness",
 "keywords": "terraframe, runway, mdbusiness",
@@ -380,11 +391,33 @@
 
 
 {
-"title": "Defining metadata through XML",
+"title": "Manipulating Metadata in XML",
 "tags": "metadata",
 "keywords": "terraframe, runway, metadata",
 "url": "mydoc_metadata_authoring.html",
-"summary": "Covers the basics of defining metadata in Runway via XML"
+"summary": "Covers the basics of manipulating metadata in Runway via XML"
+}
+,
+
+
+
+{
+"title": "Introduction to Runway metadata",
+"tags": "dao",
+"keywords": "terraframe, runway, dao",
+"url": "mydoc_metadata_daos.html",
+"summary": "Covers the basics of data access objects"
+}
+,
+
+
+
+{
+"title": "Data transfer objects",
+"tags": "dto",
+"keywords": "terraframe, runway, dto",
+"url": "mydoc_metadata_dtos.html",
+"summary": "Covers the basics of data transfer objects"
 }
 ,
 
@@ -402,11 +435,11 @@
 
 
 {
-"title": "Reading metadata at runtime",
+"title": "Manipulating Metadata in Java",
 "tags": "metadata",
 "keywords": "terraframe, runway, metadata",
 "url": "mydoc_metadata_java_reading.html",
-"summary": "Some examples of how to read metadata at runtime using Java"
+"summary": "Some examples of how to manipulate metadata using Java"
 }
 ,
 

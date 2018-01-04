@@ -11,13 +11,15 @@ folder: mydoc
 
 ## Overview
 
-The most common way to create metadata is through Runway's custom XML schema.  This XML allows for developers to intuitively manipulate metadata, which includes creating new metadata definitions, updating and deleting existing definitions, and defining permissions for metadata definitions.  Along these lines the XML is broken up into five major sections: Referencing existing definitions, deleting definitions, creating definitions, updating definitions, and defining permissions.
+The most common way to create metadata is through Runway's custom XML schema.  This XML allows for developers to intuitively manipulate metadata, which includes creating new metadata definitions, updating and deleting existing definitions, and defining permissions for metadata definitions.  Along these lines the XML is broken up into five major sections: Referencing existing definitions, deleting definitions, creating definitions, updating definitions, and defining permissions. 
+
+It is important to understand that the XML is not the final definition of the model, but rather an input mechanism with syntax for managing the lifecyle of the domain model. Unlike raw DML SQL, the XML syntax covers transitions between model versions that migrate both generated source code and database schemas (if applicable) transactionally when imported into Runway SDK. 
 
 The XML syntax for creating a new definition and updating an existing definition are (almost) identical.  The `create` tag is used to create a new definition while the `update` tag is used to update existing definitions.  There are a few key differences between creates and updates, however we will go into this later.
 
-## Creating an MdBusiness
+## Creating a Persisted Class
 
-The following XML defines a new type of User called a GeoprismUser. Because users in Runway are defined via an MdBusiness, they can be extended to create custom user types that more accurately reflect the needs of the application.
+The following XML defines a new type of User called a GeoprismUser. An MdBusiness is a sublass of MdClass to represent classes that are persisted to a relational database with a business-focused workflow. Because users in Runway are defined via an MdBusiness, they can be extended to create custom user types that more accurately reflect the needs of the application.
 
 ```
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -43,7 +45,7 @@ The following XML defines a new type of User called a GeoprismUser. Because user
 
 Lets break down this XML line by line.
 
-## The version tag
+## The Version tag
 
 All metadata files start with this line:
 
@@ -54,7 +56,7 @@ All metadata files start with this line:
 The `version` tag lets us know that we are defining verisoned metadata and is associated with the particular Runway importer we will be using ([com.runwaysdk.dataaccess.io.Versioning](https://github.com/terraframe/Runway-SDK/blob/master/runwaysdk-server/src/main/java/com/runwaysdk/dataaccess/io/Versioning.java)).
 
 
-## The classpath notation {#classpathNotation}
+## The Classpath Notation {#classpathNotation}
 
 At the top of every schema file you will see this:
 
@@ -92,7 +94,7 @@ An XML schema can be either imported or unimported. The `doIt` tag defines what 
 As you progress in experience writing schema files, you may be tempted to ignore the `undoIt` section and simply comment out metadata that already exists, allowing you to skip unimporting the schema and running the import again (with only that which has changed). Resist the urge to do this! When the time comes to finally commit your metadata file, you will have never run the schema file in its entirety, which means you are committing untested code. In addition, you will start to lose track of the actual state of your database. All of these things will cost you time. Get in the good habit now of writing your `undoIt` section along-side your `doIt` code.
 
 
-## Import action tags
+## Import Action Tags
 
 ```
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -112,7 +114,7 @@ The import action tag is a required tag that comes immediately after the `doIt` 
 
 The `update` tag is however a little different.
 
-## mdBusiness tag
+## mdBusiness Tag
 
 ```
       <mdBusiness name="net.geoprism.GeoprismUser" label="User" extends="com.runwaysdk.system.Users">

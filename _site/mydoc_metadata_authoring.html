@@ -3,9 +3,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Covers the basics of defining metadata in Runway via XML">
+<meta name="description" content="Covers the basics of manipulating metadata in Runway via XML">
 <meta name="keywords" content="metadata,  terraframe, runway, metadata">
-<title>Defining metadata through XML | Runway SDK documentation</title>
+<title>Manipulating Metadata in XML | Runway SDK documentation</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -129,7 +129,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Defining metadata through XML page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Manipulating Metadata in XML page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -147,7 +147,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Defining metadata through XML">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Manipulating Metadata in XML">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -202,7 +202,14 @@
             
             
             
-            <li><a href="mydoc_about.html">About the team behind Runway SDK</a></li>
+            <li><a href="mydoc_manifesto.html">Our Manifesto</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_about.html">About the Team Behind Runway SDK</a></li>
             
             
             
@@ -224,14 +231,14 @@
             
             
             
-            <li class="active"><a href="mydoc_metadata_authoring.html">Defining metadata through XML</a></li>
+            <li class="active"><a href="mydoc_metadata_authoring.html">Manipulating Metadata in XML</a></li>
             
             
             
             
             
             
-            <li><a href="mydoc_metadata_java_reading.html">Reading metadata at runtime</a></li>
+            <li><a href="mydoc_metadata_java_reading.html">Manipulating Metadata in Java</a></li>
             
             
             
@@ -285,7 +292,7 @@
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Defining metadata through XML</h1>
+   <h1 class="post-title-main">Manipulating Metadata in XML</h1>
 </div>
 
 
@@ -293,7 +300,7 @@
 <div class="post-content">
 
    
-    <div class="summary">Covers the basics of defining metadata in Runway via XML</div>
+    <div class="summary">Covers the basics of manipulating metadata in Runway via XML</div>
    
 
     
@@ -332,11 +339,13 @@ $('#toc').on('click', 'a', function() {
 
 <p>The most common way to create metadata is through Runway’s custom XML schema.  This XML allows for developers to intuitively manipulate metadata, which includes creating new metadata definitions, updating and deleting existing definitions, and defining permissions for metadata definitions.  Along these lines the XML is broken up into five major sections: Referencing existing definitions, deleting definitions, creating definitions, updating definitions, and defining permissions.</p>
 
+<p>It is important to understand that the XML is not the final definition of the model, but rather an input mechanism with syntax for managing the lifecyle of the domain model. Unlike raw DML SQL, the XML syntax covers transitions between model versions that migrate both generated source code and database schemas (if applicable) transactionally when imported into Runway SDK.</p>
+
 <p>The XML syntax for creating a new definition and updating an existing definition are (almost) identical.  The <code class="highlighter-rouge">create</code> tag is used to create a new definition while the <code class="highlighter-rouge">update</code> tag is used to update existing definitions.  There are a few key differences between creates and updates, however we will go into this later.</p>
 
-<h2 id="creating-an-mdbusiness">Creating an MdBusiness</h2>
+<h2 id="creating-a-persisted-class">Creating a Persisted Class</h2>
 
-<p>The following XML defines a new type of User called a GeoprismUser. Because users in Runway are defined via an MdBusiness, they can be extended to create custom user types that more accurately reflect the needs of the application.</p>
+<p>The following XML defines a new type of User called a GeoprismUser. An MdBusiness is a sublass of MdClass to represent classes that are persisted to a relational database with a business-focused workflow. Because users in Runway are defined via an MdBusiness, they can be extended to create custom user types that more accurately reflect the needs of the application.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
   &lt;doIt&gt;
@@ -362,7 +371,7 @@ $('#toc').on('click', 'a', function() {
 
 <p>Lets break down this XML line by line.</p>
 
-<h2 id="the-version-tag">The version tag</h2>
+<h2 id="the-version-tag">The Version tag</h2>
 
 <p>All metadata files start with this line:</p>
 
@@ -372,7 +381,7 @@ $('#toc').on('click', 'a', function() {
 
 <p>The <code class="highlighter-rouge">version</code> tag lets us know that we are defining verisoned metadata and is associated with the particular Runway importer we will be using (<a href="https://github.com/terraframe/Runway-SDK/blob/master/runwaysdk-server/src/main/java/com/runwaysdk/dataaccess/io/Versioning.java">com.runwaysdk.dataaccess.io.Versioning</a>).</p>
 
-<h2 id="classpathNotation">The classpath notation</h2>
+<h2 id="classpathNotation">The Classpath Notation</h2>
 
 <p>At the top of every schema file you will see this:</p>
 
@@ -396,6 +405,22 @@ $('#toc').on('click', 'a', function() {
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
   &lt;doIt&gt;
+    ...
+  &lt;/doIt&gt;
+  &lt;undoIt&gt;
+    ...
+  &lt;/undoIt&gt;
+</code></pre>
+</div>
+
+<p>An XML schema can be either imported or unimported. The <code class="highlighter-rouge">doIt</code> tag defines what happens when the schema is imported. The <code class="highlighter-rouge">undoIt</code> tag defines what happens when the schema is unimported. Thus, the <code class="highlighter-rouge">doIt</code> section defines the domain for whatever feature you are implementing, and the <code class="highlighter-rouge">undoIt</code> section removes the feature. This is useful in a development context because your feature is in a state of flux. If the metadata already exists in the database from the last time you imported this schema, you must first delete all the metadata before you can import the schema again to redefine your model.</p>
+
+<p>As you progress in experience writing schema files, you may be tempted to ignore the <code class="highlighter-rouge">undoIt</code> section and simply comment out metadata that already exists, allowing you to skip unimporting the schema and running the import again (with only that which has changed). Resist the urge to do this! When the time comes to finally commit your metadata file, you will have never run the schema file in its entirety, which means you are committing untested code. In addition, you will start to lose track of the actual state of your database. All of these things will cost you time. Get in the good habit now of writing your <code class="highlighter-rouge">undoIt</code> section along-side your <code class="highlighter-rouge">doIt</code> code.</p>
+
+<h2 id="import-action-tags">Import Action Tags</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;doIt&gt;
     &lt;create&gt;
      ...
     &lt;/create&gt;
@@ -408,13 +433,23 @@ $('#toc').on('click', 'a', function() {
 </code></pre>
 </div>
 
-<p>An XML schema can be either imported or unimported. The <code class="highlighter-rouge">doIt</code> tag defines what happens when the schema is imported. The <code class="highlighter-rouge">undoIt</code> tag defines what happens when the schema is unimported. Thus, the <code class="highlighter-rouge">doIt</code> section defines the domain for whatever feature you are implementing, and the <code class="highlighter-rouge">undoIt</code> section removes the feature. This is useful in a development context because your feature is in a state of flux. If the metadata already exists in the database from the last time you imported this schema, you must first delete all the metadata before you can import the schema again to redefine your model.</p>
+<p>The import action tag is a required tag that comes immediately after the <code class="highlighter-rouge">doIt</code> or <code class="highlighter-rouge">undoIt</code> tag and it specifies what action to perform with the metadata that we’re defining. In our GeoprismUser example, we are using the <code class="highlighter-rouge">create</code> import action tag because we simply want to define new metadata from scratch. In the <code class="highlighter-rouge">undoIt</code> section, you see an example of the <code class="highlighter-rouge">delete</code> action, and it functions much the same as the <code class="highlighter-rouge">create</code> action. Simply place your metadata within the action tag and your action will be performed on the specified metadata.</p>
 
-<p>As you progress in experience writing schema files, you may be tempted to ignore the <code class="highlighter-rouge">undoIt</code> section and simply comment out metadata that already exists, allowing you to skip unimporting the schema and running the import again (with only that which has changed). Resist the urge to do this! When the time comes to finally commit your metadata file, you will have never run the schema file in its entirety, which means you are committing untested code. In addition, you will start to lose track of the actual state of your database. All of these things will cost you time. Get in the good habit now of writing your <code class="highlighter-rouge">undoIt</code> section along-side your <code class="highlighter-rouge">doIt</code> code.</p>
+<p>The <code class="highlighter-rouge">update</code> tag is however a little different.</p>
 
-<h2 id="create-update-delete">Create, update, delete</h2>
+<h2 id="mdbusiness-tag">mdBusiness Tag</h2>
 
-<p>The <code class="highlighter-rouge">create</code> tag just says that we’re creating new metadata. This is in contrast to <code class="highlighter-rouge">update</code>, <code class="highlighter-rouge">createOrUpdate</code>, <code class="highlighter-rouge">delete</code> or <code class="highlighter-rouge">permissions</code>. The most common use-case is to create some metadata in the <code class="highlighter-rouge">doIt</code>, and then delete that metadata in the <code class="highlighter-rouge">undoIt</code>. For <code class="highlighter-rouge">update</code> tags, there may be a <code class="highlighter-rouge">create</code> tag within the <code class="highlighter-rouge">update</code> tag.</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>      &lt;mdBusiness name="net.geoprism.GeoprismUser" label="User" extends="com.runwaysdk.system.Users"&gt;
+        &lt;attributes&gt;
+          ...
+        &lt;/attributes&gt;
+      &lt;/mdBusiness&gt;
+</code></pre>
+</div>
+
+<p>The <code class="highlighter-rouge">mdBusiness</code> tag tells the system that we are referring to an MdBusiness. When inside a <code class="highlighter-rouge">create</code> action, the system will create a new mdBusiness. During an update, it will be used as context to fetch an MdBusiness to update. Any additional attributes will be updated to their provided values in the XML. The following attributes are available on an <code class="highlighter-rouge">mdBusiness</code> tag:</p>
+
+<p>An MdBusiness may also include a list of MdAttributes, which is specified via an inner <code class="highlighter-rouge">attributes</code> tag.</p>
 
 <h2 id="file-conventions">File conventions</h2>
 
@@ -448,7 +483,7 @@ $('#toc').on('click', 'a', function() {
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2018 TerraFrame. All rights reserved. <br />
-<span>Page last updated:</span> December 21, 2017<br/> Site last generated: Jan 3, 2018 <br />
+<span>Page last updated:</span> December 21, 2017<br/> Site last generated: Jan 4, 2018 <br />
 <p>
 <!--
 <img src="images/company_logo.png" alt="Company logo"/>
