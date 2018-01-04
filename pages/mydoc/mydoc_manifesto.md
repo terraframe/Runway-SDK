@@ -47,10 +47,6 @@ arguments and evidence to be simplified or twisted to support a particular posit
 abstraction becomes a tool for obfuscation, making matters appear to be trivial or simpler than they
 actually are. Process models are often susceptible to this practice in that they make certain assumptions that are not always true [^fn2]. Everything comes with an essential complexity and context that, if abstracted far enough, will loose the characteristics and constraints that are intrinsic to its essence.
 
-## Miscellaneous
-* Staying current with current research
-
-
 ## Footnotes
 
 [^fn1]: The others are static properties whose intrinsic value is not dependent upon the dynamic behavior. That is, they are embodied directly in each static description of an artifact.
