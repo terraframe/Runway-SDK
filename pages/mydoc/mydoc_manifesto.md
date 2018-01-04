@@ -9,21 +9,21 @@ permalink: mydoc_manifesto.html
 folder: mydoc
 ---
 
-## Check your ego at the door
+## Check Your Ego at the Door
 
-While all of us have egos, more often than not, they just get in the way and impede progress. If you are here with us, then by definition, we think you are good, and we expect you to demonstrate this through your contributions, not with attitude. We consider humility to be a virtue.
+While all of us have egos, more often than not, they just get in the way and impede progress. If you are here with us, then by definition we think you are good and we expect you to demonstrate this through your contributions, but not with an attitude. We consider humility to be a virtue.
 
 The reality is that you're probably not as good as you think your are, and we're not either; none of us are. All of us need to admit this (if only to ourselves) and get on with the job of getting better. We acknowledge and embrace the fact that as good as we actually (think we) are, we will always be lacking in some area. We view it as our personal responsibility to to better ourselves as engineers. We owe it to ourselves, our colleagues, and to society. After all, "software runs the world".
 
-## Quality is paramount, but elusive
+## Quality Is Paramount, but Elusive
 
 Quality, defined as correctness, is paramount. But what is more important is our ability fix what's broken (and something will always broken, you just may not know it yet!). If we can't fix it, then all hope of achieving quality is forsaken. Can this be true? Unfortunately, it is.
 
-Unlike the so-called "illities" of software [^fn1], such as understandability and maintainabilty, correctness is a dynamic property of software that emerges only as a side effect that is observable at runtime . Further, the best that we can do is access correctness relative to a description of some statically given set of inputs and their corresponding expected (correct) outputs. Given such a (test) set, we can state with certainty that the software is or is not correct, but only with respect to that set, and only after testing the software against each element (test case). If the software produces the expected output for each input, then we can say that the software is correct relative to that particular test set. Further, this statement only applies to the specific version of the software used during the test. If either the contents of the test set or the configuration of the software changes, then the statement will no longer apply.
+Unlike the so-called "illities" of software [^fn1], such as understandability and maintainabilty, correctness is a dynamic property of software that emerges only as a side effect that is observable at runtime. Further, the best that we can do is access correctness relative to a description of some statically given set of inputs and their corresponding expected correct outputs. Given such a test set, we can state with certainty that the software is or is not correct, but only with respect to that set, and only after testing the software against each element (test case). If the software produces the expected output for each input, then we can say that the software is correct relative to that particular test set. Further, this statement only applies to the specific version of the software used during the test. If either the contents of the test set or the configuration of the software changes, then the statement will no longer apply.
 
-## Software Engineering (SWE) is engineering
+## Software Engineering (SWE) Is Engineering
 
-Software Engineering (SWE) is an engineering discipline, just as much as any of the traditional engineering disciplines are. What's different, however, is that SWE has far fewer constraints and a much, much larger number of degrees of freedom. And its always the degrees of freedom that lead to complexity in software. SWE itself is a dynamical system, sensitive to initial conditions, in which chaos can, and often does, emerge. This also often applies to the executing systems that are the result of our craft. An of course, the biggest source of degrees of freedom are humans.
+Software Engineering (SWE) is an engineering discipline, just as much as any of the traditional engineering disciplines are. What's different, however, is that SWE has far fewer constraints and a much, much larger number of degrees of freedom. And its always the degrees of freedom that lead to complexity in software. SWE itself is a dynamical system sensitive to initial conditions in which chaos can, and often does, emerge. This also often applies to the executing systems that are the result of our craft. And of course, the biggest source of degrees of freedom are humans.
 
 ## Governing Laws
 
