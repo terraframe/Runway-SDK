@@ -11,13 +11,15 @@ folder: mydoc
 
 ## Overview
 
-The most common way to create metadata is through Runway's custom XML schema.  This XML allows for developers to intuitively manipulate metadata, which includes creating new metadata definitions, updating and deleting existing definitions, and defining permissions for metadata definitions.  Along these lines the XML is broken up into five major sections: Referencing existing definitions, deleting definitions, creating definitions, updating definitions, and defining permissions.
+The most common way to create metadata is through Runway's custom XML schema.  This XML allows for developers to intuitively manipulate metadata, which includes creating new metadata definitions, updating and deleting existing definitions, and defining permissions for metadata definitions.  Along these lines the XML is broken up into five major sections: Referencing existing definitions, deleting definitions, creating definitions, updating definitions, and defining permissions. 
+
+It is important to understand that the XML is not the final definition of the model, but rather an input mechanism with syntax for managing the lifecyle of the domain model. Unlike raw DML SQL, the XML covers transitions between model versions that migrate both generated source code and database schemas (if applicable) transactionally. 
 
 The XML syntax for creating a new definition and updating an existing definition are (almost) identical.  The `create` tag is used to create a new definition while the `update` tag is used to update existing definitions.  There are a few key differences between creates and updates, however we will go into this later.
 
-## Creating an MdBusiness
+## Creating a persisted Class
 
-The following XML defines a new type of User called a GeoprismUser. Because users in Runway are defined via an MdBusiness, they can be extended to create custom user types that more accurately reflect the needs of the application.
+The following XML defines a new type of User called a GeoprismUser. An MdBusiness is a sublass of MdClass to represent classes that are persisted to a relational database with a business-focused workflow. Because users in Runway are defined via an MdBusiness, they can be extended to create custom user types that more accurately reflect the needs of the application.
 
 ```
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
