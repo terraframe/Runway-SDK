@@ -19,6 +19,6 @@ These two hierarchies comprise the majority of Runway's metadata domain. There a
 
 ## The Hierarchy
 
-[![UML of Runway Metadata Hierarchy](/images/Metadata.svg "UML of Runway Metadata Hierarchy")](/images/Metadata.svg)
+[![UML of Runway Metadata Hierarchy](./images/Metadata.svg "UML of Runway Metadata Hierarchy")](./images/Metadata.svg)
 
 {% include links.html %}
