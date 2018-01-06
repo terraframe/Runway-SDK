@@ -3,9 +3,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="This is the fourth post in the series.">
-<meta name="keywords" content=" ">
-<title>Series demo 4 | Runway SDK documentation</title>
+<meta name="description" content="Introduction to the metadata attribute hierarchy.">
+<meta name="keywords" content="mdbusiness,  terraframe, runway, mdtype">
+<title>Introduction to Metadata Attributes | Runway SDK documentation</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -129,7 +129,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Series demo 4 page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Introduction to Metadata Attributes page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -147,7 +147,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Series demo 4">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Introduction to Metadata Attributes">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -228,6 +228,55 @@
             
             
             
+            <li class="subfolders">
+                <a href="#">MdClasses</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_metadata_mdclass_intro.html">Introduction</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="mydoc_mdbusiness.html">MdBusiness</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="mydoc_mdrelationship.html">MdRelationship</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li class="subfolders">
+                <a href="#">MdAttributes</a>
+                <ul>
+                    
+                    
+                    
+                    <li class="active"><a href="mydoc_metadata_mdattr_intro.html">Introduction</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
             
             
             
@@ -292,7 +341,7 @@
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Series demo 4</h1>
+   <h1 class="post-title-main">Introduction to Metadata Attributes</h1>
 </div>
 
 
@@ -300,7 +349,7 @@
 <div class="post-content">
 
    
-    <div class="summary">This is the fourth post in the series.</div>
+    <div class="summary">Introduction to the metadata attribute hierarchy.</div>
    
 
     
@@ -331,531 +380,27 @@ $('#toc').on('click', 'a', function() {
 
     
 
-    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_seriesdemo4.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_metadata_mdattr_intro.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
 
     
 
-  <div class="seriesContext">
-    <a>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    </a>
-    &nbsp;
-    <div class="btn-group">
-        <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Jump to: <span class="caret"></span></button>
-        <ol class="dropdown-menu">
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            <li>
-                <a href="mydoc_seriesdemo1.html">Series demo 1</a>
-            </li>
-            
-            
-            
-            
-            
-            <li>
-                <a href="mydoc_seriesdemo2.html">Series demo 2</a>
-            </li>
-            
-            
-            
-            
-            
-            <li>
-                <a href="mydoc_seriesdemo3.html">Series demo 3</a>
-            </li>
-            
-            
-            
-            
-            
-            <li class="active"> → 4. Series demo 4</li>
-            
-            
-            
-            
-            
-        </ol>
-    </div>
-</div>
+  <h2 id="overview">Overview</h2>
 
-<p>This is the fourth post in the series.</p>
+<p>MdAttributes cannot exist without an associated MdClass.</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vel sollicitudin felis. Sed eu arcu sed ipsum semper luctus eu a tortor. Suspendisse id leo eu metus laoreet varius. Mauris consequat accumsan ex, a iaculis metus fermentum a. Praesent sit amet fermentum leo. Aliquam feugiat, nibh in ultrices mattis, felis ipsum venenatis metus, vel vehicula libero mauris a enim. Sed placerat est ac lectus vestibulum tempor. Quisque ut condimentum massa. Proin venenatis leo id urna cursus blandit. Vivamus sit amet hendrerit metus.</p>
+<h2 id="the-hierarchy">The Hierarchy</h2>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vel sollicitudin felis. Sed eu arcu sed ipsum semper luctus eu a tortor. Suspendisse id leo eu metus laoreet varius. Mauris consequat accumsan ex, a iaculis metus fermentum a. Praesent sit amet fermentum leo. Aliquam feugiat, nibh in ultrices mattis, felis ipsum venenatis metus, vel vehicula libero mauris a enim. Sed placerat est ac lectus vestibulum tempor. Quisque ut condimentum massa. Proin venenatis leo id urna cursus blandit. Vivamus sit amet hendrerit metus.</p>
-
-<p>Mauris consequat accumsan ex, a iaculis metus fermentum a. Praesent sit amet fermentum leo. Aliquam feugiat, nibh in ultrices mattis, felis ipsum venenatis metus, vel vehicula libero mauris a enim. Sed placerat est ac lectus vestibulum tempor. Quisque ut condimentum massa. Proin venenatis leo id urna cursus blandit. Vivamus sit amet hendrerit metus.</p>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vel sollicitudin felis. Sed eu arcu sed ipsum semper luctus eu a tortor. Suspendisse id leo eu metus laoreet varius.</p>
+<p><a href="./images/AttributeHierarchy-Rev4.svg"><img src="./images/AttributeHierarchy-Rev4.svg" alt="UML of Runway Attribute Hierarchy" title="UML of Runway Attribute Hierarchy" /></a></p>
 
 
 
     <div class="tags">
+        
+        <b>Tags: </b>
+        
+        
+        
+        
         
     </div>
 
@@ -869,7 +414,7 @@ $('#toc').on('click', 'a', function() {
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2018 TerraFrame. All rights reserved. <br />
-<span>Page last updated:</span> July 3, 2016<br/> Site last generated: Jan 4, 2018 <br />
+<span>Page last updated:</span> December 21, 2017<br/> Site last generated: Jan 5, 2018 <br />
 <p>
 <!--
 <img src="images/company_logo.png" alt="Company logo"/>

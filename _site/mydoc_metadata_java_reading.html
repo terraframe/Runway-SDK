@@ -3,9 +3,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Submit any issues to the GitHub issue tracker">
-<meta name="keywords" content="getting_startedtroubleshooting,  questions, troubleshooting, contact, support">
-<title>Support | Runway SDK documentation</title>
+<meta name="description" content="Some examples of how to manipulate metadata using Java">
+<meta name="keywords" content="metadata,  terraframe, runway, metadata">
+<title>Manipulating Metadata in Java | Runway SDK documentation</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -129,7 +129,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Support page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Manipulating Metadata in Java page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -147,7 +147,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Support">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Manipulating Metadata in Java">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -228,6 +228,55 @@
             
             
             
+            <li class="subfolders">
+                <a href="#">MdClasses</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_metadata_mdclass_intro.html">Introduction</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="mydoc_mdbusiness.html">MdBusiness</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="mydoc_mdrelationship.html">MdRelationship</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li class="subfolders">
+                <a href="#">MdAttributes</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_metadata_mdattr_intro.html">Introduction</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
             
             
             
@@ -238,7 +287,7 @@
             
             
             
-            <li><a href="mydoc_metadata_java_reading.html">Manipulating Metadata in Java</a></li>
+            <li class="active"><a href="mydoc_metadata_java_reading.html">Manipulating Metadata in Java</a></li>
             
             
             
@@ -292,7 +341,7 @@
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Support</h1>
+   <h1 class="post-title-main">Manipulating Metadata in Java</h1>
 </div>
 
 
@@ -300,7 +349,7 @@
 <div class="post-content">
 
    
-    <div class="summary">Submit any issues to the GitHub issue tracker</div>
+    <div class="summary">Some examples of how to manipulate metadata using Java</div>
    
 
     
@@ -331,11 +380,75 @@ $('#toc').on('click', 'a', function() {
 
     
 
-    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_support.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_metadata_java_reading.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
 
     
 
-  <p>We are always happy to help with any issues you find.  The best way to report bugs or suggest changes are through the <a href="https://github.com/terraframe/geoprism/issues">Github issue tracker here</a>.</p>
+  <h2 id="overview">Overview</h2>
+
+<p>One of the biggest strengths of Runway is that the domain model can be manipulated at runtime. One the applications we developed uses this functionality extensively through a robust feature known as the form generator. The DDMS form generator allows users to create MdBusinesses (classes with a business contect) and MdAttributes at runtime for the purpose of exposing new datatypes for collection and reporting. This functionality exists in some of the industry’s most popular applications such as SalesForce®.</p>
+
+<h2 id="creating-metadata">Creating Metadata</h2>
+
+<p>Suppose you wanted to write your own form generator. To keep things simple, lets assume for now that all they can do is create new datatypes with a name that they are allowed to specify. You may have a method somewhere on the server that looks like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>@Transaction
+public void createMetadata(String name)
+{
+  MdBusiness customForm = new MdBusiness();
+  customForm.setPackageName("com.test.forms");
+  customForm.setTypeName(this.convertToTypename(name));
+  customForm.getDisplayLabel().setDefaultValue(name);
+  customForm.apply();
+}
+</code></pre>
+</div>
+
+<p>The <code class="highlighter-rouge">@Transaction</code> annotation tells Runway’s transaction aspects to weave into this method. Click here to learn more about Runway transactions.</p>
+
+<p><code class="highlighter-rouge">setPackageName</code> is a method that configures the package of your new MdBusiness. Because applying a new MdBusiness generates Java code, all MdBusinesses must have a unique keyname. The keyname of a MdBusiness is the concatenated package name and type name of the format: <code class="highlighter-rouge">packageName</code> + “.” + <code class="highlighter-rouge">typeName</code>.</p>
+
+<p><code class="highlighter-rouge">setTypeName</code> configures the MdBusiness’s type name. The type name is the class name of the generated Java type and it also is used when creating your database table. Because the user is specifying the name, I also included <code class="highlighter-rouge">this.convertToTypename</code>, which is another method we would need to implement to sanitize and convert the user input into something suitable for a typename that does not, for example, contain any spaces.</p>
+
+<p><code class="highlighter-rouge">getDisplayLabel</code> and <code class="highlighter-rouge">setDefaultValue</code> sets the default locale of the display label of the MdBusiness. <a href="./mydoc_localization_introduction.html">Click here</a> to learn more about localization.</p>
+
+<p><code class="highlighter-rouge">apply</code> tells Runway that our MdBusiness is fully configured and the changes are ready to be applied. Because we are in a transaction, the MdBusiness is added to Runway’s transaction cache. At the end of the transaction (which happens at the end of our <code class="highlighter-rouge">createMetadata</code> method), all changes will be applied. This includes all database changes as well as Java code changes.</p>
+
+<h2 id="reading-and-querying-metadata">Reading and Querying Metadata</h2>
+
+<p>Now that the user has the ability to create new data types, we need a way to display to the user which data types exist already in the system.</p>
+
+<p>If the MdBusiness is hardcoded and known ahead of time, we can fetch it in a single line:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>MdBusiness mdBiz = MdBusiness.getMdBusiness("net.geoprism.GeoprismUser");
+</code></pre>
+</div>
+
+<p>Unfortunately for us, things are not so simple because these objects are created arbitrarily at runtime. Luckily Runway’s query API makes this very simple.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>QueryFactory qf = new QueryFactory();
+
+MdBusinessQuery mbq = new MdBusinessQuery(qf);
+mbq.WHERE(mbq.getPackageName().EQ("com.test.forms"));
+OIterator&lt;? extends MdBusiness&gt; mbIt = mbq.getIterator();
+
+try
+{
+  while (mbIt.hasNext())
+  {
+    MdBusiness mdBiz = mbIt.next();
+    
+    // Serialize the MdBusiness (to JSON) for display
+  }
+}
+finally
+{
+  mbIt.close();
+}
+</code></pre>
+</div>
+
+<p>To learn how Runway’s query API works, click here.</p>
 
 
 
@@ -344,12 +457,6 @@ $('#toc').on('click', 'a', function() {
         <b>Tags: </b>
         
         
-        
-        <a href="tag_getting_started.html" class="btn btn-default navbar-btn cursorNorm" role="button">getting_started</a>
-        
-        
-        
-        <a href="tag_troubleshooting.html" class="btn btn-default navbar-btn cursorNorm" role="button">troubleshooting</a>
         
         
         
@@ -365,7 +472,7 @@ $('#toc').on('click', 'a', function() {
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2018 TerraFrame. All rights reserved. <br />
-<span>Page last updated:</span> July 3, 2016<br/> Site last generated: Jan 4, 2018 <br />
+<span>Page last updated:</span> December 21, 2017<br/> Site last generated: Jan 5, 2018 <br />
 <p>
 <!--
 <img src="images/company_logo.png" alt="Company logo"/>

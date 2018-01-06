@@ -19,7 +19,7 @@ The XML syntax for creating a new definition and updating an existing definition
 
 ## Creating a Persisted Class
 
-The following XML defines a new type of User called a GeoprismUser. An MdBusiness is a sublass of MdClass to represent classes that are persisted to a relational database with a business-focused workflow. Because users in Runway are defined via an MdBusiness, they can be extended to create custom user types that more accurately reflect the needs of the application.
+The following XML defines a new type of User called a GeoprismUser. Because users in Runway are defined via an MdBusiness, they can be extended to create custom user types that more accurately reflect the needs of the application.
 
 ```
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

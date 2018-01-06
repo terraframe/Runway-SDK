@@ -9,7 +9,7 @@ permalink: mydoc_mdbusiness.html
 folder: mydoc
 ---
 
-MdBusiness is the primary building block of your application.
+An MdBusiness is a sublass of MdClass to represent classes that are persisted to a relational database with a business-focused workflow. Unlike MdClass and the rest of MdBusiness's parents, MdBusiness is not an abstract class. This is the primary metadata component you will be using.
 
 
 {% include links.html %}

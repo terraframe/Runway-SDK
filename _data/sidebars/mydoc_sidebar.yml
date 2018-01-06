@@ -62,8 +62,6 @@ entries:
 #           url: /tag_formatting.html
 #           output: web
   
-  
-  
   - title: Working with Metadata
     output: web, pdf
     folderitems:
@@ -72,6 +70,42 @@ entries:
       url: /mydoc_metadata_getting_started.html
       output: web, pdf
       
+      subfolders: 
+      - title: MdClasses
+        output: web, pdf
+        subfolderitems:
+       
+        - title: Introduction
+          url: /mydoc_metadata_mdclass_intro.html
+          output: web, pdf
+       
+        - title: MdBusiness
+          url: /mydoc_mdbusiness.html
+          output: web, pdf
+          
+        - title: MdRelationship
+          url: /mydoc_mdrelationship.html
+          output: web, pdf
+      
+      
+    # This is a stupid little hack I had to do to compensate for the fact that this jekyll template doesn't know how to generate a menu structure
+    #   with 2 subfolders right next to eachother.
+    #   I hacked this line: {% elsif folderitem.title == "ignore" %}
+    #     into  '_includes/sidebar.html'  to allow me to create an ignored menu item whose only purpose exists to separate these two subfolders
+    - title: ignore
+      url: ignore
+      output: web,pdf
+      
+      
+      subfolders: 
+      - title: MdAttributes
+        output: web, pdf
+        subfolderitems:
+       
+        - title: Introduction
+          url: /mydoc_metadata_mdattr_intro.html
+          output: web, pdf
+          
     - title: Manipulating Metadata in XML
       url: /mydoc_metadata_authoring.html
       output: web, pdf
@@ -79,7 +113,7 @@ entries:
     - title: Manipulating Metadata in Java
       url: /mydoc_metadata_java_reading.html
       output: web, pdf
-      
+    
     #- title: Data transfer objects (DTO)
     #  url: /mydoc_metadata_dtos.html
     #  output: web, pdf
@@ -88,19 +122,6 @@ entries:
     #  url: /mydoc_metadata_daos.html
     #  output: web, pdf
     
-      #subfolders: 
-      #- title: Types of metadata
-      #  output: web, pdf
-      #  subfolderitems:
-      # 
-      #  - title: MdBusiness
-      #    url: /mydoc_mdbusiness.html
-      #    output: web, pdf
-      #    
-      #  - title: MdRelationship
-      #    url: /mydoc_mdrelationship.html
-      #    output: web, pdf
-          
     #- title: Patching
     #  url: /mydoc_metadata_patching.html
     #  output: web, pdf

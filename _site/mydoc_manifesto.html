@@ -3,9 +3,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="You can push your build to AWS using commands from the command line. By including your copy commands in commands, you can package all of the build and deploy...">
-<meta name="keywords" content="publishing,  AWS, Amazon, command line, pushing build">
-<title>Pushing builds to server | Runway SDK documentation</title>
+<meta name="description" content="Our software engineering manifesto">
+<meta name="keywords" content="manifesto,  terraframe, gis, manifesto">
+<title>Our Software Engineering Manifesto | Runway SDK documentation</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -129,7 +129,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Pushing builds to server page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:info@terraframe.com?subject=Runway SDK documentation feedback feedback&body=I have some feedback about the Our Software Engineering Manifesto page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -147,7 +147,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Pushing builds to server">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Our Software Engineering Manifesto">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -202,7 +202,7 @@
             
             
             
-            <li><a href="mydoc_manifesto.html">Our Manifesto</a></li>
+            <li class="active"><a href="mydoc_manifesto.html">Our Manifesto</a></li>
             
             
             
@@ -225,6 +225,55 @@
             
             
             <li><a href="mydoc_metadata_getting_started.html">Introduction</a></li>
+            
+            
+            
+            <li class="subfolders">
+                <a href="#">MdClasses</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_metadata_mdclass_intro.html">Introduction</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="mydoc_mdbusiness.html">MdBusiness</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="mydoc_mdrelationship.html">MdRelationship</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li class="subfolders">
+                <a href="#">MdAttributes</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_metadata_mdattr_intro.html">Introduction</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
             
             
             
@@ -292,7 +341,7 @@
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Pushing builds to server</h1>
+   <h1 class="post-title-main">Our Software Engineering Manifesto</h1>
 </div>
 
 
@@ -300,7 +349,7 @@
 <div class="post-content">
 
    
-    <div class="summary">You can push your build to AWS using commands from the command line. By including your copy commands in commands, you can package all of the build and deploy process into executable scripts.</div>
+    <div class="summary">Our software engineering manifesto</div>
    
 
     
@@ -331,32 +380,66 @@ $('#toc').on('click', 'a', function() {
 
     
 
-    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_push_build_to_server.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    <a target="_blank" href="https://github.com/terraframe/runway-sdk/tree/gh-pages/pages/mydoc/mydoc_manifesto.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
 
     
 
-  <h2 id="pushing-to-aws-s3">Pushing to AWS S3</h2>
+  <h2 id="check-your-ego-at-the-door">Check Your Ego at the Door</h2>
 
-<p>If you have the AWS Command Line Interface installed and are pushing your builds to AWS, the following commands show how you can build and push to an AWS location from the command line:</p>
+<p>While all of us have egos, more often than not, they just get in the way and impede progress. If you are here with us, then by definition we think you are good and we expect you to demonstrate this through your contributions, but not with an attitude. We consider humility to be a virtue.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>aws s3 cp ~/users/tjohnson/projects/mydocproject/ s3://[aws path]docpath/mydocproject --recursive
+<p>The reality is that you’re probably not as good as you think your are, and we’re not either; none of us are. All of us need to admit this (if only to ourselves) and get on with the job of getting better. We acknowledge and embrace the fact that as good as we actually (think we) are, we will always be lacking in some area. We view it as our personal responsibility to to better ourselves as engineers. We owe it to ourselves, our colleagues, and to society. After all, “software runs the world”.</p>
 
-aws s3 cp ~/users/tjohnson/projects/anotherdocproject2/ s3://[aws path]docpath/anotherdocproject --recursive
-</code></pre>
+<h2 id="quality-is-paramount-but-elusive">Quality Is Paramount, but Elusive</h2>
+
+<p>Quality, defined as correctness, is paramount. But what is more important is our ability fix what’s broken (and something will always broken, you just may not know it yet!). If we can’t fix it, then all hope of achieving quality is forsaken. Can this be true? Unfortunately, it is.</p>
+
+<p>Unlike the so-called “illities” of software <sup id="fnref:fn1"><a href="#fn:fn1" class="footnote">1</a></sup>, such as understandability and maintainabilty, correctness is a dynamic property of software that emerges only as a side effect that is observable at runtime. Further, the best that we can do is access correctness relative to a description of some statically given set of inputs and their corresponding expected correct outputs. Given such a test set, we can state with certainty that the software is or is not correct, but only with respect to that set, and only after testing the software against each element (test case). If the software produces the expected output for each input, then we can say that the software is correct relative to that particular test set. Further, this statement only applies to the specific version of the software used during the test. If either the contents of the test set or the configuration of the software changes, then the statement will no longer apply.</p>
+
+<h2 id="software-engineering-swe-is-engineering">Software Engineering (SWE) Is Engineering</h2>
+
+<p>Software Engineering (SWE) is an engineering discipline, just as much as any of the traditional engineering disciplines are. What’s different, however, is that SWE has far fewer constraints and a much, much larger number of degrees of freedom. And its always the degrees of freedom that lead to complexity in software. SWE itself is a dynamical system sensitive to initial conditions in which chaos can, and often does, emerge. This also often applies to the executing systems that are the result of our craft. And of course, the biggest source of degrees of freedom are humans.</p>
+
+<h2 id="governing-laws">Governing Laws</h2>
+
+<p>The laws of Nature that govern SWE unfortunately are embodied in the psyches of human beings and not in the technology that we use. The fundamental problems are largely psychological and sociological, which are poorly understood and difficult to control. Yes, engineers working in traditional disciplines also suffer form this. However, they also have Natural Law to contend with (e.g., the laws of physics, chemistry) that works to their favor in that it constrains and limits the number of degrees they must cope with (lucky bastards). We software engineers are only constrained by the the inherent limitations of von Neuman computing, along with the limits of our own intellects. For most of us, that equates to an extremely large and practically infinite number of degrees of freedom.</p>
+
+<ul>
+  <li>All engineering is an optimization problem. Every decision we make is trade off against other possibilities. Further, is the context in which a decision is made that determines the relative value of one trade-off versus another. It is often the case that what makes one trade-off better than the alternatives has little or nothing to technical merits (i.e., in some cases, crap is the better choice). The key thing is that we understand and explicitly state the rationale for our decisions, their known limitations and an estimate of their future impacts and anticipated ameliorations.</li>
+</ul>
+
+<h2 id="foundations">Foundations</h2>
+
+<ul>
+  <li>We find it unacceptable the belief that software development primarily consists of learning how to code. Attending a coding boot camp for several months is no substitute for a true foundation in computer science. Writing code consists of only a fraction of the knowledge of the art of being an exceptional software developer.</li>
+  <li>We find it unacceptable that code is typically written that requires global system awareness in order to ensure correctness. This limits what our programs can ultimately do and leads to throwaway code.</li>
+  <li>Process is only a guideline. It’s not a goal. The history of software development is replete with examples in which process and process models are emphasized over technical realities. That said, there is much benefit from having standard operating procedures. It improves communications by defining work flow responsibilities, and expected/desired outcomes. However, process cannot overcome weakness in technical foundations, nor can it ensure outcomes. The key success factor with process lies in understanding its underlying assumptions and their dependencies, along with recognizing where and when explicit adjustments must be made.</li>
+</ul>
+
+<h2 id="objective-truth">Objective Truth</h2>
+
+<ul>
+  <li>We find it unacceptable that science is deliberately ignored and mocked. That truth is determined based on consent of the masses, rather than the scientific method. This is why fads come and go in our industry.</li>
+  <li>In software development, we only have one tool for overcoming and handling complexity:
+abstraction. Abstraction allows us to ignore irrelevant details and emphasize those that are principal.
+However, it is unfortunate that the power of abstraction is often abused as a means for allow
+arguments and evidence to be simplified or twisted to support a particular position. In so doing,
+abstraction becomes a tool for obfuscation, making matters appear to be trivial or simpler than they
+actually are. Process models are often susceptible to this practice in that they make certain assumptions that are not always true <sup id="fnref:fn2"><a href="#fn:fn2" class="footnote">2</a></sup>. Everything comes with an essential complexity and context that, if abstracted far enough, will loose the characteristics and constraints that are intrinsic to its essence.</li>
+</ul>
+
+<h2 id="footnotes">Footnotes</h2>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:fn1">
+      <p>The others are static properties whose intrinsic value is not dependent upon the dynamic behavior. That is, they are embodied directly in each static description of an artifact. <a href="#fnref:fn1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:fn2">
+      <p>Dan Turk, Robert France, and Bernhard Rumpe. Limitations of Agile Software Processes. In Proceedings Of The Third International Conference On Extreme Programming And Flexible Processes In Software Engineering (XP2000). Springer-Verlag, 2000. pp. 43-46. <a href="#fnref:fn2" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
 </div>
-
-<p>The first path in the argument is the local location; the second path is the destination.</p>
-
-<h2 id="pushing-to-a-regular-server">Pushing to a regular server</h2>
-
-<p>If you’re pushing to a regular server that you can ssh into, you can use <code class="highlighter-rouge">scp</code> commands to push your build. Here’s an example:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>scp -r /users/tjohnson/projects/mydocproject/ name@domain:/var/www/html/mydocproject
-</code></pre>
-</div>
-
-<p>Similar to the above, the first path is the local location; the second path is the destination.</p>
-
 
 
     <div class="tags">
@@ -364,8 +447,6 @@ aws s3 cp ~/users/tjohnson/projects/anotherdocproject2/ s3://[aws path]docpath/a
         <b>Tags: </b>
         
         
-        
-        <a href="tag_publishing.html" class="btn btn-default navbar-btn cursorNorm" role="button">publishing</a>
         
         
         
@@ -381,7 +462,7 @@ aws s3 cp ~/users/tjohnson/projects/anotherdocproject2/ s3://[aws path]docpath/a
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2018 TerraFrame. All rights reserved. <br />
-<span>Page last updated:</span> July 3, 2016<br/> Site last generated: Jan 4, 2018 <br />
+<span>Page last updated:</span> December 21, 2017<br/> Site last generated: Jan 5, 2018 <br />
 <p>
 <!--
 <img src="images/company_logo.png" alt="Company logo"/>

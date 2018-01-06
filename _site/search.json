@@ -403,28 +403,6 @@
 
 {
 "title": "Introduction to Runway metadata",
-"tags": "dao",
-"keywords": "terraframe, runway, dao",
-"url": "mydoc_metadata_daos.html",
-"summary": "Covers the basics of data access objects"
-}
-,
-
-
-
-{
-"title": "Data transfer objects",
-"tags": "dto",
-"keywords": "terraframe, runway, dto",
-"url": "mydoc_metadata_dtos.html",
-"summary": "Covers the basics of data transfer objects"
-}
-,
-
-
-
-{
-"title": "Introduction to Runway metadata",
 "tags": "mdbusiness",
 "keywords": "terraframe, runway, mdbusiness",
 "url": "mydoc_metadata_getting_started.html",
@@ -446,6 +424,28 @@
 
 
 {
+"title": "Introduction to Metadata Attributes",
+"tags": "mdbusiness",
+"keywords": "terraframe, runway, mdtype",
+"url": "mydoc_metadata_mdattr_intro.html",
+"summary": "Introduction to the metadata attribute hierarchy."
+}
+,
+
+
+
+{
+"title": "Introduction to Metadata Classes (MdClass)",
+"tags": "mdbusiness",
+"keywords": "terraframe, runway, mdtype",
+"url": "mydoc_metadata_mdclass_intro.html",
+"summary": "A class definition that transcends Java."
+}
+,
+
+
+
+{
 "title": "Patching",
 "tags": "metadatapatching",
 "keywords": "terraframe, runway, metadata",
@@ -457,77 +457,11 @@
 
 
 {
-"title": "Navtabs",
-"tags": "formatting",
-"keywords": "navigation tabs, hide sections, tabbers, interface tabs",
-"url": "mydoc_navtabs.html",
-"summary": "Navtabs provide a tab-based navagation directly in your content, allowing users to click from tab to tab to see different panels of content. Navtabs are especially helpful for showing code samples for different programming languages. The only downside to using navtabs is that you must use HTML instead of Markdown."
-}
-,
-
-
-
-{
-"title": "Getting around the password prompts in SCP",
-"tags": "publishingtroubleshooting",
-"keywords": "",
-"url": "mydoc_no_password_prompts_scp.html",
-"summary": "You can publish your docs via SSH through a Terminal window or more likely, via a shell script that you simply execute as part of the publishing process. However, you will be prompted for your password with each file transfer unless you configure passwordless SSH. The basic process for setting up password less SSH is to create a key on your own machine that you also transfer to the remote machine. When you use the SCP command, the remote machine checks that you have the authorized key and allows access without a password prompt."
-}
-,
-
-
-
-{
-"title": "Pages",
-"tags": "getting_startedformattingcontent_types",
-"keywords": "pages, authoring, exclusion, frontmatter",
-"url": "mydoc_pages.html",
-"summary": "This theme primarily uses pages. You need to make sure your pages have the appropriate frontmatter. One frontmatter tag your users might find helpful is the summary tag. This functions similar in purpose to the shortdesc element in DITA."
-}
-,
-
-
-
-{
 "title": "Introduction to Runway permissions",
 "tags": "aspects",
 "keywords": "terraframe, runway, permissions",
 "url": "mydoc_permissions_introduction.html",
 "summary": "Covers the basics of using permissions within Runway"
-}
-,
-
-
-
-{
-"title": "Posts",
-"tags": "getting_startedformattingcontent_types",
-"keywords": "posts, blog, news, authoring, exclusion, frontmatter",
-"url": "mydoc_posts.html",
-"summary": "You can use posts when you want to create blogs or news type of content."
-}
-,
-
-
-
-{
-"title": "Publishing on Github Pages",
-"tags": "",
-"keywords": "",
-"url": "mydoc_publishing_github_pages.html",
-"summary": "You can publish your project on Github Pages, which is a free web hosting service provided by Github. All you need is to put your content into a Github repo branch called gh-pages and make this your default branch in your repo. With a Jekyll site, you just commit your entire project into the gh-pages branch and Github Pages will build the site for you."
-}
-,
-
-
-
-{
-"title": "Pushing builds to server",
-"tags": "publishing",
-"keywords": "AWS, Amazon, command line, pushing build",
-"url": "mydoc_push_build_to_server.html",
-"summary": "You can push your build to AWS using commands from the command line. By including your copy commands in commands, you can package all of the build and deploy process into executable scripts."
 }
 ,
 
@@ -550,237 +484,6 @@
 "keywords": "json, scrolling, scrollto, jquery plugin",
 "url": "jsmydoc_scroll.html",
 "summary": "This page demonstrates how you the integration of a script called ScrollTo, which is used here to link definitions of a JSON code sample to a list of definitions for that particular term. The scenario here is that the JSON blocks are really long, with extensive nesting and subnesting, which makes it difficult for tables below the JSON to adequately explain the term in a usable way."
-}
-,
-
-
-
-{
-"title": "Scroll layout",
-"tags": "special_layouts",
-"keywords": "json, scrolling, scrollto, jquery plugin",
-"url": "mydoc_scroll.html",
-"summary": "This page demonstrates how you the integration of a script called ScrollTo, which is used here to link definitions of a JSON code sample to a list of definitions for that particular term. The scenario here is that the JSON blocks are really long, with extensive nesting and subnesting, which makes it difficult for tables below the JSON to adequately explain the term in a usable way."
-}
-,
-
-
-
-{
-"title": "Search configuration",
-"tags": "publishingnavigation",
-"keywords": "search, json, configuration, findability",
-"url": "mydoc_search_configuration.html",
-"summary": "The search feature uses JavaScript to look for keyword matches in a JSON file. The results show instant matches, but it doesn't provide a search results page like Google. Also, sometimes invalid formatting can break the JSON file."
-}
-,
-
-
-
-{
-"title": "Series",
-"tags": "content_types",
-"keywords": "series, connected articles, tutorials, hello world",
-"url": "mydoc_series.html",
-"summary": "You can automatically link together topics belonging to the same series. This helps users know the context within a particular process."
-}
-,
-
-
-
-{
-"title": "Series demo 1",
-"tags": "",
-"keywords": "",
-"url": "mydoc_seriesdemo1.html",
-"summary": "This is the first post in the series."
-}
-,
-
-
-
-{
-"title": "Series demo 2",
-"tags": "",
-"keywords": "",
-"url": "mydoc_seriesdemo2.html",
-"summary": "This is the second post in the series."
-}
-,
-
-
-
-{
-"title": "Series demo 3",
-"tags": "",
-"keywords": "",
-"url": "mydoc_seriesdemo3.html",
-"summary": "This is the third post in the series."
-}
-,
-
-
-
-{
-"title": "Series demo 4",
-"tags": "",
-"keywords": "",
-"url": "mydoc_seriesdemo4.html",
-"summary": "This is the fourth post in the series."
-}
-,
-
-
-
-{
-"title": "Shuffle layout",
-"tags": "special_layouts",
-"keywords": "shuffle, card layout, dynamic grid, doc portal, support portal",
-"url": "mydoc_shuffle.html",
-"summary": "This layout shows an example of a knowledge-base style navigation system, where there is no hierarchy, just groups of pages that have certain tags."
-}
-,
-
-
-
-{
-"title": "Sidebar Navigation",
-"tags": "getting_started",
-"keywords": "sidebar, accordion, yaml, iteration, for loop, navigation, attributes, conditional filtering",
-"url": "mydoc_sidebar_navigation.html",
-"summary": "The sidebar navigation uses a jQuery component called Navgoco. The sidebar is a somewhat complex part of the theme that remembers your current page, highlights the active item, stays in a fixed position on the page, and more. This page explains a bit about how the sidebar was put together."
-}
-,
-
-
-
-{
-"title": "Special layouts overview",
-"tags": "special_layouts",
-"keywords": "layouts, information design, presentation",
-"url": "mydoc_special_layouts.html",
-"summary": "This theme has a few special layouts. Special layouts include the JS files they need directly in the page. The JavaScript for each special layout does not load by default for every page in the site."
-}
-,
-
-
-
-{
-"title": "Support",
-"tags": "getting_startedtroubleshooting",
-"keywords": "questions, troubleshooting, contact, support",
-"url": "mydoc_support.html",
-"summary": "Submit any issues to the GitHub issue tracker"
-}
-,
-
-
-
-{
-"title": "Supported features",
-"tags": "getting_started",
-"keywords": "features, capabilities, scalability, multichannel output, dita, hats, comparison, benefits",
-"url": "mydoc_supported_features.html",
-"summary": "If you're not sure whether Jekyll and this theme will support your requirements, this list provides a semi-comprehensive overview of available features."
-}
-,
-
-
-
-{
-"title": "Syntax highlighting",
-"tags": "formatting",
-"keywords": "rouge, pygments, prettify, color coding,",
-"url": "mydoc_syntax_highlighting.html",
-"summary": "You can apply syntax highlighting to your code. This theme uses pygments and applies color coding based on the lexer you specify."
-}
-,
-
-
-
-{
-"title": "Tables",
-"tags": "formatting",
-"keywords": "datatables, tables, grids, markdown, multimarkdown, jquery plugins",
-"url": "mydoc_tables.html",
-"summary": "You can format tables using either multimarkdown syntax or HTML. You can also use jQuery datatables (a plugin) if you need more robust tables."
-}
-,
-
-
-
-{
-"title": "Tag archives overview",
-"tags": "navigation",
-"keywords": "archives, tagging",
-"url": "mydoc_tag_archives_overview.html",
-"summary": "This is an overview to the tag archives section. Really the only reason this section is listed explicitly in the TOC here is to demonstrate how to add a third-level to the navigation."
-}
-,
-
-
-
-{
-"title": "Tags",
-"tags": "navigation",
-"keywords": "tags, navigation, buttons, links, association",
-"url": "mydoc_tags.html",
-"summary": "Tags provide another means of navigation for your content. Unlike the table of contents, tags can show the content in a variety of arrangements and groupings. Implementing tags in this Jekyll theme is somewhat of a manual process."
-}
-,
-
-
-
-{
-"title": "Themes",
-"tags": "publishing",
-"keywords": "themes, styles, colors, css",
-"url": "mydoc_themes.html",
-"summary": "You can choose between two different themes (one green, the other blue) for your projects. The theme CSS is stored in the CSS folder and configured in the configuration file for each project."
-}
-,
-
-
-
-{
-"title": "Troubleshooting",
-"tags": "troubleshooting",
-"keywords": "trouble, problems, support, error messages, problems, failure, error,",
-"url": "mydoc_troubleshooting.html",
-"summary": "This page lists common errors and the steps needed to troubleshoot them."
-}
-,
-
-
-
-{
-"title": "WebStorm Text Editor",
-"tags": "",
-"keywords": "webstorm, sublime, markdown, atom, gnome, notepad ++, textpad, bbedit",
-"url": "mydoc_webstorm_text_editor.html",
-"summary": "You can use a variety of text editors when working with a Jekyll project. WebStorm from IntelliJ offers a lot of project-specific features, such as find and replace, that make it ideal for working with tech comm projects."
-}
-,
-
-
-
-{
-"title": "Workflow maps",
-"tags": "formatting",
-"keywords": "release notes, announcements, what's new, new features",
-"url": "mydoc_workflow_maps.html",
-"summary": "Version 6.0 of the Documentation theme for Jekyll reverts back to relative links so you can view the files offline. Additionally, you can store pages in subdirectories. Templates for alerts and images are available."
-}
-,
-
-
-
-{
-"title": "YAML tutorial in the context of Jekyll",
-"tags": "formatting",
-"keywords": "search",
-"url": "mydoc_yaml_tutorial.html",
-"summary": "YAML is a format that relies on white spacing to separate out the various elements of content. Jekyll lets you use Liquid with YAML as a way to parse through the data. Storing items for your table of contents is one of the most common uses of YAML with Jekyll."
 }
 ,
 
