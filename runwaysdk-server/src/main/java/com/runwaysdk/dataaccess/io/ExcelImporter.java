@@ -83,7 +83,7 @@ public class ExcelImporter
   /**
    * Optional logger
    */
-  private ExcelImportLogIF    log;
+  private ExcelImportProgressMonitorIF    monitor;
 
   /**
    * Constructor for this importer. Opens the stream and parses some header information. The source stream is accepted as is, so any necessary buffering should be handled by the caller.
@@ -104,12 +104,12 @@ public class ExcelImporter
   }
 
   /**
-   * @param log
-   *          the log to set
+   * @param monitor
+   *          the progress monitor to set
    */
-  public void setLog(ExcelImportLogIF log)
+  public void setProgressMonitor(ExcelImportProgressMonitorIF monitor)
   {
-    this.log = log;
+    this.monitor = monitor;
   }
 
   /**
@@ -216,9 +216,27 @@ public class ExcelImporter
     // Initialize some class variables
     boolean hadErrors = false;
 
+    // Calculate how many total rows there are
+    long totalRows = 0;
     for (ImportContext context : contexts)
     {
-      readSheet(context);
+      Sheet sheet = context.getImportSheet();
+      totalRows += sheet.getLastRowNum() - 2; // zero indexed so add one then we have 3 headers so subtract 3
+    }
+    if (this.monitor != null)
+    {
+      this.monitor.setTotalRows(totalRows);
+    }
+    
+    // Actually do the import
+    long rowNum = 0;
+    for (ImportContext context : contexts)
+    {
+      readSheet(context, rowNum);
+      
+      Sheet sheet = context.getImportSheet();
+      totalRows += sheet.getLastRowNum() - 2;
+      rowNum = rowNum + totalRows;
 
       if (context.hasErrors())
       {
@@ -260,7 +278,7 @@ public class ExcelImporter
     }
   }
 
-  private void readSheet(ImportContext context)
+  private void readSheet(ImportContext context, long baseRow)
   {
     Sheet sheet = context.getImportSheet();
     Iterator<Row> rowIterator = sheet.rowIterator();
@@ -273,7 +291,7 @@ public class ExcelImporter
     {
       try
       {
-        readRow(context, rowIterator.next());
+        readRow(context, rowIterator.next(), baseRow);
       }
       catch (ProgrammingErrorException e)
       {
@@ -301,18 +319,23 @@ public class ExcelImporter
    * @param row
    */
   @Transaction
-  private void readRow(ImportContext context, Row row)
+  private void readRow(ImportContext context, Row row, long baseRow)
   {
     if (!rowHasValues(row))
     {
       return;
     }
-
+    
     int previousErrorCount = context.getErrorCount();
+    
+    if (this.monitor != null)
+    {
+      this.monitor.setCurrentRow(row.getRowNum() + 1 + baseRow);
+    }
 
     try
     {
-      context.readRow(row, this.log);
+      context.readRow(row, this.monitor);
     }
     catch (Exception e)
     {
@@ -744,12 +767,7 @@ public class ExcelImporter
      * 
      * @param row
      */
-    public void readRow(Row row) throws Exception
-    {
-      this.readRow(row, null);
-    }
-
-    public void readRow(Row row, ExcelImportLogIF log) throws Exception
+    public void readRow(Row row, ExcelImportProgressMonitorIF monitor) throws Exception
     {
       Mutable instance = this.getMutableForRow(row);
 
@@ -830,9 +848,9 @@ public class ExcelImporter
         listener.afterApply(instance);
       }
 
-      if (log != null)
+      if (monitor != null)
       {
-        log.logImport(instance, extraEntities);
+        monitor.entityImported(instance, extraEntities);
       }
     }
 

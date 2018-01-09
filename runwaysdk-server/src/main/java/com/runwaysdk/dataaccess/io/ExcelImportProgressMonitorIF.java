@@ -24,13 +24,11 @@ import java.util.List;
 import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.Mutable;
 
-public interface ExcelImportLogIF
+public interface ExcelImportProgressMonitorIF
 {
-
-  /**
-   * @param mutable
-   * @param extraEntities
-   */
-  public void logImport(Mutable mutable, HashMap<String, List<Entity>> extraEntities);
-
+  public void entityImported(Mutable mutable, HashMap<String, List<Entity>> extraEntities);
+  
+  public void setTotalRows(long total);
+  
+  public void setCurrentRow(long current);
 }
