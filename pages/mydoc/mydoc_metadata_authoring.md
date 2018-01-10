@@ -92,7 +92,7 @@ As a workaround for development, but when the file is committed you should use t
 An XML schema can be either imported or unimported. The `doIt` tag defines what happens when the schema is imported. The `undoIt` tag defines what happens when the schema is unimported. Thus, the `doIt` section defines the domain for whatever feature you are implementing, and the `undoIt` section removes the feature. This is useful in a development context because your feature is in a state of flux. If the metadata already exists in the database from the last time you imported this schema, you must first delete all the metadata before you can import the schema again to redefine your model.
 
 
-<h4>Important Note</h4> 
+<strong>Important Note</strong> 
 As you progress in experience writing schema files, you may be tempted to ignore the `undoIt` section and simply comment out metadata that already exists, allowing you to skip unimporting the schema and running the import again (with only that which has changed). <b>Resist the urge to do this!</b> When the time comes to finally commit your metadata file, you will have never run the schema file in its entirety, which means you are committing untested code. In addition, you will start to lose track of the actual state of your database. All of these things will cost you time. Get in the good habit now of writing your `undoIt` section along-side your `doIt` code.
 
 
