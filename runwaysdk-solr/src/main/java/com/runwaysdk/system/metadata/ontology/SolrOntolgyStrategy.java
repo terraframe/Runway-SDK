@@ -33,7 +33,9 @@ import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.transaction.TransactionState;
 import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.OrderBy.SortOrder;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.util.Cache;
 
 public class SolrOntolgyStrategy implements OntologyStrategyIF
 {
@@ -49,9 +51,17 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
   private String       termClass;
 
+  private String       sortAttriubte;
+
   public SolrOntolgyStrategy(String termClass)
   {
+    this(termClass, null);
+  }
+
+  public SolrOntolgyStrategy(String termClass, String sortAttribute)
+  {
     this.termClass = termClass;
+    this.sortAttriubte = sortAttribute;
   }
 
   @Override
@@ -91,15 +101,31 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
       QueryFactory factory = new QueryFactory();
       BusinessQuery query = factory.businessQuery(this.termClass);
+
+      if (this.sortAttriubte != null)
+      {
+        query.ORDER_BY(query.getS(this.sortAttriubte), SortOrder.ASC);
+      }
+
+      long total = query.getCount();
+      long count = 0;
+
       OIterator<Business> it = query.getIterator();
+
+      Cache<String, List<List<QualifiedOntologyEntryIF>>> cache = new Cache<String, List<List<QualifiedOntologyEntryIF>>>(1000);
 
       try
       {
         while (it.hasNext())
         {
+//          if (count % 50 == 0)
+//          {
+            System.out.println("Processing:" + count + "/" + total + " " + System.currentTimeMillis());
+//          }
+
           Term term = (Term) it.next();
 
-          List<List<QualifiedOntologyEntryIF>> paths = this.getPaths(term, relationshipType);
+          List<List<QualifiedOntologyEntryIF>> paths = this.getPaths(term, relationshipType, cache);
 
           for (List<QualifiedOntologyEntryIF> path : paths)
           {
@@ -118,7 +144,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
             client.add(updateDoc);
           }
-          
+
           JSONArray relationships = new JSONArray();
           relationships.put(this.relationship(term));
 
@@ -127,7 +153,9 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
           updateDoc.addField(RELATIONSHIPS, this.serialize(relationships));
           updateDoc.addField(QUALIFIER, term.getQualifier());
 
-          client.add(updateDoc);          
+          client.add(updateDoc);
+
+          count++;
         }
       }
       finally
@@ -174,7 +202,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
       SolrCommand command = this.getCommand();
       HttpSolrClient client = command.getClient();
 
-      List<List<QualifiedOntologyEntryIF>> paths = this.getPaths(parent, relationshipType);
+      List<List<QualifiedOntologyEntryIF>> paths = this.getPaths(parent, relationshipType, new Cache<>(20));
 
       // Add new old paths
       SolrQuery query = new SolrQuery();
@@ -253,7 +281,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     }
   }
 
-  private List<List<QualifiedOntologyEntryIF>> getPaths(Term term, String relationshipType)
+  private List<List<QualifiedOntologyEntryIF>> getPaths(Term term, String relationshipType, Cache<String, List<List<QualifiedOntologyEntryIF>>> cache)
   {
     List<List<QualifiedOntologyEntryIF>> paths = new LinkedList<>();
     List<Term> parents = term.getDirectAncestors(relationshipType).getAll();
@@ -262,7 +290,12 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     {
       for (Term parent : parents)
       {
-        List<List<QualifiedOntologyEntryIF>> pp = this.getPaths(parent, relationshipType);
+        if (!cache.containsKey(parent.getId()))
+        {
+          cache.put(parent.getId(), this.getPaths(parent, relationshipType, cache));
+        }
+
+        List<List<QualifiedOntologyEntryIF>> pp = cache.get(parent.getId());
 
         for (List<QualifiedOntologyEntryIF> p : pp)
         {
@@ -291,6 +324,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     for (OntologyEntryIF synonym : synonyms)
     {
       QualifiedOntologyEntry entry = new QualifiedOntologyEntry(synonym.getId(), synonym.getLabel(), term.getQualifier());
+
       for (List<QualifiedOntologyEntryIF> path : paths)
       {
         LinkedList<QualifiedOntologyEntryIF> sPath = new LinkedList<QualifiedOntologyEntryIF>(path);
@@ -460,7 +494,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
           SolrInputDocument updateDoc = new SolrInputDocument();
           updateDoc.addField(ID, (String) document.get(ID));
           updateDoc.addField(RELATIONSHIPS, this.serialize(update));
-          updateDoc.addField(QUALIFIER, (String) document.get(QUALIFIER));          
+          updateDoc.addField(QUALIFIER, (String) document.get(QUALIFIER));
 
           client.add(updateDoc);
         }

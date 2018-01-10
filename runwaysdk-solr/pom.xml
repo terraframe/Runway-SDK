@@ -10,7 +10,7 @@
   <dependencies>
     <dependency>
       <groupId>com.runwaysdk</groupId>
-      <artifactId>runwaysdk-server</artifactId>
+      <artifactId>runwaysdk-gis-server</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!-- Solr dependencies -->
