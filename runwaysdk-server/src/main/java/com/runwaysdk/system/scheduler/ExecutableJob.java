@@ -80,11 +80,27 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   }
   
   /**
+   * Creates, configures and applies a new JobHistory that will be used to record history for the current job execution context.
+   *   The beauty of this is that it can be overridden by subclasses if you want to extend JobHistory to record additional stuff.
+   * 
+   * @return A new, configured, applied instance of JobHistory
+   */
+  protected JobHistory createNewHistory()
+  {
+    JobHistory history = new JobHistory();
+    history.setStartTime(new Date());
+    history.addStatus(AllJobStatus.RUNNING);
+    history.apply();
+    
+    return history;
+  }
+  
+  /**
    * Executes the Job within the context of Quartz.
    */
   @Override
   @Request
-  public final void execute(JobExecutionContext context) throws JobExecutionException
+  public void execute(JobExecutionContext context) throws JobExecutionException
   {
     JobHistoryRecord record;
     ExecutableJob job;
@@ -97,10 +113,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
 
       job = ExecutableJob.get(id);
 
-      history = new JobHistory();
-      history.setStartTime(new Date());
-      history.addStatus(AllJobStatus.RUNNING);
-      history.apply();
+      history = createNewHistory();
 
       record = new JobHistoryRecord(job, history);
       record.apply();
@@ -114,18 +127,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
 
     ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job, history);
 
-    executeJob(job, history, executionContext);
-  }
-
-  /**
-   * The final stage in executing the job, which invokes the execute() method directly. This cannot be overridden because it follows a special error handling procedure.
-   * 
-   * @param ej
-   * @param executionContext
-   */
-  @Request
-  static final void executeJob(ExecutableJob job, JobHistory history, ExecutionContext executionContext)
-  {
     String errorMessage = null;
 
     try
@@ -208,16 +209,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     return errorMessage;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.system.scheduler.ExecutableJob#execute()
+  /**
+   * Defines what the job should actually do when executed (or started). Must be overridden with actual behavior.
    */
   @Override
-  public void execute(ExecutionContext executionContext)
-  {
-    // do nothing by default
-  }
+  abstract public void execute(ExecutionContext executionContext);
 
   /*
    * (non-Javadoc)
@@ -242,10 +238,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       SchedulerManager.addJobListener(this, jobListener);
     }
 
-    JobHistory jh = new JobHistory();
-    jh.setStartTime(new Date());
-    jh.addStatus(AllJobStatus.RUNNING);
-    jh.apply();
+    JobHistory jh = createNewHistory();
 
     JobHistoryRecord rec = new JobHistoryRecord(this, jh);
     rec.apply();
