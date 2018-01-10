@@ -19,6 +19,7 @@
 package com.runwaysdk.system.scheduler;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.quartz.CronScheduleBuilder;
@@ -90,15 +91,41 @@ public class SchedulerManager
         throw new ProgrammingErrorException("Error occurred when initializing the Scheduler Manager.", e);
       }
     }
+    
+    faillAllRunning();
 
     initialized = true;
   }
-
+  
   private static Scheduler scheduler()
   {
     return Singleton.INSTANCE.scheduler;
   }
-
+  
+  /**
+   * Sets all RUNNING jobs to FAILURE.
+   */
+  private void faillAllRunning()
+  {
+    JobHistoryQuery query = new JobHistoryQuery(new QueryFactory());
+    query.WHERE(query.getStatus().containsAny(AllJobStatus.RUNNING));
+    OIterator<? extends JobHistory> jhs = query.getIterator();
+    
+    while (jhs.hasNext())
+    {
+      JobHistory jh = jhs.next();
+      
+      jh.clearStatus();
+      jh.addStatus(AllJobStatus.FAILURE);
+      
+      jh.setEndTime(new Date());
+      
+      jh.getHistoryInformation().setValue("The server was shutdown while the job was running."); // TODO : Should be localized
+      
+      jh.apply();
+    }
+  }
+  
   /**
    * Starts the Scheduler
    */

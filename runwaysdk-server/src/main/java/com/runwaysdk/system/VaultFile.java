@@ -18,6 +18,13 @@
  */
 package com.runwaysdk.system;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+import com.runwaysdk.business.BusinessFacade;
+import com.runwaysdk.constants.VaultFileInfo;
+import com.runwaysdk.vault.VaultFileDAO;
+
 public class VaultFile extends VaultFileBase
 {
   private static final long serialVersionUID = 1229405886296L;
@@ -25,6 +32,35 @@ public class VaultFile extends VaultFileBase
   public VaultFile()
   {
     super();
+  }
+  
+  /**
+   * Creates and applies a new VaultFile using the given parameters. Purely a convenience method.
+   * 
+   * @param filename The name of the file, including extension but not the path. Example: WaterPoints.xlsx
+   * @param file
+   */
+  public static VaultFile createAndApply(String fileName, InputStream file)
+  {
+    VaultFile entity = new VaultFile();
+    VaultFileDAO fileDao = (VaultFileDAO) BusinessFacade.getEntityDAO(entity);
+
+    // TODO ?
+//    this.checkVaultPermissions(entity, Operation.CREATE);
+
+    int index = fileName.lastIndexOf('.');
+
+    String onlyName = fileName.substring(0, index);
+    String extension = "xlsx";
+
+    entity.setValue(VaultFileInfo.FILE_NAME, onlyName);
+    entity.setValue(VaultFileInfo.EXTENSION, extension);
+
+    fileDao.setSize(0);
+    entity.apply();
+    fileDao.putFile(file);
+    
+    return entity;
   }
   
 }

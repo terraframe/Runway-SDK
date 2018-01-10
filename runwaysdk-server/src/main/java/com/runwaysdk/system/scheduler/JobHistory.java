@@ -40,15 +40,13 @@ public class JobHistory extends JobHistoryBase
   public static void clearHistory()
   {
     JobHistoryQuery query = new JobHistoryQuery(new QueryFactory());
+    query.WHERE(query.getStatus().notContainsAny(AllJobStatus.RUNNING));
     OIterator<? extends JobHistory> jhs = query.getIterator();
     
     while (jhs.hasNext())
     {
       JobHistory jh = jhs.next();
-      if (!jh.getStatus().contains(AllJobStatus.RUNNING))
-      {
-        jh.delete();
-      }
+      jh.delete();
     }
   }
   
