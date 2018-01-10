@@ -11,7 +11,7 @@ folder: mydoc
 
 ## Overview
 
-MdAttributes cannot exist without an associated MdClass.
+MdAttributes are attributes on an MdClass therefore they cannot exist without an associated MdClass.
 
 ## The Hierarchy
 
