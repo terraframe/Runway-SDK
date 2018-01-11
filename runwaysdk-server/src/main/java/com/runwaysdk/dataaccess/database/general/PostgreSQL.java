@@ -2491,7 +2491,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     StringBuffer statement = new StringBuffer();
     statement.append("CREATE TABLE " + Database.PROPERTIES_TABLE + " ( " + EntityDAOIF.ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL," + Database.VERSION_NUMBER + " CHAR(16) NOT NULL PRIMARY KEY);");
-    statement.append("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_VERSION_PROPERTY + "', '" + RunwayMetadataVersion.getCurrentVersion().toString() + "');");
+    statement.append("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_METADATA_VERSION_PROPERTY + "', '" + RunwayMetadataVersion.getCurrentVersion().toString() + "');");
 
     this.execute(statement.toString());
   }

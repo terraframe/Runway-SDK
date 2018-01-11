@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.database;
 
@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.inject.Inject;
+import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
@@ -60,9 +61,9 @@ public class Database
    * Logs DML and DDL SQL statements to standard out. This is used to produce a
    * SQL script that will record a Runway refactor.
    */
-  private static boolean     logDMLandDDLStatements     = false;
+  private static boolean     logDMLandDDLStatements           = false;
 
-  public static final int    STARTING_SEQUENCE_NUMBER   = 1000;
+  public static final int    STARTING_SEQUENCE_NUMBER         = 1000;
 
   /**
    * Maximum length of a database identifier.
@@ -73,59 +74,59 @@ public class Database
    * http://www.postgresql.org/docs/9.1/static/sql-syntax-lexical.html Section
    * 4.1.1.
    */
-  public static final int    MAX_DB_IDENTIFIER_SIZE     = 30;
+  public static final int    MAX_DB_IDENTIFIER_SIZE           = 30;
 
   /**
    * Maximum length of an attribute name
    */
-  public static final int    MAX_ATTRIBUTE_NAME_SIZE    = 28;
+  public static final int    MAX_ATTRIBUTE_NAME_SIZE          = 28;
 
   /**
    * The size, in characters, of the ID strings for each object in the database.
    */
-  public static final String DATABASE_ID_SIZE           = "64";
+  public static final String DATABASE_ID_SIZE                 = "64";
 
   /**
    * Magic number for an unlimited text length on clob attributes
    */
-  public static final int    UNLIMITED_TEXT_LENGTH      = -1;
+  public static final int    UNLIMITED_TEXT_LENGTH            = -1;
 
   /**
    * The size, in characters, of the type strings for each object in the
    * database.
    */
-  public static final String DATABASE_TYPE_SIZE         = "255";
+  public static final String DATABASE_TYPE_SIZE               = "255";
 
-  public static final String DATABASE_SET_ID_SIZE       = "32";
+  public static final String DATABASE_SET_ID_SIZE             = "32";
 
-  public static final String FIXED_CHARACTER_SUFFIX     = "_FIXED";
+  public static final String FIXED_CHARACTER_SUFFIX           = "_FIXED";
 
   /**
    * The name of the table containing the current version
    */
-  public static final String PROPERTIES_TABLE           = "dynamic_properties";
+  public static final String PROPERTIES_TABLE                 = "dynamic_properties";
 
   /**
    * The key of the only row in the dynamic properties table
    */
-  public static final String VERSION_TIMESTAMP_PROPERTY = "000000000000000000000";
+  public static final String VERSION_TIMESTAMP_PROPERTY       = "000000000000000000000";
 
   /**
    * The key of the only row in the dynamic properties table
    */
-  public static final String RUNWAY_VERSION_PROPERTY    = "000000000000000000001";
+  public static final String RUNWAY_METADATA_VERSION_PROPERTY = "000000000000000000001";
 
   /**
    * The name of the version number column on the properties
    */
-  public static final String VERSION_NUMBER             = "version_number";
+  public static final String VERSION_NUMBER                   = "version_number";
 
-  public static final String PROPERTIES_ID_COLUMN       = "id";
+  public static final String PROPERTIES_ID_COLUMN             = "id";
 
   /**
    * The initial version number
    */
-  public static final String INITIAL_VERSION            = "0000000000000000";
+  public static final String INITIAL_VERSION                  = "0000000000000000";
 
   /**
    * The singleton {@link Database} instance.
@@ -185,9 +186,10 @@ public class Database
   {
     instance().close();
   }
-  
+
   /**
-   * Builds a JDBC prepared <code>INSERT</code> statement for the given columns. <br>
+   * Builds a JDBC prepared <code>INSERT</code> statement for the given columns.
+   * <br>
    * 
    * @param table
    *          The table to insert into.
@@ -401,7 +403,7 @@ public class Database
   {
     instance().deleteWhere(table, condition);
   }
-  
+
   /**
    * Returns the blob as an array of bytes.
    * 
@@ -480,7 +482,8 @@ public class Database
   }
 
   /**
-   * Builds a JDBC prepared <code>UPDATE</code> statement for the given columns. <br>
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given columns.
+   * <br>
    * 
    * @param table
    *          The table to insert into.
@@ -503,7 +506,8 @@ public class Database
   }
 
   /**
-   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields. <br>
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields.
+   * <br>
    * 
    * @param table
    *          The table to insert into.
@@ -528,7 +532,8 @@ public class Database
   }
 
   /**
-   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields. <br>
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields.
+   * <br>
    * 
    * @param table
    *          The table to insert into.
@@ -551,7 +556,8 @@ public class Database
   }
 
   /**
-   * Builds a JDBC prepared <code>UPDATE</code> statement for the given columns. <br>
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given columns.
+   * <br>
    * 
    * @param table
    *          The table to insert into.
@@ -793,6 +799,11 @@ public class Database
    */
   public static void setPropertyValue(String columnName, String attributeType, String value)
   {
+    Database.setPropertyValue(columnName, attributeType, value, Database.VERSION_TIMESTAMP_PROPERTY);
+  }
+
+  public static void setPropertyValue(String columnName, String attributeType, String value, String propertyId)
+  {
     List<String> columns = new LinkedList<String>();
     columns.add(columnName);
 
@@ -806,7 +817,7 @@ public class Database
     attributeTypes.add(attributeType);
 
     List<PreparedStatement> statements = new LinkedList<PreparedStatement>();
-    statements.add(Database.buildPreparedSQLUpdateStatement(Database.PROPERTIES_TABLE, columns, prepStmtVars, values, attributeTypes, Database.VERSION_TIMESTAMP_PROPERTY));
+    statements.add(Database.buildPreparedSQLUpdateStatement(Database.PROPERTIES_TABLE, columns, prepStmtVars, values, attributeTypes, propertyId));
 
     Database.executeStatementBatch(statements);
   }
@@ -882,6 +893,13 @@ public class Database
     }
 
     return results;
+  }
+
+  public static RunwayMetadataVersion getMetadataVersion()
+  {
+    List<String> value = Database.getPropertyValue(RUNWAY_METADATA_VERSION_PROPERTY);
+
+    return new RunwayMetadataVersion(value.get(0));
   }
 
   /**
@@ -1487,13 +1505,19 @@ public class Database
   {
     instance().addTempFieldsToTable(tableName, columnName, columnType, numberOfTempFields);
   }
-  
+
   /**
-   * Creates a temporary table that lasts for at most the duration of the session. The behavior on transaction commit is configurable with the onCommit parameter.
+   * Creates a temporary table that lasts for at most the duration of the
+   * session. The behavior on transaction commit is configurable with the
+   * onCommit parameter.
    * 
-   * @param tableName The name of the temp table.
-   * @param columns An array of MdAttribute class names that represent the columns in the table.
-   * @param onCommit Decides the fate of the temporary table upon transaction commit.
+   * @param tableName
+   *          The name of the temp table.
+   * @param columns
+   *          An array of MdAttribute class names that represent the columns in
+   *          the table.
+   * @param onCommit
+   *          Decides the fate of the temporary table upon transaction commit.
    */
   public static void createTempTable(String tableName, List<String> columns, String onCommit)
   {
@@ -1596,8 +1620,9 @@ public class Database
    * Returns the most recent savepoint, but does not pop it from the stack.
    * 
    * @return most recent savepoint, but does not pop it from the stack.
-   * @throws {@link EmptyStackException} if there is no savepoint on the request
-   *         stack.
+   * @throws {@link
+   *           EmptyStackException} if there is no savepoint on the request
+   *           stack.
    */
   public static Savepoint peekCurrentSavepoint()
   {
@@ -1609,8 +1634,9 @@ public class Database
    * Returns the most recent savepoint and pops it it from the stack.
    * 
    * @return most recent savepoint and pops it it from the stack.
-   * @throws {@link EmptyStackException} if there is no savepoint on the request
-   *         stack.
+   * @throws {@link
+   *           EmptyStackException} if there is no savepoint on the request
+   *           stack.
    */
   public static Savepoint popCurrentSavepoint()
   {
@@ -2770,10 +2796,11 @@ public class Database
 
     return tables;
   }
-  
+
   /**
-   * Drops and then remakes the application schema, effectively dropping all tables. If the database is spatially 
-   * enabled and the application schema is 'public' then PostGIS will be recreated as well.
+   * Drops and then remakes the application schema, effectively dropping all
+   * tables. If the database is spatially enabled and the application schema is
+   * 'public' then PostGIS will be recreated as well.
    */
   public static void dropAll()
   {
@@ -2924,8 +2951,10 @@ public class Database
    * Imports the given SQL file into the database
    * 
    * @param restoreSQLFile
-   * @param out The output stream that the new process will print standard out to.
-   * @param errOut The output stream that the new process will print err output to.
+   * @param out
+   *          The output stream that the new process will print standard out to.
+   * @param errOut
+   *          The output stream that the new process will print err output to.
    */
   public static void importFromSQL(String restoreSQLFile, PrintStream out, PrintStream errOut)
   {
@@ -3038,14 +3067,14 @@ public class Database
   {
     return instance().getMaxColumnSize();
   }
-  
+
   /**
-   * Casts the given sql to a decimal. 
+   * Casts the given sql to a decimal.
    * 
    * Note, this has only been tested against Postgres
    * 
    * @param sql
-   * @return Casts the given sql to a decimal. 
+   * @return Casts the given sql to a decimal.
    */
   public static String castToDecimal(String sql)
   {

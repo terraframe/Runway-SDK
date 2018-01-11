@@ -80,7 +80,7 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
     {
       return;
     }
-    
+
     SolrCommand command = this.getCommand();
     HttpSolrClient client = command.getClient();
 
@@ -122,15 +122,15 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
       try
       {
         System.out.println("Start Query: " + System.currentTimeMillis());
-        
+
         results = Database.query(builder.toString());
-        
-        System.out.println("Finished Query: " + System.currentTimeMillis());        
+
+        System.out.println("Finished Query: " + System.currentTimeMillis());
 
         String prevId = null;
         Map<String, Set<String>> relationships = new HashMap<>();
         Map<String, Location> locations = new HashMap<>();
-        
+
         long count = 0;
 
         while (results.next())
@@ -167,11 +167,31 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
               client.add(updateDoc);
             }
 
+            Location location = locations.get(prevId);
+
+            Map<String, String> labels = location.getLabels();
+            Set<Entry<String, String>> entries = labels.entrySet();
+
+            for (Entry<String, String> entry : entries)
+            {
+              QualifiedOntologyEntry qu = new QualifiedOntologyEntry(entry.getKey(), entry.getValue(), location.getUniversal());
+
+              JSONArray array = new JSONArray();
+              array.put(this.relationship(qu));
+
+              SolrInputDocument updateDoc = new SolrInputDocument();
+              updateDoc.addField(ENTITY, prevId);
+              updateDoc.addField(RELATIONSHIPS, this.serialize(array));
+              updateDoc.addField(QUALIFIER, location.getUniversal());
+
+              client.add(updateDoc);
+            }
+
             // Reset entries
             relationships = new HashMap<>();
             locations = new HashMap<>();
-            
-            System.out.println("Processed entity [" + (count++) + "]: " + System.currentTimeMillis());            
+
+            System.out.println("Processed entity [" + ( count++ ) + "]: " + System.currentTimeMillis());
           }
 
           // Just add a synonym
@@ -197,10 +217,9 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
 
           prevId = id;
         }
-        
-        
-        System.out.println("Finished Index: " + System.currentTimeMillis());        
-        
+
+        System.out.println("Finished Index: " + System.currentTimeMillis());
+
         command.doIt();
       }
       finally
@@ -227,7 +246,7 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
       for (String parentId : parentIds)
       {
         List<List<QualifiedOntologyEntryIF>> pp = this.getPaths(parentId, relationships, locations);
-        
+
         paths.addAll(pp);
       }
     }
@@ -243,7 +262,7 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
     Location location = locations.get(entityId);
     Map<String, String> labels = location.getLabels();
     Set<Entry<String, String>> entries = labels.entrySet();
-    
+
     LinkedList<List<QualifiedOntologyEntryIF>> union = new LinkedList<>();
 
     for (Entry<String, String> entry : entries)
