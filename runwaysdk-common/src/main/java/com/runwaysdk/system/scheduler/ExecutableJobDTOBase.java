@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1369690016)
+@com.runwaysdk.business.ClassSignature(hash = 1774590839)
 public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.scheduler.AbstractJobDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.ExecutableJob";
-  private static final long serialVersionUID = -1369690016;
+  private static final long serialVersionUID = 1774590839;
   
   protected ExecutableJobDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -49,6 +31,7 @@ public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.schedule
   public static java.lang.String ENTRYDATE = "entryDate";
   public static java.lang.String JOBID = "jobId";
   public static java.lang.String RECORDHISTORY = "recordHistory";
+  public static java.lang.String RUNASUSER = "runAsUser";
   public com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO getDescription()
   {
     return (com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO) this.getAttributeStructDTO(DESCRIPTION).getStructDTO();
@@ -183,6 +166,55 @@ public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.schedule
   public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getRecordHistoryMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(RECORDHISTORY).getAttributeMdDTO();
+  }
+  
+  public com.runwaysdk.system.SingleActorDTO getRunAsUser()
+  {
+    if(getValue(RUNASUSER) == null || getValue(RUNASUSER).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.SingleActorDTO.get(getRequest(), getValue(RUNASUSER));
+    }
+  }
+  
+  public String getRunAsUserId()
+  {
+    return getValue(RUNASUSER);
+  }
+  
+  public void setRunAsUser(com.runwaysdk.system.SingleActorDTO value)
+  {
+    if(value == null)
+    {
+      setValue(RUNASUSER, "");
+    }
+    else
+    {
+      setValue(RUNASUSER, value.getId());
+    }
+  }
+  
+  public boolean isRunAsUserWritable()
+  {
+    return isWritable(RUNASUSER);
+  }
+  
+  public boolean isRunAsUserReadable()
+  {
+    return isReadable(RUNASUSER);
+  }
+  
+  public boolean isRunAsUserModified()
+  {
+    return isModified(RUNASUSER);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getRunAsUserMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(RUNASUSER).getAttributeMdDTO();
   }
   
   public final void cancel()

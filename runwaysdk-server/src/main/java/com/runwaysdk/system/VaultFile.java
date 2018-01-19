@@ -18,11 +18,19 @@
  */
 package com.runwaysdk.system;
 
-import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 
+import org.apache.commons.io.FilenameUtils;
+
 import com.runwaysdk.business.BusinessFacade;
+import com.runwaysdk.business.rbac.Operation;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.VaultFileInfo;
+import com.runwaysdk.session.CreatePermissionException;
+import com.runwaysdk.session.Session;
+import com.runwaysdk.session.SessionFacade;
+import com.runwaysdk.session.SessionIF;
 import com.runwaysdk.vault.VaultFileDAO;
 
 public class VaultFile extends VaultFileBase
@@ -37,7 +45,7 @@ public class VaultFile extends VaultFileBase
   /**
    * Creates and applies a new VaultFile using the given parameters. Purely a convenience method.
    * 
-   * @param filename The name of the file, including extension but not the path. Example: WaterPoints.xlsx
+   * @param filename The name of the file, including extension.
    * @param file
    */
   public static VaultFile createAndApply(String fileName, InputStream file)
@@ -45,13 +53,10 @@ public class VaultFile extends VaultFileBase
     VaultFile entity = new VaultFile();
     VaultFileDAO fileDao = (VaultFileDAO) BusinessFacade.getEntityDAO(entity);
 
-    // TODO ?
-//    this.checkVaultPermissions(entity, Operation.CREATE);
+    checkVaultPermissions(entity, Operation.CREATE);
 
-    int index = fileName.lastIndexOf('.');
-
-    String onlyName = fileName.substring(0, index);
-    String extension = "xlsx";
+    String onlyName = FilenameUtils.getBaseName(fileName);
+    String extension = FilenameUtils.getExtension(fileName);
 
     entity.setValue(VaultFileInfo.FILE_NAME, onlyName);
     entity.setValue(VaultFileInfo.EXTENSION, extension);
@@ -61,6 +66,36 @@ public class VaultFile extends VaultFileBase
     fileDao.putFile(file);
     
     return entity;
+  }
+  
+  public File getFile()
+  {
+    VaultFileDAO fileDAO = (VaultFileDAO) BusinessFacade.getEntityDAO(this);
+    return fileDAO.getFile();
+  }
+  
+  public InputStream getFileStream()
+  {
+    VaultFileDAO fileDAO = (VaultFileDAO) BusinessFacade.getEntityDAO(this);
+    return fileDAO.getFileStream();
+  }
+  
+  private static void checkVaultPermissions(VaultFile entity, Operation operation)
+  {
+    SessionIF session = Session.getCurrentSession();
+
+    if (session != null)
+    {
+      String sessionId = session.getId();
+      boolean access = SessionFacade.checkAccess(sessionId, operation, entity);
+
+      if (!access)
+      {
+        SingleActorDAOIF user = SessionFacade.getUser(sessionId);
+        String errorMsg = "User [" + user.getSingleActorName() + "] does not have permission to " + operation.name() + " a vault file.";
+        throw new CreatePermissionException(errorMsg, entity, user);
+      }
+    }
   }
   
 }

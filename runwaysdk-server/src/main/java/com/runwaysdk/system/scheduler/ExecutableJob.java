@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.quartz.JobExecutionContext;
@@ -29,8 +30,14 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.SmartException;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.session.Request;
+import com.runwaysdk.session.RequestType;
+import com.runwaysdk.session.SessionFacade;
+import com.runwaysdk.system.SingleActor;
+import com.runwaysdk.transport.conversion.ConversionFacade;
 import com.runwaysdk.util.IDGenerator;
 
 public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, com.runwaysdk.system.scheduler.Job, ExecutableJobIF
@@ -99,9 +106,10 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
    * Executes the Job within the context of Quartz.
    */
   @Override
-  @Request
   public void execute(JobExecutionContext context) throws JobExecutionException
   {
+    // Our 'this' reference right now is not equal to the job that needs to actually run. We need to find the real ExecutableJob instance first.
+    
     JobHistoryRecord record;
     ExecutableJob job;
     JobHistory history;
@@ -124,7 +132,49 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       job = record.getParent();
       history = record.getChild();
     }
-
+    
+    
+    // If the job wants to be run as a particular user then we need to create a session and a request for that user.
+    
+    SingleActor user = job.getRunAsUser();
+    
+    if (user == null)
+    {
+      executeAsSystem(job, history, record);
+    }
+    else
+    {
+      SingleActorDAOIF userDAO = (SingleActorDAOIF) BusinessFacade.getEntityDAO(user);
+      
+      String sessionId = SessionFacade.logIn(userDAO, new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
+      
+      try
+      {
+        executeAsUser(sessionId, job, history, record);
+      }
+      finally
+      {
+        SessionFacade.closeSession(sessionId);
+      }
+    }
+  }
+  
+  @Request(RequestType.SESSION)
+  public void executeAsUser(String sessionId, ExecutableJob job, JobHistory history, JobHistoryRecord record) throws JobExecutionException
+  {
+    executeJobWithinExistingRequest(job, history, record);
+  }
+  
+  @Request
+  public void executeAsSystem(ExecutableJob job, JobHistory history, JobHistoryRecord record) throws JobExecutionException
+  {
+    executeJobWithinExistingRequest(job, history, record);
+  }
+  
+  public void executeJobWithinExistingRequest(ExecutableJob job, JobHistory history, JobHistoryRecord record)
+  {
+    // Execute the job
+    
     ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job, history);
 
     String errorMessage = null;
@@ -137,6 +187,8 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       errorMessage = getMessageFromException(t);
     }
+    
+    // Configure the history
 
     JobHistory jh = JobHistory.get(history.getId());
 

@@ -1,0 +1,17 @@
+<version xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/terraframe/Runway-SDK/master/runwaysdk-server/src/main/resources/com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create></create>
+    <update>
+      <mdBusiness name="com.runwaysdk.system.scheduler.ExecutableJob">
+        <create>
+          <attributes>
+            <reference name="runAsUser" label="runAsUser" required="false" description="A user to run the job as. If unspecified the job will be run as SYSTEM." type="com.runwaysdk.system.SingleActor"/>
+          </attributes>
+        </create>
+      </mdBusiness>
+    </update>
+  </doIt>
+  <undoIt>
+    <delete></delete>
+  </undoIt>
+</version>
