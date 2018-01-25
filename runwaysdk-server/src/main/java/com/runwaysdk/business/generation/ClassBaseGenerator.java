@@ -548,7 +548,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     VisibilityModifier setterVisibility = m.getSetterVisibility();
     
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
-    getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "(" + String.class.getName() + " id)");
+    getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "Id(" + String.class.getName() + " id)");
     getWriter().openBracket();
     getWriter().writeLine("if(id == null)");
     getWriter().openBracket();
