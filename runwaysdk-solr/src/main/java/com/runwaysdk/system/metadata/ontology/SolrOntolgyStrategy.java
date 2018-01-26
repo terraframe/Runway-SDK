@@ -19,6 +19,8 @@ import org.apache.solr.common.params.CursorMarkParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;
@@ -39,6 +41,8 @@ import com.runwaysdk.util.Cache;
 
 public class SolrOntolgyStrategy implements OntologyStrategyIF
 {
+  private static Logger logger = LoggerFactory.getLogger(GeoEntitySolrOntologyStrategy.class);
+  
   public static String LABEL         = "label";
 
   public static String ID            = "id";
@@ -94,6 +98,9 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     {
       return;
     }
+    
+    logger.info("Initializing SolrOntolgyStrategy");
+    
     try
     {
       SolrCommand command = this.getCommand();
@@ -120,7 +127,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
         {
 //          if (count % 50 == 0)
 //          {
-            System.out.println("Processing:" + count + "/" + total + " " + System.currentTimeMillis());
+            logger.info("SolrOntolgyStrategy Processing:" + count + "/" + total + " " + System.currentTimeMillis());
 //          }
 
           Term term = (Term) it.next();
@@ -169,6 +176,8 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     {
       throw new ProgrammingErrorException(e);
     }
+    
+    logger.info("SolrOntolgyStrategy finished initializing.");
   }
 
   @Override

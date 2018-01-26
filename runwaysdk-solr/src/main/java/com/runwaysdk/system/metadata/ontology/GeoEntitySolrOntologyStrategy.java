@@ -16,6 +16,8 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.common.SolrInputDocument;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.business.ontology.QualifiedOntologyEntry;
@@ -26,6 +28,8 @@ import com.runwaysdk.system.gis.geo.GeoEntity;
 
 public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implements OntologyStrategyIF
 {
+  private static Logger logger = LoggerFactory.getLogger(GeoEntitySolrOntologyStrategy.class);
+  
   static class Location
   {
     private String              universal;
@@ -80,6 +84,8 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
     {
       return;
     }
+    
+    logger.info("Initializing GeoEntitySolrOntologyStrategy");
 
     SolrCommand command = this.getCommand();
     HttpSolrClient client = command.getClient();
@@ -121,11 +127,11 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
 
       try
       {
-        System.out.println("Start Query: " + System.currentTimeMillis());
+        logger.info("GeoEntitySolrOntologyStrategy Start Query: " + System.currentTimeMillis());
 
         results = Database.query(builder.toString());
 
-        System.out.println("Finished Query: " + System.currentTimeMillis());
+        logger.info("GeoEntitySolrOntologyStrategy Finished Query: " + System.currentTimeMillis());
 
         String prevId = null;
         Map<String, Set<String>> relationships = new HashMap<>();
@@ -191,7 +197,7 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
             relationships = new HashMap<>();
             locations = new HashMap<>();
 
-            System.out.println("Processed entity [" + ( count++ ) + "]: " + System.currentTimeMillis());
+            logger.info("GeoEntitySolrOntologyStrategy Processed entity [" + ( count++ ) + "]: " + System.currentTimeMillis());
           }
 
           // Just add a synonym
@@ -218,7 +224,7 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
           prevId = id;
         }
 
-        System.out.println("Finished Index: " + System.currentTimeMillis());
+        logger.info("GeoEntitySolrOntologyStrategy Finished Index: " + System.currentTimeMillis());
 
         command.doIt();
       }
@@ -234,6 +240,8 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
     {
       throw new ProgrammingErrorException(e);
     }
+    
+    logger.info("GeoEntitySolrOntologyStrategy finished initializing.");
   }
 
   private List<List<QualifiedOntologyEntryIF>> getPaths(String entityId, Map<String, Set<String>> relationships, Map<String, Location> locations)
