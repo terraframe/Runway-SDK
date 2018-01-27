@@ -22,13 +22,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.List;
 
+import com.runwaysdk.ClasspathResource;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
@@ -64,11 +60,45 @@ public class InstallerCP
       throw new RunwayConfigurationException("Unable to find the xsd '" + xsd + "' on the classpath, the specified resource does not exist.");
     }
 
-    InputStream[] xmlFilesIS = new InputStream[]{InstallerCP.class.getClassLoader().getResourceAsStream("metadata/(0000000000000001)bootstrap.xmli")};
+    InputStream[] xmlFilesIS = buildMetadataInputStreamList();
 
     XMLImporter x = new XMLImporter(xsdIS, xmlFilesIS);
     x.toDatabase();
 
     ServerInitializerFacade.rebuild();
+  }
+  
+  public static InputStream[] buildMetadataInputStreamList() throws IOException
+  {
+    List<ClasspathResource> xmlFileDependencies = ClasspathResource.getResourcesInPackage(ConfigGroup.METADATA.getPath());
+    ClasspathResource[] xmlFiles = (ClasspathResource[]) xmlFileDependencies.toArray(new ClasspathResource[xmlFileDependencies.size()]);
+    
+    InputStream[] xmlFilesIS = new InputStream[xmlFiles.length];
+    for (int i = 0; i < xmlFiles.length; ++i)
+    {
+      ClasspathResource cpr = xmlFiles[i];
+      
+      if (cpr.getNameExtension().equals("xml"))
+      {
+        String s = cpr.getName();
+        
+        if (LocalProperties.isRunwayEnvironment()) {
+          // Always read the metadata directly from src/main/resources if it exists, instead of reading it from a jar.
+          try {
+            String targetFilePath = RunwayProperties.getRunwayServerResources() + "/" + ConfigGroup.METADATA.getPath() + s;
+            File targetMetadata = new File(targetFilePath);
+            xmlFilesIS[i] = new FileInputStream(targetMetadata);
+          }
+          catch (Exception e) {
+            xmlFilesIS[i] = cpr.getStream();
+          }
+        }
+        else {
+          xmlFilesIS[i] = cpr.getStream();
+        }
+      }
+    }
+    
+    return xmlFilesIS;
   }
 }
