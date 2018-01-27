@@ -18,9 +18,10 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.RunwayMetadataVersion;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.dataaccess.CoreException;
-import com.runwaysdk.dataaccess.InstallerCP;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.Database;
@@ -32,8 +33,8 @@ public class RunwayMetadataPatcher
 {
   private static Logger logger = LoggerFactory.getLogger(RunwayMetadataPatcher.class);
   
-  public static final String RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = "DDMS00000000000000003";
-  // delete from dynamic_properties where id ='DDMS00000000000000003'
+  public static final String RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = "000000000000000000002";
+  // delete from dynamic_properties where id ='000000000000000000002'
   
   private static final String DATE_PATTEN  = "\\d{4,}";
   
@@ -70,7 +71,7 @@ public class RunwayMetadataPatcher
   
   private void initialize()
   {
-//    bootstrap();
+    bootstrap();
     
     this.map = new HashMap<Date, ClasspathResource>();
     this.ordered = new TreeSet<ClasspathResource>(new VersionComparator());
@@ -197,8 +198,25 @@ public class RunwayMetadataPatcher
     }
   }
   
+  /**
+   * Migrates databases using the legacy patcher system to our new versioned patcher.
+   */
+//  public void migrateToNewPatcher()
+//  {
+//    RunwayMetadataVersion version = Database.getMetadataVersion();
+//    
+//    String sql = null;
+//    
+//    if (version.toString().equals("1.27.0"))
+//    {
+//      
+//    }
+//  }
+  
   public void doAll() throws ParseException
   {
+    LocalProperties.setSkipCodeGenAndCompile(true);
+    
     List<ClasspathResource> list = new LinkedList<ClasspathResource>(ordered);
 
     this.performDoIt(list);
@@ -208,7 +226,7 @@ public class RunwayMetadataPatcher
   {
     try
     {
-      RunwayMetadataPatcher.bootstrap();
+//      RunwayMetadataPatcher.bootstrap();
       RunwayMetadataPatcher.run(args);
     }
     finally

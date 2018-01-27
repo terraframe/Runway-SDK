@@ -84,6 +84,38 @@
 
   <profiles>
     <profile>
+      <id>run-sandbox</id>
+      <activation>
+        <property>
+          <name>run-sandbox</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>run-sandbox</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.Sandbox</mainClass>
+                  <arguments>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>unimport-working</id>
       <activation>
         <property>
