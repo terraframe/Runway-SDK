@@ -161,14 +161,6 @@ public class RunwayMetadataPatcher
         {
           SAXImporter.runImport(new ResourceStreamSource(resource.getAbsolutePath()), null);
         }
-        else if (resource.getNameExtension().equals("xmli"))
-        {
-          stream = resource.getStream();
-          InputStream[] xmlFilesIS = new InputStream[]{stream};
-          
-          XMLImporter importer = new XMLImporter(schema, xmlFilesIS);
-          importer.toDatabase(false);
-        }
         else if (resource.getNameExtension().equals("class"))
         {
           // TODO : Run the java file
