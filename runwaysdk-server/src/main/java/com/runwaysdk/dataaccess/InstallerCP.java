@@ -64,110 +64,11 @@ public class InstallerCP
       throw new RunwayConfigurationException("Unable to find the xsd '" + xsd + "' on the classpath, the specified resource does not exist.");
     }
 
-    InputStream[] xmlFilesIS = buildMetadataInputStreamList();
+    InputStream[] xmlFilesIS = new InputStream[]{InstallerCP.class.getClassLoader().getResourceAsStream("com/runwaysdk/resources/metadata/(0001)metadata.xml")};
 
     XMLImporter x = new XMLImporter(xsdIS, xmlFilesIS);
     x.toDatabase();
 
     ServerInitializerFacade.rebuild();
-  }
-  
-  public static InputStream[] buildMetadataInputStreamList() throws IOException {
-    ArrayList<String> xmlFileDependencies = getClassNamesFromPackage(ConfigGroup.METADATA.getPath());
-    String[] xmlFiles = (String[]) xmlFileDependencies.toArray(new String[xmlFileDependencies.size()]);
-    
-    InputStream[] xmlFilesIS = new InputStream[xmlFiles.length];
-    for (int i = 0; i < xmlFiles.length; ++i)
-    {
-      String s = xmlFiles[i] + ".xml";
-      
-      if (LocalProperties.isRunwayEnvironment()) {
-        // Always read the metadata directly from src/main/resources if it exists, instead of reading it from a jar.
-        try {
-          String targetFilePath = RunwayProperties.getRunwayServerResources() + "/" + ConfigGroup.METADATA.getPath() + s;
-          File targetMetadata = new File(targetFilePath);
-          xmlFilesIS[i] = new FileInputStream(targetMetadata);
-        }
-        catch (Exception e) {
-          InputStream is = ConfigurationManager.getResourceAsStream(ConfigGroup.METADATA, s);
-          xmlFilesIS[i] = is;
-        }
-      }
-      else {
-        InputStream is = ConfigurationManager.getResourceAsStream(ConfigGroup.METADATA, s);
-        xmlFilesIS[i] = is;
-      }
-    }
-    
-    return xmlFilesIS;
-  }
-
-  /**
-   * Returns a list of names of files on the classpath with the given
-   * packageName or inside the given directory.
-   * 
-   * @param packageName
-   *          A classname or directory on the classpath
-   * @return A list of fully qualified file names found inside the
-   *         package/directory.
-   * @throws IOException
-   */
-  public static ArrayList<String> getClassNamesFromPackage(String packageName) throws IOException
-  {
-    ClassLoader classLoader = InstallerCP.class.getClassLoader();
-    Enumeration<URL> packageURLs;
-    ArrayList<String> names = new ArrayList<String>();
-
-    packageName = packageName.replace(".", "/");
-    packageURLs = classLoader.getResources(packageName);
-
-    while (packageURLs.hasMoreElements())
-    {
-      URL packageURL = packageURLs.nextElement();
-
-      if (packageURL.getProtocol().equals("jar"))
-      {
-        String jarFileName;
-        JarFile jf;
-        Enumeration<JarEntry> jarEntries;
-        String entryName;
-
-        // build jar file name, then loop through zipped entries
-        jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
-        jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
-        jf = new JarFile(jarFileName);
-        try
-        {
-          jarEntries = jf.entries();
-          while (jarEntries.hasMoreElements())
-          {
-            entryName = jarEntries.nextElement().getName();
-            if (entryName.startsWith(packageName) && entryName.length() > packageName.length() + 5)
-            {
-              entryName = entryName.substring(entryName.lastIndexOf('/') + 1, entryName.lastIndexOf('.'));
-              names.add(entryName);
-            }
-          }
-        }
-        finally
-        {
-          jf.close();
-        }
-      }
-      else
-      {
-        File folder = new File(packageURL.getFile());
-        File[] contenuti = folder.listFiles();
-        String entryName;
-        for (File actual : contenuti)
-        {
-          entryName = actual.getName();
-          entryName = entryName.substring(0, entryName.lastIndexOf('.'));
-          names.add(entryName);
-        }
-      }
-    }
-
-    return names;
   }
 }
