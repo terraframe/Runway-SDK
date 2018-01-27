@@ -138,40 +138,40 @@ public class GISServerInitializer implements ServerInitializerIF
   @Request
   public synchronized void rebuild()
   {
-    StreamSource universalXml;
-    String path = "com/runwaysdk/resources/build/universal.xml";
-    
-    LocalProperties.setSkipCodeGenAndCompile(true);
-
-    if (LocalProperties.isRunwayEnvironment())
-    {
-      // Always read universal from src/main/resources, instead of reading it from a jar.
-      try
-      {
-        String targetFilePath = RunwayGisProperties.getGisServerResourcesDir() + "/" + path;
-        File file = new File(targetFilePath);
-        universalXml = new FileStreamSource(file);
-      }
-      catch (Exception e)
-      {
-        universalXml = new ResourceStreamSource(path);
-      }
-    }
-    else
-    {
-      // Read it from the jar.
-      universalXml = new ResourceStreamSource(path);
-    }
-
-    try
-    {
-      SAXImporter.runImport(universalXml, "classpath:" + ConfigGroup.XSD.getPath() + "datatype_gis.xsd");
-    }
-    catch (Throwable t)
-    {
-      String errorMessage = "Failed to initialize module [" + this.getClass().getName() + "]";
-      throw new ProgrammingErrorException(errorMessage, t);
-    }
+//    StreamSource universalXml;
+//    String path = "com/runwaysdk/resources/build/universal.xml";
+//    
+//    LocalProperties.setSkipCodeGenAndCompile(true);
+//
+//    if (LocalProperties.isRunwayEnvironment())
+//    {
+//      // Always read universal from src/main/resources, instead of reading it from a jar.
+//      try
+//      {
+//        String targetFilePath = RunwayGisProperties.getGisServerResourcesDir() + "/" + path;
+//        File file = new File(targetFilePath);
+//        universalXml = new FileStreamSource(file);
+//      }
+//      catch (Exception e)
+//      {
+//        universalXml = new ResourceStreamSource(path);
+//      }
+//    }
+//    else
+//    {
+//      // Read it from the jar.
+//      universalXml = new ResourceStreamSource(path);
+//    }
+//
+//    try
+//    {
+//      SAXImporter.runImport(universalXml, "classpath:" + ConfigGroup.XSD.getPath() + "datatype_gis.xsd");
+//    }
+//    catch (Throwable t)
+//    {
+//      String errorMessage = "Failed to initialize module [" + this.getClass().getName() + "]";
+//      throw new ProgrammingErrorException(errorMessage, t);
+//    }
   }
 
 }

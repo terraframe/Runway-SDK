@@ -18,54 +18,18 @@
  */
 package com.runwaysdk;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-
-import com.runwaysdk.constants.Constants;
-import com.runwaysdk.constants.EntityCacheMaster;
-import com.runwaysdk.constants.EnumerationMasterInfo;
-import com.runwaysdk.constants.IndexTypes;
-import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
-import com.runwaysdk.constants.MdAttributeConcreteInfo;
-import com.runwaysdk.constants.MdAttributeEnumerationInfo;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
-import com.runwaysdk.constants.MdAttributeReferenceInfo;
-import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdClassInfo;
-import com.runwaysdk.constants.MdElementInfo;
-import com.runwaysdk.constants.MdEnumerationInfo;
-import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdTableInfo;
-import com.runwaysdk.constants.MdTypeInfo;
-import com.runwaysdk.constants.MdViewInfo;
-import com.runwaysdk.constants.MdWebAttributeInfo;
-import com.runwaysdk.constants.SingleActorInfo;
-import com.runwaysdk.constants.VaultInfo;
-import com.runwaysdk.constants.VisibilityModifier;
-import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.BusinessDAOIF;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.InstallerCP;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
-import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
-import com.runwaysdk.dataaccess.metadata.MdTableDAO;
-import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.query.BusinessDAOQuery;
-import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.QueryFactory;
-import com.runwaysdk.session.Request;
-import com.runwaysdk.system.Vault;
-import com.runwaysdk.system.metadata.MdAttributeCharacter;
+import com.runwaysdk.dataaccess.io.ClasspathResource;
+import com.runwaysdk.dataaccess.io.RunwayMetadataPatcher;
+import com.runwaysdk.dataaccess.io.TimeFormat;
+import com.runwaysdk.dataaccess.io.XMLImporter;
+import com.runwaysdk.util.ServerInitializerFacade;
 
 /**
  * !!HEADS UP!!
@@ -91,5 +55,10 @@ import com.runwaysdk.system.metadata.MdAttributeCharacter;
  */
 public class Sandbox
 {
-  
+  public static void main(String[] args) throws IOException
+  {
+    RunwayMetadataPatcher.main(new String[]{});
+//    Sandbox.bootstrap();
+//    InstallerCP.main(new String[]{"postgres", "postgres", "postgres", "com/runwaysdk/resources/xsd/schema.xsd"});
+  }
 }

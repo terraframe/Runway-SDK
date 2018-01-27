@@ -18,13 +18,13 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.util.ServerInitializerFacade;
@@ -38,7 +38,9 @@ public class RunwayMetadataPatcher
   
   private static final String DATE_PATTEN  = "\\d{4,}";
   
-  private static final String NAME_PATTERN = "^[A-Za-z_\\-\\d\\.]*\\((" + DATE_PATTEN + ")\\)[A-Za-z_\\-\\d\\.]*.(?:sql|xml|class)$";
+  private static final String NAME_PATTERN = "^[A-Za-z_\\-\\d\\.]*\\((" + DATE_PATTEN + ")\\)[A-Za-z_\\-\\d\\.]*.(?:sql|xml|xmli|class)$";
+  
+  private static final String METADATA_CLASSPATH_LOC = "metadata";
   
   class VersionComparator implements Comparator<ClasspathResource>
   {
@@ -71,12 +73,14 @@ public class RunwayMetadataPatcher
   
   private void initialize()
   {
+    logger.info("Initializing Runway metadata patcher.");
+    
     bootstrap();
     
     this.map = new HashMap<Date, ClasspathResource>();
     this.ordered = new TreeSet<ClasspathResource>(new VersionComparator());
 
-    for (ClasspathResource resource : getTimestampedResources("com/runwaysdk/resources/metadata"))
+    for (ClasspathResource resource : getTimestampedResources(METADATA_CLASSPATH_LOC))
     {
       ordered.add(resource);
 
@@ -88,10 +92,8 @@ public class RunwayMetadataPatcher
     // Get a list of all the imported versions
     List<String> values = Database.getPropertyValue(RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
 
-    for (String str : values)
+    for (String timestamp : values)
     {
-      String timestamp = str.substring(8);
-      
       timestamps.add(new Date(Long.parseLong(timestamp)));
     }
   }
@@ -103,9 +105,9 @@ public class RunwayMetadataPatcher
       return;
     }
     
-    logger.info("Bootstrapping Runway metadata.xml on an empty database.");
+    logger.info("Bootstrapping Runway onto an empty database.");
     
-    ClasspathResource metadataRs = new ClasspathResource("(0001)metadata.xml", "com/runwaysdk/resources/metadata");
+    ClasspathResource metadataRs = new ClasspathResource("(0000000000000001)bootstrap.xmli", METADATA_CLASSPATH_LOC);
     InputStream schema = ClasspathResource.class.getClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
     InputStream metadata = metadataRs.getStream();
     InputStream[] xmlFilesIS = new InputStream[]{metadata};
@@ -115,9 +117,7 @@ public class RunwayMetadataPatcher
       XMLImporter importer = new XMLImporter(schema, xmlFilesIS);
       importer.toDatabase();
 
-      ServerInitializerFacade.rebuild();
-      
-      Database.addPropertyValue(Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, "RWMETA-" + new TimeFormat(getDate(metadataRs).getTime()).format().substring(8), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
+      Database.addPropertyValue(Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(getDate(metadataRs).getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
     }
     finally
     {
@@ -138,33 +138,42 @@ public class RunwayMetadataPatcher
     // Only perform the doIt if this file has not already been imported
     if (!timestamps.contains(timestamp))
     {
-      logger.info("Importing runway metadata classpath resource [" + resource.getAbsolutePath() + "].");
+      logger.info("Importing metadata classpath resource [" + resource.getAbsolutePath() + "].");
       
-      Database.addPropertyValue(Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, "RWMETA-" + new TimeFormat(timestamp.getTime()).format().substring(8), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
+      Database.addPropertyValue(Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
 
-      InputStream stream = resource.getStream();
-      InputStream schema = ClasspathResource.class.getClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
+      InputStream stream = null;
+      
+      // Its better if we don't specify the schema that way we're not making any assumptions and the file itself can say what schema it wants.
       
       try
       {
-        if (resource.getNameExtension().equals(".sql"))
+        if (resource.getNameExtension().equals("sql"))
         {
+          stream = resource.getStream();
           String sql = IOUtils.toString(stream, "UTF-8");
           
           Database.executeStatement(sql);
         }
-        else if (resource.getNameExtension().equals(".xml"))
+        else if (resource.getNameExtension().equals("xml"))
         {
+          SAXImporter.runImport(new ResourceStreamSource(resource.getAbsolutePath()), null);
+        }
+        else if (resource.getNameExtension().equals("xmli"))
+        {
+          stream = resource.getStream();
           InputStream[] xmlFilesIS = new InputStream[]{stream};
           
-          XMLImporter importer = new XMLImporter(schema, xmlFilesIS);
+          XMLImporter importer = new XMLImporter(null, xmlFilesIS);
           importer.toDatabase();
-          
-          ServerInitializerFacade.rebuild();
         }
-        else if (resource.getNameExtension().equals(".class"))
+        else if (resource.getNameExtension().equals("class"))
         {
           // TODO : Run the java file
+        }
+        else
+        {
+          throw new CoreException("Unknown extension [" + resource.getNameExtension() + "].");
         }
       }
       catch (IOException e)
@@ -174,8 +183,10 @@ public class RunwayMetadataPatcher
       finally
       {
         try {
-          stream.close();
-          schema.close();
+          if (stream != null)
+          {
+            stream.close();
+          }
         }
         catch (IOException e)
         {

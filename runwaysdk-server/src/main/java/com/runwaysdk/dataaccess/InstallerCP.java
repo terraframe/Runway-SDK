@@ -64,7 +64,7 @@ public class InstallerCP
       throw new RunwayConfigurationException("Unable to find the xsd '" + xsd + "' on the classpath, the specified resource does not exist.");
     }
 
-    InputStream[] xmlFilesIS = new InputStream[]{InstallerCP.class.getClassLoader().getResourceAsStream("com/runwaysdk/resources/metadata/(0001)metadata.xml")};
+    InputStream[] xmlFilesIS = new InputStream[]{InstallerCP.class.getClassLoader().getResourceAsStream("metadata/(0000000000000001)bootstrap.xmli")};
 
     XMLImporter x = new XMLImporter(xsdIS, xmlFilesIS);
     x.toDatabase();
