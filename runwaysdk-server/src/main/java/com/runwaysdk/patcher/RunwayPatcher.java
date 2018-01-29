@@ -1,4 +1,4 @@
-package com.runwaysdk;
+package com.runwaysdk.patcher;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,11 +20,13 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.ClasspathResource;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.InstallerCP;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.ResourceStreamSource;
@@ -35,23 +37,23 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
 
-public class RunwayMetadataPatcher
+public class RunwayPatcher
 {
-  private static Logger logger = LoggerFactory.getLogger(RunwayMetadataPatcher.class);
+  private static Logger logger = LoggerFactory.getLogger(RunwayPatcher.class);
   
   public static final String RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = Database.VERSION_TIMESTAMP_PROPERTY;
   
   private static final String DATE_PATTEN  = "\\d{4,}";
   
-  private static final String NAME_PATTERN = "^[A-Za-z_\\-\\d\\.]*\\((" + DATE_PATTEN + ")\\)[A-Za-z_\\-\\d\\.]*.(?:sql|xml|class)$";
+  private static final String NAME_PATTERN = "^([A-Za-z_\\-\\d\\.]*)\\((" + DATE_PATTEN + ")\\)([A-Za-z_\\-\\d\\.]*).(?:sql|xml|java)$";
   
-  private static final String METADATA_CLASSPATH_LOC = "metadata";
+  public static final String METADATA_CLASSPATH_LOC = "domain";
   
   class VersionComparator implements Comparator<ClasspathResource>
   {
     public int compare(ClasspathResource arg0, ClasspathResource arg1)
     {
-      return RunwayMetadataPatcher.compare(arg0, arg1);
+      return RunwayPatcher.compare(arg0, arg1);
     }
   }
   
@@ -71,7 +73,7 @@ public class RunwayMetadataPatcher
    */
   protected Map<Date, ClasspathResource> map;
   
-  public RunwayMetadataPatcher()
+  public RunwayPatcher()
   {
     initialize();
   }
@@ -149,7 +151,7 @@ public class RunwayMetadataPatcher
     // Only perform the doIt if this file has not already been imported
     if (!timestamps.contains(timestamp))
     {
-      logger.info("Importing metadata classpath resource [" + resource.getAbsolutePath() + "].");
+      logger.info("Importing domain classpath resource [" + resource.getName() + "].");
       
       Database.addPropertyValue(Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
 
@@ -170,9 +172,11 @@ public class RunwayMetadataPatcher
         {
           SAXImporter.runImport(new ResourceStreamSource(resource.getAbsolutePath()), null);
         }
-        else if (resource.getNameExtension().equals("class"))
+        else if (resource.getNameExtension().equals("java"))
         {
-          Class<?> clazz = LoaderDecorator.load(resource.getAbsolutePath().replaceAll("/", "."));
+          ObjectCache.refreshTheEntireCache();
+          
+          Class<?> clazz = LoaderDecorator.load("com.runwaysdk.patcher." + RunwayPatcher.METADATA_CLASSPATH_LOC + "." + RunwayPatcher.getName(resource));
           Method main = clazz.getMethod("main", String[].class);
           main.invoke(null, (Object) new String[]{});
         }
@@ -204,7 +208,6 @@ public class RunwayMetadataPatcher
     }
   }
   
-  @Transaction
   public void performDoIt(List<ClasspathResource> resources)
   {
     for (ClasspathResource resource : resources)
@@ -248,13 +251,12 @@ public class RunwayMetadataPatcher
   {
     try
     {
-      RunwayMetadataPatcher.bootstrap(args);
-      RunwayMetadataPatcher.run(args);
+      RunwayPatcher.bootstrap(args);
+      RunwayPatcher.run(args);
     }
     finally
     {
       CacheShutdown.shutdown();
-      
     }
   }
   
@@ -263,13 +265,40 @@ public class RunwayMetadataPatcher
   {
     try
     {
-      RunwayMetadataPatcher patcher = new RunwayMetadataPatcher();
+      RunwayPatcher patcher = new RunwayPatcher();
       patcher.doAll();
     }
     catch (ParseException e)
     {
       throw new CoreException(e);
     }
+  }
+  
+  public static String getName(ClasspathResource resource)
+  {
+    Pattern namePattern = Pattern.compile(NAME_PATTERN);
+    Matcher nameMatcher = namePattern.matcher(resource.getName());
+
+    if (nameMatcher.find())
+    {
+      String out = "";
+      
+      String name1 = nameMatcher.group(1);
+      if (name1 != null)
+      {
+        out = out + name1;
+      }
+      
+      String name2 = nameMatcher.group(3);
+      if (name2 != null)
+      {
+        out = out + name2;
+      }
+      
+      return out;
+    }
+
+    return null;
   }
 
   public static Long getTimestamp(ClasspathResource resource)
@@ -279,7 +308,7 @@ public class RunwayMetadataPatcher
 
     if (nameMatcher.find())
     {
-      Long timeStamp = Long.parseLong(nameMatcher.group(1));
+      Long timeStamp = Long.parseLong(nameMatcher.group(2));
       return timeStamp;
     }
 
