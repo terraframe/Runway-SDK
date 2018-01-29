@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.runwaysdk.business.generation.GenerationManager;
+import com.runwaysdk.dataaccess.io.RunwayMetadataPatcher;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -39,7 +40,8 @@ public class Sandbox
 
   public static void main(String[] args) throws Exception
   {
-    test();
+//    test();
+    RunwayMetadataPatcher.main(new String[]{});
   }
   
   @Request

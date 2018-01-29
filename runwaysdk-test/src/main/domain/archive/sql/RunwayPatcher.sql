@@ -1,0 +1,2 @@
+INSERT INTO dynamic_properties ( id, version_number) VALUES ('DDMS00000000000000003', 'RWMETA-00000001');
+INSERT INTO dynamic_properties ( id, version_number) VALUES ('DDMS00000000000000003', 'RWMETA-00000002');

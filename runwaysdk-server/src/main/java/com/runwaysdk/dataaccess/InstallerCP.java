@@ -22,13 +22,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.List;
 
+import com.runwaysdk.ClasspathResource;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
@@ -72,102 +68,37 @@ public class InstallerCP
     ServerInitializerFacade.rebuild();
   }
   
-  public static InputStream[] buildMetadataInputStreamList() throws IOException {
-    ArrayList<String> xmlFileDependencies = getClassNamesFromPackage(ConfigGroup.METADATA.getPath());
-    String[] xmlFiles = (String[]) xmlFileDependencies.toArray(new String[xmlFileDependencies.size()]);
+  public static InputStream[] buildMetadataInputStreamList() throws IOException
+  {
+    List<ClasspathResource> xmlFileDependencies = ClasspathResource.getResourcesInPackage(ConfigGroup.METADATA.getPath());
+    ClasspathResource[] xmlFiles = (ClasspathResource[]) xmlFileDependencies.toArray(new ClasspathResource[xmlFileDependencies.size()]);
     
     InputStream[] xmlFilesIS = new InputStream[xmlFiles.length];
     for (int i = 0; i < xmlFiles.length; ++i)
     {
-      String s = xmlFiles[i] + ".xml";
+      ClasspathResource cpr = xmlFiles[i];
       
-      if (LocalProperties.isRunwayEnvironment()) {
-        // Always read the metadata directly from src/main/resources if it exists, instead of reading it from a jar.
-        try {
-          String targetFilePath = RunwayProperties.getRunwayServerResources() + "/" + ConfigGroup.METADATA.getPath() + s;
-          File targetMetadata = new File(targetFilePath);
-          xmlFilesIS[i] = new FileInputStream(targetMetadata);
+      if (cpr.getNameExtension().equals("xml"))
+      {
+        String s = cpr.getName();
+        
+        if (LocalProperties.isRunwayEnvironment()) {
+          // Always read the metadata directly from src/main/resources if it exists, instead of reading it from a jar.
+          try {
+            String targetFilePath = RunwayProperties.getRunwayServerResources() + "/" + ConfigGroup.METADATA.getPath() + s;
+            File targetMetadata = new File(targetFilePath);
+            xmlFilesIS[i] = new FileInputStream(targetMetadata);
+          }
+          catch (Exception e) {
+            xmlFilesIS[i] = cpr.getStream();
+          }
         }
-        catch (Exception e) {
-          InputStream is = ConfigurationManager.getResourceAsStream(ConfigGroup.METADATA, s);
-          xmlFilesIS[i] = is;
+        else {
+          xmlFilesIS[i] = cpr.getStream();
         }
-      }
-      else {
-        InputStream is = ConfigurationManager.getResourceAsStream(ConfigGroup.METADATA, s);
-        xmlFilesIS[i] = is;
       }
     }
     
     return xmlFilesIS;
-  }
-
-  /**
-   * Returns a list of names of files on the classpath with the given
-   * packageName or inside the given directory.
-   * 
-   * @param packageName
-   *          A classname or directory on the classpath
-   * @return A list of fully qualified file names found inside the
-   *         package/directory.
-   * @throws IOException
-   */
-  public static ArrayList<String> getClassNamesFromPackage(String packageName) throws IOException
-  {
-    ClassLoader classLoader = InstallerCP.class.getClassLoader();
-    Enumeration<URL> packageURLs;
-    ArrayList<String> names = new ArrayList<String>();
-
-    packageName = packageName.replace(".", "/");
-    packageURLs = classLoader.getResources(packageName);
-
-    while (packageURLs.hasMoreElements())
-    {
-      URL packageURL = packageURLs.nextElement();
-
-      if (packageURL.getProtocol().equals("jar"))
-      {
-        String jarFileName;
-        JarFile jf;
-        Enumeration<JarEntry> jarEntries;
-        String entryName;
-
-        // build jar file name, then loop through zipped entries
-        jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
-        jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
-        jf = new JarFile(jarFileName);
-        try
-        {
-          jarEntries = jf.entries();
-          while (jarEntries.hasMoreElements())
-          {
-            entryName = jarEntries.nextElement().getName();
-            if (entryName.startsWith(packageName) && entryName.length() > packageName.length() + 5)
-            {
-              entryName = entryName.substring(entryName.lastIndexOf('/') + 1, entryName.lastIndexOf('.'));
-              names.add(entryName);
-            }
-          }
-        }
-        finally
-        {
-          jf.close();
-        }
-      }
-      else
-      {
-        File folder = new File(packageURL.getFile());
-        File[] contenuti = folder.listFiles();
-        String entryName;
-        for (File actual : contenuti)
-        {
-          entryName = actual.getName();
-          entryName = entryName.substring(0, entryName.lastIndexOf('.'));
-          names.add(entryName);
-        }
-      }
-    }
-
-    return names;
   }
 }
