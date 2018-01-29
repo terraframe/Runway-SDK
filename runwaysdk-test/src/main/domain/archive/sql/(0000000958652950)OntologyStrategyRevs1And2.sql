@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 INSERT INTO class_cache (set_id, item_id)  VALUES  ('1qo04f0f6l3psbb9reunz90ezz0tvqlg', '0000000000000000000000000000023100000000000000000000000000000222');
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('29swd393o37ry2i7s0gjnkr1qinvdpq4NM200904120000000000000000000030', '29swd393o37ry2i7s0gjnkr1qinvdpq4NM200904120000000000000000000030', 'terraframe.com', 'Strategy State Master');
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('71i1hnjo2j5ze0dfba36o3l7jd44n3ijNM200904120000000000000000000030', '71i1hnjo2j5ze0dfba36o3l7jd44n3ijNM200904120000000000000000000030', 'terraframe.com', 'Strategy State Master');

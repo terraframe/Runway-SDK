@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 INSERT INTO class_cache (set_id, item_id)  VALUES  ('xneaj0ux87if4efyvll2ewpqqp4p3rdn', '0000000000000000000000000000023100000000000000000000000000000222');
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('1s6hqrduqo0iqj09fzuj9tm7u8w1ba8wNM200904120000000000000000000030', '1s6hqrduqo0iqj09fzuj9tm7u8w1ba8wNM200904120000000000000000000030', 'terraframe.com', 'MdTerm');
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('8qvrbvpgcixc0dkprgce79ku71j76qpaNM200904120000000000000000000030', '8qvrbvpgcixc0dkprgce79ku71j76qpaNM200904120000000000000000000030', 'terraframe.com', 'Business for term definition');
