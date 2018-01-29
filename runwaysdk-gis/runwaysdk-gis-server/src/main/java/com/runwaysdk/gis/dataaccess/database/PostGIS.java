@@ -93,6 +93,7 @@ public class PostGIS extends PostgreSQL
     // statements.add("GRANT SELECT, INSERT, UPDATE, DELETE ON "+GEOMETRY_COLUMNS+" TO "
     // + userName);
 
+    statements.add("CREATE EXTENSION IF NOT EXISTS postgis");
     statements.add("GRANT ALL ON TABLE " + SPATIAL_REF_SYS + " TO " + userName);
     statements.add("GRANT ALL ON TABLE " + GEOMETRY_COLUMNS + " TO " + userName);
 

@@ -2,6 +2,8 @@ package com.runwaysdk;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
@@ -30,18 +32,18 @@ import com.runwaysdk.dataaccess.io.TimeFormat;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
 
 public class RunwayMetadataPatcher
 {
   private static Logger logger = LoggerFactory.getLogger(RunwayMetadataPatcher.class);
   
-  public static final String RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = "000000000000000000002";
-  // delete from dynamic_properties where id ='000000000000000000002'
+  public static final String RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = Database.VERSION_TIMESTAMP_PROPERTY;
   
   private static final String DATE_PATTEN  = "\\d{4,}";
   
-  private static final String NAME_PATTERN = "^[A-Za-z_\\-\\d\\.]*\\((" + DATE_PATTEN + ")\\)[A-Za-z_\\-\\d\\.]*.(?:sql|xml|xmli|class)$";
+  private static final String NAME_PATTERN = "^[A-Za-z_\\-\\d\\.]*\\((" + DATE_PATTEN + ")\\)[A-Za-z_\\-\\d\\.]*.(?:sql|xml|class)$";
   
   private static final String METADATA_CLASSPATH_LOC = "metadata";
   
@@ -101,37 +103,43 @@ public class RunwayMetadataPatcher
     }
   }
   
-  public static void bootstrap()
+  /**
+   * Bootstrapping must not be done inside a request or transaction.
+   */
+  public static void bootstrap(String[] args)
   {
-    if (Database.tableExists("md_class"))
+    if ((args.length == 4 && Boolean.valueOf(args[3]) == true) || !Database.tableExists("md_class"))
     {
-      return;
-    }
-    
-    logger.info("Bootstrapping Runway into an empty database.");
-    
-    InputStream schema = ClasspathResource.class.getClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
-    
-    try
-    {
-      InputStream[] xmlFilesIS = InstallerCP.buildMetadataInputStreamList();
-
-      XMLImporter importer = new XMLImporter(schema, xmlFilesIS);
-      importer.toDatabase();
-    }
-    catch (IOException e)
-    {
-      throw new CoreException(e);
-    }
-    finally
-    {
+      logger.info("Bootstrapping Runway into an empty database.");
+      
+      if (args.length >= 3)
+      {
+        Database.initialSetup(args[0], args[1], args[2]);
+      }
+      
+      InputStream schema = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
+      
       try
       {
-        schema.close();
+        InputStream[] xmlFilesIS = InstallerCP.buildMetadataInputStreamList();
+  
+        XMLImporter importer = new XMLImporter(schema, xmlFilesIS);
+        importer.toDatabase();
       }
       catch (IOException e)
       {
         throw new CoreException(e);
+      }
+      finally
+      {
+        try
+        {
+          schema.close();
+        }
+        catch (IOException e)
+        {
+          throw new CoreException(e);
+        }
       }
     }
   }
@@ -145,8 +153,9 @@ public class RunwayMetadataPatcher
       
       Database.addPropertyValue(Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
 
-      InputStream stream = null;
+      // We always want to use the context class loader because it ensures our resource paths are absolute.
       InputStream schema = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
+      InputStream stream = null;
       
       try
       {
@@ -163,14 +172,16 @@ public class RunwayMetadataPatcher
         }
         else if (resource.getNameExtension().equals("class"))
         {
-          // TODO : Run the java file
+          Class<?> clazz = LoaderDecorator.load(resource.getAbsolutePath().replaceAll("/", "."));
+          Method main = clazz.getMethod("main", String[].class);
+          main.invoke(null, (Object) new String[]{});
         }
         else
         {
           throw new CoreException("Unknown extension [" + resource.getNameExtension() + "].");
         }
       }
-      catch (IOException e)
+      catch (IOException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e)
       {
         throw new ProgrammingErrorException(e);
       }
@@ -228,11 +239,16 @@ public class RunwayMetadataPatcher
     this.performDoIt(list);
   }
   
+  /**
+   * Brings your database to a fully patched state (as far as Runway is concerned). The arguments are entirely optional and are only used for creating new a database and user.
+   * 
+   * @param args
+   */
   public static void main(String[] args)
   {
     try
     {
-      RunwayMetadataPatcher.bootstrap();
+      RunwayMetadataPatcher.bootstrap(args);
       RunwayMetadataPatcher.run(args);
     }
     finally
