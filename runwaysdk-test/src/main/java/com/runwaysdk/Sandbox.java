@@ -19,17 +19,8 @@
 package com.runwaysdk;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-import com.runwaysdk.constants.MdAttributeCharacterInfo;
-import com.runwaysdk.dataaccess.InstallerCP;
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.dataaccess.io.ClasspathResource;
-import com.runwaysdk.dataaccess.io.RunwayMetadataPatcher;
-import com.runwaysdk.dataaccess.io.TimeFormat;
-import com.runwaysdk.dataaccess.io.XMLImporter;
-import com.runwaysdk.util.ServerInitializerFacade;
+import com.runwaysdk.patcher.RunwayPatcher;
 
 /**
  * !!HEADS UP!!
@@ -57,7 +48,7 @@ public class Sandbox
 {
   public static void main(String[] args) throws IOException
   {
-    RunwayMetadataPatcher.main(new String[]{});
+    RunwayPatcher.main(new String[]{"postgres","postgres","postgres","true"});
 //    Sandbox.bootstrap();
 //    InstallerCP.main(new String[]{"postgres", "postgres", "postgres", "com/runwaysdk/resources/xsd/schema.xsd"});
   }
