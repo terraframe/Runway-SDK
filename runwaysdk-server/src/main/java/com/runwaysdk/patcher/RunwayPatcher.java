@@ -80,7 +80,7 @@ public class RunwayPatcher
   
   private void initialize()
   {
-    logger.info("Initializing Runway metadata patcher.");
+    logger.info("Initializing Runway patcher.");
     
 //    bootstrap();
     

@@ -20,14 +20,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.runwaysdk.business.generation.GenerationManager;
-import com.runwaysdk.dataaccess.io.RunwayMetadataPatcher;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.patcher.RunwayPatcher;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.system.gis.geo.GeoEntity;
-import com.runwaysdk.system.gis.geo.Synonym;
-import com.runwaysdk.system.gis.geo.Universal;
 import com.runwaysdk.system.metadata.MdType;
 import com.runwaysdk.system.metadata.MdTypeQuery;
 
@@ -41,7 +38,7 @@ public class Sandbox
   public static void main(String[] args) throws Exception
   {
 //    test();
-    RunwayMetadataPatcher.main(new String[]{});
+    RunwayPatcher.main(new String[]{"postgres","postgres","postgres","true"});
   }
   
   @Request
