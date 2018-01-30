@@ -17,5 +17,15 @@
 -- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 --
 
-INSERT INTO dynamic_properties ( id, version_number) VALUES ('DDMS00000000000000003', 'RWMETA-00000001');
-INSERT INTO dynamic_properties ( id, version_number) VALUES ('DDMS00000000000000003', 'RWMETA-00000002');
+-- This file should patch most legacy databases into using the newer runway patcher. If the database is pretty old you may need to manually run some sql
+-- which you can find at runwaysdk-test/src/main/domain/archive/sql. Make sure the database has all sql in the range of (0000000000100001) - (0000000000100009)
+
+
+-----------------------------------------------------------------------
+-------------- When you manually patch runway metadata ----------------
+-----------------------------------------------------------------------
+------------------- !!DO NOT LOG IN AS ROOT!! -------------------------
+-----------------------------------------------------------------------
+
+INSERT INTO dynamic_properties ( id, version_number) VALUES ('000000000000000000000', '0000000000010000'); -- universal.xml
+-- INSERT INTO dynamic_properties ( id, version_number) VALUES ('000000000000000000000', '0000000000100010'); -- Change_Md_Action_cache_type

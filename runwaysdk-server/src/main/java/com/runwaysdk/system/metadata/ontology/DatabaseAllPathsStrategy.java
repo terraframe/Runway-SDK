@@ -26,16 +26,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.ontology.DDMSAllpathsLogic;
 import com.runwaysdk.business.ontology.DefaultStrategy;
 import com.runwaysdk.business.ontology.DeleteStrategyProviderIF;
-import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.business.ontology.OntologyEntryIF;
+import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.IndexTypes;
@@ -66,7 +66,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 {
   private static final long  serialVersionUID            = -428490646;
 
-  private static Log         log                         = LogFactory.getLog(DatabaseAllPathsStrategy.class);
+  private static Logger      logger                      = LoggerFactory.getLogger(DatabaseAllPathsStrategy.class);
 
   public static final String PARENT_TERM_ATTR            = "parentTerm";
 
@@ -156,42 +156,50 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   @Transaction
   private void createTableMetadata()
   {
-    MdTerm mdTerm = this.getMdTerm();
-    String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
-    String typeName = mdTerm.getTypeName() + "AllPathsTable";
-
-    MdBusinessDAO allPaths = MdBusinessDAO.newInstance();
-    allPaths.setValue(MdBusinessInfo.NAME, typeName);
-    allPaths.setValue(MdBusinessInfo.PACKAGE, packageName);
-    allPaths.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "AllPaths Table");
-    allPaths.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Used for storing AllPaths data.");
-    allPaths.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
-    allPaths.setGenerateMdController(false);
-    allPaths.apply();
-
-    MdAttributeReferenceDAO mdParentTermAttr = MdAttributeReferenceDAO.newInstance();
-    mdParentTermAttr.setValue(MdAttributeReferenceInfo.NAME, PARENT_TERM_ATTR);
-    mdParentTermAttr.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent");
-    mdParentTermAttr.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent");
-    mdParentTermAttr.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdParentTermAttr.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdParentTermAttr.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, allPaths.getId());
-    mdParentTermAttr.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
-    mdParentTermAttr.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
-    mdParentTermAttr.apply();
-
-    MdAttributeReferenceDAO mdChildTermAttr = MdAttributeReferenceDAO.newInstance();
-    mdChildTermAttr.setValue(MdAttributeReferenceInfo.NAME, CHILD_TERM_ATTR);
-    mdChildTermAttr.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child");
-    mdChildTermAttr.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child");
-    mdChildTermAttr.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdChildTermAttr.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdChildTermAttr.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, allPaths.getId());
-    mdChildTermAttr.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
-    mdChildTermAttr.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
-    mdChildTermAttr.apply();
-
-    this.termAllPaths = MdBusiness.get(allPaths.getId());
+    if (this.termAllPaths == null)
+    {
+      MdTerm mdTerm = this.getMdTerm();
+      String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
+      String typeName = mdTerm.getTypeName() + "AllPathsTable";
+    
+      MdBusinessDAO allPaths = MdBusinessDAO.newInstance();
+      allPaths.setValue(MdBusinessInfo.NAME, typeName);
+      allPaths.setValue(MdBusinessInfo.PACKAGE, packageName);
+      allPaths.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "AllPaths Table");
+      allPaths.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Used for storing AllPaths data.");
+      allPaths.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+      allPaths.setGenerateMdController(false);
+      allPaths.apply();
+  
+      MdAttributeReferenceDAO mdParentTermAttr = MdAttributeReferenceDAO.newInstance();
+      mdParentTermAttr.setValue(MdAttributeReferenceInfo.NAME, PARENT_TERM_ATTR);
+      mdParentTermAttr.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent");
+      mdParentTermAttr.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent");
+      mdParentTermAttr.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+      mdParentTermAttr.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+      mdParentTermAttr.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, allPaths.getId());
+      mdParentTermAttr.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
+      mdParentTermAttr.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+      mdParentTermAttr.apply();
+  
+      MdAttributeReferenceDAO mdChildTermAttr = MdAttributeReferenceDAO.newInstance();
+      mdChildTermAttr.setValue(MdAttributeReferenceInfo.NAME, CHILD_TERM_ATTR);
+      mdChildTermAttr.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child");
+      mdChildTermAttr.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child");
+      mdChildTermAttr.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+      mdChildTermAttr.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+      mdChildTermAttr.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, allPaths.getId());
+      mdChildTermAttr.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
+      mdChildTermAttr.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+      mdChildTermAttr.apply();
+  
+      this.termAllPaths = MdBusiness.get(allPaths.getId());
+    }
+    else
+    {
+      // This should never happen
+      logger.error("Table metadata already exists for DatabaseAllPathsStrategy [" + this.termClass + "]. Bad manners!");
+    }
   }
 
   /**
@@ -301,13 +309,13 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   {
     String allpathsTable = this.getAllPaths().getTableName();
 
-    if (log.isDebugEnabled())
+    if (logger.isDebugEnabled())
     {
       // report the number of records that are being deleted
       BusinessDAOQuery q = new QueryFactory().businessDAOQuery(this.getAllPaths().definesType());
       long beforeCount = q.getCount();
 
-      log.debug("The type [" + termAllPaths + "] had [" + beforeCount + "] objects in table [" + allpathsTable + "] BEFORE a complete allpaths rebuild.");
+      logger.debug("The type [" + termAllPaths + "] had [" + beforeCount + "] objects in table [" + allpathsTable + "] BEFORE a complete allpaths rebuild.");
     }
 
     this.getAllPaths().deleteAllTableRecords();
