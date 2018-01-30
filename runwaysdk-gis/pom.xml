@@ -24,7 +24,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>2.0.34-SNAPSHOT</version>
+    <version>2.0.34</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   
@@ -43,6 +43,6 @@
     <connection>scm:git:ssh://git@github.com/terraframe/Runway-SDK-GIS</connection>
     <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK-GIS</developerConnection>
     <url>scm:git:ssh://git@github.com/terraframe/Runway-SDK-GIS</url>
-    <tag>v2.0.18</tag>
+    <tag>2.0.34</tag>
   </scm>
 </project>
