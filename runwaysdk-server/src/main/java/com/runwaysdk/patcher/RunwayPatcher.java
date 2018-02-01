@@ -179,12 +179,15 @@ public class RunwayPatcher
       
       try
       {
+        // TODO : Because we have to import sql files we can't run inside a transaction. Runway patching files should be in instance XML
         if (resource.getNameExtension().equals("sql"))
         {
           stream = resource.getStream();
           String sql = IOUtils.toString(stream, "UTF-8");
           
           Database.executeStatement(sql);
+          
+          ObjectCache.refreshTheEntireCache();
         }
         else if (resource.getNameExtension().equals("xml"))
         {
@@ -192,8 +195,6 @@ public class RunwayPatcher
         }
         else if (resource.getNameExtension().equals("java"))
         {
-          ObjectCache.refreshTheEntireCache();
-          
           Class<?> clazz = LoaderDecorator.load("com.runwaysdk.patcher." + RunwayPatcher.METADATA_CLASSPATH_LOC + "." + RunwayPatcher.getName(resource));
           Method main = clazz.getMethod("main", String[].class);
           main.invoke(null, (Object) new String[]{});
