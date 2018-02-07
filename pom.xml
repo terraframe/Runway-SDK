@@ -193,38 +193,6 @@
       </build>
     </profile>
     <profile>
-      <id>patch</id>
-      <activation>
-        <property>
-          <name>patch</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version>
-            <executions>
-              <execution>
-                <id>patch</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>java</goal>
-                </goals>
-                <configuration>
-                  <executable>java</executable>
-                  <mainClass>com.runwaysdk.patcher.RunwayPatcher</mainClass>
-                  <arguments>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>rebuild-database</id>
       <activation>
         <property>
@@ -252,6 +220,38 @@
                     <argument>${root.pass}</argument>
                     <argument>${root.db}</argument>
                     <argument>com/runwaysdk/resources/xsd/schema.xsd</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>patch</id>
+      <activation>
+        <property>
+          <name>patch</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>patch</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.patcher.RunwayPatcher</mainClass>
+                  <arguments>
                   </arguments>
                 </configuration>
               </execution>
