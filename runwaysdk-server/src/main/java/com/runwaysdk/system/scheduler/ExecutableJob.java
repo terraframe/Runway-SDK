@@ -37,6 +37,7 @@ import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.system.SingleActor;
+import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 import com.runwaysdk.util.IDGenerator;
 
@@ -137,6 +138,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     // If the job wants to be run as a particular user then we need to create a session and a request for that user.
     
     SingleActor user = job.getRunAsUser();
+    MdDimension dimension = job.getRunAsDimension();
     
     if (user == null)
     {
@@ -146,7 +148,16 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       SingleActorDAOIF userDAO = (SingleActorDAOIF) BusinessFacade.getEntityDAO(user);
       
-      String sessionId = SessionFacade.logIn(userDAO, new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
+      String sessionId;
+      
+      if (dimension == null)
+      {
+        sessionId = SessionFacade.logIn(userDAO, new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
+      }
+      else
+      {
+        sessionId = SessionFacade.logIn(userDAO, dimension.getKey(), new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
+      }
       
       try
       {

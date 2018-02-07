@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -909551113)
+@com.runwaysdk.business.ClassSignature(hash = 1550433758)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -35,8 +17,9 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
   public static java.lang.String ENTRYDATE = "entryDate";
   public static java.lang.String JOBID = "jobId";
   public static java.lang.String RECORDHISTORY = "recordHistory";
+  public static java.lang.String RUNASDIMENSION = "runAsDimension";
   public static java.lang.String RUNASUSER = "runAsUser";
-  private static final long serialVersionUID = -909551113;
+  private static final long serialVersionUID = 1550433758;
   
   public ExecutableJobBase()
   {
@@ -144,6 +127,58 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     }
   }
   
+  public com.runwaysdk.system.metadata.MdDimension getRunAsDimension()
+  {
+    if (getValue(RUNASDIMENSION).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.MdDimension.get(getValue(RUNASDIMENSION));
+    }
+  }
+  
+  public String getRunAsDimensionId()
+  {
+    return getValue(RUNASDIMENSION);
+  }
+  
+  public void validateRunAsDimension()
+  {
+    this.validateAttribute(RUNASDIMENSION);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getRunAsDimensionMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.ExecutableJob.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(RUNASDIMENSION);
+  }
+  
+  public void setRunAsDimension(com.runwaysdk.system.metadata.MdDimension value)
+  {
+    if(value == null)
+    {
+      setValue(RUNASDIMENSION, "");
+    }
+    else
+    {
+      setValue(RUNASDIMENSION, value.getId());
+    }
+  }
+  
+  public void setRunAsDimensionId(java.lang.String id)
+  {
+    if(id == null)
+    {
+      setValue(RUNASDIMENSION, "");
+    }
+    else
+    {
+      setValue(RUNASDIMENSION, id);
+    }
+  }
+  
   public com.runwaysdk.system.SingleActor getRunAsUser()
   {
     if (getValue(RUNASUSER).trim().equals(""))
@@ -184,7 +219,7 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     }
   }
   
-  public void setRunAsUser(java.lang.String id)
+  public void setRunAsUserId(java.lang.String id)
   {
     if(id == null)
     {

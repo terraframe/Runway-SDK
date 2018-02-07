@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -312402706)
+@com.runwaysdk.business.ClassSignature(hash = -1435441145)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -130,6 +112,29 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
     return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJob.RECORDHISTORY, alias, displayLabel);
 
   }
+  public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension()
+  {
+    return getRunAsDimension(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION);
+
+    return (com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION, mdAttributeIF, this, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias, String displayLabel)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION);
+
+    return (com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION, mdAttributeIF, this, alias, displayLabel);
+
+  }
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getRunAsUser()
   {
     return getRunAsUser(null);
@@ -157,7 +162,11 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   {
     String name = mdAttributeIF.definesAttribute();
     
-    if (name.equals(com.runwaysdk.system.scheduler.ExecutableJob.RUNASUSER)) 
+    if (name.equals(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION)) 
+    {
+       return new com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.system.scheduler.ExecutableJob.RUNASUSER)) 
     {
        return new com.runwaysdk.system.SingleActorQuery.SingleActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
@@ -573,6 +582,9 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
     public com.runwaysdk.query.SelectableBoolean getRecordHistory();
     public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias);
     public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension();
+    public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias);
+    public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias, String displayLabel);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getRunAsUser();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getRunAsUser(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getRunAsUser(String alias, String displayLabel);
@@ -757,6 +769,23 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.scheduler.ExecutableJob.RECORDHISTORY, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension()
+  {
+    return getRunAsDimension(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION,  alias, displayLabel);
 
   }
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getRunAsUser()
@@ -1128,7 +1157,11 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   {
     String name = mdAttributeIF.definesAttribute();
     
-    if (name.equals(com.runwaysdk.system.scheduler.ExecutableJob.RUNASUSER)) 
+    if (name.equals(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION)) 
+    {
+       return new com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.system.scheduler.ExecutableJob.RUNASUSER)) 
     {
        return new com.runwaysdk.system.SingleActorQuery.SingleActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
@@ -1173,6 +1206,9 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
     public com.runwaysdk.query.SelectableBoolean getRecordHistory();
     public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias);
     public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension();
+    public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias);
+    public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias, String displayLabel);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getRunAsUser();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getRunAsUser(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getRunAsUser(String alias, String displayLabel);
@@ -1328,6 +1364,23 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
     return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.scheduler.ExecutableJob.RECORDHISTORY, alias, displayLabel);
 
   }
+  public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension()
+  {
+    return getRunAsDimension(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION,  alias, displayLabel);
+
+  }
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getRunAsUser()
   {
     return getRunAsUser(null);
@@ -1349,7 +1402,11 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   {
     String name = mdAttributeIF.definesAttribute();
     
-    if (name.equals(com.runwaysdk.system.scheduler.ExecutableJob.RUNASUSER)) 
+    if (name.equals(com.runwaysdk.system.scheduler.ExecutableJob.RUNASDIMENSION)) 
+    {
+       return new com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.system.scheduler.ExecutableJob.RUNASUSER)) 
     {
        return new com.runwaysdk.system.SingleActorQuery.SingleActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }

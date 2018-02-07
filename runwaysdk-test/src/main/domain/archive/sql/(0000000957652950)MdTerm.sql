@@ -17,6 +17,12 @@
 -- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 --
 
+
+-- This code was generated after MdTerm was already created.
+--   As a result, the ids do not match what already exists (on existing systems) and this SQL cannot be used.
+
+
+
 INSERT INTO class_cache (set_id, item_id)  VALUES  ('xneaj0ux87if4efyvll2ewpqqp4p3rdn', '0000000000000000000000000000023100000000000000000000000000000222');
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('1s6hqrduqo0iqj09fzuj9tm7u8w1ba8wNM200904120000000000000000000030', '1s6hqrduqo0iqj09fzuj9tm7u8w1ba8wNM200904120000000000000000000030', 'terraframe.com', 'MdTerm');
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('8qvrbvpgcixc0dkprgce79ku71j76qpaNM200904120000000000000000000030', '8qvrbvpgcixc0dkprgce79ku71j76qpaNM200904120000000000000000000030', 'terraframe.com', 'Business for term definition');

@@ -1259,7 +1259,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       {
         String ownerId = ( (Ownable) mutable ).getOwnerId();
 
-        if (ownerId != null)
+        if (ownerId != null && !ownerId.equals(""))
         {
           return ownerId.equals(user.getId());
         }

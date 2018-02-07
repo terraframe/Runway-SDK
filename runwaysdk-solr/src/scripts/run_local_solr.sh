@@ -6,7 +6,6 @@
 export AWS_ACCESS_KEY_ID=XXXXXX && export AWS_SECRET_ACCESS_KEY=XXXXXX
 
 
-
 docker rm -f $(docker ps -a -q --filter=name=solr)
 
 set -e
