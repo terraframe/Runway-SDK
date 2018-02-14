@@ -29,6 +29,8 @@ Authenticate is an annotation that can be placed above a server MdMethod to modi
 
 When code is executed within an authenticate annotation, the permissions are only checked for the execution of the method, and not for each individual piece of metadata contained within the method. This can be used to simplify permissions, especially when dealing with very large metadata hierarchies.
 
+Simply add your annotation to the MdMethod, and then in your metadata you can assign a role to your MdMethod.
+
     <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <doIt>
         <create></create>
