@@ -27,7 +27,7 @@ Authenticate is an annotation that can be placed above a server method to modify
       ....
     }
 
-When code is executed within the request of an authenticate annotation, the permissions are only checked for the execution of the method, and not for each individual piece of metadata contained within the method. This can be used to simplify permissions, especially when dealing with very large metadata hierarchies.
+When code is executed within an authenticate annotation, the permissions are only checked for the execution of the method, and not for each individual piece of metadata contained within the method. This can be used to simplify permissions, especially when dealing with very large metadata hierarchies.
 
 ## Role inheritance
 
