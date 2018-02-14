@@ -17,6 +17,18 @@ When defining a permission on a component, the operation is also specified. This
 
 Just like metadata, permissions can also be defined in an XML schema. 
 
+## @Authenticate
+
+Authenticate is an annotation that can be placed above a server method to modify the way permissions are validated. 
+
+    @Authenticate
+    public static InputStream importData(String configuration)
+    {
+      ....
+    }
+
+When code is executed within the request of an authenticate annotation, the permissions are only checked for the execution of the method, and not for each individual piece of metadata contained within the method. This can be used to simplify permissions, especially when dealing with very large metadata hierarchies.
+
 ## Role inheritance
 
 Roles can inherit from other roles.
