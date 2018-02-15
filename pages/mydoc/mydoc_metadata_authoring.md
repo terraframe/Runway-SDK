@@ -68,13 +68,15 @@ The `xsi:noNamespaceSchemaLocation` is a standard way in XML to define an XSD sc
 
 <https://raw.githubusercontent.com/terraframe/Runway-SDK/master/runwaysdk-server/src/main/resources/com/runwaysdk/resources/xsd/version.xsd>
 
-This custom classpath modifier has many advantages when used at runtime, however IDE's like Eclipse cannot read the XSD file to provide auto-complete. You can place this URL into the `xsi:noNamespaceSchemaLocation` attribute like so:
+This custom classpath modifier has many advantages when used at runtime, however IDE's like Eclipse must be configured to read the XSD file properly to provide auto-complete.
 
-```
-xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/terraframe/Runway-SDK/master/runwaysdk-server/src/main/resources/com/runwaysdk/resources/xsd/version.xsd"
-```
+Open your Eclipse settings and navigate to XML -> XML Catalog. Create a user specified entry where:
 
-As a workaround for development, but when the file is committed you should use the classpath notation.
+Location: https://raw.githubusercontent.com/terraframe/Runway-SDK/master/runwaysdk-server/src/main/resources/com/runwaysdk/resources/xsd/version.xsd
+Key type: Schema location
+Key: classpath:com/runwaysdk/resources/xsd/version.xsd
+
+[![Custom XML catalog](./images/classpath-catalog.png "Custom XML catalog")](./images/classpath-catalog.png)
 
 
 ## doIt and undoIt
