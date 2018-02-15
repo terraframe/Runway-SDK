@@ -72,9 +72,11 @@ This custom classpath modifier has many advantages when used at runtime, however
 
 Open your Eclipse settings and navigate to XML -> XML Catalog. Create a user specified entry where:
 
+```
 Location: https://raw.githubusercontent.com/terraframe/Runway-SDK/master/runwaysdk-server/src/main/resources/com/runwaysdk/resources/xsd/version.xsd
 Key type: Schema location
 Key: classpath:com/runwaysdk/resources/xsd/version.xsd
+```
 
 [![Custom XML catalog](./images/classpath-catalog.png "Custom XML catalog")](./images/classpath-catalog.png)
 
