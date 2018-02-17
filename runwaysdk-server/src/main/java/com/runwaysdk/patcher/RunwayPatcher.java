@@ -188,6 +188,7 @@ public class RunwayPatcher
           Database.executeStatement(sql);
           
           ObjectCache.refreshTheEntireCache();
+          ObjectCache.refreshCache();
         }
         else if (resource.getNameExtension().equals("xml"))
         {
