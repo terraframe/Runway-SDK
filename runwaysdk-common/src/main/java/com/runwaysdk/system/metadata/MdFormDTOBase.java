@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 2043568342)
+@com.runwaysdk.business.ClassSignature(hash = 1142596424)
 public abstract class MdFormDTOBase extends com.runwaysdk.system.metadata.MdTypeDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdForm";
-  private static final long serialVersionUID = 2043568342;
+  private static final long serialVersionUID = 1142596424;
   
   protected MdFormDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -45,8 +27,58 @@ public abstract class MdFormDTOBase extends com.runwaysdk.system.metadata.MdType
     return CLASS;
   }
   
+  public static java.lang.String DIMENSION = "dimension";
   public static java.lang.String FORMMDCLASS = "formMdClass";
   public static java.lang.String FORMNAME = "formName";
+  public com.runwaysdk.system.metadata.MdDimensionDTO getDimension()
+  {
+    if(getValue(DIMENSION) == null || getValue(DIMENSION).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.MdDimensionDTO.get(getRequest(), getValue(DIMENSION));
+    }
+  }
+  
+  public String getDimensionId()
+  {
+    return getValue(DIMENSION);
+  }
+  
+  public void setDimension(com.runwaysdk.system.metadata.MdDimensionDTO value)
+  {
+    if(value == null)
+    {
+      setValue(DIMENSION, "");
+    }
+    else
+    {
+      setValue(DIMENSION, value.getId());
+    }
+  }
+  
+  public boolean isDimensionWritable()
+  {
+    return isWritable(DIMENSION);
+  }
+  
+  public boolean isDimensionReadable()
+  {
+    return isReadable(DIMENSION);
+  }
+  
+  public boolean isDimensionModified()
+  {
+    return isModified(DIMENSION);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getDimensionMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(DIMENSION).getAttributeMdDTO();
+  }
+  
   public com.runwaysdk.system.metadata.MdClassDTO getFormMdClass()
   {
     if(getValue(FORMMDCLASS) == null || getValue(FORMMDCLASS).trim().equals(""))

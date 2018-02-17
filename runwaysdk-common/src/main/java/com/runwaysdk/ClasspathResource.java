@@ -21,6 +21,7 @@ package com.runwaysdk;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -30,9 +31,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.apache.commons.io.FilenameUtils;
-
-import com.runwaysdk.dataaccess.CoreException;
-import com.runwaysdk.dataaccess.InstallerCP;
 
 public class ClasspathResource
 {
@@ -46,10 +44,13 @@ public class ClasspathResource
    */
   public String cpPackage;
   
-  public ClasspathResource(String name, String cpPackage)
+  public URL packageUrl;
+  
+  public ClasspathResource(String name, String cpPackage, URL packageUrl)
   {
     this.name = name;
     this.cpPackage = cpPackage;
+    this.packageUrl = packageUrl;
     
     if (this.cpPackage.endsWith("/"))
     {
@@ -71,7 +72,7 @@ public class ClasspathResource
     if (is == null)
     {
       String msg = "Unable to get the stream for resource [" + resource + "].";
-      throw new CoreException(msg);
+      throw new RuntimeException(msg);
     }
     
     return is;
@@ -92,6 +93,34 @@ public class ClasspathResource
     return this.name;
   }
   
+  public URL getPackageURL()
+  {
+    return this.packageUrl;
+  }
+  
+  /**
+   * If the resource is contained within a jar, this will return the jar. If the resource exists on the filesystem this will return the file on the filesystem.
+   */
+  public File getFile()
+  {
+    if (packageUrl.getProtocol().equals("jar"))
+    {
+      try {
+        String jarFileName = URLDecoder.decode(packageUrl.getFile(), "UTF-8");
+        jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
+        return new File(jarFileName);
+      }
+      catch (UnsupportedEncodingException e)
+      {
+        throw new RuntimeException(e);
+      }
+    }
+    else
+    {
+      return new File(packageUrl.getFile());
+    }
+  }
+  
   public String getNameExtension()
   {
     return FilenameUtils.getExtension(this.name);
@@ -106,7 +135,7 @@ public class ClasspathResource
   {
     try
     {
-      ClassLoader classLoader = InstallerCP.class.getClassLoader();
+      ClassLoader classLoader = ClasspathResource.class.getClassLoader();
       Enumeration<URL> packageURLs;
       ArrayList<ClasspathResource> resources = new ArrayList<ClasspathResource>();
   
@@ -138,7 +167,7 @@ public class ClasspathResource
               {
                 String name = entryName.substring(entryName.lastIndexOf('/') + 1);
                 
-                ClasspathResource resource = new ClasspathResource(name, packageName);
+                ClasspathResource resource = new ClasspathResource(name, packageName, packageURL);
                 resources.add(resource);
               }
             }
@@ -157,7 +186,7 @@ public class ClasspathResource
           {
             entryName = actual.getName();
             
-            ClasspathResource resource = new ClasspathResource(entryName, packageName);
+            ClasspathResource resource = new ClasspathResource(entryName, packageName, packageURL);
             resources.add(resource);
           }
         }
@@ -167,7 +196,7 @@ public class ClasspathResource
     }
     catch(IOException ex)
     {
-      throw new CoreException(ex);
+      throw new RuntimeException(ex);
     }
   }
   

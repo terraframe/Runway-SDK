@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1521065814)
+@com.runwaysdk.business.ClassSignature(hash = 1867170248)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,13 +11,66 @@ package com.runwaysdk.system.metadata;
 public abstract class MdFormBase extends com.runwaysdk.system.metadata.MdType
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdForm";
+  public static java.lang.String DIMENSION = "dimension";
   public static java.lang.String FORMMDCLASS = "formMdClass";
   public static java.lang.String FORMNAME = "formName";
-  private static final long serialVersionUID = 1521065814;
+  private static final long serialVersionUID = 1867170248;
   
   public MdFormBase()
   {
     super();
+  }
+  
+  public com.runwaysdk.system.metadata.MdDimension getDimension()
+  {
+    if (getValue(DIMENSION).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.MdDimension.get(getValue(DIMENSION));
+    }
+  }
+  
+  public String getDimensionId()
+  {
+    return getValue(DIMENSION);
+  }
+  
+  public void validateDimension()
+  {
+    this.validateAttribute(DIMENSION);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getDimensionMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdForm.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(DIMENSION);
+  }
+  
+  public void setDimension(com.runwaysdk.system.metadata.MdDimension value)
+  {
+    if(value == null)
+    {
+      setValue(DIMENSION, "");
+    }
+    else
+    {
+      setValue(DIMENSION, value.getId());
+    }
+  }
+  
+  public void setDimensionId(java.lang.String id)
+  {
+    if(id == null)
+    {
+      setValue(DIMENSION, "");
+    }
+    else
+    {
+      setValue(DIMENSION, id);
+    }
   }
   
   public com.runwaysdk.system.metadata.MdClass getFormMdClass()
@@ -60,10 +95,10 @@ public abstract class MdFormBase extends com.runwaysdk.system.metadata.MdType
     this.validateAttribute(FORMMDCLASS);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getFormMdClassMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getFormMdClassMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdForm.CLASS);
-    return mdClassIF.definesAttribute(FORMMDCLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(FORMMDCLASS);
   }
   
   public void setFormMdClass(com.runwaysdk.system.metadata.MdClass value)
@@ -78,6 +113,18 @@ public abstract class MdFormBase extends com.runwaysdk.system.metadata.MdType
     }
   }
   
+  public void setFormMdClassId(java.lang.String id)
+  {
+    if(id == null)
+    {
+      setValue(FORMMDCLASS, "");
+    }
+    else
+    {
+      setValue(FORMMDCLASS, id);
+    }
+  }
+  
   public String getFormName()
   {
     return getValue(FORMNAME);
@@ -88,10 +135,10 @@ public abstract class MdFormBase extends com.runwaysdk.system.metadata.MdType
     this.validateAttribute(FORMNAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getFormNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getFormNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdForm.CLASS);
-    return mdClassIF.definesAttribute(FORMNAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(FORMNAME);
   }
   
   public void setFormName(String value)
