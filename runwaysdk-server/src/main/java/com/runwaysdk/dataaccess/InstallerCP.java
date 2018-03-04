@@ -22,10 +22,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.runwaysdk.ClasspathResource;
-import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.LocalProperties;
@@ -70,7 +70,7 @@ public class InstallerCP
   
   public static InputStream[] buildMetadataInputStreamList() throws IOException
   {
-    List<ClasspathResource> xmlFileDependencies = ClasspathResource.getResourcesInPackage(ConfigGroup.METADATA.getPath());
+    List<ClasspathResource> xmlFileDependencies = orderMetadataFiles(ClasspathResource.getResourcesInPackage(ConfigGroup.METADATA.getPath()));
     ClasspathResource[] xmlFiles = (ClasspathResource[]) xmlFileDependencies.toArray(new ClasspathResource[xmlFileDependencies.size()]);
     
     InputStream[] xmlFilesIS = new InputStream[xmlFiles.length];
@@ -100,5 +100,33 @@ public class InstallerCP
     }
     
     return xmlFilesIS;
+  }
+  
+  public static List<ClasspathResource> orderMetadataFiles(List<ClasspathResource> resources)
+  {
+    // Yes I know this is a gigantic hack but I'm in a time crunch. We can fix this later.
+    ClasspathResource metadataXml = null;
+    ClasspathResource gisMetadataXml = null;
+    
+    List<ClasspathResource> ordered = new ArrayList<ClasspathResource>();
+    
+    for (int i = 0; i < resources.size(); ++i)
+    {
+      ClasspathResource res = resources.get(i);
+      
+      if (res.getName().equals("metadata.xml"))
+      {
+        metadataXml = res;
+      }
+      else if (res.getName().equals("gismetadata.xml"))
+      {
+        gisMetadataXml = res;
+      }
+    }
+    
+    if (metadataXml != null) { ordered.add(metadataXml); }
+    if (gisMetadataXml != null) { ordered.add(gisMetadataXml); }
+    
+    return ordered;
   }
 }

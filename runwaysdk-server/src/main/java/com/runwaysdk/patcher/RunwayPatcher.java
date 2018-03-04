@@ -18,11 +18,13 @@
  */
 package com.runwaysdk.patcher;
 
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,7 +36,15 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +61,8 @@ import com.runwaysdk.dataaccess.io.ResourceStreamSource;
 import com.runwaysdk.dataaccess.io.TimeFormat;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter;
+import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler;
+import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler.Action;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
@@ -59,13 +71,19 @@ public class RunwayPatcher
 {
   private static Logger logger = LoggerFactory.getLogger(RunwayPatcher.class);
   
+  public static final List<String> supportedExtensions = toList("sql,xml,java");
+  
   public static final String RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = Database.VERSION_TIMESTAMP_PROPERTY;
   
   private static final String DATE_PATTEN  = "\\d{4,}";
   
-  private static final String NAME_PATTERN = "^([A-Za-z_\\-\\d\\.]*)\\((" + DATE_PATTEN + ")\\)([A-Za-z_\\-\\d\\.]*).(?:sql|xml|java)$";
+  private static final String NAME_PATTERN = "^([A-Za-z_\\-\\d\\.]*)\\((" + DATE_PATTEN + ")\\)([A-Za-z_\\-\\d\\.]*).(?:" + StringUtils.join(supportedExtensions,"|") + ")$";
   
   public static final String METADATA_CLASSPATH_LOC = "domain";
+  
+  public static final String MODE_STANDARD = "standard";
+  
+  public static final String MODE_BOOTSTRAP = "bootstrap";
   
   class VersionComparator implements Comparator<ClasspathResource>
   {
@@ -91,8 +109,30 @@ public class RunwayPatcher
    */
   protected Map<Date, ClasspathResource> map;
   
-  public RunwayPatcher()
+  private List<String> extensions;
+  
+  private String path;
+  
+  public RunwayPatcher(List<String> extensions, String path)
   {
+    if (path == null)
+    {
+      this.path = METADATA_CLASSPATH_LOC;
+    }
+    else
+    {
+      this.path = path;
+    }
+    
+    if (extensions != null && !extensions.equals(""))
+    {
+      this.extensions = extensions;
+    }
+    else
+    {
+      this.extensions = supportedExtensions;
+    }
+    
     initialize();
   }
   
@@ -105,7 +145,7 @@ public class RunwayPatcher
     this.map = new HashMap<Date, ClasspathResource>();
     this.ordered = new TreeSet<ClasspathResource>(new VersionComparator());
 
-    for (ClasspathResource resource : getTimestampedResources(METADATA_CLASSPATH_LOC))
+    for (ClasspathResource resource : getTimestampedResources(this.path))
     {
       ordered.add(resource);
 
@@ -126,15 +166,15 @@ public class RunwayPatcher
   /**
    * Bootstrapping must not be done inside a request or transaction.
    */
-  public static void bootstrap(String[] args)
+  public static void bootstrap(String rootUser, String rootPass, String template, Boolean clean)
   {
-    if ((args.length >= 4 && Boolean.valueOf(args[3]) == true) || !Database.tableExists("md_class"))
+    if (clean == true || !Database.tableExists("md_class"))
     {
       logger.info("Bootstrapping Runway into an empty database.");
       
-      if (args.length >= 3)
+      if (rootUser != null && rootPass != null && template != null)
       {
-        Database.initialSetup(args[0], args[1], args[2]);
+        Database.initialSetup(rootUser, rootPass, template);
       }
       
       InputStream schema = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
@@ -167,7 +207,7 @@ public class RunwayPatcher
   protected void performDoIt(ClasspathResource resource, Date timestamp)
   {
     // Only perform the doIt if this file has not already been imported
-    if (!timestamps.contains(timestamp))
+    if (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension()))
     {
       logger.info("Importing domain classpath resource [" + resource.getName() + "].");
       
@@ -179,20 +219,25 @@ public class RunwayPatcher
       
       try
       {
-        // TODO : Because we have to import sql files we can't run inside a transaction. Runway patching files should be in instance XML
         if (resource.getNameExtension().equals("sql"))
         {
+          ObjectCache.shutdownGlobalCache();
+          
           stream = resource.getStream();
           String sql = IOUtils.toString(stream, "UTF-8");
           
           Database.executeStatement(sql);
-          
-          ObjectCache.refreshTheEntireCache();
-          ObjectCache.refreshCache();
         }
         else if (resource.getNameExtension().equals("xml"))
         {
-          SAXImporter.runImport(new ResourceStreamSource(resource.getAbsolutePath()), null);
+          if (resource.getName().contains("universal")) // TODO : Don't hardcode this
+          {
+            SAXImporter.runImport(new ResourceStreamSource(resource.getAbsolutePath()), null);
+          }
+          else
+          {
+            VersionHandler.runImport(resource, Action.DO_IT, null);
+          }
         }
         else if (resource.getNameExtension().equals("java"))
         {
@@ -205,7 +250,7 @@ public class RunwayPatcher
           throw new CoreException("Unknown extension [" + resource.getNameExtension() + "].");
         }
       }
-      catch (IOException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e)
+      catch (IOException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
       {
         throw new ProgrammingErrorException(e);
       }
@@ -253,7 +298,17 @@ public class RunwayPatcher
 //    }
 //  }
   
-  public void doAll() throws ParseException
+  public void doAll()
+  {
+    LocalProperties.setSkipCodeGenAndCompile(true);
+    
+    List<ClasspathResource> list = new LinkedList<ClasspathResource>(ordered);
+
+    this.performDoIt(list);
+  }
+  
+  @Transaction
+  public void doAllInTransaction()
   {
     LocalProperties.setSkipCodeGenAndCompile(true);
     
@@ -263,34 +318,100 @@ public class RunwayPatcher
   }
   
   /**
-   * Brings your database to a fully patched state (as far as Runway is concerned). The arguments are entirely optional and are only used for creating new a database and user.
+   * Brings your database to a fully patched state (as far as Runway is concerned).
    * 
    * @param args
    */
   public static void main(String[] args)
   {
+    CommandLineParser parser = new DefaultParser();
+    Options options = new Options();
+    options.addOption(Option.builder("mode").hasArg().argName("mode").longOpt("mode").desc("The mode to run the RunwayPatcher in. Can be either bootstrap or standard. If omitted standard is assumed. During standard mode, bootstrapping will be attempted if Runway does not exist.").optionalArg(true).build());
+    options.addOption(Option.builder("rootUser").hasArg().argName("rootUser").longOpt("rootUser").desc("The username of the root database user. Only required when bootstrapping.").optionalArg(true).build());
+    options.addOption(Option.builder("rootPass").hasArg().argName("rootPass").longOpt("rootPass").desc("The password of the root database user. Only required when bootstrapping.").optionalArg(true).build());
+    options.addOption(Option.builder("templateDb").hasArg().argName("templateDb").longOpt("templateDb").desc("The template database to use when creating the application database. Only required when bootstrapping.").optionalArg(true).build());
+    options.addOption(Option.builder("extensions").hasArg().argName("extensions").longOpt("extensions").desc("A comma separated list of extensions denoting which schema files to run. If unspecified we will use all supported.").optionalArg(true).build());
+    options.addOption(Option.builder("clean").hasArg().argName("clean").longOpt("clean").desc("A boolean parameter denoting whether or not to clean the database and delete all data. Default is false.").optionalArg(true).build());
+    options.addOption(Option.builder("path").hasArg().argName("path").longOpt("path").desc("The path (from the root of the classpath) to the location of the metadata files. Defaults to 'domain'").optionalArg(true).build());
+    
     try
     {
-      RunwayPatcher.bootstrap(args);
-      RunwayPatcher.run(args);
-    }
-    finally
-    {
-      CacheShutdown.shutdown();
-    }
-  }
-  
-  @Request
-  public static void run(String[] args)
-  {
-    try
-    {
-      RunwayPatcher patcher = new RunwayPatcher();
-      patcher.doAll();
+      CommandLine line = parser.parse( options, args );
+      
+      String mode = line.getOptionValue("mode");
+      String user = line.getOptionValue("rootUser");
+      String pass = line.getOptionValue("rootPass");
+      String template = line.getOptionValue("templateDb");
+      String extensions = line.getOptionValue("extensions");
+      String path = line.getOptionValue("path");
+      Boolean clean = line.getOptionValue("clean") == null || line.getOptionValue("clean").equals("") ? false : Boolean.valueOf(line.getOptionValue("clean"));
+      
+      List<String> exts = supportedExtensions;
+      if (extensions != null && extensions.length() > 0)
+      {
+        exts = toList(extensions);
+      }
+      
+      try
+      {
+        if (path == null || path.length() == 0)
+        {
+          path = RunwayPatcher.METADATA_CLASSPATH_LOC;
+        }
+        
+        if (mode != null && mode.equals(RunwayPatcher.MODE_BOOTSTRAP))
+        {
+          RunwayPatcher.bootstrap(user, pass, template, clean);
+        }
+        else
+        {
+          RunwayPatcher.bootstrap(user, pass, template, clean);
+          
+          if (exts.contains("sql"))
+          {
+            RunwayPatcher.run(toList("sql"), path);
+            exts.remove(exts.indexOf("sql"));
+          }
+          
+          RunwayPatcher.run(exts, path);
+        }
+      }
+      finally
+      {
+        CacheShutdown.shutdown();
+      }
     }
     catch (ParseException e)
     {
-      throw new CoreException(e);
+      throw new RuntimeException(e);
+    }
+  }
+  
+  private static ArrayList<String> toList(String string)
+  {
+    String[] split = string.split(",");
+    
+    ArrayList<String> ret = new ArrayList<String>();
+    for (String sp : split)
+    {
+      ret.add(sp);
+    }
+    
+    return ret;
+  }
+  
+  @Request
+  public static void run(List<String> extensions, String path)
+  {
+    if (extensions.contains("sql"))
+    {
+      RunwayPatcher patcher = new RunwayPatcher(extensions, path);
+      patcher.doAll();
+    }
+    else
+    {
+      RunwayPatcher patcher = new RunwayPatcher(extensions, path);
+      patcher.doAllInTransaction();
     }
   }
   

@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.runwaysdk.ClasspathResource;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
 public class ResourceStreamSource implements StreamSource
@@ -34,6 +35,16 @@ public class ResourceStreamSource implements StreamSource
   public ResourceStreamSource(String name)
   {
     this.name = name;
+  }
+  
+  public ResourceStreamSource(ClasspathResource res)
+  {
+    this.name = res.getAbsolutePath();
+    
+    if (this.name.startsWith("/"))
+    {
+      this.name = this.name.substring(1);
+    }
   }
 
   /*

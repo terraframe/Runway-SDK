@@ -23,8 +23,10 @@ import java.io.File;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 
+import com.runwaysdk.ClasspathResource;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.io.FileStreamSource;
+import com.runwaysdk.dataaccess.io.ResourceStreamSource;
 import com.runwaysdk.dataaccess.io.StreamSource;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -119,6 +121,54 @@ public class VersionHandler extends SAXSourceParser
       else if (xsd == null)
       {
         new VersionHandler(new FileStreamSource(file), null, plugins).begin();
+      }
+    }
+    catch (SAXException e)
+    {
+      throw new XMLParseException(e);
+    }
+  }
+  
+  @Transaction
+  public synchronized static void runImport(ClasspathResource xmlRes, Action action, String xsd)
+  {
+    try
+    {
+      ImportPluginIF[] plugins = SAXSourceParser.plugins(new VersionPlugin(action));
+      
+      if (xsd != null && !xsd.startsWith("classpath:"))
+      {
+        /*
+         * IMPORTANT: This block of code prevents backward compatibility issues where classpath xsd defitions start with '/' xsd defitions which start instead of classpath:
+         */
+        if (!xsd.startsWith("/"))
+        {
+          xsd = "/".concat(xsd);
+        }
+
+        java.net.URL xsdRes = VersionHandler.class.getResource(xsd);
+
+        if (xsdRes == null)
+        {
+          throw new RuntimeException("Unable to find the xsd resource at [" + xsd + "].");
+        }
+
+        String location = xsdRes.toString();
+
+        VersionHandler handler = new VersionHandler(new ResourceStreamSource(xmlRes), location, plugins);
+        handler.begin();
+      }
+      else if (xsd != null && xsd.startsWith("classpath:"))
+      {
+        /*
+         * Just pass the xsd right on through. We have a custom entity resolver (RunwayClasspathEntityResolver.java) which will check the classpath. This is a better place to check the classpath
+         * because it works with imports in the xml file as well.
+         */
+        new VersionHandler(new ResourceStreamSource(xmlRes), xsd, plugins).begin();
+      }
+      else if (xsd == null)
+      {
+        new VersionHandler(new ResourceStreamSource(xmlRes), null, plugins).begin();
       }
     }
     catch (SAXException e)

@@ -269,7 +269,12 @@ public class ServerProperties
   public static List<String> getServerClasspath()
   {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(Singleton.INSTANCE.props.getString("server.classpath"));
+    
+    String base = Singleton.INSTANCE.props.getString("server.classpath");
+    if (base != null && base.length() > 0)
+    {
+      buffer.append(base);
+    }
 
     String append = Singleton.INSTANCE.props.getString("server.classpath.append");
 
