@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.patcher;
 
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -44,7 +42,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +54,7 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.io.ResourceStreamSource;
 import com.runwaysdk.dataaccess.io.TimeFormat;
 import com.runwaysdk.dataaccess.io.XMLImporter;
@@ -140,8 +138,6 @@ public class RunwayPatcher
   {
     logger.info("Initializing Runway patcher.");
     
-//    bootstrap();
-    
     this.map = new HashMap<Date, ClasspathResource>();
     this.ordered = new TreeSet<ClasspathResource>(new VersionComparator());
 
@@ -168,7 +164,18 @@ public class RunwayPatcher
    */
   public static void bootstrap(String rootUser, String rootPass, String template, Boolean clean)
   {
-    if (clean == true || !Database.tableExists("md_class"))
+    boolean tableExist;
+    try
+    {
+      tableExist = Database.tableExists("md_class");
+    }
+    catch (DatabaseException ex)
+    {
+      // An exception can be thrown if the database itself doesn't exist. (not just the table)
+      tableExist = false;
+    }
+    
+    if (clean == true || !tableExist)
     {
       logger.info("Bootstrapping Runway into an empty database.");
       
