@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -111,7 +112,9 @@ public class RunwayPatcher
   
   private String path;
   
-  public RunwayPatcher(List<String> extensions, String path)
+  private Boolean ignoreErrors;
+  
+  public RunwayPatcher(List<String> extensions, String path, Boolean ignoreErrors)
   {
     if (path == null)
     {
@@ -130,6 +133,8 @@ public class RunwayPatcher
     {
       this.extensions = supportedExtensions;
     }
+    
+    this.ignoreErrors = ignoreErrors;
     
     initialize();
   }
@@ -211,7 +216,7 @@ public class RunwayPatcher
     }
   }
   
-  protected void performDoIt(ClasspathResource resource, Date timestamp)
+  protected void performDoIt(ClasspathResource resource, Date timestamp, Boolean isTransaction)
   {
     // Only perform the doIt if this file has not already been imported
     if (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension()))
@@ -223,6 +228,12 @@ public class RunwayPatcher
       // We always want to use the context class loader because it ensures our resource paths are absolute.
       InputStream schema = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
       InputStream stream = null;
+      
+      Savepoint sp = null;
+      if (ignoreErrors && isTransaction)
+      {
+        sp = Database.setSavepoint();
+      }
       
       try
       {
@@ -257,12 +268,34 @@ public class RunwayPatcher
           throw new CoreException("Unknown extension [" + resource.getNameExtension() + "].");
         }
       }
-      catch (IOException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
+      catch (Throwable t)
       {
-        throw new ProgrammingErrorException(e);
+        if (ignoreErrors)
+        {
+          if (isTransaction)
+          {
+            Database.rollbackSavepoint(sp);
+          }
+        }
+        else
+        {
+          if (t instanceof RuntimeException)
+          {
+            throw (RuntimeException) t;
+          }
+          else
+          {
+            throw new ProgrammingErrorException(t);
+          }
+        }
       }
       finally
       {
+        if (ignoreErrors && isTransaction)
+        {
+          Database.releaseSavepoint(sp);
+        }
+        
         try {
           if (stream != null)
           {
@@ -280,13 +313,13 @@ public class RunwayPatcher
     }
   }
   
-  public void performDoIt(List<ClasspathResource> resources)
+  public void performDoIt(List<ClasspathResource> resources, Boolean isTransaction)
   {
     for (ClasspathResource resource : resources)
     {
       Date date = getDate(resource);
 
-      this.performDoIt(resource, date);
+      this.performDoIt(resource, date, isTransaction);
     }
   }
   
@@ -311,7 +344,7 @@ public class RunwayPatcher
     
     List<ClasspathResource> list = new LinkedList<ClasspathResource>(ordered);
 
-    this.performDoIt(list);
+    this.performDoIt(list, false);
   }
   
   @Transaction
@@ -321,7 +354,7 @@ public class RunwayPatcher
     
     List<ClasspathResource> list = new LinkedList<ClasspathResource>(ordered);
 
-    this.performDoIt(list);
+    this.performDoIt(list, true);
   }
   
   /**
@@ -340,6 +373,7 @@ public class RunwayPatcher
     options.addOption(Option.builder("extensions").hasArg().argName("extensions").longOpt("extensions").desc("A comma separated list of extensions denoting which schema files to run. If unspecified we will use all supported.").optionalArg(true).build());
     options.addOption(Option.builder("clean").hasArg().argName("clean").longOpt("clean").desc("A boolean parameter denoting whether or not to clean the database and delete all data. Default is false.").optionalArg(true).build());
     options.addOption(Option.builder("path").hasArg().argName("path").longOpt("path").desc("The path (from the root of the classpath) to the location of the metadata files. Defaults to 'domain'").optionalArg(true).build());
+    options.addOption(Option.builder("ignoreErrors").hasArg().argName("ignoreErrors").longOpt("ignoreErrors").desc("Ignore errors if one occurs while importing sql. Not recommended for everyday usage.").optionalArg(true).build());
     
     try
     {
@@ -351,6 +385,7 @@ public class RunwayPatcher
       String template = line.getOptionValue("templateDb");
       String extensions = line.getOptionValue("extensions");
       String path = line.getOptionValue("path");
+      Boolean ignoreErrors = line.getOptionValue("ignoreErrors") == null || line.getOptionValue("ignoreErrors").equals("") ? false : Boolean.valueOf(line.getOptionValue("ignoreErrors"));
       Boolean clean = line.getOptionValue("clean") == null || line.getOptionValue("clean").equals("") ? false : Boolean.valueOf(line.getOptionValue("clean"));
       
       List<String> exts = supportedExtensions;
@@ -374,13 +409,16 @@ public class RunwayPatcher
         {
           RunwayPatcher.bootstrap(user, pass, template, clean);
           
-          if (exts.contains("sql"))
-          {
-            RunwayPatcher.run(toList("sql"), path);
-            exts.remove(exts.indexOf("sql"));
-          }
+          // I think this code is somehow running inside a transaction even though we're trying to avoid it.
+          // I'm commenting this code out (because it doesn't work anyway and) because it breaks my "ignoreErrors"
+          //   logic which I need for DDMS BackupDevImporter.
+//          if (exts.contains("sql"))
+//          {
+//            RunwayPatcher.run(toList("sql"), path, ignoreErrors);
+//            exts.remove(exts.indexOf("sql"));
+//          }
           
-          RunwayPatcher.run(exts, path);
+          RunwayPatcher.run(exts, path, ignoreErrors);
         }
       }
       finally
@@ -408,18 +446,18 @@ public class RunwayPatcher
   }
   
   @Request
-  public static void run(List<String> extensions, String path)
+  public static void run(List<String> extensions, String path, Boolean ignoreErrors)
   {
-    if (extensions.contains("sql"))
-    {
-      RunwayPatcher patcher = new RunwayPatcher(extensions, path);
-      patcher.doAll();
-    }
-    else
-    {
-      RunwayPatcher patcher = new RunwayPatcher(extensions, path);
+//    if (extensions.contains("sql"))
+//    {
+//      RunwayPatcher patcher = new RunwayPatcher(extensions, path, ignoreErrors);
+//      patcher.doAll();
+//    }
+//    else
+//    {
+      RunwayPatcher patcher = new RunwayPatcher(extensions, path, ignoreErrors);
       patcher.doAllInTransaction();
-    }
+//    }
   }
   
   public static String getName(ClasspathResource resource)
