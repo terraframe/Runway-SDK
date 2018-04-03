@@ -173,6 +173,7 @@ public class RunwayPatcher
     try
     {
       tableExist = Database.tableExists("md_class");
+      Database.close(); // Connection pooling leaves connections floating around. We have to make sure everything is closed.
     }
     catch (DatabaseException ex)
     {

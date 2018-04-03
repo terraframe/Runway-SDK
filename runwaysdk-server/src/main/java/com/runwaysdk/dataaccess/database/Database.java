@@ -185,6 +185,7 @@ public class Database
   public static void close()
   {
     instance().close();
+    instance = null;
   }
 
   /**
