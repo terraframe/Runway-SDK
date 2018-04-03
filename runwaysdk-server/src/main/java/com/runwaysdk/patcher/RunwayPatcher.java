@@ -173,7 +173,6 @@ public class RunwayPatcher
     try
     {
       tableExist = Database.tableExists("md_class");
-      Database.close(); // Connection pooling leaves connections floating around. We have to make sure everything is closed.
     }
     catch (DatabaseException ex)
     {
@@ -187,6 +186,7 @@ public class RunwayPatcher
       
       if (rootUser != null && rootPass != null && template != null)
       {
+        Database.close(); // Connection pooling leaves connections floating around. We have to make sure everything is closed.
         Database.initialSetup(rootUser, rootPass, template);
       }
       
