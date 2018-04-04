@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.excel;
 
@@ -29,9 +29,11 @@ import java.util.List;
 
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -52,12 +54,12 @@ public class ExcelUtil
    * A comparator that sorts mdAttributes alphabetically
    */
   private static Comparator<MdAttributeDAOIF> alphabetical = new Comparator<MdAttributeDAOIF>()
-                                                           {
-                                                             public int compare(MdAttributeDAOIF o1, MdAttributeDAOIF o2)
-                                                             {
-                                                               return o1.definesAttribute().compareTo(o2.definesAttribute());
-                                                             }
-                                                           };
+  {
+    public int compare(MdAttributeDAOIF o1, MdAttributeDAOIF o2)
+    {
+      return o1.definesAttribute().compareTo(o2.definesAttribute());
+    }
+  };
 
   /**
    * Returns a sorted list of attributes for the given type. Excludes attributes
@@ -227,16 +229,14 @@ public class ExcelUtil
   {
     BufferedInputStream bis = new BufferedInputStream(i);
 
-    if (POIXMLDocument.hasOOXMLHeader(bis))
+    try
     {
-      return new XSSFWorkbook(bis);
+      return WorkbookFactory.create(bis);
     }
-    else if (POIFSFileSystem.hasPOIFSHeader(bis))
+    catch (InvalidFormatException e)
     {
-      return new HSSFWorkbook(bis);
+      throw new FileReadException("Unable to read the file because it is of the incorrect format type.", null);
     }
-
-    throw new FileReadException("Unable to read the file because it is of the incorrect format type.", null);
   }
 
   public static Workbook createWorkbook(Workbook workbook) throws IOException
