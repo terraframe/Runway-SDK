@@ -132,7 +132,7 @@ public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, Special
    */
   public void setSize(long size)
   {
-    this.setValue(VaultFileInfo.FILE_SIZE, Long.toString(size));
+    this.setValue(VaultFileInfo.FILE_SIZE, Long.toString(size / 1000));
   }
 
   /*

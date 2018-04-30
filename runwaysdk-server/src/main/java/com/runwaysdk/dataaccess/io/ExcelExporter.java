@@ -29,6 +29,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.runwaysdk.SystemException;
 
@@ -59,7 +60,7 @@ public class ExcelExporter
    */
   public ExcelExporter()
   {
-    this(new HSSFWorkbook());
+    this(new XSSFWorkbook());
   }
 
   /**
