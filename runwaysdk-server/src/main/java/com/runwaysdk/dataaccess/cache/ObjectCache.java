@@ -816,7 +816,6 @@ public class ObjectCache
 
       if (cacheStrategyMap == null)
       {
-        logger.info("The global cache returned NULL for collection classes");
         initializeGlobalCacheWithMetadata();
       }
       else

@@ -35,8 +35,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.RunwayException;
+import com.runwaysdk.RunwayExceptionIF;
 import com.runwaysdk.StopTransactionException;
 import com.runwaysdk.SystemException;
 import com.runwaysdk.business.BusinessFacade;
@@ -339,8 +341,6 @@ public class ExcelImporter
     }
     catch (Exception e)
     {
-//      RunwayLogUtil.logToLevel(LogLevel.ERROR, "Excel import exception", e);
-
       context.addException(e);
     }
 
@@ -750,7 +750,7 @@ public class ExcelImporter
       {
         message += ": " + local;
       }
-
+      
       String attributeName = null;
       if (mdAttribute != null)
       {
@@ -758,6 +758,11 @@ public class ExcelImporter
       }
 
       int count = this.getErrorRowCount();
+      
+      if (CommonExceptionMessageLocalizer.runwayException(Session.getCurrentLocale()).equals(local) || !(cause instanceof RunwayExceptionIF))
+      {
+        RunwayLogUtil.logToLevel(LogLevel.ERROR, "An unusual error occurred while importing data in cell (row:column) [" + (count + 1) + ":" + column + "]. " + message, cause);
+      }
 
       this.addError(new ExcelMessage(count + 1, column, message, attributeName));
     }
@@ -801,8 +806,6 @@ public class ExcelImporter
         }
         catch (Exception e)
         {
-          RunwayLogUtil.logToLevel(LogLevel.ERROR, "", e);
-
           this.addException(column.getDisplayLabel(), column.getMdAttribute(), e);
         }
 
