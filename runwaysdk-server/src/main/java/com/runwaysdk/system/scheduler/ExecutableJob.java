@@ -209,11 +209,12 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     if (errorMessage != null)
     {
       jh.getHistoryInformation().setValue(errorMessage);
-      jh.addStatus(AllJobStatus.FAILURE);
+      
+      this.setJobStatus(jh, AllJobStatus.FAILURE);
     }
     else
     {
-      jh.addStatus(AllJobStatus.SUCCESS);
+      this.setJobStatus(jh, AllJobStatus.SUCCESS);
     }
     jh.apply();
     
@@ -231,6 +232,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
         downstream.executableJobStart();
       }
     }
+  }
+
+  protected void setJobStatus(JobHistory jh, AllJobStatus status)
+  {
+    jh.addStatus(status);
   }
   
   public static String getMessageFromException(Throwable t)
