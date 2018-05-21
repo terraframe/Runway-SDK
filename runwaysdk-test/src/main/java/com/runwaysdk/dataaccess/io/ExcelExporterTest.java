@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -23,19 +23,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -57,6 +55,12 @@ import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+
 public class ExcelExporterTest extends TestCase
 {
   private final class MockExcelExportListener implements ExcelExportListener
@@ -64,12 +68,6 @@ public class ExcelExporterTest extends TestCase
     private static final String ATTRIBUTE_NAME = "testExtraColumn";
 
     private static final String DISPLAY_LABEL  = "Test Extra Column";
-
-    @Override
-    public void preWrite(Workbook workbook)
-    {
-      // Do nothing
-    }
 
     @Override
     public void preHeader(ExcelColumn columnInfo)
@@ -120,7 +118,7 @@ public class ExcelExporterTest extends TestCase
   private static MdBusinessDAO mdBusiness;
 
   private static MdBusinessDAO mdBusiness2;
-  
+
   private static MdBusinessDAO mdBusiness3;
 
   private static MdWebFormDAO  mdForm;
@@ -170,13 +168,13 @@ public class ExcelExporterTest extends TestCase
     TestFixtureFactory.delete(mdBusiness2);
   }
 
-  public void testExport() throws IOException
+  public void testExport() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new ExcelExporter();
     exporter.addTemplate(mdBusiness.definesType());
     byte[] bytes = exporter.write();
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
     assertEquals(1, workbook.getNumberOfSheets());
 
@@ -205,13 +203,13 @@ public class ExcelExporterTest extends TestCase
     assertNull(labelRow.getCell(attributes.size()));
   }
 
-  public void testFormExport() throws IOException
+  public void testFormExport() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new FormExcelExporter(new MdWebAttributeFilter());
     exporter.addTemplate(mdForm.definesType());
     byte[] bytes = exporter.write();
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
     assertEquals(1, workbook.getNumberOfSheets());
 
@@ -241,14 +239,14 @@ public class ExcelExporterTest extends TestCase
     assertNull(labelRow.getCell(fields.size()));
   }
 
-  public void testExtraColumns() throws IOException
+  public void testExtraColumns() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new ExcelExporter();
     exporter.addListener(new MockExcelExportListener());
     exporter.addTemplate(mdBusiness.definesType());
     byte[] bytes = exporter.write();
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
     assertEquals(1, workbook.getNumberOfSheets());
 
@@ -268,7 +266,7 @@ public class ExcelExporterTest extends TestCase
     assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
   }
 
-  public void testAddRow() throws IOException
+  public void testAddRow() throws IOException, InvalidFormatException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
     business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
@@ -282,7 +280,9 @@ public class ExcelExporterTest extends TestCase
 
     byte[] bytes = exporter.write();
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    FileUtils.writeByteArrayToFile(new File("test.xlsx"), bytes);
+
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
     assertEquals(1, workbook.getNumberOfSheets());
 
@@ -300,14 +300,61 @@ public class ExcelExporterTest extends TestCase
     }
   }
 
-  public void testMultipleSheets() throws IOException
+  public void testOverwriteValue() throws IOException, InvalidFormatException
+  {
+    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
+    business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+    business.setValue("testDouble", "10");
+    business.setValue("testInteger", "-1");
+
+    Map<String, String> values = new HashMap<>();
+    values.put("testDouble", "20");
+
+    ExcelExporter exporter = new ExcelExporter();
+
+    ExcelExportSheet excelSheet = exporter.addTemplate(mdBusiness.definesType());
+    excelSheet.addRow(business, values);
+
+    byte[] bytes = exporter.write();
+
+    FileUtils.writeByteArrayToFile(new File("test.xlsx"), bytes);
+
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
+
+    assertEquals(1, workbook.getNumberOfSheets());
+
+    Sheet sheet = workbook.getSheetAt(0);
+    Row row = sheet.getRow(3);
+
+    List<? extends MdAttributeDAOIF> attributes = ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter());
+
+    boolean test = false;
+
+    for (int i = 0; i < attributes.size(); i++)
+    {
+      MdAttributeDAOIF mdAttribute = attributes.get(i);
+
+      if (mdAttribute.definesAttribute().equals("testDouble"))
+      {
+        String value = ExcelUtil.getString(row.getCell(i));
+
+        assertEquals("20", value);
+
+        test = true;
+      }
+    }
+
+    assertTrue("Test did not execute", test);
+  }
+
+  public void testMultipleSheets() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new ExcelExporter();
     exporter.addTemplate(mdBusiness.definesType());
     exporter.addTemplate(mdBusiness2.definesType());
     byte[] bytes = exporter.write();
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
     assertEquals(2, workbook.getNumberOfSheets());
 
@@ -360,7 +407,7 @@ public class ExcelExporterTest extends TestCase
     assertNull(labelRow.getCell(attributes.size()));
   }
 
-  public void testMultipleSheetsWithDefaultListeners() throws IOException
+  public void testMultipleSheetsWithDefaultListeners() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new ExcelExporter();
     exporter.addListener(new MockExcelExportListener());
@@ -368,7 +415,7 @@ public class ExcelExporterTest extends TestCase
     exporter.addTemplate(mdBusiness2.definesType());
     byte[] bytes = exporter.write();
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
     assertEquals(2, workbook.getNumberOfSheets());
 
@@ -403,7 +450,7 @@ public class ExcelExporterTest extends TestCase
     assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
   }
 
-  public void testMultipleSheetsWithDifferentListeners() throws IOException
+  public void testMultipleSheetsWithDifferentListeners() throws IOException, InvalidFormatException
   {
     List<ExcelExportListener> listeners = new LinkedList<ExcelExportListener>();
     listeners.add(new MockExcelExportListener());
@@ -413,7 +460,7 @@ public class ExcelExporterTest extends TestCase
     exporter.addTemplate(mdBusiness2.definesType(), listeners);
     byte[] bytes = exporter.write();
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
     assertEquals(2, workbook.getNumberOfSheets());
 
@@ -456,8 +503,8 @@ public class ExcelExporterTest extends TestCase
     assertEquals(MockExcelExportListener.ATTRIBUTE_NAME, attributeName);
     assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
   }
-  
-  public void testInvalidSheetNames() throws IOException
+
+  public void testInvalidSheetNames() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new ExcelExporter();
     exporter.addTemplate(mdBusiness.definesType());
@@ -465,7 +512,7 @@ public class ExcelExporterTest extends TestCase
     exporter.addTemplate(mdBusiness3.definesType());
     byte[] bytes = exporter.write();
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
     assertEquals(3, workbook.getNumberOfSheets());
 
@@ -517,8 +564,6 @@ public class ExcelExporterTest extends TestCase
     assertNull(attributeRow.getCell(attributes.size()));
     assertNull(labelRow.getCell(attributes.size()));
   }
-
-
 
   public static void writeFile(byte[] bytes) throws FileNotFoundException, IOException
   {

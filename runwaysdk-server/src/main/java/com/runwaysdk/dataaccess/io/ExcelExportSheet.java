@@ -3,23 +3,25 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -64,17 +66,27 @@ public class ExcelExportSheet
    */
   private List<ExcelColumn>         extraColumns;
 
-  /**
-   * A list of entities which represent a row
-   */
-  private List<ComponentIF>         components;
+  private Sheet                     sheet;
+
+  private ExcelSheetMetadata        metadata;
 
   public ExcelExportSheet(List<ExcelExportListener> listeners)
   {
+    this(new ExcelSheetMetadata(), listeners);
+  }
+
+  public ExcelExportSheet(ExcelSheetMetadata metadata, List<ExcelExportListener> listeners)
+  {
+    this.metadata = metadata;
     this.listeners = listeners;
+
     this.expectedColumns = new ArrayList<ExcelColumn>();
     this.extraColumns = new ArrayList<ExcelColumn>();
-    this.components = new ArrayList<ComponentIF>();
+  }
+
+  public ExcelSheetMetadata getMetadata()
+  {
+    return metadata;
   }
 
   public void setType(String type)
@@ -93,7 +105,8 @@ public class ExcelExportSheet
   }
 
   /**
-   * Specifies the type we want to export. Future exporters will support multiple sheets, thus the term 'add' instead of 'set.'
+   * Specifies the type we want to export. Future exporters will support
+   * multiple sheets, thus the term 'add' instead of 'set.'
    * 
    * @param type
    */
@@ -130,11 +143,17 @@ public class ExcelExportSheet
 
   public void addRow(ComponentIF entity)
   {
-    this.components.add(entity);
+    this.addRow(entity, new HashMap<String, String>(1));
+  }
+
+  public void addRow(ComponentIF entity, Map<String, String> overrides)
+  {
+    this.writeRow(entity, overrides);
   }
 
   /**
-   * Converts a list of MdAttributes into a list of ColumnInfos, storing any necessary metadata in the process.
+   * Converts a list of MdAttributes into a list of ColumnInfos, storing any
+   * necessary metadata in the process.
    * 
    * @param mdClass
    */
@@ -178,41 +197,49 @@ public class ExcelExportSheet
   }
 
   /**
-   * Prepares a new sheet (which represents a type) in the workbook. Fills in all necessary information for the sheet.
+   * Prepares a new sheet (which represents a type) in the workbook. Fills in
+   * all necessary information for the sheet.
    * 
    * @return
    */
   public Sheet createSheet(Workbook workbook, CellStyle boldStyle)
   {
-    CreationHelper helper = workbook.getCreationHelper();
-    String sheetName = this.getFormattedSheetName();
-
-    Sheet sheet = workbook.createSheet(sheetName);
-    Drawing drawing = sheet.createDrawingPatriarch();
-
-
-    Row typeRow = sheet.createRow(0);
-    typeRow.setZeroHeight(true);
-
-    Row nameRow = sheet.createRow(1);
-    nameRow.setZeroHeight(true);
-
-    Row labelRow = sheet.createRow(2);
-
-    int i = 0;
-    for (ExcelColumn column : this.getExpectedColumns())
+    if (this.sheet == null)
     {
-      writeHeader(sheet, drawing, nameRow, labelRow, i++, column, boldStyle);
+      CreationHelper helper = workbook.getCreationHelper();
+      String sheetName = this.getFormattedSheetName();
+
+      this.sheet = workbook.createSheet(sheetName);
+      Drawing drawing = sheet.createDrawingPatriarch();
+
+      Row typeRow = sheet.createRow(0);
+      typeRow.setZeroHeight(true);
+
+      Row nameRow = sheet.createRow(1);
+      nameRow.setZeroHeight(true);
+
+      Row labelRow = sheet.createRow(2);
+
+      int i = 0;
+      for (ExcelColumn column : this.getExpectedColumns())
+      {
+        writeHeader(sheet, drawing, nameRow, labelRow, i++, column, boldStyle);
+      }
+
+      for (ExcelColumn column : this.getExtraColumns())
+      {
+        writeHeader(sheet, drawing, nameRow, labelRow, i++, column, boldStyle);
+      }
+
+      typeRow.createCell(0).setCellValue(helper.createRichTextString(this.getType()));
+
+      List<String> values = this.metadata.getValues();
+
+      for (int j = 0; j < values.size(); j++)
+      {
+        typeRow.createCell(j + 1).setCellValue(helper.createRichTextString(values.get(j)));
+      }
     }
-
-    for (ExcelColumn column : this.getExtraColumns())
-    {
-      writeHeader(sheet, drawing, nameRow, labelRow, i++, column, boldStyle);
-    }
-
-    typeRow.createCell(0).setCellValue(helper.createRichTextString(this.getType()));
-
-    this.writeRows(sheet);
 
     return sheet;
   }
@@ -265,35 +292,32 @@ public class ExcelExportSheet
     sheet.autoSizeColumn((short) i);
   }
 
-  private void writeRows(Sheet sheet)
+  private void writeRow(ComponentIF component, Map<String, String> overrides)
   {
     List<ExcelColumn> expectedColumns = this.getExpectedColumns();
     List<ExcelColumn> extraColumns = this.getExtraColumns();
 
-    for (int i = 0; i < components.size(); i++)
+    int rowNum = this.sheet.getLastRowNum() + 1;
+    Row row = this.sheet.createRow(rowNum);
+
+    int size = expectedColumns.size();
+
+    for (int j = 0; j < size; j++)
     {
-      ComponentIF component = components.get(i);
-      Row row = sheet.createRow(HEADER_ROW_COUNT + i);
+      ExcelColumn column = expectedColumns.get(j);
+      String value = column.getValue(component, overrides);
 
-      int size = expectedColumns.size();
+      Cell cell = row.createCell(j);
+      column.setValue(cell, value);
+    }
 
-      for (int j = 0; j < size; j++)
-      {
-        ExcelColumn column = expectedColumns.get(j);
-        String value = column.getValue(component);
+    for (int k = 0; k < extraColumns.size(); k++)
+    {
+      ExcelColumn column = extraColumns.get(k);
+      String value = column.getValue(component, overrides);
 
-        Cell cell = row.createCell(j);
-        column.setValue(cell, value);
-      }
-
-      for (int k = 0; k < extraColumns.size(); k++)
-      {
-        ExcelColumn column = extraColumns.get(k);
-        String value = column.getValue(component);
-
-        Cell cell = row.createCell(size + k);
-        column.setValue(cell, value);
-      }
+      Cell cell = row.createCell(size + k);
+      column.setValue(cell, value);
     }
   }
 }
