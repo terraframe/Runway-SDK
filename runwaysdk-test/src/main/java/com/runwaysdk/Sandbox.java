@@ -46,10 +46,22 @@ import com.runwaysdk.patcher.RunwayPatcher;
  */
 public class Sandbox
 {
-  public static void main(String[] args) throws IOException
+  public static void main(String[] args)
   {
-    RunwayPatcher.main(new String[]{"postgres","postgres","postgres","true"});
-//    Sandbox.bootstrap();
-//    InstallerCP.main(new String[]{"postgres", "postgres", "postgres", "com/runwaysdk/resources/xsd/schema.xsd"});
+    String attributeName = "test.value";
+    int index = attributeName.lastIndexOf(".");
+    String structName = attributeName.substring(0, index);
+    String structAttribute = attributeName.substring(index + 1);
+    
+    System.out.println(structName);    
+    System.out.println(structAttribute);
   }
+
+//  public static void main(String[] args) throws IOException
+//  {
+//    
+//    RunwayPatcher.main(new String[]{"postgres","postgres","postgres","true"});
+////    Sandbox.bootstrap();
+////    InstallerCP.main(new String[]{"postgres", "postgres", "postgres", "com/runwaysdk/resources/xsd/schema.xsd"});
+//  }  
 }

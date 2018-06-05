@@ -221,7 +221,14 @@ public class ExcelUtil
     }
     else
     {
-      return Integer.parseInt(cell.getRichStringCellValue().getString().trim());
+      String value = cell.getRichStringCellValue().getString().trim();
+      
+      if(value.length() > 0)
+      {
+        return Integer.parseInt(value);
+      }
+      
+      return null;
     }
   }
 

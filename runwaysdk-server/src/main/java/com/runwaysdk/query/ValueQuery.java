@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.query;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,10 +49,6 @@ import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.dataaccess.EntityDAOIF;
-import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
-import com.runwaysdk.dataaccess.IndicatorCompositeDAOIF;
-import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
-import com.runwaysdk.dataaccess.IndicatorPrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
@@ -67,13 +62,11 @@ import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
-import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
@@ -112,7 +105,7 @@ public class ValueQuery extends ComponentQuery
   private Map<String, List<Selectable>> getRawSelectableComponentQueryMap;
 
   // Key: aliasSeed of the EntityQuery
-  private Map<String, EntityQuery>      entityQueryInRightSideOfLeftJoin;
+  private Map<String, TableClassQuery>      entityQueryInRightSideOfLeftJoin;
 
   private Set<LeftJoin>                 leftOuterJoinSet;
 
@@ -206,7 +199,7 @@ public class ValueQuery extends ComponentQuery
     this.processedSelectableMap = new HashMap<String, Selectable>();
     this.rawSelectableMap = new HashMap<String, Selectable>();
     this.getRawSelectableComponentQueryMap = new HashMap<String, List<Selectable>>();
-    this.entityQueryInRightSideOfLeftJoin = new HashMap<String, EntityQuery>();
+    this.entityQueryInRightSideOfLeftJoin = new HashMap<String, TableClassQuery>();
     this.leftOuterJoinSet = new HashSet<LeftJoin>();
     this.customInnerJoinSet = new HashSet<InnerJoin>();
     this.groupByAttributeMap = new HashMap<String, SelectableSingle>();
@@ -582,7 +575,7 @@ public class ValueQuery extends ComponentQuery
       Selectable selectable;
       // This changes the db column alias to accomodate for the fact the
       // selectable comes from a left join
-      if (entityQueryInLeftJoin.contains(componentQuery.getAliasSeed()) && componentQuery instanceof EntityQuery)
+      if (entityQueryInLeftJoin.contains(componentQuery.getAliasSeed()) && componentQuery instanceof TableClassQuery)
       {
         selectable = convertSelectableUsedInLeftJoin(loopSelectable, (EntityQuery) componentQuery);
       }
@@ -642,12 +635,12 @@ public class ValueQuery extends ComponentQuery
     return this.getRawSelectableComponentQueryMap.get(aliasSeed);
   }
 
-  protected void setEntityQueryInLeftJoin(EntityQuery entityQuery)
+  protected void setEntityQueryInLeftJoin(TableClassQuery entityQuery)
   {
     this.entityQueryInRightSideOfLeftJoin.put(entityQuery.getAliasSeed(), entityQuery);
   }
 
-  protected boolean isEntityInLeftJoin(EntityQuery entityQuery)
+  protected boolean isEntityInLeftJoin(TableClassQuery entityQuery)
   {
     return this.entityQueryInRightSideOfLeftJoin.containsKey(entityQuery.getAliasSeed());
   }
@@ -1036,7 +1029,7 @@ public class ValueQuery extends ComponentQuery
       // Visiting this attribute will copy joins in the nested SELECT and put
       // them in the
       // outermost SELECT.
-      if (componentQuery instanceof EntityQuery)
+      if (componentQuery instanceof TableClassQuery)
       {
         selectable.accept(visitor);
       }

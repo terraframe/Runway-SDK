@@ -103,6 +103,11 @@ public class ExcelExportSheet
   {
     this.expectedColumns.add(column);
   }
+  
+  public Sheet getSheet()
+  {
+    return sheet;
+  }
 
   /**
    * Specifies the type we want to export. Future exporters will support

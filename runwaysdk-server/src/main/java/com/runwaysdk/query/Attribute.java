@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -133,8 +133,8 @@ public abstract class Attribute implements SelectableSingle, Statement
   protected Map<String, String>           fromTableMap;
 
   protected Set<Join>                     tableJoinSet;
-  
-  private Object data;
+
+  private Object                          data;
 
   protected Attribute(MdAttributeConcreteDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
@@ -187,7 +187,6 @@ public abstract class Attribute implements SelectableSingle, Statement
     }
   }
 
-  
   /**
    * Used only for queries involving parent_id or child_id on a relationship
    */
@@ -294,10 +293,9 @@ public abstract class Attribute implements SelectableSingle, Statement
     }
     else if (_mdAttributeIF instanceof MdAttributeIndicatorDAOIF)
     {
-      mdAttribute_Q = new MdAttributeIndicator_Q((MdAttributeIndicatorDAOIF)_mdAttributeIF);
+      mdAttribute_Q = new MdAttributeIndicator_Q((MdAttributeIndicatorDAOIF) _mdAttributeIF);
     }
-    
-    
+
     if (mdAttribute_Q == null)
     {
       for (PluginIF plugin : pluginMap.values())
@@ -321,7 +319,7 @@ public abstract class Attribute implements SelectableSingle, Statement
       throw new ProgrammingErrorException(errMsg);
     }
   }
-  
+
   @Override
   public Object getData()
   {
@@ -332,7 +330,7 @@ public abstract class Attribute implements SelectableSingle, Statement
   public void setData(Object data)
   {
     this.data = data;
-  }  
+  }
 
   /**
    * Returns the name of the attribute used in the resultant {@link ValueObject}
@@ -550,7 +548,6 @@ public abstract class Attribute implements SelectableSingle, Statement
     return this.definingTableAlias;
   }
 
-
   /**
    * {@inheritDoc}
    */
@@ -559,7 +556,7 @@ public abstract class Attribute implements SelectableSingle, Statement
   {
     return new ColumnInfo(this.getDefiningTableName(), this.getDefiningTableAlias(), this.getDbColumnName(), this.getColumnAlias());
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -570,7 +567,7 @@ public abstract class Attribute implements SelectableSingle, Statement
     columnInfoList.add(this.getColumnInfo());
     return columnInfoList;
   }
-  
+
   /**
    * Returns the qualified name of the attribute.
    */
@@ -912,7 +909,7 @@ public abstract class Attribute implements SelectableSingle, Statement
     // Visiting this attribute will copy joins in the nested SELECT and put them
     // in the
     // outermost SELECT.
-    if (this.rootQuery instanceof EntityQuery)
+    if (this.rootQuery instanceof TableClassQuery)
     {
       boolean shouldVisit = true;
 
@@ -925,7 +922,7 @@ public abstract class Attribute implements SelectableSingle, Statement
         // do not visit the attribute if it is defined by an entity that is used
         // on the right
         // hand side of a left join
-        if (valueQuery.isEntityInLeftJoin((EntityQuery) this.rootQuery))
+        if (valueQuery.isEntityInLeftJoin((TableClassQuery) this.rootQuery))
         {
           shouldVisit = false;
         }
@@ -936,6 +933,11 @@ public abstract class Attribute implements SelectableSingle, Statement
         visitor.visit(this);
         this.rootQuery.accept(visitor);
       }
+    }
+    else if (this.rootQuery instanceof TableQuery)
+    {
+      visitor.visit(this);
+      this.rootQuery.accept(visitor);
     }
   }
 

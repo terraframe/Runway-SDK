@@ -61,7 +61,7 @@ public abstract class ValueJoinCondition extends BasicCondition
     // Only get the criteria if it is an EntityQuery.  Otherwise, 
     // criteria in a nested select will also incorrectly appear in
     // the enclosing value query.
-    if (rightComponentQuery instanceof EntityQuery)
+    if (rightComponentQuery instanceof TableClassQuery)
     {
       additionalCriteria = rightComponentQuery.getQueryConditionSQL();
     }
