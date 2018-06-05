@@ -103,18 +103,13 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     return history;
   }
   
-  /**
-   * Executes the Job within the context of Quartz.
-   */
-  @Override
-  public void execute(JobExecutionContext context) throws JobExecutionException
+  @Request
+  private Object[] buildExecutionPrereqs(JobExecutionContext context)
   {
-    // Our 'this' reference right now is not equal to the job that needs to actually run. We need to find the real ExecutableJob instance first.
-    
     JobHistoryRecord record;
     ExecutableJob job;
     JobHistory history;
-
+    
     String id = context.getJobDetail().getKey().getName();
     if (id.startsWith(JOB_ID_PREPEND))
     {
@@ -128,12 +123,25 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       record.apply();
     }
     else
-    {
+    { 
       record = JobHistoryRecord.get(id);
       job = record.getParent();
       history = record.getChild();
     }
     
+    return new Object[]{job, history, record};
+  }
+  
+  /**
+   * Executes the Job within the context of Quartz.
+   */
+  @Override
+  public void execute(JobExecutionContext context) throws JobExecutionException
+  {
+    Object[] prereqs = buildExecutionPrereqs(context);
+    ExecutableJob job = (ExecutableJob) prereqs[0];
+    JobHistory history = (JobHistory) prereqs[1];
+    JobHistoryRecord record = (JobHistoryRecord) prereqs[2];
     
     // If the job wants to be run as a particular user then we need to create a session and a request for that user.
     
