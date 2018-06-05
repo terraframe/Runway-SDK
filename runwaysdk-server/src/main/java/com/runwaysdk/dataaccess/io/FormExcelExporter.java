@@ -66,4 +66,26 @@ public class FormExcelExporter extends ExcelExporter
     
     return sheet;
   }
+  
+  @Override
+  public ExcelExportSheet addTemplate(String type, ExcelSheetMetadata metadata)
+  {
+    ExcelExportSheet sheet = new FormExcelExportSheet(metadata, this.getListeners(), filter, factory);
+    sheet.addTemplate(type);
+    
+    this.addSheet(sheet);
+    
+    return sheet;
+  }
+  
+  @Override
+  public ExcelExportSheet addTemplate(String type, ExcelSheetMetadata metadata, List<ExcelExportListener> listeners)
+  {
+    ExcelExportSheet sheet = new FormExcelExportSheet(metadata, listeners, filter, factory);
+    sheet.addTemplate(type);
+    
+    this.addSheet(sheet);
+    
+    return sheet;
+  }
 }

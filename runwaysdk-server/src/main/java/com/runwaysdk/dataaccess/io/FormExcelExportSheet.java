@@ -42,6 +42,14 @@ public class FormExcelExportSheet extends ExcelExportSheet
     this.factory = factory;
   }
 
+  public FormExcelExportSheet(ExcelSheetMetadata metadata, List<ExcelExportListener> listeners, MdFieldFilter filter, ColumnFactory factory)
+  {
+    super(metadata, listeners);
+    
+    this.filter = filter;
+    this.factory = factory;
+  }
+  
   @Override
   public void addTemplate(String type)
   {
