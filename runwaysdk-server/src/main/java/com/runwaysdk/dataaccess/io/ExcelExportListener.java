@@ -38,14 +38,7 @@ public interface ExcelExportListener
    * @param columnInfo
    */
   public void preHeader(ExcelColumn columnInfo);
-  
-  /**
-   * Called immediately before the file is serialized into a byte array.
-   * 
-   * @param workbook
-   */
-  public void preWrite(Workbook workbook);
-  
+    
   /**
    * Allows the listener to add extra columns to the exported template
    * 

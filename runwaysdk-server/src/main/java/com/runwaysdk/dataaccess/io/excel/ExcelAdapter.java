@@ -42,11 +42,6 @@ public class ExcelAdapter implements ExcelExportListener, ImportApplyListener
   }
 
   @Override
-  public void preWrite(Workbook workbook)
-  {
-  }
-
-  @Override
   public void beforeApply(Mutable instance)
   {
   }

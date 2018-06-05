@@ -3,23 +3,24 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
- 
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import junit.extensions.TestSetup;
@@ -29,10 +30,12 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.DateConditionInfo;
@@ -199,7 +202,7 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
-  public void testError() throws IOException
+  public void testError() throws IOException, InvalidFormatException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
     business.setValue("testDouble", "10");
@@ -219,7 +222,7 @@ public class ExcelImporterTest extends TestCase
 
     ExcelExporterTest.writeFile(results);
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(results));
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(results));
 
     assertEquals(2, workbook.getNumberOfSheets());
 
@@ -255,7 +258,7 @@ public class ExcelImporterTest extends TestCase
     assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
   }
 
-  public void testSuccessAndError() throws IOException
+  public void testSuccessAndError() throws IOException, InvalidFormatException
   {
     BusinessDAO valid = BusinessDAO.newInstance(mdBusiness.definesType());
     valid.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
@@ -281,7 +284,7 @@ public class ExcelImporterTest extends TestCase
 
     ExcelExporterTest.writeFile(results);
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(results));
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(results));
 
     assertEquals(2, workbook.getNumberOfSheets());
 
@@ -452,7 +455,7 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
-  public void testMultipleSheetsWithErrors() throws IOException
+  public void testMultipleSheetsWithErrors() throws IOException, InvalidFormatException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
     business.setValue("testDouble", "10");
@@ -478,7 +481,7 @@ public class ExcelImporterTest extends TestCase
 
     ExcelExporterTest.writeFile(results);
 
-    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(results));
+    Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(results));
 
     assertEquals(3, workbook.getNumberOfSheets());
 

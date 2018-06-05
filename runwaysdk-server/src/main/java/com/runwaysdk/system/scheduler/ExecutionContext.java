@@ -52,10 +52,13 @@ public class ExecutionContext
   private ExecutableJob job;
   private JobHistory history;
   
+  private AllJobStatus status;
+  
   ExecutionContext(ExecutableJob job, JobHistory history)
   {
     this.job = job;
     this.history = history;
+    this.status = null;
   }
   
   /**
@@ -68,6 +71,16 @@ public class ExecutionContext
   
   public JobHistory getJobHistory() {
     return this.history;
+  }
+  
+  public void setStatus(AllJobStatus status)
+  {
+    this.status = status;
+  }
+  
+  public AllJobStatus getStatus()
+  {
+    return status;
   }
   
   /**

@@ -38,11 +38,4 @@ public class ExcelExportAdapter implements ExcelExportListener
   {
     // Do nothing
   }
-
-  @Override
-  public void preWrite(Workbook workbook)
-  {
-    // Do nothing
-  }
-
 }
