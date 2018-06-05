@@ -221,7 +221,14 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
     else
     {
-      jh.addStatus(AllJobStatus.SUCCESS);
+      if(executionContext.getStatus() != null)
+      {
+        jh.addStatus(executionContext.getStatus());
+      }
+      else
+      {
+        jh.addStatus(AllJobStatus.SUCCESS);
+      }
     }
     jh.apply();
     
