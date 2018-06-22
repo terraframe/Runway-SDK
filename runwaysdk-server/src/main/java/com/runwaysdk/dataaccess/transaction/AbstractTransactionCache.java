@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.dataaccess.transaction;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,17 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.commons.collections.bidimap.DualHashBidiMap;
-import org.apache.commons.io.FileUtils;
-import org.ehcache.PersistentUserManagedCache;
-import org.ehcache.UserManagedCacheBuilder;
-import org.ehcache.config.ResourcePoolsBuilder;
-import org.ehcache.config.persistence.DefaultPersistenceConfiguration;
-import org.ehcache.config.persistence.UserManagedPersistenceContext;
-import org.ehcache.config.units.EntryUnit;
-import org.ehcache.config.units.MemoryUnit;
-import org.ehcache.internal.persistence.DefaultLocalPersistenceService;
-import org.ehcache.spi.service.LocalPersistenceService;
+import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,7 +45,6 @@ import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
-import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -106,7 +94,6 @@ import com.runwaysdk.session.PermissionEntity;
 import com.runwaysdk.session.PermissionObserver;
 import com.runwaysdk.system.metadata.MdClass;
 import com.runwaysdk.system.metadata.MdType;
-import com.runwaysdk.util.IDGenerator;
 import com.runwaysdk.util.IdParser;
 
 public abstract class AbstractTransactionCache implements TransactionCacheIF

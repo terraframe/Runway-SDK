@@ -76,7 +76,7 @@ public class ExcelExporter
     this.sheets = new LinkedList<ExcelExportSheet>();
 
     Font font = workbook.createFont();
-    font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+    font.setBold(true);
 
     this.boldStyle = workbook.createCellStyle();
     this.boldStyle.setFont(font);

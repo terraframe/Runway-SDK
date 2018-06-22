@@ -86,6 +86,8 @@ public class ExcelImporter
    * Optional logger
    */
   private ExcelImportProgressMonitorIF    monitor;
+  
+  private boolean hasValidSheet;
 
   /**
    * Constructor for this importer. Opens the stream and parses some header information. The source stream is accepted as is, so any necessary buffering should be handled by the caller.
@@ -101,6 +103,7 @@ public class ExcelImporter
   {
     this.builder = builder;
     this.contexts = new LinkedList<ImportContext>();
+    this.hasValidSheet = false;
 
     this.openStream(stream);
   }
@@ -137,6 +140,8 @@ public class ExcelImporter
         // Skip the error sheet
         if (this.isValidSheet(sheet, sheetName))
         {
+          this.hasValidSheet = true;
+          
           Row row = sheet.getRow(0);
           Cell cell = row.getCell(0);
           String type = ExcelUtil.getString(cell);
@@ -151,6 +156,11 @@ public class ExcelImporter
     {
       throw new SystemException(e);
     }
+  }
+  
+  public boolean getHasValidSheet()
+  {
+    return this.hasValidSheet;
   }
 
   private boolean isValidSheet(Sheet sheet, String sheetName)

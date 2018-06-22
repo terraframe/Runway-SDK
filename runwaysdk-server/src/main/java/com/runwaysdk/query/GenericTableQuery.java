@@ -45,7 +45,7 @@ public class GenericTableQuery extends GeneratedTableClassQuery
     
     if (this.getComponentQuery() == null)
     {
-      this.setComponentQuery(new BusinessQuery(_valueQuery, _mdTableDAOIF.definesType()));
+      this.setComponentQuery(new TableQuery(_valueQuery, _mdTableDAOIF.definesType()));
     }
   }
   

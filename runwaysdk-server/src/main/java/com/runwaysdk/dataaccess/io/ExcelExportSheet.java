@@ -32,6 +32,7 @@ import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -215,7 +216,13 @@ public class ExcelExportSheet
       String sheetName = this.getFormattedSheetName();
 
       this.sheet = workbook.createSheet(sheetName);
-      Drawing drawing = sheet.createDrawingPatriarch();
+      
+      if(this.sheet instanceof SXSSFSheet)
+      {
+        ((SXSSFSheet)this.sheet).trackAllColumnsForAutoSizing();
+      }
+      
+      Drawing<?> drawing = sheet.createDrawingPatriarch();
 
       Row typeRow = sheet.createRow(0);
       typeRow.setZeroHeight(true);
@@ -283,10 +290,10 @@ public class ExcelExportSheet
       anchor.setDy1(0);
       anchor.setDx2(0);
       anchor.setDy2(0);
-      anchor.setCol1(0);
-      anchor.setRow1(0);
-      anchor.setCol2(0);
-      anchor.setRow2(4);
+      anchor.setCol1(cell.getColumnIndex());
+      anchor.setRow1(cell.getRowIndex());
+      anchor.setCol2(cell.getColumnIndex());
+      anchor.setRow2(cell.getRowIndex());
 
       Comment comment = drawing.createCellComment(anchor);
       comment.setString(helper.createRichTextString(column.getDescription()));
