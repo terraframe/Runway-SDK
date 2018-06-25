@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -131,7 +131,8 @@ public interface XMLTags
   public static final String   NOTHING_ENUMERATION              = "nothing";
 
   /**
-   * The xml name of the most recently used enumeration of the cache algorithm attribute
+   * The xml name of the most recently used enumeration of the cache algorithm
+   * attribute
    */
   public static final String   RECENTLY_ENUMERATION             = "most recently used";
 
@@ -141,7 +142,8 @@ public interface XMLTags
   public static final String   UNIQUE_INDEX_ENUMERATION         = "unique index";
 
   /**
-   * The xml name of the non-unique index enumeration of the index type attribute
+   * The xml name of the non-unique index enumeration of the index type
+   * attribute
    */
   public static final String   NON_UNIQUE_INDEX_ENUMERATION     = "non-unique index";
 
@@ -186,7 +188,8 @@ public interface XMLTags
   public static final String   LOCAL_TEXT_TAG                   = "localText";
 
   /**
-   * The tag attribute for referencing the key of the local struct type that defines all of the local values.
+   * The tag attribute for referencing the key of the local struct type that
+   * defines all of the local values.
    */
   public static final String   LOCALSTRUCT_ATTRIBUTE            = "localStruct";
 
@@ -471,7 +474,8 @@ public interface XMLTags
   public static final String   COMPOSITION_ATTRIBUTE            = "composition";
 
   /**
-   * Attributes of the parent and child tag, see datatype.xsd for full description
+   * Attributes of the parent and child tag, see datatype.xsd for full
+   * description
    */
   public static final String   CARDINALITY_ATTRIBUTE            = "cardinality";
 
@@ -784,7 +788,8 @@ public interface XMLTags
   public static final String   GRANT_TAG                        = "grant";
 
   /**
-   * List of all tags which might define a type used in a MdMethod or a MdParameter
+   * List of all tags which might define a type used in a MdMethod or a
+   * MdParameter
    */
   public static final String[] TYPE_TAGS                        = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG, XMLTags.MD_GRAPH_TAG, XMLTags.MD_RELATIONSHIP_TAG, XMLTags.MD_TREE_TAG, XMLTags.MD_TERM_RELATIONSHIP_TAG, XMLTags.MD_VIEW_TAG, XMLTags.MD_UTIL_TAG, XMLTags.MD_ENUMERATION_TAG };
 
@@ -971,4 +976,6 @@ public interface XMLTags
   public static final String   ROOT_TERM_TAG                    = "rootTerm";
 
   public static final String   SELECTABLE                       = "selectable";
+
+  public static final String   MD_TABLE_TAG                     = "mdTable";
 }

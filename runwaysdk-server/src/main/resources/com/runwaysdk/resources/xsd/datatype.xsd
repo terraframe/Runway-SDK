@@ -50,6 +50,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element name="mdEnumeration" type="mdEnumeration" />
       <xs:element name="enumerationMaster" type="mdBusiness" />
+      <xs:element name="mdTable" type="mdClass" />      
       <xs:element name="mdStruct" type="mdStruct" />
       <xs:element name="mdLocalStruct" type="mdLocalStruct" />
       <xs:element name="mdBusiness" type="mdBusiness" />
@@ -79,6 +80,7 @@
       <xs:element name="object" type="entity" />
       <xs:element name="relationship" type="relationshipCreate" />
       <xs:element name="enumerationMaster" type="mdBusiness" />
+      <xs:element name="mdTable" type="mdClass" />            
       <xs:element name="mdStruct" type="mdStruct" />
       <xs:element name="mdLocalStruct" type="mdLocalStruct" />
       <xs:element name="mdBusiness" type="mdBusiness" />

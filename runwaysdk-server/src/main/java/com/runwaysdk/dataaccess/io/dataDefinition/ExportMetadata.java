@@ -831,16 +831,16 @@ public class ExportMetadata
     return metadata;
   }
 
-  public List<? extends MdAttributeDAOIF> filterAttributes(MdEntityDAOIF mdEntity)
+  public List<? extends MdAttributeDAOIF> filterAttributes(MdClassDAOIF mdEntity)
   {
-    List<? extends MdAttributeConcreteDAOIF> list = mdEntity.definesAttributes();
+    List<? extends MdAttributeDAOIF> list = mdEntity.definesAttributes();
     List<MdAttributeDAO> newAttributes = this.getNewMdAttributes(mdEntity);
 
-    Iterator<? extends MdAttributeConcreteDAOIF> it = list.iterator();
+    Iterator<? extends MdAttributeDAOIF> it = list.iterator();
 
     while (it.hasNext())
     {
-      MdAttributeConcreteDAOIF next = it.next();
+      MdAttributeDAOIF next = it.next();
 
       if (newAttributes.contains(next))
       {

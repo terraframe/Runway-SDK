@@ -1787,4 +1787,16 @@ public class TestFixtureFactory
     return term;
   }
 
+  public static MdTableDAO createMdTable()
+  {
+    MdTableDAO mdTable = MdTableDAO.newInstance();
+    mdTable.setValue(MdTableInfo.NAME, TestFixConst.TEST_CLASS1);
+    mdTable.setValue(MdTableInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
+    mdTable.setValue(MdTableInfo.TABLE_NAME, "test_table");
+    mdTable.setStructValue(MdTableInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdTable Set Test");
+    mdTable.setStructValue(MdTableInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdTable Attributes Test");
+
+    return mdTable;
+  }
+
 }
