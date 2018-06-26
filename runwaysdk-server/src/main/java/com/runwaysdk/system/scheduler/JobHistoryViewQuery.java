@@ -72,11 +72,46 @@ public class JobHistoryViewQuery extends com.runwaysdk.system.scheduler.JobHisto
     super(queryFactory, viewQueryBuilder);
   }
 
+  public JobHistoryViewQuery(QueryFactory queryFactory, String sortAttribute, Boolean isAscending, Integer pageSize,
+      Integer pageNumber, String[] typeExcludes)
+  {
+    super(queryFactory);
+    
+    this.historyQ = new JobHistoryQuery(queryFactory);
+    this.execJobQ = new ExecutableJobQuery(queryFactory);
+    this.jobHistoryRecordQ = new JobHistoryRecordQuery(queryFactory);
+    
+    this.buildQuery(new DefaultJobHistoryViewBuilder(queryFactory, typeExcludes));
+    
+    if (sortAttribute != null && !(sortAttribute.equals(""))) {
+      Selectable attr = this.getSelectable(sortAttribute, null, null);
+      
+      if (attr != null && attr instanceof SelectablePrimitive) {
+        if (isAscending) {
+          this.ORDER_BY_ASC((SelectablePrimitive) attr);
+        }
+        else {
+          this.ORDER_BY_DESC((SelectablePrimitive) attr);
+        }
+      }
+    }
+    this.restrictRows(pageSize, pageNumber);
+  }
+
   class DefaultJobHistoryViewBuilder extends com.runwaysdk.query.ViewQueryBuilder
   {
+    private String[] typeExcludes;
+    
     public DefaultJobHistoryViewBuilder(com.runwaysdk.query.QueryFactory queryFactory)
     {
       super(queryFactory);
+    }
+
+    public DefaultJobHistoryViewBuilder(QueryFactory queryFactory, String[] typeExcludes)
+    {
+      super(queryFactory);
+      
+      this.typeExcludes = typeExcludes;
     }
 
     protected JobHistoryViewQuery getViewQuery()
@@ -114,6 +149,14 @@ public class JobHistoryViewQuery extends com.runwaysdk.system.scheduler.JobHisto
     protected void buildWhereClause()
     {
       this.getViewQuery().WHERE(jobHistoryRecordQ.childId().EQ(historyQ.getId()).AND(jobHistoryRecordQ.parentId().EQ(execJobQ.getId())));
+      
+      if (this.typeExcludes != null)
+      {
+        for (String exclude : typeExcludes)
+        {
+          this.getViewQuery().WHERE(execJobQ.getType().NE(exclude));
+        }
+      }
     }
 
   }
