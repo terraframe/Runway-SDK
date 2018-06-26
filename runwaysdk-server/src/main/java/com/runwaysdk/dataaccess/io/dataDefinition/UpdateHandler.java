@@ -34,6 +34,7 @@ public class UpdateHandler extends TagHandler implements TagHandlerIF, HandlerFa
     MdRelationshipHandler relationshipHandler = new MdRelationshipHandler(manager);
 
     // Metadata handlers
+    this.addHandler(XMLTags.MD_TABLE_TAG, new MdTableHandler(manager));
     this.addHandler(XMLTags.ENUMERATION_MASTER_TAG, mdBusinessHandler);
     this.addHandler(XMLTags.MD_BUSINESS_TAG, mdBusinessHandler);
     this.addHandler(XMLTags.MD_TERM_TAG, mdBusinessHandler);

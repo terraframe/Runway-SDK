@@ -50,7 +50,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element name="mdEnumeration" type="mdEnumeration" />
       <xs:element name="enumerationMaster" type="mdBusiness" />
-      <xs:element name="mdTable" type="mdClass" />      
+      <xs:element name="mdTable" type="mdTable" />      
       <xs:element name="mdStruct" type="mdStruct" />
       <xs:element name="mdLocalStruct" type="mdLocalStruct" />
       <xs:element name="mdBusiness" type="mdBusiness" />
@@ -80,7 +80,7 @@
       <xs:element name="object" type="entity" />
       <xs:element name="relationship" type="relationshipCreate" />
       <xs:element name="enumerationMaster" type="mdBusiness" />
-      <xs:element name="mdTable" type="mdClass" />            
+      <xs:element name="mdTable" type="mdTable" />      
       <xs:element name="mdStruct" type="mdStruct" />
       <xs:element name="mdLocalStruct" type="mdLocalStruct" />
       <xs:element name="mdBusiness" type="mdBusiness" />
@@ -737,6 +737,33 @@
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="mdStateMachine" type="mdStateMachine" minOccurs="0" maxOccurs="1" />
           <xs:element name="create" type="mdBusinessOptions" minOccurs="0" maxOccurs="1" />
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="mdTableOptions">
+    <xs:sequence>
+      <xs:element name="attributes" type="attributes" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>  
+  
+  <xs:complexType name="mdTableBase">
+    <xs:complexContent>
+      <xs:extension base="mdClass">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="attributes" type="attributes" minOccurs="0" />
+        </xs:choice>
+        <xs:attribute name="table" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdTable">
+    <xs:complexContent>
+      <xs:extension base="mdTableBase">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="create" type="mdTableOptions" minOccurs="0" maxOccurs="1" />
         </xs:choice>
       </xs:extension>
     </xs:complexContent>

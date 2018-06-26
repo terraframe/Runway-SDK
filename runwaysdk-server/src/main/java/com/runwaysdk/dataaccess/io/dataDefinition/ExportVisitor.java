@@ -92,6 +92,7 @@ import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTransientInfo;
@@ -1913,6 +1914,8 @@ public class ExportVisitor extends MarkupVisitor
   private HashMap<String, String> getMdTableParameters(MdTableDAOIF mdTableIF)
   {
     HashMap<String, String> parameters = getMdClassParameters(mdTableIF);
+    
+    parameters.put(XMLTags.ENTITY_TABLE, mdTableIF.getValue(MdTableInfo.TABLE_NAME));
 
     return parameters;
   }
