@@ -22,7 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -164,6 +168,80 @@ public class RunwayPatcher
     }
   }
   
+  private static Boolean rawTableExistCheck(String tableName)
+  {
+    String sqlStmt = "SELECT relname FROM pg_class WHERE relname = '" + tableName + "'";
+
+    Connection conx = Database.getConnectionRaw();
+    String selectStatement = sqlStmt;
+
+    Statement statement = null;
+    ResultSet resultSet = null;
+
+    try
+    {
+      statement = conx.createStatement();
+      
+      boolean isResultSet = statement.execute(selectStatement);
+      
+      while(true) {
+        if (isResultSet) {
+          resultSet = statement.getResultSet();
+          break;
+        }
+        else if (statement.getUpdateCount() == -1) {
+          throw new SQLException("No results were returned by the query.");
+        }
+        
+        isResultSet = statement.getMoreResults();
+      }
+    }
+    catch (SQLException ex)
+    {
+      Database.throwDatabaseException(ex);
+    }
+    finally
+    {
+      try
+      {
+        Database.closeConnection(conx);
+      }
+      catch (SQLException e)
+      {
+        Database.throwDatabaseException(e);
+      }
+    }
+
+    boolean returnResult = false;
+
+    try
+    {
+      if (resultSet.next())
+      {
+        returnResult = true;
+      }
+    }
+    catch (SQLException sqlEx1)
+    {
+      Database.throwDatabaseException(sqlEx1);
+    }
+    finally
+    {
+      try
+      {
+        java.sql.Statement statement2 = resultSet.getStatement();
+        resultSet.close();
+        statement2.close();
+      }
+      catch (SQLException sqlEx2)
+      {
+        Database.throwDatabaseException(sqlEx2);
+      }
+    }
+    
+    return returnResult;
+  }
+  
   /**
    * Bootstrapping must not be done inside a request or transaction.
    */
@@ -172,7 +250,7 @@ public class RunwayPatcher
     boolean tableExist;
     try
     {
-      tableExist = Database.tableExists("md_class");
+      tableExist = rawTableExistCheck("md_class");
     }
     catch (DatabaseException ex)
     {

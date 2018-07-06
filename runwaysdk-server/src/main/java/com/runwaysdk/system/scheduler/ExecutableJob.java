@@ -129,7 +129,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       history = record.getChild();
     }
     
-    return new Object[]{job, history, record};
+    return new Object[]{job, history, record, job.getRunAsUser(), job.getRunAsDimension()};
   }
   
   /**
@@ -142,30 +142,17 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     ExecutableJob job = (ExecutableJob) prereqs[0];
     JobHistory history = (JobHistory) prereqs[1];
     JobHistoryRecord record = (JobHistoryRecord) prereqs[2];
+    SingleActor user = (SingleActor) prereqs[3];
+    MdDimension dimension = (MdDimension) prereqs[4];
     
     // If the job wants to be run as a particular user then we need to create a session and a request for that user.
-    
-    SingleActor user = job.getRunAsUser();
-    MdDimension dimension = job.getRunAsDimension();
-    
     if (user == null)
     {
       executeAsSystem(job, history, record);
     }
     else
     {
-      SingleActorDAOIF userDAO = (SingleActorDAOIF) BusinessFacade.getEntityDAO(user);
-      
-      String sessionId;
-      
-      if (dimension == null)
-      {
-        sessionId = SessionFacade.logIn(userDAO, new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
-      }
-      else
-      {
-        sessionId = SessionFacade.logIn(userDAO, dimension.getKey(), new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
-      }
+      String sessionId = logIn(user, dimension);
       
       try
       {
@@ -173,8 +160,29 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       }
       finally
       {
-        SessionFacade.closeSession(sessionId);
+        logOut(sessionId);
       }
+    }
+  }
+  
+  @Request
+  private void logOut(String sessionId)
+  {
+    SessionFacade.closeSession(sessionId);
+  }
+  
+  @Request
+  private String logIn(SingleActor user, MdDimension dimension)
+  {
+    SingleActorDAOIF userDAO = (SingleActorDAOIF) BusinessFacade.getEntityDAO(user);
+    
+    if (dimension == null)
+    {
+      return SessionFacade.logIn(userDAO, new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
+    }
+    else
+    {
+      return SessionFacade.logIn(userDAO, dimension.getKey(), new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
     }
   }
   

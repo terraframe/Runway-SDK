@@ -1714,6 +1714,18 @@ public class Database
   {
     return instance().getConnection();
   }
+  
+  /**
+   * Returns a raw, unmanaged database connection for usage outside of requests.
+   * 
+   * Do not call this unless you have a very good reason! Use getConnection instead.
+   * 
+   * @return
+   */
+  public static Connection getConnectionRaw()
+  {
+    return instance().getConnectionRaw();
+  }
 
   /**
    * All connections managed by the framework need to be closed using this

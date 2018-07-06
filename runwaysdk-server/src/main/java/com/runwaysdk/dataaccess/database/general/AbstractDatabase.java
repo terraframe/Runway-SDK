@@ -86,6 +86,7 @@ import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeIF;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.ElementDAOIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
@@ -122,6 +123,7 @@ import com.runwaysdk.dataaccess.metadata.ForbiddenMethodException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
+import com.runwaysdk.session.RequestState;
 import com.runwaysdk.util.IdParser;
 
 /**
@@ -309,19 +311,8 @@ public abstract class AbstractDatabase
       throw new DatabaseException(ex);
     }
   }
-
-  /**
-   * Returns a java.sql.Connection object for the database.
-   * 
-   * <br/>
-   * <b>Precondition:</b> database is running. <br/>
-   * <b>Precondition:</b> database.properities file contains correct DB
-   * connection settings. <br/>
-   * <b>Postcondition:</b> true
-   * 
-   * @return java.sql.Connection object
-   */
-  public Connection getConnection()
+  
+  public Connection getConnectionRaw()
   {
     this.connlock.lock();
     try
@@ -357,6 +348,28 @@ public abstract class AbstractDatabase
     {
       this.connlock.unlock();
     }
+  }
+
+  /**
+   * Returns a java.sql.Connection object for the database.
+   * 
+   * <br/>
+   * <b>Precondition:</b> database is running. <br/>
+   * <b>Precondition:</b> database.properities file contains correct DB
+   * connection settings. <br/>
+   * <b>Postcondition:</b> true
+   * 
+   * @return java.sql.Connection object
+   */
+  public Connection getConnection()
+  {
+    RequestState currentRequestState = RequestState.getCurrentRequestState();
+
+    if (currentRequestState == null) {
+      throw new CoreException("Request state expected.");
+    }
+    
+    return this.getConnectionRaw();
   }
 
   /**

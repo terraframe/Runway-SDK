@@ -42,7 +42,7 @@ public class RequestState
 
   protected RequestState()
   {
-    this.conn = Database.getConnection();
+    this.conn = Database.getConnectionRaw();
     this.session = null;
     this.mainThread = Thread.currentThread();
   }
