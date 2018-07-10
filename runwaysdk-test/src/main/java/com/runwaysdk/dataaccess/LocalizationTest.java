@@ -22,12 +22,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
@@ -66,6 +60,12 @@ import com.runwaysdk.query.ValueQuery;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.session.Session;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class LocalizationTest extends TestCase
 {

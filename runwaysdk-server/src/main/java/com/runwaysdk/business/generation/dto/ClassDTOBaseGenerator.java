@@ -46,7 +46,6 @@ import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 
 public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
@@ -908,11 +907,6 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
     String extend = this.getExtends(parent);
 
     getWriter().write("public abstract class " + getFileName() + " extends " + extend);
-
-    if (!this.getMdTypeDAOIF().isSystemPackage())
-    {
-      getWriter().write(Reloadable.IMPLEMENTS);
-    }
 
     getWriter().writeLine("");
 

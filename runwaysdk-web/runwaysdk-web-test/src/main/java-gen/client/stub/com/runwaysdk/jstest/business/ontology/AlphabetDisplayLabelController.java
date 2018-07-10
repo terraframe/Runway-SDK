@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest.business.ontology;
 
-public class AlphabetDisplayLabelController extends AlphabetDisplayLabelControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class AlphabetDisplayLabelController extends AlphabetDisplayLabelControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String JSP_DIR = "/WEB-INF/com/runwaysdk/jstest/business/ontology/AlphabetDisplayLabel/";
   public static final String LAYOUT = "WEB-INF/templates/layout.jsp";

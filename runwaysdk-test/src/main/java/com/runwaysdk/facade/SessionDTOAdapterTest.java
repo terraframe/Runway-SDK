@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.ProblemExceptionDTO;
@@ -91,6 +89,8 @@ import com.runwaysdk.transport.metadata.AttributeMdDTO;
 import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
+
+import junit.framework.TestCase;
 
 public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWeave
 {

@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.runwaysdk.generation.loader.Reloadable;
 
-public class URLUtility implements Reloadable
+
+public class URLUtility
 {
   private String baseURL;
   

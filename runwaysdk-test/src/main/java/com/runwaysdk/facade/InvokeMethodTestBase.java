@@ -22,8 +22,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import junit.framework.TestCase;
-
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.business.BusinessDTO;
@@ -49,13 +47,13 @@ import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MethodActorInfo;
-import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.GeneratedComponentQuery;
 import com.runwaysdk.query.QueryFactory;
+
+import junit.framework.TestCase;
 
 public class InvokeMethodTestBase extends TestCase implements DoNotWeave
 {
@@ -710,7 +708,7 @@ public class InvokeMethodTestBase extends TestCase implements DoNotWeave
 
   private static String getBlankMethodStub()
   {
-    String[] collectionStubSource = { "package " + pack + ";", "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS, "{", "  public Collection()", "  {", "    super();", "  }", "}" };
+    String[] collectionStubSource = { "package " + pack + ";", "public class Collection extends Collection", "{", "  public Collection()", "  {", "    super();", "  }", "}" };
 
     String source = "";
     for (String s : collectionStubSource)
@@ -728,7 +726,7 @@ public class InvokeMethodTestBase extends TestCase implements DoNotWeave
     String aDoubleConst = TypeGenerator.buildAttributeConstant(collectionType, "aDouble");
     String aLongConst = TypeGenerator.buildAttributeConstant(collectionType, "aLong");
 
-    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "\n" + "  private " + collectionQueryClass + " collectionQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     collectionQuery = new " + collectionQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + aBooleanConst + ", collectionQuery.getABoolean());\n" + "     this.map(" + aCharacterConst + ", collectionQuery.getACharacter());\n" + "     this.map(" + aDoubleConst + ", collectionQuery.getADouble());\n" + "     this.map(" + aLongConst
+    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase \n" + "{\n" + "\n" + "  private " + collectionQueryClass + " collectionQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     collectionQuery = new " + collectionQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + aBooleanConst + ", collectionQuery.getABoolean());\n" + "     this.map(" + aCharacterConst + ", collectionQuery.getACharacter());\n" + "     this.map(" + aDoubleConst + ", collectionQuery.getADouble());\n" + "     this.map(" + aLongConst
         + ", collectionQuery.getALong());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
 
     return queryStubSource;
@@ -736,7 +734,7 @@ public class InvokeMethodTestBase extends TestCase implements DoNotWeave
 
   private static String getBlankViewQueryStub()
   {
-    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "  }\n" + "}\n";
+    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase \n" + "{\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "  }\n" + "}\n";
 
     return queryStubSource;
   }

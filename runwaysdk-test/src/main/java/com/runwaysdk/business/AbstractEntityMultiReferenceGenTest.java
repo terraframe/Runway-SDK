@@ -24,18 +24,18 @@ package com.runwaysdk.business;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
 
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdBusinessInfo;
+
+import junit.framework.TestCase;
 
 
 /*******************************************************************************

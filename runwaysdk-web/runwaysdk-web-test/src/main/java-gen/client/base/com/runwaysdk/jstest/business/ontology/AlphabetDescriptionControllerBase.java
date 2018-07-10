@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest.business.ontology;
 
 @com.runwaysdk.business.ClassSignature(hash = -147226281)
-public class AlphabetDescriptionControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class AlphabetDescriptionControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String CLASS = "com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController";
   protected javax.servlet.http.HttpServletRequest req;

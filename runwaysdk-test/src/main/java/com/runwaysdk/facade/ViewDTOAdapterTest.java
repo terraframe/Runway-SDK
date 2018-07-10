@@ -20,9 +20,6 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.View;
@@ -31,9 +28,11 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
 
 public class ViewDTOAdapterTest extends SessionDTOAdapterTest
 {
@@ -70,7 +69,7 @@ public class ViewDTOAdapterTest extends SessionDTOAdapterTest
   protected static void moreSetup()
   {
     source = "package com.test.controller;\n"
-      + "public class "+parentMdSessionTypeName+" extends "+parentMdSessionTypeName+TypeGeneratorInfo.BASE_SUFFIX+" implements "+Reloadable.class.getName()+"\n"
+      + "public class "+parentMdSessionTypeName+" extends "+parentMdSessionTypeName+TypeGeneratorInfo.BASE_SUFFIX +"\n"
       + "{\n"
       + "  public "+parentMdSessionTypeName+"() {" + "   super();" + "}\n"
       + "  public static "+parentMdSessionTypeName+" get(String id)\n"

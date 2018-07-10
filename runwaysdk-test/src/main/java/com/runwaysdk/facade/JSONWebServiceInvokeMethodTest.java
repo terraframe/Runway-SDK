@@ -20,16 +20,16 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.TestProperties;
 import com.runwaysdk.web.json.JSONWebServiceClientRequest;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 public class JSONWebServiceInvokeMethodTest extends JSONInvokeMethodTest implements DoNotWeave
 {

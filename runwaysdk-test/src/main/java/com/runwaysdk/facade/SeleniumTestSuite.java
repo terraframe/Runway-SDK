@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.facade;
 
+import com.runwaysdk.constants.TestProperties;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
-import com.runwaysdk.constants.TestProperties;
 
 public class SeleniumTestSuite extends TestSuite
 {

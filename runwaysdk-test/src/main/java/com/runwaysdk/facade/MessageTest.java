@@ -23,10 +23,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import com.runwaysdk.AttributeNotification;
 import com.runwaysdk.AttributeNotificationDTO;
 import com.runwaysdk.ClientSession;
@@ -78,9 +74,12 @@ import com.runwaysdk.dataaccess.transaction.AttributeNotificationMap;
 import com.runwaysdk.dataaccess.transaction.SkipIfProblem;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 public class MessageTest extends TestCase implements DoNotWeave
 {
@@ -481,20 +480,20 @@ public class MessageTest extends TestCase implements DoNotWeave
   protected static void changeStubSource()
   {
     clientRequest.lock(attributeProblem1);
-    attributeProblem1.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "\n" + "public class InvalidTitleAttributeProblem extends InvalidTitleAttributeProblemBase implements " + Reloadable.class.getName() + ",\n" + " " + AttributeNotification.class.getName() + " \n" + "{\n" + "  public InvalidTitleAttributeProblem()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public InvalidTitleAttributeProblem(" + String.class.getName() + " developerMessage)\n" + "  {\n"
+    attributeProblem1.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "\n" + "public class InvalidTitleAttributeProblem extends InvalidTitleAttributeProblemBase ,\n" + " " + AttributeNotification.class.getName() + " \n" + "{\n" + "  public InvalidTitleAttributeProblem()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public InvalidTitleAttributeProblem(" + String.class.getName() + " developerMessage)\n" + "  {\n"
         + "    super(developerMessage);\n" + "  }\n" + "}\n");
-    attributeProblem1.setValue(MdClassInfo.DTO_STUB_SOURCE, "package test.bookstore;\n" + "\n" + "\n" + "public class InvalidTitleAttributeProblemDTO extends InvalidTitleAttributeProblemDTOBase implements " + Reloadable.class.getName() + ",\n" + " " + AttributeNotificationDTO.class.getName() + " \n" + "{\n" + "  public InvalidTitleAttributeProblemDTO(" + ClientRequestIF.class.getName() + " clientRequestIF)\n" + "  {\n" + "    super(clientRequestIF);\n" + "  }\n" + "\n"
+    attributeProblem1.setValue(MdClassInfo.DTO_STUB_SOURCE, "package test.bookstore;\n" + "\n" + "\n" + "public class InvalidTitleAttributeProblemDTO extends InvalidTitleAttributeProblemDTOBase ,\n" + " " + AttributeNotificationDTO.class.getName() + " \n" + "{\n" + "  public InvalidTitleAttributeProblemDTO(" + ClientRequestIF.class.getName() + " clientRequestIF)\n" + "  {\n" + "    super(clientRequestIF);\n" + "  }\n" + "\n"
         + "  public InvalidTitleAttributeProblemDTO(" + ClientRequestIF.class.getName() + " clientRequestIF, " + java.util.Locale.class.getName() + " locale)\n" + "  {\n" + "    super(clientRequestIF, locale);\n" + "  }\n" + "}\n");
     clientRequest.update(attributeProblem1);
 
     clientRequest.lock(mdViewBook);
-    mdViewBook.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "public class BookView extends BookViewBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "  public BookView()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public void apply()\n" + "  {\n" + "    " + bookType + " book1 = new " + bookType + "();\n" + "\n" + "    " + AttributeNotificationMap.class.getName() + " attrNotification = \n" + "      new " + AttributeNotificationMap.class.getName()
+    mdViewBook.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "public class BookView extends BookViewBase \n" + "{\n" + "  public BookView()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public void apply()\n" + "  {\n" + "    " + bookType + " book1 = new " + bookType + "();\n" + "\n" + "    " + AttributeNotificationMap.class.getName() + " attrNotification = \n" + "      new " + AttributeNotificationMap.class.getName()
         + "(book1, \"title\", this, \"viewTitle\");\n" + "\n" + "    InvalidTitleAttributeProblem attributeProblem1 = new InvalidTitleAttributeProblem(\"Attribute Problem Developer Message\");\n" + "    attributeProblem1.setBookTitle(\"Chicky Monkey\");\n" + "    attributeProblem1.setComponentId(book1.getId());\n" + "    attributeProblem1.setDefiningType(\"" + bookType + "\");\n" + "    attributeProblem1.setDefiningTypeDisplayLabel(\"A Book\");\n"
         + "    attributeProblem1.setAttributeName(\"title\");\n" + "    attributeProblem1.setAttributeDisplayLabel(\"Book Title\");\n" + "    attributeProblem1.apply();\n" + "    attributeProblem1.throwIt();\n" + "  }\n" + "}\n");
     clientRequest.update(mdViewBook);
 
     clientRequest.lock(mdBusinessBook);
-    mdBusinessBook.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "import " + InheritanceException.class.getName() + ";\n" + "import " + ExcelProblem.class.getName() + ";\n" + "import " + java.util.Locale.class.getName() + ";\n" + "\n" + "public class Book extends BookBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "  public Book()\n" + "  {\n" + "    super();\n" + "  }\n" + "  \n" + "  public void exceptionMethod()\n" + "  {\n"
+    mdBusinessBook.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "import " + InheritanceException.class.getName() + ";\n" + "import " + ExcelProblem.class.getName() + ";\n" + "import " + java.util.Locale.class.getName() + ";\n" + "\n" + "public class Book extends BookBase \n" + "{\n" + "  public Book()\n" + "  {\n" + "    super();\n" + "  }\n" + "  \n" + "  public void exceptionMethod()\n" + "  {\n"
         + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n" + "  \n" + "  @" + Transaction.class.getName() + "\n" + "  public void problemMethod()\n" + "  {\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value1\");\n" + "    this.apply();\n" + "    \n"
         + "    TooManyCheckedOutBooksProblem problem1 = new TooManyCheckedOutBooksProblem(\"Problem1 Developer Message\");\n" + "    problem1.setCheckedOutBooks(10);\n" + "    problem1.apply();\n" + "    problem1.throwIt();\n" + "    \n" + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "    \n" + "    this.lock();\n"
         + "    this.setTitle(\"Changed Value2\");\n" + "    this.apply();\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType + " warningMethod()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    return this;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType

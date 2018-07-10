@@ -24,17 +24,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.io.FileReadException;
 import com.runwaysdk.dataaccess.io.SAXParseTest;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.util.FileIO;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class VaultTest extends TestCase
 {

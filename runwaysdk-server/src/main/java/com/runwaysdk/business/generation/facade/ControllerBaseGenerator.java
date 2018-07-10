@@ -41,7 +41,6 @@ import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.generation.loader.Reloadable;
 
 public class ControllerBaseGenerator extends AbstractClientGenerator implements ControllerGenerator
 {
@@ -114,10 +113,6 @@ public class ControllerBaseGenerator extends AbstractClientGenerator implements 
 
     getWriter().write("public class " + typeName);
 
-    if (!this.getMdTypeDAOIF().isSystemPackage())
-    {
-      getWriter().write(Reloadable.IMPLEMENTS);
-    }
     getWriter().writeLine("");
 
     getWriter().openBracket();

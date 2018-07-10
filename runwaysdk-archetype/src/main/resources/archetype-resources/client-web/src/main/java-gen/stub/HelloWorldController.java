@@ -18,7 +18,7 @@
  */
 package ${package};
 
-public class HelloWorldController extends HelloWorldControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class HelloWorldController extends HelloWorldControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String pakge = "${package}";
   public static final String JSP_DIR = "/WEB-INF/" + pakge.replace(".", "/") + "/HelloWorld/";

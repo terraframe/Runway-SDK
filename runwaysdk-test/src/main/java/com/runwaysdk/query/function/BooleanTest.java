@@ -18,12 +18,6 @@
  */
 package com.runwaysdk.query.function;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
@@ -35,6 +29,12 @@ import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableBoolean;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class BooleanTest  extends TestCase
 {

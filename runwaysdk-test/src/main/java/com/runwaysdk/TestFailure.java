@@ -18,10 +18,10 @@
  */
 package com.runwaysdk;
 
-import junit.framework.TestCase;
-
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
+
+import junit.framework.TestCase;
 
 public class TestFailure extends TestCase implements DoNotWeave
 {

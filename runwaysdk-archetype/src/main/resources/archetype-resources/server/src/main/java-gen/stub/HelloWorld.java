@@ -20,7 +20,7 @@ package ${package};
 
 import java.util.Random;
 
-public class HelloWorld extends HelloWorldBase implements com.runwaysdk.generation.loader.Reloadable
+public class HelloWorld extends HelloWorldBase implements com.runwaysdk.generation.loader.
 {
   private static final long serialVersionUID = 413407027;
   

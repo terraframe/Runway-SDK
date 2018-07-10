@@ -26,10 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestResult;
-
 import org.apache.commons.math.stat.StatUtils;
 
 import com.runwaysdk.constants.Constants;
@@ -45,6 +41,10 @@ import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.QueryMasterSetup;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestResult;
 
 public class AggregateFunctionMasterSetup extends TestSetup
 {

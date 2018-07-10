@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest.business.ontology;
 
 public class AlphabetDTO extends AlphabetDTOBase
- implements com.runwaysdk.generation.loader.Reloadable{
+ implements com.runwaysdk.generation.loader.{
   private static final long serialVersionUID = 1235411941;
   
   public AlphabetDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)

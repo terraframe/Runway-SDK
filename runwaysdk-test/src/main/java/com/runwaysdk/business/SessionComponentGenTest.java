@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -32,10 +32,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import sun.security.provider.Sun;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.SystemException;
@@ -119,7 +115,6 @@ import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
@@ -131,6 +126,10 @@ import com.runwaysdk.transport.metadata.AttributeMdDTO;
 import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 import com.runwaysdk.util.FileIO;
+
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import sun.security.provider.Sun;
 
 @SuppressWarnings("unchecked")
 public abstract class SessionComponentGenTest extends TestCase
@@ -2021,7 +2020,7 @@ public abstract class SessionComponentGenTest extends TestCase
       }
       catch (RuntimeException ex)
       {
-        if (!(ex instanceof LoaderDecoratorExceptionIF))
+        if (! ( ex instanceof LoaderDecoratorExceptionIF ))
         {
           throw ex;
         }
@@ -2037,7 +2036,7 @@ public abstract class SessionComponentGenTest extends TestCase
       }
       catch (RuntimeException ex)
       {
-        if (!(ex instanceof LoaderDecoratorExceptionIF))
+        if (! ( ex instanceof LoaderDecoratorExceptionIF ))
         {
           throw ex;
         }
@@ -2144,7 +2143,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     collectionCharacter.apply();
-    LoaderDecorator.reload();
+
     colletionClass = LoaderDecorator.load(collection.definesType());
     colletionBaseClass = colletionClass.getSuperclass();
 
@@ -2178,7 +2177,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       collectionCharacter.apply();
-      LoaderDecorator.reload();
+
       colletionClass = LoaderDecorator.load(collection.definesType());
       colletionBaseClass = colletionClass.getSuperclass();
 
@@ -2220,7 +2219,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     collectionCharacter.apply();
-    LoaderDecorator.reload();
+
     colletionClass = LoaderDecorator.load(collection.definesType());
     colletionBaseClass = colletionClass.getSuperclass();
 
@@ -2251,7 +2250,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       collectionCharacter.apply();
-      LoaderDecorator.reload();
+
       colletionClass = LoaderDecorator.load(collection.definesType());
       colletionBaseClass = colletionClass.getSuperclass();
 
@@ -3055,8 +3054,7 @@ public abstract class SessionComponentGenTest extends TestCase
     originalCollectionStubSource = collection.getValue(MdClassInfo.STUB_SOURCE);
 
     // Build the new source for Collection.java
-    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n"
-        + "    car = new Car();\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "     " + this.buildGetMethod() + "  }\n" + "}";
+    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "     " + this.buildGetMethod() + "  }\n" + "}";
 
     // Write the new stub, and compile tom ake sure it's valid
     MdSessionDAO updateCollection = MdSessionDAO.get(collection.getId()).getBusinessDAO();
@@ -3113,7 +3111,7 @@ public abstract class SessionComponentGenTest extends TestCase
     topSpeed.setValue(MdAttributeIntegerInfo.NAME, "topSpeed");
     topSpeed.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "120");
     topSpeed.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, car.getId());
-    topSpeed.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "The Top Speed");
+    topSpeed.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "The Top Speed");
     topSpeed.apply();
 
     // Get the bytes that represent the new .class file
@@ -3137,23 +3135,7 @@ public abstract class SessionComponentGenTest extends TestCase
     String originalCollectionStubSource = collection.getValue(MdClassInfo.STUB_SOURCE);
 
     // Build the new source for Collection.java
-    String collectionStubSource =
-      "package test.generated;\n"+
-      "import test.generated.Car;\n"+
-      "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS +"\n"+
-      "{\n"+
-      "  private Car car;\n"+
-      "  public Collection()\n"+
-      "  {\n"+
-      "    super();\n"+
-      "    car = new Car();\n"+
-      "    car.setTopSpeed(120);\n"+
-      "  }\n"+
-      "  public static Collection get(String id)\n"+
-      "  {\n"+
-      "     "+this.buildGetMethod()+
-      "  }\n"+
-      "}";
+    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "    car.setTopSpeed(120);\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "     " + this.buildGetMethod() + "  }\n" + "}";
 
     // Write the new stub, and compile to make sure it's valid
     MdSessionDAO updateCollection = MdSessionDAO.get(collection.getId()).getBusinessDAO();
@@ -3190,7 +3172,6 @@ public abstract class SessionComponentGenTest extends TestCase
 
     // The critical test is to see if the source/class for Car got rolled back
     // to a safe state - namely one that still has setTopSpeed(int)
-    LoaderDecorator.reload();
 
     car = (MdSessionDAO) MdTypeDAO.getMdTypeDAO("test.generated.Car");
     Class<?> carClass = LoaderDecorator.load(car.definesType());

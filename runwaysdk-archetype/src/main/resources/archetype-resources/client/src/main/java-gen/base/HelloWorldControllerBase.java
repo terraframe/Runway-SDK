@@ -19,7 +19,7 @@
 package ${package};
 
 @com.runwaysdk.business.ClassSignature(hash = -1812778207)
-public class HelloWorldControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class HelloWorldControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String CLASS = "${package}.HelloWorldController";
   protected javax.servlet.http.HttpServletRequest req;

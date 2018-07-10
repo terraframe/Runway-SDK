@@ -19,7 +19,7 @@
 package ${package};
 
 public class HelloWorldDTO extends HelloWorldDTOBase
- implements com.runwaysdk.generation.loader.Reloadable{
+ implements com.runwaysdk.generation.loader.{
   private static final long serialVersionUID = -1193781069;
   
   public HelloWorldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)

@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.query;
 
-import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.dataaccess.MdTableDAOIF;
 
 public class GenericTableQuery extends GeneratedTableClassQuery

@@ -18,12 +18,6 @@
  */
 package com.runwaysdk.query;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.RelationshipTypes;
@@ -31,6 +25,12 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class EnumerationMasterQueryTest extends TestCase
 {

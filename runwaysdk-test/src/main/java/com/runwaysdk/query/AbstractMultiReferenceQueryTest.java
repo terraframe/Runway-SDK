@@ -28,8 +28,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
 
 import com.runwaysdk.ComponentIF;
@@ -63,6 +61,8 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+
+import junit.framework.TestCase;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.

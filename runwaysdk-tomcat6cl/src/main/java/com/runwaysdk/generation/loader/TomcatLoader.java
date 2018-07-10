@@ -230,11 +230,11 @@ public class TomcatLoader implements Loader, Lifecycle
 
   /**
    * @return
-   * @see org.apache.catalina.loader.WebappLoader#getReloadable()
+   * @see org.apache.catalina.loader.WebappLoader#get()
    */
-  public boolean getReloadable()
+  public boolean get()
   {
-    return webappLoader.getReloadable();
+    return webappLoader.get();
   }
 
   /**
@@ -274,12 +274,12 @@ public class TomcatLoader implements Loader, Lifecycle
   }
 
   /**
-   * @param reloadable
-   * @see org.apache.catalina.loader.WebappLoader#setReloadable(boolean)
+   * @param 
+   * @see org.apache.catalina.loader.WebappLoader#set(boolean)
    */
-  public void setReloadable(boolean reloadable)
+  public void set(boolean )
   {
-    webappLoader.setReloadable(reloadable);
+    webappLoader.set();
   }
 
   @Override

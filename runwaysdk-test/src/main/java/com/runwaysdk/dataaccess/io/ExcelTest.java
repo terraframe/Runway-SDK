@@ -21,12 +21,6 @@ package com.runwaysdk.dataaccess.io;
 import java.io.IOException;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.constants.CommonProperties;
@@ -48,6 +42,12 @@ import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdStruct;
 import com.runwaysdk.transport.conversion.ExcelErrors;
 import com.runwaysdk.util.FileIO;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class ExcelTest extends TestCase
 {

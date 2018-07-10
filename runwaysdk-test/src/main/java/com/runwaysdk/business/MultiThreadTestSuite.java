@@ -31,11 +31,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+
 
 import com.runwaysdk.DomainErrorException;
 import com.runwaysdk.RunwayExceptionDTO;
@@ -72,7 +68,6 @@ import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.facade.Facade;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -81,6 +76,12 @@ import com.runwaysdk.session.ExecuteInstancePermissionException;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.session.WritePermissionException;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class MultiThreadTestSuite extends TestCase
 {
@@ -1577,7 +1578,7 @@ public class MultiThreadTestSuite extends TestCase
     mdMethod.apply();
 
     // Build the new source for CollecticreateSingleObjectForUseron.java
-    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String id)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(id);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public void someMethod()\n" + "  {\n" + "  }\n" + "}";
+    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX  + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String id)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(id);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public void someMethod()\n" + "  {\n" + "  }\n" + "}";
 
     multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
     multiThreadMdBusiness1.setValue(MdBusinessInfo.STUB_SOURCE, classStubSource);
@@ -1719,7 +1720,7 @@ public class MultiThreadTestSuite extends TestCase
     methodActor.setValue(MethodActorInfo.MD_METHOD, mdMethod.getId());
     methodActor.apply();
 
-    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String id)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(id);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public static void someStaticMethod() \n" + "  {\n" + "    " + multiThreadMdBusiness1.definesType() + " object = new "
+    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX  + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String id)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(id);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public static void someStaticMethod() \n" + "  {\n" + "    " + multiThreadMdBusiness1.definesType() + " object = new "
         + multiThreadMdBusiness1.definesType() + "();\n" + "    object.setSomeInt(1);\n" + "    object.apply();\n" + "    object.delete();\n" + "  }\n" + "}";
 
     multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();

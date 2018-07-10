@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.gis.dataaccess.attributes.entity;
 
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.gis.AttributePolygonParseException;
 import com.runwaysdk.gis.dataaccess.AttributePolygonIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
-import com.runwaysdk.constants.CommonProperties;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;

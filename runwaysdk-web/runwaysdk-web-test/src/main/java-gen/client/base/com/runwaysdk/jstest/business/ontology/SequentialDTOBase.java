@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest.business.ontology;
 
 @com.runwaysdk.business.ClassSignature(hash = 1551729790)
-public abstract class SequentialDTOBase extends com.runwaysdk.business.RelationshipDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class SequentialDTOBase extends com.runwaysdk.business.RelationshipDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.Sequential";
   private static final long serialVersionUID = 1551729790;

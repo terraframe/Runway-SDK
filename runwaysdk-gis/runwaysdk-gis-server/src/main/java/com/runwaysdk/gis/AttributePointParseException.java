@@ -18,9 +18,6 @@
  */
 package com.runwaysdk.gis;
 
-import com.runwaysdk.gis.GISCommonExceptionMessageLocalizer;
-
-
 public class AttributePointParseException extends AttributeGeometryParseException
 {
   /**

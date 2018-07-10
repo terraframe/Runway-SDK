@@ -18,12 +18,6 @@
  */
 package com.runwaysdk.business;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.IndicatorCompositeInfo;
 import com.runwaysdk.constants.IndicatorPrimitiveInfo;
@@ -43,8 +37,8 @@ import com.runwaysdk.dataaccess.IndicatorCompositeDAO;
 import com.runwaysdk.dataaccess.IndicatorPrimitiveDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
+import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
@@ -55,6 +49,12 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.system.metadata.IndicatorAggregateFunction;
 import com.runwaysdk.system.metadata.IndicatorOperator;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class EntityAttributeIndicatorGenTest extends TestCase
 {

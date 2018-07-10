@@ -25,10 +25,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.constants.MdAttributeDateUtil;
 import com.runwaysdk.constants.MdWebAttributeInfo;
 import com.runwaysdk.constants.MdWebBooleanInfo;
@@ -71,6 +67,10 @@ import com.runwaysdk.system.metadata.MdWebHeader;
 import com.runwaysdk.system.metadata.MdWebText;
 import com.runwaysdk.system.metadata.MetadataDisplayLabel;
 import com.runwaysdk.system.metadata.WebGroupField;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 public class MdWebFormTest extends MdFormDAOTest
 {

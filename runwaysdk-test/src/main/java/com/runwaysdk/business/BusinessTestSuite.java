@@ -18,16 +18,16 @@
  */
 package com.runwaysdk.business;
 
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.RunwayVersionTest;
 import com.runwaysdk.business.rbac.RBACTest;
 import com.runwaysdk.business.state.StateTest;
 import com.runwaysdk.format.CustomFormatTest;
 import com.runwaysdk.format.DefaultFormatTest;
 import com.runwaysdk.format.LocalizedFormatTest;
+
+import junit.framework.Test;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class BusinessTestSuite extends TestSuite
 {

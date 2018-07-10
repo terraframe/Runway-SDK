@@ -23,9 +23,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import sun.security.provider.Sun;
-
 import com.runwaysdk.constants.CommonProperties;
+
+import sun.security.provider.Sun;
 
 /**
  * IDGenerator creates Universally Unique IDs (UUIDs) for objects created in the runway. The algorithm is an improvement on the Leach-Salz standard <a href="http://www.ietf.org/rfc/rfc4122.txt">(IETF

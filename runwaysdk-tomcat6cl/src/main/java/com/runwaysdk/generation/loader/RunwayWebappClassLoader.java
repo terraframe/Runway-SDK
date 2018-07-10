@@ -45,7 +45,7 @@ public class RunwayWebappClassLoader extends WebappClassLoader
   /**
    * This ghost method is called by other classes when they attempt to resolve
    * dependencies. Rather that immediately loading a class that may be
-   * {@link Reloadable}, this method instead delegates to
+   * {@link }, this method instead delegates to
    * {@link LoaderManager#loadClass(String)}, which attempts to load through
    * {@link LoaderDecorator#load(String)} before using the
    * {@link WebappClassLoader}

@@ -18,10 +18,6 @@
  */
 package com.runwaysdk;
 
-import java.io.IOException;
-
-import com.runwaysdk.patcher.RunwayPatcher;
-
 /**
  * !!HEADS UP!!
  * 

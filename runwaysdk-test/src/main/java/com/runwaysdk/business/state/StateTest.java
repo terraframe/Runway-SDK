@@ -20,13 +20,6 @@ package com.runwaysdk.business.state;
 
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
-
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -47,6 +40,13 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.NameConventionException;
 import com.runwaysdk.dataaccess.metadata.ReservedWordException;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
 public class StateTest extends TestCase
 {

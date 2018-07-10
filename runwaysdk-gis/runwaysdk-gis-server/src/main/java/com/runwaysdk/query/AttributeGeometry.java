@@ -20,9 +20,9 @@ package com.runwaysdk.query;
 
 import java.util.Set;
 
-import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
 import com.runwaysdk.constants.QueryConditions;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
 
 public abstract class AttributeGeometry extends Attribute implements SelectableGeometry
 {

@@ -18,14 +18,14 @@
  */
 package com.runwaysdk.business;
 
+import com.runwaysdk.constants.MdViewInfo;
+import com.runwaysdk.dataaccess.metadata.MdSessionDAO;
+import com.runwaysdk.dataaccess.metadata.MdViewDAO;
+
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
-
-import com.runwaysdk.constants.MdViewInfo;
-import com.runwaysdk.dataaccess.metadata.MdSessionDAO;
-import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 
 
 public class ViewGenTest extends SessionComponentGenTest

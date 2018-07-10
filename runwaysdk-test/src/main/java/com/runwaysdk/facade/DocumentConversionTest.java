@@ -20,11 +20,6 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.w3c.dom.Document;
 
 import com.runwaysdk.business.BusinessDTO;
@@ -46,6 +41,11 @@ import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.transport.conversion.ConversionFacade;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 public class DocumentConversionTest extends TestCase
 {

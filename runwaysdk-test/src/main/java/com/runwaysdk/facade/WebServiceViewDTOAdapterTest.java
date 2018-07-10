@@ -20,13 +20,13 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
 
 public class WebServiceViewDTOAdapterTest extends ViewDTOAdapterTest
 {

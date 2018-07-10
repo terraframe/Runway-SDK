@@ -20,12 +20,6 @@ package com.runwaysdk.controller;
 
 import java.io.InputStream;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import org.junit.Assert;
 
 import com.runwaysdk.controller.URLConfigurationManager.ControllerMapping;
@@ -33,6 +27,12 @@ import com.runwaysdk.controller.URLConfigurationManager.ControllerMapping.Action
 import com.runwaysdk.controller.URLConfigurationManager.UriForwardMapping;
 import com.runwaysdk.controller.URLConfigurationManager.UriMapping;
 import com.runwaysdk.mvc.MockController;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class URLConfigurationManagerTest extends TestCase
 {

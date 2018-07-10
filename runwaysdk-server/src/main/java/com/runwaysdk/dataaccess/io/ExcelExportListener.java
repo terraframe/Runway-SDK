@@ -20,8 +20,6 @@ package com.runwaysdk.dataaccess.io;
 
 import java.util.List;
 
-import org.apache.poi.ss.usermodel.Workbook;
-
 import com.runwaysdk.dataaccess.io.excel.ExcelColumn;
 
 /**

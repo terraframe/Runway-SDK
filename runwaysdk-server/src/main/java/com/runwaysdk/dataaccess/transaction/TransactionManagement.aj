@@ -39,8 +39,6 @@ import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.AddGroupIndexDDLCommand;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
-
-import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.PermissionCache;
 import com.runwaysdk.session.RequestManagement;
@@ -191,10 +189,6 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     
     // (new 6 and 7) reload the classloader if any MdTypes have been modified
     // or deleted
-    if (!LocalProperties.isSkipCodeGenAndCompile() && (mdTypeIFGenerateClasses.size() > 0 || mdTypeIFDeleteClasses.size() > 0))
-    {
-      LoaderDecorator.reload();
-    }
 
     // Clear all thread locks
     ( LockObject.getLockObject() ).releaseTransactionLocks(this.getTransactionCache());

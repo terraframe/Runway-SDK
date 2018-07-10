@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.mobile;
 
-public class SessionIdToMobileIdMapping extends SessionIdToMobileIdMappingBase implements com.runwaysdk.generation.loader.Reloadable
+public class SessionIdToMobileIdMapping extends SessionIdToMobileIdMappingBase
 {
   private static final long serialVersionUID = -2076589353;
   

@@ -18,13 +18,13 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.framework.TestCase;
-
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+
+import junit.framework.TestCase;
 
 public abstract class MdFormDAOTest extends TestCase
 {

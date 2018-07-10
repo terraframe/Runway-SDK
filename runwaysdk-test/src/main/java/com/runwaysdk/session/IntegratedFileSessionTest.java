@@ -21,15 +21,15 @@ package com.runwaysdk.session;
 import java.io.File;
 import java.io.IOException;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.dataaccess.io.FileReadException;
 import com.runwaysdk.util.FileIO;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 public class IntegratedFileSessionTest extends IntegratedSessionTest
 {

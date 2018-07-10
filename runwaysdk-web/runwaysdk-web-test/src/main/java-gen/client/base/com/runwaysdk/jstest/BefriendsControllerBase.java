@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -965110972)
-public class BefriendsControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class BefriendsControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String CLASS = "com.runwaysdk.jstest.BefriendsController";
   protected javax.servlet.http.HttpServletRequest req;

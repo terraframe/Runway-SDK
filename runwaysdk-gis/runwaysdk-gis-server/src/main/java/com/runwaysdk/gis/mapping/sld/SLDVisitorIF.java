@@ -18,7 +18,8 @@
  */
 package com.runwaysdk.gis.mapping.sld;
 
-import com.runwaysdk.generation.loader.Reloadable;
+
+
 import com.runwaysdk.system.gis.mapping.AndRule;
 import com.runwaysdk.system.gis.mapping.ExactRule;
 import com.runwaysdk.system.gis.mapping.GreaterThanOrEqualRule;
@@ -30,7 +31,7 @@ import com.runwaysdk.system.gis.mapping.LessThanRule;
 import com.runwaysdk.system.gis.mapping.OrRule;
 import com.runwaysdk.system.gis.mapping.ThematicAttribute;
 
-public interface SLDVisitorIF extends Reloadable
+public interface SLDVisitorIF
 {
   public void visit(LayerStyle style, SLDVisitable visitable);
 

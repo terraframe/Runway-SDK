@@ -32,11 +32,11 @@ import javax.servlet.http.HttpSession;
 
 import com.runwaysdk.constants.ClientConstants;
 import com.runwaysdk.constants.ClientRequestIF;
-import com.runwaysdk.generation.loader.Reloadable;
+import com.runwaysdk.generation.loader.;
 import com.runwaysdk.web.ServletUtility;
 import com.runwaysdk.web.WebClientSession;
 
-public class LoginFilter implements Filter, Reloadable
+public class LoginFilter implements Filter, 
 {
   private FilterConfig filterConfig;
 

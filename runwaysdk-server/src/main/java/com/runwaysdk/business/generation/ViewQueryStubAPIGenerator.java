@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
+
+
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
@@ -32,7 +34,6 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.io.FileWriteException;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.QueryException;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.ViewQueryBuilder;
@@ -208,10 +209,6 @@ public class ViewQueryStubAPIGenerator extends ComponentQueryAPIGenerator
     this.writeLine(this.srcBuffer, " */");
     this.write(this.srcBuffer, "public class " + this.queryTypeName + " extends " + baseTypeName + " ");
 
-    if (!this.getMdClassIF().isSystemPackage())
-    {
-      this.write(this.srcBuffer, Reloadable.IMPLEMENTS);
-    }
     this.writeLine(this.srcBuffer, "");
 
     this.writeLine(this.srcBuffer, "{");
@@ -244,11 +241,6 @@ public class ViewQueryStubAPIGenerator extends ComponentQueryAPIGenerator
   {
     writeLine(this.srcBuffer, "");
     write(this.srcBuffer, "  class " + this.defaultQueryBuilder + " extends " + ViewQueryBuilder.class.getName());
-
-    if (!this.getMdClassIF().isSystemPackage())
-    {
-      write(this.srcBuffer, " implements " + Reloadable.class.getName());
-    }
 
     writeLine(this.srcBuffer, "");
 

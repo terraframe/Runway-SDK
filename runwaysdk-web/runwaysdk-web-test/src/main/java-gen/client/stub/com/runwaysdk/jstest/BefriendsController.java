@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest;
 
-public class BefriendsController extends BefriendsControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class BefriendsController extends BefriendsControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String JSP_DIR = "/WEB-INF/com/runwaysdk/jstest/Befriends/";
   public static final String LAYOUT = "WEB-INF/templates/layout.jsp";

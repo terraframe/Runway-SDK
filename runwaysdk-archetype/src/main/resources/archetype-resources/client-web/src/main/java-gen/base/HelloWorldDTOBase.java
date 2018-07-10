@@ -19,7 +19,7 @@
 package ${package};
 
 @com.runwaysdk.business.ClassSignature(hash = 1249388592)
-public abstract class HelloWorldDTOBase extends com.runwaysdk.business.BusinessDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class HelloWorldDTOBase extends com.runwaysdk.business.BusinessDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "${package}.HelloWorld";
   private static final long serialVersionUID = 1249388592;

@@ -27,12 +27,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ognl.ExpressionSyntaxException;
-import ognl.Ognl;
-import ognl.OgnlClassResolver;
-import ognl.OgnlContext;
-import ognl.OgnlException;
-
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
@@ -75,6 +69,12 @@ import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectablePrimitive;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
+
+import ognl.ExpressionSyntaxException;
+import ognl.Ognl;
+import ognl.OgnlClassResolver;
+import ognl.OgnlContext;
+import ognl.OgnlException;
 
 /**
  * The root class of the business layer, Entity is the parent of all generated java classes. Entity provides access to the Data Access layer, and all associated functionality.

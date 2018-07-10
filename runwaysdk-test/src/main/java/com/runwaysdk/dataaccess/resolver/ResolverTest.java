@@ -22,12 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.CompositeException;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.UserDAO;
@@ -52,6 +46,12 @@ import com.runwaysdk.dataaccess.transaction.TransactionImportManager;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.Roles;
 import com.runwaysdk.util.FileIO;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class ResolverTest extends TestCase
 {

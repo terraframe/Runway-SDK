@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = 307846891)
-public abstract class SummationProxy implements SummationClientRequestIF, com.runwaysdk.generation.loader.Reloadable
+public abstract class SummationProxy implements SummationClientRequestIF, com.runwaysdk.generation.loader.
 {
   public static SummationProxy getClientRequest()
   {

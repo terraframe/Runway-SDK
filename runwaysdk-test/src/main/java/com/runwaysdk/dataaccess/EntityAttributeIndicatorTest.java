@@ -18,12 +18,6 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.IndicatorCompositeInfo;
 import com.runwaysdk.constants.IndicatorPrimitiveInfo;
@@ -57,6 +51,12 @@ import com.runwaysdk.query.TableQuery;
 import com.runwaysdk.query.ValueQuery;
 import com.runwaysdk.system.metadata.IndicatorAggregateFunction;
 import com.runwaysdk.system.metadata.IndicatorOperator;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class EntityAttributeIndicatorTest extends TestCase
 {

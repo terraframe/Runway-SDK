@@ -24,10 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.runwaysdk.business.EntityQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO.OrderBy;
 import com.runwaysdk.business.ClassQueryDTO.QueryCondition;
 import com.runwaysdk.business.ClassQueryDTO.StructOrderBy;
+import com.runwaysdk.business.EntityQueryDTO;
 import com.runwaysdk.constants.JSON;
 
 public abstract class EntityQueryDTOToJSON extends ClassQueryDTOToJSON

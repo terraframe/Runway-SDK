@@ -30,8 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.ehcache.Cache.Entry;
-
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.EntityDAO;

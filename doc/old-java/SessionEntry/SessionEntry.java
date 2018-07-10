@@ -26,7 +26,7 @@ import com.runwaysdk.system.Users;
  * @author justin
  * 
  */
-public class SessionEntry extends SessionEntryBase implements com.runwaysdk.generation.loader.Reloadable
+public class SessionEntry extends SessionEntryBase implements com.runwaysdk.generation.loader.
 {
   private static final long serialVersionUID = -1326763274;
 

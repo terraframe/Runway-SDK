@@ -35,15 +35,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import sun.security.provider.Sun;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.SystemException;
@@ -149,7 +143,6 @@ import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
@@ -162,6 +155,12 @@ import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.util.Base64;
 import com.runwaysdk.util.FileIO;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+import sun.security.provider.Sun;
 
 @SuppressWarnings("unchecked")
 public class EntityGenTest extends TestCase
@@ -2788,7 +2787,7 @@ public class EntityGenTest extends TestCase
     
     collectionCharacter.setValue(MdAttributeConcreteInfo.NAME, "AChangedCharacter");
     collectionCharacter.apply();
-    LoaderDecorator.reload();
+    //LoaderDecorator.reload();
     colletionClass = LoaderDecorator.load(collection.definesType());
     businessObject = colletionClass.getConstructor().newInstance();
 
@@ -2819,7 +2818,7 @@ public class EntityGenTest extends TestCase
     {
       collectionCharacter.setValue(MdAttributeConcreteInfo.NAME, "aCharacter");
       collectionCharacter.apply();
-      LoaderDecorator.reload();
+      //LoaderDecorator.reload();
     }
   }
 
@@ -2842,7 +2841,7 @@ public class EntityGenTest extends TestCase
 
     collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     collectionCharacter.apply();
-    LoaderDecorator.reload();
+    //LoaderDecorator.reload();
     colletionClass = LoaderDecorator.load(collection.definesType());
     colletionBaseClass = colletionClass.getSuperclass();
 
@@ -2876,7 +2875,7 @@ public class EntityGenTest extends TestCase
     {
       collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       collectionCharacter.apply();
-      LoaderDecorator.reload();
+      //LoaderDecorator.reload();
       colletionClass = LoaderDecorator.load(collection.definesType());
       colletionBaseClass = colletionClass.getSuperclass();
 
@@ -2912,7 +2911,7 @@ public class EntityGenTest extends TestCase
 
     collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     collectionCharacter.apply();
-    LoaderDecorator.reload();
+    //LoaderDecorator.reload();
     colletionClass = LoaderDecorator.load(collection.definesType());
     colletionBaseClass = colletionClass.getSuperclass();
 
@@ -2942,7 +2941,7 @@ public class EntityGenTest extends TestCase
     {
       collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       collectionCharacter.apply();
-      LoaderDecorator.reload();
+      //LoaderDecorator.reload();
       colletionClass = LoaderDecorator.load(collection.definesType());
       colletionBaseClass = colletionClass.getSuperclass();
 
@@ -3012,7 +3011,7 @@ public class EntityGenTest extends TestCase
     updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);
     updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     updateRelationship.apply();
-    LoaderDecorator.reload();
+    //LoaderDecorator.reload();
 
     referenceClass = LoaderDecorator.load(reference.definesType());
     referenceBaseClass = referenceClass.getSuperclass();
@@ -3169,7 +3168,7 @@ public class EntityGenTest extends TestCase
       updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);
       updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       updateRelationship.apply();
-      LoaderDecorator.reload();
+      //LoaderDecorator.reload();
 
       referenceClass = LoaderDecorator.load(reference.definesType());
       referenceBaseClass = referenceClass.getSuperclass();
@@ -3270,7 +3269,7 @@ public class EntityGenTest extends TestCase
     updateRelationship.clearItems(MdRelationshipInfo.CHILD_VISIBILITY);
     updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     updateRelationship.apply();
-    LoaderDecorator.reload();
+    //LoaderDecorator.reload();
 
     referenceClass = LoaderDecorator.load(reference.definesType());
     referenceDTOclass = LoaderDecorator.load(referenceDTO);
@@ -3429,7 +3428,7 @@ public class EntityGenTest extends TestCase
       updateRelationship.clearItems(MdRelationshipInfo.CHILD_VISIBILITY);
       updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       updateRelationship.apply();
-      LoaderDecorator.reload();
+      //LoaderDecorator.reload();
 
       referenceClass = LoaderDecorator.load(reference.definesType());
       referenceDTOclass = LoaderDecorator.load(referenceDTO);
@@ -5070,7 +5069,7 @@ public class EntityGenTest extends TestCase
     originalCollectionStubSource = collection.getValue(MdClassInfo.STUB_SOURCE);
 
     // Build the new source for Collection.java
-    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
+    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX  + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
 
     // Write the new stub, and compile tom ake sure it's valid
     MdBusinessDAO updateCollection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
@@ -5144,7 +5143,7 @@ public class EntityGenTest extends TestCase
     String originalCollectionStubSource = collection.getValue(MdClassInfo.STUB_SOURCE);
 
     // Build the new source for Collection.java
-    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "\n" + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "    car.setTopSpeed(120);\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
+    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX  + "\n" + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "    car.setTopSpeed(120);\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
 
     // Write the new stub, and compile to make sure it's valid
     MdBusinessDAO updateCollection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
@@ -5181,7 +5180,7 @@ public class EntityGenTest extends TestCase
 
     // The critical test is to see if the source/class for Car got rolled back
     // to a safe state - namely one that still has setTopSpeed(int)
-    LoaderDecorator.reload();
+    //LoaderDecorator.reload();
 
     car = (MdBusinessDAO) MdTypeDAO.getMdTypeDAO("test.generated.Car");
     Class<?> carClass = LoaderDecorator.load(car.definesType());

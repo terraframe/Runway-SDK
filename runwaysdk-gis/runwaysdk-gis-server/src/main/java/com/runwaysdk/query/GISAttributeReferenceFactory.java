@@ -20,6 +20,8 @@ package com.runwaysdk.query;
 
 import java.util.Set;
 
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.gis.constants.GISConstants;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
@@ -28,8 +30,6 @@ import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
 import com.runwaysdk.query.AttributeReference.PluginIF;
-import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 
 public class GISAttributeReferenceFactory implements PluginIF
 {

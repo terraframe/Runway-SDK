@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -420684135)
-public class StateEnumControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class StateEnumControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String CLASS = "com.runwaysdk.jstest.StateEnumController";
   protected javax.servlet.http.HttpServletRequest req;

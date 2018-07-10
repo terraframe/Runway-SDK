@@ -24,15 +24,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import com.runwaysdk.constants.DeployProperties;
+import com.runwaysdk.session.Request;
+import com.runwaysdk.util.FileIO;
+
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
-
-import com.runwaysdk.constants.DeployProperties;
-import com.runwaysdk.session.Request;
-import com.runwaysdk.util.FileIO;
 
 public class BackupTest extends TestCase
 {

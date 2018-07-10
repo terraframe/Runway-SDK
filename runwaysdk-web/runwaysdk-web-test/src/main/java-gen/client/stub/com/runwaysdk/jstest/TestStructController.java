@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest;
 
-public class TestStructController extends TestStructControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class TestStructController extends TestStructControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String JSP_DIR = "/WEB-INF/com/runwaysdk/jstest/TestStruct/";
   public static final String LAYOUT = "WEB-INF/templates/layout.jsp";

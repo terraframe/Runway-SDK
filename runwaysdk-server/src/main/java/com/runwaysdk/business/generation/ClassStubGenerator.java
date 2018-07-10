@@ -27,7 +27,6 @@ import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
-import com.runwaysdk.generation.loader.Reloadable;
 
 public abstract class ClassStubGenerator extends TypeGenerator
 {
@@ -175,10 +174,6 @@ public abstract class ClassStubGenerator extends TypeGenerator
 
     getWriter().write(modifier + " " + typeName + " extends " + baseFileName + impls);
 
-    if (!this.getMdTypeDAOIF().isSystemPackage())
-    {
-      getWriter().write(Reloadable.IMPLEMENTS);
-    }
     getWriter().writeLine("");
 
     getWriter().openBracket();

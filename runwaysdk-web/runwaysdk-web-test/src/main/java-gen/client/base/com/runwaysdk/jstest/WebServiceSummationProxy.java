@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -2023437043)
-public class WebServiceSummationProxy extends SummationProxy implements com.runwaysdk.generation.loader.Reloadable
+public class WebServiceSummationProxy extends SummationProxy implements com.runwaysdk.generation.loader.
 {
   
   private java.lang.String label;

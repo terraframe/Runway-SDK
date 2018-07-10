@@ -21,12 +21,6 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestResult;
-
-import com.runwaysdk.ClientSession;
-import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -36,6 +30,10 @@ import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestResult;
 
 /**
  * EntityMasterTestSetup is a wrapper for various Test classes. It contains

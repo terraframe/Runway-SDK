@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
-import com.runwaysdk.constants.DeployProperties;
 
 public class CommonsConfigurationResolver implements ConfigurationResolverIF
 {

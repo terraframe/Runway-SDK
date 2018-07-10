@@ -27,11 +27,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.business.generation.GeneratorIF;
 import com.runwaysdk.business.generation.ProviderFactory;
@@ -52,6 +47,11 @@ import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.ParameterDefinitionException_InvalidType;
 import com.runwaysdk.dataaccess.metadata.ParameterDefinitionException_NameExists;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 public class MdControllerTest extends TestCase
 {

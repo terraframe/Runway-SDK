@@ -18,9 +18,6 @@
  */
 package com.runwaysdk;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.business.BusinessTestSuite;
 import com.runwaysdk.business.MultiThreadTestSuite;
 import com.runwaysdk.business.ontology.OntologyTestSuite;
@@ -34,6 +31,9 @@ import com.runwaysdk.logging.LoggingTest;
 import com.runwaysdk.query.QueryTestSuite;
 import com.runwaysdk.session.SessionTestSuite;
 import com.runwaysdk.vault.VaultTestSuite;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 public class UeberTestSuite
 {

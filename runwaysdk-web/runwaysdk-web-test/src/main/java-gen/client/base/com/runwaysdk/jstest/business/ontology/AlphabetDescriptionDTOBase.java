@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest.business.ontology;
 
 @com.runwaysdk.business.ClassSignature(hash = 1607712745)
-public abstract class AlphabetDescriptionDTOBase extends com.runwaysdk.business.LocalStructDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class AlphabetDescriptionDTOBase extends com.runwaysdk.business.LocalStructDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.AlphabetDescription";
   private static final long serialVersionUID = 1607712745;

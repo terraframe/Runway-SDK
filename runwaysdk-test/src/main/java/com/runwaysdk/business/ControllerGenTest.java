@@ -44,11 +44,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.apache.catalina.session.StandardSession;
 
 import com.runwaysdk.ClientSession;
@@ -89,7 +84,11 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.generation.loader.Reloadable;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 public class ControllerGenTest extends TestCase
 {
@@ -967,14 +966,14 @@ public class ControllerGenTest extends TestCase
 
   private static String getDTOsource()
   {
-    String source = "package test.generated; \n" + "" + "import java.util.Locale;\n" + "" + "public class TestBusinessDTO extends TestBusinessDTOBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "  public final static String CLASS = \"test.generated.TestBusiness\";\n" + "  private static final long serialVersionUID = 1220396508382L;\n" + "  public TestBusinessDTO(" + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n" + "    super(clientRequest);\n" + "  }\n" + "  /**\n" + "  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.\n" + "  * \n" + "  * @param businessDTO The BusinessDTO to duplicate\n" + "  * @param clientRequest The clientRequest this DTO should use to communicate with the server.\n" + "  */\n"
+    String source = "package test.generated; \n" + "" + "import java.util.Locale;\n" + "" + "public class TestBusinessDTO extends TestBusinessDTOBase \n" + "{\n" + "  public final static String CLASS = \"test.generated.TestBusiness\";\n" + "  private static final long serialVersionUID = 1220396508382L;\n" + "  public TestBusinessDTO(" + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n" + "    super(clientRequest);\n" + "  }\n" + "  /**\n" + "  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.\n" + "  * \n" + "  * @param businessDTO The BusinessDTO to duplicate\n" + "  * @param clientRequest The clientRequest this DTO should use to communicate with the server.\n" + "  */\n"
         + "  protected TestBusinessDTO(" + BusinessDTO.class.getName() + " businessDTO, " + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n" + "    super(businessDTO, clientRequest);\n" + "  }\n" + "}\n";
     return source;
   }
 
   private static String getSource()
   {
-    String source = "package test.generated; \n" + "public class TestController extends TestControllerBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "  public TestController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean bool)\n" + "  {\n" + "    super(req, resp, bool);\n" + "  }\n" + "  public void testAction(java.lang.Long seq, java.lang.Long value)\n" + "  {\n" + "    req.setAttribute(\"testAttribute\", seq + value);\n" + "  }\n" + "  public void failTestAction(java.lang.String seq, java.lang.String value)\n" + "  {\n" + "    req.setAttribute(\"testAttribute\", seq);\n" + "  }\n" + "  public void changeRequest()\n" + "  {\n" + "    req.setAttribute(\"testAttribute\", \"true\");\n" + "  }\n"
+    String source = "package test.generated; \n" + "public class TestController extends TestControllerBase \n" + "{\n" + "  public TestController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean bool)\n" + "  {\n" + "    super(req, resp, bool);\n" + "  }\n" + "  public void testAction(java.lang.Long seq, java.lang.Long value)\n" + "  {\n" + "    req.setAttribute(\"testAttribute\", seq + value);\n" + "  }\n" + "  public void failTestAction(java.lang.String seq, java.lang.String value)\n" + "  {\n" + "    req.setAttribute(\"testAttribute\", seq);\n" + "  }\n" + "  public void changeRequest()\n" + "  {\n" + "    req.setAttribute(\"testAttribute\", \"true\");\n" + "  }\n"
         + "  public void testPrimitives(java.lang.Short shortParam, java.lang.Integer integerParam, java.lang.Long longParam, java.lang.Float floatParam, java.lang.Double doubleParam, java.lang.Character characterParam, java.lang.String stringParam, java.util.Date dateParam)\n" + "  {\n" + "    req.setAttribute(\"shortParam\", shortParam);\n" + "    req.setAttribute(\"integerParam\", integerParam);\n" + "    req.setAttribute(\"longParam\", longParam);\n" + "    req.setAttribute(\"floatParam\", floatParam);\n" + "    req.setAttribute(\"doubleParam\", doubleParam);\n" + "    req.setAttribute(\"characterParam\", characterParam);\n" + "    req.setAttribute(\"stringParam\", stringParam);\n" + "    req.setAttribute(\"dateParam\", dateParam);\n" + "  }\n"
         + "  public void testBusiness(test.generated.TestBusinessDTO businessParam)\n" + "  {\n" + "    req.setAttribute(\"testCharacter\", businessParam.getValue(\"testCharacter\"));\n" + "    req.setAttribute(\"testDouble\", businessParam.getTestStruct().getValue(\"testDouble\"));\n" + "  }\n" + "  public void failTestBusiness(test.generated.TestBusinessDTO businessParam)\n" + "  {\n" + "    req.setAttribute(\"testCharacter\", \"testValue Extra Stuff\");\n" + "    req.setAttribute(\"testDouble\", \"invalid\");\n" + "  }\n" + "  public void testRelationship(test.generated.TestRelationshipDTO relationshipParam)\n" + "  {\n" + "    req.setAttribute(\"testInteger\", relationshipParam.getTestInteger());\n" + "  }\n" + "  public void testArray(java.lang.String[] testArray)\n" + "  {\n"
         + "    req.setAttribute(\"testArray\", testArray[3]);\n" + "  }\n" + "  public void testDTOArray(test.generated.TestBusinessDTO[] testArray)\n" + "  {\n" + "    req.setAttribute(\"testCharacter\", testArray[3].getValue(\"testCharacter\"));\n" + "    req.setAttribute(\"testDouble\", testArray[3].getTestStruct().getValue(\"testDouble\"));\n" + "  }\n" + "  public void testException()\n" + "  {\n" + " throw new " + pack + ".TestExceptionDTO(super.getClientRequest());\n" + "  }\n" + "  public void testMultipartFileParameter(" + MdActionInfo.MULTIPART_FILE_PARAMETER + " file)\n" + "  {\n" + "}\n" + "}\n";

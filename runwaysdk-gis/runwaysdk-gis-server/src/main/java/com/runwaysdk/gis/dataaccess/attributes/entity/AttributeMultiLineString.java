@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.gis.dataaccess.attributes.entity;
 
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.gis.AttributeMultiLineStringParseException;
 import com.runwaysdk.gis.dataaccess.AttributeMultiLineStringIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
-import com.runwaysdk.constants.CommonProperties;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiLineString;

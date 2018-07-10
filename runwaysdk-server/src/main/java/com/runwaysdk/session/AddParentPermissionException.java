@@ -22,7 +22,6 @@ import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 
 public class AddParentPermissionException extends RelationshipPermissionException

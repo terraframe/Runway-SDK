@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.gis.dataaccess.attributes.entity;
 
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.gis.AttributeMultiPointParseException;
 import com.runwaysdk.gis.dataaccess.AttributeMultiPointIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
-import com.runwaysdk.constants.CommonProperties;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPoint;

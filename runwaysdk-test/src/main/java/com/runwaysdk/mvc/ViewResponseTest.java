@@ -20,12 +20,6 @@ package com.runwaysdk.mvc;
 
 import java.io.File;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import org.junit.Assert;
 
 import com.runwaysdk.controller.JSPFetcher;
@@ -33,6 +27,12 @@ import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.controller.ServletMethod;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class ViewResponseTest extends TestCase
 {

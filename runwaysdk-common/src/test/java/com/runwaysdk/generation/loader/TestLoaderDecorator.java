@@ -69,35 +69,35 @@ public class TestLoaderDecorator
   }
   
   @Test
-  public void testReloadableEnabled() {
-    inMemConfig.setProperty("classloader.reloadable.enabled", "true");
+  public void testEnabled() {
+    inMemConfig.setProperty("classloader..enabled", "true");
     
     
     inMemConfig.setProperty("local.bin", "${project.basedir}/target/classes");
     
     inMemConfig.setProperty("environment", LocalProperties.DEVELOP);
-    LoaderDecorator.reload();
+    
     LoaderDecorator.load(BusinessDTOInfo.CLASS);
     
     inMemConfig.setProperty("environment", LocalProperties.DEPLOY);
-    LoaderDecorator.reload();
+    
     LoaderDecorator.load(BusinessDTOInfo.CLASS);
   }
   
   @Test
-  public void testReloadableDisabled() {
-    inMemConfig.setProperty("classloader.reloadable.enabled", "false");
+  public void testDisabled() {
+    inMemConfig.setProperty("classloader..enabled", "false");
     
     
     inMemConfig.setProperty("local.bin", "aBadValue");
     
     inMemConfig.setProperty("environment", LocalProperties.DEVELOP);
-    LoaderDecorator.reload();
+    
     LoaderDecorator.load(BusinessDTOInfo.CLASS);
     
     inMemConfig.setProperty("environment", LocalProperties.DEPLOY);
     inMemConfig.setProperty("local.bin", "aBadValue");
-    LoaderDecorator.reload();
+    
     LoaderDecorator.load(BusinessDTOInfo.CLASS);
   }
 }

@@ -28,10 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Row;
@@ -60,10 +56,13 @@ import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.generation.loader.WebTestGeneratedClassLoader;
 import com.runwaysdk.session.ExecuteInstancePermissionExceptionDTO;
 import com.runwaysdk.session.ExecuteStaticPermissionExceptionDTO;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 public class InvokeMethodTest extends InvokeMethodTestBase
 {
@@ -112,7 +111,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     clientRequest.grantTypePermission(methodActor.getId(), collection.getId(), Operation.READ.name());
     clientRequest.grantAttributePermission(methodActor.getId(), mdAttributeLong.getId(), Operation.READ.name());
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDTO = null;
     try
@@ -138,7 +137,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   {
     clientRequest.grantTypePermission(methodActor.getId(), collection.getId(), Operation.CREATE.name());
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDTO = null;
     try
@@ -170,7 +169,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     try
     {
-      Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+      Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
       Method getCount = collectionClass.getMethod("getCollectionObjectCount", ClientRequestIF.class);
       Integer recordCount = (Integer) getCount.invoke(null, clientRequest);
@@ -231,7 +230,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     try
     {
-      Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+      Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
       Method getCount = collectionClass.getMethod("getCollectionObjectCount", ClientRequestIF.class);
       Integer recordCount = (Integer) getCount.invoke(null, clientRequest);
@@ -268,7 +267,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     String booleanInput = Boolean.toString(true);
     String longInput = "374364";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -291,7 +290,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testInvokeNullParameter() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     Integer[] output = (Integer[]) collectionClass.getMethod("sortIntegers", ClientRequestIF.class, Integer[].class).invoke(null, clientRequest, null);
 
@@ -302,7 +301,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   {
     String input = "164";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", input + "3");
@@ -331,7 +330,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     String input = "Har har bar bar";
     String longInput = "1";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -369,7 +368,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     String longInput = "152";
 
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -404,7 +403,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   {
     // Create the existing BusinessDAO
     String longInput = "163";
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -449,8 +448,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   {
     String longInput = "278";
 
-    Class<?> bagClass = WebTestGeneratedClassLoader.load(bagDTO);
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> bagClass = this.getClass().getClassLoader().loadClass(bagDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput + "0");
@@ -479,8 +478,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     String longInput = "142";
     String input = "H to this izzo, E to the izza";
 
-    Class<?> bagClass = WebTestGeneratedClassLoader.load(bagDTO);
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> bagClass = this.getClass().getClassLoader().loadClass(bagDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput + "0");
@@ -518,8 +517,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     String longInput = "152";
 
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
-    Class<?> referenceClass = WebTestGeneratedClassLoader.load(referenceType + TypeGeneratorInfo.DTO_SUFFIX);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
+    Class<?> referenceClass = this.getClass().getClassLoader().loadClass(referenceType + TypeGeneratorInfo.DTO_SUFFIX);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -547,7 +546,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   {
     String input = "164";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", input + "3");
@@ -566,8 +565,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     String longInput = "152";
 
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
-    Class<?> referenceClass = WebTestGeneratedClassLoader.load(referenceType + TypeGeneratorInfo.DTO_SUFFIX);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
+    Class<?> referenceClass = this.getClass().getClassLoader().loadClass(referenceType + TypeGeneratorInfo.DTO_SUFFIX);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -592,7 +591,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testInvokeEnumerationItem() throws Exception
   {
-    Class<?> stateClass = WebTestGeneratedClassLoader.load(stateType + TypeGeneratorInfo.DTO_SUFFIX);
+    Class<?> stateClass = this.getClass().getClassLoader().loadClass(stateType + TypeGeneratorInfo.DTO_SUFFIX);
 
     EnumerationDTOIF enumerationDTOIF = (EnumerationDTOIF) stateClass.getMethod("valueOf", String.class).invoke(null, colorado.getValue(EnumerationMasterInfo.NAME));
 
@@ -602,7 +601,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     assertEquals("item method on the enum returned an object of the wrong class.", colorado.getClass().getName(), colBusDTO.getClass().getName());
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     String longInput = "152";
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
@@ -627,7 +626,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testReturnStates() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
     Class<?> stateClass = LoaderDecorator.load(stateType + TypeGeneratorInfo.DTO_SUFFIX);
 
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
@@ -663,7 +662,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
    */
   public void testIsModified() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
     String input = "164";
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
@@ -709,7 +708,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
    */
   public void testModifiedNoPersist() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDTO.setValue("aLong", "11");
@@ -751,7 +750,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     String booleanInput = Boolean.toString(true);
     String longInput = "374364";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -787,7 +786,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
    */
   public void testNotModified() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", "142");
@@ -809,7 +808,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testStaticMethod() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
     Integer[] integers = { 12, 34, 6, 4, 33, 2 };
 
     Integer[] output = (Integer[]) collectionClass.getMethod("sortIntegers", ClientRequestIF.class, integers.getClass()).invoke(null, clientRequest, (Object) integers);
@@ -824,7 +823,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testStaticMethodNoPermission() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
     Integer[] integers = { 12, 34, 6, 4, 33, 2 };
 
     try
@@ -847,7 +846,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   {
     String longInput = "374364";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -880,7 +879,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testDateMethod() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
     Date date = new Date(System.currentTimeMillis());
 
     Date[] output = (Date[]) collectionClass.getMethod("getDates", ClientRequestIF.class, date.getClass()).invoke(null, clientRequest, date);
@@ -904,7 +903,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     String longInput = "152";
 
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -943,7 +942,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     String longInput = "152";
 
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -980,7 +979,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     Boolean bool = Boolean.TRUE;
     Long[] array = new Long[] { 3L, 4L, 8L, 9L, 10923012910L };
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDTO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDTO);
@@ -996,7 +995,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   public void testInvokeMethodWithUtilParam() throws Exception
   {
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     collectionClass.getMethod("apply").invoke(businessDTO);
@@ -1007,7 +1006,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     String someCharValue = "Some Char Value";
 
-    Class<?> utilClass = WebTestGeneratedClassLoader.load(utilDTO);
+    Class<?> utilClass = this.getClass().getClassLoader().loadClass(utilDTO);
 
     Object input = utilClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     utilClass.getMethod("setACharacter", String.class).invoke(input, someCharValue);
@@ -1032,7 +1031,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   public void testInvokeMethodWithViewParam() throws Exception
   {
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     collectionClass.getMethod("apply").invoke(businessDTO);
@@ -1043,7 +1042,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     String someCharValue = "Some Char Value";
 
-    Class<?> viewClass = WebTestGeneratedClassLoader.load(viewDTO);
+    Class<?> viewClass = this.getClass().getClassLoader().loadClass(viewDTO);
 
     Object input = viewClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     viewClass.getMethod("setACharacter", String.class).invoke(input, someCharValue);
@@ -1068,7 +1067,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   public void testInvokeMethodWithUtilArrayParam() throws Exception
   {
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     collectionClass.getMethod("apply").invoke(businessDTO);
@@ -1077,7 +1076,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     businessDTO = (BusinessDTO) get.invoke(null, clientRequest, id);
 
-    Class<?> utilClass = WebTestGeneratedClassLoader.load(utilDTO);
+    Class<?> utilClass = this.getClass().getClassLoader().loadClass(utilDTO);
     UtilDTO[] array = (UtilDTO[]) Array.newInstance(utilClass, 5);
 
     Object input = utilClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
@@ -1116,7 +1115,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   public void testInvokeMethodWithViewArrayParam() throws Exception
   {
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     collectionClass.getMethod("apply").invoke(businessDTO);
@@ -1125,7 +1124,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     businessDTO = (BusinessDTO) get.invoke(null, clientRequest, id);
 
-    Class<?> viewClass = WebTestGeneratedClassLoader.load(viewDTO);
+    Class<?> viewClass = this.getClass().getClassLoader().loadClass(viewDTO);
     ViewDTO[] array = (ViewDTO[]) Array.newInstance(viewClass, 5);
 
     Object input = viewClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
@@ -1163,7 +1162,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testInvokeMethodWithQueryReturnTypeCheckAttributeMetadata() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     Method get = collectionClass.getMethod("getCollectionQuery", ClientRequestIF.class);
 
@@ -1185,7 +1184,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testInvokeMethodWithViewQueryReturnType() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     Method getCount = collectionClass.getMethod("getCollectionObjectCount", ClientRequestIF.class);
     Integer recordCount = (Integer) getCount.invoke(null, clientRequest);
@@ -1201,7 +1200,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testInvokeMethodWithBusinessQueryReturnTypeRestictRows() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
     Method get = collectionClass.getMethod("getCollectionQueryRestrictRows", ClientRequestIF.class);
 
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) get.invoke(null, clientRequest);
@@ -1211,7 +1210,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testInvokeMethodWithViewQueryReturnTypeRestrictRows() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
     Method get = collectionClass.getMethod("getViewQueryRestrictRows", ClientRequestIF.class);
 
     ViewQueryDTO queryDTO = (ViewQueryDTO) get.invoke(null, clientRequest);
@@ -1241,7 +1240,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
         String longInput = "152";
 
         // Create the existing BusinessDAO
-        Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+        Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
         Object array = Array.newInstance(collectionClass, 0);
 
         BusinessDTO business = (BusinessDTO) request.newDisconnectedEntity(collectionType);
@@ -1274,7 +1273,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testInvokeMethodWithBusinessQueryReturnType() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     Method getCount = collectionClass.getMethod("getCollectionObjectCount", ClientRequestIF.class);
     Integer recordCount = (Integer) getCount.invoke(null, clientRequest);
@@ -1290,7 +1289,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
   public void testInvokeMethodWithGenericBusinessQueryReturnType() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     Method getCount = collectionClass.getMethod("getCollectionObjectCount", ClientRequestIF.class);
     Integer recordCount = (Integer) getCount.invoke(null, clientRequest);

@@ -18,12 +18,12 @@
  */
 package com.runwaysdk.business.ontology;
 
+import com.runwaysdk.session.Request;
+import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
+
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
-import com.runwaysdk.session.Request;
-import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 
 public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
 {

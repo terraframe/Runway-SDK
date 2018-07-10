@@ -49,7 +49,6 @@ import com.runwaysdk.business.rbac.Authenticate;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;

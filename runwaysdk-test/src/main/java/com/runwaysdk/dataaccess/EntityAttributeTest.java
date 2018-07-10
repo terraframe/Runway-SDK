@@ -33,12 +33,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.ThreadTransactionCallable;
@@ -129,6 +123,12 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.dataaccess.transaction.TransactionType;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 /**
  * J-Unit tests for class Attribute. Adds several attributes to the

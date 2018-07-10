@@ -18,12 +18,12 @@
  */
 package com.runwaysdk.session;
 
+import com.google.inject.Binder;
+import com.google.inject.Module;
+
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
-import com.google.inject.Binder;
-import com.google.inject.Module;
 
 public class IntegratedMemorySessionTest extends IntegratedSessionTest
 {

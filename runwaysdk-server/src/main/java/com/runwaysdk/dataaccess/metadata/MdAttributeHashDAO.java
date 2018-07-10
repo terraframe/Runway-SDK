@@ -23,8 +23,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Random;
 
-import sun.security.provider.Sun;
-
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.constants.HashMethods;
 import com.runwaysdk.constants.MdAttributeHashInfo;
@@ -41,6 +39,8 @@ import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
 import com.runwaysdk.transport.metadata.caching.AttributeHashMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
+
+import sun.security.provider.Sun;
 
 public class MdAttributeHashDAO extends MdAttributeEncryptionDAO implements MdAttributeHashDAOIF
 {

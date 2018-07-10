@@ -21,8 +21,9 @@ package com.runwaysdk.business.generation;
 import java.util.Iterator;
 import java.util.Map;
 
+
+
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
-import com.runwaysdk.generation.loader.Reloadable;
 
 
 /**
@@ -70,10 +71,6 @@ public abstract class Java5EnumGenerator extends AbstractGenerator
   protected void addEnumName(String enumName)
   {
     getWriter().write("public enum " + enumName);
-    if (!this.getMdTypeDAOIF().isSystemPackage())
-    {
-      getWriter().write(Reloadable.IMPLEMENTS);
-    }
     getWriter().writeLine("");
     
     getWriter().openBracket();

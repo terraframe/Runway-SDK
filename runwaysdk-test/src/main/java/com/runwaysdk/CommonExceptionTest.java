@@ -18,12 +18,12 @@
  */
 package com.runwaysdk;
 
-import junit.framework.TestCase;
-
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
 import com.runwaysdk.session.Request;
+
+import junit.framework.TestCase;
 
 public class CommonExceptionTest extends TestCase
 {

@@ -21,8 +21,6 @@ package com.runwaysdk.dataaccess;
 import java.util.List;
 import java.util.Map;
 
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-
 /**
  * Metadata classes that implement this interface reference a database table.
  * 

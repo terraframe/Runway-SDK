@@ -21,8 +21,6 @@ package com.runwaysdk.controller;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
 
 import com.runwaysdk.ClientSession;
@@ -30,6 +28,8 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.form.FormObject;
 import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
+
+import junit.framework.TestCase;
 
 public class MofoParserTest extends TestCase
 {

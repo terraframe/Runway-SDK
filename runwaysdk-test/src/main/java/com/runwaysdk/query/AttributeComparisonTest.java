@@ -18,15 +18,15 @@
  */
 package com.runwaysdk.query;
 
+import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
+import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.generation.loader.LoaderDecorator;
+
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
-
-import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
-import com.runwaysdk.dataaccess.BusinessDAOIF;
-import com.runwaysdk.generation.loader.LoaderDecorator;
 
 public class AttributeComparisonTest extends TestCase
 {

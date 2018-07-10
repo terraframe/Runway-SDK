@@ -82,6 +82,7 @@ import com.runwaysdk.dataaccess.metadata.InheritanceException;
 import com.runwaysdk.dataaccess.metadata.InvalidColumnNameException;
 import com.runwaysdk.dataaccess.metadata.InvalidDefinitionException;
 import com.runwaysdk.dataaccess.metadata.InvalidIdentifierException;
+import com.runwaysdk.dataaccess.metadata.InvalidIndicatorDefinition;
 import com.runwaysdk.dataaccess.metadata.InvalidMRUCacheSizeException;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;

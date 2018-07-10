@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest.business.ontology;
 
-public class AlphabetAttributeRoot extends AlphabetAttributeRootBase implements com.runwaysdk.generation.loader.Reloadable
+public class AlphabetAttributeRoot extends AlphabetAttributeRootBase implements com.runwaysdk.generation.loader.
 {
   private static final long serialVersionUID = 1250958818;
   

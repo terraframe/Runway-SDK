@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.query;
 
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 import com.runwaysdk.gis.constants.GISConstants;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
@@ -32,8 +34,6 @@ import com.runwaysdk.gis.dataaccess.attributes.value.MdAttributeMultiPolygon_Q;
 import com.runwaysdk.gis.dataaccess.attributes.value.MdAttributePoint_Q;
 import com.runwaysdk.gis.dataaccess.attributes.value.MdAttributePolygon_Q;
 import com.runwaysdk.query.Attribute.PluginIF;
-import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 
 public class GISAttributeMdAttributeConcrete_Q_Factory implements PluginIF
 {

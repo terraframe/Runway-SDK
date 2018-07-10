@@ -96,7 +96,7 @@ public class CommonExceptionProcessor
    */
   private static void processClientException(String runwayExceptionType, String developerMessage, Throwable throwable) throws ClassNotFoundException
   {
-    Class<?> exceptionClass = LoaderDecorator.loadClassNoCommonExceptionProcessor(runwayExceptionType + TypeGeneratorInfo.DTO_SUFFIX);
+    Class<?> exceptionClass = LoaderDecorator.load(runwayExceptionType + TypeGeneratorInfo.DTO_SUFFIX);
 
     RunwayExceptionDTO exception = null;
 
@@ -143,7 +143,7 @@ public class CommonExceptionProcessor
    */
   private static void processServerException(String runwayExceptionType, String developerMessage, Throwable throwable) throws ClassNotFoundException
   {
-    Class<?> exceptionClass = LoaderDecorator.loadClassNoCommonExceptionProcessor(runwayExceptionType);
+    Class<?> exceptionClass = LoaderDecorator.load(runwayExceptionType);
 
     /*
      * Use RuntimeException instead of RunwayException because RunwayException

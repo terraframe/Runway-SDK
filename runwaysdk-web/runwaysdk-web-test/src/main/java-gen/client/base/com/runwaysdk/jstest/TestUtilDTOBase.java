@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = 336400629)
-public abstract class TestUtilDTOBase extends com.runwaysdk.business.UtilDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class TestUtilDTOBase extends com.runwaysdk.business.UtilDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestUtil";
   private static final long serialVersionUID = 336400629;

@@ -18,9 +18,6 @@
  */
 package com.runwaysdk.gis.constants;
 
-import it.geosolutions.geoserver.rest.GeoServerRESTPublisher;
-import it.geosolutions.geoserver.rest.GeoServerRESTReader;
-
 import java.net.MalformedURLException;
 import java.util.ResourceBundle;
 
@@ -28,9 +25,11 @@ import org.apache.commons.logging.LogFactory;
 
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.generation.loader.Reloadable;
 
-public class GeoserverProperties implements Reloadable
+import it.geosolutions.geoserver.rest.GeoServerRESTPublisher;
+import it.geosolutions.geoserver.rest.GeoServerRESTReader;
+
+public class GeoserverProperties
 {
   private static final String          GEOSERVER_PROPERTIES = "geoserver";
 
@@ -46,7 +45,7 @@ public class GeoserverProperties implements Reloadable
         BusinessDTO.class.getClassLoader());
   }
 
-  private static class Singleton implements Reloadable
+  private static class Singleton
   {
     private static GeoserverProperties INSTANCE = new GeoserverProperties();
   }

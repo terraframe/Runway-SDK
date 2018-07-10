@@ -30,10 +30,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -178,6 +174,10 @@ import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.util.FileIO;
 import com.runwaysdk.util.IDGenerator;
 import com.runwaysdk.web.AdminScreenAccessExceptionDTO;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 public class NoSourceAdapterTest extends TestCase
 {

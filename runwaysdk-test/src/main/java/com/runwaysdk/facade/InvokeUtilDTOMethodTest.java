@@ -20,10 +20,6 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.Util;
 import com.runwaysdk.constants.CommonProperties;
@@ -32,6 +28,10 @@ import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.dataaccess.io.XMLImporter;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 public class InvokeUtilDTOMethodTest extends InvokeSessionComponentMethodTest
 {

@@ -23,9 +23,6 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -35,6 +32,9 @@ import org.xml.sax.InputSource;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleneseTestCase;
 import com.thoughtworks.selenium.Selenium;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * This code runs tests defined in Javascript using the TestFramework provided in TestFramework.js on multiple browsers.

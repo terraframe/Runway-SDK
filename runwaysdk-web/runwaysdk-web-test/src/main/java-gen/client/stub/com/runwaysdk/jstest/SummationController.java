@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest;
 
-public class SummationController extends SummationControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class SummationController extends SummationControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String JSP_DIR = "/WEB-INF/com/runwaysdk/jstest/Summation/";
   public static final String LAYOUT = "WEB-INF/templates/layout.jsp";

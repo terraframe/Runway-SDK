@@ -22,7 +22,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
-import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;

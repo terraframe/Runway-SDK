@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -1845188163)
-public class TestClassControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class TestClassControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String CLASS = "com.runwaysdk.jstest.TestClassController";
   protected javax.servlet.http.HttpServletRequest req;

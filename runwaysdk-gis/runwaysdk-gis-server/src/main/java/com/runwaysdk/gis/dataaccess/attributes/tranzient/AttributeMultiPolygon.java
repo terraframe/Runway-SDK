@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.gis.dataaccess.attributes.tranzient;
 
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.gis.AttributeMultiPolygonParseException;
 import com.runwaysdk.gis.dataaccess.AttributeMultiPolygonIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
-import com.runwaysdk.constants.CommonProperties;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;

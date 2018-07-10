@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = 851809795)
-public interface SummationRemoteAdapter extends java.rmi.Remote, com.runwaysdk.generation.loader.Reloadable
+public interface SummationRemoteAdapter extends java.rmi.Remote, com.runwaysdk.generation.loader.
 {
   public static final String SERVICE_NAME = "java:com.runwaysdk.jstest.SummationRemoteAdapter";
   public java.lang.Integer[][] arrayInOut(String sessionId, java.lang.Integer[][] array) throws java.rmi.RemoteException;

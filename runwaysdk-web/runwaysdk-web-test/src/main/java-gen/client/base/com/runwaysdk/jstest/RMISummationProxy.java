@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -1775162593)
-public class RMISummationProxy extends SummationProxy implements com.runwaysdk.generation.loader.Reloadable
+public class RMISummationProxy extends SummationProxy implements com.runwaysdk.generation.loader.
 {
   
   private java.lang.String label;

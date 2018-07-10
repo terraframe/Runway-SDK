@@ -542,16 +542,16 @@ public enum AdminConstants
   public static final String SEARCH_TABBAR_HANDLE_SUFFIX = "_searchTabbarHandle";
   
   /**
-   * The id suffix of the div that contains reloadable content (i.e., a Grid
+   * The id suffix of the div that contains  content (i.e., a Grid
    * in a CollectionDiv).
    */
-  public static final String RELOADABLE_DIV_SUFFIX = "_reloadableDiv";
+  public static final String _DIV_SUFFIX = "_Div";
   
   /**
-   * The class of the div that contains reloadable content (i.e., a Grid
+   * The class of the div that contains  content (i.e., a Grid
    * in a CollectionDiv).
    */
-  public static final String RELOADABLE_DIV_CLASS = "reloadableDiv";
+  public static final String _DIV_CLASS = "Div";
   
   public static final String SEARCH_COLUMN_CLASS = "searchColumn";
   

@@ -207,7 +207,6 @@ import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.system.FieldOperation;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 import com.runwaysdk.system.metadata.MdTerm;
@@ -1061,14 +1060,14 @@ public class TestFixtureFactory
 
   public static String getMdBusinessStub()
   {
-    String source = "package test.xmlclasses;" + "public class Class1 extends Class1Base implements " + Reloadable.class.getName() + "\n" + "{\n" + "  public Class1()\n" + "  {\n" + "    super();\n" + "  }\n" + "  public static Class1 get(String id)\n" + "  {\n" + "    return (Class1) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "  public void tempMethod()\n" + "  {\n" + "    return;\n" + "  }\n" + "}";
+    String source = "package test.xmlclasses;" + "public class Class1 extends Class1Base \n" + "{\n" + "  public Class1()\n" + "  {\n" + "    super();\n" + "  }\n" + "  public static Class1 get(String id)\n" + "  {\n" + "    return (Class1) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "  public void tempMethod()\n" + "  {\n" + "    return;\n" + "  }\n" + "}";
 
     return source;
   }
 
   public static String getMdBusinessDTOStub()
   {
-    String source = "package test.xmlclasses;\n" + "public class Class1DTO extends Class1DTOBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "  public static final long serialVersionUID = 1205173531292L;\n" + "  public Class1DTO(" + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n" + "    super(clientRequest);\n" + "  }\n" + "  /**\n" + "  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.\n" + "  * \n" + "  * @param businessDTO The BusinessDTO to duplicate\n" + "  * @param clientRequest The clientRequest this DTO should use to communicate with the server.\n" + "  */\n" + "  protected Class1DTO(" + BusinessDTO.class.getName() + " businessDTO, " + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n"
+    String source = "package test.xmlclasses;\n" + "public class Class1DTO extends Class1DTOBase \n" + "{\n" + "  public static final long serialVersionUID = 1205173531292L;\n" + "  public Class1DTO(" + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n" + "    super(clientRequest);\n" + "  }\n" + "  /**\n" + "  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.\n" + "  * \n" + "  * @param businessDTO The BusinessDTO to duplicate\n" + "  * @param clientRequest The clientRequest this DTO should use to communicate with the server.\n" + "  */\n" + "  protected Class1DTO(" + BusinessDTO.class.getName() + " businessDTO, " + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n"
         + "    super(businessDTO, clientRequest);\n" + "  }\n" + "  public static Class1DTO get(" + ClientRequestIF.class.getName() + " clientRequest, String id)\n" + "  {\n" + "    " + EntityDTO.class.getName() + " dto = (" + EntityDTO.class.getName() + ")clientRequest.get(id);\n" + "    return (Class1DTO) dto;\n" + "  }\n" + "  public void tempMethod()\n" + "  {\n" + "    return;\n" + "  }\n" + "}\n";
 
     return source;

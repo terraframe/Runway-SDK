@@ -21,12 +21,12 @@
 */
 package com.runwaysdk.query;
 
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
+
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
-
-import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.

@@ -22,12 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import org.json.JSONObject;
 import org.junit.Assert;
 
@@ -53,6 +47,12 @@ import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
 import com.runwaysdk.transport.conversion.json.ComponentDTOIFToJSON;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class DelegatingServletTest extends TestCase
 {

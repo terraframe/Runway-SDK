@@ -18,11 +18,11 @@
  */
 package com.runwaysdk;
 
-import junit.framework.Test;
-
 import org.apache.cactus.ServletTestCase;
 
 import com.runwaysdk.query.QueryTestSuite;
+
+import junit.framework.Test;
 
 
 public class DeployTestSuite extends ServletTestCase

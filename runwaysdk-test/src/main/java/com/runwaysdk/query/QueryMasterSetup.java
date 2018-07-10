@@ -22,10 +22,6 @@ import java.lang.reflect.Array;
 import java.util.LinkedList;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestResult;
-
 import org.junit.Assert;
 
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
@@ -86,8 +82,11 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.session.Request;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestResult;
 
 /**
  * Tests the query API
@@ -827,7 +826,7 @@ public class QueryMasterSetup extends TestSetup
     String queryClobConst = TypeGenerator.buildAttributeConstant(mdView, "refQueryClob");
     String queryIntegerConst = TypeGenerator.buildAttributeConstant(mdView, "refQueryInteger");
 
-    String queryStubSource = "package temporary.junit.test; \n" + "\n" + "public class TestViewQuery extends temporary.junit.test.TestViewQueryBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "\n" + "  private " + childQueryClass + " childQuery;\n" + "  private " + refChildQueryClass + " refChildQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     childQuery = new " + childQueryClass + "(componentQueryFactory);\n" + "     refChildQuery = new " + refChildQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + queryBooleanConst + ", childQuery.getQueryBoolean());\n" + "     this.map(" + queryCharacterConst
+    String queryStubSource = "package temporary.junit.test; \n" + "\n" + "public class TestViewQuery extends temporary.junit.test.TestViewQueryBase \n" + "{\n" + "\n" + "  private " + childQueryClass + " childQuery;\n" + "  private " + refChildQueryClass + " refChildQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     childQuery = new " + childQueryClass + "(componentQueryFactory);\n" + "     refChildQuery = new " + refChildQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + queryBooleanConst + ", childQuery.getQueryBoolean());\n" + "     this.map(" + queryCharacterConst
         + ", childQuery.getQueryCharacter());\n" + "     this.map(" + queryTextConst + ", childQuery.getReference().getRefQueryText());\n" + "     this.map(" + queryClobConst + ", childQuery.getReference().getRefQueryClob());\n" + "     this.map(" + queryIntegerConst + ", childQuery.getReference().getRefQueryInteger());\n" + "     this.map(" + charFromLocalCharConst + ", childQuery.getQueryLocalChar().localize());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
     mdView.setValue(MdViewInfo.QUERY_STUB_SOURCE, queryStubSource);
 

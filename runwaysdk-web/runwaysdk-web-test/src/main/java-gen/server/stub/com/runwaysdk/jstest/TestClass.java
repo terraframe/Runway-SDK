@@ -21,7 +21,7 @@ package com.runwaysdk.jstest;
 import com.runwaysdk.dataaccess.transaction.SkipIfProblem;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 
-public class TestClass extends TestClassBase implements com.runwaysdk.generation.loader.Reloadable
+public class TestClass extends TestClassBase implements com.runwaysdk.generation.loader.
 {
 public TestClass()
 {

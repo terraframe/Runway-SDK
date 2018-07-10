@@ -21,9 +21,9 @@
 */
 package com.runwaysdk.logging;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.LogFactory;
+
+import junit.framework.TestCase;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 

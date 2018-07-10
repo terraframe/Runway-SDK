@@ -24,12 +24,6 @@ package com.runwaysdk.dataaccess;
 import java.util.LinkedList;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -41,6 +35,12 @@ import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 /**
  * @author Eric G

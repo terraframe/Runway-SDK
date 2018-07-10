@@ -38,7 +38,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.system.gis.mapping.AndRule;
 import com.runwaysdk.system.gis.mapping.CompositeRule;
 import com.runwaysdk.system.gis.mapping.ExactRule;
@@ -52,7 +51,7 @@ import com.runwaysdk.system.gis.mapping.OrRule;
 import com.runwaysdk.system.gis.mapping.ThematicAttribute;
 import com.runwaysdk.transport.conversion.ConversionException;
 
-public class SLDPolygonVisitor implements Reloadable, SLDVisitorIF
+public class SLDPolygonVisitor implements SLDVisitorIF
 {
   private Stack<Node>              parents;
 

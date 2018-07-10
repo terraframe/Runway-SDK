@@ -21,8 +21,6 @@ package com.runwaysdk.gis.dataaccess.attributes.value;
 import com.runwaysdk.gis.constants.MdAttributeLineStringInfo;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.transport.metadata.AttributeLineStringMdDTO;
-import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
-import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 
 public class MdAttributeLineString_Q extends MdAttributeGeometry_Q implements MdAttributeLineStringDAOIF
 {

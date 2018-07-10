@@ -18,9 +18,9 @@
  */
 package com.runwaysdk.gis.dataaccess.attributes.value;
 
+import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
-import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 
 public abstract class MdAttributeGeometry_Q extends MdAttributeConcrete_Q implements MdAttributeGeometryDAOIF
 {

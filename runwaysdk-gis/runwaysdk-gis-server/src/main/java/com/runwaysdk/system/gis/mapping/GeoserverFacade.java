@@ -25,9 +25,6 @@ import static com.runwaysdk.gis.constants.GeoserverProperties.getPublisher;
 import static com.runwaysdk.gis.constants.GeoserverProperties.getReader;
 import static com.runwaysdk.gis.constants.GeoserverProperties.getStore;
 import static com.runwaysdk.gis.constants.GeoserverProperties.getWorkspace;
-import it.geosolutions.geoserver.rest.encoder.GSLayerEncoder;
-import it.geosolutions.geoserver.rest.encoder.GSPostGISDatastoreEncoder;
-import it.geosolutions.geoserver.rest.encoder.feature.GSFeatureTypeEncoder;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -45,7 +42,6 @@ import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.gis.mapping.gwc.SeedRequest;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -53,9 +49,12 @@ import com.runwaysdk.query.ValueQuery;
 import com.runwaysdk.system.gis.ConfigurationException;
 import com.runwaysdk.util.FileIO;
 
+import it.geosolutions.geoserver.rest.encoder.GSLayerEncoder;
+import it.geosolutions.geoserver.rest.encoder.GSPostGISDatastoreEncoder;
+import it.geosolutions.geoserver.rest.encoder.feature.GSFeatureTypeEncoder;
+
 @SuppressWarnings("deprecation")
-public class GeoserverFacade extends GeoserverFacadeBase implements
-    com.runwaysdk.generation.loader.Reloadable
+public class GeoserverFacade extends GeoserverFacadeBase
 {
   private static final long  serialVersionUID = 162768295;
 
@@ -78,7 +77,7 @@ public class GeoserverFacade extends GeoserverFacadeBase implements
   /**
    * Checks if a given File is a cache directory for the workspace.
    */
-  private static class CacheFilter implements FileFilter, Reloadable
+  private static class CacheFilter implements FileFilter
   {
     @Override
     public boolean accept(File file)

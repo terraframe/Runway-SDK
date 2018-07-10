@@ -28,7 +28,6 @@ import java.util.Map;
 
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdTableClassIF;
-import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 
 public abstract class ComponentIterator<T> implements OIterator<T> 

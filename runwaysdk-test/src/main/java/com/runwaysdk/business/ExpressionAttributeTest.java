@@ -24,13 +24,6 @@ package com.runwaysdk.business;
 import java.util.Date;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-import ognl.OgnlClassResolver;
-
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.constants.DatabaseProperties;
@@ -69,6 +62,13 @@ import com.runwaysdk.system.metadata.MdClass;
 import com.runwaysdk.system.metadata.MdWebFloat;
 import com.runwaysdk.system.metadata.MdWebForm;
 import com.runwaysdk.system.metadata.MdWebPrimitive;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+import ognl.OgnlClassResolver;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 

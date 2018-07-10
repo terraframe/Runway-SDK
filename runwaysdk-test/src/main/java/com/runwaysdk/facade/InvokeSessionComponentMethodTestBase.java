@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.facade;
 
-import junit.framework.TestCase;
+
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.BusinessDTO;
@@ -41,7 +41,8 @@ import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.generation.loader.Reloadable;
+
+import junit.framework.TestCase;
 
 public class InvokeSessionComponentMethodTestBase extends TestCase
 {
@@ -425,7 +426,7 @@ public class InvokeSessionComponentMethodTestBase extends TestCase
   {
     String[] sessionStubSource = {
         "package "+pack+";",
-        "public class "+sessionTypeName+" extends "+sessionTypeName+TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS,
+        "public class "+sessionTypeName+" extends "+sessionTypeName+TypeGeneratorInfo.BASE_SUFFIX ,
         "{",
         "  public "+sessionTypeName+"()",
         "  {",
@@ -545,7 +546,7 @@ public class InvokeSessionComponentMethodTestBase extends TestCase
   {
     String[] sessionStubSource = {
         "package "+pack+";",
-        "public class "+sessionTypeName+" extends "+sessionTypeName+TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS,
+        "public class "+sessionTypeName+" extends "+sessionTypeName+TypeGeneratorInfo.BASE_SUFFIX ,
         "{",
         "  public "+sessionTypeName+"()",
         "  {",

@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.dataaccess.attributes.tranzient;
 
-import java.math.BigDecimal;
-
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;

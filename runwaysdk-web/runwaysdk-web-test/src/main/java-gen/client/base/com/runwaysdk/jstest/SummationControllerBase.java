@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = 1321806353)
-public class SummationControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class SummationControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String CLASS = "com.runwaysdk.jstest.SummationController";
   protected javax.servlet.http.HttpServletRequest req;

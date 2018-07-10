@@ -22,15 +22,15 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.runwaysdk.constants.Constants;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.dataaccess.ValueObject;
+
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
-
-import com.runwaysdk.constants.Constants;
-import com.runwaysdk.constants.MdAttributeBooleanInfo;
-import com.runwaysdk.dataaccess.ValueObject;
 
 public class ValueQueryReferenceTest extends TestCase
 {

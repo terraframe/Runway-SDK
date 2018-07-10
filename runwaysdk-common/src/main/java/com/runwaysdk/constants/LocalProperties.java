@@ -259,9 +259,9 @@ public class LocalProperties
     }
   }
 
-  public static boolean isReloadableClassesEnabled()
+  public static boolean isClassesEnabled()
   {
-    return instance().getBoolean("classloader.reloadable.enabled", true);
+    return instance().getBoolean("classloader..enabled", true);
   }
 
   /**

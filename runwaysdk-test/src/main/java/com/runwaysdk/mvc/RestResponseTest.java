@@ -21,12 +21,6 @@ package com.runwaysdk.mvc;
 import java.io.ByteArrayOutputStream;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import org.json.JSONObject;
 import org.junit.Assert;
 
@@ -51,6 +45,12 @@ import com.runwaysdk.controller.ServletMethod;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class RestResponseTest extends TestCase implements DoNotWeave
 {

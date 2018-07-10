@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.gis.dataaccess.attributes.tranzient;
 
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.gis.AttributePointParseException;
 import com.runwaysdk.gis.dataaccess.AttributePointIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
-import com.runwaysdk.constants.CommonProperties;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;

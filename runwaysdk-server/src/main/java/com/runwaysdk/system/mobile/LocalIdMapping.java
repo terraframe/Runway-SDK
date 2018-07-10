@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.mobile;
 
-public class LocalIdMapping extends LocalIdMappingBase implements com.runwaysdk.generation.loader.Reloadable
+public class LocalIdMapping extends LocalIdMappingBase
 {
   private static final long serialVersionUID = 490487162;
   

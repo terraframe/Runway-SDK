@@ -20,8 +20,6 @@ package com.runwaysdk.facade;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,6 +36,8 @@ import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
+
+import junit.framework.TestCase;
 
 public class SerializeObjectCacheTest extends TestCase
 {

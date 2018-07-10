@@ -24,10 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,11 +40,14 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.dataaccess.io.XMLImporter;
-import com.runwaysdk.generation.loader.WebTestGeneratedClassLoader;
 import com.runwaysdk.transport.conversion.json.JSONReturnObject;
 import com.runwaysdk.transport.conversion.json.JSONUtil;
 import com.runwaysdk.util.DTOConversionUtilInfo;
 import com.runwaysdk.web.json.JSONJavaClientRequest;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotWeave
 {
@@ -107,7 +106,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
   public void testInvokeEmptyMethod() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", "142");
@@ -144,7 +143,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
     String booleanInput = Boolean.toString(true);
     String longInput = "374364";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -188,7 +187,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
   {
     String input = "164";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", input + "3");
@@ -231,7 +230,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
     String input = "Har har bar bar";
     String longInput = "1";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -288,7 +287,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
     String longInput = "152";
 
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -340,7 +339,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
   {
     // Create the existing BusinessDAO
     String longInput = "163";
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
@@ -401,7 +400,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
   {
     String longInput = "278";
 
-    Class<?> bagClass = WebTestGeneratedClassLoader.load(bagDTO);
+    Class<?> bagClass = this.getClass().getClassLoader().loadClass(bagDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput + "0");
@@ -445,7 +444,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
     String longInput = "142";
     String input = "H to this izzo, E to the izza";
 
-    Class<?> bagClass = WebTestGeneratedClassLoader.load(bagDTO);
+    Class<?> bagClass = this.getClass().getClassLoader().loadClass(bagDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput + "0");

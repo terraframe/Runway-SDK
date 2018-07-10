@@ -32,8 +32,8 @@ import com.runwaysdk.business.ProblemDTO;
 import com.runwaysdk.constants.ClientConstants;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.request.RequestDecorator;
-import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ResponseDecorator;
+import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
 
 public class RequestManager

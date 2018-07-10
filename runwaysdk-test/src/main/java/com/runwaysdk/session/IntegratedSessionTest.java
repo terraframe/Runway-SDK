@@ -21,12 +21,6 @@ package com.runwaysdk.session;
 import java.util.Locale;
 import java.util.Set;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.ClientException;
 import com.runwaysdk.RunwayExceptionDTO;
 import com.runwaysdk.business.Business;
@@ -75,8 +69,13 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
-import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.facade.Facade;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class IntegratedSessionTest extends TestCase
 {

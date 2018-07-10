@@ -21,13 +21,6 @@ package com.runwaysdk.dataaccess;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-import sun.security.provider.Sun;
-
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.HashMethods;
@@ -45,6 +38,13 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.util.Base64;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+import sun.security.provider.Sun;
 
 public class EncryptionTest extends TestCase
 {

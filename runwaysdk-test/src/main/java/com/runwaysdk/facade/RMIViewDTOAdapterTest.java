@@ -20,14 +20,14 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.request.RMIClientRequest;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
 
 public class RMIViewDTOAdapterTest extends ViewDTOAdapterTest
 {

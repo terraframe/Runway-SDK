@@ -30,10 +30,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -134,7 +130,6 @@ import com.runwaysdk.dataaccess.attributes.ImmutableAttributeProblemDTO;
 import com.runwaysdk.dataaccess.cache.DataNotFoundExceptionDTO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.ConditionOperator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.AttributeWritePermissionExceptionDTO;
@@ -189,6 +184,10 @@ import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.util.FileIO;
 import com.runwaysdk.util.IDGenerator;
 import com.runwaysdk.web.AdminScreenAccessExceptionDTO;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 public class AdapterTest extends TestCase implements DoNotWeave
 {
@@ -493,7 +492,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     parentMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     parentMdBusiness.addEnumItem(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.toString());
 
-    String source = "package com.test.controller;\n" + "public class ParentTest extends ParentTestBase implements " + Reloadable.class.getName() + "\n" + "{" + "public ParentTest()" + "{" + "   super();" + "}" + "public static ParentTest get(String id)" + "{" + "  return (ParentTest) " + Business.class.getName() + ".get(id);" + "}" + "public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}" + "}";
+    String source = "package com.test.controller;\n" + "public class ParentTest extends ParentTestBase\n" + "{" + "public ParentTest()" + "{" + "   super();" + "}" + "public static ParentTest get(String id)" + "{" + "  return (ParentTest) " + Business.class.getName() + ".get(id);" + "}" + "public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}" + "}";
 
     parentMdBusiness.setValue(MdElementInfo.STUB_SOURCE, source);
     clientRequest.createBusiness(parentMdBusiness);
@@ -911,7 +910,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     addAttributesToQuery(mdView.getId());
 
-    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "\n" + "  private ParentTestQuery parentTest;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     parentTest = new ParentTestQuery(componentQueryFactory);\n" + "\n" + "     this.map(" + objectIdConst + ", parentTest.getId());\n" + "     this.map(" + queryBooleanConst + ", parentTest.getQueryBoolean());\n" + "     this.map(" + queryCharConst + ", parentTest.getQueryChar());\n" + "     this.map(" + aCharConst + ", parentTest.getACharacter());\n" + "     this.map(" + queryLongConst
+    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase \n" + "{\n" + "\n" + "  private ParentTestQuery parentTest;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     parentTest = new ParentTestQuery(componentQueryFactory);\n" + "\n" + "     this.map(" + objectIdConst + ", parentTest.getId());\n" + "     this.map(" + queryBooleanConst + ", parentTest.getQueryBoolean());\n" + "     this.map(" + queryCharConst + ", parentTest.getQueryChar());\n" + "     this.map(" + aCharConst + ", parentTest.getACharacter());\n" + "     this.map(" + queryLongConst
         + ", parentTest.getQueryLong());\n" + "     this.map(" + queryTimeConst + ", parentTest.getQueryTime());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
 
     clientRequest.lock(mdView);

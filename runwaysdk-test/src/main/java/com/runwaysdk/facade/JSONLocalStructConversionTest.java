@@ -20,11 +20,6 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.json.JSONObject;
 
 import com.runwaysdk.DoNotWeave;
@@ -41,6 +36,11 @@ import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.conversion.json.ComponentDTOIFToJSON;
 import com.runwaysdk.transport.conversion.json.JSONUtil;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 public class JSONLocalStructConversionTest extends TestCase implements DoNotWeave
 {

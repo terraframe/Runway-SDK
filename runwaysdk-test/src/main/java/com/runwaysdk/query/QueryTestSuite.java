@@ -18,14 +18,14 @@
  */
 package com.runwaysdk.query;
 
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.dataaccess.EntityAttributeIndicatorTest;
 import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.query.function.AggregateFunctionTestSuite;
+
+import junit.framework.Test;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class QueryTestSuite extends TestSuite
 {

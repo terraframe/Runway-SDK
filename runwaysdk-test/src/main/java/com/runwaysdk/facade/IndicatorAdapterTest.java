@@ -20,10 +20,6 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.TestSuiteTF;
@@ -68,6 +64,10 @@ import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.IndicatorAggregateFunction;
 import com.runwaysdk.system.metadata.IndicatorOperator;
 import com.runwaysdk.transport.conversion.ValueObjectToValueObjectDTO;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 public class IndicatorAdapterTest extends TestCase implements DoNotWeave
 {

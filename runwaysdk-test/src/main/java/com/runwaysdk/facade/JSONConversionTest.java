@@ -24,10 +24,6 @@ package com.runwaysdk.facade;
 import java.util.List;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,6 +53,10 @@ import com.runwaysdk.transport.metadata.AttributeMultiReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMultiTermMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.web.json.JSONController;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 public class JSONConversionTest extends TestCase implements DoNotWeave
 {

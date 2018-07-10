@@ -20,8 +20,6 @@ package com.runwaysdk.dataaccess.schemamanager;
 
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -30,6 +28,8 @@ import com.runwaysdk.dataaccess.schemamanager.model.KeyedElement;
 import com.runwaysdk.dataaccess.schemamanager.model.SchemaClass;
 import com.runwaysdk.dataaccess.schemamanager.xml.CreateElement;
 import com.runwaysdk.dataaccess.schemamanager.xml.XSDConstraintsManager;
+
+import junit.framework.TestCase;
 
 public class TestXSDConstraints extends TestCase
 {

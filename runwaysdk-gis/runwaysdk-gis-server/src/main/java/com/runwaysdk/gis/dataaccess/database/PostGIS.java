@@ -30,15 +30,15 @@ import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.ds.common.BaseDataSource;
 
 import com.google.inject.Inject;
+import com.runwaysdk.constants.DatabaseProperties;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.database.general.PostgreSQL;
 import com.runwaysdk.gis.constants.MdAttributeLineStringInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiLineStringInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
-import com.runwaysdk.constants.DatabaseProperties;
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.database.general.PostgreSQL;
 import com.vividsolutions.jts.geom.Geometry;
 
 public class PostGIS extends PostgreSQL

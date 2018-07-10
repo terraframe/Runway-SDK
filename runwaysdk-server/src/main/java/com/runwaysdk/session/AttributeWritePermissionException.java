@@ -22,7 +22,6 @@ import com.runwaysdk.ComponentIF;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 

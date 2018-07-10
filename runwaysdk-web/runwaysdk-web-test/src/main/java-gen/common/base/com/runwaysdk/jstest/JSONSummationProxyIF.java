@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -1785262308)
-public interface JSONSummationProxyIF extends com.runwaysdk.constants.ClientRequestMarker, com.runwaysdk.generation.loader.Reloadable
+public interface JSONSummationProxyIF extends com.runwaysdk.constants.ClientRequestMarker, com.runwaysdk.generation.loader.
 {
   public java.lang.String arrayInOut(java.lang.String sessionId, java.lang.String array);
   

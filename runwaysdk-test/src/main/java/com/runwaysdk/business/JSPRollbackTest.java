@@ -22,11 +22,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Set;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.business.generation.ProviderFactory;
 import com.runwaysdk.business.generation.view.ContentProviderIF;
 import com.runwaysdk.constants.MdControllerInfo;
@@ -35,8 +30,12 @@ import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.util.FileIO;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 public class JSPRollbackTest extends TestCase
 {
@@ -91,7 +90,7 @@ public class JSPRollbackTest extends TestCase
 
   private static String getSource()
   {
-    String source = "package test.xmlclasses; \n" + "public class TestController extends TestControllerBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "  public TestController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean bool)\n" + "  {\n" + "    super(req, resp, bool);\n" + "  }\n" + "  public void testAction(" + mdBusiness.definesType() + "DTO" + " test)\n" + "  {\n" + "  }\n" + "}\n";
+    String source = "package test.xmlclasses; \n" + "public class TestController extends TestControllerBase implements \n" + "{\n" + "  public TestController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean bool)\n" + "  {\n" + "    super(req, resp, bool);\n" + "  }\n" + "  public void testAction(" + mdBusiness.definesType() + "DTO" + " test)\n" + "  {\n" + "  }\n" + "}\n";
 
     return source;
   }

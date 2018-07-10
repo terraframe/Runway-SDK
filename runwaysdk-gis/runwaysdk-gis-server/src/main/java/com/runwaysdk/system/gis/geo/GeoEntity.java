@@ -23,10 +23,10 @@ import java.util.List;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Relationship;
+import com.runwaysdk.business.ontology.OntologyEntryIF;
 import com.runwaysdk.business.ontology.OntologyStrategyBuilderIF;
 import com.runwaysdk.business.ontology.OntologyStrategyFactory;
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
-import com.runwaysdk.business.ontology.OntologyEntryIF;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.dataaccess.InvalidIdException;

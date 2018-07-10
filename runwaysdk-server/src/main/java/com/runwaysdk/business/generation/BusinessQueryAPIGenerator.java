@@ -43,7 +43,6 @@ import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.AttributeEnumeration;
 import com.runwaysdk.query.AttributeMultiReference;
 import com.runwaysdk.query.AttributeMultiTerm;
@@ -181,10 +180,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     writeLine(this.srcBuffer, " implements " + getMultiReferenceInterfaceName(this.getMdClassIF()));
 
-    if (!mdBusinessIF.isSystemPackage())
-    {
-      write(this.srcBuffer, ", " + Reloadable.class.getName());
-    }
     writeLine(this.srcBuffer, "");
 
     writeLine(this.srcBuffer, "  {");
@@ -276,11 +271,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     writeLine(this.srcBuffer, " * This type is used when a join is performed on this class as a reference.");
     writeLine(this.srcBuffer, " **/");
     write(this.srcBuffer, "  public interface " + getMultiReferenceInterfaceName(mdBusinessIF) + " extends ");
-
-    if (!mdBusinessIF.isSystemPackage())
-    {
-      write(this.srcBuffer, Reloadable.class.getName() + ", ");
-    }
 
     MdBusinessDAOIF parentMdBusinessIF = mdBusinessIF.getSuperClass();
     if (parentMdBusinessIF != null)
@@ -1319,11 +1309,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
       writeLine(this.srcBuffer, " **/");
       write(this.srcBuffer, "  public interface " + getEnumInterfaceName(mdBusinessIF) + " extends ");
 
-      if (!mdBusinessIF.isSystemPackage())
-      {
-        write(this.srcBuffer, Reloadable.class.getName() + ", ");
-      }
-
       MdBusinessDAOIF parentMdBusinessIF = mdBusinessIF.getSuperClass();
       if (parentMdBusinessIF != null)
       {
@@ -1373,10 +1358,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
       write(this.srcBuffer, " implements " + getEnumInterfaceName(this.getMdClassIF()));
 
-      if (!mdBusinessIF.isSystemPackage())
-      {
-        write(this.srcBuffer, ", " + Reloadable.class.getName());
-      }
       writeLine(this.srcBuffer, "");
 
       writeLine(this.srcBuffer, "  {");
@@ -1447,11 +1428,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     writeLine(this.srcBuffer, " **/");
     write(this.srcBuffer, "  public interface " + getEnumSubInterfaceName(mdEnumerationIF) + " extends ");
 
-    if (!mdBusinessIF.isSystemPackage())
-    {
-      write(this.srcBuffer, Reloadable.class.getName() + ", ");
-    }
-
     write(this.srcBuffer, getEnumInterfaceName(mdBusinessIF));
 
     writeLine(this.srcBuffer, "  {");
@@ -1517,10 +1493,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     write(this.srcBuffer, "  public static class " + getEnumSubClassName(mdEnumerationIF) + " extends " + getEnumClassName(mdBusinessIF));
     write(this.srcBuffer, " implements  " + getEnumSubInterfaceName(mdEnumerationIF));
 
-    if (!mdBusinessIF.isSystemPackage())
-    {
-      write(this.srcBuffer, ", " + Reloadable.class.getName());
-    }
     writeLine(this.srcBuffer, "");
 
     writeLine(this.srcBuffer, "  {");
@@ -1577,11 +1549,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     writeLine(this.srcBuffer, " * This type is used when a join is performed on this class as a reference.");
     writeLine(this.srcBuffer, " **/");
     write(this.srcBuffer, "  public interface " + getRefInterfaceName(mdBusinessIF) + " extends ");
-
-    if (!mdBusinessIF.isSystemPackage())
-    {
-      write(this.srcBuffer, Reloadable.class.getName() + ", ");
-    }
 
     MdBusinessDAOIF parentMdBusinessIF = mdBusinessIF.getSuperClass();
     if (parentMdBusinessIF != null)
@@ -1647,10 +1614,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     writeLine(this.srcBuffer, " implements " + getRefInterfaceName(this.getMdClassIF()));
 
-    if (!mdBusinessIF.isSystemPackage())
-    {
-      write(this.srcBuffer, ", " + Reloadable.class.getName());
-    }
     writeLine(this.srcBuffer, "");
 
     writeLine(this.srcBuffer, "  {");

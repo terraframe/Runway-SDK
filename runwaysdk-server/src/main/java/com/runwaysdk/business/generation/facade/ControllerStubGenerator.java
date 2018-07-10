@@ -51,7 +51,6 @@ import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.generation.loader.Reloadable;
 
 public class ControllerStubGenerator extends AbstractClientGenerator implements ControllerStubGeneratorIF
 {
@@ -140,10 +139,6 @@ public class ControllerStubGenerator extends AbstractClientGenerator implements 
     String baseName = ControllerBaseGenerator.getGeneratedName(this.getMdTypeDAOIF());
 
     getWriter().write("public class " + typeName + " extends " + baseName);
-    if (!this.getMdTypeDAOIF().isSystemPackage())
-    {
-      getWriter().write(Reloadable.IMPLEMENTS);
-    }
     getWriter().writeLine("");
 
     getWriter().openBracket();

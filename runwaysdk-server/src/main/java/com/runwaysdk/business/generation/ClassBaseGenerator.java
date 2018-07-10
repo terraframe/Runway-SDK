@@ -52,7 +52,6 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.generation.loader.Reloadable;
 
 /**
  * !IMPORTANT! If you're changing the way base classes are generated then its
@@ -169,11 +168,6 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
     String typeName = this.getMdTypeDAOIF().getTypeName();
     String classSignature = "public abstract class " + this.getBaseClassName() + " extends " + getExtends(parent);
-
-    if (!this.getMdTypeDAOIF().isSystemPackage())
-    {
-      classSignature += Reloadable.IMPLEMENTS;
-    }
 
     // Add a javadoc to the base file that yells at the user to not make changes
     getWriter().writeLine("/**");

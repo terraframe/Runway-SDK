@@ -26,12 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.SystemException;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.state.MdStateMachineDAO;
@@ -103,6 +97,12 @@ import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.util.FileIO;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class InstanceImportTest extends TestCase
 {

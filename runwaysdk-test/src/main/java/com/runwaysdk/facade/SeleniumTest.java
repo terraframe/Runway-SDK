@@ -20,7 +20,6 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
 
 import org.openqa.selenium.server.SeleniumServer;
 
@@ -73,9 +72,10 @@ import com.runwaysdk.constants.TestProperties;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.session.InvalidLoginException;
 import com.thoughtworks.selenium.DefaultSelenium;
+
+import junit.framework.TestCase;
 
 public class SeleniumTest extends TestCase implements DoNotWeave
 {
@@ -944,7 +944,7 @@ public class SeleniumTest extends TestCase implements DoNotWeave
   {
     String[] lines = {
         "package "+PACKAGE+";",
-        "public class TestUtil extends TestUtilBase" + Reloadable.IMPLEMENTS,
+        "public class TestUtil extends TestUtilBase" ,
         "{",
           "public TestUtil()",
           "{",
@@ -985,7 +985,7 @@ public class SeleniumTest extends TestCase implements DoNotWeave
   {
     String[] lines = {
         "package "+PACKAGE+";",
-        "public class TestView extends TestViewBase" + Reloadable.IMPLEMENTS,
+        "public class TestView extends TestViewBase" ,
         "{",
           "public TestView()",
           "{",
@@ -1026,7 +1026,7 @@ public class SeleniumTest extends TestCase implements DoNotWeave
   {
     String[] lines = {
         "package "+PACKAGE+";",
-        "public class TestClass extends TestClassBase" + Reloadable.IMPLEMENTS,
+        "public class TestClass extends TestClassBase" ,
         "{",
           "public TestClass()",
           "{",

@@ -24,11 +24,6 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 
@@ -37,6 +32,11 @@ import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.session.Request;
+
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 
 public class IdConversionTest extends TestCase

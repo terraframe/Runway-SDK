@@ -21,10 +21,6 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.TestConstants;
@@ -37,6 +33,10 @@ import com.runwaysdk.dataaccess.io.VersionTest;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.resolver.TransactionImportTest;
 import com.runwaysdk.dataaccess.schemamanager.MergeTest;
+
+import junit.framework.Test;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 /**
  * 

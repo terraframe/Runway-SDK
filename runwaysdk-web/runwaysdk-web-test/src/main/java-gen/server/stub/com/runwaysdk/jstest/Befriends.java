@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest;
 
-public class Befriends extends BefriendsBase implements com.runwaysdk.generation.loader.Reloadable
+public class Befriends extends BefriendsBase implements com.runwaysdk.generation.loader.
 {
   private static final long serialVersionUID = -1106016064;
   
