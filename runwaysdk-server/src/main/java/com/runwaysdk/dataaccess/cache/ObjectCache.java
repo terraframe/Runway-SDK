@@ -37,7 +37,6 @@ import com.runwaysdk.business.generation.ClientMarker;
 import com.runwaysdk.business.generation.ServerMarker;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.constants.BusinessInfo;
-import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityTypes;
@@ -135,12 +134,9 @@ import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataException;
 import com.runwaysdk.dataaccess.transaction.ITaskListener;
 import com.runwaysdk.dataaccess.transaction.LockObject;
-import com.runwaysdk.facade.WebServiceAdapter;
-import com.runwaysdk.facade.wsdd.WebServiceDeployer;
 import com.runwaysdk.generation.CommonMarker;
 import com.runwaysdk.util.IdParser;
 import com.runwaysdk.util.ServerInitializerFacade;
-import com.runwaysdk.web.json.JSONWebServiceAdapter;
 
 /**
  * Manages collections of all EntityDAO classes. All EntityDAO CRUD operations
@@ -889,16 +885,6 @@ public class ObjectCache
         }
       }
 
-      // add the default services
-
-      if (CommonProperties.getContainerWebServiceEnabled())
-      {
-        // deploy the web services
-        WebServiceDeployer serviceDeployer = new WebServiceDeployer();
-        serviceDeployer.addService(WebServiceAdapter.class);
-        serviceDeployer.addService(JSONWebServiceAdapter.class);
-        serviceDeployer.deploy();
-      }
 
       extractDatabaseSourceAndClasses = true;
 

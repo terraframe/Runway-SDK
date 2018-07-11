@@ -1,5 +1,7 @@
 package com.runwaysdk.generation.loader;
 
+import com.runwaysdk.constants.TypeGeneratorInfo;
+
 public class LoaderDecorator
 {
 
@@ -13,6 +15,11 @@ public class LoaderDecorator
     {
       throw new RuntimeException(e);
     }
+  }
+
+  public static Class<?> loadClassNoCommonExceptionProcessor(String name)
+  {
+    return load(name.replaceAll(TypeGeneratorInfo.DTO_SUFFIX, ""));
   }
 
 }

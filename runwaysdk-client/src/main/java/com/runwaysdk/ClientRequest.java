@@ -46,7 +46,6 @@ import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.request.ClientRequestException;
 import com.runwaysdk.request.ConnectionLabel;
 import com.runwaysdk.request.RMIClientRequest;
-import com.runwaysdk.request.WebServiceClientRequest;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 
 /**
@@ -527,10 +526,6 @@ public abstract class ClientRequest implements ClientRequestIF
     {
       clientRequestIF = new RMIClientRequest(clientSession, locales);
     }
-    else if (type.equals(ConnectionLabel.Type.WEB_SERVICE))
-    {
-      clientRequestIF = new WebServiceClientRequest(clientSession, locales);
-    }
 
     return clientRequestIF;
   }
@@ -580,10 +575,6 @@ public abstract class ClientRequest implements ClientRequestIF
     else if (type.equals(ConnectionLabel.Type.RMI))
     {
       clientRequest = new RMIClientRequest(clientSession, sessionId);
-    }
-    else if (type.equals(ConnectionLabel.Type.WEB_SERVICE))
-    {
-      clientRequest = new WebServiceClientRequest(clientSession, sessionId);
     }
 
     return clientRequest;
@@ -656,10 +647,6 @@ public abstract class ClientRequest implements ClientRequestIF
     else if (type.equals(ConnectionLabel.Type.RMI))
     {
       clientRequest = new RMIClientRequest(clientSession, userName, password, locales);
-    }
-    else if (type.equals(ConnectionLabel.Type.WEB_SERVICE))
-    {
-      clientRequest = new WebServiceClientRequest(clientSession, userName, password, locales);
     }
 
     return clientRequest;

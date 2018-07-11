@@ -138,9 +138,4 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
   {
     assertEquals(new Integer(1201), (Integer) CommonProperties.getSessionTime());
   }
-  @Test
-  public void testInstanceOverride()
-  {
-    assertEquals("INSTANCE", CommonProperties.getContainerWebServiceDeployURL());
-  }
 }

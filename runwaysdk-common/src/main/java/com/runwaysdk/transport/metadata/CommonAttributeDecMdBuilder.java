@@ -18,16 +18,6 @@
  */
 package com.runwaysdk.transport.metadata;
 
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.Node;
-
-import com.runwaysdk.CommonExceptionProcessor;
-import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.transport.conversion.ConversionFacade;
-import com.runwaysdk.transport.conversion.dom.Elements;
-
 /**
  * Builds the metadata for an attribute dec.
  */
@@ -54,27 +44,6 @@ public class CommonAttributeDecMdBuilder extends CommonAttributeNumberMdBuilder
 
     this.totalLength = source.getTotalLength();
     this.decimalLength = source.getDecimalLength();
-  }
-
-  /**
-   *
-   * @param metadata
-   * @param dest
-   */
-  protected CommonAttributeDecMdBuilder(Node metadata, Node properties, AttributeDecMdDTO dest)
-  {
-    super(metadata, properties, dest);
-
-    try
-    {
-      this.totalLength = ((Double)ConversionFacade.getXPath().evaluate(Elements.DEC_METADATA_TOTAL_LENGTH.getLabel(), metadata, XPathConstants.NUMBER)).intValue();
-      this.decimalLength = ((Double)ConversionFacade.getXPath().evaluate(Elements.DEC_METADATA_DECIMAL_LENGTH.getLabel(), metadata, XPathConstants.NUMBER)).intValue();;
-    }
-    catch(XPathExpressionException ex)
-    {
-      String errString = "Improper XPath expression: "+ex.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
-    }
   }
 
   /**

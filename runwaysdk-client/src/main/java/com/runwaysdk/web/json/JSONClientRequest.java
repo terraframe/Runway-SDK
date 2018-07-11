@@ -110,10 +110,6 @@ public abstract class JSONClientRequest implements JSONClientRequestIF
     {
       return new JSONRMIClientRequest(connection.getLabel(), connection.getAddress());
     }
-    else if(type.equals(ConnectionLabel.Type.WEB_SERVICE))
-    {
-      return new JSONWebServiceClientRequest(connection.getLabel(), connection.getAddress());
-    }
     
     return jsonClientRequestIF;
   }

@@ -18,16 +18,6 @@
  */
 package com.runwaysdk.transport.metadata;
 
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.Node;
-
-import com.runwaysdk.CommonExceptionProcessor;
-import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.transport.conversion.ConversionFacade;
-import com.runwaysdk.transport.conversion.dom.Elements;
-
 /**
  * Builds the metadata for an attribute character.
  */
@@ -43,25 +33,6 @@ public class CommonAttributeCharacterMdBuilder extends CommonAttributeMdBuilder
     super(source, dest);
 
     size = source.getSize();
-  }
-
-  /**
-   * Constructor
-   */
-  protected CommonAttributeCharacterMdBuilder(Node metadata, Node properties, AttributeCharacterMdDTO dest)
-  {
-    super(metadata, properties, dest);
-
-    try
-    {
-      Double temp = (Double)ConversionFacade.getXPath().evaluate(Elements.CHARACTER_METADATA_SIZE.getLabel(), metadata, XPathConstants.NUMBER);
-      size = temp.intValue();
-    }
-    catch(XPathExpressionException ex)
-    {
-      String errString = "Improper XPath expression: "+ex.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
-    }
   }
 
   /**

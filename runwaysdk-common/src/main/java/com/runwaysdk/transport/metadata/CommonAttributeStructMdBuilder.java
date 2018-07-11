@@ -18,16 +18,6 @@
  */
 package com.runwaysdk.transport.metadata;
 
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.Node;
-
-import com.runwaysdk.CommonExceptionProcessor;
-import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.transport.conversion.ConversionFacade;
-import com.runwaysdk.transport.conversion.dom.Elements;
-
 /**
  * Builds the metadata for an attribute struct.
  */
@@ -48,26 +38,6 @@ public class CommonAttributeStructMdBuilder extends CommonAttributeMdBuilder
     super(source, dest);
 
     definingMdStruct = source.getDefiningMdStruct();
-  }
-
-  /**
-   *
-   * @param metadata
-   * @param dest
-   */
-  protected CommonAttributeStructMdBuilder(Node metadata, Node properties, AttributeMdDTO dest)
-  {
-    super(metadata, properties, dest);
-
-    try
-    {
-      definingMdStruct = (String)ConversionFacade.getXPath().evaluate(Elements.STRUCT_METADATA_DEFINING_MDSTRUCT.getLabel(), metadata, XPathConstants.STRING);
-    }
-    catch(XPathExpressionException ex)
-    {
-      String errString = "Improper XPath expression: "+ex.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
-    }
   }
 
   /**
