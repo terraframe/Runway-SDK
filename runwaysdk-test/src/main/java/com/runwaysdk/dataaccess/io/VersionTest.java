@@ -74,6 +74,8 @@ public class VersionTest extends TestCase
    */
   public void testDeleteAndAttributeInTransaction_Enumeration()
   {
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
+
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction_Enumeration/";
 
     // Import merge file
@@ -128,7 +130,7 @@ public class VersionTest extends TestCase
       UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
   /**
@@ -136,6 +138,8 @@ public class VersionTest extends TestCase
    */
   public void testDeleteAndAttributeInTransaction()
   {
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
+    
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction/";
 
     // Import merge file
@@ -173,7 +177,7 @@ public class VersionTest extends TestCase
       UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
   /**
@@ -181,6 +185,8 @@ public class VersionTest extends TestCase
    */
   public void testDeleteAndAttributeInTransaction_Exception()
   {
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
+
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction_Exception/";
 
     UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000001" });
@@ -221,12 +227,12 @@ public class VersionTest extends TestCase
       UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
   public void testIncreaseVersion()
   {
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
 
     UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, "0001204354800000" });
 
@@ -248,13 +254,13 @@ public class VersionTest extends TestCase
     {
       UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
 
-      assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+      assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
     }
   }
 
   public void testDecremenateVersion()
   {
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
 
     UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, "0001207033200000" });
 
@@ -291,14 +297,14 @@ public class VersionTest extends TestCase
     finally
     {
       UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
-      assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+      assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
     }
 
   }
 
   public void testMostRecent()
   {
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
 
     Versioning.run(new String[] { path, XMLConstants.VERSION_XSD });
 
@@ -321,7 +327,7 @@ public class VersionTest extends TestCase
     {
       UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
   /**
@@ -329,7 +335,7 @@ public class VersionTest extends TestCase
    */
   public void testCreateAndDeleteInOneTransaction()
   {
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
 
     UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, "0000000000000002" });
 
@@ -354,7 +360,7 @@ public class VersionTest extends TestCase
       UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
   /**
@@ -362,11 +368,11 @@ public class VersionTest extends TestCase
    */
   public void testCreateAndDeleteRollback()
   {
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
 
     UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, "0000000000000002" });
 
-    assertEquals(2, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    assertEquals(original + 2, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
     try
     {
@@ -385,7 +391,7 @@ public class VersionTest extends TestCase
     try
     {
       // Ensure that the database rolled back correctly
-      assertEquals(2, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+      assertEquals(original + 2, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
       // Ensure that the MdException was not imported
       MdExceptionDAOIF mdException = MdExceptionDAO.getMdException("test.xmlclasses.TestException");
@@ -401,7 +407,7 @@ public class VersionTest extends TestCase
       UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
   public void testCreateDeleteCreateAttribute() throws IOException

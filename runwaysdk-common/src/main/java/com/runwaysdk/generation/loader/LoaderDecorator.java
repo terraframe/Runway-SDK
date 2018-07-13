@@ -1,7 +1,5 @@
 package com.runwaysdk.generation.loader;
 
-import com.runwaysdk.constants.TypeGeneratorInfo;
-
 public class LoaderDecorator
 {
 
@@ -9,7 +7,7 @@ public class LoaderDecorator
   {
     try
     {
-      return LoaderDecorator.class.getClassLoader().loadClass(name);
+      return Thread.currentThread().getContextClassLoader().loadClass(name);
     }
     catch (ClassNotFoundException e)
     {
@@ -17,9 +15,9 @@ public class LoaderDecorator
     }
   }
 
-  public static Class<?> loadClassNoCommonExceptionProcessor(String name)
+  public static Class<?> loadClass(String name) throws ClassNotFoundException
   {
-    return load(name.replaceAll(TypeGeneratorInfo.DTO_SUFFIX, ""));
+    return Thread.currentThread().getContextClassLoader().loadClass(name);
   }
 
 }

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
 
@@ -22,6 +22,13 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
@@ -52,7 +59,6 @@ import com.runwaysdk.dataaccess.metadata.MdPackage;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.SupportedLocaleDAO;
 import com.runwaysdk.facade.Facade;
-import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -61,36 +67,9 @@ import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.session.Session;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class LocalizationTest extends TestCase
+@RunWith(ClasspathTestRunner.class)
+public class LocalizationTest
 {
-  /**
-   * The run method is only overridden to allow aspects to weave in
-   * 
-   * @see junit.framework.TestCase#run()
-   */
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  /**
-   * The run method is only overridden to allow aspects to weave in
-   * 
-   * @see junit.framework.TestCase#run(junit.framework.TestResult)
-   */
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static String                       pack           = "test.localize";
 
   private static MdBusinessDAO                phrases;
@@ -107,28 +86,9 @@ public class LocalizationTest extends TestCase
 
   private static String                       defaultApology = "This is my default apology";
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(LocalizationTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  private static void classSetUp()
+  @BeforeClass
+  @Request
+  public static void classSetUp()
   {
     phrases = MdBusinessDAO.newInstance();
     phrases.setValue(MdTypeInfo.NAME, "Phrases");
@@ -168,30 +128,34 @@ public class LocalizationTest extends TestCase
     greetingId = greetingDAO.apply();
   }
 
-  private static void classTearDown()
+  @AfterClass
+  @Request
+  public static void classTearDown()
   {
     new MdPackage(pack).delete();
   }
 
+  @Test
+  @Request
   public void testRequiredAttribute()
   {
     BusinessDAO businessDAO1 = null;
     BusinessDAO businessDAO2 = null;
     BusinessDAO businessDAO3 = null;
     BusinessDAO businessDAO4 = null;
-    
+
     Locale originalLocale = CommonProperties.getDefaultLocale();
-    
+
     try
     {
       // Should not throw an exception
       businessDAO1 = BusinessDAO.newInstance(phrases.definesType());
       businessDAO1.apply();
-    
-      lang = (MdAttributeLocalCharacterDAO)MdAttributeLocalCharacterDAO.get(lang.getId()).getBusinessDAO();
+
+      lang = (MdAttributeLocalCharacterDAO) MdAttributeLocalCharacterDAO.get(lang.getId()).getBusinessDAO();
       lang.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       lang.apply();
-    
+
       try
       {
         businessDAO2 = BusinessDAO.newInstance(phrases.definesType());
@@ -201,68 +165,70 @@ public class LocalizationTest extends TestCase
       catch (ProblemException pe)
       {
         List<ProblemIF> problemList = pe.getProblems();
-        
+
         if (problemList.size() == 1 && problemList.get(0) instanceof EmptyValueProblem)
         {
           // Expected to land here
         }
         else
         {
-          fail(EmptyValueProblem.class.getName() + " was not thrown.");
+          Assert.fail(EmptyValueProblem.class.getName() + " was not thrown.");
         }
       }
-            
+
       lang.addLocale(Locale.GERMAN);
-      
+
       CommonProperties.setDefaultLocaleForTestingPurposesOnly(Locale.GERMAN);
-      
+
       businessDAO3 = BusinessDAO.newInstance(phrases.definesType());
       businessDAO3.setStructValue(lang.definesAttribute(), "de", "Das Boot");
       businessDAO3.apply();
-      
+
       businessDAO4 = BusinessDAO.newInstance(phrases.definesType());
       businessDAO4.setStructValue(lang.definesAttribute(), MdAttributeLocalInfo.DEFAULT_LOCALE, "Das Boot");
       businessDAO4.apply();
     }
     finally
-    { 
+    {
       CommonProperties.setDefaultLocaleForTestingPurposesOnly(originalLocale);
-      
+
       if (businessDAO1 != null && !businessDAO1.isNew())
       {
-        businessDAO1.delete();  
+        businessDAO1.delete();
       }
-    
+
       if (businessDAO2 != null && !businessDAO2.isNew())
       {
         businessDAO2.delete();
       }
-      
+
       if (businessDAO3 != null && !businessDAO3.isNew())
       {
         businessDAO3.delete();
       }
-      
+
       if (businessDAO4 != null && !businessDAO4.isNew())
       {
         businessDAO4.delete();
       }
-      
-      lang = (MdAttributeLocalCharacterDAO)MdAttributeLocalCharacterDAO.get(lang.getId()).getBusinessDAO();
+
+      lang = (MdAttributeLocalCharacterDAO) MdAttributeLocalCharacterDAO.get(lang.getId()).getBusinessDAO();
       lang.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       lang.apply();
-      
+
       lang.removeLocale(Locale.GERMAN);
     }
   }
-  
+
+  @Test
+  @Request
   public void testCreateLocalizableNoStruct()
   {
     String structType = pack + ".PhrasesHello";
     try
     {
       MdStructDAO.getMdStructDAO(structType);
-      fail("[" + structType + "] already exists");
+      Assert.fail("[" + structType + "] already exists");
     }
     catch (DataNotFoundException e)
     {
@@ -286,6 +252,8 @@ public class LocalizationTest extends TestCase
     }
   }
 
+  @Test
+  @Request
   public void testCreateLocalizableCustomStruct()
   {
     String structType = pack + ".PhrasesGoodbye";
@@ -300,7 +268,7 @@ public class LocalizationTest extends TestCase
     try
     {
       MdStructDAO.getMdStructDAO(structType);
-      fail("[" + structType + "] was autocreated even though mdStruct was specified");
+      Assert.fail("[" + structType + "] was autocreated even though mdStruct was specified");
     }
     catch (DataNotFoundException e)
     {
@@ -313,6 +281,8 @@ public class LocalizationTest extends TestCase
     }
   }
 
+  @Test
+  @Request
   public void testAddDeleteLocale() throws Exception
   {
     String fr_fr = Locale.FRANCE.toString();
@@ -321,7 +291,7 @@ public class LocalizationTest extends TestCase
 
     if (struct.definesAttribute(fr_fr) == null)
     {
-      fail("Attribute failed to associate French with it");
+      Assert.fail("Attribute Assert.failed to associate French with it");
     }
 
     try
@@ -331,14 +301,14 @@ public class LocalizationTest extends TestCase
       sorryDAO.setStructValue(lang.definesAttribute(), fr_fr, in);
       sorryDAO.apply();
 
-      Class<?> phrasesClass = LoaderDecorator.load(phrases.definesType());
+      Class<?> phrasesClass = Thread.currentThread().getContextClassLoader().loadClass(phrases.definesType());
 
       Method get = phrasesClass.getMethod("get", String.class);
       Object object = get.invoke(null, sorryId);
       Struct struct = (Struct) phrasesClass.getMethod("getLang").invoke(object);
       String out = struct.getValue(fr_fr);
 
-      assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
+      Assert.assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
     }
     finally
     {
@@ -346,6 +316,8 @@ public class LocalizationTest extends TestCase
     }
   }
 
+  @Test
+  @Request
   public void testGetLocalText() throws Exception
   {
     String fr_fr = Locale.FRANCE.toString();
@@ -354,7 +326,7 @@ public class LocalizationTest extends TestCase
 
     if (struct.definesAttribute(fr_fr) == null)
     {
-      fail("Attribute failed to associate French with it");
+      Assert.fail("Attribute Assert.failed to associate French with it");
     }
 
     try
@@ -364,14 +336,14 @@ public class LocalizationTest extends TestCase
       greetingDAO.setStructValue(formal.definesAttribute(), fr_fr, in);
       greetingDAO.apply();
 
-      Class<?> phrasesClass = LoaderDecorator.load(phrases.definesType());
+      Class<?> phrasesClass = Thread.currentThread().getContextClassLoader().loadClass(phrases.definesType());
 
       Method get = phrasesClass.getMethod("get", String.class);
       Object object = get.invoke(null, greetingId);
       Struct struct = (Struct) phrasesClass.getMethod("getFormal").invoke(object);
       String out = (String) struct.getValue(fr_fr);
 
-      assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
+      Assert.assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
     }
     finally
     {
@@ -379,6 +351,8 @@ public class LocalizationTest extends TestCase
     }
   }
 
+  @Test
+  @Request
   public void testUserLocale() throws Exception
   {
     lang.addLocale(Locale.GERMAN);
@@ -391,15 +365,15 @@ public class LocalizationTest extends TestCase
       sorryDAO.setStructValue(lang.definesAttribute(), "de", in);
       sorryDAO.apply();
 
-      Class<?> phrasesClass = LoaderDecorator.load(phrases.definesType());
-      Class<?> structClass = LoaderDecorator.load(struct.definesType());
+      Class<?> phrasesClass = Thread.currentThread().getContextClassLoader().loadClass(phrases.definesType());
+      Class<?> structClass = Thread.currentThread().getContextClassLoader().loadClass(struct.definesType());
 
       Method get = phrasesClass.getMethod("get", String.class);
       Object object = get.invoke(null, sorryId);
       Object struct = phrasesClass.getMethod("getLang").invoke(object);
       String out = (String) structClass.getMethod("getValue", Locale.class).invoke(struct, Locale.GERMANY);
 
-      assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
+      Assert.assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
     }
     finally
     {
@@ -407,6 +381,8 @@ public class LocalizationTest extends TestCase
     }
   }
 
+  @Test
+  @Request
   public void testUserLocaleDTO() throws Exception
   {
     lang.addLocale(Locale.GERMAN);
@@ -423,15 +399,15 @@ public class LocalizationTest extends TestCase
       ClientRequestIF request = systemSession.getRequest();
       try
       {
-        Class<?> phrasesDtoClass = LoaderDecorator.load(phrases.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
-        Class<?> structDtoClass = LoaderDecorator.load(struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
+        Class<?> phrasesDtoClass = Thread.currentThread().getContextClassLoader().loadClass(phrases.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
+        Class<?> structDtoClass = Thread.currentThread().getContextClassLoader().loadClass(struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
 
         Method get = phrasesDtoClass.getMethod("get", ClientRequestIF.class, String.class);
         Object object = get.invoke(null, request, sorryId);
         Object struct = phrasesDtoClass.getMethod("getLang").invoke(object);
         String out = (String) structDtoClass.getMethod("getValue", Locale.class).invoke(struct, Locale.GERMANY);
 
-        assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
+        Assert.assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
       }
       finally
       {
@@ -444,6 +420,8 @@ public class LocalizationTest extends TestCase
     }
   }
 
+  @Test
+  @Request
   public void testTextDTO() throws Exception
   {
     lang.addLocale(Locale.GERMAN);
@@ -460,15 +438,19 @@ public class LocalizationTest extends TestCase
       ClientRequestIF request = systemSession.getRequest();
       try
       {
-        Class<?> phrasesDtoClass = LoaderDecorator.load(phrases.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
-        Class<?> structDtoClass = LoaderDecorator.load(struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
+        Class<?> phrasesDtoClass = Thread.currentThread().getContextClassLoader().loadClass(phrases.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
+        Class<?> structDtoClass = Thread.currentThread().getContextClassLoader().loadClass(struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
 
         Method get = phrasesDtoClass.getMethod("get", ClientRequestIF.class, String.class);
         Object object = get.invoke(null, request, greetingId);
         Object struct = phrasesDtoClass.getMethod("getFormal").invoke(object);
         String out = (String) structDtoClass.getMethod("getValue", Locale.class).invoke(struct, Locale.GERMANY);
 
-        assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
+        Assert.assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
+      }
+      catch (RuntimeException e)
+      {
+        e.printStackTrace();
       }
       finally
       {
@@ -481,6 +463,8 @@ public class LocalizationTest extends TestCase
     }
   }
 
+  @Test
+  @Request
   public void testDefaultCharacterDTO() throws Exception
   {
     lang.addLocale(Locale.GERMAN);
@@ -498,15 +482,15 @@ public class LocalizationTest extends TestCase
 
       try
       {
-        Class<?> phrasesDtoClass = LoaderDecorator.load(phrases.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
-        Class<?> structDtoClass = LoaderDecorator.load(struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
+        Class<?> phrasesDtoClass = Thread.currentThread().getContextClassLoader().loadClass(phrases.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
+        Class<?> structDtoClass = Thread.currentThread().getContextClassLoader().loadClass(struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
 
         Method get = phrasesDtoClass.getMethod("get", ClientRequestIF.class, String.class);
         Object object = get.invoke(null, request, sorryId);
         Object struct = phrasesDtoClass.getMethod("getLang").invoke(object);
         String out = (String) structDtoClass.getMethod("getValue").invoke(struct);
 
-        assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
+        Assert.assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
       }
       finally
       {
@@ -519,6 +503,8 @@ public class LocalizationTest extends TestCase
     }
   }
 
+  @Test
+  @Request
   public void testDefaultTextDTO() throws Exception
   {
     lang.addLocale(Locale.GERMAN);
@@ -536,15 +522,15 @@ public class LocalizationTest extends TestCase
 
       try
       {
-        Class<?> phrasesDtoClass = LoaderDecorator.load(phrases.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
-        Class<?> structDtoClass = LoaderDecorator.load(struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
+        Class<?> phrasesDtoClass = Thread.currentThread().getContextClassLoader().loadClass(phrases.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
+        Class<?> structDtoClass = Thread.currentThread().getContextClassLoader().loadClass(struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
 
         Method get = phrasesDtoClass.getMethod("get", ClientRequestIF.class, String.class);
         Object object = get.invoke(null, request, greetingId);
         Object struct = phrasesDtoClass.getMethod("getFormal").invoke(object);
         String out = (String) structDtoClass.getMethod("getValue").invoke(struct);
 
-        assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
+        Assert.assertEquals("Stored and Retrieved StructCharacters have different values.", in, out);
       }
       finally
       {
@@ -557,6 +543,8 @@ public class LocalizationTest extends TestCase
     }
   }
 
+  @Test
+  @Request
   public void testLocalizeDefaultDimensionQuery()
   {
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
@@ -605,7 +593,7 @@ public class LocalizationTest extends TestCase
     i.close();
     String out = valueObject.getValue("localValue");
 
-    assertEquals("the non-dimensional default apology should have been returned.", defaultApology, out);
+    Assert.assertEquals("the non-dimensional default apology should have been returned.", defaultApology, out);
 
     session.setDimension(mdDimensionDAOIF);
 
@@ -616,9 +604,11 @@ public class LocalizationTest extends TestCase
     i.close();
     out = valueObject.getValue("localValue");
 
-    assertEquals("the dimensional default apology should have been returned.", dimensionDefault, out);
+    Assert.assertEquals("the dimensional default apology should have been returned.", dimensionDefault, out);
   }
 
+  @Test
+  @Request
   public void testLocalizeDefaultDimension()
   {
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
@@ -656,17 +646,19 @@ public class LocalizationTest extends TestCase
     session.setDimension((MdDimensionDAOIF) null);
 
     String out = sorryDAO.getLocalValue(lang.definesAttribute(), Session.getCurrentLocale());
-    assertEquals("the non-dimensional default apology should have been returned.", defaultApology, out);
+    Assert.assertEquals("the non-dimensional default apology should have been returned.", defaultApology, out);
 
     session.setDimension(mdDimensionDAOIF);
 
     out = sorryDAO.getLocalValue(lang.definesAttribute(), Session.getCurrentLocale());
-    assertEquals("the dimensional default apology should have been returned.", dimensionDefault, out);
+    Assert.assertEquals("the dimensional default apology should have been returned.", dimensionDefault, out);
   }
 
   /**
    * The dimension default has a value, but not the locale dimension.
    */
+  @Test
+  @Request
   public void testLocalizedLocaleWithDimensionDefault()
   {
     this.addLocale(Locale.GERMAN);
@@ -722,12 +714,12 @@ public class LocalizationTest extends TestCase
     session.setDimension((MdDimensionDAOIF) null);
 
     String out = sorryDAO.getLocalValue(lang.definesAttribute(), Session.getCurrentLocale());
-    assertEquals("the non-dimensional local apology should have been returned.", localeValue, out);
+    Assert.assertEquals("the non-dimensional local apology should have been returned.", localeValue, out);
 
     session.setDimension(mdDimensionDAOIF);
 
     out = sorryDAO.getLocalValue(lang.definesAttribute(), Session.getCurrentLocale());
-    assertEquals("the dimensional default apology should have been returned.", dimensionDefault, out);
+    Assert.assertEquals("the dimensional default apology should have been returned.", dimensionDefault, out);
   }
 
   @Request(RequestType.SESSION)
@@ -737,17 +729,19 @@ public class LocalizationTest extends TestCase
     session.setDimension((MdDimensionDAOIF) null);
 
     String out = sorryDAO.getLocalValue(lang.definesAttribute(), Session.getCurrentLocale());
-    assertEquals("the non-dimensional local apology should have been returned.", localeValue, out);
+    Assert.assertEquals("the non-dimensional local apology should have been returned.", localeValue, out);
 
     session.setDimension(mdDimensionDAOIF);
 
     out = sorryDAO.getLocalValue(lang.definesAttribute(), Session.getCurrentLocale());
-    assertEquals("the dimensional local apology should have been returned.", dimensionLocale, out);
+    Assert.assertEquals("the dimensional local apology should have been returned.", dimensionLocale, out);
   }
 
   /**
    * The dimension default has a value, but not the locale dimension.
    */
+  @Test
+  @Request
   public void testLocalizedLocaleWithDimensionDefaultQuery()
   {
     this.addLocale(Locale.GERMAN);
@@ -812,7 +806,7 @@ public class LocalizationTest extends TestCase
     ValueObject valueObject = i.next();
     i.close();
     String out = valueObject.getValue("localValue");
-    assertEquals("the non-dimensional local apology should have been returned.", localeValue, out);
+    Assert.assertEquals("the non-dimensional local apology should have been returned.", localeValue, out);
 
     session.setDimension(mdDimensionDAOIF);
 
@@ -823,7 +817,7 @@ public class LocalizationTest extends TestCase
     i.close();
     out = valueObject.getValue("localValue");
 
-    assertEquals("the dimensional default apology should have been returned.", dimensionDefault, out);
+    Assert.assertEquals("the dimensional default apology should have been returned.", dimensionDefault, out);
   }
 
   @Request(RequestType.SESSION)
@@ -843,7 +837,7 @@ public class LocalizationTest extends TestCase
     i.close();
     String out = valueObject.getValue("localValue");
 
-    assertEquals("the non-dimensional local apology should have been returned.", localeValue, out);
+    Assert.assertEquals("the non-dimensional local apology should have been returned.", localeValue, out);
 
     session.setDimension(mdDimensionDAOIF);
 
@@ -854,9 +848,11 @@ public class LocalizationTest extends TestCase
     i.close();
     out = valueObject.getValue("localValue");
 
-    assertEquals("the dimensional local apology should have been returned.", dimensionLocale, out);
+    Assert.assertEquals("the dimensional local apology should have been returned.", dimensionLocale, out);
   }
 
+  @Test
+  @Request
   public void testAddSupportedLocales()
   {
     MdLocalStructDAOIF mdLocalStructDAOIF = MdLocalStructDAO.getMdLocalStructDAO(EntityTypes.METADATADISPLAYLABEL.getType());
@@ -866,17 +862,19 @@ public class LocalizationTest extends TestCase
 
     int newNumAttributes = mdLocalStructDAOIF.definesAttributes().size();
 
-    assertEquals("Adding a supported locale did not automatically add an additional attribute to a local struct type.", oldNumAttributes + 1, newNumAttributes);
+    Assert.assertEquals("Adding a supported locale did not automatically add an additional attribute to a local struct type.", oldNumAttributes + 1, newNumAttributes);
 
-    assertNotSame("Adding a supported locale did not automatically add an additional attribute to a local struct type.", null, mdLocalStructDAOIF.definesAttribute(Locale.ITALY.toString()));
+    Assert.assertNotSame("Adding a supported locale did not automatically add an additional attribute to a local struct type.", null, mdLocalStructDAOIF.definesAttribute(Locale.ITALY.toString()));
 
     this.deleteLocale(Locale.ITALY);
 
-    assertEquals("Removing a supported locale did not automatically remove an attribute from a local struct type.", oldNumAttributes, mdLocalStructDAOIF.definesAttributes().size());
+    Assert.assertEquals("Removing a supported locale did not automatically remove an attribute from a local struct type.", oldNumAttributes, mdLocalStructDAOIF.definesAttributes().size());
 
-    assertEquals("Removing a supported locale did not automatically remove an attribute from a local struct type.", null, mdLocalStructDAOIF.definesAttribute(Locale.ITALY.toString()));
+    Assert.assertEquals("Removing a supported locale did not automatically remove an attribute from a local struct type.", null, mdLocalStructDAOIF.definesAttribute(Locale.ITALY.toString()));
   }
 
+  @Test
+  @Request
   public void testAddDimension()
   {
     MdLocalStructDAOIF mdLocalStructDAOIF = MdLocalStructDAO.getMdLocalStructDAO(EntityTypes.METADATADISPLAYLABEL.getType());
@@ -889,17 +887,19 @@ public class LocalizationTest extends TestCase
 
     int newNumAttributes = mdLocalStructDAOIF.definesAttributes().size();
 
-    assertEquals("Adding a dimension did not automatically add an additional attribute to a local struct type.", oldNumAttributes + 1, newNumAttributes);
+    Assert.assertEquals("Adding a dimension did not automatically add an additional attribute to a local struct type.", oldNumAttributes + 1, newNumAttributes);
 
-    assertNotSame("Adding a dimension did not automatically add an additional attribute to a local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getDefaultLocaleAttributeName()));
+    Assert.assertNotSame("Adding a dimension did not automatically add an additional attribute to a local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getDefaultLocaleAttributeName()));
 
     mdDimensionDAO.delete();
 
-    assertEquals("Removing a dimension did not automatically remove an attribute from a local struct type.", oldNumAttributes, mdLocalStructDAOIF.definesAttributes().size());
+    Assert.assertEquals("Removing a dimension did not automatically remove an attribute from a local struct type.", oldNumAttributes, mdLocalStructDAOIF.definesAttributes().size());
 
-    assertEquals("Removing a dimension did not automatically remove an attribute from a local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getDefaultLocaleAttributeName()));
+    Assert.assertEquals("Removing a dimension did not automatically remove an attribute from a local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getDefaultLocaleAttributeName()));
   }
 
+  @Test
+  @Request
   public void testAddDimensionToLocales()
   {
     this.addLocale(Locale.ITALY);
@@ -914,19 +914,21 @@ public class LocalizationTest extends TestCase
 
     int newNumAttributes = mdLocalStructDAOIF.definesAttributes().size();
 
-    assertEquals("Adding a dimension with an existing locale did not automatically add two additional attribute to a local struct type.", oldNumAttributes + 2, newNumAttributes);
+    Assert.assertEquals("Adding a dimension with an existing locale did not automatically add two additional attribute to a local struct type.", oldNumAttributes + 2, newNumAttributes);
 
-    assertNotSame("Adding a dimension with an existing locale did not automatically add an additional attribute to a local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getLocaleAttributeName(Locale.ITALY)));
+    Assert.assertNotSame("Adding a dimension with an existing locale did not automatically add an additional attribute to a local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getLocaleAttributeName(Locale.ITALY)));
 
     mdDimensionDAO.delete();
 
-    assertEquals("Removing a dimension with an existing locale did not automatically remove an attribute from the local struct type.", oldNumAttributes, mdLocalStructDAOIF.definesAttributes().size());
+    Assert.assertEquals("Removing a dimension with an existing locale did not automatically remove an attribute from the local struct type.", oldNumAttributes, mdLocalStructDAOIF.definesAttributes().size());
 
-    assertEquals("Removing a dimension with an existing locale did not automatically remove an attribute from the local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getLocaleAttributeName(Locale.ITALY)));
+    Assert.assertEquals("Removing a dimension with an existing locale did not automatically remove an attribute from the local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getLocaleAttributeName(Locale.ITALY)));
 
     this.deleteLocale(Locale.ITALY);
   }
 
+  @Test
+  @Request
   public void testAddLocaleToDimension()
   {
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
@@ -941,20 +943,22 @@ public class LocalizationTest extends TestCase
 
     int newNumAttributes = mdLocalStructDAOIF.definesAttributes().size();
 
-    assertEquals("Adding a dimension with an existing locale did not automatically add two additional attribute to a local struct type.", oldNumAttributes + 2, newNumAttributes);
+    Assert.assertEquals("Adding a dimension with an existing locale did not automatically add two additional attribute to a local struct type.", oldNumAttributes + 2, newNumAttributes);
 
-    assertNotSame("Adding a dimension with an existing locale did not automatically add an additional attribute to a local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getLocaleAttributeName(Locale.ITALY)));
+    Assert.assertNotSame("Adding a dimension with an existing locale did not automatically add an additional attribute to a local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getLocaleAttributeName(Locale.ITALY)));
 
     this.deleteLocale(Locale.ITALY);
 
-    assertEquals("Removing a dimension with an existing locale did not automatically remove an attribute from the local struct type.", oldNumAttributes, mdLocalStructDAOIF.definesAttributes().size());
+    Assert.assertEquals("Removing a dimension with an existing locale did not automatically remove an attribute from the local struct type.", oldNumAttributes, mdLocalStructDAOIF.definesAttributes().size());
 
-    assertEquals("Removing a dimension with an existing locale did not automatically remove an attribute from the local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getLocaleAttributeName(Locale.ITALY)));
+    Assert.assertEquals("Removing a dimension with an existing locale did not automatically remove an attribute from the local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getLocaleAttributeName(Locale.ITALY)));
 
     mdDimensionDAO.delete();
   }
 
   // Test columns on local attributes
+  @Test
+  @Request
   public void testLocaleAttributes()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
@@ -977,7 +981,7 @@ public class LocalizationTest extends TestCase
 
           MdAttributeDAOIF defaultDimension = mdStructIF.getDefaultLocale(mdDimension);
 
-          assertNotNull(defaultDimension);
+          Assert.assertNotNull(defaultDimension);
         }
         finally
         {
@@ -997,6 +1001,8 @@ public class LocalizationTest extends TestCase
   }
 
   // Test columns on local attributes
+  @Test
+  @Request
   public void testLocaleAttributesWithDefaultLocaleStruct()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
@@ -1014,7 +1020,7 @@ public class LocalizationTest extends TestCase
 
         MdAttributeDAOIF defaultDimension = mdStructIF.getDefaultLocale(mdDimension);
 
-        assertNotNull(defaultDimension);
+        Assert.assertNotNull(defaultDimension);
       }
       finally
       {
@@ -1047,12 +1053,12 @@ public class LocalizationTest extends TestCase
   @Request
   private void deleteLocale(Locale locale)
   {
-//    SessionIF currentSession = Session.getCurrentSession();
-//
-//    if (currentSession != null)
-//    {
-//      ( (Session) currentSession ).setDimension((String) null);
-//    }
+    // SessionIF currentSession = Session.getCurrentSession();
+    //
+    // if (currentSession != null)
+    // {
+    // ( (Session) currentSession ).setDimension((String) null);
+    // }
 
     SupportedLocaleDAO supportedLocaleDAO = (SupportedLocaleDAO) SupportedLocaleDAO.getEnumeration(SupportedLocaleInfo.CLASS, locale.toString());
     supportedLocaleDAO.delete();

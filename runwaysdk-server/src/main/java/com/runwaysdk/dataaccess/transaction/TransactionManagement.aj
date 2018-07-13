@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.transaction;
 
@@ -45,9 +45,9 @@ import com.runwaysdk.session.RequestManagement;
 
 public privileged aspect TransactionManagement extends AbstractTransactionManagement
 {
-  private static Logger logger = LoggerFactory.getLogger(TransactionManagement.class);
-  
-  boolean lockedCache = false;
+  private static Logger logger      = LoggerFactory.getLogger(TransactionManagement.class);
+
+  boolean               lockedCache = false;
 
   public pointcut transactions()
   // : (nonAnnotatedTransactions() || nonThreadedTransaction(Transaction)) &&
@@ -69,35 +69,35 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
   {
     return RequestManagement.aspectOf().getProblemList();
   }
-  
-  
+
   /**
-   * New Description:
-   * Update the cache after the object has been applied to the DB with the correct
-   * ID and KEY values.
+   * New Description: Update the cache after the object has been applied to the
+   * DB with the correct ID and KEY values.
    * 
-   * Old description:
-   * Updating the key cache needs to occur after the call, as the key is not
-   * updated until after the object is applied.
+   * Old description: Updating the key cache needs to occur after the call, as
+   * the key is not updated until after the object is applied.
    * 
    * @param entityDAO
    */
   protected pointcut afterEntityApply(EntityDAO entityDAO)
   :(execution (* com.runwaysdk.dataaccess.EntityDAO.apply(..)) && target(entityDAO))
-   && within(com.runwaysdk.dataaccess.EntityDAO);  
+   && within(com.runwaysdk.dataaccess.EntityDAO);
+
   after(EntityDAO entityDAO)
     : afterEntityApply(entityDAO)
   {
-      // This can be called if this is the root most entity in a transaction and the 
-      // transaction cache has been closed. This can happen due to aspect weave ordering
-      // with the main transaction AROUND advice
-      if (!this.getTransactionCache().isClosed())
-      {
-        this.getTransactionCache().put(entityDAO);        
-      }
-     
-      // Mark the original reference as having participated in the transaction
-      entityDAO.setTransactionState();
+    // This can be called if this is the root most entity in a transaction and
+    // the
+    // transaction cache has been closed. This can happen due to aspect weave
+    // ordering
+    // with the main transaction AROUND advice
+    if (!this.getTransactionCache().isClosed())
+    {
+      this.getTransactionCache().put(entityDAO);
+    }
+
+    // Mark the original reference as having participated in the transaction
+    entityDAO.setTransactionState();
   }
 
   /**
@@ -111,10 +111,11 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     // 2. Delete all Java source and class files for types that are deleted in
     // this transaction.
     Collection<MdTypeDAOIF> mdTypeIFDeleteClasses = this.getTransactionCache().getMdTypesForClassRemoval();
-    
-    // 2b. Write all java artifacts which have been marked as needed to be written before the compile 
+
+    // 2b. Write all java artifacts which have been marked as needed to be
+    // written before the compile
     this.generateJavaFiles(this.getState().getListOfMarkedArtifacts());
-    
+
     // 3. Compile Java source files and produce class files for types that
     // were created or modified in this transaction.
     Collection<MdTypeDAOIF> mdTypeIFGenerateClasses = this.getTransactionCache().getMdTypesForCodeGeneration();
@@ -186,7 +187,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     // ObjectCacheFacade.commitGlobalCacheTransaction();
 
     this.getTransactionCache().updatePermissionEntities();
-    
+
     // (new 6 and 7) reload the classloader if any MdTypes have been modified
     // or deleted
 
@@ -281,7 +282,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
   protected void doFinally()
   {
     super.doFinally();
-    
+
     this.getState().allCommandsDoFinally();
   }
 
@@ -331,13 +332,14 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
    * Removes java files, removes class files, and unloads java classes.
    */
   private void removeClassFiles(Collection<MdTypeDAOIF> mdTypeIFDeleteClasses)
-  {   
+  {
     // If this is a development environment, and we're keeping source, don't
     // delete anything
-    if ( (LocalProperties.isKeepSource() && LocalProperties.isDevelopEnvironment()) || mdTypeIFDeleteClasses.size() == 0 ) {
+    if ( ( LocalProperties.isKeepSource() && LocalProperties.isDevelopEnvironment() ) || mdTypeIFDeleteClasses.size() == 0)
+    {
       return;
     }
-    
+
     String bcuz = LocalProperties.isKeepSource() == false ? "because isKeepSource=false" : "because isDevelopEnvironment=false";
     logger.info("Deleting source files for types [" + mdTypeIFDeleteClasses.toString() + "] " + bcuz + ".");
 
@@ -359,15 +361,14 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
    */
   private void generateAndCompileClasses(Collection<MdTypeDAOIF> mdTypeIFGenerateClasses)
   {
-    if (LocalProperties.isSkipCodeGenAndCompile())
+    if (LocalProperties.isSkipCodeGenAndCompile() || ! ( LocalProperties.isDevelopEnvironment() || LocalProperties.isRunwayEnvironment()  || LocalProperties.isTestEnvironment() ))
     {
       return;
     }
-    
+
     // Remove all mdTypes which don't generate source
     List<MdTypeDAOIF> mdTypeDAOIFs = mdTypeIFGenerateClasses.stream().filter(t -> t.isGenerateSource()).collect(Collectors.toList());
-    
-    
+
     // Even if the size of the collection is 0, continue executing this method.
     // Additional important stuff happens.
 
@@ -405,26 +406,26 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
       }
     }
 
-    // Third, store result in the database
-    for (MdTypeDAOIF mdTypeDAOIF : mdTypeDAOIFs)
-    {
-      if (GenerationUtil.isSkipCompileAndCodeGeneration(mdTypeDAOIF))
-      {
-        continue;
-      }
-
-      // Store result in the database
-      // This cast is OK, as we are not modifying the object itself.
-      ( (MdTypeDAO) mdTypeDAOIF ).writeFileArtifactsToDatabaseAndObjects(conn);
-
-      // Increment the sequence numbers to create a transaction log.
-      // This cast is OK, as the object has already been copied from the cached
-      // version (see TransactionCacheIF.addMdTypeToMapForGen(..))
-      EntityDAOFactory.update((MdTypeDAO) mdTypeDAOIF, false);
-      
-      // Add the newly updated EntityDAO back into the transaction cache
-      this.getTransactionCache().put(mdTypeDAOIF);
-    }
+//    // Third, store result in the database
+//    for (MdTypeDAOIF mdTypeDAOIF : mdTypeDAOIFs)
+//    {
+//      if (GenerationUtil.isSkipCompileAndCodeGeneration(mdTypeDAOIF))
+//      {
+//        continue;
+//      }
+//
+//      // Store result in the database
+//      // This cast is OK, as we are not modifying the object itself.
+//      ( (MdTypeDAO) mdTypeDAOIF ).writeFileArtifactsToDatabaseAndObjects(conn);
+//
+//      // Increment the sequence numbers to create a transaction log.
+//      // This cast is OK, as the object has already been copied from the cached
+//      // version (see TransactionCacheIF.addMdTypeToMapForGen(..))
+//      EntityDAOFactory.update((MdTypeDAO) mdTypeDAOIF, false);
+//
+//      // Add the newly updated EntityDAO back into the transaction cache
+//      this.getTransactionCache().put(mdTypeDAOIF);
+//    }
   }
 
   /**

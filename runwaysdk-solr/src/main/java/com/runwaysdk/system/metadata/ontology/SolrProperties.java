@@ -21,11 +21,10 @@ package com.runwaysdk.system.metadata.ontology;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
-import com.runwaysdk.generation.loader.;
 
-public class SolrProperties implements 
+public class SolrProperties
 {
-  private static class Singleton implements 
+  private static class Singleton
   {
     private static SolrProperties INSTANCE = new SolrProperties();
 

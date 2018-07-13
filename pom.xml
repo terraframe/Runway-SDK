@@ -34,7 +34,6 @@
     <module>runwaysdk-client</module>
     <module>runwaysdk-server</module>
     <module>runwaysdk-test</module>
-    <module>runwaysdk-tomcat6cl</module>
     <module>runwaysdk-web</module>
     <module>runwaysdk-archetype</module>
     <module>runwaysdk-gis</module>

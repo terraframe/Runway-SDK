@@ -198,17 +198,6 @@ public class ConversionFacade
   }
 
   /**
-   * Copies the values from one DTO into another.
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void genericCopy(ClientRequestIF clientRequest, MutableDTO source, MutableDTO dest)
-  {
-    ComponentDTOIFCopier.copy(clientRequest, source, dest, false, false);
-  }
-
-  /**
    * Copies the contents of one DTO into another. The ComponentDTOIF dest
    * parameter is assumed to be type-safe.
    * 
