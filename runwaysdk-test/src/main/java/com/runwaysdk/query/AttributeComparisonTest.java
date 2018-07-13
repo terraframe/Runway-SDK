@@ -3,69 +3,34 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class AttributeComparisonTest extends TestCase
+public class AttributeComparisonTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
 
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new QueryMasterSetup(AttributeComparisonTest.suite(), QueryMasterSetup.parentQueryInfo.getType(), QueryMasterSetup.parentRefQueryInfo.getType()));
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(AttributeComparisonTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-      }
-
-      protected void tearDown()
-      {
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @Test
   public void testBooleanEqAttributeBoolean()
   {
     try
@@ -80,14 +45,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute boolean values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
       }
 
@@ -101,16 +66,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute boolean values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute boolean values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testBooleanEqAttributeBoolean_Generated()
   {
     try
@@ -140,7 +107,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -149,7 +116,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute boolean values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
       }
 
@@ -169,15 +136,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute boolean values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute boolean values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testBooleanNotEqAttributeBoolean()
   {
     try
@@ -192,14 +161,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute boolean values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
       }
 
@@ -213,16 +182,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute boolean values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute boolean values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testBooleanNotEqAttributeBoolean_Generated()
   {
     try
@@ -251,7 +222,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -260,7 +231,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute boolean values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
       }
 
@@ -281,15 +252,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute boolean values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute boolean values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqAttribute()
   {
     try
@@ -304,14 +277,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
       }
 
@@ -324,16 +297,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testCharacterEqAttribute_Generated()
   {
     try
@@ -363,7 +338,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -372,7 +347,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on character values are incorrect.");
+          Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
       }
 
@@ -393,15 +368,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqIgnoreCaseAttribute()
   {
     // uppercase the current value for this ignore case test
@@ -419,14 +396,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
       }
 
@@ -439,12 +416,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -455,6 +432,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testCharacterEqIgnoreCaseAttribute_Generated()
   {
     // uppercase the current value for this ignore case test
@@ -487,7 +466,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -496,7 +475,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on character values are incorrect.");
+          Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
       }
 
@@ -517,12 +496,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -532,6 +511,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqAttribute()
   {
     try
@@ -546,14 +527,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
       }
 
@@ -566,16 +547,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testCharacterNotEqAttribute_Generated()
   {
     try
@@ -611,7 +594,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -620,7 +603,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on character values are incorrect.");
+          Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
       }
 
@@ -636,15 +619,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqIgnoreCaseAttribute()
   {
     try
@@ -659,14 +644,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
       }
 
@@ -679,16 +664,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testCharacterNotEqIgnoreCaseAttribute_Generated()
   {
     try
@@ -724,7 +711,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -733,7 +720,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on character values are incorrect.");
+          Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
       }
 
@@ -749,15 +736,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testTextEqAttribute()
   {
     try
@@ -772,14 +761,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
       }
 
@@ -792,15 +781,17 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testClobEqAttribute()
   {
     try
@@ -815,14 +806,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
       }
 
@@ -835,16 +826,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testTextEqAttribute_Generated()
   {
     try
@@ -874,7 +867,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -883,7 +876,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on text values are incorrect.");
+          Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
       }
 
@@ -904,16 +897,18 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testClobEqAttribute_Generated()
   {
     try
@@ -943,7 +938,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -952,7 +947,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
       }
 
@@ -973,15 +968,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testTextNotEqAttribute()
   {
     String originalValue = QueryMasterSetup.compareQueryObject.getValue("comText");
@@ -1001,14 +998,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Text values are incorrect.");
         }
       }
 
@@ -1021,12 +1018,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1036,6 +1033,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testClobNotEqAttribute()
   {
     String originalValue = QueryMasterSetup.compareQueryObject.getValue("comClob");
@@ -1055,14 +1054,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
       }
 
@@ -1075,12 +1074,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1091,6 +1090,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testTextNotEqAttribute_Generated()
   {
     String originalValue = QueryMasterSetup.compareQueryObject.getValue("comText");
@@ -1132,7 +1133,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -1141,7 +1142,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on text values are incorrect.");
+          Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
       }
 
@@ -1157,12 +1158,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1173,6 +1174,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testClobNotEqAttribute_Generated()
   {
     String originalValue = QueryMasterSetup.compareQueryObject.getValue("comClob");
@@ -1214,7 +1217,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -1223,7 +1226,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
       }
 
@@ -1239,12 +1242,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1254,6 +1257,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqIgnoreCaseAttribute()
   {
     // uppercase the current value for this ignore case test
@@ -1271,14 +1276,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Text values are incorrect.");
         }
       }
 
@@ -1291,12 +1296,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute Text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1306,6 +1311,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testClobEqIgnoreCaseAttribute()
   {
     // uppercase the current value for this ignore case test
@@ -1323,14 +1330,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
       }
 
@@ -1343,12 +1350,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1359,6 +1366,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testTextEqIgnoreCaseAttribute_Generated()
   {
     // uppercase the current value for this ignore case test
@@ -1392,7 +1401,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -1401,7 +1410,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on text values are incorrect.");
+          Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
       }
 
@@ -1422,12 +1431,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1438,6 +1447,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testClobEqIgnoreCaseAttribute_Generated()
   {
     // uppercase the current value for this ignore case test
@@ -1471,7 +1482,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -1480,7 +1491,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
       }
 
@@ -1501,12 +1512,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1516,6 +1527,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeEqAttribute()
   {
     try
@@ -1530,14 +1543,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
       }
 
@@ -1550,16 +1563,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateTimeEqAttribute_Generated()
   {
     try
@@ -1589,7 +1604,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -1598,7 +1613,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
       }
 
@@ -1619,15 +1634,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeGtAttribute()
   {
     try
@@ -1642,14 +1659,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
       }
 
@@ -1662,16 +1679,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateTimeGtAttribute_Generated()
   {
     try
@@ -1701,7 +1720,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -1710,7 +1729,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
       }
 
@@ -1731,15 +1750,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeGtEqAttribute()
   {
     try
@@ -1753,14 +1774,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
       }
 
@@ -1773,14 +1794,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
       }
 
@@ -1796,12 +1817,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1811,6 +1832,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateTimeGtEqAttribute_Generated()
   {
 
@@ -1846,7 +1869,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -1855,7 +1878,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
       }
 
@@ -1872,7 +1895,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -1881,7 +1904,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
       }
 
@@ -1899,13 +1922,13 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
       e.printStackTrace();
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1914,6 +1937,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeLtAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDateTime", "2006-12-07 13:00:00");
@@ -1931,14 +1956,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
       }
 
@@ -1951,12 +1976,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1966,6 +1991,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateTimeLtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDateTime", "2006-12-07 13:00:00");
@@ -1998,7 +2025,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -2007,7 +2034,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
       }
 
@@ -2023,12 +2050,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2037,6 +2064,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeLtEqAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDateTime", "2006-12-07 13:00:00");
@@ -2054,14 +2083,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
       }
 
@@ -2077,12 +2106,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2092,6 +2121,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateTimeLtEqAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDateTime", "2006-12-07 13:00:00");
@@ -2124,7 +2155,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -2133,7 +2164,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
       }
 
@@ -2152,12 +2183,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2166,6 +2197,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeNotEqAttribute()
   {
     try
@@ -2180,14 +2213,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
       }
 
@@ -2200,16 +2233,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateTimeNotEqAttribute_Generated()
   {
     try
@@ -2243,7 +2278,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -2252,7 +2287,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
       }
 
@@ -2268,15 +2303,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateEqAttribute()
   {
     try
@@ -2291,14 +2328,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
       }
 
@@ -2311,16 +2348,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateEqAttribute_Generated()
   {
     try
@@ -2350,7 +2389,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -2359,7 +2398,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on date values are incorrect.");
+          Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
       }
 
@@ -2380,15 +2419,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateGtAttribute()
   {
     try
@@ -2403,14 +2444,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
       }
 
@@ -2423,17 +2464,19 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
 
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateGtAttribute_Generated()
   {
     try
@@ -2463,7 +2506,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -2472,7 +2515,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on date values are incorrect.");
+          Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
       }
 
@@ -2493,15 +2536,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateGtEqAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDate", "2006-12-01");
@@ -2519,14 +2564,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
       }
 
@@ -2539,12 +2584,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2554,6 +2599,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateGtEqAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDate", "2006-12-01");
@@ -2586,7 +2633,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -2595,7 +2642,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on date values are incorrect.");
+          Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
       }
 
@@ -2611,12 +2658,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2625,6 +2672,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLtAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDate", "2006-12-07");
@@ -2642,14 +2691,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
       }
 
@@ -2662,12 +2711,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2677,6 +2726,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateLtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDate", "2006-12-07");
@@ -2709,7 +2760,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -2718,7 +2769,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on date values are incorrect.");
+          Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
       }
 
@@ -2734,12 +2785,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2748,6 +2799,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLtEqAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDate", "2006-12-07");
@@ -2765,14 +2818,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
       }
 
@@ -2788,14 +2841,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
       }
 
@@ -2811,12 +2864,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2826,6 +2879,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateLtEqAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDate", "2006-12-07");
@@ -2858,7 +2913,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -2867,7 +2922,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on date values are incorrect.");
+          Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
       }
 
@@ -2887,7 +2942,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -2896,7 +2951,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on date values are incorrect.");
+          Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
       }
 
@@ -2916,12 +2971,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2930,6 +2985,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateNotEqAttribute()
   {
     try
@@ -2944,14 +3001,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
       }
 
@@ -2964,16 +3021,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDateNotEqAttribute_Generated()
   {
     try
@@ -3007,7 +3066,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -3016,7 +3075,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on date values are incorrect.");
+          Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
       }
 
@@ -3032,15 +3091,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testTimeEqAttribute()
   {
     try
@@ -3055,14 +3116,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
       }
 
@@ -3075,16 +3136,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testTimeEqAttribute_Generatted()
   {
     try
@@ -3114,7 +3177,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -3123,7 +3186,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on time values are incorrect.");
+          Assert.fail("The objects returned by a query based on time values are incorrect.");
         }
       }
 
@@ -3144,15 +3207,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testTimeGtAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comTime", "14:00:00");
@@ -3170,14 +3235,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
       }
 
@@ -3190,12 +3255,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3205,6 +3270,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testTimeGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comTime", "14:00:00");
@@ -3242,7 +3309,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -3251,7 +3318,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on time values are incorrect.");
+          Assert.fail("The objects returned by a query based on time values are incorrect.");
         }
       }
 
@@ -3267,13 +3334,13 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
 
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3282,6 +3349,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeGtEqAttribute()
   {
     try
@@ -3296,14 +3365,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
       }
 
@@ -3316,14 +3385,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
       }
 
@@ -3339,12 +3408,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3354,6 +3423,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testTimeGtEqAttribute_Generated()
   {
     try
@@ -3387,7 +3458,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -3396,7 +3467,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on time values are incorrect.");
+          Assert.fail("The objects returned by a query based on time values are incorrect.");
         }
       }
 
@@ -3412,7 +3483,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -3421,7 +3492,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on time values are incorrect.");
+          Assert.fail("The objects returned by a query based on time values are incorrect.");
         }
       }
 
@@ -3440,12 +3511,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3454,6 +3525,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeLtAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comTime", "14:00:00");
@@ -3471,14 +3544,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
       }
 
@@ -3491,12 +3564,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3506,6 +3579,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testTimeLtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comTime", "14:00:00");
@@ -3542,7 +3617,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -3551,7 +3626,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on time values are incorrect.");
+          Assert.fail("The objects returned by a query based on time values are incorrect.");
         }
       }
 
@@ -3567,13 +3642,13 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
 
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3582,6 +3657,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeLtEqAttribute()
   {
     try
@@ -3596,14 +3673,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
       }
 
@@ -3619,14 +3696,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
       }
 
@@ -3639,12 +3716,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3654,6 +3731,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testTimeLtEqAttribute_Grenerated()
   {
     try
@@ -3687,7 +3766,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -3696,7 +3775,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on time values are incorrect.");
+          Assert.fail("The objects returned by a query based on time values are incorrect.");
         }
       }
 
@@ -3716,7 +3795,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -3725,7 +3804,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on time values are incorrect.");
+          Assert.fail("The objects returned by a query based on time values are incorrect.");
         }
       }
 
@@ -3741,12 +3820,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3755,6 +3834,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeNotEqAttribute()
   {
     try
@@ -3769,14 +3850,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
       }
 
@@ -3789,16 +3870,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testTimeNotEqAttribute_Generated()
   {
     try
@@ -3831,7 +3914,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -3840,7 +3923,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on time values are incorrect.");
+          Assert.fail("The objects returned by a query based on time values are incorrect.");
         }
       }
 
@@ -3856,15 +3939,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testIntegerEqAttribute()
   {
     try
@@ -3879,14 +3964,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
       }
 
@@ -3899,16 +3984,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testIntegerEqAttribute_Generated()
   {
     try
@@ -3941,7 +4028,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -3950,7 +4037,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
       }
 
@@ -3966,15 +4053,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testIntegerGtAttribute()
   {
     try
@@ -3989,14 +4078,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.childRefQueryObject.getId()) && !object.getId().equals(QueryMasterSetup.childRefQueryObject2.getId()))
         {
-          fail("The objects returned by a query based on attribute integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
       }
 
@@ -4009,16 +4098,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testIntegerGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comInteger", "100");
@@ -4054,7 +4145,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -4063,7 +4154,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) refClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.childRefQueryObject.getId()) && !objectId.equals(QueryMasterSetup.childRefQueryObject2.getId()))
         {
-          fail("The objects returned by a query based on integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
       }
 
@@ -4079,13 +4170,13 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
       e.printStackTrace();
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4094,6 +4185,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerGtEqAttribute()
   {
     try
@@ -4108,14 +4201,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
       }
 
@@ -4130,14 +4223,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
       }
 
@@ -4150,12 +4243,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4165,6 +4258,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testIntegerGtEqAttribute_Generated()
   {
     try
@@ -4198,7 +4293,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -4207,7 +4302,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
       }
 
@@ -4227,7 +4322,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -4236,7 +4331,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
       }
 
@@ -4252,12 +4347,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4266,6 +4361,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerLtEqAttribute()
   {
     try
@@ -4280,14 +4377,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
       }
 
@@ -4303,14 +4400,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
       }
 
@@ -4326,12 +4423,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4341,6 +4438,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testIntegerLtEqAttribute_Generated()
   {
     try
@@ -4370,7 +4469,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -4379,7 +4478,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
       }
 
@@ -4399,7 +4498,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -4408,7 +4507,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
       }
 
@@ -4425,12 +4524,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4439,6 +4538,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerNotEqAttribute()
   {
     try
@@ -4453,14 +4554,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
       }
 
@@ -4473,16 +4574,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testIntegerNotEqAttribute_Generated()
   {
     try
@@ -4516,7 +4619,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -4525,7 +4628,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
       }
 
@@ -4542,15 +4645,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testLongEqAttribute()
   {
     try
@@ -4565,14 +4670,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
       }
 
@@ -4585,16 +4690,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testLongEqAttribute_Generated()
   {
     try
@@ -4627,7 +4734,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -4636,7 +4743,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -4652,15 +4759,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testLongGtAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comLong", "95");
@@ -4678,14 +4787,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
       }
 
@@ -4698,12 +4807,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4713,6 +4822,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testLongGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comLong", "95");
@@ -4748,7 +4859,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -4757,7 +4868,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -4773,12 +4884,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4787,6 +4898,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGtEqAttribute()
   {
     try
@@ -4801,14 +4914,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
       }
 
@@ -4824,14 +4937,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
       }
 
@@ -4844,12 +4957,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4859,6 +4972,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testLongGtEqAttribute_Generated()
   {
     try
@@ -4891,7 +5006,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -4900,7 +5015,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -4919,7 +5034,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -4928,7 +5043,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -4944,12 +5059,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4958,6 +5073,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLtAttribute()
   {
     try
@@ -4972,14 +5089,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
       }
 
@@ -4992,16 +5109,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testLongLtAttribute_Generated()
   {
     try
@@ -5034,7 +5153,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -5043,7 +5162,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -5059,15 +5178,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testLongLtEqAttribute()
   {
     try
@@ -5082,14 +5203,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
       }
 
@@ -5105,14 +5226,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
       }
 
@@ -5128,12 +5249,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5143,6 +5264,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testLongLtEqAttribute_Generated()
   {
     try
@@ -5171,7 +5294,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -5180,7 +5303,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -5199,7 +5322,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -5208,7 +5331,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -5228,12 +5351,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5242,6 +5365,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongNotEqAttribute()
   {
     try
@@ -5256,14 +5381,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
       }
 
@@ -5276,16 +5401,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testLongNotEqAttribute_Generated()
   {
     try
@@ -5319,7 +5446,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -5328,7 +5455,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -5345,15 +5472,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testFloatEqAttribute()
   {
     try
@@ -5368,14 +5497,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
       }
 
@@ -5388,16 +5517,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testFloatEqAttribute_Generated()
   {
     try
@@ -5430,7 +5561,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -5439,7 +5570,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on float values are incorrect.");
+          Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
       }
 
@@ -5455,15 +5586,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testFloatGtAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comFloat", "100");
@@ -5481,14 +5614,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
       }
 
@@ -5502,12 +5635,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5517,6 +5650,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testFloatGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comFloat", "100");
@@ -5552,7 +5687,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -5561,7 +5696,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on float values are incorrect.");
+          Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
       }
 
@@ -5577,12 +5712,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5591,6 +5726,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatGtEqAttribute()
   {
     try
@@ -5605,14 +5742,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
       }
 
@@ -5629,14 +5766,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
       }
 
@@ -5649,12 +5786,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5664,6 +5801,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testFloatGtEqAttribute_Generated()
   {
     try
@@ -5696,7 +5835,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -5705,7 +5844,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on float values are incorrect.");
+          Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
       }
 
@@ -5724,7 +5863,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -5733,7 +5872,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on float values are incorrect.");
+          Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
       }
 
@@ -5749,12 +5888,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5763,6 +5902,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatLtAttribute()
   {
     try
@@ -5777,14 +5918,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
       }
 
@@ -5797,16 +5938,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testFloatLtAttribute_Generated()
   {
     try
@@ -5835,7 +5978,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -5844,7 +5987,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -5861,15 +6004,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testFloatLtEqAttribute()
   {
     QueryMasterSetup.childRefQueryObject.setValue("refQueryFloat", "100.5");
@@ -5887,14 +6032,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
       }
 
@@ -5911,14 +6056,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
       }
 
@@ -5931,12 +6076,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5946,6 +6091,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testFloatLtEqAttribute_Generated()
   {
     QueryMasterSetup.childRefQueryObject.setValue("refQueryFloat", "100.5");
@@ -5977,7 +6124,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -5986,7 +6133,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -6005,7 +6152,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -6014,7 +6161,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -6031,12 +6178,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6045,6 +6192,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatNotEqAttribute()
   {
     try
@@ -6059,14 +6208,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Float values are incorrect.");
         }
       }
 
@@ -6079,16 +6228,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute Float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testFloatNotEqAttribute_Generated()
   {
     try
@@ -6122,7 +6273,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -6131,7 +6282,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Float values are incorrect.");
+          Assert.fail("The objects returned by a query based on Float values are incorrect.");
         }
       }
 
@@ -6148,15 +6299,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDecimalEqAttribute()
   {
     try
@@ -6171,14 +6324,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
       }
 
@@ -6191,16 +6344,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDecimalEqAttribute_Generated()
   {
     try
@@ -6233,7 +6388,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -6242,7 +6397,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
       }
 
@@ -6258,15 +6413,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDecimalGtAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDecimal", "100");
@@ -6284,14 +6441,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
       }
 
@@ -6304,12 +6461,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6319,6 +6476,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDecimalGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDecimal", "100");
@@ -6354,7 +6513,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -6363,7 +6522,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
       }
 
@@ -6379,12 +6538,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6393,6 +6552,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalGtEqAttribute()
   {
     try
@@ -6407,14 +6568,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Decimal values are incorrect.");
         }
       }
 
@@ -6431,14 +6592,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Decimal values are incorrect.");
         }
       }
 
@@ -6451,12 +6612,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6466,6 +6627,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDecimalGtEqAttribute_Generated()
   {
     try
@@ -6498,7 +6661,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -6507,7 +6670,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
       }
 
@@ -6526,7 +6689,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -6535,7 +6698,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
       }
 
@@ -6551,12 +6714,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6565,6 +6728,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalLtAttribute()
   {
     try
@@ -6579,14 +6744,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
       }
 
@@ -6599,16 +6764,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDecimalLtAttribute_Generated()
   {
     try
@@ -6637,7 +6804,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -6646,7 +6813,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -6663,15 +6830,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDecimalLtEqAttribute()
   {
     QueryMasterSetup.childRefQueryObject.setValue("refQueryDecimal", "100.5");
@@ -6689,14 +6858,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Decimal values are incorrect.");
         }
       }
 
@@ -6713,14 +6882,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Decimal values are incorrect.");
         }
       }
 
@@ -6733,12 +6902,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6748,6 +6917,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDecimalLtEqAttribute_Generated()
   {
     QueryMasterSetup.childRefQueryObject.setValue("refQueryDecimal", "100.5");
@@ -6779,7 +6950,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -6788,7 +6959,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -6807,7 +6978,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -6816,7 +6987,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -6833,12 +7004,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6847,6 +7018,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalNotEqAttribute()
   {
     try
@@ -6861,14 +7034,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
       }
 
@@ -6881,16 +7054,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDecimalNotEqAttribute_Generated()
   {
     try
@@ -6924,7 +7099,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -6933,7 +7108,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
       }
 
@@ -6950,15 +7125,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDoubleEqAttribute()
   {
     try
@@ -6973,14 +7150,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
       }
 
@@ -6993,16 +7170,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDoubleEqAttribute_Generated()
   {
     try
@@ -7035,7 +7214,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -7044,7 +7223,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Double values are incorrect.");
+          Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
       }
 
@@ -7060,15 +7239,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGtAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDouble", "100");
@@ -7086,14 +7267,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
       }
 
@@ -7106,12 +7287,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7121,6 +7302,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDoubleGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDouble", "100");
@@ -7156,7 +7339,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -7165,7 +7348,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Double values are incorrect.");
+          Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
       }
 
@@ -7181,12 +7364,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7195,6 +7378,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGtEqAttribute()
   {
     try
@@ -7209,14 +7394,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Double values are incorrect.");
         }
       }
 
@@ -7233,14 +7418,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Double values are incorrect.");
         }
       }
 
@@ -7253,12 +7438,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute Double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7268,6 +7453,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDoubleGtEqAttribute_Generated()
   {
     try
@@ -7300,7 +7487,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -7309,7 +7496,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Double values are incorrect.");
+          Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
       }
 
@@ -7328,7 +7515,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -7337,7 +7524,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Double values are incorrect.");
+          Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
       }
 
@@ -7353,12 +7540,12 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7367,6 +7554,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLtAttribute()
   {
     try
@@ -7381,14 +7570,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
       }
 
@@ -7401,16 +7590,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDoubleLtAttribute_Generated()
   {
     try
@@ -7439,7 +7630,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -7448,7 +7639,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -7465,15 +7656,17 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLtEqAttribute()
   {
     QueryMasterSetup.childRefQueryObject.setValue("refQueryDouble", "100.5");
@@ -7491,14 +7684,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Double values are incorrect.");
         }
       }
 
@@ -7515,14 +7708,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute Double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute Double values are incorrect.");
         }
       }
 
@@ -7535,12 +7728,12 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute Double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7550,6 +7743,8 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDoubleLtEqAttribute_Generated()
   {
     QueryMasterSetup.childRefQueryObject.setValue("refQueryDouble", "100.5");
@@ -7581,7 +7776,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -7590,7 +7785,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -7609,7 +7804,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -7618,7 +7813,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on long values are incorrect.");
+          Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
       }
 
@@ -7635,13 +7830,13 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
       e.printStackTrace();
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7650,6 +7845,8 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleNotEqAttribute()
   {
     try
@@ -7664,14 +7861,14 @@ public class AttributeComparisonTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
       }
 
@@ -7684,16 +7881,18 @@ public class AttributeComparisonTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testDoubleNotEqAttribute_Generated()
   {
     try
@@ -7727,7 +7926,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -7736,7 +7935,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on Double values are incorrect.");
+          Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
       }
 
@@ -7753,16 +7952,18 @@ public class AttributeComparisonTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute Double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute Double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Request
+  @Test
   public void testTermReference_Generated() throws Exception
   {
     String type = QueryMasterSetup.childQueryInfo.getType();
@@ -7794,7 +7995,7 @@ public class AttributeComparisonTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable) resultIterator)
@@ -7803,7 +8004,7 @@ public class AttributeComparisonTest extends TestCase
         String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute boolean values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
       }
     }

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis.business;
 
@@ -36,6 +36,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.catalina.session.StandardSession;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.AttributeNotificationDTO;
@@ -226,8 +229,8 @@ public class GISControllerGenTest
 
   private static String          testActionUri;
 
-  @BeforeClass
   @Request
+  @BeforeClass
   public static void classSetUp()
   {
     mdBusiness = MdBusinessDAO.newInstance();
@@ -313,26 +316,26 @@ public class GISControllerGenTest
     updateController.apply();
   }
 
-  @AfterClass
   @Request
+  @AfterClass
   public static void classTearDown()
   {
     new MdPackage(pack).delete();
   }
 
-  @Test
   @Request
+  @Test
   public void testComparison() throws ParseException
   {
     WKTReader reader = new WKTReader();
     MultiPolygon multiPolygon = (MultiPolygon) reader.read("MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))");
     MultiPolygon multiPolygon2 = (MultiPolygon) reader.read("MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))");
 
-    assertTrue(multiPolygon.equalsExact(multiPolygon2));
+    Assert.assertTrue(multiPolygon.equalsExact(multiPolygon2));
   }
 
-  @Test
   @Request
+  @Test
   public void testDispatcherBusinessParameters() throws Exception
   {
     ClientSession systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { Locale.US });
@@ -358,7 +361,7 @@ public class GISControllerGenTest
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -366,8 +369,8 @@ public class GISControllerGenTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testPropigatePointParseProblem() throws Exception
   {
     ClientSession systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { Locale.US });
@@ -394,10 +397,10 @@ public class GISControllerGenTest
       String id = (String) req.getAttribute("id");
       List<AttributeNotificationDTO> notifications = clientRequest.getAttributeNotifications(id, "testPoint");
 
-      assertEquals("fail", req.getAttribute("fail"));
-      assertNotNull(notifications);
-      assertEquals(1, notifications.size());
-      assertTrue(notifications.get(0) instanceof AttributePointParseProblemDTO);
+      Assert.assertEquals("fail", req.getAttribute("fail"));
+      Assert.assertNotNull(notifications);
+      Assert.assertEquals(1, notifications.size());
+      Assert.assertTrue(notifications.get(0) instanceof AttributePointParseProblemDTO);
     }
     finally
     {
@@ -405,8 +408,8 @@ public class GISControllerGenTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testPropigateLineParseProblem() throws Exception
   {
     ClientSession systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { Locale.US });
@@ -433,10 +436,10 @@ public class GISControllerGenTest
       String id = (String) req.getAttribute("id");
       List<AttributeNotificationDTO> notifications = clientRequest.getAttributeNotifications(id, "testLine");
 
-      assertEquals("fail", req.getAttribute("fail"));
-      assertNotNull(notifications);
-      assertEquals(1, notifications.size());
-      assertTrue(notifications.get(0) instanceof AttributeLineStringParseProblemDTO);
+      Assert.assertEquals("fail", req.getAttribute("fail"));
+      Assert.assertNotNull(notifications);
+      Assert.assertEquals(1, notifications.size());
+      Assert.assertTrue(notifications.get(0) instanceof AttributeLineStringParseProblemDTO);
     }
     finally
     {
@@ -444,8 +447,8 @@ public class GISControllerGenTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testPropigatePolygonParseProblem() throws Exception
   {
     ClientSession systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { Locale.US });
@@ -472,10 +475,10 @@ public class GISControllerGenTest
       String id = (String) req.getAttribute("id");
       List<AttributeNotificationDTO> notifications = clientRequest.getAttributeNotifications(id, "testPolygon");
 
-      assertEquals("fail", req.getAttribute("fail"));
-      assertNotNull(notifications);
-      assertEquals(1, notifications.size());
-      assertTrue(notifications.get(0) instanceof AttributePolygonParseProblemDTO);
+      Assert.assertEquals("fail", req.getAttribute("fail"));
+      Assert.assertNotNull(notifications);
+      Assert.assertEquals(1, notifications.size());
+      Assert.assertTrue(notifications.get(0) instanceof AttributePolygonParseProblemDTO);
     }
     finally
     {
@@ -483,8 +486,8 @@ public class GISControllerGenTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testPropigateMultiPointParseProblem() throws Exception
   {
     ClientSession systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { Locale.US });
@@ -511,10 +514,10 @@ public class GISControllerGenTest
       String id = (String) req.getAttribute("id");
       List<AttributeNotificationDTO> notifications = clientRequest.getAttributeNotifications(id, "testMultiPoint");
 
-      assertEquals("fail", req.getAttribute("fail"));
-      assertNotNull(notifications);
-      assertEquals(1, notifications.size());
-      assertTrue(notifications.get(0) instanceof AttributeMultiPointParseProblemDTO);
+      Assert.assertEquals("fail", req.getAttribute("fail"));
+      Assert.assertNotNull(notifications);
+      Assert.assertEquals(1, notifications.size());
+      Assert.assertTrue(notifications.get(0) instanceof AttributeMultiPointParseProblemDTO);
     }
     finally
     {
@@ -522,8 +525,8 @@ public class GISControllerGenTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testPropigateMultiLineParseProblem() throws Exception
   {
     ClientSession systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { Locale.US });
@@ -550,10 +553,10 @@ public class GISControllerGenTest
       String id = (String) req.getAttribute("id");
       List<AttributeNotificationDTO> notifications = clientRequest.getAttributeNotifications(id, "testMultiLine");
 
-      assertEquals("fail", req.getAttribute("fail"));
-      assertNotNull(notifications);
-      assertEquals(1, notifications.size());
-      assertTrue(notifications.get(0) instanceof AttributeMultiLineStringParseProblemDTO);
+      Assert.assertEquals("fail", req.getAttribute("fail"));
+      Assert.assertNotNull(notifications);
+      Assert.assertEquals(1, notifications.size());
+      Assert.assertTrue(notifications.get(0) instanceof AttributeMultiLineStringParseProblemDTO);
     }
     finally
     {
@@ -561,8 +564,8 @@ public class GISControllerGenTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testPropigateMultiPolygonParseProblem() throws Exception
   {
     ClientSession systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { Locale.US });
@@ -589,10 +592,10 @@ public class GISControllerGenTest
       String id = (String) req.getAttribute("id");
       List<AttributeNotificationDTO> notifications = clientRequest.getAttributeNotifications(id, "testMultiPolygon");
 
-      assertEquals("fail", req.getAttribute("fail"));
-      assertNotNull(notifications);
-      assertEquals(1, notifications.size());
-      assertTrue(notifications.get(0) instanceof AttributeMultiPolygonParseProblemDTO);
+      Assert.assertEquals("fail", req.getAttribute("fail"));
+      Assert.assertNotNull(notifications);
+      Assert.assertEquals(1, notifications.size());
+      Assert.assertTrue(notifications.get(0) instanceof AttributeMultiPolygonParseProblemDTO);
     }
     finally
     {
@@ -602,11 +605,11 @@ public class GISControllerGenTest
 
   private static String getSource()
   {
-    String source = "package test.generated;\n" + "import com.runwaysdk.business.BusinessDTO;\n" + "import com.vividsolutions.jts.geom.LineString;\n" + "import com.vividsolutions.jts.geom.MultiLineString;\n" + "import com.vividsolutions.jts.geom.MultiPoint;\n" + "import com.vividsolutions.jts.geom.MultiPolygon;\n" + "import com.vividsolutions.jts.geom.Point;\n" + "import com.vividsolutions.jts.geom.Polygon;\n" + "import com.vividsolutions.jts.io.WKTReader;\n" + "public class TestController extends TestControllerBase \n" + "{\n" + "  private static final long serialVersionUID = 1238004456805L;      \n"
-        + "  public TestController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean isAsynchronous)\n" + "  {\n" + "    super(req, resp, isAsynchronous);\n" + "  }       \n" + "  @Override\n" + "  public void testAction(test.generated.TestBusinessDTO dto) throws java.io.IOException, javax.servlet.ServletException\n" + "  {\n" + "    try\n" + "    {\n" + "    WKTReader reader = new WKTReader();\n" + "    Point point = (Point) reader.read(\"POINT(191232 243118)\");\n" + "    LineString line = (LineString) reader.read(\"LINESTRING (191232 243118, 191108 243242)\");\n" + "    Polygon polygon = (Polygon) reader.read(\"POLYGON (( 10 10, 10 20, 20 20, 20 15, 10 10))\");\n"
-        + "    MultiLineString multiLine = (MultiLineString) reader.read(\"MULTILINESTRING ((191232 243118, 191108 243242, 200000 250000, 275000 300000))\");\n" + "    MultiPoint multiPoint = (MultiPoint) reader.read(\"MULTIPOINT(191232 243118, 10000 20000)\");\n" + "    MultiPolygon multiPolygon = (MultiPolygon) reader.read(\"MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))\");\n" + "    if(!dto.getTestPoint().equalsExact(point)) throw new RuntimeException(\"Expected: \" + point.toText() + \", Actual: \" + dto.getTestPoint().toText());   \n" + "    if(!dto.getTestLine().equalsExact(line)) throw new RuntimeException(\"Expected: \" + line.toText() + \", Actual: \" + dto.getTestLine().toText());\n"
-        + "    if(!dto.getTestPolygon().equalsExact(polygon)) throw new RuntimeException(\"Expected: \" + polygon.toText() + \", Actual: \" + dto.getTestPolygon().toText());\n" + "    if(!dto.getTestMultiPoint().equalsExact(multiPoint)) throw new RuntimeException(\"Expected: \" + multiPoint.toText() + \", Actual: \" + dto.getTestMultiPoint().toText());\n" + "    if(!dto.getTestMultiLine().equalsExact(multiLine)) throw new RuntimeException(\"Expected: \" + multiLine.toText() + \", Actual: \" + dto.getTestMultiLine().toText());\n" + "    if(!dto.getTestMultiPolygon().equalsExact(multiPolygon)) throw new RuntimeException(\"Expected: \" + multiPolygon.toText() + \", Actual: \" + dto.getTestMultiPolygon().toText());\n" + "    }\n" + "    catch(" + ParseException.class.getName() + " e)\n"
-        + "    {\n" + "      throw new RuntimeException(e);\n" + "    }\n" + "  } \n" + "  @Override\n" + "  public void failTestAction(test.generated.TestBusinessDTO dto) throws java.io.IOException, javax.servlet.ServletException\n" + "  {\n" + "    super.getRequest().setAttribute(\"id\", dto.getId());\n" + "    super.getRequest().setAttribute(\"fail\", \"fail\");\n" + "  }\n" + "}\n";
+    String source = "package test.generated;\n" + "import com.runwaysdk.business.BusinessDTO;\n" + "import com.vividsolutions.jts.geom.LineString;\n" + "import com.vividsolutions.jts.geom.MultiLineString;\n" + "import com.vividsolutions.jts.geom.MultiPoint;\n" + "import com.vividsolutions.jts.geom.MultiPolygon;\n" + "import com.vividsolutions.jts.geom.Point;\n" + "import com.vividsolutions.jts.geom.Polygon;\n" + "import com.vividsolutions.jts.io.WKTReader;\n" + "public class TestController extends TestControllerBase \n" + "{\n" + "  private static final long serialVersionUID = 1238004456805L;      \n" + "  public TestController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean isAsynchronous)\n" + "  {\n"
+        + "    super(req, resp, isAsynchronous);\n" + "  }       \n" + "  @Override\n" + "  @Request @Test public void testAction(test.generated.TestBusinessDTO dto) throws java.io.IOException, javax.servlet.ServletException\n" + "  {\n" + "    try\n" + "    {\n" + "    WKTReader reader = new WKTReader();\n" + "    Point point = (Point) reader.read(\"POINT(191232 243118)\");\n" + "    LineString line = (LineString) reader.read(\"LINESTRING (191232 243118, 191108 243242)\");\n" + "    Polygon polygon = (Polygon) reader.read(\"POLYGON (( 10 10, 10 20, 20 20, 20 15, 10 10))\");\n" + "    MultiLineString multiLine = (MultiLineString) reader.read(\"MULTILINESTRING ((191232 243118, 191108 243242, 200000 250000, 275000 300000))\");\n"
+        + "    MultiPoint multiPoint = (MultiPoint) reader.read(\"MULTIPOINT(191232 243118, 10000 20000)\");\n" + "    MultiPolygon multiPolygon = (MultiPolygon) reader.read(\"MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))\");\n" + "    if(!dto.getTestPoint().equalsExact(point)) throw new RuntimeException(\"Expected: \" + point.toText() + \", Actual: \" + dto.getTestPoint().toText());   \n" + "    if(!dto.getTestLine().equalsExact(line)) throw new RuntimeException(\"Expected: \" + line.toText() + \", Actual: \" + dto.getTestLine().toText());\n" + "    if(!dto.getTestPolygon().equalsExact(polygon)) throw new RuntimeException(\"Expected: \" + polygon.toText() + \", Actual: \" + dto.getTestPolygon().toText());\n"
+        + "    if(!dto.getTestMultiPoint().equalsExact(multiPoint)) throw new RuntimeException(\"Expected: \" + multiPoint.toText() + \", Actual: \" + dto.getTestMultiPoint().toText());\n" + "    if(!dto.getTestMultiLine().equalsExact(multiLine)) throw new RuntimeException(\"Expected: \" + multiLine.toText() + \", Actual: \" + dto.getTestMultiLine().toText());\n" + "    if(!dto.getTestMultiPolygon().equalsExact(multiPolygon)) throw new RuntimeException(\"Expected: \" + multiPolygon.toText() + \", Actual: \" + dto.getTestMultiPolygon().toText());\n" + "    }\n" + "    catch(" + ParseException.class.getName() + " e)\n" + "    {\n" + "      throw new RuntimeException(e);\n" + "    }\n" + "  } \n" + "  @Override\n"
+        + "  public void failTestAction(test.generated.TestBusinessDTO dto) throws java.io.IOException, javax.servlet.ServletException\n" + "  {\n" + "    super.getRequest().setAttribute(\"id\", dto.getId());\n" + "    super.getRequest().setAttribute(\"fail\", \"fail\");\n" + "  }\n" + "}\n";
 
     return source;
   }

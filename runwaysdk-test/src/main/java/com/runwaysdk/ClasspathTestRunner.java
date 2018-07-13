@@ -27,7 +27,7 @@ public class ClasspathTestRunner extends BlockJUnit4ClassRunner
       {
         customClassLoader = GeneratedLoader.createClassLoader();
       }
-      
+
       return Class.forName(clazz.getName(), true, customClassLoader);
     }
     catch (ClassNotFoundException | MalformedURLException e)

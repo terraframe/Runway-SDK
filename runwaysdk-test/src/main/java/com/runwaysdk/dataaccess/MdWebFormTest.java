@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
 
@@ -24,6 +24,11 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeDateUtil;
 import com.runwaysdk.constants.MdWebAttributeInfo;
@@ -68,10 +73,6 @@ import com.runwaysdk.system.metadata.MdWebText;
 import com.runwaysdk.system.metadata.MetadataDisplayLabel;
 import com.runwaysdk.system.metadata.WebGroupField;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 public class MdWebFormTest extends MdFormDAOTest
 {
   /**
@@ -86,27 +87,6 @@ public class MdWebFormTest extends MdFormDAOTest
 
   @SuppressWarnings("unused")
   private static String                              FORM_TYPE;
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdWebFormTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
 
   @Transaction
   protected static void classSetUpTrans()
@@ -126,10 +106,8 @@ public class MdWebFormTest extends MdFormDAOTest
       testForm.setValue(MdWebFormInfo.NAME, testFormName);
       testForm.setValue(MdWebFormInfo.PACKAGE, PACKAGE);
       testForm.setValue(MdWebFormInfo.FORM_NAME, testFormName);
-      testForm.setStructValue(MdWebFormInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE,
-          "Test Form.");
-      testForm.setStructValue(MdWebFormInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE,
-          "An MdForm representation of a TestType.");
+      testForm.setStructValue(MdWebFormInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, "Test Form.");
+      testForm.setStructValue(MdWebFormInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "An MdForm representation of a TestType.");
       testForm.setValue(MdWebFormInfo.FORM_MD_CLASS, testTypeMd.getId());
       testForm.apply();
 
@@ -142,14 +120,14 @@ public class MdWebFormTest extends MdFormDAOTest
       textField.setValue(MdWebTextInfo.WIDTH, "50");
       textField.setValue(MdWebText.HEIGHT, "40");
       applyField(textField);
-      
+
       // Set the end date range to now plus one day
       Date now = new Date();
       Calendar cal = Calendar.getInstance();
       cal.setTime(now);
-      cal.add( Calendar.DATE, 1 );
+      cal.add(Calendar.DATE, 1);
       Date endDate = cal.getTime();
-      
+
       MdFieldDAO dateField = createField(testForm, dateAttr, MdWebDateInfo.CLASS);
       dateField.setValue(MdWebDateInfo.AFTER_TODAY_EXCLUSIVE, "true");
       dateField.setValue(MdWebDateInfo.AFTER_TODAY_INCLUSIVE, "false");
@@ -158,13 +136,13 @@ public class MdWebFormTest extends MdFormDAOTest
       dateField.setValue(MdWebDateInfo.END_DATE, MdAttributeDateUtil.getTypeUnsafeValue(endDate));
       dateField.setValue(MdWebDateInfo.START_DATE, "");
       applyField(dateField);
-      
+
       MdFieldDAO dateTimeField = createField(testForm, dateTimeAttr, MdWebDateTimeInfo.CLASS);
       applyField(dateTimeField);
 
       MdFieldDAO timeField = createField(testForm, timeAttr, MdWebTimeInfo.CLASS);
       applyField(timeField);
-      
+
       MdFieldDAO floatField = createField(testForm, floatAttr, MdWebFloatInfo.CLASS);
       floatField.setValue(MdWebFloatInfo.DECPRECISION, "7");
       floatField.setValue(MdWebFloatInfo.DECSCALE, "3");
@@ -198,55 +176,56 @@ public class MdWebFormTest extends MdFormDAOTest
 
       MdFieldDAO booleanField = createField(testForm, booleanAttr, MdWebBooleanInfo.CLASS);
       applyField(booleanField);
-      
+
       MdFieldDAO refField = createField(testForm, referenceAttr, MdWebReferenceInfo.CLASS);
       applyField(refField);
-      
+
       MdWebGroupDAO group = TestFixtureFactory.addGroupField(testForm);
       applyField(group);
-      
+
       MdFieldDAO groupIntField = createField(testForm, group1Int, MdWebIntegerInfo.CLASS);
       applyField(groupIntField);
-      
+
       groupIntField.addParent(group, WebGroupField.CLASS).apply();
 
       MdWebGroupDAO group2 = TestFixtureFactory.addGroupField(testForm, "nestedGroup");
       applyField(group2);
-      
+
       MdFieldDAO groupBoolField = createField(testForm, group2Boolean, MdWebBooleanInfo.CLASS);
       applyField(groupBoolField);
-      
+
       groupBoolField.addParent(group2, WebGroupField.CLASS).apply();
-     
+
       // geo field
       MdFieldDAO geoField = createField(testForm, geoAttr, MdWebGeoInfo.CLASS);
       applyField(geoField);
-      
+
       // single term
       MdFieldDAO singleTermField = createField(testForm, singleTermAttr, MdWebSingleTermInfo.CLASS);
       applyField(singleTermField);
-      
+
       // multiple term
       MdFieldDAO multipleTermField = createField(testForm, multipleTermAttr, MdWebMultipleTermInfo.CLASS);
       applyField(multipleTermField);
-      
+
       // single term grid
       MdFieldDAO singleGridField = createField(testForm, singleGridAttr, MdWebSingleTermGridInfo.CLASS);
       applyField(singleGridField);
-      
-//      // point
-//      MdFieldDAO pointField = createField(testForm, pointAttr, MdWebPointInfo.CLASS);
-//      applyField(pointField);
-      
+
+      // // point
+      // MdFieldDAO pointField = createField(testForm, pointAttr,
+      // MdWebPointInfo.CLASS);
+      // applyField(pointField);
+
       // header
       MdFieldDAO headerField = MdWebHeaderDAO.newInstance();
       headerField.setValue(MdWebHeaderInfo.FIELD_NAME, "testHeader");
       headerField.setStructValue(MdWebHeaderInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, "Test Header");
       headerField.setStructValue(MdWebHeaderInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "Test Header Desc");
-      headerField.setValue(MdWebHeaderInfo.DEFINING_MD_FORM,  testForm.getId());
+      headerField.setValue(MdWebHeaderInfo.DEFINING_MD_FORM, testForm.getId());
       headerField.setStructValue(MdWebHeader.HEADERTEXT, MetadataDisplayLabel.DEFAULTLOCALE, "This is a test header");
       applyField(headerField);
-    
+
       // break
       MdFieldDAO breakField = MdWebBreakDAO.newInstance();
       breakField.setValue(MdWebBreakInfo.FIELD_NAME, "testBreak");
@@ -254,17 +233,16 @@ public class MdWebFormTest extends MdFormDAOTest
       breakField.setStructValue(MdWebBreakInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "Test Break Desc");
       breakField.setValue(MdWebBreakInfo.DEFINING_MD_FORM, testForm.getId());
       applyField(breakField);
-      
+
       // comment
       MdFieldDAO commentField = MdWebCommentDAO.newInstance();
       commentField.setValue(MdWebCommentInfo.FIELD_NAME, "testComment");
       commentField.setStructValue(MdWebCommentInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, "Test Comment");
       commentField.setStructValue(MdWebCommentInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "Test Comment Desc");
-      commentField.setValue(MdWebCommentInfo.DEFINING_MD_FORM,  testForm.getId());
+      commentField.setValue(MdWebCommentInfo.DEFINING_MD_FORM, testForm.getId());
       commentField.setStructValue(MdWebCommentInfo.COMMENT_TEXT, MetadataDisplayLabel.DEFAULTLOCALE, "This is a test comment");
       applyField(commentField);
-      
-      
+
       // apply each MdField
       Iterator<MdFieldDAOIF> allFields = fields.values().iterator();
       while (allFields.hasNext())
@@ -279,10 +257,9 @@ public class MdWebFormTest extends MdFormDAOTest
     }
   }
 
-  protected static MdWebFieldDAO createField(MdWebFormDAOIF form, MdAttributeDAOIF md,
-      String fieldClass)
+  protected static MdWebFieldDAO createField(MdWebFormDAOIF form, MdAttributeDAOIF md, String fieldClass)
   {
-    
+
     BusinessDAO field = BusinessDAO.newInstance(fieldClass);
 
     String fieldName = md.definesAttribute();
@@ -302,7 +279,7 @@ public class MdWebFormTest extends MdFormDAOTest
 
     return (MdWebFieldDAO) field;
   }
-  
+
   private static void applyField(BusinessDAO field)
   {
     int order = fields.size();
@@ -312,9 +289,10 @@ public class MdWebFormTest extends MdFormDAOTest
     field.apply();
     fields.put(f.getFieldName(), f);
   }
-  
+
   @Request
-  protected static void classSetUp()
+  @BeforeClass
+  public static void classSetUp()
   {
     classSetUpTrans();
   }
@@ -338,7 +316,8 @@ public class MdWebFormTest extends MdFormDAOTest
   }
 
   @Request
-  protected static void classTearDown()
+  @AfterClass
+  public static void classTearDown()
   {
     classTearDownTrans();
   }
@@ -346,23 +325,27 @@ public class MdWebFormTest extends MdFormDAOTest
   /**
    * Tests the metadata on the MdForm instance.
    */
+  @Request
+  @Test
   public void testFormMetadata()
   {
     MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
 
-    assertEquals(testForm.getId(), form.getId());
-    assertEquals(testForm.getTypeName(), form.getTypeName());
-    assertEquals(testForm.getPackage(), form.getPackage());
-    assertEquals(testForm.getFormName(), form.getFormName());
-    assertEquals(testForm.getDisplayLabel(Locale.ENGLISH), form.getDisplayLabel(Locale.ENGLISH));
-    assertEquals(testForm.getDescription(Locale.ENGLISH), form.getDescription(Locale.ENGLISH));
-    assertEquals(testForm.getFormMdClass(), testTypeMd);
+    Assert.assertEquals(testForm.getId(), form.getId());
+    Assert.assertEquals(testForm.getTypeName(), form.getTypeName());
+    Assert.assertEquals(testForm.getPackage(), form.getPackage());
+    Assert.assertEquals(testForm.getFormName(), form.getFormName());
+    Assert.assertEquals(testForm.getDisplayLabel(Locale.ENGLISH), form.getDisplayLabel(Locale.ENGLISH));
+    Assert.assertEquals(testForm.getDescription(Locale.ENGLISH), form.getDescription(Locale.ENGLISH));
+    Assert.assertEquals(testForm.getFormMdClass(), testTypeMd);
   }
 
   /**
    * Tests the relationships between the form and its fields. The field order
    * should be preserved in calls to MdWebFormDAO.getAllMdFields();
    */
+  @Request
+  @Test
   public void testFieldOrder()
   {
     MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
@@ -375,9 +358,9 @@ public class MdWebFormTest extends MdFormDAOTest
       MdFieldDAOIF expected = fields.get(iter.next());
       MdFieldDAOIF returned = allFields.get(index);
 
-      assertEquals(Integer.parseInt(returned.getFieldOrder()), index);
-      assertEquals(returned.getFieldOrder(), expected.getFieldOrder());
-      assertEquals(expected.getBusinessDAO().getId(), returned.getBusinessDAO().getId());
+      Assert.assertEquals(Integer.parseInt(returned.getFieldOrder()), index);
+      Assert.assertEquals(returned.getFieldOrder(), expected.getFieldOrder());
+      Assert.assertEquals(expected.getBusinessDAO().getId(), returned.getBusinessDAO().getId());
 
       index++;
     }
@@ -388,21 +371,22 @@ public class MdWebFormTest extends MdFormDAOTest
    */
   protected void _testField(MdWebFieldDAOIF expected, MdWebFieldDAOIF returned)
   {
-    assertEquals(expected.getFieldName(), returned.getFieldName());
-    assertEquals(expected.getFieldOrder(), returned.getFieldOrder());
-    assertEquals(expected.getMdFormId(), returned.getMdFormId());
-    assertEquals(expected.getDisplayLabel(Locale.ENGLISH), returned.getDisplayLabel(Locale.ENGLISH));
-    assertEquals(expected.getDescription(Locale.ENGLISH), returned.getDescription(Locale.ENGLISH));
-    assertEquals(expected.getMdForm(), returned.getMdForm());
-    assertEquals(expected.getBusinessDAO(), returned.getBusinessDAO());
+    Assert.assertEquals(expected.getFieldName(), returned.getFieldName());
+    Assert.assertEquals(expected.getFieldOrder(), returned.getFieldOrder());
+    Assert.assertEquals(expected.getMdFormId(), returned.getMdFormId());
+    Assert.assertEquals(expected.getDisplayLabel(Locale.ENGLISH), returned.getDisplayLabel(Locale.ENGLISH));
+    Assert.assertEquals(expected.getDescription(Locale.ENGLISH), returned.getDescription(Locale.ENGLISH));
+    Assert.assertEquals(expected.getMdForm(), returned.getMdForm());
+    Assert.assertEquals(expected.getBusinessDAO(), returned.getBusinessDAO());
 
     if (expected instanceof MdWebAttributeDAOIF)
     {
-      assertEquals( ( (MdWebAttributeDAOIF) expected ).getDefiningMdAttribute(),
-          ( (MdWebAttributeDAOIF) returned ).getDefiningMdAttribute());
+      Assert.assertEquals( ( (MdWebAttributeDAOIF) expected ).getDefiningMdAttribute(), ( (MdWebAttributeDAOIF) returned ).getDefiningMdAttribute());
     }
   }
 
+  @Request
+  @Test
   public void testGeo()
   {
     String fieldName = geoAttr.definesAttribute();
@@ -410,10 +394,12 @@ public class MdWebFormTest extends MdFormDAOTest
 
     MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
     MdWebGeoDAO geoField = (MdWebGeoDAO) form.getMdField(fieldName);
-    
-    _testField(field, geoField);     
+
+    _testField(field, geoField);
   }
-  
+
+  @Request
+  @Test
   public void testSingleTerm()
   {
     String fieldName = singleTermAttr.definesAttribute();
@@ -421,10 +407,12 @@ public class MdWebFormTest extends MdFormDAOTest
 
     MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
     MdWebSingleTermDAO singleTerm = (MdWebSingleTermDAO) form.getMdField(fieldName);
-    
-    _testField(field, singleTerm); 
+
+    _testField(field, singleTerm);
   }
-  
+
+  @Request
+  @Test
   public void testMultipleTerm()
   {
     String fieldName = multipleTermAttr.definesAttribute();
@@ -432,10 +420,12 @@ public class MdWebFormTest extends MdFormDAOTest
 
     MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
     MdWebMultipleTermDAO multipleTerm = (MdWebMultipleTermDAO) form.getMdField(fieldName);
-    
-    _testField(field, multipleTerm);   
+
+    _testField(field, multipleTerm);
   }
-  
+
+  @Request
+  @Test
   public void testSingleTermGrid()
   {
     String fieldName = singleGridAttr.definesAttribute();
@@ -443,24 +433,26 @@ public class MdWebFormTest extends MdFormDAOTest
 
     MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
     MdWebSingleTermGridDAO singleTermGrid = (MdWebSingleTermGridDAO) form.getMdField(fieldName);
-    
-    _testField(field, singleTermGrid);    
+
+    _testField(field, singleTermGrid);
   }
-  
-//  public void testPoint()
-//  {
-//    String fieldName = pointAttr.definesAttribute();
-//    MdWebPointDAO field = (MdWebPointDAO) fields.get(fieldName);
-//
-//    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
-//    MdWebPointDAO point = (MdWebPointDAO) form.getMdField(fieldName);
-//    
-//    _testField(field, point); 
-//  }
-  
+
+  // @Request @Test public void testPoint()
+  // {
+  // String fieldName = pointAttr.definesAttribute();
+  // MdWebPointDAO field = (MdWebPointDAO) fields.get(fieldName);
+  //
+  // MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+  // MdWebPointDAO point = (MdWebPointDAO) form.getMdField(fieldName);
+  //
+  // _testField(field, point);
+  // }
+
   /**
    * Tests the character field metadata.
    */
+  @Request
+  @Test
   public void testCharacter()
   {
     String fieldName = charAttr.definesAttribute();
@@ -471,10 +463,12 @@ public class MdWebFormTest extends MdFormDAOTest
 
     _testField(field, charField);
 
-    assertEquals(field.getDisplayLength(), charField.getDisplayLength());
-    assertEquals(field.getMaxLength(), charField.getMaxLength());
+    Assert.assertEquals(field.getDisplayLength(), charField.getDisplayLength());
+    Assert.assertEquals(field.getMaxLength(), charField.getMaxLength());
   }
 
+  @Request
+  @Test
   public void testText()
   {
     String fieldName = textAttr.definesAttribute();
@@ -486,6 +480,8 @@ public class MdWebFormTest extends MdFormDAOTest
     _testField(field, charField);
   }
 
+  @Request
+  @Test
   public void testDate()
   {
     String fieldName = dateAttr.definesAttribute();
@@ -497,6 +493,8 @@ public class MdWebFormTest extends MdFormDAOTest
     _testField(field, charField);
   }
 
+  @Request
+  @Test
   public void testDouble()
   {
     String fieldName = doubleAttr.definesAttribute();
@@ -508,6 +506,8 @@ public class MdWebFormTest extends MdFormDAOTest
     _testField(field, charField);
   }
 
+  @Request
+  @Test
   public void testFloat()
   {
     String fieldName = floatAttr.definesAttribute();
@@ -519,6 +519,8 @@ public class MdWebFormTest extends MdFormDAOTest
     _testField(field, charField);
   }
 
+  @Request
+  @Test
   public void testInteger()
   {
     String fieldName = integerAttr.definesAttribute();
@@ -529,7 +531,9 @@ public class MdWebFormTest extends MdFormDAOTest
 
     _testField(field, charField);
   }
-  
+
+  @Request
+  @Test
   public void testBoolean()
   {
     String fieldName = booleanAttr.definesAttribute();

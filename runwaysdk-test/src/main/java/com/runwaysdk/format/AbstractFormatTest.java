@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -25,26 +25,28 @@ import java.util.Calendar;
 import java.util.Date;
 
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 public abstract class AbstractFormatTest extends FormatTest
 {
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getIntegerDisplay()
    */
   @Override
@@ -52,8 +54,10 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return this.getIntegerString();
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getLongDisplay()
    */
   @Override
@@ -61,8 +65,10 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return this.getLongString();
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getDoubleDisplay()
    */
   @Override
@@ -70,8 +76,10 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return this.getDoubleString();
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getFloatDisplay()
    */
   @Override
@@ -79,8 +87,10 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return this.getFloatString();
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getDecimalDisplay()
    */
   @Override
@@ -88,9 +98,10 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return this.getDecimalString();
   }
-  
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getCharacterObject()
    */
   @Override
@@ -99,7 +110,9 @@ public abstract class AbstractFormatTest extends FormatTest
     return new Character('c');
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getCharacterString()
    */
   @Override
@@ -107,8 +120,10 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return "c";
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getCharacterDisplay()
    */
   @Override
@@ -117,7 +132,9 @@ public abstract class AbstractFormatTest extends FormatTest
     return this.getCharacterString();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getStringObject()
    */
   @Override
@@ -126,7 +143,9 @@ public abstract class AbstractFormatTest extends FormatTest
     return new String("test_string");
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getStringString()
    */
   @Override
@@ -134,8 +153,10 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return "test_string";
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getStringDisplay()
    */
   @Override
@@ -144,7 +165,9 @@ public abstract class AbstractFormatTest extends FormatTest
     return this.getStringString();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getDateObject()
    */
   @Override
@@ -152,11 +175,13 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     Calendar cal = Calendar.getInstance();
     cal.set(1984, 4, 17, 10, 9, 8);
-    
+
     return cal.getTime();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getDateString()
    */
   @Override
@@ -164,8 +189,10 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return this.getDateObject().toString();
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getDateDisplay()
    */
   @Override
@@ -174,7 +201,9 @@ public abstract class AbstractFormatTest extends FormatTest
     return this.getDateString();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getBooleanObject()
    */
   @Override
@@ -183,7 +212,9 @@ public abstract class AbstractFormatTest extends FormatTest
     return new Boolean(true);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getBooleanString()
    */
   @Override
@@ -191,8 +222,10 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return "true";
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getBooleanDisplay()
    */
   @Override
@@ -201,16 +234,20 @@ public abstract class AbstractFormatTest extends FormatTest
     return this.getBooleanString();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getPrimitiveObject()
    */
   @Override
   protected final Byte getPrimitiveObject()
   {
-    return new Byte((byte)0);
+    return new Byte((byte) 0);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getPrimitiveString()
    */
   @Override
@@ -218,8 +255,10 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return "0";
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.FormatTest#getPrimitiveDisplay()
    */
   @Override
@@ -227,5 +266,5 @@ public abstract class AbstractFormatTest extends FormatTest
   {
     return this.getPrimitiveString();
   }
-  
+
 }

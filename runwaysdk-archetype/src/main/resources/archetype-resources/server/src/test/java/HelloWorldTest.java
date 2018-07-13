@@ -20,7 +20,7 @@ package ${package};
 
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.Assert; import org.junit.Test;
 
 import com.runwaysdk.session.Request;
 import ${package}.HelloWorld;

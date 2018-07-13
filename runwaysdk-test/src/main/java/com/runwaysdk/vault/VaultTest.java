@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.vault;
 
@@ -24,32 +24,21 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.io.FileReadException;
 import com.runwaysdk.dataaccess.io.SAXParseTest;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.util.FileIO;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class VaultTest extends TestCase
+public class VaultTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    * The first vault to store files
    */
@@ -74,31 +63,11 @@ public class VaultTest extends TestCase
    */
   private static final String filePath = SAXParseTest.FILTER_SET;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTestSuite(VaultTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   /**
    * The setup done before the test suite is run
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     vault1 = VaultDAO.newInstance();
@@ -124,6 +93,8 @@ public class VaultTest extends TestCase
   /**
    * The tear down done after all the test in the test suite have run
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     vault1 = (VaultDAO) VaultDAO.get(vault1.getId()).getBusinessDAO();
@@ -134,19 +105,12 @@ public class VaultTest extends TestCase
   }
 
   /**
-   * No setup needed non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  protected void setUp() throws Exception
-  {
-  }
-
-  /**
    * Delete all MetaData objects which were created in the class
    * 
    * @see junit.framework.TestCase#tearDown()
    */
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
     if (file != null && file.isAppliedToDB())
@@ -171,6 +135,8 @@ public class VaultTest extends TestCase
   // }
   //
   @Transaction
+  @Request
+  @Test
   public void testApplyMultipleFileInATransaction()
   {
     for (int i = 0; i < 10; i++)
@@ -189,6 +155,8 @@ public class VaultTest extends TestCase
   /**
    * Test creating a file
    */
+  @Request
+  @Test
   public void testCreateFile()
   {
     file = VaultFileDAO.newInstance();
@@ -197,8 +165,8 @@ public class VaultTest extends TestCase
     file.setSize(testFile.length);
     file.setExtension("xml");
 
-    assertEquals("testFile", file.getFileName());
-    assertEquals("xml", file.getExtension());
+    Assert.assertEquals("testFile", file.getFileName());
+    Assert.assertEquals("xml", file.getExtension());
 
     file.apply();
   }
@@ -211,6 +179,8 @@ public class VaultTest extends TestCase
    * @throws IllegalAccessException
    * @throws IllegalArgumentException
    */
+  @Request
+  @Test
   public void testPutFile() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException
   {
     file = VaultFileDAO.newInstance();
@@ -220,9 +190,9 @@ public class VaultTest extends TestCase
     file.setSize(testFile.length);
     file.apply();
 
-//    VaultDAOIF vault = VaultDAO.get(file.getVaultReference());
+    // VaultDAOIF vault = VaultDAO.get(file.getVaultReference());
 
-//    long byteCount = Long.parseLong(vault.getValue(VaultInfo.BYTE_COUNT));
+    // long byteCount = Long.parseLong(vault.getValue(VaultInfo.BYTE_COUNT));
 
     file.putFile(testFile);
 
@@ -231,20 +201,20 @@ public class VaultTest extends TestCase
 
     File f = new File(path);
 
-    assertTrue(f.exists());
-    assertTrue(f.isFile());
+    Assert.assertTrue(f.exists());
+    Assert.assertTrue(f.isFile());
 
     // Ensure that the file is the same
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(file.getFileStream()));
     BufferedReader bytes2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(testFile)));
-//    int i = 0;
+    // int i = 0;
 
     try
     {
       while (bytes1.ready() || bytes2.ready())
       {
-        assertEquals(bytes1.read(), bytes2.read());
-//        i++;
+        Assert.assertEquals(bytes1.read(), bytes2.read());
+        // i++;
       }
 
       bytes1.close();
@@ -252,7 +222,7 @@ public class VaultTest extends TestCase
     }
     catch (IOException e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
 
   }
@@ -260,6 +230,8 @@ public class VaultTest extends TestCase
   /**
    * Test deleting a file in a vault
    */
+  @Request
+  @Test
   public void testDeleteFile()
   {
     file = VaultFileDAO.newInstance();
@@ -277,22 +249,24 @@ public class VaultTest extends TestCase
     String path = vault.getVaultPath() + "/" + file.getVaultFilePath() + file.getVaultFileName();
     String tempPath = vault.getVaultPath() + "/" + file.getVaultFilePath() + file.getVaultFileName() + ".temp";
 
-    assertTrue(new File(path).exists());
-    assertFalse(new File(tempPath).exists());
+    Assert.assertTrue(new File(path).exists());
+    Assert.assertFalse(new File(tempPath).exists());
 
     file.delete();
     file = null;
 
     // Ensure that the file and the temp file no longer exists on the
     // filesystem
-    assertFalse(new File(path).exists());
-    assertFalse(new File(tempPath).exists());
-    assertEquals(byteCount, Long.parseLong(vault.getValue(VaultInfo.BYTE_COUNT)));
+    Assert.assertFalse(new File(path).exists());
+    Assert.assertFalse(new File(tempPath).exists());
+    Assert.assertEquals(byteCount, Long.parseLong(vault.getValue(VaultInfo.BYTE_COUNT)));
   }
 
   /**
    * Test deleting an empty file in a vault
    */
+  @Request
+  @Test
   public void testDeleteFile2()
   {
     file = VaultFileDAO.newInstance();
@@ -310,6 +284,8 @@ public class VaultTest extends TestCase
   /**
    * Test adding files to multiple different vaults
    */
+  @Request
+  @Test
   public void testMultiVaults()
   {
     // Create a file in the first file vault
@@ -334,7 +310,7 @@ public class VaultTest extends TestCase
     file2.putFile(testFile);
 
     // Ensure the files are in separate vaults
-    assertTrue(!file.getVaultReference().equals(file2.getId()));
+    Assert.assertTrue(!file.getVaultReference().equals(file2.getId()));
 
     // Ensure that both files are equals in the different vaults
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(file.getFileStream()));
@@ -344,7 +320,7 @@ public class VaultTest extends TestCase
     {
       while (bytes1.ready() || bytes2.ready())
       {
-        assertEquals(bytes1.read(), bytes2.read());
+        Assert.assertEquals(bytes1.read(), bytes2.read());
       }
 
       bytes1.close();
@@ -352,13 +328,15 @@ public class VaultTest extends TestCase
     }
     catch (IOException e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
   }
 
   /**
    * Test the undo it command on an empty file
    */
+  @Request
+  @Test
   public void testUndoIt1()
   {
     createFile();
@@ -378,12 +356,14 @@ public class VaultTest extends TestCase
 
     File f = new File(path);
 
-    assertFalse(f.exists());
+    Assert.assertFalse(f.exists());
   }
 
   /**
    * Test the undo it command on an existing file
    */
+  @Request
+  @Test
   public void testUndoIt2()
   {
     createFile(testFile);
@@ -403,8 +383,8 @@ public class VaultTest extends TestCase
 
     File f = new File(path);
 
-    assertTrue(f.exists());
-    assertTrue(f.isFile());
+    Assert.assertTrue(f.exists());
+    Assert.assertTrue(f.isFile());
 
     // Ensure that the file is the same
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(file.getFileStream()));
@@ -414,7 +394,7 @@ public class VaultTest extends TestCase
     {
       while (bytes1.ready() || bytes2.ready())
       {
-        assertEquals(bytes1.read(), bytes2.read());
+        Assert.assertEquals(bytes1.read(), bytes2.read());
       }
 
       bytes1.close();
@@ -422,10 +402,12 @@ public class VaultTest extends TestCase
     }
     catch (IOException e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDeleteRollBack()
   {
     createFile(testFile);
@@ -445,8 +427,8 @@ public class VaultTest extends TestCase
 
     File f = new File(path);
 
-    assertTrue(f.exists());
-    assertTrue(f.isFile());
+    Assert.assertTrue(f.exists());
+    Assert.assertTrue(f.isFile());
 
     // Ensure that the file is the same
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(file.getFileStream()));
@@ -456,7 +438,7 @@ public class VaultTest extends TestCase
     {
       while (bytes1.ready() || bytes2.ready())
       {
-        assertEquals(bytes1.read(), bytes2.read());
+        Assert.assertEquals(bytes1.read(), bytes2.read());
       }
 
       bytes1.close();
@@ -464,12 +446,14 @@ public class VaultTest extends TestCase
     }
     catch (IOException e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
 
     file = null;
   }
 
+  @Request
+  @Test
   public void testVaultDelete()
   {
     // Add files to an existing vault
@@ -514,8 +498,8 @@ public class VaultTest extends TestCase
 
     File f = new File(path);
 
-    assertTrue(f.exists());
-    assertTrue(f.isFile());
+    Assert.assertTrue(f.exists());
+    Assert.assertTrue(f.isFile());
 
     // Ensure that the file is the same
     // Ensure that the file is the same
@@ -526,7 +510,7 @@ public class VaultTest extends TestCase
     {
       while (bytes1.ready() || bytes2.ready())
       {
-        assertEquals(bytes1.read(), bytes2.read());
+        Assert.assertEquals(bytes1.read(), bytes2.read());
       }
 
       bytes1.close();
@@ -534,7 +518,7 @@ public class VaultTest extends TestCase
     }
     catch (IOException e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
   }
 

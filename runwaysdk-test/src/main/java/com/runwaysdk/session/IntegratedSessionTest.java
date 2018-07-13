@@ -3,23 +3,30 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
 import java.util.Locale;
 import java.util.Set;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ClientException;
 import com.runwaysdk.RunwayExceptionDTO;
@@ -71,26 +78,8 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.facade.Facade;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class IntegratedSessionTest extends TestCase
+public class IntegratedSessionTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    * The test user object
    */
@@ -294,38 +283,10 @@ public class IntegratedSessionTest extends TestCase
   private static String                    enumItemId3;
 
   /**
-   * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps it
-   * in <code>MasterTestSetup</code>. The returned class is a suite of all the
-   * tests in <code>AttributeTest</code>, with the global setUp() and tearDown()
-   * methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTestSuite(IntegratedSessionTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  /**
    * The setup done before the test suite is run
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     // Create a new user
@@ -504,6 +465,8 @@ public class IntegratedSessionTest extends TestCase
   /**
    * The tear down done after all the test in the test suite have run
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(typeTuple1);
@@ -522,19 +485,12 @@ public class IntegratedSessionTest extends TestCase
   }
 
   /**
-   * No setup needed non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  protected void setUp() throws Exception
-  {
-  }
-
-  /**
    * Delete all MetaData objects which were created in the class
    * 
    * @see junit.framework.TestCase#tearDown()
    */
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
     Set<RelationshipDAOIF> set = newUser1.getAllPermissions();
@@ -565,6 +521,8 @@ public class IntegratedSessionTest extends TestCase
     SessionFacade.clearSessions();
   }
 
+  @Request
+  @Test
   public void testNoCreatePermissions()
   {
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -587,7 +545,7 @@ public class IntegratedSessionTest extends TestCase
     try
     {
       test.apply();
-      fail("Failed to thrown an exception on creation of invalid permisions");
+      Assert.fail("Failed to thrown an exception on creation of invalid permisions");
     }
     catch (CreatePermissionException e)
     {
@@ -595,6 +553,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNoReadPermissions()
   {
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -615,7 +575,7 @@ public class IntegratedSessionTest extends TestCase
     try
     {
       Facade.get(sessionId, ElementInfo.ID_VALUE);
-      fail("Failed to set readable on DTO when reading an object without read permission.  Object was instantiated.");
+      Assert.fail("Failed to set readable on DTO when reading an object without read permission.  Object was instantiated.");
     }
     catch (ReadPermissionException e)
     {
@@ -623,6 +583,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testReadPermissions()
   {
     String sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -646,15 +608,17 @@ public class IntegratedSessionTest extends TestCase
 
       if (!mutableDTO.getId().equals(ElementInfo.ID_VALUE))
       {
-        fail("Failed to instantiate an object with read permission.");
+        Assert.fail("Failed to instantiate an object with read permission.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testNoNewBusinessPermissions()
   {
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -678,7 +642,7 @@ public class IntegratedSessionTest extends TestCase
 
       if (entityDTO.isReadable() || entityDTO.isWritable())
       {
-        fail("Created a DTO without permission.");
+        Assert.fail("Created a DTO without permission.");
       }
     }
     catch (CreatePermissionException e)
@@ -687,6 +651,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNewBusinessPermissions()
   {
     String sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -710,15 +676,17 @@ public class IntegratedSessionTest extends TestCase
 
       if (!entityDTO.getType().equals(MdBusinessInfo.CLASS))
       {
-        fail("Failed to instantiate a business DTO although adequate permissions were granted. Object was instantiated.");
+        Assert.fail("Failed to instantiate a business DTO although adequate permissions were granted. Object was instantiated.");
       }
     }
     catch (PermissionException e)
     {
-      fail("Failed to instantiate a business DTO although adequate permissions were granted. Object was not instantiated.");
+      Assert.fail("Failed to instantiate a business DTO although adequate permissions were granted. Object was not instantiated.");
     }
   }
 
+  @Request
+  @Test
   public void testNoNewRelationshipPermissions()
   {
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -750,7 +718,7 @@ public class IntegratedSessionTest extends TestCase
 
       if (!relationshipDTO.isReadable() || relationshipDTO.isWritable())
       {
-        fail("Created a DTO without permission.");
+        Assert.fail("Created a DTO without permission.");
       }
     }
     catch (CreatePermissionException e)
@@ -759,6 +727,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNewRelationshipPermissions()
   {
     String sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -788,12 +758,12 @@ public class IntegratedSessionTest extends TestCase
 
       if (!relationshipDTO.getType().equals(mdRelationship.definesType()))
       {
-        fail("Failed to instantiate a relationship DTO although adequate permissions were granted. Relationship was instantiated.");
+        Assert.fail("Failed to instantiate a relationship DTO although adequate permissions were granted. Relationship was instantiated.");
       }
     }
     catch (PermissionException e)
     {
-      fail("Failed to instantiate a relationship DTO although adequate permissions were granted. Relationship was not instantiated.");
+      Assert.fail("Failed to instantiate a relationship DTO although adequate permissions were granted. Relationship was not instantiated.");
     }
     catch (Exception e)
     {
@@ -801,6 +771,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeCreatePermissions()
   {
     newUser1.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -830,7 +802,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to create a businessDAO with Create Type permissions");
+      Assert.fail("Unable to create a businessDAO with Create Type permissions");
     }
 
     try
@@ -840,7 +812,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to delete a businessDAO with Delete Type permissions");
+      Assert.fail("Unable to delete a businessDAO with Delete Type permissions");
     }
   }
 
@@ -852,7 +824,7 @@ public class IntegratedSessionTest extends TestCase
     try
     {
       test.apply();
-      fail("Able to create a businessDAO without Create BusinessDAO permissions on the MetaData");
+      Assert.fail("Able to create a businessDAO without Create BusinessDAO permissions on the MetaData");
     }
     catch (PermissionException e)
     {
@@ -870,10 +842,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
   }
 
+  @Request
+  @Test
   public void testOwnerCreatePermissions()
   {
     RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -905,7 +879,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to create a businessDAO with Owner Create Type permissions");
+      Assert.fail("Unable to create a businessDAO with Owner Create Type permissions");
     }
     finally
     {
@@ -917,6 +891,8 @@ public class IntegratedSessionTest extends TestCase
   /**
    * Tests logging in with the anonymous user.
    */
+  @Request
+  @Test
   public void testAnonymousLogin()
   {
     String sessionId = null;
@@ -926,7 +902,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (Throwable ex)
     {
-      fail(ex.getMessage());
+      Assert.fail(ex.getMessage());
     }
 
     Facade.logout(sessionId);
@@ -935,6 +911,8 @@ public class IntegratedSessionTest extends TestCase
   /**
    * Tests logging in with the anonymous user.
    */
+  @Request
+  @Test
   public void testValidChangLogin()
   {
     String sessionId = Facade.loginAnonymous(new Locale[] { CommonProperties.getDefaultLocale() });
@@ -948,7 +926,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (Throwable ex)
     {
-      fail(ex.getMessage());
+      Assert.fail(ex.getMessage());
     }
 
     Facade.logout(sessionId);
@@ -957,6 +935,8 @@ public class IntegratedSessionTest extends TestCase
   /**
    * Tests logging in with the anonymous user.
    */
+  @Request
+  @Test
   public void testInvalidChangLogin()
   {
     String sessionId = Facade.loginAnonymous(new Locale[] { CommonProperties.getDefaultLocale() });
@@ -981,7 +961,7 @@ public class IntegratedSessionTest extends TestCase
     {
       Facade.changeLogin(sessionId, username1, "invalidPassword");
 
-      fail("Able to change the user on a give session without providing the proper password.");
+      Assert.fail("Able to change the user on a give session without providing the proper password.");
     }
     catch (Exception ex)
     {
@@ -992,13 +972,15 @@ public class IntegratedSessionTest extends TestCase
   /**
    * Tests passing in an invalid session id.
    */
+  @Request
+  @Test
   public void testInvalidSessionId()
   {
     String sessionId = "Blah Blah Blah";
     try
     {
       Facade.changeLogin(sessionId, username1, password1);
-      fail("An invalid session id was accepted.");
+      Assert.fail("An invalid session id was accepted.");
     }
     catch (Throwable e)
     {
@@ -1014,11 +996,13 @@ public class IntegratedSessionTest extends TestCase
       }
       if (fail)
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
   }
 
+  @Request
+  @Test
   public void testLock()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1053,7 +1037,7 @@ public class IntegratedSessionTest extends TestCase
       test.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
       test.apply();
 
-      fail("Able to update a Business without acquiring the lock");
+      Assert.fail("Able to update a Business without acquiring the lock");
     }
     catch (LockException e)
     {
@@ -1072,7 +1056,7 @@ public class IntegratedSessionTest extends TestCase
       test.unlock();
       test.apply();
 
-      fail("Able to update a Business without acquiring the lock");
+      Assert.fail("Able to update a Business without acquiring the lock");
     }
     catch (LockException e)
     {
@@ -1091,10 +1075,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (ClientException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testWriteTypePermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1125,7 +1111,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to write a businessDAO with Type permissions");
+      Assert.fail("Unable to write a businessDAO with Type permissions");
     }
   }
 
@@ -1160,10 +1146,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to write a businessDAO with Type permissions");
+      Assert.fail("Unable to write a businessDAO with Type permissions");
     }
   }
 
+  @Request
+  @Test
   public void testWriteStateTypePermissions()
   {
     newUser1.grantPermission(Operation.WRITE, state1.getId());
@@ -1194,10 +1182,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to write a with a state type permissions");
+      Assert.fail("Unable to write a with a state type permissions");
     }
   }
 
+  @Request
+  @Test
   public void testWriteStructTypePermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1228,7 +1218,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to write a with a struct type permissions");
+      Assert.fail("Unable to write a with a struct type permissions");
     }
   }
 
@@ -1237,6 +1227,8 @@ public class IntegratedSessionTest extends TestCase
    * adequate permissions.Facade
    * 
    */
+  @Request
+  @Test
   public void testValidStructTypePermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdStruct.getId());
@@ -1266,7 +1258,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to write a directly to a Struct with adequate permissions.");
+      Assert.fail("Unable to write a directly to a Struct with adequate permissions.");
     }
   }
 
@@ -1275,6 +1267,8 @@ public class IntegratedSessionTest extends TestCase
    * adequate permissions.
    * 
    */
+  @Request
+  @Test
   public void testInvalidStructTypePermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1302,7 +1296,7 @@ public class IntegratedSessionTest extends TestCase
       test.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Yahooo");
       test.apply();
 
-      fail("Able to write a directly to a Struct without adequate permissions.");
+      Assert.fail("Able to write a directly to a Struct without adequate permissions.");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -1315,6 +1309,8 @@ public class IntegratedSessionTest extends TestCase
    * permissions.
    * 
    */
+  @Request
+  @Test
   public void testValidStructSetBlobPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdStruct.getId());
@@ -1345,7 +1341,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable set a blob attribute directly on a Struct with adequate permissions.");
+      Assert.fail("Unable set a blob attribute directly on a Struct with adequate permissions.");
     }
   }
 
@@ -1354,6 +1350,8 @@ public class IntegratedSessionTest extends TestCase
    * adequate permissions.
    * 
    */
+  @Request
+  @Test
   public void testInvalidStructSetBlobPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1381,7 +1379,7 @@ public class IntegratedSessionTest extends TestCase
     {
       test.setBlob(mdAttributeBlob.definesAttribute(), new byte[0]);
       test.apply();
-      fail("Able set a blob attribute directly on a Struct without adequate permissions.");
+      Assert.fail("Able set a blob attribute directly on a Struct without adequate permissions.");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -1394,6 +1392,8 @@ public class IntegratedSessionTest extends TestCase
    * adequate permissions.
    * 
    */
+  @Request
+  @Test
   public void testValidStructAddEnumPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdStruct.getId());
@@ -1433,7 +1433,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to add an enumeration item directly to a Struct with adequate permissions.");
+      Assert.fail("Unable to add an enumeration item directly to a Struct with adequate permissions.");
     }
   }
 
@@ -1442,6 +1442,8 @@ public class IntegratedSessionTest extends TestCase
    * without adequate permissions.
    * 
    */
+  @Request
+  @Test
   public void testInvalidStructAddEnumPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1478,7 +1480,7 @@ public class IntegratedSessionTest extends TestCase
     {
       test.addEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId1);
       test.apply();
-      fail("Able to add an enumeration item directly to a Struct without adequate permissions.");
+      Assert.fail("Able to add an enumeration item directly to a Struct without adequate permissions.");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -1491,6 +1493,8 @@ public class IntegratedSessionTest extends TestCase
    * with adequate permissions.
    * 
    */
+  @Request
+  @Test
   public void testValidStructClearAllPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdStruct.getId());
@@ -1525,7 +1529,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to clear all enumerations item directly to a Struct with adequate permissions.");
+      Assert.fail("Unable to clear all enumerations item directly to a Struct with adequate permissions.");
     }
   }
 
@@ -1534,6 +1538,8 @@ public class IntegratedSessionTest extends TestCase
    * struct without adequate permissions.
    * 
    */
+  @Request
+  @Test
   public void testInvalidStructClearAllPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1565,7 +1571,7 @@ public class IntegratedSessionTest extends TestCase
     {
       test.clearEnum(mdAttributeEnumeration.definesAttribute());
       test.apply();
-      fail("Able to clear all enumerations item directly to a Struct without adequate permissions.");
+      Assert.fail("Able to clear all enumerations item directly to a Struct without adequate permissions.");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -1578,6 +1584,8 @@ public class IntegratedSessionTest extends TestCase
    * with adequate permissions.
    * 
    */
+  @Request
+  @Test
   public void testValidStructRemoveItemPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdStruct.getId());
@@ -1610,7 +1618,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to remove an enumeration item directly from a Struct with adequate permissions.");
+      Assert.fail("Unable to remove an enumeration item directly from a Struct with adequate permissions.");
     }
   }
 
@@ -1619,6 +1627,8 @@ public class IntegratedSessionTest extends TestCase
    * struct without adequate permissions.
    * 
    */
+  @Request
+  @Test
   public void testInvalidStructRemoveItemPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1648,7 +1658,7 @@ public class IntegratedSessionTest extends TestCase
     {
       test.removeEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId1);
       test.apply();
-      fail("Able to remove an enumeration item directly from a Struct without adequate permissions.");
+      Assert.fail("Able to remove an enumeration item directly from a Struct without adequate permissions.");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -1656,6 +1666,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testWriteStructOnStructPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1687,7 +1699,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to write on a generic struct retrieved from a business entity with adequate permissions");
+      Assert.fail("Unable to write on a generic struct retrieved from a business entity with adequate permissions");
     }
   }
 
@@ -1695,6 +1707,8 @@ public class IntegratedSessionTest extends TestCase
    * Tests if permissions prevent you to set a value on a struct that was
    * obtained from an entity.
    */
+  @Request
+  @Test
   public void testWriteStructOnStructPermissionsFail()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1722,7 +1736,7 @@ public class IntegratedSessionTest extends TestCase
       test.lock();
       struct.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "HelloASD");
       test.apply();
-      fail("Able to write on a generic struct retrieved from a business entity with inadequate permissions");
+      Assert.fail("Able to write on a generic struct retrieved from a business entity with inadequate permissions");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -1734,6 +1748,8 @@ public class IntegratedSessionTest extends TestCase
    * Tests if permissions allow you to set a blob value on a Struct obtained
    * from a Entity.
    */
+  @Request
+  @Test
   public void testStructSetBlobOnStructPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1765,7 +1781,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to set a blob on a generic struct retrieved from a business entity with adequate permissions");
+      Assert.fail("Unable to set a blob on a generic struct retrieved from a business entity with adequate permissions");
     }
   }
 
@@ -1773,6 +1789,8 @@ public class IntegratedSessionTest extends TestCase
    * Tests if permissions prevent you from setting a blob value on a Struct
    * obtained from a Entity.
    */
+  @Request
+  @Test
   public void testStructSetBlobOnStructPermissionsFail()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1800,7 +1818,7 @@ public class IntegratedSessionTest extends TestCase
       test.lock();
       struct.setBlob(mdAttributeBlob.definesAttribute(), new byte[0]);
       test.apply();
-      fail("Able to set a blob on a generic struct retrieved from a business entity without adequate permissions");
+      Assert.fail("Able to set a blob on a generic struct retrieved from a business entity without adequate permissions");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -1812,6 +1830,8 @@ public class IntegratedSessionTest extends TestCase
    * Tests if permissions allow you to add an enumeration item on a Struct
    * obtained from a Entity.
    */
+  @Request
+  @Test
   public void testStructAddItemOnStructPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1843,7 +1863,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to an enumeration item to an attribute on a generic struct retrieved from a business entity with adequate permissions");
+      Assert.fail("Unable to an enumeration item to an attribute on a generic struct retrieved from a business entity with adequate permissions");
     }
   }
 
@@ -1851,6 +1871,8 @@ public class IntegratedSessionTest extends TestCase
    * Tests if inadequate permissions permit you to add an enumeration item on a
    * Struct obtained from a Entity.
    */
+  @Request
+  @Test
   public void testStructAddItemOnStructPermissionsFail()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1878,7 +1900,7 @@ public class IntegratedSessionTest extends TestCase
       test.lock();
       struct.addEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId1);
       test.apply();
-      fail("Able to an enumeration item to an attribute on a generic struct retrieved from a business entity with inadequate permissions");
+      Assert.fail("Able to an enumeration item to an attribute on a generic struct retrieved from a business entity with inadequate permissions");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -1890,6 +1912,8 @@ public class IntegratedSessionTest extends TestCase
    * Tests if permissions allow you to remove all enumeration items from a
    * Struct obtained from a Entity.
    */
+  @Request
+  @Test
   public void testStructClearItemsOnStructPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1945,7 +1969,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to clear enumeration items from an attribute on a generic struct retrieved from a business entity with adequate permissions");
+      Assert.fail("Unable to clear enumeration items from an attribute on a generic struct retrieved from a business entity with adequate permissions");
     }
   }
 
@@ -1953,6 +1977,8 @@ public class IntegratedSessionTest extends TestCase
    * Tests if permissions prevent you from removing all enumeration items from a
    * Struct obtained from a Entity.
    */
+  @Request
+  @Test
   public void testStructClearItemsOnStructPermissionsFail()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -1999,7 +2025,7 @@ public class IntegratedSessionTest extends TestCase
       test.lock();
       struct.clearEnum(mdAttributeEnumeration.definesAttribute());
       test.apply();
-      fail("Able to clear enumeration items from an attribute on a generic struct retrieved from a business entityout with adequate permissions");
+      Assert.fail("Able to clear enumeration items from an attribute on a generic struct retrieved from a business entityout with adequate permissions");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -2011,6 +2037,8 @@ public class IntegratedSessionTest extends TestCase
    * Tests if permissions allow you to remove an enumeration item from a Struct
    * obtained from a Entity.
    */
+  @Request
+  @Test
   public void testStructRemoveItemOnStructPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -2063,7 +2091,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to remove an enumeration item from an attribute on a generic struct retrieved from a business entity with adequate permissions");
+      Assert.fail("Unable to remove an enumeration item from an attribute on a generic struct retrieved from a business entity with adequate permissions");
     }
   }
 
@@ -2071,6 +2099,8 @@ public class IntegratedSessionTest extends TestCase
    * Tests if permissions prevent you from removing an enumeration item from a
    * Struct obtained from a Entity.
    */
+  @Request
+  @Test
   public void testStructRemoveItemOnStructPermissionsFail()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -2115,7 +2145,7 @@ public class IntegratedSessionTest extends TestCase
       test.lock();
       struct.removeEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId1);
       test.apply();
-      fail("Able to remove an enumeration item from an attribute on a generic struct retrieved from a business entity without adequate permissions");
+      Assert.fail("Able to remove an enumeration item from an attribute on a generic struct retrieved from a business entity without adequate permissions");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -2123,6 +2153,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidWritePermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
@@ -2151,7 +2183,7 @@ public class IntegratedSessionTest extends TestCase
       test.apply();
       test.unlock();
 
-      fail("Able to write a with an attribute with WRITE permissions only on the defining MdBusiness");
+      Assert.fail("Able to write a with an attribute with WRITE permissions only on the defining MdBusiness");
     }
     catch (AttributeWritePermissionException e)
     {
@@ -2166,6 +2198,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidWritePermissions2()
   {
     newUser1.grantPermission(Operation.WRITE, mdAttribute.getId());
@@ -2194,7 +2228,7 @@ public class IntegratedSessionTest extends TestCase
       test.apply();
       test.unlock();
 
-      fail("Able to write a with a WRITE permissions on MdAttribute, but not the defining MdBusiness");
+      Assert.fail("Able to write a with a WRITE permissions on MdAttribute, but not the defining MdBusiness");
     }
     catch (WritePermissionException e)
     {
@@ -2202,6 +2236,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeAddChildPermissions()
   {
     newUser1.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
@@ -2235,12 +2271,14 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to add a child with type ADD_CHILD permissions. \n" + e.getMessage());
+      Assert.fail("Unable to add a child with type ADD_CHILD permissions. \n" + e.getMessage());
     }
 
     rel.delete();
   }
 
+  @Request
+  @Test
   public void testInvalidTypeAddChildPermissions()
   {
     Business parent = Business.get(businessDAO.getId());
@@ -2268,7 +2306,7 @@ public class IntegratedSessionTest extends TestCase
     {
       rel = parent.addChild(child, mdRelationship.definesType());
       rel.apply();
-      fail("Able to add a child without type ADD_CHILD permissions. \n");
+      Assert.fail("Able to add a child without type ADD_CHILD permissions. \n");
     }
     catch (Throwable e)
     {
@@ -2279,6 +2317,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeWriteChildPermissions()
   {
     newUser1.grantPermission(Operation.WRITE_CHILD, mdRelationship.getId());
@@ -2325,10 +2365,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to modify a child with type WRITE_CHILD permissions. \n" + e.getMessage());
+      Assert.fail("Unable to modify a child with type WRITE_CHILD permissions. \n" + e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidWriteRelationshipPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, relMdAttribute.getId());
@@ -2370,7 +2412,7 @@ public class IntegratedSessionTest extends TestCase
       relationship.lock();
       relationship.setValue(relMdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
       relationship.apply();
-      fail("Able to modify a child without type WRITE_CHILD permissions.");
+      Assert.fail("Able to modify a child without type WRITE_CHILD permissions.");
     }
     catch (WritePermissionException e)
     {
@@ -2378,6 +2420,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeWriteRelationshipPermissions()
   {
     newUser1.grantPermission(Operation.WRITE, mdRelationship.getId());
@@ -2423,10 +2467,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to modify a child with type WRITE permissions. \n" + e.getMessage());
+      Assert.fail("Unable to modify a child with type WRITE permissions. \n" + e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testTypeDeleteAllChildrenPermissions()
   {
     newUser1.grantPermission(Operation.DELETE_CHILD, mdRelationship.getId());
@@ -2463,10 +2509,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to remove children with the DELETE_CHILD permission. \n" + e.getMessage());
+      Assert.fail("Unable to remove children with the DELETE_CHILD permission. \n" + e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testTypeDeleteChildPermission()
   {
     newUser1.grantPermission(Operation.DELETE_CHILD, mdRelationship.getId());
@@ -2500,10 +2548,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to remove a given relationship with the DELETE_CHILD permission. \n" + e.getMessage());
+      Assert.fail("Unable to remove a given relationship with the DELETE_CHILD permission. \n" + e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testTypeDeleteAllChildrenPermissions_missingDeleteChild()
   {
     newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
@@ -2540,10 +2590,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Able to remove a child relationship with the DELETE permission");
+      Assert.fail("Able to remove a child relationship with the DELETE permission");
     }
   }
 
+  @Request
+  @Test
   public void testTypeDeleteChildPermission_missingDeleteChild()
   {
     newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
@@ -2576,10 +2628,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to remove a child relationship without the required DELETE permission");
+      Assert.fail("Unable to remove a child relationship without the required DELETE permission");
     }
   }
 
+  @Request
+  @Test
   public void testTypeDeleteAllParentPermissions()
   {
     newUser1.grantPermission(Operation.DELETE_PARENT, mdRelationship.getId());
@@ -2616,10 +2670,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to remove children with the DELETE_PARENT permission. \n" + e.getMessage());
+      Assert.fail("Unable to remove children with the DELETE_PARENT permission. \n" + e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testTypeDeleteParentPermission()
   {
     newUser1.grantPermission(Operation.DELETE_PARENT, mdRelationship.getId());
@@ -2653,10 +2709,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to remove a given relationship with the DELETE_PARENT permission. \n" + e.getMessage());
+      Assert.fail("Unable to remove a given relationship with the DELETE_PARENT permission. \n" + e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testTypeDeleteAllParentsPermissions_missingParentChild()
   {
     newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
@@ -2693,10 +2751,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to remove a parent relationship with DELETE permission");
+      Assert.fail("Unable to remove a parent relationship with DELETE permission");
     }
   }
 
+  @Request
+  @Test
   public void testTypeDeleteParentPermission_missingDeleteParent()
   {
     newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
@@ -2729,10 +2789,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to remove a child relationship with DELETE permission");
+      Assert.fail("Unable to remove a child relationship with DELETE permission");
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeDeleteParentPermission_missingDelete()
   {
     newUser1.grantPermission(Operation.DELETE_CHILD, mdRelationship.getId());
@@ -2772,7 +2834,7 @@ public class IntegratedSessionTest extends TestCase
     try
     {
       child.removeParent(relationship1);
-      fail("Able to remove a parent relationship without the required DELETE permission");
+      Assert.fail("Able to remove a parent relationship without the required DELETE permission");
     }
     catch (DeleteParentPermissionException e)
     {
@@ -2780,6 +2842,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testStateAddChildPermissions()
   {
     newUser1.grantPermission(Operation.ADD_CHILD, typeTuple2.getId());
@@ -2814,12 +2878,14 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to add a child with type ADD_CHILD permissions");
+      Assert.fail("Unable to add a child with type ADD_CHILD permissions");
     }
 
     rel.delete();
   }
 
+  @Request
+  @Test
   public void testOwnerAddChildPermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -2855,12 +2921,14 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to add a child with type ADD_CHILD permissions");
+      Assert.fail("Unable to add a child with type ADD_CHILD permissions");
     }
 
     rel.delete();
   }
 
+  @Request
+  @Test
   public void testOwnerWriteChildPermissions()
   {
     String relationshipId = null;
@@ -2920,7 +2988,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to modify a child with owner WRITE permissions. \n" + e.getMessage());
+      Assert.fail("Unable to modify a child with owner WRITE permissions. \n" + e.getMessage());
     }
     finally
     {
@@ -2932,6 +3000,8 @@ public class IntegratedSessionTest extends TestCase
    * Make sure that the owner of the relationship is different that the owner on
    * the parent.
    */
+  @Request
+  @Test
   public void testOwnerWriteChildRelationshipPermissions()
   {
     newUser2.grantPermission(Operation.CREATE, mdRelationship.getId());
@@ -3003,10 +3073,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to modify a child with type WRITE permissions. \n" + e.getMessage());
+      Assert.fail("Unable to modify a child with type WRITE permissions. \n" + e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerWriteChildPermissions()
   {
     Business parent = Business.get(businessDAO.getId());
@@ -3037,7 +3109,7 @@ public class IntegratedSessionTest extends TestCase
       relationship.lock();
       relationship.setValue(relMdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
       relationship.apply();
-      fail("Able to modify a child without owner WRITE_CHILD permissions.");
+      Assert.fail("Able to modify a child without owner WRITE_CHILD permissions.");
     }
     catch (WritePermissionException e)
     {
@@ -3045,6 +3117,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOwnerDeleteChildPermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -3080,10 +3154,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Owner is unable to delete child with required DELETE_CHILD permission");
+      Assert.fail("Owner is unable to delete child with required DELETE_CHILD permission");
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerDeleteChildPermissions()
   {
 
@@ -3122,7 +3198,7 @@ public class IntegratedSessionTest extends TestCase
     try
     {
       parent.removeChild(relationship1);
-      fail("Owner able to delete child without required DELETE_CHILD permission");
+      Assert.fail("Owner able to delete child without required DELETE_CHILD permission");
     }
     catch (DeleteChildPermissionException e)
     {
@@ -3130,6 +3206,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAddChildPermissions2()
   {
     newUser1.grantPermission(Operation.CREATE, mdRelationship.getId());
@@ -3157,10 +3235,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to add a child with CREATE permissions on the MdRelationship, but no ADD_CHILD permissions on the MdBusiness");
+      Assert.fail("Unable to add a child with CREATE permissions on the MdRelationship, but no ADD_CHILD permissions on the MdBusiness");
     }
   }
 
+  @Request
+  @Test
   public void testStateAddParentPermissions()
   {
     newUser1.grantPermission(Operation.ADD_PARENT, typeTuple2.getId());
@@ -3193,12 +3273,14 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to add a parent with type ADD_PARENT permissions");
+      Assert.fail("Unable to add a parent with type ADD_PARENT permissions");
     }
 
     rel.delete();
   }
 
+  @Request
+  @Test
   public void testOwnerAddParentPermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -3233,12 +3315,14 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to add a parent with type ADD_PARENT permissions");
+      Assert.fail("Unable to add a parent with type ADD_PARENT permissions");
     }
 
     rel.delete();
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerAddParentPermissions()
   {
     Business child = Business.get(businessDAO.getId());
@@ -3265,7 +3349,7 @@ public class IntegratedSessionTest extends TestCase
     {
       rel = child.addParent(parent, mdRelationship.definesType());
       rel.apply();
-      fail("Able to add a parent with type ADD_PARENT permissions");
+      Assert.fail("Able to add a parent with type ADD_PARENT permissions");
     }
     catch (AddParentPermissionException e)
     {
@@ -3273,6 +3357,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOwnerWriteAddPermissions()
   {
     String relationshipId = null;
@@ -3332,7 +3418,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to modify a child with owner WRITE permissions. \n" + e.getMessage());
+      Assert.fail("Unable to modify a child with owner WRITE permissions. \n" + e.getMessage());
     }
     finally
     {
@@ -3344,6 +3430,8 @@ public class IntegratedSessionTest extends TestCase
    * Make sure that the owner of the relationship is different that the owner on
    * the child.
    */
+  @Request
+  @Test
   public void testOwnerWriteParentRelationshipPermissions()
   {
     newUser2.grantPermission(Operation.CREATE, mdRelationship.getId());
@@ -3415,10 +3503,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to modify a child with type WRITE permissions. \n" + e.getMessage());
+      Assert.fail("Unable to modify a child with type WRITE permissions. \n" + e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerWriteParentPermissions()
   {
     Business parent = Business.get(businessDAO.getId());
@@ -3449,7 +3539,7 @@ public class IntegratedSessionTest extends TestCase
       relationship.lock();
       relationship.setValue(relMdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
       relationship.apply();
-      fail("Able to modify a child without owner WRITE_PARENT permissions.");
+      Assert.fail("Able to modify a child without owner WRITE_PARENT permissions.");
     }
     catch (WritePermissionException e)
     {
@@ -3457,6 +3547,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOwnerDeleteParentPermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -3492,10 +3584,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Owner is unable to delete parent with required DELETE_PARENT permission");
+      Assert.fail("Owner is unable to delete parent with required DELETE_PARENT permission");
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerDeleteParentPermissions()
   {
     // Create the relationship
@@ -3524,7 +3618,7 @@ public class IntegratedSessionTest extends TestCase
     try
     {
       child.removeParent(relationship1);
-      fail("Owner is able to delete parent with required DELETE_PARENT permission");
+      Assert.fail("Owner is able to delete parent with required DELETE_PARENT permission");
     }
     catch (DeleteParentPermissionException e)
     {
@@ -3532,6 +3626,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAddParentPermissions2()
   {
     newUser1.grantPermission(Operation.CREATE, mdRelationship.getId());
@@ -3561,10 +3657,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to ADD_PARENT with CREATE permissions on the MdRelationship");
+      Assert.fail("Unable to ADD_PARENT with CREATE permissions on the MdRelationship");
     }
   }
 
+  @Request
+  @Test
   public void testInvalidDeletePermissions()
   {
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -3588,7 +3686,7 @@ public class IntegratedSessionTest extends TestCase
     {
       test.delete();
 
-      fail("Able to DELETE without permissions");
+      Assert.fail("Able to DELETE without permissions");
     }
     catch (DeletePermissionException e)
     {
@@ -3625,7 +3723,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to delet with Type Permissions");
+      Assert.fail("Unable to delet with Type Permissions");
     }
   }
 
@@ -3660,7 +3758,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to delete with owner Permissions");
+      Assert.fail("Unable to delete with owner Permissions");
     }
   }
 
@@ -3693,7 +3791,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to delete with state Permissions");
+      Assert.fail("Unable to delete with state Permissions");
     }
   }
 
@@ -3723,11 +3821,11 @@ public class IntegratedSessionTest extends TestCase
     {
       test.lock();
       test.promote("transition1");
-      assertEquals(state2, businessDAO5.currentState());
+      Assert.assertEquals(state2, businessDAO5.currentState());
     }
     catch (PermissionException e)
     {
-      fail("Unable to promote with state type PROMOTE permissions");
+      Assert.fail("Unable to promote with state type PROMOTE permissions");
     }
     finally
     {
@@ -3766,7 +3864,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to promote with state-businessDAO PROMOTE permissions");
+      Assert.fail("Unable to promote with state-businessDAO PROMOTE permissions");
     }
     finally
     {
@@ -3800,7 +3898,7 @@ public class IntegratedSessionTest extends TestCase
       test.lock();
       test.promote("transition3");
 
-      fail("Able to PROMOTE with no permissions");
+      Assert.fail("Able to PROMOTE with no permissions");
     }
     catch (PromotePermissionException e)
     {
@@ -3839,7 +3937,7 @@ public class IntegratedSessionTest extends TestCase
 
       test.promote("transition1");
 
-      fail("Able to PROMOTE with permissions on the current state, but not on the destination state");
+      Assert.fail("Able to PROMOTE with permissions on the current state, but not on the destination state");
     }
     catch (PromotePermissionException e)
     {
@@ -3879,7 +3977,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (PermissionException e)
     {
-      fail("Unable to update a relationship with WRITE permissions on the MdTree");
+      Assert.fail("Unable to update a relationship with WRITE permissions on the MdTree");
     }
   }
 
@@ -3908,7 +4006,7 @@ public class IntegratedSessionTest extends TestCase
       test.apply();
       test.unlock();
 
-      fail("Able to write on a relationship without permissions");
+      Assert.fail("Able to write on a relationship without permissions");
 
     }
     catch (WritePermissionException e)
@@ -3917,6 +4015,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAttributeDimensionPermissions()
   {
     MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute.getMdAttributeDimension(mdDimension);
@@ -3953,10 +4053,12 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (AttributeWritePermissionException e)
     {
-      fail("Unable to write a businessDAO with Type permissions");
+      Assert.fail("Unable to write a businessDAO with Type permissions");
     }
   }
 
+  @Request
+  @Test
   public void testClassDimensionPermissions()
   {
     MdClassDimensionDAOIF mdClassDimension = mdDimension.getMdClassDimension(mdBusiness);
@@ -3975,7 +4077,7 @@ public class IntegratedSessionTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
     finally
     {
@@ -3995,6 +4097,8 @@ public class IntegratedSessionTest extends TestCase
     test.apply();
   }
 
+  @Request
+  @Test
   public void testDenyCreatePermissions()
   {
     RoleDAO superRole = TestFixtureFactory.createRole1();
@@ -4036,6 +4140,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOverwriteDenyCreatePermissions()
   {
     RoleDAO superRole = TestFixtureFactory.createRole1();
@@ -4077,6 +4183,8 @@ public class IntegratedSessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSingleActorPermissions()
   {
     newActor1.grantPermission(Operation.WRITE, mdBusiness.getId());

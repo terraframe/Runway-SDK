@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.facade;
 
@@ -23,12 +23,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import com.runwaysdk.AttributeNotification;
 import com.runwaysdk.AttributeNotificationDTO;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.ProblemExceptionDTO;
-import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.InformationDTO;
@@ -77,11 +81,7 @@ import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-
-public class MessageTest extends TestCase implements DoNotWeave
+public class MessageTest implements DoNotWeave
 {
   protected static String          label;
 
@@ -149,40 +149,6 @@ public class MessageTest extends TestCase implements DoNotWeave
 
   protected static String          pack                = "test.bookstore";
 
-  public static Test suite()
-  {
-    TestSuiteTF suite = new TestSuiteTF();
-    suite.addTestSuite(MessageTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        label = "default";
-        systemSession = ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-
-        try
-        {
-          clientRequest = systemSession.getRequest();
-          clientRequest.setKeepMessages(false);
-          classSetUp();
-          changeStubSource();
-        }
-        catch (Exception e)
-        {
-          systemSession.logout();
-        }
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   protected ClientSession createAnonymousSession()
   {
     return ClientSession.createAnonymousSession(label, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -206,7 +172,27 @@ public class MessageTest extends TestCase implements DoNotWeave
     return clientRequestIF;
   }
 
+  @BeforeClass
   public static void classSetUp()
+  {
+    label = "default";
+    systemSession = ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+
+    try
+    {
+      clientRequest = systemSession.getRequest();
+      clientRequest.setKeepMessages(false);
+      classSetUpRequest();
+      changeStubSource();
+    }
+    catch (Exception e)
+    {
+      systemSession.logout();
+    }
+  }
+
+  @Request
+  public static void classSetUpRequest()
   {
     addLocale(Locale.GERMAN);
 
@@ -480,38 +466,27 @@ public class MessageTest extends TestCase implements DoNotWeave
   protected static void changeStubSource()
   {
     clientRequest.lock(attributeProblem1);
-    attributeProblem1.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "\n" + "public class InvalidTitleAttributeProblem extends InvalidTitleAttributeProblemBase ,\n" + " " + AttributeNotification.class.getName() + " \n" + "{\n" + "  public InvalidTitleAttributeProblem()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public InvalidTitleAttributeProblem(" + String.class.getName() + " developerMessage)\n" + "  {\n"
-        + "    super(developerMessage);\n" + "  }\n" + "}\n");
-    attributeProblem1.setValue(MdClassInfo.DTO_STUB_SOURCE, "package test.bookstore;\n" + "\n" + "\n" + "public class InvalidTitleAttributeProblemDTO extends InvalidTitleAttributeProblemDTOBase ,\n" + " " + AttributeNotificationDTO.class.getName() + " \n" + "{\n" + "  public InvalidTitleAttributeProblemDTO(" + ClientRequestIF.class.getName() + " clientRequestIF)\n" + "  {\n" + "    super(clientRequestIF);\n" + "  }\n" + "\n"
-        + "  public InvalidTitleAttributeProblemDTO(" + ClientRequestIF.class.getName() + " clientRequestIF, " + java.util.Locale.class.getName() + " locale)\n" + "  {\n" + "    super(clientRequestIF, locale);\n" + "  }\n" + "}\n");
+    attributeProblem1.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "\n" + "public class InvalidTitleAttributeProblem extends InvalidTitleAttributeProblemBase ,\n" + " " + AttributeNotification.class.getName() + " \n" + "{\n" + "  public InvalidTitleAttributeProblem()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public InvalidTitleAttributeProblem(" + String.class.getName() + " developerMessage)\n" + "  {\n" + "    super(developerMessage);\n" + "  }\n" + "}\n");
+    attributeProblem1.setValue(MdClassInfo.DTO_STUB_SOURCE, "package test.bookstore;\n" + "\n" + "\n" + "public class InvalidTitleAttributeProblemDTO extends InvalidTitleAttributeProblemDTOBase ,\n" + " " + AttributeNotificationDTO.class.getName() + " \n" + "{\n" + "  public InvalidTitleAttributeProblemDTO(" + ClientRequestIF.class.getName() + " clientRequestIF)\n" + "  {\n" + "    super(clientRequestIF);\n" + "  }\n" + "\n" + "  public InvalidTitleAttributeProblemDTO(" + ClientRequestIF.class.getName() + " clientRequestIF, " + java.util.Locale.class.getName() + " locale)\n" + "  {\n" + "    super(clientRequestIF, locale);\n" + "  }\n" + "}\n");
     clientRequest.update(attributeProblem1);
 
     clientRequest.lock(mdViewBook);
-    mdViewBook.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "public class BookView extends BookViewBase \n" + "{\n" + "  public BookView()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public void apply()\n" + "  {\n" + "    " + bookType + " book1 = new " + bookType + "();\n" + "\n" + "    " + AttributeNotificationMap.class.getName() + " attrNotification = \n" + "      new " + AttributeNotificationMap.class.getName()
-        + "(book1, \"title\", this, \"viewTitle\");\n" + "\n" + "    InvalidTitleAttributeProblem attributeProblem1 = new InvalidTitleAttributeProblem(\"Attribute Problem Developer Message\");\n" + "    attributeProblem1.setBookTitle(\"Chicky Monkey\");\n" + "    attributeProblem1.setComponentId(book1.getId());\n" + "    attributeProblem1.setDefiningType(\"" + bookType + "\");\n" + "    attributeProblem1.setDefiningTypeDisplayLabel(\"A Book\");\n"
-        + "    attributeProblem1.setAttributeName(\"title\");\n" + "    attributeProblem1.setAttributeDisplayLabel(\"Book Title\");\n" + "    attributeProblem1.apply();\n" + "    attributeProblem1.throwIt();\n" + "  }\n" + "}\n");
+    mdViewBook.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "public class BookView extends BookViewBase \n" + "{\n" + "  public BookView()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public void apply()\n" + "  {\n" + "    " + bookType + " book1 = new " + bookType + "();\n" + "\n" + "    " + AttributeNotificationMap.class.getName() + " attrNotification = \n" + "      new " + AttributeNotificationMap.class.getName() + "(book1, \"title\", this, \"viewTitle\");\n" + "\n" + "    InvalidTitleAttributeProblem attributeProblem1 = new InvalidTitleAttributeProblem(\"Attribute Problem Developer Message\");\n" + "    attributeProblem1.setBookTitle(\"Chicky Monkey\");\n" + "    attributeProblem1.setComponentId(book1.getId());\n"
+        + "    attributeProblem1.setDefiningType(\"" + bookType + "\");\n" + "    attributeProblem1.setDefiningTypeDisplayLabel(\"A Book\");\n" + "    attributeProblem1.setAttributeName(\"title\");\n" + "    attributeProblem1.setAttributeDisplayLabel(\"Book Title\");\n" + "    attributeProblem1.apply();\n" + "    attributeProblem1.throwIt();\n" + "  }\n" + "}\n");
     clientRequest.update(mdViewBook);
 
     clientRequest.lock(mdBusinessBook);
-    mdBusinessBook.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "import " + InheritanceException.class.getName() + ";\n" + "import " + ExcelProblem.class.getName() + ";\n" + "import " + java.util.Locale.class.getName() + ";\n" + "\n" + "public class Book extends BookBase \n" + "{\n" + "  public Book()\n" + "  {\n" + "    super();\n" + "  }\n" + "  \n" + "  public void exceptionMethod()\n" + "  {\n"
-        + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n" + "  \n" + "  @" + Transaction.class.getName() + "\n" + "  public void problemMethod()\n" + "  {\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value1\");\n" + "    this.apply();\n" + "    \n"
-        + "    TooManyCheckedOutBooksProblem problem1 = new TooManyCheckedOutBooksProblem(\"Problem1 Developer Message\");\n" + "    problem1.setCheckedOutBooks(10);\n" + "    problem1.apply();\n" + "    problem1.throwIt();\n" + "    \n" + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "    \n" + "    this.lock();\n"
-        + "    this.setTitle(\"Changed Value2\");\n" + "    this.apply();\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType + " warningMethod()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    return this;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType
-        + "[] warningMethodReturnArrayObjects()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    " + bookType + "[] bookArray = new " + bookType + "[2];\n" + "    \n" + "    " + bookType + " book1 = new " + bookType + "();\n" + "    book1.setTitle(\"The Illiad\");\n" + "    book1.apply();\n" + "    bookArray[0] = book1;\n" + "    \n" + "    "
-        + bookType + " book2 = new " + bookType + "();\n" + "    book2.setTitle(\"The Odyssey\");\n" + "    book2.apply();\n" + "    bookArray[1] = book2;\n" + "    \n" + "    return bookArray;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType + "Query warningMdMethodReturnQueryObject()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n"
-        + "    warning1.throwIt();\n" + "    \n" + "    " + QueryFactory.class.getName() + " q = new " + QueryFactory.class.getName() + "();\n" + "    " + bookQueryType + " bookQuery = new " + bookQueryType + "(q);\n" + "    bookQuery.ORDER_BY_ASC(bookQuery.getTitle());\n" + "    \n" + "    return bookQuery;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + Integer.class.getName() + " warningMdMethodReturnInt()\n" + "  {\n"
-        + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    return 5;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + Integer.class.getName() + "[] warningMdMethodReturnIntArray()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n"
-        + "    warning1.throwIt();\n" + "    \n" + "    Integer[] intArray = new Integer[2];\n" + "    intArray[0] = 6;\n" + "    intArray[1] = 7;\n" + "    return intArray;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType + " informationMethod()\n" + "  {\n" + "    RecommendedBook information1 = new RecommendedBook();\n" + "    information1.setTitle(\"Tom Sawyer\");\n" + "    information1.apply();\n" + "    information1.throwIt();\n" + "    return this;\n"
-        + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType + " multipleMessagesMethod()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "\n" + "    RecommendedBook information1 = new RecommendedBook();\n" + "    information1.setTitle(\"Tom Sawyer\");\n" + "    information1.apply();\n" + "    information1.throwIt();\n"
-        + "    return this;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public void skipIfProblemsMethod()\n" + "  {\n" + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "\n" + "    skipThisMethod();\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value\");\n" + "    this.apply();\n" + "  }\n"
-        + "  @" + SkipIfProblem.class.getName() + "\n" + "  private void skipThisMethod()\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public void noSkipIfProblemsMethod()\n" + "  {\n" + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n"
-        + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "\n" + "    doNotSkipThisMethod();\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value\");\n" + "    this.apply();\n" + "  }\n" + "\n" + "  private void doNotSkipThisMethod()\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n"
-        + "\n" + "  @" + Transaction.class.getName() + "\n" + "  public void abortIfProblemsMethod()\n" + "  {\n" + "    OverdueLibraryFeesProblem problem1 = new OverdueLibraryFeesProblem(\"Problem1 Developer Message\");\n" + "    problem1.setTotalOutstandingFees(1000);\n" + "    problem1.apply();\n" + "    problem1.throwIt();\n" + "\n" + "    abortOnExecuteMethod();\n" + "\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value\");\n" + "    this.apply();\n" + "\n"
-        + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "  }\n" + "  @" + AbortIfProblem.class.getName() + "\n" + "  private void abortOnExecuteMethod()\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n"
-        + "    throw acoe;\n" + "  }\n" + "\n" + "  @" + Transaction.class.getName() + "\n" + "  public void noAbortIfProblemsMethod()\n" + "  {\n" + "    OverdueLibraryFeesProblem problem1 = new OverdueLibraryFeesProblem(\"Problem1 Developer Message\");\n" + "    problem1.setTotalOutstandingFees(1000);\n" + "    problem1.apply();\n" + "    problem1.throwIt();\n" + "\n" + "    noAbortOnExecuteMethod();\n" + "\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value\");\n"
-        + "    this.apply();\n" + "\n" + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "  }\n" + "\n" + "  private void noAbortOnExecuteMethod()\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n"
-        + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public void excelProblemMethod()\n" + "  {\n" + "    InheritanceException inheritanceException = new InheritanceException(\"This is a developer message\");" + "    inheritanceException.setLocale(" + CommonProperties.class.getName() + ".getDefaultLocale());" + "    ExcelProblem excelProblem = new ExcelProblem(inheritanceException);" + "    excelProblem.setRow(2);" + "    excelProblem.setColumn(\"Cookie\");"
-        + "    excelProblem.throwIt();" + "  }\n" + "}\n");
+    mdBusinessBook.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "import " + InheritanceException.class.getName() + ";\n" + "import " + ExcelProblem.class.getName() + ";\n" + "import " + java.util.Locale.class.getName() + ";\n" + "\n" + "public class Book extends BookBase \n" + "{\n" + "  public Book()\n" + "  {\n" + "    super();\n" + "  }\n" + "  \n" + "  public void exceptionMethod()\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n" + "  \n" + "  @" + Transaction.class.getName() + "\n" + "  public void problemMethod()\n" + "  {\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value1\");\n" + "    this.apply();\n"
+        + "    \n" + "    TooManyCheckedOutBooksProblem problem1 = new TooManyCheckedOutBooksProblem(\"Problem1 Developer Message\");\n" + "    problem1.setCheckedOutBooks(10);\n" + "    problem1.apply();\n" + "    problem1.throwIt();\n" + "    \n" + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "    \n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value2\");\n" + "    this.apply();\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType + " warningMethod()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n"
+        + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    return this;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType + "[] warningMethodReturnArrayObjects()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    " + bookType + "[] bookArray = new " + bookType + "[2];\n" + "    \n" + "    " + bookType + " book1 = new " + bookType + "();\n" + "    book1.setTitle(\"The Illiad\");\n" + "    book1.apply();\n" + "    bookArray[0] = book1;\n" + "    \n" + "    " + bookType + " book2 = new " + bookType + "();\n" + "    book2.setTitle(\"The Odyssey\");\n" + "    book2.apply();\n"
+        + "    bookArray[1] = book2;\n" + "    \n" + "    return bookArray;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType + "Query warningMdMethodReturnQueryObject()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    " + QueryFactory.class.getName() + " q = new " + QueryFactory.class.getName() + "();\n" + "    " + bookQueryType + " bookQuery = new " + bookQueryType + "(q);\n" + "    bookQuery.ORDER_BY_ASC(bookQuery.getTitle());\n" + "    \n" + "    return bookQuery;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + Integer.class.getName() + " warningMdMethodReturnInt()\n" + "  {\n"
+        + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    return 5;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + Integer.class.getName() + "[] warningMdMethodReturnIntArray()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    Integer[] intArray = new Integer[2];\n" + "    intArray[0] = 6;\n" + "    intArray[1] = 7;\n" + "    return intArray;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType + " informationMethod()\n" + "  {\n"
+        + "    RecommendedBook information1 = new RecommendedBook();\n" + "    information1.setTitle(\"Tom Sawyer\");\n" + "    information1.apply();\n" + "    information1.throwIt();\n" + "    return this;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public " + bookType + " multipleMessagesMethod()\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "\n" + "    RecommendedBook information1 = new RecommendedBook();\n" + "    information1.setTitle(\"Tom Sawyer\");\n" + "    information1.apply();\n" + "    information1.throwIt();\n" + "    return this;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n"
+        + "  public void skipIfProblemsMethod()\n" + "  {\n" + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "\n" + "    skipThisMethod();\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value\");\n" + "    this.apply();\n" + "  }\n" + "  @" + SkipIfProblem.class.getName() + "\n" + "  private void skipThisMethod()\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public void noSkipIfProblemsMethod()\n" + "  {\n"
+        + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "\n" + "    doNotSkipThisMethod();\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value\");\n" + "    this.apply();\n" + "  }\n" + "\n" + "  private void doNotSkipThisMethod()\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n" + "\n" + "  @" + Transaction.class.getName() + "\n" + "  public void abortIfProblemsMethod()\n" + "  {\n"
+        + "    OverdueLibraryFeesProblem problem1 = new OverdueLibraryFeesProblem(\"Problem1 Developer Message\");\n" + "    problem1.setTotalOutstandingFees(1000);\n" + "    problem1.apply();\n" + "    problem1.throwIt();\n" + "\n" + "    abortOnExecuteMethod();\n" + "\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value\");\n" + "    this.apply();\n" + "\n" + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "  }\n" + "  @" + AbortIfProblem.class.getName() + "\n" + "  private void abortOnExecuteMethod()\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n"
+        + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n" + "\n" + "  @" + Transaction.class.getName() + "\n" + "  public void noAbortIfProblemsMethod()\n" + "  {\n" + "    OverdueLibraryFeesProblem problem1 = new OverdueLibraryFeesProblem(\"Problem1 Developer Message\");\n" + "    problem1.setTotalOutstandingFees(1000);\n" + "    problem1.apply();\n" + "    problem1.throwIt();\n" + "\n" + "    noAbortOnExecuteMethod();\n" + "\n" + "    this.lock();\n" + "    this.setTitle(\"Changed Value\");\n" + "    this.apply();\n" + "\n" + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "  }\n" + "\n"
+        + "  private void noAbortOnExecuteMethod()\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public void excelProblemMethod()\n" + "  {\n" + "    InheritanceException inheritanceException = new InheritanceException(\"This is a developer message\");" + "    inheritanceException.setLocale(" + CommonProperties.class.getName() + ".getDefaultLocale());" + "    ExcelProblem excelProblem = new ExcelProblem(inheritanceException);" + "    excelProblem.setRow(2);" + "    excelProblem.setColumn(\"Cookie\");" + "    excelProblem.throwIt();" + "  }\n" + "}\n");
     clientRequest.update(mdBusinessBook);
 
     clientRequest.lock(exception);
@@ -544,6 +519,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     clientRequest.update(attributeProblem1);
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     try
@@ -574,6 +551,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testAttributeNotification()
   {
     BusinessDTO instance = clientRequest.newBusiness(bookType);
@@ -586,22 +565,24 @@ public class MessageTest extends TestCase implements DoNotWeave
     {
       if (! ( e instanceof ProblemExceptionDTO ))
       {
-        fail("Exception expected was [" + ProblemExceptionDTO.class.getName() + "] but instead was [" + e.getClass().getName() + "]");
+        Assert.fail("Exception expected was [" + ProblemExceptionDTO.class.getName() + "] but instead was [" + e.getClass().getName() + "]");
       }
 
       List<AttributeNotificationDTO> notificationList = clientRequest.getAttributeNotifications(instance.getId(), "title");
 
-      assertTrue("List of attribute notifications is null", notificationList != null);
+      Assert.assertTrue("List of attribute notifications is null", notificationList != null);
 
-      assertTrue("No attribute notificatoins were returned", notificationList.size() > 0);
-      assertEquals("The wrong number of attribute notificatoins was returned", 1, notificationList.size());
+      Assert.assertTrue("No attribute notificatoins were returned", notificationList.size() > 0);
+      Assert.assertEquals("The wrong number of attribute notificatoins was returned", 1, notificationList.size());
 
       AttributeNotificationDTO notificationDTO = notificationList.get(0);
 
-      assertTrue("Returned notification is of the wrong type.", notificationDTO instanceof EmptyValueProblemDTO);
+      Assert.assertTrue("Returned notification is of the wrong type.", notificationDTO instanceof EmptyValueProblemDTO);
     }
   }
 
+  @Request
+  @Test
   public void testViewDomainAttributeMapping()
   {
     Class<?> viewDTOclass = LoaderDecorator.load(bookViewType + "DTO");
@@ -614,7 +595,7 @@ public class MessageTest extends TestCase implements DoNotWeave
     {
       instance = (ViewDTO) viewDTOclass.getMethod("apply").invoke(instance);
 
-      fail("Problem Exception not thrown.");
+      Assert.fail("Problem Exception not thrown.");
     }
     catch (Throwable e)
     {
@@ -626,40 +607,42 @@ public class MessageTest extends TestCase implements DoNotWeave
 
         if (! ( te instanceof ProblemExceptionDTO ))
         {
-          fail("Exception expected was [" + ProblemExceptionDTO.class.getName() + "] but instead was [" + te.getClass().getName() + "]");
+          Assert.fail("Exception expected was [" + ProblemExceptionDTO.class.getName() + "] but instead was [" + te.getClass().getName() + "]");
         }
 
         List<AttributeNotificationDTO> notificationList = clientRequest.getAttributeNotifications(instance.getId(), "viewTitle");
 
-        assertTrue("List of attribute notifications is null", notificationList != null);
+        Assert.assertTrue("List of attribute notifications is null", notificationList != null);
 
-        assertTrue("No attribute notificatoins were returned", notificationList.size() > 0);
-        assertEquals("The wrong number of attribute notificatoins was returned", 1, notificationList.size());
+        Assert.assertTrue("No attribute notificatoins were returned", notificationList.size() > 0);
+        Assert.assertEquals("The wrong number of attribute notificatoins was returned", 1, notificationList.size());
 
         AttributeNotificationDTO notificationDTO = notificationList.get(0);
 
-        assertTrue("Returned notification is of the wrong type.", invalidTitleProblemDTOclass.isInstance(notificationDTO));
+        Assert.assertTrue("Returned notification is of the wrong type.", invalidTitleProblemDTOclass.isInstance(notificationDTO));
 
         try
         {
           String definingType = (String) invalidTitleProblemDTOclass.getMethod("getDefiningType").invoke(notificationDTO);
           String definingTypeDisplayLabel = (String) invalidTitleProblemDTOclass.getMethod("getDefiningTypeDisplayLabel").invoke(notificationDTO);
 
-          assertEquals("Containging type for an attributenotification was not remapped to the view type.", bookViewType, definingType);
-          assertEquals("Containging type display label for an attributenotification was not remapped to the view type display label.", "A Book View", definingTypeDisplayLabel);
+          Assert.assertEquals("Containging type for an attributenotification was not remapped to the view type.", bookViewType, definingType);
+          Assert.assertEquals("Containging type display label for an attributenotification was not remapped to the view type display label.", "A Book View", definingTypeDisplayLabel);
         }
         catch (Exception innerException)
         {
-          fail(innerException.getMessage());
+          Assert.fail(innerException.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
   }
 
+  @Request
+  @Test
   public void testWarning()
   {
     Class<?> warningClass = LoaderDecorator.load("test.bookstore.CheckoutLimitReachedDTO");
@@ -676,25 +659,25 @@ public class MessageTest extends TestCase implements DoNotWeave
       instance = (BusinessDTO) bookClass.getMethod("warningMethod").invoke(instance);
 
       // Make sure the original object is returned.
-      assertEquals("Moby Dick", instance.getValue("title"));
+      Assert.assertEquals("Moby Dick", instance.getValue("title"));
 
       List<MessageDTO> messageList = clientRequest.getMessages();
-      assertEquals("Only one message should have been returned.", 1, messageList.size());
+      Assert.assertEquals("Only one message should have been returned.", 1, messageList.size());
 
       List<WarningDTO> warningList = clientRequest.getWarnings();
-      assertEquals("Only one warning should have been returned.", 1, warningList.size());
+      Assert.assertEquals("Only one warning should have been returned.", 1, warningList.size());
 
       List<InformationDTO> informationList = clientRequest.getInformation();
-      assertEquals("No information should have been returned.", 0, informationList.size());
+      Assert.assertEquals("No information should have been returned.", 0, informationList.size());
 
       MessageDTO messageDTO = messageList.get(0);
-      assertTrue("Message is of the wrong type.", warningClass.isInstance(messageDTO));
+      Assert.assertTrue("Message is of the wrong type.", warningClass.isInstance(messageDTO));
 
       Integer maxAllowedBooks = (Integer) warningClass.getMethod("getMaxAllowedBooks").invoke(messageDTO);
-      assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
+      Assert.assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
 
       String localizedMessage = (String) warningClass.getMethod("getMessage").invoke(messageDTO);
-      assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
+      Assert.assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
 
       systemSession.logout();
       try
@@ -706,7 +689,7 @@ public class MessageTest extends TestCase implements DoNotWeave
         messageList = clientRequest.getMessages();
         messageDTO = messageList.get(0);
         localizedMessage = (String) warningClass.getMethod("getMessage").invoke(messageDTO);
-        assertEquals("10 ist die Hoechstzahl der Buecher, die Sie zur gegebener Zeit ausleihen koennen.", localizedMessage);
+        Assert.assertEquals("10 ist die Hoechstzahl der Buecher, die Sie zur gegebener Zeit ausleihen koennen.", localizedMessage);
       }
       finally
       {
@@ -717,7 +700,7 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -728,6 +711,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testWarningMethodReturnArrayObjects()
   {
     Class<?> warningClass = LoaderDecorator.load("test.bookstore.CheckoutLimitReachedDTO");
@@ -744,33 +729,33 @@ public class MessageTest extends TestCase implements DoNotWeave
 
       bookArray = (BusinessDTO[]) bookClass.getMethod("warningMethodReturnArrayObjects").invoke(instance);
 
-      assertEquals("Returned the wrong number of elements in the array", 2, bookArray.length);
+      Assert.assertEquals("Returned the wrong number of elements in the array", 2, bookArray.length);
 
-      assertEquals("The Illiad", bookArray[0].getValue("title"));
-      assertEquals("The Odyssey", bookArray[1].getValue("title"));
+      Assert.assertEquals("The Illiad", bookArray[0].getValue("title"));
+      Assert.assertEquals("The Odyssey", bookArray[1].getValue("title"));
 
       List<MessageDTO> messageList = clientRequest.getMessages();
-      assertEquals("Only one message should have been returned.", 1, messageList.size());
+      Assert.assertEquals("Only one message should have been returned.", 1, messageList.size());
 
       List<WarningDTO> warningList = clientRequest.getWarnings();
-      assertEquals("Only one warning should have been returned.", 1, warningList.size());
+      Assert.assertEquals("Only one warning should have been returned.", 1, warningList.size());
 
       List<InformationDTO> informationList = clientRequest.getInformation();
-      assertEquals("No information should have been returned.", 0, informationList.size());
+      Assert.assertEquals("No information should have been returned.", 0, informationList.size());
 
       MessageDTO messageDTO = messageList.get(0);
-      assertTrue("Message is of the wrong type.", warningClass.isInstance(messageDTO));
+      Assert.assertTrue("Message is of the wrong type.", warningClass.isInstance(messageDTO));
 
       Integer maxAllowedBooks = (Integer) warningClass.getMethod("getMaxAllowedBooks").invoke(messageDTO);
-      assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
+      Assert.assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
 
       String localizedMessage = (String) warningClass.getMethod("getMessage").invoke(messageDTO);
-      assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
+      Assert.assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -789,6 +774,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testWarningMdMethodReturnQueryObject()
   {
     Class<?> warningClass = LoaderDecorator.load("test.bookstore.CheckoutLimitReachedDTO");
@@ -810,35 +797,35 @@ public class MessageTest extends TestCase implements DoNotWeave
 
       bookQueryDTO = (BusinessQueryDTO) bookClass.getMethod("warningMdMethodReturnQueryObject").invoke(instance1);
 
-      assertEquals("Returned the wrong number of elements in the array", 2, bookQueryDTO.getCount());
+      Assert.assertEquals("Returned the wrong number of elements in the array", 2, bookQueryDTO.getCount());
 
       List<? extends BusinessDTO> businessDTOList = bookQueryDTO.getResultSet();
 
-      assertEquals("Hunt for Red October", businessDTOList.get(0).getValue("title"));
-      assertEquals("Moby Dick", businessDTOList.get(1).getValue("title"));
+      Assert.assertEquals("Hunt for Red October", businessDTOList.get(0).getValue("title"));
+      Assert.assertEquals("Moby Dick", businessDTOList.get(1).getValue("title"));
 
       List<MessageDTO> messageList = clientRequest.getMessages();
-      assertEquals("Only one message should have been returned.", 1, messageList.size());
+      Assert.assertEquals("Only one message should have been returned.", 1, messageList.size());
 
       List<WarningDTO> warningList = clientRequest.getWarnings();
-      assertEquals("Only one warning should have been returned.", 1, warningList.size());
+      Assert.assertEquals("Only one warning should have been returned.", 1, warningList.size());
 
       List<InformationDTO> informationList = clientRequest.getInformation();
-      assertEquals("No information should have been returned.", 0, informationList.size());
+      Assert.assertEquals("No information should have been returned.", 0, informationList.size());
 
       MessageDTO messageDTO = messageList.get(0);
-      assertTrue("Message is of the wrong type.", warningClass.isInstance(messageDTO));
+      Assert.assertTrue("Message is of the wrong type.", warningClass.isInstance(messageDTO));
 
       Integer maxAllowedBooks = (Integer) warningClass.getMethod("getMaxAllowedBooks").invoke(messageDTO);
-      assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
+      Assert.assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
 
       String localizedMessage = (String) warningClass.getMethod("getMessage").invoke(messageDTO);
-      assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
+      Assert.assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -854,6 +841,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testWarningMdMethodReturnInt()
   {
     Class<?> warningClass = LoaderDecorator.load("test.bookstore.CheckoutLimitReachedDTO");
@@ -869,30 +858,30 @@ public class MessageTest extends TestCase implements DoNotWeave
 
       Integer integer = (Integer) bookClass.getMethod("warningMdMethodReturnInt").invoke(instance1);
 
-      assertEquals("Returned the wrong Integer Value.", 5, integer.intValue());
+      Assert.assertEquals("Returned the wrong Integer Value.", 5, integer.intValue());
 
       List<MessageDTO> messageList = clientRequest.getMessages();
-      assertEquals("Only one message should have been returned.", 1, messageList.size());
+      Assert.assertEquals("Only one message should have been returned.", 1, messageList.size());
 
       List<WarningDTO> warningList = clientRequest.getWarnings();
-      assertEquals("Only one warning should have been returned.", 1, warningList.size());
+      Assert.assertEquals("Only one warning should have been returned.", 1, warningList.size());
 
       List<InformationDTO> informationList = clientRequest.getInformation();
-      assertEquals("No information should have been returned.", 0, informationList.size());
+      Assert.assertEquals("No information should have been returned.", 0, informationList.size());
 
       MessageDTO messageDTO = messageList.get(0);
-      assertTrue("Message is of the wrong type.", warningClass.isInstance(messageDTO));
+      Assert.assertTrue("Message is of the wrong type.", warningClass.isInstance(messageDTO));
 
       Integer maxAllowedBooks = (Integer) warningClass.getMethod("getMaxAllowedBooks").invoke(messageDTO);
-      assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
+      Assert.assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
 
       String localizedMessage = (String) warningClass.getMethod("getMessage").invoke(messageDTO);
-      assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
+      Assert.assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -903,6 +892,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testWarningMdMethodReturnIntArray()
   {
     Class<?> warningClass = LoaderDecorator.load("test.bookstore.CheckoutLimitReachedDTO");
@@ -918,34 +909,34 @@ public class MessageTest extends TestCase implements DoNotWeave
 
       Integer[] integerArray = (Integer[]) bookClass.getMethod("warningMdMethodReturnIntArray").invoke(instance1);
 
-      assertEquals("Returned Integer Array is of the wrong size.", 2, integerArray.length);
+      Assert.assertEquals("Returned Integer Array is of the wrong size.", 2, integerArray.length);
 
-      assertEquals("Returned the wrong Integer Value.", 6, integerArray[0].intValue());
+      Assert.assertEquals("Returned the wrong Integer Value.", 6, integerArray[0].intValue());
 
-      assertEquals("Returned the wrong Integer Value.", 7, integerArray[1].intValue());
+      Assert.assertEquals("Returned the wrong Integer Value.", 7, integerArray[1].intValue());
 
       List<MessageDTO> messageList = clientRequest.getMessages();
-      assertEquals("Only one message should have been returned.", 1, messageList.size());
+      Assert.assertEquals("Only one message should have been returned.", 1, messageList.size());
 
       List<WarningDTO> warningList = clientRequest.getWarnings();
-      assertEquals("Only one warning should have been returned.", 1, warningList.size());
+      Assert.assertEquals("Only one warning should have been returned.", 1, warningList.size());
 
       List<InformationDTO> informationList = clientRequest.getInformation();
-      assertEquals("No information should have been returned.", 0, informationList.size());
+      Assert.assertEquals("No information should have been returned.", 0, informationList.size());
 
       MessageDTO messageDTO = messageList.get(0);
-      assertTrue("Message is of the wrong type.", warningClass.isInstance(messageDTO));
+      Assert.assertTrue("Message is of the wrong type.", warningClass.isInstance(messageDTO));
 
       Integer maxAllowedBooks = (Integer) warningClass.getMethod("getMaxAllowedBooks").invoke(messageDTO);
-      assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
+      Assert.assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
 
       String localizedMessage = (String) warningClass.getMethod("getMessage").invoke(messageDTO);
-      assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
+      Assert.assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -956,6 +947,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInformation()
   {
     Class<?> informationClass = LoaderDecorator.load("test.bookstore.RecommendedBookDTO");
@@ -972,25 +965,25 @@ public class MessageTest extends TestCase implements DoNotWeave
       instance = (BusinessDTO) bookClass.getMethod("informationMethod").invoke(instance);
 
       // Make sure the original object is returned.
-      assertEquals("Moby Dick", instance.getValue("title"));
+      Assert.assertEquals("Moby Dick", instance.getValue("title"));
 
       List<MessageDTO> messageList = clientRequest.getMessages();
-      assertEquals("Only one message should have been returned.", 1, messageList.size());
+      Assert.assertEquals("Only one message should have been returned.", 1, messageList.size());
 
       List<WarningDTO> warningList = clientRequest.getWarnings();
-      assertEquals("No warning should have been returned.", 0, warningList.size());
+      Assert.assertEquals("No warning should have been returned.", 0, warningList.size());
 
       List<InformationDTO> informationList = clientRequest.getInformation();
-      assertEquals("Only one information should have been returned.", 1, informationList.size());
+      Assert.assertEquals("Only one information should have been returned.", 1, informationList.size());
 
       MessageDTO messageDTO = messageList.get(0);
-      assertTrue("Message is of the wrong type.", informationClass.isInstance(messageDTO));
+      Assert.assertTrue("Message is of the wrong type.", informationClass.isInstance(messageDTO));
 
       String recommendedTitle = (String) informationClass.getMethod("getTitle").invoke(messageDTO);
-      assertEquals("Attribute on information class has the wrong value.", "Tom Sawyer", recommendedTitle);
+      Assert.assertEquals("Attribute on information class has the wrong value.", "Tom Sawyer", recommendedTitle);
 
       String localizedMessage = (String) informationClass.getMethod("getMessage").invoke(messageDTO);
-      assertEquals("You may also enjoy Tom Sawyer.", localizedMessage);
+      Assert.assertEquals("You may also enjoy Tom Sawyer.", localizedMessage);
 
       systemSession.logout();
       try
@@ -1002,7 +995,7 @@ public class MessageTest extends TestCase implements DoNotWeave
         messageList = clientRequest.getMessages();
         messageDTO = messageList.get(0);
         localizedMessage = (String) informationClass.getMethod("getMessage").invoke(messageDTO);
-        assertEquals("Das Buch Tom Sawyer werden Sie gefallen.", localizedMessage);
+        Assert.assertEquals("Das Buch Tom Sawyer werden Sie gefallen.", localizedMessage);
       }
       finally
       {
@@ -1013,7 +1006,7 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1024,6 +1017,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testMultipleMessages()
   {
     Class<?> warningClass = LoaderDecorator.load("test.bookstore.CheckoutLimitReachedDTO");
@@ -1041,16 +1036,16 @@ public class MessageTest extends TestCase implements DoNotWeave
       instance = (BusinessDTO) bookClass.getMethod("multipleMessagesMethod").invoke(instance);
 
       // Make sure the original object is returned.
-      assertEquals("Moby Dick", instance.getValue("title"));
+      Assert.assertEquals("Moby Dick", instance.getValue("title"));
 
       List<MessageDTO> messageList = clientRequest.getMessages();
-      assertEquals("Only two message should have been returned.", 2, messageList.size());
+      Assert.assertEquals("Only two message should have been returned.", 2, messageList.size());
 
       List<WarningDTO> warningList = clientRequest.getWarnings();
-      assertEquals("Only one warning should have been returned.", 1, warningList.size());
+      Assert.assertEquals("Only one warning should have been returned.", 1, warningList.size());
 
       List<InformationDTO> informationList = clientRequest.getInformation();
-      assertEquals("Only one information should have been returned.", 1, informationList.size());
+      Assert.assertEquals("Only one information should have been returned.", 1, informationList.size());
 
       boolean warningClassFound = false;
       boolean informationClassFound = false;
@@ -1061,28 +1056,28 @@ public class MessageTest extends TestCase implements DoNotWeave
           warningClassFound = true;
 
           Integer maxAllowedBooks = (Integer) warningClass.getMethod("getMaxAllowedBooks").invoke(messageDTO);
-          assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
+          Assert.assertEquals("Attribute on warning class has the wrong value.", 10, maxAllowedBooks + 0);
 
           String localizedMessage = (String) warningClass.getMethod("getMessage").invoke(messageDTO);
-          assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
+          Assert.assertEquals("10 is the maximum number of books you can check out at a given time.", localizedMessage);
         }
         else if (informationClass.isInstance(messageDTO))
         {
           informationClassFound = true;
 
           String recommendedTitle = (String) informationClass.getMethod("getTitle").invoke(messageDTO);
-          assertEquals("Attribute on information class has the wrong value.", "Tom Sawyer", recommendedTitle);
+          Assert.assertEquals("Attribute on information class has the wrong value.", "Tom Sawyer", recommendedTitle);
 
           String localizedMessage = (String) informationClass.getMethod("getMessage").invoke(messageDTO);
-          assertEquals("You may also enjoy Tom Sawyer.", localizedMessage);
+          Assert.assertEquals("You may also enjoy Tom Sawyer.", localizedMessage);
         }
         else
         {
-          fail("Returned message was of the wrong type.");
+          Assert.fail("Returned message was of the wrong type.");
         }
       }
 
-      assertTrue("Both message types were not returned from the method.", warningClassFound && informationClassFound);
+      Assert.assertTrue("Both message types were not returned from the method.", warningClassFound && informationClassFound);
 
       systemSession.logout();
       try
@@ -1099,12 +1094,12 @@ public class MessageTest extends TestCase implements DoNotWeave
           if (warningClass.isInstance(messageDTO))
           {
             String localizedMessage = (String) warningClass.getMethod("getMessage").invoke(messageDTO);
-            assertEquals("10 ist die Hoechstzahl der Buecher, die Sie zur gegebener Zeit ausleihen koennen.", localizedMessage);
+            Assert.assertEquals("10 ist die Hoechstzahl der Buecher, die Sie zur gegebener Zeit ausleihen koennen.", localizedMessage);
           }
           else if (informationClass.isInstance(messageDTO))
           {
             String localizedMessage = (String) informationClass.getMethod("getMessage").invoke(messageDTO);
-            assertEquals("Das Buch Tom Sawyer werden Sie gefallen.", localizedMessage);
+            Assert.assertEquals("Das Buch Tom Sawyer werden Sie gefallen.", localizedMessage);
           }
         }
       }
@@ -1117,7 +1112,7 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1128,6 +1123,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testSkipIfProblems()
   {
     Class<?> exceptionClass = LoaderDecorator.load("test.bookstore.AlreadyCheckedOutExceptionDTO");
@@ -1147,7 +1144,7 @@ public class MessageTest extends TestCase implements DoNotWeave
     {
       if (!instance.getValue("title").equals("Moby Dick"))
       {
-        fail("Problems did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
+        Assert.fail("Problems did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
       }
 
       if (e instanceof InvocationTargetException)
@@ -1160,22 +1157,22 @@ public class MessageTest extends TestCase implements DoNotWeave
         {
           if (exceptionClass.isInstance(te))
           {
-            fail("Method marked to be skipped by an annotation was executed.");
+            Assert.fail("Method marked to be skipped by an annotation was executed.");
           }
 
           if (! ( te instanceof ProblemExceptionDTO ))
           {
-            fail("Method failed to throw problems");
+            Assert.fail("Method failed to throw problems");
           }
         }
         else
         {
-          fail("Method failed to throw problems");
+          Assert.fail("Method failed to throw problems");
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1187,6 +1184,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testNoSkipIfProblems()
   {
     Class<?> exceptionClass = LoaderDecorator.load("test.bookstore.AlreadyCheckedOutExceptionDTO");
@@ -1206,7 +1205,7 @@ public class MessageTest extends TestCase implements DoNotWeave
     {
       if (!instance.getValue("title").equals("Moby Dick"))
       {
-        fail("Exception did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
+        Assert.fail("Exception did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
       }
 
       if (e instanceof InvocationTargetException)
@@ -1219,22 +1218,22 @@ public class MessageTest extends TestCase implements DoNotWeave
         {
           if (!exceptionClass.isInstance(te))
           {
-            fail("Method that was not marked to be skipped by an annotation was not executed.");
+            Assert.fail("Method that was not marked to be skipped by an annotation was not executed.");
           }
 
           if (te instanceof ProblemExceptionDTO)
           {
-            fail("Method throwed problems when it should not have");
+            Assert.fail("Method throwed problems when it should not have");
           }
         }
         else
         {
-          fail("Method failed to throw exception");
+          Assert.fail("Method failed to throw exception");
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1246,6 +1245,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testAbortIfProblemsMethod()
   {
     Class<?> exceptionClass = LoaderDecorator.load("test.bookstore.AlreadyCheckedOutExceptionDTO");
@@ -1265,7 +1266,7 @@ public class MessageTest extends TestCase implements DoNotWeave
     {
       if (!instance.getValue("title").equals("Moby Dick"))
       {
-        fail("Problems did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
+        Assert.fail("Problems did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
       }
 
       if (e instanceof InvocationTargetException)
@@ -1278,27 +1279,27 @@ public class MessageTest extends TestCase implements DoNotWeave
         {
           if (exceptionClass.isInstance(te))
           {
-            fail("Method marked to abort transaction by an annotation was executed.");
+            Assert.fail("Method marked to abort transaction by an annotation was executed.");
           }
 
           if (! ( te instanceof ProblemExceptionDTO ))
           {
-            fail("Method failed to throw problems");
+            Assert.fail("Method failed to throw problems");
           }
           else
           {
             ProblemExceptionDTO problemExceptionDTO = (ProblemExceptionDTO) te;
-            assertEquals("Only one problem should be returned.  Transaction should have been aborted before the second problem.", problemExceptionDTO.getProblems().size(), 1);
+            Assert.assertEquals("Only one problem should be returned.  Transaction should have been aborted before the second problem.", problemExceptionDTO.getProblems().size(), 1);
           }
         }
         else
         {
-          fail("Method failed to throw problems");
+          Assert.fail("Method failed to throw problems");
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1310,6 +1311,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testNoAbortIfProblemsMethod()
   {
     Class<?> exceptionClass = LoaderDecorator.load("test.bookstore.AlreadyCheckedOutExceptionDTO");
@@ -1329,7 +1332,7 @@ public class MessageTest extends TestCase implements DoNotWeave
     {
       if (!instance.getValue("title").equals("Moby Dick"))
       {
-        fail("Problems did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
+        Assert.fail("Problems did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
       }
 
       if (e instanceof InvocationTargetException)
@@ -1342,22 +1345,22 @@ public class MessageTest extends TestCase implements DoNotWeave
         {
           if (! ( exceptionClass.isInstance(te) ))
           {
-            fail("Method not marked to abort transaction by an annotation was not executed.");
+            Assert.fail("Method not marked to abort transaction by an annotation was not executed.");
           }
 
           if (te instanceof ProblemExceptionDTO)
           {
-            fail("Method throwed problems when it should have thrown an exception.");
+            Assert.fail("Method throwed problems when it should have thrown an exception.");
           }
         }
         else
         {
-          fail("Method failed to throw problems");
+          Assert.fail("Method failed to throw problems");
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1369,6 +1372,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testExcelProblemMethod()
   {
     Class<?> bookClass = LoaderDecorator.load("test.bookstore.BookDTO");
@@ -1378,7 +1383,7 @@ public class MessageTest extends TestCase implements DoNotWeave
     {
       instance = clientRequest.newBusiness(bookType);
       bookClass.getMethod("excelProblemMethod").invoke(instance);
-      fail("No ExcelProblem was thrown");
+      Assert.fail("No ExcelProblem was thrown");
     }
     catch (Throwable e)
     {
@@ -1395,36 +1400,38 @@ public class MessageTest extends TestCase implements DoNotWeave
             ProblemExceptionDTO problemExceptionDTO = (ProblemExceptionDTO) te;
             List<? extends ProblemDTOIF> problems = problemExceptionDTO.getProblems();
             if (problems.size() != 1)
-              fail("Expected 1 ProblemDTO, found " + problems.size());
+              Assert.fail("Expected 1 ProblemDTO, found " + problems.size());
 
             ProblemDTOIF problem = problems.get(0);
             if (! ( problem instanceof ExcelProblemDTO ))
-              fail("Expected ExcelProblemDTO, found " + problem.getClass().getName());
+              Assert.fail("Expected ExcelProblemDTO, found " + problem.getClass().getName());
 
             ExcelProblemDTO excelProblem = (ExcelProblemDTO) problem;
             if (excelProblem.getRowNumber() != 2)
-              fail("Expected rowNumber=2, found " + excelProblem.getRowNumber());
+              Assert.fail("Expected rowNumber=2, found " + excelProblem.getRowNumber());
 
             if (!excelProblem.getColumn().equals("Cookie"))
-              fail("Expected Column.equals(\"Cookie\"), found " + excelProblem.getColumn());
+              Assert.fail("Expected Column.equals(\"Cookie\"), found " + excelProblem.getColumn());
           }
           else
           {
-            fail("Expected ProblemExceptionDTO, caught " + te.getClass().getName());
+            Assert.fail("Expected ProblemExceptionDTO, caught " + te.getClass().getName());
           }
         }
         else
         {
-          fail("Method failed to throw problems");
+          Assert.fail("Method failed to throw problems");
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
   }
 
+  @Request
+  @Test
   public void testThrow()
   {
     Class<?> exceptionClass = LoaderDecorator.load("test.bookstore.AlreadyCheckedOutExceptionDTO");
@@ -1458,19 +1465,19 @@ public class MessageTest extends TestCase implements DoNotWeave
           }
           catch (Exception exception)
           {
-            fail(exception.getMessage());
+            Assert.fail(exception.getMessage());
           }
 
-          assertEquals("There are no copies of Atlas Shrugged available for checkout.", localizedMessage);
+          Assert.assertEquals("There are no copies of Atlas Shrugged available for checkout.", localizedMessage);
         }
         else
         {
-          fail(e.getMessage());
+          Assert.fail(e.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1482,6 +1489,8 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testClientSideLocalizeException()
   {
     Class<?> alreadyCheckedOutDTOclass = LoaderDecorator.load("test.bookstore.AlreadyCheckedOutExceptionDTO");
@@ -1496,15 +1505,17 @@ public class MessageTest extends TestCase implements DoNotWeave
     }
     catch (SmartExceptionDTO smartExceptionDTO)
     {
-      assertEquals("There are no copies of Moby Dick available for checkout.", smartExceptionDTO.getMessage());
+      Assert.assertEquals("There are no copies of Moby Dick available for checkout.", smartExceptionDTO.getMessage());
     }
     catch (Exception exception)
     {
-      fail(exception.getMessage());
+      Assert.fail(exception.getMessage());
     }
 
   }
 
+  @Request
+  @Test
   public void testClientSideLocalizeProblem()
   {
     Class<?> tooManyCheckedOutDTOclass = LoaderDecorator.load("test.bookstore.TooManyCheckedOutBooksProblemDTO");
@@ -1515,28 +1526,30 @@ public class MessageTest extends TestCase implements DoNotWeave
       ProblemDTO problemDTO = (ProblemDTO) tooManyCheckedOutDTOclass.getConstructor(ClientRequestIF.class, Locale.class).newInstance(clientRequest, CommonProperties.getDefaultLocale());
       tooManyCheckedOutDTOclass.getMethod("setCheckedOutBooks", Integer.class).invoke(problemDTO, 10);
 
-      assertEquals("You already have 10 books checked out.", problemDTO.getMessage());
+      Assert.assertEquals("You already have 10 books checked out.", problemDTO.getMessage());
     }
     catch (IllegalAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     catch (InvocationTargetException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     catch (NoSuchMethodException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     catch (InstantiationException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testProblem_DeveloperMessage()
   {
     Class<?> bookClass = LoaderDecorator.load("test.bookstore.BookDTO");
@@ -1576,11 +1589,11 @@ public class MessageTest extends TestCase implements DoNotWeave
       {
         if (!instance.getValue("title").equals("Moby Dick"))
         {
-          fail("Problems did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
+          Assert.fail("Problems did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
         }
         if (!instance.getValue("lockedBy").equals(""))
         {
-          fail("Problems did not abort the transaction.  User lock was not rolled back.");
+          Assert.fail("Problems did not abort the transaction.  User lock was not rolled back.");
         }
       }
 
@@ -1600,7 +1613,7 @@ public class MessageTest extends TestCase implements DoNotWeave
           }
           catch (Exception exception)
           {
-            fail(exception.getMessage());
+            Assert.fail(exception.getMessage());
           }
 
           for (ProblemDTO problemDTO : problemDTOList)
@@ -1616,12 +1629,12 @@ public class MessageTest extends TestCase implements DoNotWeave
               }
               catch (Exception exception)
               {
-                fail(exception.getMessage());
+                Assert.fail(exception.getMessage());
               }
 
-              assertEquals("Problem1 Developer Message", problemDTO.getDeveloperMessage());
-              assertEquals("You already have 10 books checked out.", problemDTO.getMessage());
-              assertEquals(10, numberOfBooks);
+              Assert.assertEquals("Problem1 Developer Message", problemDTO.getDeveloperMessage());
+              Assert.assertEquals("You already have 10 books checked out.", problemDTO.getMessage());
+              Assert.assertEquals(10, numberOfBooks);
             }
             else if (overdueFeesDTOclass.isInstance(problemDTO))
             {
@@ -1634,23 +1647,23 @@ public class MessageTest extends TestCase implements DoNotWeave
               }
               catch (Exception exception)
               {
-                fail(exception.getMessage());
+                Assert.fail(exception.getMessage());
               }
 
-              assertEquals("Problem2 Developer Message", problemDTO.getDeveloperMessage());
-              assertEquals("You have $1000.00 in outstanding fees.", problemDTO.getMessage());
-              assertEquals(overdueFees, 1000);
+              Assert.assertEquals("Problem2 Developer Message", problemDTO.getDeveloperMessage());
+              Assert.assertEquals("You have $1000.00 in outstanding fees.", problemDTO.getMessage());
+              Assert.assertEquals(overdueFees, 1000);
             }
           }
         }
         else
         {
-          fail(e.getMessage());
+          Assert.fail(e.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1673,12 +1686,14 @@ public class MessageTest extends TestCase implements DoNotWeave
       clientRequest.removeMember(newUser.getId(), RoleDAOIF.DEVELOPER_ROLE);
     }
 
-    assertEquals("Wrong number of problems was generated.", 2, problemDTOList.size());
-    assertTrue("The [" + tooManyCheckedOutDTOclass + "] problem was not returned.", foundTooManyCheckedOut);
-    assertTrue("The [" + overdueFeesDTOclass + "] problem was not returned.", foundOverdueFee);
+    Assert.assertEquals("Wrong number of problems was generated.", 2, problemDTOList.size());
+    Assert.assertTrue("The [" + tooManyCheckedOutDTOclass + "] problem was not returned.", foundTooManyCheckedOut);
+    Assert.assertTrue("The [" + overdueFeesDTOclass + "] problem was not returned.", foundOverdueFee);
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testProblem_NoDeveloperMessage()
   {
     Class<?> bookClass = LoaderDecorator.load("test.bookstore.BookDTO");
@@ -1717,11 +1732,11 @@ public class MessageTest extends TestCase implements DoNotWeave
       {
         if (!instance.getValue("title").equals("Moby Dick"))
         {
-          fail("Problems did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
+          Assert.fail("Problems did not abort the transaction.  A value on an attribute was set. " + instance.getValue("title"));
         }
         if (!instance.getValue("lockedBy").equals(""))
         {
-          fail("Problems did not abort the transaction.  User lock was not rolled back.");
+          Assert.fail("Problems did not abort the transaction.  User lock was not rolled back.");
         }
       }
 
@@ -1741,7 +1756,7 @@ public class MessageTest extends TestCase implements DoNotWeave
           }
           catch (Exception exception)
           {
-            fail(exception.getMessage());
+            Assert.fail(exception.getMessage());
           }
 
           for (ProblemDTO problemDTO : problemDTOList)
@@ -1757,12 +1772,12 @@ public class MessageTest extends TestCase implements DoNotWeave
               }
               catch (Exception exception)
               {
-                fail(exception.getMessage());
+                Assert.fail(exception.getMessage());
               }
 
-              assertEquals("", problemDTO.getDeveloperMessage());
-              assertEquals("You already have 10 books checked out.", problemDTO.getMessage());
-              assertEquals(10, numberOfBooks);
+              Assert.assertEquals("", problemDTO.getDeveloperMessage());
+              Assert.assertEquals("You already have 10 books checked out.", problemDTO.getMessage());
+              Assert.assertEquals(10, numberOfBooks);
             }
             else if (overdueFeesDTOclass.isInstance(problemDTO))
             {
@@ -1775,23 +1790,23 @@ public class MessageTest extends TestCase implements DoNotWeave
               }
               catch (Exception exception)
               {
-                fail(exception.getMessage());
+                Assert.fail(exception.getMessage());
               }
 
-              assertEquals("", problemDTO.getDeveloperMessage());
-              assertEquals("You have $1000.00 in outstanding fees.", problemDTO.getMessage());
-              assertEquals(overdueFees, 1000);
+              Assert.assertEquals("", problemDTO.getDeveloperMessage());
+              Assert.assertEquals("You have $1000.00 in outstanding fees.", problemDTO.getMessage());
+              Assert.assertEquals(overdueFees, 1000);
             }
           }
         }
         else
         {
-          fail(e.getMessage());
+          Assert.fail(e.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1813,9 +1828,9 @@ public class MessageTest extends TestCase implements DoNotWeave
       clientRequest.revokeAttributePermission(newUser.getId(), mdAttributeLockedBy.getId(), Operation.READ.name());
     }
 
-    assertEquals("Wrong number of problems was generated.", 2, problemDTOList.size());
-    assertTrue("The [" + tooManyCheckedOutDTOclass + "] problem was not returned.", foundTooManyCheckedOut);
-    assertTrue("The [" + overdueFeesDTOclass + "] problem was not returned.", foundOverdueFee);
+    Assert.assertEquals("Wrong number of problems was generated.", 2, problemDTOList.size());
+    Assert.assertTrue("The [" + tooManyCheckedOutDTOclass + "] problem was not returned.", foundTooManyCheckedOut);
+    Assert.assertTrue("The [" + overdueFeesDTOclass + "] problem was not returned.", foundOverdueFee);
   }
 
   @Request

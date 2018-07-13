@@ -3,61 +3,37 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc;
 
 import java.io.File;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.controller.JSPFetcher;
 import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.controller.ServletMethod;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class ViewResponseTest extends TestCase
+public class ViewResponseTest
 {
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ViewResponseTest.class);
-
-    TestSetup wrapper = new TestSetup(suite);
-
-    return wrapper;
-  }
-
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
+  @Request
+  @Test
   public void testAttribute() throws Exception
   {
     String name = "test";
@@ -69,6 +45,8 @@ public class ViewResponseTest extends TestCase
     Assert.assertEquals(value, response.getAttribute(name));
   }
 
+  @Request
+  @Test
   public void testHandle() throws Exception
   {
     MockServletRequest req = new MockServletRequest();
@@ -85,6 +63,8 @@ public class ViewResponseTest extends TestCase
     Assert.assertEquals(template, req.getDispatcher().getLocation());
   }
 
+  @Request
+  @Test
   public void testHandleDirectory() throws Exception
   {
     MockServletRequest req = new MockServletRequest();
@@ -102,6 +82,8 @@ public class ViewResponseTest extends TestCase
     Assert.assertEquals(template, req.getDispatcher().getLocation());
   }
 
+  @Request
+  @Test
   public void testHandleAttributes() throws Exception
   {
     MockServletRequest req = new MockServletRequest();

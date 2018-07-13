@@ -3,20 +3,25 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.ElementInfo;
@@ -40,27 +45,10 @@ import com.runwaysdk.dataaccess.metadata.MdGraphDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.RelationshipDefinitionException;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class MdRelationshipTest extends TestCase
+public class MdRelationshipTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static MdRelationshipDAO      abstractParentMdTree1;
 
   private static MdRelationshipDAO      abstractParentMdTree2;
@@ -78,45 +66,11 @@ public class MdRelationshipTest extends TestCase
   private static MdBusinessDAO          mdBusinessChildClass1;
 
   /**
-   * Launch-point for the standalone textui JUnit tests in this class.
-   * 
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(MdRelationshipTest.suite()));
-  }
-
-  /**
-   * 
-   * @return
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdRelationshipTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-
-  }
-
-  /**
    * Creates an abstract relationship that will be extended in various test
    * cases.
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     MdBusinessDAOIF busObjectMdBusiness = MdBusinessDAO.getMdBusinessDAO(BusinessInfo.CLASS);
@@ -280,6 +234,8 @@ public class MdRelationshipTest extends TestCase
   /**
    * Deletes the abstract relationship.
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     if (abstractParentMdTree1 != null && abstractParentMdTree1.isAppliedToDB())
@@ -308,10 +264,10 @@ public class MdRelationshipTest extends TestCase
     }
 
     if (mdBusinessChildClass1 != null && mdBusinessChildClass1.isAppliedToDB())
-    { 
+    {
       TestFixtureFactory.delete(mdBusinessChildClass1);
     }
-    
+
     if (mdBusinessParentClass1 != null && mdBusinessParentClass1.isAppliedToDB())
     {
       TestFixtureFactory.delete(mdBusinessParentClass1);
@@ -321,6 +277,8 @@ public class MdRelationshipTest extends TestCase
   /**
    * Creates a relationship type who's parent is not a relationship
    */
+  @Request
+  @Test
   public void testNewMdRelationshipWithInvalidParentType()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -352,7 +310,7 @@ public class MdRelationshipTest extends TestCase
       mdTree.setGenerateMdController(false);
       mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTree.apply();
-      fail("A Relationship type was defined incorrectly.  Relationship was defined to extend a Class.  Relationships can only extend other Relationships.");
+      Assert.fail("A Relationship type was defined incorrectly.  Relationship was defined to extend a Class.  Relationships can only extend other Relationships.");
     }
     catch (InvalidReferenceException e)
     {
@@ -370,6 +328,8 @@ public class MdRelationshipTest extends TestCase
   /**
    * Only abstract relationships may be extended.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipExtendsConcrete()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -424,7 +384,7 @@ public class MdRelationshipTest extends TestCase
     try
     {
       mdTree.apply();
-      fail("A Relationship type was defined incorrectly.  Only abstract Relationships may be extended.  A Relationship was created that extends a concrete Relationship.");
+      Assert.fail("A Relationship type was defined incorrectly.  Only abstract Relationships may be extended.  A Relationship was created that extends a concrete Relationship.");
 
     }
     catch (RelationshipDefinitionException e)
@@ -449,6 +409,8 @@ public class MdRelationshipTest extends TestCase
    * Creates a relationship where the class of the parent objects are not
    * compatible with the class on the parent relationship.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipInvalidClassForParentObjects()
   {
     TypeInfo newRelationship = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "RelationshipBadParentClass");
@@ -478,7 +440,7 @@ public class MdRelationshipTest extends TestCase
     {
       mdTree.apply();
       mdTree.delete();
-      fail("A Relationship type was defined incorrectly.  The parent class on the Relationship must be a subtype of the parent class on the parent Relationship.");
+      Assert.fail("A Relationship type was defined incorrectly.  The parent class on the Relationship must be a subtype of the parent class on the parent Relationship.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -490,6 +452,8 @@ public class MdRelationshipTest extends TestCase
    * Creates a relationship where the class of the child objects are not
    * compatable with the class on the parent relationship.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipInvalidClassForChildObjects()
   {
     TypeInfo newRelationship = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "RelationshipBadParentClass");
@@ -519,7 +483,7 @@ public class MdRelationshipTest extends TestCase
     {
       mdTree.apply();
       mdTree.delete();
-      fail("A Relationship type was defined incorrectly.  The child class on the Relationship must be a subtype of the child class on the parent Relationship.");
+      Assert.fail("A Relationship type was defined incorrectly.  The child class on the Relationship must be a subtype of the child class on the parent Relationship.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -530,6 +494,8 @@ public class MdRelationshipTest extends TestCase
   /**
    * Creates a relationship where the parent cardinality is a negative value.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipInvalidParentCardinalityValue()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -562,7 +528,7 @@ public class MdRelationshipTest extends TestCase
     {
       mdTree.apply();
       mdTree.delete();
-      fail("A Relationship type was defined incorrectly.  An incorrect cardinality value was specified.  Valid values are a valid integer greater than 1 or the '*' symbol for an unlimited value.");
+      Assert.fail("A Relationship type was defined incorrectly.  An incorrect cardinality value was specified.  Valid values are a valid integer greater than 1 or the '*' symbol for an unlimited value.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -574,6 +540,8 @@ public class MdRelationshipTest extends TestCase
    * Creates a relationship where the parent cardinality is greater than the
    * parent cardinality on the super relationship.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipCardinalityGreaterThanSuper1()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -606,7 +574,7 @@ public class MdRelationshipTest extends TestCase
     {
       mdTree.apply();
       mdTree.delete();
-      fail("A Relationship type was defined incorrectly.  An incorrect cardinality value was specified.  The cardinality cannot be greater than the super cardinality.");
+      Assert.fail("A Relationship type was defined incorrectly.  An incorrect cardinality value was specified.  The cardinality cannot be greater than the super cardinality.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -618,6 +586,8 @@ public class MdRelationshipTest extends TestCase
    * Creates a relationship where the cardinality is greater than the
    * cardinality of a child relationship.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipCardinalityLessThanChild1()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -649,13 +619,13 @@ public class MdRelationshipTest extends TestCase
     mdTree.apply();
 
     abstractParentMdTree1 = MdRelationshipDAO.get(abstractParentMdTree1.getId()).getBusinessDAO();
-    
+
     try
     {
       abstractParentMdTree1.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "5");
       abstractParentMdTree1.apply();
 
-      fail("A Relationship was modified incorrectly.  An incorrect cardinality value was specified that conflicts with an inherited cardinality.  The inerited cardinality cannot be greater than the super cardinality.");
+      Assert.fail("A Relationship was modified incorrectly.  An incorrect cardinality value was specified that conflicts with an inherited cardinality.  The inerited cardinality cannot be greater than the super cardinality.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -678,6 +648,8 @@ public class MdRelationshipTest extends TestCase
    * Creates a relationship where the cardinality is greater than the
    * cardinality of a child relationship.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipCardinalityLessThanChild2()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -713,7 +685,7 @@ public class MdRelationshipTest extends TestCase
       abstractParentMdTree1.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "1000");
       abstractParentMdTree1.apply();
 
-      fail("A Relationship was modified incorrectly.  An incorrect cardinality value was specified that conflicts with an inherited cardinality.  The inerited cardinality cannot be greater than the super cardinality.");
+      Assert.fail("A Relationship was modified incorrectly.  An incorrect cardinality value was specified that conflicts with an inherited cardinality.  The inerited cardinality cannot be greater than the super cardinality.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -736,6 +708,8 @@ public class MdRelationshipTest extends TestCase
    * Correctly modifies a relationship by setting the cardinality greater than
    * the cardinality on a child relationship.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipCardinalityGreaterThanChild()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -773,11 +747,11 @@ public class MdRelationshipTest extends TestCase
     }
     catch (RelationshipDefinitionException e)
     {
-      fail("A correctly defined Relationship was not created.  The child cardinality lass than the parent cardinality, yet the core rejected it.");
+      Assert.fail("A correctly defined Relationship was not created.  The child cardinality lass than the parent cardinality, yet the core rejected it.");
     }
     catch (Exception e)
     {
-      fail("A correctly defined Relationship was not created.  Error: " + e.getMessage());
+      Assert.fail("A correctly defined Relationship was not created.  Error: " + e.getMessage());
     }
     finally
     {
@@ -796,6 +770,8 @@ public class MdRelationshipTest extends TestCase
    * Creates a relationship where the the cardinality is greater than the super
    * type for the parent objects.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipParentCardinalityGreaterThanSuper2()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -829,7 +805,7 @@ public class MdRelationshipTest extends TestCase
     {
       mdTree.apply();
       mdTree.delete();
-      fail("A Relationship type was defined incorrectly.  An incorrect cardinality value was specified.  The child cardinality cannot be greater than the super cardinality.");
+      Assert.fail("A Relationship type was defined incorrectly.  An incorrect cardinality value was specified.  The child cardinality cannot be greater than the super cardinality.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -841,6 +817,8 @@ public class MdRelationshipTest extends TestCase
    * Correctly defines a relationship type where the parent cardinality is less
    * than the cardinality on the super relationship type.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipLessThanParentCardinality1()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -876,11 +854,11 @@ public class MdRelationshipTest extends TestCase
     }
     catch (RelationshipDefinitionException e)
     {
-      fail("A correctly defined Relationship was not created.  The child cardinality is less than the parent cardinality, yet the core rejected it.");
+      Assert.fail("A correctly defined Relationship was not created.  The child cardinality is less than the parent cardinality, yet the core rejected it.");
     }
     catch (Exception e)
     {
-      fail("A correctly defined Relationship was not created.  Error: " + e.getMessage());
+      Assert.fail("A correctly defined Relationship was not created.  Error: " + e.getMessage());
     }
   }
 
@@ -888,6 +866,8 @@ public class MdRelationshipTest extends TestCase
    * Correctly defines a relationship type where the child cardinality is less
    * than the cardinality on the super relationship type.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipLessThanParentCardinality2()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -923,11 +903,11 @@ public class MdRelationshipTest extends TestCase
     }
     catch (RelationshipDefinitionException e)
     {
-      fail("A correctly defined Relationship was not created.  The child cardinality is less than the parent cardinality, yet the core rejected it.");
+      Assert.fail("A correctly defined Relationship was not created.  The child cardinality is less than the parent cardinality, yet the core rejected it.");
     }
     catch (Exception e)
     {
-      fail("A correctly defined Relationship was not created.  Error: " + e.getMessage());
+      Assert.fail("A correctly defined Relationship was not created.  Error: " + e.getMessage());
     }
   }
 
@@ -936,6 +916,8 @@ public class MdRelationshipTest extends TestCase
    * cardinalities are equal to the cardinalities on the super relationship
    * type.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipEqualCardinalityWithParent()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -971,11 +953,11 @@ public class MdRelationshipTest extends TestCase
     }
     catch (RelationshipDefinitionException e)
     {
-      fail("A correctly defined Relationship was not created.  The child cardinality equal to the parent cardinality, yet the core rejected it.");
+      Assert.fail("A correctly defined Relationship was not created.  The child cardinality equal to the parent cardinality, yet the core rejected it.");
     }
     catch (Exception e)
     {
-      fail("A correctly defined Relationship was not created.  Error: " + e.getMessage());
+      Assert.fail("A correctly defined Relationship was not created.  Error: " + e.getMessage());
     }
   }
 
@@ -983,6 +965,8 @@ public class MdRelationshipTest extends TestCase
    * Creates a relationship where the the cardinality is greater than the super
    * type for the parent objects.
    */
+  @Request
+  @Test
   public void testNewMdRelationshipAbstractCacheEverything()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1016,7 +1000,7 @@ public class MdRelationshipTest extends TestCase
     {
       mdTree.apply();
       mdTree.delete();
-      fail("A Relationship type was defined incorrectly.  An abstract relationship cannot have a cache all algorithm.");
+      Assert.fail("A Relationship type was defined incorrectly.  An abstract relationship cannot have a cache all algorithm.");
     }
     catch (CacheCodeException e)
     {
@@ -1027,6 +1011,8 @@ public class MdRelationshipTest extends TestCase
   /**
    * Test to make sure you cannot extend an MdRelationship with an MdGraph.
    */
+  @Request
+  @Test
   public void testExtendMdRelationshipWithMdGraph()
   {
     MdBusinessDAOIF busObjectMdBusiness = MdBusinessDAO.getMdBusinessDAO(BusinessInfo.CLASS);
@@ -1056,7 +1042,7 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
-      fail("A graph was allowed to extend a relationship.  Graphs cannot extend relationships.");
+      Assert.fail("A graph was allowed to extend a relationship.  Graphs cannot extend relationships.");
     }
     catch (InheritanceException e)
     {
@@ -1074,6 +1060,8 @@ public class MdRelationshipTest extends TestCase
   /**
    * Test to make sure you cannot extend an MdRelationship with an MdTree.
    */
+  @Request
+  @Test
   public void testExtendMdRelationshipWithMdTree()
   {
     MdBusinessDAOIF busObjectMdBusiness = MdBusinessDAO.getMdBusinessDAO(BusinessInfo.CLASS);
@@ -1103,7 +1091,7 @@ public class MdRelationshipTest extends TestCase
       mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTree.apply();
 
-      fail("A tree was allowed to extend a relationship.  Trees cannot extend relationship.");
+      Assert.fail("A tree was allowed to extend a relationship.  Trees cannot extend relationship.");
     }
     catch (InheritanceException e)
     {
@@ -1121,6 +1109,8 @@ public class MdRelationshipTest extends TestCase
   /**
    * Test to make sure you cannot extend an MdGraph with a MdRelationship.
    */
+  @Request
+  @Test
   public void testExtendMdGraphWithMdRelationship()
   {
     MdBusinessDAOIF busObjectMdBusiness = MdBusinessDAO.getMdBusinessDAO(BusinessInfo.CLASS);
@@ -1150,7 +1140,7 @@ public class MdRelationshipTest extends TestCase
       mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdRelationship.apply();
 
-      fail("A relationship was allowed to extend a graph.  Relationships cannot extend graphs.");
+      Assert.fail("A relationship was allowed to extend a graph.  Relationships cannot extend graphs.");
     }
     catch (InheritanceException e)
     {
@@ -1168,6 +1158,8 @@ public class MdRelationshipTest extends TestCase
   /**
    * Test to make sure you cannot extend an MdGraph with an MdTree.
    */
+  @Request
+  @Test
   public void testExtendMdGraphWithMdTree()
   {
     MdBusinessDAOIF busObjectMdBusiness = MdBusinessDAO.getMdBusinessDAO(BusinessInfo.CLASS);
@@ -1197,7 +1189,7 @@ public class MdRelationshipTest extends TestCase
       mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTree.apply();
 
-      fail("A tree was allowed to extend a graph.  Trees cannot extend graphs.");
+      Assert.fail("A tree was allowed to extend a graph.  Trees cannot extend graphs.");
     }
     catch (InheritanceException e)
     {
@@ -1215,6 +1207,8 @@ public class MdRelationshipTest extends TestCase
   /**
    * Test to make sure you cannot extend an MdTree with a MdRelationship.
    */
+  @Request
+  @Test
   public void testExtendMdTreeWithMdRelationship()
   {
     MdBusinessDAOIF busObjectMdBusiness = MdBusinessDAO.getMdBusinessDAO(ElementInfo.CLASS);
@@ -1244,7 +1238,7 @@ public class MdRelationshipTest extends TestCase
       mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdRelationship.apply();
 
-      fail("A relationship was allowed to extend a tree.  Relationship cannot extend trees.");
+      Assert.fail("A relationship was allowed to extend a tree.  Relationship cannot extend trees.");
     }
     catch (InheritanceException e)
     {
@@ -1262,6 +1256,8 @@ public class MdRelationshipTest extends TestCase
   /**
    * Test to make sure you cannot extend an MdTree with an MdGraph.
    */
+  @Request
+  @Test
   public void testExtendMdTreeWithMdGraph()
   {
     MdBusinessDAOIF busObjectMdBusiness = MdBusinessDAO.getMdBusinessDAO(BusinessInfo.CLASS);
@@ -1291,7 +1287,7 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
-      fail("A graph was allowed to extend a tree.  Graphs cannot extend trees.");
+      Assert.fail("A graph was allowed to extend a tree.  Graphs cannot extend trees.");
     }
     catch (InheritanceException e)
     {
@@ -1310,13 +1306,15 @@ public class MdRelationshipTest extends TestCase
    * Test to make sure you cannot create an MdRelationship with duplicate parent
    * method names.
    */
+  @Request
+  @Test
   public void testDuplicateParentMethod()
   {
     // Method name conflicts are only checked on classes that compile
     MdBusinessDAO testClassMdBusiness = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType()).getBusinessDAO();
     testClassMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     testClassMdBusiness.apply();
-    
+
     // Now for a new Relationship
     MdGraphDAO mdGraph = MdGraphDAO.newInstance();
 
@@ -1341,7 +1339,7 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
       mdGraph.apply();
 
-      fail("Created a new MdRelationship with conflicting method names.");
+      Assert.fail("Created a new MdRelationship with conflicting method names.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -1351,7 +1349,7 @@ public class MdRelationshipTest extends TestCase
     {
       testClassMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testClassMdBusiness.apply();
-      
+
       if (mdGraph.isAppliedToDB())
       {
         mdGraph.delete();
@@ -1363,6 +1361,8 @@ public class MdRelationshipTest extends TestCase
    * Test to make sure you cannot create an MdRelationship with duplicate parent
    * method names.
    */
+  @Request
+  @Test
   public void testParentMethod()
   {
     MdBusinessDAOIF testClassMdBusiness = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1393,7 +1393,7 @@ public class MdRelationshipTest extends TestCase
     }
     catch (RelationshipDefinitionException e)
     {
-      fail("Unable to create a new MdRelationship with conflicting parent method names of different types.");
+      Assert.fail("Unable to create a new MdRelationship with conflicting parent method names of different types.");
     }
     finally
     {
@@ -1408,13 +1408,15 @@ public class MdRelationshipTest extends TestCase
    * Test to make sure you cannot create an MdRelationship with duplicate child
    * method names of the same type.
    */
+  @Request
+  @Test
   public void testDuplicateChildMethod()
   {
     // Method name conflicts are only checked on classes that compile
     MdBusinessDAO testClassMdBusiness = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType()).getBusinessDAO();
     testClassMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
     testClassMdBusiness.apply();
-    
+
     // Now for a new Relationship
     MdGraphDAO mdGraph = MdGraphDAO.newInstance();
 
@@ -1439,7 +1441,7 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
       mdGraph.apply();
 
-      fail("Created a new MdRelationship with conflicting method names.");
+      Assert.fail("Created a new MdRelationship with conflicting method names.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -1449,7 +1451,7 @@ public class MdRelationshipTest extends TestCase
     {
       testClassMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testClassMdBusiness.apply();
-      
+
       if (mdGraph.isAppliedToDB())
       {
         mdGraph.delete();
@@ -1461,6 +1463,8 @@ public class MdRelationshipTest extends TestCase
    * Test to make sure you can create an MdRelationship with duplicate child
    * method names of a different type.
    */
+  @Request
+  @Test
   public void testChildMethod()
   {
     MdBusinessDAOIF testClassMdBusiness = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1491,7 +1495,7 @@ public class MdRelationshipTest extends TestCase
     }
     catch (RelationshipDefinitionException e)
     {
-      fail("Unable to create a relationship with a child duplicate method name but different type");
+      Assert.fail("Unable to create a relationship with a child duplicate method name but different type");
     }
     finally
     {
@@ -1506,6 +1510,8 @@ public class MdRelationshipTest extends TestCase
    * Test to make sure you cannot create an MdRelationship with duplicate method
    * names.
    */
+  @Request
+  @Test
   public void testSortOrder()
   {
     MdBusinessDAOIF busObjectMdBusiness = MdBusinessDAO.getMdBusinessDAO(BusinessInfo.CLASS);
@@ -1535,7 +1541,7 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
-      fail("Created a new MdRelationship with an invalid sortMdAttribute value.");
+      Assert.fail("Created a new MdRelationship with an invalid sortMdAttribute value.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -1554,6 +1560,8 @@ public class MdRelationshipTest extends TestCase
    * Test to make sure you cannot create an MdRelationship with parent of type
    * Component.
    */
+  @Request
+  @Test
   public void testComponentParent()
   {
     MdBusinessDAOIF componentMdBusiness = MdBusinessDAO.getMdBusinessDAO(ElementInfo.CLASS);
@@ -1583,7 +1591,7 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
-      fail("Created a new MdRelationship with a parent of type Component.");
+      Assert.fail("Created a new MdRelationship with a parent of type Component.");
     }
     catch (RelationshipDefinitionException e)
     {
@@ -1602,6 +1610,8 @@ public class MdRelationshipTest extends TestCase
    * Test to make sure you cannot create an MdRelationship with parent of type
    * Component.
    */
+  @Request
+  @Test
   public void testComponentChild()
   {
     MdBusinessDAOIF componentMdBusiness = MdBusinessDAO.getMdBusinessDAO(ElementInfo.CLASS);
@@ -1631,7 +1641,7 @@ public class MdRelationshipTest extends TestCase
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
-      fail("Created a new MdRelationship with a child of type Component.");
+      Assert.fail("Created a new MdRelationship with a child of type Component.");
     }
     catch (RelationshipDefinitionException e)
     {

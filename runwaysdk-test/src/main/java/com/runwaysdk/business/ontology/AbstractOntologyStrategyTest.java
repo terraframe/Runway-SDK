@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -24,6 +24,12 @@ package com.runwaysdk.business.ontology;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.constants.AssociationType;
@@ -40,12 +46,10 @@ import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
 import com.runwaysdk.system.metadata.MdTerm;
-
-import junit.framework.TestCase;
-import junit.framework.TestResult;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -65,24 +69,14 @@ import junit.framework.TestResult;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public abstract class AbstractOntologyStrategyTest extends TestCase
+public abstract class AbstractOntologyStrategyTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   public static class TermHolder
   {
     public static String termAId;
+
     public static String termBId;
+
     public static String termCId;
 
     public static Term getTermA()
@@ -110,12 +104,12 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
   public static String                mdTermRelationshipId;
 
-  public static final String          PACKAGE = "com.runwaysdk.test.business.ontology";
+  public static final String          PACKAGE    = "com.runwaysdk.test.business.ontology";
 
   public static MdTermDAO             mdTerm;
 
   public static MdTermRelationshipDAO mdTermRelationship;
-  
+
   protected static boolean            didDoSetUp = false;
 
   public abstract String getInitializeStrategySource();
@@ -126,13 +120,16 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
   {
     didDoSetUp = false;
   }
-  
+
   /**
-   * Unfortunately we have to do this hack instead of the traditional classSetUp fixture method because the
-   * classSetUp method must be static, but we require that our abstract methods are overridden by subclasses
-   * before we call the class set up so our's can't be static. This is the only way to achieve a non-static
-   * class initialization.
+   * Unfortunately we have to do this hack instead of the traditional classSetUp
+   * fixture method because the classSetUp method must be static, but we require
+   * that our abstract methods are overridden by subclasses before we call the
+   * class set up so our's can't be static. This is the only way to achieve a
+   * non-static class initialization.
    */
+  @Request
+  @Before
   protected void setUp()
   {
     if (didDoSetUp == false)
@@ -143,25 +140,30 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     didDoSetUp = true;
   }
-  
+
+  @Request
+  @After
   protected void tearDown()
   {
-    
+
   }
 
-  public static void initStrat(String mdTermDefinesType, String mdTermRelationshipDefinesType) {
+  public static void initStrat(String mdTermDefinesType, String mdTermRelationshipDefinesType)
+  {
     Term.assignStrategy(mdTermDefinesType);
     Term.getStrategy(mdTermDefinesType).initialize(mdTermRelationshipDefinesType);
   }
-  
-  public static OntologyStrategyIF getStrategy(String mdTermDefinesType) {
+
+  public static OntologyStrategyIF getStrategy(String mdTermDefinesType)
+  {
     return Term.getStrategy(mdTermDefinesType);
   }
-  
-  public static void shutDownStrat(String mdTermDefinesType) {
+
+  public static void shutDownStrat(String mdTermDefinesType)
+  {
     Term.getStrategy(mdTermDefinesType).shutdown();
   }
-  
+
   @Transaction
   protected void doSetUp()
   {
@@ -198,7 +200,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     root.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "ROOT");
     root.setKey(Term.ROOT_KEY);
     root.apply();
-    
+
     // Lets define a relationship A > B > C between these terms.
     BusinessDAO termA = BusinessDAO.newInstance(mdTerm.definesType());
     termA.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termA");
@@ -212,16 +214,18 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     termC.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termC");
     termC.apply();
     termB.addChild(termC, mdTermRelationship.definesType()).apply();
-    
+
     TermHolder.termAId = termA.getId();
     TermHolder.termBId = termB.getId();
     TermHolder.termCId = termC.getId();
-    
+
     mdTermId = mdTerm.getId();
     mdTermRelationshipId = mdTermRelationship.getId();
   }
-  
-  protected static void classTearDown()
+
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
     shutDownStrat(mdTerm.definesType());
 
@@ -231,14 +235,16 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     MdRelationship.get(mdTermRelationshipId).delete();
     MdBusiness.get(mdTermId).delete();
-    
+
     didDoSetUp = false;
   }
-  
-//  public void testInitialized() {
-//    assertTrue(Term.getStrategy(mdTerm.definesType()).isInitialized());
-//  }
 
+  // @Request @Test public void testInitialized() {
+  // Assert.assertTrue(Term.getStrategy(mdTerm.definesType()).isInitialized());
+  // }
+
+  @Request
+  @Test
   public void testCopyTerm() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
   {
     // Do the copy from the strategy
@@ -250,12 +256,14 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     TermHolder.getTermA().addLink(termZ, mdTermRelationship.definesType());
 
     Term ret = (Term) termZ.getChildren(mdTermRelationship.definesType()).next();
-    assertNotNull(ret);
-    assertNotNull(ret.getChildren(mdTermRelationship.definesType()).next());
+    Assert.assertNotNull(ret);
+    Assert.assertNotNull(ret.getChildren(mdTermRelationship.definesType()).next());
 
     termZ.delete();
   }
 
+  @Request
+  @Test
   public void testIsLeafNode() throws InstantiationException, IllegalAccessException
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
@@ -263,14 +271,16 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     termL.getDisplayLabel().setValue("termZ");
     termL.apply();
 
-    assertTrue(termL.isLeaf(mdTermRelationship.definesType()));
-    assertFalse(TermHolder.getTermA().isLeaf(mdTermRelationship.definesType()));
-    assertFalse(TermHolder.getTermB().isLeaf(mdTermRelationship.definesType()));
-    assertTrue(TermHolder.getTermC().isLeaf(mdTermRelationship.definesType()));
+    Assert.assertTrue(termL.isLeaf(mdTermRelationship.definesType()));
+    Assert.assertFalse(TermHolder.getTermA().isLeaf(mdTermRelationship.definesType()));
+    Assert.assertFalse(TermHolder.getTermB().isLeaf(mdTermRelationship.definesType()));
+    Assert.assertTrue(TermHolder.getTermC().isLeaf(mdTermRelationship.definesType()));
 
     termL.delete();
   }
 
+  @Request
+  @Test
   public void testGetDirectDescendants() throws Exception
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
@@ -298,12 +308,14 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     child3.addChild(childOfChild, mdTermRelationship.definesType()).apply();
 
     List<Term> descendants = parent.getDirectDescendants(mdTermRelationship.definesType()).getAll();
-    assertEquals(3, descendants.size());
-    assertTrue(descendants.get(0) instanceof Term);
-    assertTrue(descendants.get(1) instanceof Term);
-    assertTrue(descendants.get(2) instanceof Term);
+    Assert.assertEquals(3, descendants.size());
+    Assert.assertTrue(descendants.get(0) instanceof Term);
+    Assert.assertTrue(descendants.get(1) instanceof Term);
+    Assert.assertTrue(descendants.get(2) instanceof Term);
   }
 
+  @Request
+  @Test
   public void testGetDirectAncestors() throws Exception
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
@@ -331,30 +343,36 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     parent3.addParent(parentOfParent, mdTermRelationship.definesType()).apply();
 
     List<Term> ancestors = child.getDirectAncestors(mdTermRelationship.definesType()).getAll();
-    assertEquals(3, ancestors.size());
-    assertTrue(ancestors.get(0) instanceof Term);
-    assertTrue(ancestors.get(1) instanceof Term);
-    assertTrue(ancestors.get(2) instanceof Term);
+    Assert.assertEquals(3, ancestors.size());
+    Assert.assertTrue(ancestors.get(0) instanceof Term);
+    Assert.assertTrue(ancestors.get(1) instanceof Term);
+    Assert.assertTrue(ancestors.get(2) instanceof Term);
   }
 
+  @Request
+  @Test
   public void testGetAllDescendants() throws Exception
   {
     List<Term> descendents = TermHolder.getTermA().getAllDescendants(mdTermRelationship.definesType()).getAll();
     Iterator<Term> it = descendents.iterator();
-    assertEquals(it.next(), TermHolder.getTermB());
-    assertEquals(it.next(), TermHolder.getTermC());
+    Assert.assertEquals(it.next(), TermHolder.getTermB());
+    Assert.assertEquals(it.next(), TermHolder.getTermC());
   }
 
+  @Request
+  @Test
   public void testGetAllAncestors() throws Exception
   {
     List<Term> ancestors = TermHolder.getTermC().getAllAncestors(mdTermRelationship.definesType()).getAll();
 
-    assertEquals(3, ancestors.size());
-    assertTrue(ancestors.contains(TermHolder.getTermB()));
-    assertTrue(ancestors.contains(TermHolder.getTermA()));
-    assertTrue(ancestors.contains(Business.get(this.mdTerm.definesType(), Term.ROOT_KEY)));
+    Assert.assertEquals(3, ancestors.size());
+    Assert.assertTrue(ancestors.contains(TermHolder.getTermB()));
+    Assert.assertTrue(ancestors.contains(TermHolder.getTermA()));
+    Assert.assertTrue(ancestors.contains(Business.get(this.mdTerm.definesType(), Term.ROOT_KEY)));
   }
 
+  @Request
+  @Test
   public void testDeleteInternalTerm() throws Exception
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
@@ -392,15 +410,17 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     parent1.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
-    assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
-    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
 
     parent1.delete();
 
-    assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
-    assertEquals(0, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(0, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
   }
-  
+
+  @Request
+  @Test
   public void testDeleteLeafTerm() throws Exception
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
@@ -438,15 +458,17 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     parent2.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
-    assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
-    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
 
     child.delete();
 
-    assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
-    assertEquals(1, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(1, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
   }
 
+  @Request
+  @Test
   public void testRemoveInternalLink() throws Exception
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
@@ -484,15 +506,17 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     parent1.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
-    assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
-    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
 
     parent1.removeLink(parent4, mdTermRelationship.definesType());
 
-    assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
-    assertEquals(0, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(0, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
   }
 
+  @Request
+  @Test
   public void testRemoveLeafLink() throws Exception
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
@@ -530,16 +554,19 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     parent2.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
-    assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
-    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
 
     child.removeLink(parent1, mdTermRelationship.definesType());
 
-    assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
-    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    Assert.assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
   }
-  
-  public void testCopyTermsAndGetAllDescendants() throws InstantiationException, IllegalAccessException, IllegalArgumentException, SecurityException, InvocationTargetException, NoSuchMethodException {
+
+  @Request
+  @Test
+  public void testCopyTermsAndGetAllDescendants() throws InstantiationException, IllegalAccessException, IllegalArgumentException, SecurityException, InvocationTargetException, NoSuchMethodException
+  {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
 
     Term aa = (Term) clazz.newInstance();
@@ -556,13 +583,13 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     cc.getDisplayLabel().setValue("cc");
     cc.apply();
     cc.addTerm(mdTermRelationship.definesType());
-    
+
     bb.addLink(aa, mdTermRelationship.definesType());
     cc.addLink(bb, mdTermRelationship.definesType());
-    
+
     List<Term> descendents = aa.getAllDescendants(mdTermRelationship.definesType()).getAll();
     Iterator<Term> it = descendents.iterator();
-    assertEquals(it.next().getId(), bb.getId());
-    assertEquals(it.next().getId(), cc.getId());
+    Assert.assertEquals(it.next().getId(), bb.getId());
+    Assert.assertEquals(it.next().getId(), cc.getId());
   }
 }

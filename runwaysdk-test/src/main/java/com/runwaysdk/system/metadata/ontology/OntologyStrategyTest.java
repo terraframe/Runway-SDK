@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -22,6 +22,7 @@
 package com.runwaysdk.system.metadata.ontology;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -32,103 +33,16 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public class OntologyStrategyTest extends TestCase
+public class OntologyStrategyTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite(OntologyStrategyTest.class.getSimpleName());
-    suite.addTestSuite(OntologyStrategyTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  /**
-   * The setup done before the test suite is run
-   */
-  public static void classSetUp()
-  {
-  }
-
-  /**
-   * The tear down done after all the test in the test suite have run
-   */
-  public static void classTearDown()
-  {
-  }
-
-  /**
-   * No setup needed non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  protected void setUp() throws Exception
-  {
-
-  }
-
-  /**
-   * Delete all MetaData objects which were created in the class
-   * 
-   * @see junit.framework.TestCase#tearDown()
-   */
-  protected void tearDown() throws Exception
-  {
-  }
-
   /**
   *
   *
   */
+  @Request
+  @Test
   public void testCRUD()
   {
     BusinessDAO strategyState = BusinessDAO.newInstance(DatabaseAllPathsStrategy.CLASS);
@@ -153,6 +67,8 @@ public class OntologyStrategyTest extends TestCase
    *
    *
    */
+  @Request
+  @Test
   public void testCreateAndGetMdTerm()
   {
 
@@ -170,7 +86,7 @@ public class OntologyStrategyTest extends TestCase
       mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-//      mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
+      // mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
       mdTerm.apply();
 
       try
@@ -178,7 +94,8 @@ public class OntologyStrategyTest extends TestCase
         MdTermDAOIF result = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
         Assert.assertNotNull(result);
-//        Assert.assertEquals(result.getValue(MdTermInfo.STRATEGY), mdTerm.getValue(MdTermInfo.STRATEGY));
+        // Assert.assertEquals(result.getValue(MdTermInfo.STRATEGY),
+        // mdTerm.getValue(MdTermInfo.STRATEGY));
       }
       finally
       {

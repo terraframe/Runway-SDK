@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -22,7 +22,9 @@ import java.lang.reflect.Array;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.TypeGenerator;
@@ -84,21 +86,11 @@ import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestResult;
-
 /**
  * Tests the query API
  */
-public class QueryMasterSetup extends TestSetup
+public class QueryMasterSetup
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   protected static final String             NUM_OF_FLOAT_DECIMALS   = "2";
 
   // ////////////////////////////////////////////////
@@ -237,9 +229,8 @@ public class QueryMasterSetup extends TestSetup
 
   protected static final String             TERM_PREFIX             = "termQuery";
 
-  public QueryMasterSetup(Test suite, String type, String refType)
+  public QueryMasterSetup(String type, String refType)
   {
-    super(suite);
     testQueryType = type;
     testRefQueryType = refType;
   }
@@ -249,8 +240,8 @@ public class QueryMasterSetup extends TestSetup
     return this.testQueryType;
   }
 
-  @Override
   @Request
+  @Before
   protected void setUp() throws Exception
   {
     this.setUpTransaction();
@@ -259,7 +250,7 @@ public class QueryMasterSetup extends TestSetup
   @Transaction
   public void setUpTransaction()
   {
-    System.out.println("Setup for - " + this.getTest().countTestCases() + " tests");
+//    System.out.println("Setup for - " + this.getTest().countTestCases() + " tests");
 
     enumerationItems = new LinkedList<EnumerationItemDAO>();
     enumerationItems_east = new LinkedList<EnumerationItemDAO>();
@@ -826,8 +817,8 @@ public class QueryMasterSetup extends TestSetup
     String queryClobConst = TypeGenerator.buildAttributeConstant(mdView, "refQueryClob");
     String queryIntegerConst = TypeGenerator.buildAttributeConstant(mdView, "refQueryInteger");
 
-    String queryStubSource = "package temporary.junit.test; \n" + "\n" + "public class TestViewQuery extends temporary.junit.test.TestViewQueryBase \n" + "{\n" + "\n" + "  private " + childQueryClass + " childQuery;\n" + "  private " + refChildQueryClass + " refChildQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     childQuery = new " + childQueryClass + "(componentQueryFactory);\n" + "     refChildQuery = new " + refChildQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + queryBooleanConst + ", childQuery.getQueryBoolean());\n" + "     this.map(" + queryCharacterConst
-        + ", childQuery.getQueryCharacter());\n" + "     this.map(" + queryTextConst + ", childQuery.getReference().getRefQueryText());\n" + "     this.map(" + queryClobConst + ", childQuery.getReference().getRefQueryClob());\n" + "     this.map(" + queryIntegerConst + ", childQuery.getReference().getRefQueryInteger());\n" + "     this.map(" + charFromLocalCharConst + ", childQuery.getQueryLocalChar().localize());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
+    String queryStubSource = "package temporary.junit.test; \n" + "\n" + "public class TestViewQuery extends temporary.junit.test.TestViewQueryBase \n" + "{\n" + "\n" + "  private " + childQueryClass + " childQuery;\n" + "  private " + refChildQueryClass + " refChildQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     childQuery = new " + childQueryClass + "(componentQueryFactory);\n" + "     refChildQuery = new " + refChildQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + queryBooleanConst + ", childQuery.getQueryBoolean());\n" + "     this.map(" + queryCharacterConst + ", childQuery.getQueryCharacter());\n" + "     this.map(" + queryTextConst
+        + ", childQuery.getReference().getRefQueryText());\n" + "     this.map(" + queryClobConst + ", childQuery.getReference().getRefQueryClob());\n" + "     this.map(" + queryIntegerConst + ", childQuery.getReference().getRefQueryInteger());\n" + "     this.map(" + charFromLocalCharConst + ", childQuery.getQueryLocalChar().localize());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
     mdView.setValue(MdViewInfo.QUERY_STUB_SOURCE, queryStubSource);
 
     mdView.apply();
@@ -847,8 +838,8 @@ public class QueryMasterSetup extends TestSetup
 
   }
 
-  @Override
   @Request
+  @After
   protected void tearDown() throws Exception
   {
     this.tearDownTransaction();

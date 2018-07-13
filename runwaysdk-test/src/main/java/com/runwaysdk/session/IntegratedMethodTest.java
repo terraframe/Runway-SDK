@@ -3,25 +3,30 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
-
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.DomainErrorException;
 import com.runwaysdk.business.Business;
@@ -82,26 +87,8 @@ import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class IntegratedMethodTest extends TestCase
+public class IntegratedMethodTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    * The test user object, used to set and remove permissions for the user
    */
@@ -306,44 +293,11 @@ public class IntegratedMethodTest extends TestCase
 
   private static boolean                   setup;
 
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(IntegratedMethodTest.suite());
-  }
-
-  /**
-   * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps it
-   * in <code>MasterTestSetup</code>. The returned class is a suite of all the
-   * tests in <code>AttributeTest</code>, with the global setUp() and tearDown()
-   * methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTestSuite(IntegratedMethodTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   /**
    * The setup done before the test suite is run
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     setup = false;
@@ -703,6 +657,8 @@ public class IntegratedMethodTest extends TestCase
   /**
    * The tear down done after all the test in the test suite have run
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     // Write the new stub, and compile to make sure it's valid
@@ -755,6 +711,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @see junit.framework.TestCase#setUp()
    */
+  @Request
+  @Before
   protected void setUp() throws Exception
   {
     if (!setup)
@@ -775,6 +733,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @see junit.framework.TestCase#tearDown()
    */
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
     for (RelationshipDAOIF reference : newUser.getAllPermissions())
@@ -839,6 +799,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNoExecutePermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -862,7 +824,7 @@ public class IntegratedMethodTest extends TestCase
     try
     {
       c.getMethod("testWrite", c).invoke(business, input);
-      fail("Failed to thrown an exception when executing a method without permission");
+      Assert.fail("Failed to thrown an exception when executing a method without permission");
     }
     catch (InvocationTargetException e)
     {
@@ -870,7 +832,7 @@ public class IntegratedMethodTest extends TestCase
 
       // Ensure that a TypePermissionException is being thrown as the root
       // exception
-      assertEquals(ExecuteInstancePermissionException.class.getName(), root.getClass().getName());
+      Assert.assertEquals(ExecuteInstancePermissionException.class.getName(), root.getClass().getName());
     }
   }
 
@@ -880,6 +842,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNoCreatePermissions() throws Exception
   {
     newUser.grantPermission(Operation.EXECUTE, createMdMethod.getId());
@@ -898,14 +862,14 @@ public class IntegratedMethodTest extends TestCase
     try
     {
       c.getMethod("testCreate").invoke(null);
-      fail("Failed to throw an exception when creating a object in a method without permission");
+      Assert.fail("Failed to throw an exception when creating a object in a method without permission");
     }
     catch (InvocationTargetException e)
     {
       Throwable root = getRootCause(e);
 
       // Ensure that a DomainErrorException is the root execption
-      assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
+      Assert.assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
     }
   }
 
@@ -915,6 +879,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testCreatePermissions() throws Exception
   {
     newUser.grantPermission(Operation.EXECUTE, createMdMethod.getId());
@@ -938,7 +904,7 @@ public class IntegratedMethodTest extends TestCase
     }
     catch (InvocationTargetException e)
     {
-      fail("Unable to create an object with CREATE permissions on the MdBusiness");
+      Assert.fail("Unable to create an object with CREATE permissions on the MdBusiness");
     }
   }
 
@@ -948,6 +914,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNoDeletePermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -969,14 +937,14 @@ public class IntegratedMethodTest extends TestCase
     try
     {
       c.getMethod("testDelete", c).invoke(null, input);
-      fail("Failed to throw an exception when deleting a object in a method without permission");
+      Assert.fail("Failed to throw an exception when deleting a object in a method without permission");
     }
     catch (InvocationTargetException e)
     {
       Throwable root = getRootCause(e);
 
       // Ensure that a DomainErrorException is the root execption
-      assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
+      Assert.assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
     }
   }
 
@@ -986,6 +954,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testDeletePermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1012,7 +982,7 @@ public class IntegratedMethodTest extends TestCase
     }
     catch (InvocationTargetException e)
     {
-      fail("Unable to delete an object with DELETE permissions on the MdBusiness");
+      Assert.fail("Unable to delete an object with DELETE permissions on the MdBusiness");
     }
   }
 
@@ -1022,6 +992,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testStateDeletePermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1048,7 +1020,7 @@ public class IntegratedMethodTest extends TestCase
     }
     catch (InvocationTargetException e)
     {
-      fail("Unable to delete an object with DELETE permissions on StateIF");
+      Assert.fail("Unable to delete an object with DELETE permissions on StateIF");
     }
   }
 
@@ -1058,6 +1030,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNoWritePermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1087,14 +1061,14 @@ public class IntegratedMethodTest extends TestCase
     {
       c.getMethod("testWrite", c).invoke(business, input);
 
-      fail("Failed to throw an exception when writing a object in a method without permission");
+      Assert.fail("Failed to throw an exception when writing a object in a method without permission");
     }
     catch (InvocationTargetException e)
     {
       Throwable root = getRootCause(e);
 
       // Ensure that a DomainErrorException is being thrown
-      assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
+      Assert.assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
     }
   }
 
@@ -1105,6 +1079,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testWritePermissions() throws Exception
   {
     RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -1137,7 +1113,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to write an object with WRITE permissions on the MdBusiness");
+      Assert.fail("Unable to write an object with WRITE permissions on the MdBusiness");
     }
   }
 
@@ -1147,6 +1123,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testStateWritePermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1178,7 +1156,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to write an object with WRITE permissions on StateIF");
+      Assert.fail("Unable to write an object with WRITE permissions on StateIF");
     }
   }
 
@@ -1188,6 +1166,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNoPromotePermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1210,14 +1190,14 @@ public class IntegratedMethodTest extends TestCase
     {
       c.getMethod("testPromote", c).invoke(null, input);
 
-      fail("Failed to throw an exception when promoting an object in a method without permission");
+      Assert.fail("Failed to throw an exception when promoting an object in a method without permission");
     }
     catch (InvocationTargetException e)
     {
       Throwable root = getRootCause(e);
 
       // Ensure that a DomainErrorException is being thrown
-      assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
+      Assert.assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
     }
   }
 
@@ -1227,6 +1207,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testPromotePermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1253,7 +1235,7 @@ public class IntegratedMethodTest extends TestCase
     }
     catch (InvocationTargetException e)
     {
-      fail("Unable to promote an object with PROMOTE permissions on StateIF");
+      Assert.fail("Unable to promote an object with PROMOTE permissions on StateIF");
     }
   }
 
@@ -1263,6 +1245,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNoAddChildPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1288,14 +1272,14 @@ public class IntegratedMethodTest extends TestCase
     {
       c.getMethod("testAddChild", c).invoke(object, input);
 
-      fail("Failed to throw an exception when adding a child in a method without permission");
+      Assert.fail("Failed to throw an exception when adding a child in a method without permission");
     }
     catch (InvocationTargetException e)
     {
       Throwable root = getRootCause(e);
 
       // Ensure that a DomainErrorException is being thrown
-      assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
+      Assert.assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
     }
   }
 
@@ -1305,6 +1289,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testAddChildPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1334,7 +1320,7 @@ public class IntegratedMethodTest extends TestCase
     }
     catch (InvocationTargetException e)
     {
-      fail("Unable to add a child with ADD_CHILD permissions on MdBusiness and MdRelationship");
+      Assert.fail("Unable to add a child with ADD_CHILD permissions on MdBusiness and MdRelationship");
     }
   }
 
@@ -1344,6 +1330,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testWriteChildPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1394,7 +1382,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to modify a relationship with WRITE_CHILD permissions on MdBusiness and MdRelationship");
+      Assert.fail("Unable to modify a relationship with WRITE_CHILD permissions on MdBusiness and MdRelationship");
     }
   }
 
@@ -1404,6 +1392,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testWriteParentPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1454,7 +1444,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to modify a relationship with WRITE_CHILD permissions on MdBusiness and MdRelationship");
+      Assert.fail("Unable to modify a relationship with WRITE_CHILD permissions on MdBusiness and MdRelationship");
     }
   }
 
@@ -1464,6 +1454,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testWriteRelationshipPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1514,7 +1506,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to modify a relationship with WRITE_CHILD permissions on MdBusiness and MdRelationship");
+      Assert.fail("Unable to modify a relationship with WRITE_CHILD permissions on MdBusiness and MdRelationship");
     }
   }
 
@@ -1524,6 +1516,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testStateAddChildPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1554,7 +1548,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to add a child with ADD_CHILD permissions on StateIF and MdRelationship");
+      Assert.fail("Unable to add a child with ADD_CHILD permissions on StateIF and MdRelationship");
     }
   }
 
@@ -1564,6 +1558,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNoAddParentPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1589,14 +1585,14 @@ public class IntegratedMethodTest extends TestCase
     {
       c.getMethod("testAddParent", c).invoke(object, input);
 
-      fail("Failed to throw an exception when adding a child in a method without permission");
+      Assert.fail("Failed to throw an exception when adding a child in a method without permission");
     }
     catch (InvocationTargetException e)
     {
       Throwable root = getRootCause(e);
 
       // Ensure that a DomainErrorException is being thrown
-      assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
+      Assert.assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
     }
   }
 
@@ -1606,6 +1602,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testAddParentPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1636,7 +1634,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to add a child with ADD_PARENT permissions on MdBusiness and MdRelationship");
+      Assert.fail("Unable to add a child with ADD_PARENT permissions on MdBusiness and MdRelationship");
     }
   }
 
@@ -1646,6 +1644,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testStateAddParentPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1676,7 +1676,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to add a child with ADD_PARENT permissions on StateIF and MdRelationship");
+      Assert.fail("Unable to add a child with ADD_PARENT permissions on StateIF and MdRelationship");
     }
   }
 
@@ -1686,6 +1686,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNoDeleteChildPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1715,14 +1717,14 @@ public class IntegratedMethodTest extends TestCase
     {
       c.getMethod("testDeleteChild", c).invoke(object, input);
 
-      fail("Failed to throw an exception when deleting a child in a method without permission");
+      Assert.fail("Failed to throw an exception when deleting a child in a method without permission");
     }
     catch (InvocationTargetException e)
     {
       Throwable root = getRootCause(e);
 
       // Ensure that a DomainErrorException is being thrown
-      assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
+      Assert.assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
     }
   }
 
@@ -1732,6 +1734,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testDeleteChildPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1766,7 +1770,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to delete a child with DELETE_CHILD permissions on MdBusiness and MdRelationship");
+      Assert.fail("Unable to delete a child with DELETE_CHILD permissions on MdBusiness and MdRelationship");
     }
   }
 
@@ -1776,6 +1780,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testStateDeleteChildPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1810,7 +1816,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to delete a child with DELETE_CHILD permissions on StateIF and MdRelationship");
+      Assert.fail("Unable to delete a child with DELETE_CHILD permissions on StateIF and MdRelationship");
     }
   }
 
@@ -1820,6 +1826,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNoDeleteParentPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1849,14 +1857,14 @@ public class IntegratedMethodTest extends TestCase
     {
       c.getMethod("testDeleteParent", c).invoke(object, input);
 
-      fail("Failed to throw an exception when deleting a child in a method without permission");
+      Assert.fail("Failed to throw an exception when deleting a child in a method without permission");
     }
     catch (InvocationTargetException e)
     {
       Throwable root = getRootCause(e);
 
       // Ensure that a DomainErrorException is being thrown
-      assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
+      Assert.assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
     }
   }
 
@@ -1866,6 +1874,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testDeleteParentPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1900,7 +1910,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to delete a parent with DELETE_PARENT permissions on MdBusiness and MdRelationship");
+      Assert.fail("Unable to delete a parent with DELETE_PARENT permissions on MdBusiness and MdRelationship");
     }
   }
 
@@ -1910,6 +1920,8 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testStateDeleteParentPermissions() throws Exception
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
@@ -1944,7 +1956,7 @@ public class IntegratedMethodTest extends TestCase
     catch (InvocationTargetException e)
     {
       e.printStackTrace();
-      fail("Unable to delete a parent with DELETE_PARENT permissions on StateIF and MdRelationship");
+      Assert.fail("Unable to delete a parent with DELETE_PARENT permissions on StateIF and MdRelationship");
     }
   }
 
@@ -1955,10 +1967,12 @@ public class IntegratedMethodTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testAttributeDimensionPermissions() throws Exception
   {
     MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute1.getMdAttributeDimension(mdDimension);
-        
+
     RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
     owner.grantPermission(Operation.EXECUTE, writeMdMethod.getId());
 
@@ -2004,11 +2018,11 @@ public class IntegratedMethodTest extends TestCase
    */
   private static String getMethodStub()
   {
-    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX , "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String id)", "  {", "    return (Class1) " + Business.class.getName() + ".get(id);", "  }", "  @" + Authenticate.class.getName(), "  public static void testCreate()", "  {", "    Class1 c = new Class1();", "    c.apply();", "  }", "  @" + Authenticate.class.getName(), "  public static void testDelete(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.delete();", "  }", "  @" + Authenticate.class.getName(), "  public void testWrite(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.setTestBoolean(true);",
+    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String id)", "  {", "    return (Class1) " + Business.class.getName() + ".get(id);", "  }", "  @" + Authenticate.class.getName(), "  public static void testCreate()", "  {", "    Class1 c = new Class1();", "    c.apply();", "  }", "  @" + Authenticate.class.getName(), "  public static void testDelete(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.delete();", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testWrite(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.setTestBoolean(true);",
         "    class1.apply();", "  }",
 
-        "  @" + Authenticate.class.getName(), "  public static void testPromote(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.transition1();", "  }", "  @" + Authenticate.class.getName(), "  public void testAddChild(test.session.Class1 class1)", "  {", "    this.addTestChild(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "  public void testAddParent(test.session.Class1 class1)", "  {", "    this.addTestParent(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "  public void testDeleteChild(test.session.Class1 class1)", "  {", "    this.removeTestChild(class1);", "  }", "  @" + Authenticate.class.getName(), "  public void testDeleteParent(test.session.Class1 class1)", "  {", "    this.removeTestParent(class1);", "  }",
-        "  @" + Authenticate.class.getName(), "  public void testWriteRelationship(test.session.Relationship1 relationship1)", "  {", "    relationship1.appLock();", "    relationship1.setValue(\"testBoolean\", " + MdAttributeBooleanInfo.class.getName() + ".TRUE);", "    relationship1.apply();", "  }", "}" };
+        "  @" + Authenticate.class.getName(), "  public static void testPromote(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.transition1();", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testAddChild(test.session.Class1 class1)", "  {", "    this.addTestChild(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testAddParent(test.session.Class1 class1)", "  {", "    this.addTestParent(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testDeleteChild(test.session.Class1 class1)", "  {", "    this.removeTestChild(class1);", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testDeleteParent(test.session.Class1 class1)", "  {",
+        "    this.removeTestParent(class1);", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testWriteRelationship(test.session.Relationship1 relationship1)", "  {", "    relationship1.appLock();", "    relationship1.setValue(\"testBoolean\", " + MdAttributeBooleanInfo.class.getName() + ".TRUE);", "    relationship1.apply();", "  }", "}" };
 
     String stubSourceString = new String();
 
@@ -2027,7 +2041,7 @@ public class IntegratedMethodTest extends TestCase
    */
   private static String getEmptyStub()
   {
-    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX , "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String id)", "  {", "    return (Class1) " + Business.class.getName() + ".get(id);", "  }", "}" };
+    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String id)", "  {", "    return (Class1) " + Business.class.getName() + ".get(id);", "  }", "}" };
 
     String stubSourceString = new String();
 

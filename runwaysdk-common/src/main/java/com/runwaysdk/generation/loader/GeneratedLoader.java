@@ -67,5 +67,22 @@ public class GeneratedLoader extends URLClassLoader
     }, Thread.currentThread().getContextClassLoader());
   }
 
+  public static GeneratedLoader isolatedClassLoader() throws MalformedURLException
+  {
+    File common = new File(LocalProperties.getCommonGenBin() + "/");
+    File client = new File(LocalProperties.getClientGenBin() + "/");
+    File server = new File(LocalProperties.getServerGenBin() + "/");
+    
+    common.mkdirs();
+    client.mkdirs();
+    server.mkdirs();
+    
+    return new GeneratedLoader(new URL[] {
+        common.toURI().toURL(),
+        client.toURI().toURL(),
+        server.toURI().toURL()
+    });
+  }
+  
 
 }

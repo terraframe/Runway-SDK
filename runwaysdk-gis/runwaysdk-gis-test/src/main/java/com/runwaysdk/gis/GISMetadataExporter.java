@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis;
 
@@ -56,7 +56,7 @@ public class GISMetadataExporter
       CacheShutdown.shutdown();
     }
   }
-  
+
   @Request
   public static void gisMetadata(String schemaFile, String exportFile) throws Throwable
   {
@@ -73,7 +73,7 @@ public class GISMetadataExporter
       while (componentIterator.hasNext())
       {
         EntityDAOIF component = (EntityDAOIF) componentIterator.next();
-        
+
         if (isGISMetadata(component) && !isUniversalMetadata(component))
         {
           exporter.add(component);
@@ -83,45 +83,45 @@ public class GISMetadataExporter
 
     exporter.writeToFile(exportFile);
   }
-  
-//  private static void export(String id, Set<String> all)
-//  {
-//    if (!all.contains(id))
-//    {
-//      EntityDAOIF entity = EntityDAO.get(id);
-//
-//      if (!isRunwayMetadata(entity))
-//      {
-//        all.add(id);
-//
-//        if (entity instanceof BusinessDAOIF)
-//        {
-//          BusinessDAOIF businessDAO = (BusinessDAOIF) entity;
-//          List<RelationshipDAOIF> children = businessDAO.getAllChildren();
-//
-//          for (RelationshipDAOIF child : children)
-//          {
-//            export(child.getId(), all);
-//          }
-//
-//          List<RelationshipDAOIF> parents = businessDAO.getAllParents();
-//
-//          for (RelationshipDAOIF parent : parents)
-//          {
-//            export(parent.getId(), all);
-//          }
-//        }
-//        else if (entity instanceof RelationshipDAOIF)
-//        {
-//          RelationshipDAOIF relationship = (RelationshipDAOIF) entity;
-//
-//          export(relationship.getParentId(), all);
-//          export(relationship.getChildId(), all);
-//        }
-//      }
-//    }
-//  }
-  
+
+  // private static void export(String id, Set<String> all)
+  // {
+  // if (!all.contains(id))
+  // {
+  // EntityDAOIF entity = EntityDAO.get(id);
+  //
+  // if (!isRunwayMetadata(entity))
+  // {
+  // all.add(id);
+  //
+  // if (entity instanceof BusinessDAOIF)
+  // {
+  // BusinessDAOIF businessDAO = (BusinessDAOIF) entity;
+  // List<RelationshipDAOIF> children = businessDAO.getAllChildren();
+  //
+  // for (RelationshipDAOIF child : children)
+  // {
+  // export(child.getId(), all);
+  // }
+  //
+  // List<RelationshipDAOIF> parents = businessDAO.getAllParents();
+  //
+  // for (RelationshipDAOIF parent : parents)
+  // {
+  // export(parent.getId(), all);
+  // }
+  // }
+  // else if (entity instanceof RelationshipDAOIF)
+  // {
+  // RelationshipDAOIF relationship = (RelationshipDAOIF) entity;
+  //
+  // export(relationship.getParentId(), all);
+  // export(relationship.getChildId(), all);
+  // }
+  // }
+  // }
+  // }
+
   private static boolean isGISMetadata(EntityDAOIF component)
   {
     return component.getSiteMaster().equals("www.runwaysdk-gis.com") || component.getKey().startsWith("com.runwaysdk.system.gis");
@@ -129,6 +129,6 @@ public class GISMetadataExporter
 
   private static boolean isUniversalMetadata(EntityDAOIF component)
   {
-    return component.getKey().startsWith("com.runwaysdk.system.gis.geo"); 
+    return component.getKey().startsWith("com.runwaysdk.system.gis.geo");
   }
 }

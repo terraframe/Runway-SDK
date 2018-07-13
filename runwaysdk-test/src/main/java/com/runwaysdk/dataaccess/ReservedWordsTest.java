@@ -3,20 +3,25 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -25,39 +30,18 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.ReservedWordException;
 import com.runwaysdk.dataaccess.metadata.ReservedWords;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-public class ReservedWordsTest extends TestCase
+public class ReservedWordsTest
 {
   private static MdBusinessDAO mdAttTest;
-  private static final String TESTNAME = "ReservedWordType";
-  private static final String PACKAGENAME = "com.runwaysdk.test";
-  
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ReservedWordsTest.class);
 
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
+  private static final String  TESTNAME    = "ReservedWordType";
 
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
+  private static final String  PACKAGENAME = "com.runwaysdk.test";
 
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     mdAttTest = MdBusinessDAO.newInstance();
@@ -72,51 +56,50 @@ public class ReservedWordsTest extends TestCase
     mdAttTest.apply();
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     MdBusinessDAOIF md = MdBusinessDAO.getMdBusinessDAO(PACKAGENAME + "." + TESTNAME);
     md.getBusinessDAO().delete();
   }
 
-  public static void main(String args[])
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTest(ReservedWordsTest.suite());
-
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(ReservedWordsTest.suite()));
-  }
-
+  @Request
+  @Test
   public void testSQL() throws Exception
   {
     // Words in lists
-    assertTrue ( ReservedWords.sqlContains("add") );
-    assertTrue ( ReservedWords.sqlContains("float4") );
-    assertTrue ( ReservedWords.sqlContains("blob") );
-    assertTrue ( ReservedWords.sqlContains("as") );
+    Assert.assertTrue(ReservedWords.sqlContains("add"));
+    Assert.assertTrue(ReservedWords.sqlContains("float4"));
+    Assert.assertTrue(ReservedWords.sqlContains("blob"));
+    Assert.assertTrue(ReservedWords.sqlContains("as"));
 
     // Words not in lists
-    assertTrue ( !ReservedWords.sqlContains("person") );
-    assertTrue ( !ReservedWords.sqlContains("tree") );
-    assertTrue ( !ReservedWords.sqlContains("apple") );
-    assertTrue ( !ReservedWords.sqlContains("purple") );
+    Assert.assertTrue(!ReservedWords.sqlContains("person"));
+    Assert.assertTrue(!ReservedWords.sqlContains("tree"));
+    Assert.assertTrue(!ReservedWords.sqlContains("apple"));
+    Assert.assertTrue(!ReservedWords.sqlContains("purple"));
   }
 
+  @Request
+  @Test
   public void testJava() throws Exception
   {
     // Words in lists
-    assertTrue ( ReservedWords.javaContains("abstract") );
-    assertTrue ( ReservedWords.javaContains("try") );
-    assertTrue ( ReservedWords.javaContains("export") );
-    assertTrue ( ReservedWords.javaContains("void") );
+    Assert.assertTrue(ReservedWords.javaContains("abstract"));
+    Assert.assertTrue(ReservedWords.javaContains("try"));
+    Assert.assertTrue(ReservedWords.javaContains("export"));
+    Assert.assertTrue(ReservedWords.javaContains("void"));
 
     // Words not in lists
-    assertTrue ( !ReservedWords.javaContains("person") );
-    assertTrue ( !ReservedWords.javaContains("tree") );
-    assertTrue ( !ReservedWords.javaContains("apple") );
-    assertTrue ( !ReservedWords.javaContains("purple") );
+    Assert.assertTrue(!ReservedWords.javaContains("person"));
+    Assert.assertTrue(!ReservedWords.javaContains("tree"));
+    Assert.assertTrue(!ReservedWords.javaContains("apple"));
+    Assert.assertTrue(!ReservedWords.javaContains("purple"));
   }
 
+  @Request
+  @Test
   public void testBadTablename() throws Exception
   {
     try
@@ -134,15 +117,17 @@ public class ReservedWordsTest extends TestCase
 
       // If we get this far, it didn't throw the exception
       mdBusiness.delete();
-      fail("Reserved word allowed for table name in new type");
+      Assert.fail("Reserved word allowed for table name in new type");
     }
     catch (ReservedWordException e)
     {
       // This is expected
-      assertTrue(e.getOrigin() == ReservedWordException.Origin.TABLE);
+      Assert.assertTrue(e.getOrigin() == ReservedWordException.Origin.TABLE);
     }
   }
-  
+
+  @Request
+  @Test
   public void testGoodTablename() throws Exception
   {
     try
@@ -164,10 +149,12 @@ public class ReservedWordsTest extends TestCase
     catch (ReservedWordException e)
     {
       // The test failed
-      fail("Reserved java word 'abstract' was not allowed for table name in new type.");
+      Assert.fail("Reserved java word 'abstract' was not allowed for table name in new type.");
     }
   }
-  
+
+  @Request
+  @Test
   public void testBadTypename() throws Exception
   {
     try
@@ -185,15 +172,17 @@ public class ReservedWordsTest extends TestCase
 
       // If we get this far, it didn't throw the exception, the test failed
       mdBusiness.delete();
-      fail("Reserved Java word 'if' was allowed for type name in new type.");
+      Assert.fail("Reserved Java word 'if' was allowed for type name in new type.");
     }
     catch (ReservedWordException e)
     {
       // The test passed
-      assertTrue(e.getOrigin() == ReservedWordException.Origin.TYPE);
+      Assert.assertTrue(e.getOrigin() == ReservedWordException.Origin.TYPE);
     }
   }
-  
+
+  @Request
+  @Test
   public void testGoodTypename() throws Exception
   {
     try
@@ -215,9 +204,12 @@ public class ReservedWordsTest extends TestCase
     catch (ReservedWordException e)
     {
       // The test failed
-      fail("Reserved SQL word 'blob' was not allowed for type name in new type.");
+      Assert.fail("Reserved SQL word 'blob' was not allowed for type name in new type.");
     }
   }
+
+  @Request
+  @Test
   public void testBadColumnName() throws Exception
   {
     try
@@ -232,14 +224,17 @@ public class ReservedWordsTest extends TestCase
       mdAttributeBoolean.apply();
 
       // If we get this far, it didn't throw the exception, the test failed
-      fail("Reserved SQL word 'blob' was allowed for a column name in new type.");
+      Assert.fail("Reserved SQL word 'blob' was allowed for a column name in new type.");
     }
     catch (ReservedWordException e)
     {
       // The test passed
-      assertTrue(e.getOrigin() == ReservedWordException.Origin.COLUMN);
+      Assert.assertTrue(e.getOrigin() == ReservedWordException.Origin.COLUMN);
     }
   }
+
+  @Request
+  @Test
   public void testGoodColumnName() throws Exception
   {
     try
@@ -257,9 +252,12 @@ public class ReservedWordsTest extends TestCase
     }
     catch (ReservedWordException e)
     {
-      fail("Reserved Java word 'abstract' was not allowed for a column name in new type.");
+      Assert.fail("Reserved Java word 'abstract' was not allowed for a column name in new type.");
     }
   }
+
+  @Request
+  @Test
   public void testBadAttributeName() throws Exception
   {
     try
@@ -274,14 +272,17 @@ public class ReservedWordsTest extends TestCase
       mdAttributeBoolean.apply();
 
       // If we get this far, it didn't throw the exception, the test failed
-      fail("Reserved Java word 'if' was allowed for an attribute name in new type.");
+      Assert.fail("Reserved Java word 'if' was allowed for an attribute name in new type.");
     }
     catch (ReservedWordException e)
     {
       // The test passed
-      assertTrue(e.getOrigin() == ReservedWordException.Origin.ATTRIBUTE);
+      Assert.assertTrue(e.getOrigin() == ReservedWordException.Origin.ATTRIBUTE);
     }
   }
+
+  @Request
+  @Test
   public void testGoodAttributeName() throws Exception
   {
     try
@@ -299,9 +300,12 @@ public class ReservedWordsTest extends TestCase
     }
     catch (ReservedWordException e)
     {
-      fail("Reserved SQL word 'blob' was not allowed for an attribute name in new type.");
+      Assert.fail("Reserved SQL word 'blob' was not allowed for an attribute name in new type.");
     }
   }
+
+  @Request
+  @Test
   public void testInvalidCopiedColumnName() throws Exception
   {
     try
@@ -315,12 +319,12 @@ public class ReservedWordsTest extends TestCase
       mdAttributeBoolean.apply();
 
       // If we get this far, it didn't throw the exception, the test failed
-      fail("Reserved SQL attribute name 'Access' was copied to the missing column name and was accepted by the system.");
+      Assert.fail("Reserved SQL attribute name 'Access' was copied to the missing column name and was accepted by the system.");
     }
     catch (ReservedWordException e)
     {
       // The test passed
-      assertTrue(e.getOrigin() == ReservedWordException.Origin.COLUMN);
+      Assert.assertTrue(e.getOrigin() == ReservedWordException.Origin.COLUMN);
     }
   }
 }

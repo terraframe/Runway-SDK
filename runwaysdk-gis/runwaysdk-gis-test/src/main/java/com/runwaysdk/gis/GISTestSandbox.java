@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis;
 
@@ -60,7 +60,7 @@ public class GISTestSandbox
   {
     MigrationUtil.setReferenceAttributeDefaultIndexes();
   }
-  
+
   @Request
   public static void testForm() throws JSONException
   {
@@ -80,43 +80,43 @@ public class GISTestSandbox
     System.out.println(json.toString(2));
   }
 
-//  private static void export(String id, Set<String> all)
-//  {
-    // if (!all.contains(id))
-    // {
-    // EntityDAOIF entity = EntityDAO.get(id);
-    //
-    // if (!isRunwayMetadata(entity))
-    // {
-    // all.add(id);
-    //
-    // if (entity instanceof BusinessDAOIF)
-    // {
-    // BusinessDAOIF businessDAO = (BusinessDAOIF) entity;
-    // List<RelationshipDAOIF> children = businessDAO.getAllChildren();
-    //
-    // for (RelationshipDAOIF child : children)
-    // {
-    // export(child.getId(), all);
-    // }
-    //
-    // List<RelationshipDAOIF> parents = businessDAO.getAllParents();
-    //
-    // for (RelationshipDAOIF parent : parents)
-    // {
-    // export(parent.getId(), all);
-    // }
-    // }
-    // else if (entity instanceof RelationshipDAOIF)
-    // {
-    // RelationshipDAOIF relationship = (RelationshipDAOIF) entity;
-    //
-    // export(relationship.getParentId(), all);
-    // export(relationship.getChildId(), all);
-    // }
-    // }
-    // }
-//  }
+  // private static void export(String id, Set<String> all)
+  // {
+  // if (!all.contains(id))
+  // {
+  // EntityDAOIF entity = EntityDAO.get(id);
+  //
+  // if (!isRunwayMetadata(entity))
+  // {
+  // all.add(id);
+  //
+  // if (entity instanceof BusinessDAOIF)
+  // {
+  // BusinessDAOIF businessDAO = (BusinessDAOIF) entity;
+  // List<RelationshipDAOIF> children = businessDAO.getAllChildren();
+  //
+  // for (RelationshipDAOIF child : children)
+  // {
+  // export(child.getId(), all);
+  // }
+  //
+  // List<RelationshipDAOIF> parents = businessDAO.getAllParents();
+  //
+  // for (RelationshipDAOIF parent : parents)
+  // {
+  // export(parent.getId(), all);
+  // }
+  // }
+  // else if (entity instanceof RelationshipDAOIF)
+  // {
+  // RelationshipDAOIF relationship = (RelationshipDAOIF) entity;
+  //
+  // export(relationship.getParentId(), all);
+  // export(relationship.getChildId(), all);
+  // }
+  // }
+  // }
+  // }
 
   @Transaction
   public static void addPointField()
@@ -268,7 +268,8 @@ public class GISTestSandbox
     // Object returnObject = resultSet.getObject("roads_geom");
     //
     // System.out.println("---------------------------");
-    // System.out.println("Geometry Class: :"+returnObject.getClass().getName());
+    // System.out.println("Geometry Class:
+    // :"+returnObject.getClass().getName());
     //
     // if (returnObject instanceof JtsGeometry)
     // {
@@ -289,7 +290,7 @@ public class GISTestSandbox
     // for (int i=0; i < lineString.getNumPoints(); i++)
     // {
     // Point point = lineString.getPointN(i);
-    // System.out.println("    Point Text: "+point.toText());
+    // System.out.println(" Point Text: "+point.toText());
     // }
     //
     // }
@@ -316,7 +317,7 @@ public class GISTestSandbox
     // //
     // // for (Point point : lineString.getPoints())
     // // {
-    // // System.out.println("  Point: "+point.getValue());
+    // // System.out.println(" Point: "+point.getValue());
     // // }
     // // }
     //

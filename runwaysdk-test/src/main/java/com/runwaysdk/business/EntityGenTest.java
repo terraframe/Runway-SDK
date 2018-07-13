@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -35,7 +35,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +54,6 @@ import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
-import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -110,7 +113,6 @@ import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -144,6 +146,7 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
 import com.runwaysdk.transport.metadata.AttributeDecMdDTO;
@@ -156,42 +159,12 @@ import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.util.Base64;
 import com.runwaysdk.util.FileIO;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
 import sun.security.provider.Sun;
 
 @SuppressWarnings("unchecked")
-public class EntityGenTest extends TestCase
+public class EntityGenTest
 {
-  final static Logger logger = LoggerFactory.getLogger(EntityGenTest.class);
-  
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  /**
-   * Launch-point for the standalone textui JUnit tests in this class.
-   * 
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-    {
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
-    }
-    junit.textui.TestRunner.run(EntityGenTest.suite());
-  }
+  final static Logger                         logger          = LoggerFactory.getLogger(EntityGenTest.class);
 
   public static final String                  path            = TestConstants.Path.XMLFiles + "/";
 
@@ -305,29 +278,8 @@ public class EntityGenTest extends TestCase
 
   private boolean                             didTeardown     = false;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite(EntityGenTest.class.getSimpleName());
-    suite.addTestSuite(EntityGenTest.class);
-
-//     TestSetup wrapper = new TestSetup(suite)
-//     {
-//     protected void setUp()
-//     {
-//     classSetUp();
-//     }
-//    
-//     protected void tearDown()
-//     {
-//     classTearDown();
-//     }
-//     };
-//    
-//     return wrapper;
-
-    return suite;
-  }
-
+  @Request
+  @Before
   protected void setUp()
   {
     if (didSetup == false)
@@ -345,6 +297,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @After
   protected void tearDown()
   {
     if (didTeardown == false)
@@ -356,7 +310,9 @@ public class EntityGenTest extends TestCase
     systemSession.logout();
   }
 
-  private static void classSetUp()
+  @Request
+  @BeforeClass
+  public static void classSetUp()
   {
     suitMaster = MdBusinessDAO.newInstance();
     suitMaster.setValue(MdBusinessInfo.NAME, "SuitMaster");
@@ -784,6 +740,8 @@ public class EntityGenTest extends TestCase
     car.apply();
   }
 
+  @Request
+  @Test
   public void testInstance() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -793,16 +751,18 @@ public class EntityGenTest extends TestCase
 
     if (!id.equals(business.getId()))
     {
-      fail("An applied instance did not match the retrieved instance.");
+      Assert.fail("An applied instance did not match the retrieved instance.");
     }
   }
 
+  @Request
+  @Test
   public void testNewStructWithClassType() throws Exception
   {
     try
     {
       BusinessFacade.newStruct(collectionType);
-      fail("Allowed a Struct to be created for a business type");
+      Assert.fail("Allowed a Struct to be created for a business type");
     }
     catch (UnexpectedTypeException e)
     {
@@ -810,12 +770,14 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNewElementWithStructType() throws Exception
   {
     try
     {
       BusinessFacade.newBusiness(struct.definesType());
-      fail("Allowed a Element to be created for a struct type");
+      Assert.fail("Allowed a Element to be created for a struct type");
     }
     catch (UnexpectedTypeException e)
     {
@@ -823,6 +785,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLoad() throws Exception
   {
     MdAttributeIntegerDAO topSpeed = MdAttributeIntegerDAO.newInstance();
@@ -841,15 +805,17 @@ public class EntityGenTest extends TestCase
 
     List<String> ids = EntityDAO.getEntityIdsDB(car.definesType());
     if (ids.size() != 1)
-      fail("Expected to find 1 Car, but found " + ids.size());
+      Assert.fail("Expected to find 1 Car, but found " + ids.size());
 
     BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
     if (!businessDAOIF.getValue("topSpeed").equals("200"))
-      fail("setTopSpeed was not invoked correctly");
+      Assert.fail("setTopSpeed was not invoked correctly");
 
     topSpeed.delete();
   }
 
+  @Request
+  @Test
   public void testReLoad() throws Exception
   {
     String type = car.definesType();
@@ -860,7 +826,7 @@ public class EntityGenTest extends TestCase
       Method setTopSpeedMethod = carClass.getMethod("setTopSpeed", Integer.TYPE);
       Object newCar = carClass.getConstructor().newInstance();
       setTopSpeedMethod.invoke(newCar, 200);
-      fail("The class invoked a method that doesn't exist yet");
+      Assert.fail("The class invoked a method that doesn't exist yet");
     }
     catch (NoSuchMethodException e)
     {
@@ -882,6 +848,8 @@ public class EntityGenTest extends TestCase
     carClass.getMethod("apply").invoke(newerCar);
   }
 
+  @Request
+  @Test
   public void testReLoadBlob() throws Exception
   {
     String type = car.definesType();
@@ -893,7 +861,7 @@ public class EntityGenTest extends TestCase
       Method setBlobDataMethod = carClass.getMethod("setBlobData", byte[].class);
       Object newCar = carClass.getConstructor().newInstance();
       setBlobDataMethod.invoke(newCar, data);
-      fail("The class invoked a method that doesn't exist yet");
+      Assert.fail("The class invoked a method that doesn't exist yet");
     }
     catch (NoSuchMethodException e)
     {
@@ -914,16 +882,20 @@ public class EntityGenTest extends TestCase
     carClass.getMethod("apply").invoke(newerCar);
   }
 
+  @Request
+  @Test
   public void testDelete()
   {
     MdBusinessDAO.get(car.getId()).getBusinessDAO().delete();
 
     if (MdBusinessDAO.isDefined(pack + ".Car"))
-      fail("Car was not deleted!");
+      Assert.fail("Car was not deleted!");
 
     makeCar();
   }
 
+  @Request
+  @Test
   public void testSetBlob() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -938,13 +910,15 @@ public class EntityGenTest extends TestCase
     byte[] out = businessDAOIF.getBlob("aBlob");
 
     if (in.length != out.length)
-      fail("Stored and Retrieved blobs are different sizes.");
+      Assert.fail("Stored and Retrieved blobs are different sizes.");
 
     for (int i = 0; i < in.length; i++)
       if (in[i] != out[i])
-        fail("Stored and Retrieved blobs have different values.");
+        Assert.fail("Stored and Retrieved blobs have different values.");
   }
 
+  @Request
+  @Test
   public void testGetBlob() throws Exception
   {
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
@@ -958,13 +932,15 @@ public class EntityGenTest extends TestCase
     byte[] out = (byte[]) collectionClass.getMethod("getABlob").invoke(object);
 
     if (in.length != out.length)
-      fail("Stored and Retrieved blobs are different sizes.");
+      Assert.fail("Stored and Retrieved blobs are different sizes.");
 
     for (int i = 0; i < in.length; i++)
       if (in[i] != out[i])
-        fail("Stored and Retrieved blobs have different values.");
+        Assert.fail("Stored and Retrieved blobs have different values.");
   }
 
+  @Request
+  @Test
   public void testSetBoolean() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -979,9 +955,11 @@ public class EntityGenTest extends TestCase
     boolean out = Boolean.parseBoolean(businessDAO.getValue("aBoolean"));
 
     if (in != out)
-      fail("Stored and Retrieved booleans have different values.");
+      Assert.fail("Stored and Retrieved booleans have different values.");
   }
 
+  @Request
+  @Test
   public void testGetBoolean() throws Exception
   {
     boolean in = false;
@@ -995,9 +973,11 @@ public class EntityGenTest extends TestCase
     boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
 
     if (in != out)
-      fail("Stored and Retrieved booleans have different values.");
+      Assert.fail("Stored and Retrieved booleans have different values.");
   }
 
+  @Request
+  @Test
   public void testGetBooleanNull() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -1012,12 +992,14 @@ public class EntityGenTest extends TestCase
 
     if (out != null)
     {
-      fail("A Boolean getter method was supposed to return null.");
+      Assert.fail("A Boolean getter method was supposed to return null.");
     }
 
     businessDAO.delete();
   }
 
+  @Request
+  @Test
   public void testSetCharacter() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1032,9 +1014,11 @@ public class EntityGenTest extends TestCase
     String out = businessDAO.getValue("aCharacter");
 
     if (!in.equals(out))
-      fail("Stored and Retrieved Characters have different values.");
+      Assert.fail("Stored and Retrieved Characters have different values.");
   }
 
+  @Request
+  @Test
   public void testGetCharacter() throws Exception
   {
     String in = "RunwaySDK";
@@ -1048,9 +1032,11 @@ public class EntityGenTest extends TestCase
     String out = (String) collectionClass.getMethod("getACharacter").invoke(object);
 
     if (!in.equals(out))
-      fail("Stored and Retrieved Characters have different values.");
+      Assert.fail("Stored and Retrieved Characters have different values.");
   }
 
+  @Request
+  @Test
   public void testSetDecimal() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1067,9 +1053,11 @@ public class EntityGenTest extends TestCase
     BigDecimal out = new BigDecimal(businessDAOIF.getValue("aDecimal"));
 
     if (in.subtract(out).abs().doubleValue() > .0000001)
-      fail("Stored and Retrieved Decimals have different values.");
+      Assert.fail("Stored and Retrieved Decimals have different values.");
   }
 
+  @Request
+  @Test
   public void testGetDecimal() throws Exception
   {
     double in = 987654.321;
@@ -1083,9 +1071,11 @@ public class EntityGenTest extends TestCase
     double out = ( (BigDecimal) collectionClass.getMethod("getADecimal").invoke(object) ).doubleValue();
 
     if (in != out)
-      fail("Stored and Retrieved Decimals have different values.");
+      Assert.fail("Stored and Retrieved Decimals have different values.");
   }
 
+  @Request
+  @Test
   public void testGetDecimalNull() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -1100,12 +1090,14 @@ public class EntityGenTest extends TestCase
 
     if (out != null)
     {
-      fail("A Decimal getter method was supposed to return null.");
+      Assert.fail("A Decimal getter method was supposed to return null.");
     }
 
     businessDAO.delete();
   }
 
+  @Request
+  @Test
   public void testSetDouble() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1120,9 +1112,11 @@ public class EntityGenTest extends TestCase
     double out = Double.parseDouble(businessDAO.getValue("aDouble"));
 
     if (in != out)
-      fail("Stored and Retrieved Doubles have different values.");
+      Assert.fail("Stored and Retrieved Doubles have different values.");
   }
 
+  @Request
+  @Test
   public void testGetDouble() throws Exception
   {
     double in = 98765.4321;
@@ -1136,9 +1130,11 @@ public class EntityGenTest extends TestCase
     double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
 
     if (in != out)
-      fail("Stored and Retrieved Doubles have different values.");
+      Assert.fail("Stored and Retrieved Doubles have different values.");
   }
 
+  @Request
+  @Test
   public void testGetDoubleNull() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -1153,12 +1149,14 @@ public class EntityGenTest extends TestCase
 
     if (out != null)
     {
-      fail("A Double getter method was supposed to return null.");
+      Assert.fail("A Double getter method was supposed to return null.");
     }
 
     businessDAO.delete();
   }
 
+  @Request
+  @Test
   public void testSetFloat() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1173,9 +1171,11 @@ public class EntityGenTest extends TestCase
     float out = Float.parseFloat(businessDAO.getValue("aFloat"));
 
     if (in != out)
-      fail("Stored and Retrieved Floats have different values.");
+      Assert.fail("Stored and Retrieved Floats have different values.");
   }
 
+  @Request
+  @Test
   public void testGetFloat() throws Exception
   {
     float in = 987.654321F;
@@ -1189,9 +1189,11 @@ public class EntityGenTest extends TestCase
     float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
     if (in != out)
-      fail("Stored and Retrieved Floats have different values.");
+      Assert.fail("Stored and Retrieved Floats have different values.");
   }
 
+  @Request
+  @Test
   public void testGetFloatNull() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -1206,12 +1208,14 @@ public class EntityGenTest extends TestCase
 
     if (out != null)
     {
-      fail("A Float getter method was supposed to return null.");
+      Assert.fail("A Float getter method was supposed to return null.");
     }
 
     businessDAO.delete();
   }
 
+  @Request
+  @Test
   public void testSetHash() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1230,9 +1234,11 @@ public class EntityGenTest extends TestCase
     String out = businessDAO.getValue("aHash");
 
     if (!hash.equals(out))
-      fail("Stored and Retrieved Hashes have different values.");
+      Assert.fail("Stored and Retrieved Hashes have different values.");
   }
 
+  @Request
+  @Test
   public void testHashEquals() throws Exception
   {
     String in = "For breakfast, I had some Pringles, and some fudge-striped cook-ays";
@@ -1246,9 +1252,11 @@ public class EntityGenTest extends TestCase
     boolean out = (Boolean) collectionClass.getMethod("aHashEquals", String.class).invoke(object, "For breakfast, I had some Pringles, and some fudge-striped cook-ays");
 
     if (!out)
-      fail("Stored Hash did not equal equivalent value.");
+      Assert.fail("Stored Hash did not equal equivalent value.");
   }
 
+  @Request
+  @Test
   public void testSetSymmetric() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1263,9 +1271,11 @@ public class EntityGenTest extends TestCase
     String out = businessDAO.getValue("aSym");
 
     if (!in.equals(out))
-      fail("Stored and Retrieved Symmetric encrypted attributes have different values.");
+      Assert.fail("Stored and Retrieved Symmetric encrypted attributes have different values.");
   }
 
+  @Request
+  @Test
   public void testGetSymmetric() throws Exception
   {
     String in = "You'll find that they're quite stationary";
@@ -1279,9 +1289,11 @@ public class EntityGenTest extends TestCase
     String out = (String) collectionClass.getMethod("getASym").invoke(object);
 
     if (!in.equals(out))
-      fail("Stored and Retrieved Symmetric encrypted attributes have different values.");
+      Assert.fail("Stored and Retrieved Symmetric encrypted attributes have different values.");
   }
 
+  @Request
+  @Test
   public void testSetInteger() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1296,9 +1308,11 @@ public class EntityGenTest extends TestCase
     int out = Integer.parseInt(businessDAO.getValue("anInteger"));
 
     if (in != out)
-      fail("Stored and Retrieved Integers have different values.");
+      Assert.fail("Stored and Retrieved Integers have different values.");
   }
 
+  @Request
+  @Test
   public void testGetInteger() throws Exception
   {
     int in = 9876;
@@ -1312,9 +1326,11 @@ public class EntityGenTest extends TestCase
     int out = (Integer) collectionClass.getMethod("getAnInteger").invoke(object);
 
     if (in != out)
-      fail("Stored and Retrieved Integers have different values.");
+      Assert.fail("Stored and Retrieved Integers have different values.");
   }
 
+  @Request
+  @Test
   public void testGetIntegerNull() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -1329,12 +1345,14 @@ public class EntityGenTest extends TestCase
 
     if (out != null)
     {
-      fail("An Integer getter method was supposed to return null.");
+      Assert.fail("An Integer getter method was supposed to return null.");
     }
 
     businessDAO.delete();
   }
 
+  @Request
+  @Test
   public void testSetLong() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1349,9 +1367,11 @@ public class EntityGenTest extends TestCase
     long out = Long.parseLong(businessDAO.getValue("aLong"));
 
     if (in != out)
-      fail("Stored and Retrieved Longs have different values.");
+      Assert.fail("Stored and Retrieved Longs have different values.");
   }
 
+  @Request
+  @Test
   public void testGetLong() throws Exception
   {
     long in = 987654321;
@@ -1365,9 +1385,11 @@ public class EntityGenTest extends TestCase
     long out = (Long) collectionClass.getMethod("getALong").invoke(object);
 
     if (in != out)
-      fail("Stored and Retrieved Longs have different values.");
+      Assert.fail("Stored and Retrieved Longs have different values.");
   }
 
+  @Request
+  @Test
   public void testSetLocalCharacter() throws Exception
   {
     String in = Long.toString(123456789L);
@@ -1386,10 +1408,12 @@ public class EntityGenTest extends TestCase
 
     if (!in.equals(out))
     {
-      fail("Stored and Retrieved Local character have different values.");
+      Assert.fail("Stored and Retrieved Local character have different values.");
     }
   }
 
+  @Request
+  @Test
   public void testGetLocalCharacter() throws Exception
   {
     String in = Long.toString(987654321);
@@ -1406,10 +1430,12 @@ public class EntityGenTest extends TestCase
 
     if (!in.equals(out))
     {
-      fail("Stored and Retrieved Local character have different values.");
+      Assert.fail("Stored and Retrieved Local character have different values.");
     }
   }
 
+  @Request
+  @Test
   public void testSetLocalText() throws Exception
   {
     String in = Long.toString(123456789L);
@@ -1428,10 +1454,12 @@ public class EntityGenTest extends TestCase
 
     if (!in.equals(out))
     {
-      fail("Stored and Retrieved Local text have different values.");
+      Assert.fail("Stored and Retrieved Local text have different values.");
     }
   }
 
+  @Request
+  @Test
   public void testGetLocalText() throws Exception
   {
     String in = Long.toString(987654321);
@@ -1448,10 +1476,12 @@ public class EntityGenTest extends TestCase
 
     if (!in.equals(out))
     {
-      fail("Stored and Retrieved local text have different values.");
+      Assert.fail("Stored and Retrieved local text have different values.");
     }
   }
 
+  @Request
+  @Test
   public void testGetLongNull() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -1466,12 +1496,14 @@ public class EntityGenTest extends TestCase
 
     if (out != null)
     {
-      fail("A Long getter method was supposed to return null.");
+      Assert.fail("A Long getter method was supposed to return null.");
     }
 
     businessDAO.delete();
   }
 
+  @Request
+  @Test
   public void testSetDate() throws Exception
   {
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
@@ -1487,9 +1519,11 @@ public class EntityGenTest extends TestCase
     Date out = sdf.parse(businessDAO.getValue("aDate"));
 
     if (!sdf.format(in).equals(sdf.format(out)))
-      fail("Stored and Retrieved Dates have different values.");
+      Assert.fail("Stored and Retrieved Dates have different values.");
   }
 
+  @Request
+  @Test
   public void testGetDate() throws Exception
   {
     Date in = new Date(System.currentTimeMillis());
@@ -1505,9 +1539,11 @@ public class EntityGenTest extends TestCase
     Date out = (Date) collectionClass.getMethod("getADate").invoke(object);
 
     if (!sdf.format(in).equals(sdf.format(out)))
-      fail("Stored and Retrieved Dates have different values.");
+      Assert.fail("Stored and Retrieved Dates have different values.");
   }
 
+  @Request
+  @Test
   public void testGetDateNull() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -1522,12 +1558,14 @@ public class EntityGenTest extends TestCase
 
     if (out != null)
     {
-      fail("A Date getter method was supposed to return null.");
+      Assert.fail("A Date getter method was supposed to return null.");
     }
 
     businessDAO.delete();
   }
 
+  @Request
+  @Test
   public void testSetDateTime() throws Exception
   {
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_FORMAT);
@@ -1543,9 +1581,11 @@ public class EntityGenTest extends TestCase
     Date out = sdf.parse(businessDAO.getValue("aDateTime"));
 
     if (!sdf.format(in).equals(sdf.format(out)))
-      fail("Stored and Retrieved DateTimes have different values.");
+      Assert.fail("Stored and Retrieved DateTimes have different values.");
   }
 
+  @Request
+  @Test
   public void testGetDateTime() throws Exception
   {
     Date in = new Date(System.currentTimeMillis());
@@ -1561,9 +1601,11 @@ public class EntityGenTest extends TestCase
     Date out = (Date) collectionClass.getMethod("getADateTime").invoke(object);
 
     if (!sdf.format(in).equals(sdf.format(out)))
-      fail("Stored and Retrieved DateTimes have different values.");
+      Assert.fail("Stored and Retrieved DateTimes have different values.");
   }
 
+  @Request
+  @Test
   public void testGetDateTimeNull() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -1578,12 +1620,14 @@ public class EntityGenTest extends TestCase
 
     if (out != null)
     {
-      fail("A DateTime getter method was supposed to return null.");
+      Assert.fail("A DateTime getter method was supposed to return null.");
     }
 
     businessDAO.delete();
   }
 
+  @Request
+  @Test
   public void testSetTime() throws Exception
   {
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.TIME_FORMAT);
@@ -1599,9 +1643,11 @@ public class EntityGenTest extends TestCase
     Date out = sdf.parse(businessDAO.getValue("aTime"));
 
     if (!sdf.format(in).equals(sdf.format(out)))
-      fail("Stored and Retrieved Times have different values.");
+      Assert.fail("Stored and Retrieved Times have different values.");
   }
 
+  @Request
+  @Test
   public void testGetTime() throws Exception
   {
     Date in = new Date(System.currentTimeMillis());
@@ -1617,9 +1663,11 @@ public class EntityGenTest extends TestCase
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
     if (!sdf.format(in).equals(sdf.format(out)))
-      fail("Stored and Retrieved Times have different values.");
+      Assert.fail("Stored and Retrieved Times have different values.");
   }
 
+  @Request
+  @Test
   public void testGetTimeNull() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -1634,12 +1682,14 @@ public class EntityGenTest extends TestCase
 
     if (out != null)
     {
-      fail("A Time getter method was supposed to return null.");
+      Assert.fail("A Time getter method was supposed to return null.");
     }
 
     businessDAO.delete();
   }
 
+  @Request
+  @Test
   public void testSetText() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1654,9 +1704,11 @@ public class EntityGenTest extends TestCase
     String out = businessDAO.getValue("aText");
 
     if (!in.equals(out))
-      fail("Stored and Retrieved Texts have different values.");
+      Assert.fail("Stored and Retrieved Texts have different values.");
   }
 
+  @Request
+  @Test
   public void testSetClob() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1671,9 +1723,11 @@ public class EntityGenTest extends TestCase
     String out = businessDAO.getValue("aClob");
 
     if (!in.equals(out))
-      fail("Stored and Retrieved Clobs have different values.");
+      Assert.fail("Stored and Retrieved Clobs have different values.");
   }
 
+  @Request
+  @Test
   public void testGetText() throws Exception
   {
     String in = "Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
@@ -1687,9 +1741,11 @@ public class EntityGenTest extends TestCase
     String out = (String) collectionClass.getMethod("getAText").invoke(object);
 
     if (!in.equals(out))
-      fail("Stored and Retrieved Texts have different values. In value: " + in + " Out value: " + out);
+      Assert.fail("Stored and Retrieved Texts have different values. In value: " + in + " Out value: " + out);
   }
 
+  @Request
+  @Test
   public void testGetClob() throws Exception
   {
     String in = "CLOB: Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
@@ -1703,9 +1759,11 @@ public class EntityGenTest extends TestCase
     String out = (String) collectionClass.getMethod("getAClob").invoke(object);
 
     if (!in.equals(out))
-      fail("Stored and Retrieved Clobs have different values. In value: " + in + " Out value: " + out);
+      Assert.fail("Stored and Retrieved Clobs have different values. In value: " + in + " Out value: " + out);
   }
 
+  @Request
+  @Test
   public void testSetStructCharacter() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1722,9 +1780,11 @@ public class EntityGenTest extends TestCase
     String out = businessDAO.getStructValue("aStruct", "structCharacter");
 
     if (!in.equals(out))
-      fail("Stored and Retrieved StructCharacters have different values.");
+      Assert.fail("Stored and Retrieved StructCharacters have different values.");
   }
 
+  @Request
+  @Test
   public void testGetStructCharacter() throws Exception
   {
     String in = "Smethie wuz Here!!!!";
@@ -1741,9 +1801,11 @@ public class EntityGenTest extends TestCase
     String out = (String) structClass.getMethod("getStructCharacter").invoke(struct);
 
     if (!in.equals(out))
-      fail("Stored and Retrieved StructCharacters have different values.");
+      Assert.fail("Stored and Retrieved StructCharacters have different values.");
   }
 
+  @Request
+  @Test
   public void testSetStructEnumeration() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1762,10 +1824,12 @@ public class EntityGenTest extends TestCase
     StructDAO structDAO = ( (AttributeStructIF) businessDAO.getAttributeIF("aStruct") ).getStructDAO();
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttribute("structEnumeration") ).dereference();
 
-    assertEquals(1, enums.length);
-    assertEquals(heartsId, enums[0].getId());
+    Assert.assertEquals(1, enums.length);
+    Assert.assertEquals(heartsId, enums[0].getId());
   }
 
+  @Request
+  @Test
   public void testGetStructEnumeration() throws Exception
   {
     String input = "This is myself.";
@@ -1786,11 +1850,13 @@ public class EntityGenTest extends TestCase
     String outId = (String) head.getClass().getMethod("getId").invoke(head);
     String structChar = (String) structClass.getMethod("getStructCharacter").invoke(struct);
 
-    assertEquals(input, structChar);
-    assertEquals(1, out.size());
-    assertEquals(heartsId, outId);
+    Assert.assertEquals(input, structChar);
+    Assert.assertEquals(1, out.size());
+    Assert.assertEquals(heartsId, outId);
   }
 
+  @Request
+  @Test
   public void testSetStructBoolean() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -1807,9 +1873,11 @@ public class EntityGenTest extends TestCase
     boolean out = Boolean.parseBoolean(businessDAO.getStructValue("aStruct", "structBoolean"));
 
     if (in != out)
-      fail("Stored and Retrieved StructBooleans have different values.");
+      Assert.fail("Stored and Retrieved StructBooleans have different values.");
   }
 
+  @Request
+  @Test
   public void testGetStructBoolean() throws Exception
   {
     boolean in = true;
@@ -1827,9 +1895,11 @@ public class EntityGenTest extends TestCase
     boolean out = (Boolean) structClass.getMethod("getStructBoolean").invoke(struct);
 
     if (in != out)
-      fail("Stored and Retrieved StructBooleans have different values.");
+      Assert.fail("Stored and Retrieved StructBooleans have different values.");
   }
 
+  @Request
+  @Test
   public void testSetReference() throws Exception
   {
     Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
@@ -1847,29 +1917,33 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF out = ( (AttributeReferenceIF) businessDAO.getAttributeIF("aReference") ).dereference();
 
     if (!in.getId().equalsIgnoreCase(out.getId()))
-      fail("Stored and Retrieved References are different.");
+      Assert.fail("Stored and Retrieved References are different.");
   }
 
+  @Request
+  @Test
   public void testSetReferenceById() throws Exception
   {
     Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
     Business in = (Business) referenceClass.getConstructor().newInstance();
     referenceClass.getMethod("apply").invoke(in);
-    
+
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
-    
+
     collectionClass.getMethod("setAReference", String.class).invoke(object, in.getId());
     collectionClass.getMethod("apply").invoke(object);
-    
+
     String id = (String) collectionClass.getMethod("getId").invoke(object);
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     BusinessDAOIF out = ( (AttributeReferenceIF) businessDAO.getAttributeIF("aReference") ).dereference();
-    
+
     if (!in.getId().equalsIgnoreCase(out.getId()))
-      fail("Stored and Retrieved References are different.");
+      Assert.fail("Stored and Retrieved References are different.");
   }
-  
+
+  @Request
+  @Test
   public void testGetReference() throws Exception
   {
     BusinessDAO in = BusinessDAO.newInstance(reference.definesType());
@@ -1884,9 +1958,11 @@ public class EntityGenTest extends TestCase
     Business out = (Business) collectionClass.getMethod("getAReference").invoke(object);
 
     if (!in.getId().equalsIgnoreCase(out.getId()))
-      fail("Stored and Retrieved References are different.");
+      Assert.fail("Stored and Retrieved References are different.");
   }
 
+  @Request
+  @Test
   public void testEnumDTO_getEnumNames() throws Exception
   {
     String in = heartsId;
@@ -1903,15 +1979,17 @@ public class EntityGenTest extends TestCase
     String method = "getAnEnum" + TypeGeneratorInfo.ATTRIBUTE_ENUMERATION_ENUM_NAMES_SUFFIX;
     List<String> enumNames = (List<String>) collectionClass.getMethod(method).invoke(businessDTO);
 
-    assertEquals(2, enumNames.size());
+    Assert.assertEquals(2, enumNames.size());
 
     String enumName1 = enumNames.get(0);
     String enumName2 = enumNames.get(1);
 
-    assertTrue(heartName.equals(enumName1) || heartName.equals(enumName2));
-    assertTrue(clubName.equals(enumName1) || clubName.equals(enumName2));
+    Assert.assertTrue(heartName.equals(enumName1) || heartName.equals(enumName2));
+    Assert.assertTrue(clubName.equals(enumName1) || clubName.equals(enumName2));
   }
 
+  @Request
+  @Test
   public void testEnumDTO_getName() throws Exception
   {
     Class<?> enumClass = LoaderDecorator.load(suitEnumDTO);
@@ -1922,9 +2000,11 @@ public class EntityGenTest extends TestCase
     Method getName = enumClass.getMethod("getName");
     String name = (String) getName.invoke(hearts);
 
-    assertEquals(hearts.name(), name);
+    Assert.assertEquals(hearts.name(), name);
   }
 
+  @Request
+  @Test
   public void testEnumDTO_item() throws Exception
   {
     Class<?> enumClass = LoaderDecorator.load(suitEnumDTO);
@@ -1935,9 +2015,11 @@ public class EntityGenTest extends TestCase
     Method item = enumClass.getMethod("item", ClientRequestIF.class);
     BusinessDTO heartsDTO = (BusinessDTO) item.invoke(hearts, clientRequestIF);
 
-    assertEquals(heartsDTO.getValue("enumName"), hearts.name());
+    Assert.assertEquals(heartsDTO.getValue("enumName"), hearts.name());
   }
 
+  @Request
+  @Test
   public void testEnumDTO_items() throws Exception
   {
     Class<?> enumClass = LoaderDecorator.load(suitEnumDTO);
@@ -1953,7 +2035,7 @@ public class EntityGenTest extends TestCase
     Method items = enumClass.getMethod("items", ClientRequestIF.class, array.getClass());
     List<? extends BusinessDTO> values = (List<? extends BusinessDTO>) items.invoke(hearts, clientRequestIF, array);
 
-    assertEquals(values.size(), 2);
+    Assert.assertEquals(values.size(), 2);
 
     boolean heartsFound = false;
     boolean clubsFound = false;
@@ -1966,9 +2048,11 @@ public class EntityGenTest extends TestCase
         clubsFound = true;
     }
 
-    assertTrue(heartsFound && clubsFound);
+    Assert.assertTrue(heartsFound && clubsFound);
   }
 
+  @Request
+  @Test
   public void testEnumDTO_allItems() throws Exception
   {
     Class<?> enumClass = LoaderDecorator.load(suitEnumDTO);
@@ -1976,7 +2060,7 @@ public class EntityGenTest extends TestCase
     Method items = enumClass.getMethod("allItems", ClientRequestIF.class);
     List<? extends BusinessDTO> values = (List<? extends BusinessDTO>) items.invoke(null, clientRequestIF);
 
-    assertEquals(values.size(), 4);
+    Assert.assertEquals(values.size(), 4);
 
     boolean heartsFound = false;
     boolean clubsFound = false;
@@ -1995,9 +2079,11 @@ public class EntityGenTest extends TestCase
         spadesFound = true;
     }
 
-    assertTrue(heartsFound && clubsFound && spadesFound && diamondsFound);
+    Assert.assertTrue(heartsFound && clubsFound && spadesFound && diamondsFound);
   }
 
+  @Request
+  @Test
   public void testAddEnum() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -2014,14 +2100,16 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     Set<String> ids = ( (AttributeEnumerationIF) businessDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
     if (ids.size() != 1)
-      fail("Expected 1 enum value, found " + ids.size());
+      Assert.fail("Expected 1 enum value, found " + ids.size());
 
     String out = BusinessDAO.get(ids.iterator().next()).getValue(EnumerationMasterInfo.NAME);
 
     if (!out.equals(diamondsName))
-      fail("Stored and Retrieved enums have different values.");
+      Assert.fail("Stored and Retrieved enums have different values.");
   }
 
+  @Request
+  @Test
   public void testGetEnum() throws Exception
   {
     String in = heartsId;
@@ -2036,9 +2124,11 @@ public class EntityGenTest extends TestCase
     String outId = (String) head.getClass().getMethod("getId").invoke(head);
 
     if (!in.equalsIgnoreCase(outId))
-      fail("Stored and Retrieved enums have different values.");
+      Assert.fail("Stored and Retrieved enums have different values.");
   }
 
+  @Request
+  @Test
   public void testRemoveEnum() throws Exception
   {
     String in = heartsId;
@@ -2059,9 +2149,11 @@ public class EntityGenTest extends TestCase
     Set<String> out = ( (AttributeEnumerationIF) businessDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
 
     if (out.size() != 0)
-      fail("Failed to remove an enumerated value.");
+      Assert.fail("Failed to remove an enumerated value.");
   }
 
+  @Request
+  @Test
   public void testClearEnum() throws Exception
   {
     String in = heartsId;
@@ -2078,9 +2170,11 @@ public class EntityGenTest extends TestCase
     Set<String> out = ( (AttributeEnumerationIF) businessDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
 
     if (out.size() != 0)
-      fail("Failed to clear an enumerated value.");
+      Assert.fail("Failed to clear an enumerated value.");
   }
 
+  @Request
+  @Test
   public void testAddChild() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -2096,12 +2190,14 @@ public class EntityGenTest extends TestCase
     RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
 
     if (!oracle.getParentId().equals(mom.getId()))
-      fail("Parent reference mismatch in addChild");
+      Assert.fail("Parent reference mismatch in addChild");
 
     if (!oracle.getChildId().equals(kid.getId()))
-      fail("Child reference mismatch in addChild");
+      Assert.fail("Child reference mismatch in addChild");
   }
 
+  @Request
+  @Test
   public void testAddChildDTO() throws Exception
   {
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -2135,10 +2231,12 @@ public class EntityGenTest extends TestCase
 
     RelationshipDAOIF oracle = RelationshipDAO.get(instance.getId());
 
-    assertEquals(oracle.getParentId(), mom.getId());
-    assertEquals(oracle.getChildId(), kid.getId());
+    Assert.assertEquals(oracle.getParentId(), mom.getId());
+    Assert.assertEquals(oracle.getChildId(), kid.getId());
   }
 
+  @Request
+  @Test
   public void testAddParent() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -2154,12 +2252,14 @@ public class EntityGenTest extends TestCase
     RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
 
     if (!oracle.getParentId().equals(mom.getId()))
-      fail("Parent reference mismatch in addParent");
+      Assert.fail("Parent reference mismatch in addParent");
 
     if (!oracle.getChildId().equals(kid.getId()))
-      fail("Child reference mismatch in addParent");
+      Assert.fail("Child reference mismatch in addParent");
   }
 
+  @Request
+  @Test
   public void testGetChildren() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -2175,13 +2275,15 @@ public class EntityGenTest extends TestCase
 
     List<Business> list = ( (OIterator<Business>) collectionClass.getMethod("getAllRelChild").invoke(businessMom) ).getAll();
     if (list.size() != 1)
-      fail("Expected getAllChildren to return 1, found " + list.size());
+      Assert.fail("Expected getAllChildren to return 1, found " + list.size());
     Business oracle = list.iterator().next();
 
     if (!oracle.getId().equals(kid.getId()))
-      fail("Child reference mismatch in getAllChildren");
+      Assert.fail("Child reference mismatch in getAllChildren");
   }
 
+  @Request
+  @Test
   public void testGetParents() throws Exception
   {
     Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
@@ -2197,13 +2299,15 @@ public class EntityGenTest extends TestCase
 
     List<Business> list = ( (OIterator<Business>) referenceClass.getMethod("getAllRelParent").invoke(businessKid) ).getAll();
     if (list.size() != 1)
-      fail("Expected getAllPrents to return 1, found " + list.size());
+      Assert.fail("Expected getAllPrents to return 1, found " + list.size());
     Business oracle = list.iterator().next();
 
     if (!oracle.getId().equals(mom.getId()))
-      fail("Parent reference mismatch in getAllParents");
+      Assert.fail("Parent reference mismatch in getAllParents");
   }
 
+  @Request
+  @Test
   public void testRemoveAllChildren() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -2224,17 +2328,19 @@ public class EntityGenTest extends TestCase
 
     List<RelationshipDAOIF> list = mom.getChildren(mdRelationship.definesType());
     if (list.size() != 1)
-      fail("RemoveAllChilren expected 1 child, found " + list.size());
+      Assert.fail("RemoveAllChilren expected 1 child, found " + list.size());
 
     RelationshipDAOIF rel = list.get(0);
     if (!rel.getParentId().equals(mom.getId()))
-      fail("Unexpected parent after removeAllChildren.");
+      Assert.fail("Unexpected parent after removeAllChildren.");
 
     if (!rel.getChildId().equals(kid2.getId()))
-      fail("Unexpected child after removeAllChildren.");
+      Assert.fail("Unexpected child after removeAllChildren.");
 
   }
 
+  @Request
+  @Test
   public void testRemoveAllParents() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -2255,17 +2361,17 @@ public class EntityGenTest extends TestCase
 
     List<RelationshipDAOIF> list = kid.getParents(mdRelationship.definesType());
     if (list.size() != 1)
-      fail("RemoveAllParents expected 1 parent, found " + list.size());
+      Assert.fail("RemoveAllParents expected 1 parent, found " + list.size());
 
     RelationshipDAOIF rel = list.get(0);
     if (!rel.getParentId().equals(dad.getId()))
     {
-      fail("Unexpected parent after removeAllParents.");
+      Assert.fail("Unexpected parent after removeAllParents.");
     }
 
     if (!rel.getChildId().equals(kid.getId()))
     {
-      fail("Unexpected child after removeAllParents.");
+      Assert.fail("Unexpected child after removeAllParents.");
     }
 
   }
@@ -2280,6 +2386,8 @@ public class EntityGenTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testApplyStruct() throws Exception
   {
     String in = "Haaaar Harr, BSG";
@@ -2296,7 +2404,7 @@ public class EntityGenTest extends TestCase
 
     if (!in.equals(out))
     {
-      fail("Stored and Retrieved StructCharacters have different values.");
+      Assert.fail("Stored and Retrieved StructCharacters have different values.");
     }
   }
 
@@ -2310,6 +2418,8 @@ public class EntityGenTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNoApplyStruct() throws Exception
   {
     boolean in = true;
@@ -2332,9 +2442,11 @@ public class EntityGenTest extends TestCase
     boolean out = Boolean.parseBoolean(businessDAOIF.getStructValue("aStruct", "structBoolean"));
 
     if (in != out)
-      fail("Stored and Retrieved StructBooleans have different values.");
+      Assert.fail("Stored and Retrieved StructBooleans have different values.");
   }
 
+  @Request
+  @Test
   public void testAddParentDTO() throws Exception
   {
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -2367,10 +2479,12 @@ public class EntityGenTest extends TestCase
 
     RelationshipDAOIF oracle = RelationshipDAO.get(instance.getId());
 
-    assertEquals(oracle.getParentId(), mom.getId());
-    assertEquals(oracle.getChildId(), kid.getId());
+    Assert.assertEquals(oracle.getParentId(), mom.getId());
+    Assert.assertEquals(oracle.getChildId(), kid.getId());
   }
 
+  @Request
+  @Test
   public void testDeleteDTO() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -2387,7 +2501,7 @@ public class EntityGenTest extends TestCase
     {
       BusinessDAO.get(id);
 
-      fail("Delete businessDTO did not delete the entity");
+      Assert.fail("Delete businessDTO did not delete the entity");
     }
     catch (DataNotFoundException e)
     {
@@ -2395,6 +2509,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetBlobDTO() throws Exception
   {
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
@@ -2409,11 +2525,11 @@ public class EntityGenTest extends TestCase
     byte[] out = (byte[]) collectionClass.getMethod("getABlob").invoke(object);
 
     if (in.length != out.length)
-      fail("Stored and Retrieved blobs are different sizes.");
+      Assert.fail("Stored and Retrieved blobs are different sizes.");
 
     for (int i = 0; i < in.length; i++)
       if (in[i] != out[i])
-        fail("Stored and Retrieved blobs have different values.");
+        Assert.fail("Stored and Retrieved blobs have different values.");
   }
 
   /**
@@ -2425,6 +2541,8 @@ public class EntityGenTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testGetBooleanDTO() throws Exception
   {
     boolean in = false;
@@ -2437,9 +2555,11 @@ public class EntityGenTest extends TestCase
     Object object = get.invoke(null, clientRequestIF, id);
     boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetBooleanNullDTO() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -2452,9 +2572,11 @@ public class EntityGenTest extends TestCase
 
     Boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
 
-    assertNull(null, out);
+    Assert.assertNull(null, out);
   }
 
+  @Request
+  @Test
   public void testGetCharacterDTO() throws Exception
   {
     String in = "RunwaySDK";
@@ -2468,9 +2590,11 @@ public class EntityGenTest extends TestCase
 
     String out = (String) collectionClass.getMethod("getACharacter").invoke(object);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetChildDTO() throws Exception
   {
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
@@ -2490,10 +2614,12 @@ public class EntityGenTest extends TestCase
 
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     Class<?> referenceClass = LoaderDecorator.load(referenceDTO);
-    assertTrue(referenceClass.isInstance(child));
-    assertEquals(kid.getId(), child.getId());
+    Assert.assertTrue(referenceClass.isInstance(child));
+    Assert.assertEquals(kid.getId(), child.getId());
   }
 
+  @Request
+  @Test
   public void testGetChildrenDTOCached() throws Exception
   {
     mdRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
@@ -2520,11 +2646,11 @@ public class EntityGenTest extends TestCase
       Object mom = collectionClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, momId);
       List<BusinessDTO> list = (List<BusinessDTO>) collectionClass.getMethod("getAllRelChild").invoke(mom);
 
-      assertEquals(1, list.size());
+      Assert.assertEquals(1, list.size());
       BusinessDTO oracle = list.get(0);
 
-      assertTrue(oracle.getType().equals(reference.definesType()));
-      assertEquals(oracle.getId(), kidId);
+      Assert.assertTrue(oracle.getType().equals(reference.definesType()));
+      Assert.assertEquals(oracle.getId(), kidId);
     }
     finally
     {
@@ -2538,7 +2664,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
-
+  @Request
+  @Test
   public void testGetChildrenDTONotCached() throws Exception
   {
     mdRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
@@ -2565,11 +2692,11 @@ public class EntityGenTest extends TestCase
       Object mom = collectionClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, momId);
       List<BusinessDTO> list = (List<BusinessDTO>) collectionClass.getMethod("getAllRelChild").invoke(mom);
 
-      assertEquals(1, list.size());
+      Assert.assertEquals(1, list.size());
       BusinessDTO oracle = list.get(0);
 
-      assertTrue(oracle.getType().equals(reference.definesType()));
-      assertEquals(oracle.getId(), kidId);
+      Assert.assertTrue(oracle.getType().equals(reference.definesType()));
+      Assert.assertEquals(oracle.getId(), kidId);
     }
     finally
     {
@@ -2583,6 +2710,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetChildRelationshipsDTO() throws Exception
   {
     String relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -2600,14 +2729,16 @@ public class EntityGenTest extends TestCase
     Object mom = collectionClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, momId);
     List<RelationshipDTO> list = (List<RelationshipDTO>) collectionClass.getMethod("getAllRelChildRelationships").invoke(mom);
 
-    assertEquals(3, list.size());
+    Assert.assertEquals(3, list.size());
     RelationshipDTO oracle = list.get(0);
 
-    assertTrue(relationshipClass.isInstance(oracle));
-    assertEquals(oracle.getChildId(), kidId);
-    assertEquals(oracle.getParentId(), momId);
+    Assert.assertTrue(relationshipClass.isInstance(oracle));
+    Assert.assertEquals(oracle.getChildId(), kidId);
+    Assert.assertEquals(oracle.getParentId(), momId);
   }
 
+  @Request
+  @Test
   public void testPublish() throws Exception
   {
     // Make sure we can instantiate the subclass
@@ -2628,7 +2759,7 @@ public class EntityGenTest extends TestCase
         get = collectionClass.getConstructor(ClientRequestIF.class);
         get.newInstance(clientRequestIF);
 
-        fail("Able to load a DTO class that was set to not be published");
+        Assert.fail("Able to load a DTO class that was set to not be published");
       }
       catch (RuntimeException ex)
       {
@@ -2644,7 +2775,7 @@ public class EntityGenTest extends TestCase
         get = collectionSubClass.getConstructor(ClientRequestIF.class);
         get.newInstance(clientRequestIF);
 
-        fail("Able to load a DTO class that was set to not be published");
+        Assert.fail("Able to load a DTO class that was set to not be published");
       }
       catch (RuntimeException ex)
       {
@@ -2667,6 +2798,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testPublishReference() throws Exception
   {
     BusinessDAO in = BusinessDAO.newInstance(reference.definesType());
@@ -2719,6 +2852,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testPublishRelationship() throws Exception
   {
     BusinessDAO in = BusinessDAO.newInstance(reference.definesType());
@@ -2772,6 +2907,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testChangeAttributeName() throws Exception
   {
     Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
@@ -2784,10 +2921,10 @@ public class EntityGenTest extends TestCase
     colletionClass.getMethod("getACharacter").invoke(businessObject);
 
     collectionCharacter = MdAttributeCharacterDAO.get(collectionCharacter.getId()).getBusinessDAO();
-    
+
     collectionCharacter.setValue(MdAttributeConcreteInfo.NAME, "AChangedCharacter");
     collectionCharacter.apply();
-    //LoaderDecorator.reload();
+    // LoaderDecorator.reload();
     colletionClass = LoaderDecorator.load(collection.definesType());
     businessObject = colletionClass.getConstructor().newInstance();
 
@@ -2797,7 +2934,7 @@ public class EntityGenTest extends TestCase
     }
     catch (NoSuchMethodException e)
     {
-      fail("The name of Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed on business class.");
+      Assert.fail("The name of Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed on business class.");
     }
 
     try
@@ -2808,7 +2945,7 @@ public class EntityGenTest extends TestCase
     }
     catch (NoSuchMethodException e)
     {
-      fail("The name of Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed on DTO class.");
+      Assert.fail("The name of Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed on DTO class.");
     }
     catch (Exception e)
     {
@@ -2818,10 +2955,12 @@ public class EntityGenTest extends TestCase
     {
       collectionCharacter.setValue(MdAttributeConcreteInfo.NAME, "aCharacter");
       collectionCharacter.apply();
-      //LoaderDecorator.reload();
+      // LoaderDecorator.reload();
     }
   }
 
+  @Request
+  @Test
   public void testAttributeGetterVisibility() throws Exception
   {
     Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
@@ -2833,7 +2972,7 @@ public class EntityGenTest extends TestCase
     int modifiers = colletionBaseClass.getDeclaredMethod("getACharacter").getModifiers();
     if (!Modifier.isPublic(modifiers))
     {
-      fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
     }
 
     // Make sure the accessor method is there
@@ -2841,7 +2980,7 @@ public class EntityGenTest extends TestCase
 
     collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     collectionCharacter.apply();
-    //LoaderDecorator.reload();
+    // LoaderDecorator.reload();
     colletionClass = LoaderDecorator.load(collection.definesType());
     colletionBaseClass = colletionClass.getSuperclass();
 
@@ -2850,7 +2989,7 @@ public class EntityGenTest extends TestCase
       modifiers = colletionBaseClass.getDeclaredMethod("getACharacter").getModifiers();
       if (!Modifier.isProtected(modifiers))
       {
-        fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
       }
 
       try
@@ -2859,7 +2998,7 @@ public class EntityGenTest extends TestCase
         object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
         collectionDTOclass.getMethod("getACharacter").invoke(object);
 
-        fail("Able to access a getter method on a DTO for an attribute that is [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].");
+        Assert.fail("Able to access a getter method on a DTO for an attribute that is [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].");
       }
       catch (NoSuchMethodException e)
       {
@@ -2875,14 +3014,14 @@ public class EntityGenTest extends TestCase
     {
       collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       collectionCharacter.apply();
-      //LoaderDecorator.reload();
+      // LoaderDecorator.reload();
       colletionClass = LoaderDecorator.load(collection.definesType());
       colletionBaseClass = colletionClass.getSuperclass();
 
       modifiers = colletionBaseClass.getDeclaredMethod("getACharacter").getModifiers();
       if (!Modifier.isPublic(modifiers))
       {
-        fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
       }
 
       // Make sure the accessor method is back
@@ -2892,6 +3031,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAttributeSetterVisibility() throws Exception
   {
     Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
@@ -2903,7 +3044,7 @@ public class EntityGenTest extends TestCase
     int modifiers = colletionBaseClass.getDeclaredMethod("setACharacter", String.class).getModifiers();
     if (!Modifier.isPublic(modifiers))
     {
-      fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
     }
 
     // Make sure the accessor method is there
@@ -2911,7 +3052,7 @@ public class EntityGenTest extends TestCase
 
     collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     collectionCharacter.apply();
-    //LoaderDecorator.reload();
+    // LoaderDecorator.reload();
     colletionClass = LoaderDecorator.load(collection.definesType());
     colletionBaseClass = colletionClass.getSuperclass();
 
@@ -2921,7 +3062,7 @@ public class EntityGenTest extends TestCase
       modifiers = colletionBaseClass.getDeclaredMethod("setACharacter", String.class).getModifiers();
       if (!Modifier.isProtected(modifiers))
       {
-        fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
       }
 
       try
@@ -2930,7 +3071,7 @@ public class EntityGenTest extends TestCase
         object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
         collectionDTOclass.getMethod("setACharacter", String.class).invoke(object, "123");
 
-        fail("Able to access a setter method on a DTO for an attribute that is [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].");
+        Assert.fail("Able to access a setter method on a DTO for an attribute that is [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].");
       }
       catch (NoSuchMethodException e)
       {
@@ -2941,14 +3082,14 @@ public class EntityGenTest extends TestCase
     {
       collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       collectionCharacter.apply();
-      //LoaderDecorator.reload();
+      // LoaderDecorator.reload();
       colletionClass = LoaderDecorator.load(collection.definesType());
       colletionBaseClass = colletionClass.getSuperclass();
 
       modifiers = colletionBaseClass.getDeclaredMethod("setACharacter", String.class).getModifiers();
       if (!Modifier.isPublic(modifiers))
       {
-        fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
       }
 
       // Make sure the accessor method is back
@@ -2958,6 +3099,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testParentMethodVisibility() throws Exception
   {
     Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
@@ -2970,23 +3113,23 @@ public class EntityGenTest extends TestCase
     // Check public visibility on the business class
     int modifiers = referenceBaseClass.getDeclaredMethod("addRelParent", colletionClass).getModifiers();
     if (!Modifier.isPublic(modifiers))
-      fail("Parent relationship [addRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Parent relationship [addRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
     modifiers = referenceBaseClass.getDeclaredMethod("removeRelParent", colletionClass).getModifiers();
     if (!Modifier.isPublic(modifiers))
-      fail("Parent relationship [removeRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Parent relationship [removeRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
     modifiers = referenceBaseClass.getDeclaredMethod("getAllRelParent").getModifiers();
     if (!Modifier.isPublic(modifiers))
-      fail("Parent relationship [addRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Parent relationship [addRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
     modifiers = referenceBaseClass.getDeclaredMethod("getAllRelParentRel").getModifiers();
     if (!Modifier.isPublic(modifiers))
-      fail("Parent relationship [getAllRelParentRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Parent relationship [getAllRelParentRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
     modifiers = referenceBaseClass.getDeclaredMethod("getRelParentRel", colletionClass).getModifiers();
     if (!Modifier.isPublic(modifiers))
-      fail("Parent relationship [getRelParentRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Parent relationship [getRelParentRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
     // Create some objects
     Object collectionDTOObject = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
@@ -3011,7 +3154,7 @@ public class EntityGenTest extends TestCase
     updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);
     updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     updateRelationship.apply();
-    //LoaderDecorator.reload();
+    // LoaderDecorator.reload();
 
     referenceClass = LoaderDecorator.load(reference.definesType());
     referenceBaseClass = referenceClass.getSuperclass();
@@ -3024,23 +3167,23 @@ public class EntityGenTest extends TestCase
     {
       modifiers = referenceBaseClass.getDeclaredMethod("addRelParent", colletionClass).getModifiers();
       if (!Modifier.isProtected(modifiers))
-        fail("Parent relationship [addRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [addRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
       modifiers = referenceBaseClass.getDeclaredMethod("removeRelParent", colletionClass).getModifiers();
       if (!Modifier.isProtected(modifiers))
-        fail("Parent relationship [removeRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [removeRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
       modifiers = referenceBaseClass.getDeclaredMethod("getAllRelParent").getModifiers();
       if (!Modifier.isProtected(modifiers))
-        fail("Parent relationship [addRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [addRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
       modifiers = referenceBaseClass.getDeclaredMethod("getAllRelParentRel").getModifiers();
       if (!Modifier.isProtected(modifiers))
-        fail("Parent relationship [getAllRelParentRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [getAllRelParentRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
       modifiers = referenceBaseClass.getDeclaredMethod("getRelParentRel", colletionClass).getModifiers();
       if (!Modifier.isProtected(modifiers))
-        fail("Parent relationship [getRelParentRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [getRelParentRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
       try
       {
@@ -3056,7 +3199,7 @@ public class EntityGenTest extends TestCase
         {
           aRelationshipDTO = referenceDTOclass.getMethod("addRelParent", collectionDTOclass).invoke(referenceDTOObject, collectionDTOObject);
           relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
-          fail(parentProtectedFail);
+          Assert.fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3064,7 +3207,7 @@ public class EntityGenTest extends TestCase
         try
         {
           referenceDTOclass.getMethod("getAllRelParent").invoke(referenceDTOObject);
-          fail(parentProtectedFail);
+          Assert.fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3072,7 +3215,7 @@ public class EntityGenTest extends TestCase
         try
         {
           relationshipList = (List<?>) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
-          fail(parentProtectedFail);
+          Assert.fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3080,7 +3223,7 @@ public class EntityGenTest extends TestCase
         try
         {
           referenceDTOclass.getMethod("removeRelParent", relationshipDTOclass).invoke(referenceDTOObject, relationshipList.get(0));
-          fail(parentProtectedFail);
+          Assert.fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3088,7 +3231,7 @@ public class EntityGenTest extends TestCase
         try
         {
           referenceDTOclass.getMethod("removeAllRelParent").invoke(referenceDTOObject);
-          fail(parentProtectedFail);
+          Assert.fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3115,7 +3258,7 @@ public class EntityGenTest extends TestCase
         {
           aRelationshipDTO = referenceDTOclass.getMethod("addRelParent", collectionDTOclass).invoke(referenceDTOObject, collectionDTOObject);
           relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
-          fail(parentProtectedFail);
+          Assert.fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3123,7 +3266,7 @@ public class EntityGenTest extends TestCase
         try
         {
           referenceDTOclass.getMethod("getAllRelParent").invoke(referenceDTOObject);
-          fail(parentProtectedFail);
+          Assert.fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3131,7 +3274,7 @@ public class EntityGenTest extends TestCase
         try
         {
           relationshipList = (List<?>) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
-          fail(parentProtectedFail);
+          Assert.fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3139,7 +3282,7 @@ public class EntityGenTest extends TestCase
         try
         {
           referenceDTOclass.getMethod("removeRelParent", relationshipDTOclass).invoke(referenceDTOObject, relationshipList.get(0));
-          fail(parentProtectedFail);
+          Assert.fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3147,7 +3290,7 @@ public class EntityGenTest extends TestCase
         try
         {
           referenceDTOclass.getMethod("removeAllRelParent").invoke(referenceDTOObject);
-          fail(parentProtectedFail);
+          Assert.fail(parentProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3168,7 +3311,7 @@ public class EntityGenTest extends TestCase
       updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);
       updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       updateRelationship.apply();
-      //LoaderDecorator.reload();
+      // LoaderDecorator.reload();
 
       referenceClass = LoaderDecorator.load(reference.definesType());
       referenceBaseClass = referenceClass.getSuperclass();
@@ -3180,19 +3323,19 @@ public class EntityGenTest extends TestCase
       // Check public visibility on the business class
       modifiers = referenceBaseClass.getDeclaredMethod("addRelParent", colletionClass).getModifiers();
       if (!Modifier.isPublic(modifiers))
-        fail("Parent relationship  [addRelParent] on generated server base class [" + reference.definesType() + "]was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship  [addRelParent] on generated server base class [" + reference.definesType() + "]was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
       modifiers = referenceBaseClass.getDeclaredMethod("getAllRelParent").getModifiers();
       if (!Modifier.isPublic(modifiers))
-        fail("Parent relationship  [addRelParent] on generated server base class [" + reference.definesType() + "]was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship  [addRelParent] on generated server base class [" + reference.definesType() + "]was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
       modifiers = referenceBaseClass.getDeclaredMethod("getAllRelParentRel").getModifiers();
       if (!Modifier.isPublic(modifiers))
-        fail("Parent relationship  [getAllRelParentRel] on generated server base class [" + reference.definesType() + "]was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship  [getAllRelParentRel] on generated server base class [" + reference.definesType() + "]was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
       modifiers = referenceBaseClass.getDeclaredMethod("getRelParentRel", colletionClass).getModifiers();
       if (!Modifier.isPublic(modifiers))
-        fail("Parent relationship  [getRelParentRel] on generated server base class [" + reference.definesType() + "]was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship  [getRelParentRel] on generated server base class [" + reference.definesType() + "]was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
       // Create some objects
       collectionDTOObject = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
@@ -3216,6 +3359,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testChildMethodVisibility() throws Exception
   {
     Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
@@ -3228,23 +3373,23 @@ public class EntityGenTest extends TestCase
     // Check public visibility on the business class
     int modifiers = collectionBaseClass.getDeclaredMethod("addRelChild", referenceClass).getModifiers();
     if (!Modifier.isPublic(modifiers))
-      fail("Parent relationship [addRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Parent relationship [addRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
     modifiers = collectionBaseClass.getDeclaredMethod("removeRelChild", referenceClass).getModifiers();
     if (!Modifier.isPublic(modifiers))
-      fail("Parent relationship [removeRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Parent relationship [removeRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
     modifiers = collectionBaseClass.getDeclaredMethod("getAllRelChild").getModifiers();
     if (!Modifier.isPublic(modifiers))
-      fail("Parent relationship [getAllRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Parent relationship [getAllRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
     modifiers = collectionBaseClass.getDeclaredMethod("getAllRelChildRel").getModifiers();
     if (!Modifier.isPublic(modifiers))
-      fail("Parent relationship [getAllRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Parent relationship [getAllRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
     modifiers = collectionBaseClass.getDeclaredMethod("getRelChildRel", referenceClass).getModifiers();
     if (!Modifier.isPublic(modifiers))
-      fail("Parent relationship [getRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Parent relationship [getRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
     // Create some objects
     Object collectionDTOObject = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
@@ -3269,7 +3414,7 @@ public class EntityGenTest extends TestCase
     updateRelationship.clearItems(MdRelationshipInfo.CHILD_VISIBILITY);
     updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     updateRelationship.apply();
-    //LoaderDecorator.reload();
+    // LoaderDecorator.reload();
 
     referenceClass = LoaderDecorator.load(reference.definesType());
     referenceDTOclass = LoaderDecorator.load(referenceDTO);
@@ -3282,23 +3427,23 @@ public class EntityGenTest extends TestCase
     {
       modifiers = collectionBaseClass.getDeclaredMethod("addRelChild", referenceClass).getModifiers();
       if (!Modifier.isProtected(modifiers))
-        fail("Parent relationship [addRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [addRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
       modifiers = collectionBaseClass.getDeclaredMethod("removeRelChild", referenceClass).getModifiers();
       if (!Modifier.isProtected(modifiers))
-        fail("Parent relationship [removeRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [removeRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
       modifiers = collectionBaseClass.getDeclaredMethod("getAllRelChild").getModifiers();
       if (!Modifier.isProtected(modifiers))
-        fail("Parent relationship [getAllRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [getAllRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
       modifiers = collectionBaseClass.getDeclaredMethod("getAllRelChildRel").getModifiers();
       if (!Modifier.isProtected(modifiers))
-        fail("Parent relationship [getAllRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [getAllRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
       modifiers = collectionBaseClass.getDeclaredMethod("getRelChildRel", referenceClass).getModifiers();
       if (!Modifier.isProtected(modifiers))
-        fail("Parent relationship [getRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [getRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
       try
       {
@@ -3315,7 +3460,7 @@ public class EntityGenTest extends TestCase
         {
           aRelationshipDTO = collectionDTOclass.getMethod("addRelChild", referenceDTOclass).invoke(collectionDTOObject, referenceDTOObject);
           relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
-          fail(childProtectedFail);
+          Assert.fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3323,7 +3468,7 @@ public class EntityGenTest extends TestCase
         try
         {
           collectionDTOclass.getMethod("getAllRelChild").invoke(collectionDTOObject);
-          fail(childProtectedFail);
+          Assert.fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3331,7 +3476,7 @@ public class EntityGenTest extends TestCase
         try
         {
           relationshipList = (List<?>) collectionDTOclass.getMethod("getAllRelChildRelationships").invoke(collectionDTOObject);
-          fail(childProtectedFail);
+          Assert.fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3339,7 +3484,7 @@ public class EntityGenTest extends TestCase
         try
         {
           collectionDTOclass.getMethod("removeRelChild", relationshipDTOclass).invoke(collectionDTOObject, relationshipList.get(0));
-          fail(childProtectedFail);
+          Assert.fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3347,7 +3492,7 @@ public class EntityGenTest extends TestCase
         try
         {
           collectionDTOclass.getMethod("removeAllRelChild").invoke(collectionDTOObject);
-          fail(childProtectedFail);
+          Assert.fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3375,7 +3520,7 @@ public class EntityGenTest extends TestCase
         {
           aRelationshipDTO = collectionDTOclass.getMethod("addRelChild", referenceDTOclass).invoke(collectionDTOObject, referenceDTOObject);
           relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
-          fail(childProtectedFail);
+          Assert.fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3383,7 +3528,7 @@ public class EntityGenTest extends TestCase
         try
         {
           collectionDTOclass.getMethod("getAllRelChild").invoke(collectionDTOObject);
-          fail(childProtectedFail);
+          Assert.fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3391,7 +3536,7 @@ public class EntityGenTest extends TestCase
         try
         {
           relationshipList = (List<?>) collectionDTOclass.getMethod("getAllRelChildRelationships").invoke(collectionDTOObject);
-          fail(childProtectedFail);
+          Assert.fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3399,7 +3544,7 @@ public class EntityGenTest extends TestCase
         try
         {
           collectionDTOclass.getMethod("removeRelChild", relationshipDTOclass).invoke(collectionDTOObject, relationshipList.get(0));
-          fail(childProtectedFail);
+          Assert.fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3407,7 +3552,7 @@ public class EntityGenTest extends TestCase
         try
         {
           collectionDTOclass.getMethod("removeAllRelChild").invoke(collectionDTOObject);
-          fail(childProtectedFail);
+          Assert.fail(childProtectedFail);
         }
         catch (NoSuchMethodException e)
         {
@@ -3428,7 +3573,7 @@ public class EntityGenTest extends TestCase
       updateRelationship.clearItems(MdRelationshipInfo.CHILD_VISIBILITY);
       updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       updateRelationship.apply();
-      //LoaderDecorator.reload();
+      // LoaderDecorator.reload();
 
       referenceClass = LoaderDecorator.load(reference.definesType());
       referenceDTOclass = LoaderDecorator.load(referenceDTO);
@@ -3440,23 +3585,23 @@ public class EntityGenTest extends TestCase
       // Check public visibility on the business class
       modifiers = collectionBaseClass.getDeclaredMethod("addRelChild", referenceClass).getModifiers();
       if (!Modifier.isPublic(modifiers))
-        fail("Parent relationship [addRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [addRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
       modifiers = collectionBaseClass.getDeclaredMethod("removeRelChild", referenceClass).getModifiers();
       if (!Modifier.isPublic(modifiers))
-        fail("Parent relationship [removeRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [removeRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
       modifiers = collectionBaseClass.getDeclaredMethod("getAllRelChild").getModifiers();
       if (!Modifier.isPublic(modifiers))
-        fail("Parent relationship [getAllRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [getAllRelChild] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
       modifiers = collectionBaseClass.getDeclaredMethod("getAllRelChildRel").getModifiers();
       if (!Modifier.isPublic(modifiers))
-        fail("Parent relationship [getAllRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [getAllRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
       modifiers = collectionBaseClass.getDeclaredMethod("getRelChildRel", referenceClass).getModifiers();
       if (!Modifier.isPublic(modifiers))
-        fail("Parent relationship [getRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Parent relationship [getRelChildRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
 
       // Create some objects
       collectionDTOObject = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
@@ -3479,6 +3624,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetDateDTO() throws Exception
   {
     Date in = new Date(System.currentTimeMillis());
@@ -3496,9 +3643,11 @@ public class EntityGenTest extends TestCase
 
     businessDAO.delete();
 
-    assertEquals(sdf.format(in), sdf.format(out));
+    Assert.assertEquals(sdf.format(in), sdf.format(out));
   }
 
+  @Request
+  @Test
   public void testGetDateNullDTO() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -3511,9 +3660,11 @@ public class EntityGenTest extends TestCase
 
     Date out = (Date) collectionClass.getMethod("getADate").invoke(object);
 
-    assertNull(out);
+    Assert.assertNull(out);
   }
 
+  @Request
+  @Test
   public void testGetDateTimeDTO() throws Exception
   {
     Date in = new Date(System.currentTimeMillis());
@@ -3529,9 +3680,11 @@ public class EntityGenTest extends TestCase
 
     Date out = (Date) collectionClass.getMethod("getADateTime").invoke(object);
 
-    assertEquals(sdf.format(in), sdf.format(out));
+    Assert.assertEquals(sdf.format(in), sdf.format(out));
   }
 
+  @Request
+  @Test
   public void testGetDateTimeNullDTO() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -3544,9 +3697,11 @@ public class EntityGenTest extends TestCase
 
     Date out = (Date) collectionClass.getMethod("getADateTime").invoke(object);
 
-    assertNull(out);
+    Assert.assertNull(out);
   }
 
+  @Request
+  @Test
   public void testGetDecimalDTO() throws Exception
   {
     double in = 987654.321;
@@ -3560,9 +3715,11 @@ public class EntityGenTest extends TestCase
 
     double out = ( (BigDecimal) collectionClass.getMethod("getADecimal").invoke(object) ).doubleValue();
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetDecimalNullDTO() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -3575,9 +3732,11 @@ public class EntityGenTest extends TestCase
 
     Double out = (Double) collectionClass.getMethod("getADecimal").invoke(object);
 
-    assertNull(out);
+    Assert.assertNull(out);
   }
 
+  @Request
+  @Test
   public void testGetDoubleDTO() throws Exception
   {
     double in = 98765.4321;
@@ -3591,9 +3750,11 @@ public class EntityGenTest extends TestCase
 
     double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetDoubleNullDTO() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -3606,9 +3767,11 @@ public class EntityGenTest extends TestCase
 
     Double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
 
-    assertNull(out);
+    Assert.assertNull(out);
   }
 
+  @Request
+  @Test
   public void testGetEnumDTO() throws Exception
   {
     String in = heartsId;
@@ -3624,9 +3787,11 @@ public class EntityGenTest extends TestCase
     EnumerationDTOIF head = (EnumerationDTOIF) enums.get(0);
     String out = (String) head.name();
 
-    assertEquals(heartName, out);
+    Assert.assertEquals(heartName, out);
   }
 
+  @Request
+  @Test
   public void testGetFloatDTO() throws Exception
   {
     float in = 987.654321F;
@@ -3640,9 +3805,11 @@ public class EntityGenTest extends TestCase
 
     float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetFloatNullDTO() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -3655,9 +3822,11 @@ public class EntityGenTest extends TestCase
 
     Float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
-    assertNull(out);
+    Assert.assertNull(out);
   }
 
+  @Request
+  @Test
   public void testGetIntegerDTO() throws Exception
   {
     int in = 9876;
@@ -3671,9 +3840,11 @@ public class EntityGenTest extends TestCase
 
     int out = (Integer) collectionClass.getMethod("getAnInteger").invoke(object);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetIntegerNullDTO() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -3686,9 +3857,11 @@ public class EntityGenTest extends TestCase
 
     Integer out = (Integer) collectionClass.getMethod("getAnInteger").invoke(object);
 
-    assertNull(out);
+    Assert.assertNull(out);
   }
 
+  @Request
+  @Test
   public void testGetLongDTO() throws Exception
   {
     long in = 987654321;
@@ -3702,9 +3875,11 @@ public class EntityGenTest extends TestCase
 
     long out = (Long) collectionClass.getMethod("getALong").invoke(object);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetLongNullDTO() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -3717,9 +3892,11 @@ public class EntityGenTest extends TestCase
 
     Float out = (Float) collectionClass.getMethod("getALong").invoke(object);
 
-    assertNull(out);
+    Assert.assertNull(out);
   }
 
+  @Request
+  @Test
   public void testGetParentDTO() throws Exception
   {
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
@@ -3738,10 +3915,12 @@ public class EntityGenTest extends TestCase
     BusinessDTO parent = (BusinessDTO) getParent.invoke(object);
 
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    assertTrue(collectionClass.isInstance(parent));
-    assertEquals(mom.getId(), parent.getId());
+    Assert.assertTrue(collectionClass.isInstance(parent));
+    Assert.assertEquals(mom.getId(), parent.getId());
   }
 
+  @Request
+  @Test
   public void testGetParentsDTONotCached() throws Exception
   {
     {
@@ -3768,11 +3947,11 @@ public class EntityGenTest extends TestCase
       Object kid = referenceClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, kidId);
       List<BusinessDTO> list = (List<BusinessDTO>) referenceClass.getMethod("getAllRelParent").invoke(kid);
 
-      assertEquals(1, list.size());
+      Assert.assertEquals(1, list.size());
       BusinessDTO oracle = list.get(0);
 
-      assertTrue(oracle.getType().equals(collection.definesType()));
-      assertEquals(oracle.getId(), momId);
+      Assert.assertTrue(oracle.getType().equals(collection.definesType()));
+      Assert.assertEquals(oracle.getId(), momId);
     }
     finally
     {
@@ -3783,6 +3962,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetParentsDTOCached() throws Exception
   {
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
@@ -3809,11 +3990,11 @@ public class EntityGenTest extends TestCase
       Object kid = referenceClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, kidId);
       List<BusinessDTO> list = (List<BusinessDTO>) referenceClass.getMethod("getAllRelParent").invoke(kid);
 
-      assertEquals(1, list.size());
+      Assert.assertEquals(1, list.size());
       BusinessDTO oracle = list.get(0);
 
-      assertTrue(oracle.getType().equals(collection.definesType()));
-      assertEquals(oracle.getId(), momId);
+      Assert.assertTrue(oracle.getType().equals(collection.definesType()));
+      Assert.assertEquals(oracle.getId(), momId);
     }
     finally
     {
@@ -3826,6 +4007,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetParentRelationshipsDTO() throws Exception
   {
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -3845,14 +4028,16 @@ public class EntityGenTest extends TestCase
     Object kid = referenceClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, kidId);
     List<RelationshipDTO> list = (List<RelationshipDTO>) referenceClass.getMethod("getAllRelParentRelationships").invoke(kid);
 
-    assertEquals(4, list.size());
+    Assert.assertEquals(4, list.size());
     RelationshipDTO oracle = list.get(0);
 
-    assertTrue(relationshipClass.isInstance(oracle));
-    assertEquals(oracle.getParentId(), momId);
-    assertEquals(oracle.getChildId(), kidId);
+    Assert.assertTrue(relationshipClass.isInstance(oracle));
+    Assert.assertEquals(oracle.getParentId(), momId);
+    Assert.assertEquals(oracle.getChildId(), kidId);
   }
 
+  @Request
+  @Test
   public void testGetReferenceDTO() throws Exception
   {
     BusinessDAO in = BusinessDAO.newInstance(reference.definesType());
@@ -3867,9 +4052,11 @@ public class EntityGenTest extends TestCase
     Object object = get.invoke(null, clientRequestIF, id);
     BusinessDTO out = (BusinessDTO) collectionClass.getMethod("getAReference").invoke(object);
 
-    assertEquals(in.getId(), out.getId());
+    Assert.assertEquals(in.getId(), out.getId());
   }
 
+  @Request
+  @Test
   public void testGetStructBooleanDTO() throws Exception
   {
     boolean in = true;
@@ -3887,9 +4074,11 @@ public class EntityGenTest extends TestCase
 
     boolean out = (Boolean) structClass.getMethod("getStructBoolean").invoke(struct);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetStructCharacterDTO() throws Exception
   {
     String in = "Smethie wuz Here!!!!";
@@ -3906,9 +4095,11 @@ public class EntityGenTest extends TestCase
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
     String out = (String) structClass.getMethod("getStructCharacter").invoke(struct);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetStructEnumerationDTO() throws Exception
   {
     String input = "This is myself.";
@@ -3930,11 +4121,13 @@ public class EntityGenTest extends TestCase
     String out = (String) head.name();
     String structChar = (String) structClass.getMethod("getStructCharacter").invoke(struct);
 
-    assertEquals(input, structChar);
-    assertEquals(1, enums.size());
-    assertEquals(heartName, out);
+    Assert.assertEquals(input, structChar);
+    Assert.assertEquals(1, enums.size());
+    Assert.assertEquals(heartName, out);
   }
 
+  @Request
+  @Test
   public void testGetSymmetricDTO() throws Exception
   {
     String in = "You'll find that they're quite stationary";
@@ -3948,10 +4141,13 @@ public class EntityGenTest extends TestCase
 
     String out = (String) collectionClass.getMethod("getASym").invoke(object);
 
-    assertEquals("", out); // the return value should be empty for a DTO (for
+    Assert.assertEquals("", out); // the return value should be empty for a DTO
+                                  // (for
     // security)
   }
 
+  @Request
+  @Test
   public void testGetTextDTO() throws Exception
   {
     String in = "Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
@@ -3964,9 +4160,11 @@ public class EntityGenTest extends TestCase
     Object object = get.invoke(null, clientRequestIF, id);
     String out = (String) collectionClass.getMethod("getAText").invoke(object);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetClobDTO() throws Exception
   {
     String in = "CLOB: Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
@@ -3979,9 +4177,11 @@ public class EntityGenTest extends TestCase
     Object object = get.invoke(null, clientRequestIF, id);
     String out = (String) collectionClass.getMethod("getAClob").invoke(object);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetTimeDTO() throws Exception
   {
     Date in = new Date(System.currentTimeMillis());
@@ -3996,9 +4196,11 @@ public class EntityGenTest extends TestCase
     Object object = get.invoke(null, clientRequestIF, id);
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
-    assertEquals(sdf.format(in), sdf.format(out));
+    Assert.assertEquals(sdf.format(in), sdf.format(out));
   }
 
+  @Request
+  @Test
   public void testGetTimeNullDTO() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -4011,13 +4213,13 @@ public class EntityGenTest extends TestCase
 
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
-    assertNull(out);
+    Assert.assertNull(out);
   }
 
   // TODO this test is obsolete since it checks the value of a hash via a DTO.
   // However,
   // DTO hash values are empty for security reasons.
-  // public void testHashEqualsDTO() throws Exception
+  // @Request @Test public void testHashEqualsDTO() throws Exception
   // {
   // String in = "For breakfast, I had some Pringles, and some fudge-striped
   // cook-ays";
@@ -4034,9 +4236,11 @@ public class EntityGenTest extends TestCase
   // String hash = businessDAO.getValue("aHash");
   // String out = (String) collectionClass.getMethod("getAHash").invoke(object);
   //
-  // assertEquals(hash, out);
+  // Assert.assertEquals(hash, out);
   // }
 
+  @Request
+  @Test
   public void testIsReadableDTO() throws Exception
   {
     Date in = new Date(System.currentTimeMillis());
@@ -4051,9 +4255,11 @@ public class EntityGenTest extends TestCase
     Object object = get.invoke(null, clientRequestIF, id);
     boolean out = (Boolean) collectionClass.getMethod("isATimeReadable").invoke(object);
 
-    assertTrue(out);
+    Assert.assertTrue(out);
   }
 
+  @Request
+  @Test
   public void testIsWritableDTO() throws Exception
   {
     Date in = new Date(System.currentTimeMillis());
@@ -4068,9 +4274,11 @@ public class EntityGenTest extends TestCase
     Object object = get.invoke(null, clientRequestIF, id);
     boolean out = (Boolean) collectionClass.getMethod("isATimeWritable").invoke(object);
 
-    assertTrue(out);
+    Assert.assertTrue(out);
   }
 
+  @Request
+  @Test
   public void testRemoveEnumDTO() throws Exception
   {
     String in = heartsId;
@@ -4097,9 +4305,11 @@ public class EntityGenTest extends TestCase
     businessDAO = BusinessDAO.get(id).getBusinessDAO();
     Set<String> out = ( (AttributeEnumerationIF) businessDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
 
-    assertEquals(0, out.size());
+    Assert.assertEquals(0, out.size());
   }
 
+  @Request
+  @Test
   public void testRemoveAllChildrenDTO() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -4120,9 +4330,11 @@ public class EntityGenTest extends TestCase
 
     List<RelationshipDAOIF> list = BusinessDAO.get(mom.getId()).getChildren(mdRelationship.definesType());
 
-    assertEquals(0, list.size());
+    Assert.assertEquals(0, list.size());
   }
 
+  @Request
+  @Test
   public void testRemoveAllParentsDTO() throws Exception
   {
     Class<?> referenceClass = LoaderDecorator.load(reference.definesType() + TypeGeneratorInfo.DTO_SUFFIX);
@@ -4137,7 +4349,7 @@ public class EntityGenTest extends TestCase
     RelationshipDAO.newInstance(dad.getId(), kid.getId(), mdRelationship.definesType()).apply();
 
     List<RelationshipDAOIF> list = BusinessDAO.get(kid.getId()).getParents(mdRelationship.definesType());
-    assertEquals(2, list.size());
+    Assert.assertEquals(2, list.size());
 
     Method get = referenceClass.getMethod("get", ClientRequestIF.class, String.class);
     Object businessKid = get.invoke(null, clientRequestIF, kid.getId());
@@ -4145,9 +4357,11 @@ public class EntityGenTest extends TestCase
     referenceClass.getMethod("removeAllRelParent").invoke(businessKid);
 
     list = BusinessDAO.get(kid.getId()).getParents(mdRelationship.definesType());
-    assertEquals(0, list.size());
+    Assert.assertEquals(0, list.size());
   }
 
+  @Request
+  @Test
   public void testSetBlobDTO() throws Exception
   {
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
@@ -4163,12 +4377,14 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     byte[] out = businessDAO.getBlob("aBlob");
 
-    assertEquals(in.length, out.length);
+    Assert.assertEquals(in.length, out.length);
 
     for (int i = 0; i < in.length; i++)
-      assertEquals(in[i], out[i]);
+      Assert.assertEquals(in[i], out[i]);
   }
 
+  @Request
+  @Test
   public void testSetBooleanDTO() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -4183,9 +4399,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     boolean out = Boolean.parseBoolean(businessDAO.getValue("aBoolean"));
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetCharacterDTO() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -4200,9 +4418,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     String out = businessDAO.getValue("aCharacter");
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetDateDTO() throws Exception
   {
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
@@ -4219,9 +4439,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     Date out = sdf.parse(businessDAO.getValue("aDate"));
 
-    assertEquals(sdf.format(in), sdf.format(out));
+    Assert.assertEquals(sdf.format(in), sdf.format(out));
   }
 
+  @Request
+  @Test
   public void testSetDateTimeDTO() throws Exception
   {
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_FORMAT);
@@ -4238,9 +4460,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     Date out = sdf.parse(businessDAO.getValue("aDateTime"));
 
-    assertEquals(sdf.format(in), sdf.format(out));
+    Assert.assertEquals(sdf.format(in), sdf.format(out));
   }
 
+  @Request
+  @Test
   public void testSetDecimalDTO() throws Exception
   {
     BigDecimal in = new BigDecimal(123456.789);
@@ -4258,9 +4482,11 @@ public class EntityGenTest extends TestCase
     BigDecimal out = new BigDecimal(businessDAO.getValue("aDecimal"));
 
     if (in.subtract(out).abs().doubleValue() > .0000001)
-      fail("Stored and Retrieved Decimals have different values.");
+      Assert.fail("Stored and Retrieved Decimals have different values.");
   }
 
+  @Request
+  @Test
   public void testSetDoubleDTO() throws Exception
   {
     double in = 123456.789;
@@ -4276,9 +4502,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     double out = Double.parseDouble(businessDAO.getValue("aDouble"));
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetFloatDTO() throws Exception
   {
     float in = 123456.789F;
@@ -4294,9 +4522,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     float out = Float.parseFloat(businessDAO.getValue("aFloat"));
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetHashDTO() throws Exception
   {
     String in = "When you win, say nothing. When you lose, say less.";
@@ -4316,9 +4546,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     String out = businessDAO.getValue("aHash");
 
-    assertEquals(hash, out);
+    Assert.assertEquals(hash, out);
   }
 
+  @Request
+  @Test
   public void testSetIntegerDTO() throws Exception
   {
     int in = 1234;
@@ -4334,9 +4566,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     int out = Integer.parseInt(businessDAO.getValue("anInteger"));
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetLongDTO() throws Exception
   {
     long in = 123456789;
@@ -4352,9 +4586,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     long out = Long.parseLong(businessDAO.getValue("aLong"));
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetLocalCharacterDTO() throws Exception
   {
     String in = Long.toString(123456789L);
@@ -4371,9 +4607,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     String out = businessDAO.getStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetDefaultLocalCharacterDTO() throws Exception
   {
     String in = Long.toString(123456789L);
@@ -4390,9 +4628,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     String out = businessDAO.getStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetDefaultLocalCharacterDTO() throws Exception
   {
     String in = Long.toString(987654321L);
@@ -4408,9 +4648,11 @@ public class EntityGenTest extends TestCase
     StructDTO struct = (StructDTO) collectionClass.getMethod("getALocalCharacter").invoke(object);
     String out = struct.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetLocalCharacterDTO() throws Exception
   {
     String in = Long.toString(987654321L);
@@ -4426,9 +4668,11 @@ public class EntityGenTest extends TestCase
     LocalStructDTO localStructDTO = (LocalStructDTO) collectionClass.getMethod("getALocalCharacter").invoke(object);
     String out = localStructDTO.getValue();
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetDefaultLocalTextDTO() throws Exception
   {
     String in = Long.toString(123456789L);
@@ -4445,9 +4689,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     String out = businessDAO.getStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetLocalTextDTO() throws Exception
   {
     String in = Long.toString(123456789L);
@@ -4464,9 +4710,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     String out = businessDAO.getStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetLocalTextDTO() throws Exception
   {
     String in = Long.toString(987654321L);
@@ -4482,9 +4730,11 @@ public class EntityGenTest extends TestCase
     LocalStructDTO localStruct = (LocalStructDTO) collectionClass.getMethod("getALocalText").invoke(object);
     String out = localStruct.getValue();
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testGetDefaultLocalTextDTO() throws Exception
   {
     String in = Long.toString(987654321L);
@@ -4500,9 +4750,11 @@ public class EntityGenTest extends TestCase
     LocalStructDTO localStruct = (LocalStructDTO) collectionClass.getMethod("getALocalText").invoke(object);
     String out = localStruct.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE);
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetReferenceDTO() throws Exception
   {
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -4523,9 +4775,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     BusinessDAOIF out = ( (AttributeReferenceIF) businessDAO.getAttributeIF("aReference") ).dereference();
 
-    assertEquals(ref.getId(), out.getId());
+    Assert.assertEquals(ref.getId(), out.getId());
   }
 
+  @Request
+  @Test
   public void testSetStructBusiness()
   {
     String in = MdAttributeBooleanInfo.TRUE;
@@ -4538,9 +4792,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(object.getId());
     String out = businessDAO.getStructValue("aStruct", "structBoolean");
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetStructDTO()
   {
     String in = MdAttributeBooleanInfo.TRUE;
@@ -4550,19 +4806,21 @@ public class EntityGenTest extends TestCase
     ComponentDTOFacade.getAttributeStructDTO(object, "aStruct").setValue("structBoolean", in);
 
     AttributeStructDTO struct = ComponentDTOFacade.getAttributeStructDTO(object, "aStruct");
-    assertEquals(in, struct.getValue("structBoolean"));
+    Assert.assertEquals(in, struct.getValue("structBoolean"));
 
     clientRequestIF.createBusiness(object);
 
     BusinessDAOIF businessDAO = BusinessDAO.get(object.getId());
     String out = businessDAO.getStructValue("aStruct", "structBoolean");
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
   /**
    * Test creating a StructDAO by itself through the DTO layer
    */
+  @Request
+  @Test
   public void testSetStandaloneDTO() throws Exception
   {
     boolean bIn = true;
@@ -4600,11 +4858,11 @@ public class EntityGenTest extends TestCase
       enumNames.add(business.getValue("enumName"));
     }
 
-    assertEquals(bIn, bOut);
-    assertEquals(cIn, cOut);
-    assertEquals(2, enums.length);
-    assertTrue(enumNames.contains(heartName));
-    assertTrue(enumNames.contains(clubName));
+    Assert.assertEquals(bIn, bOut);
+    Assert.assertEquals(cIn, cOut);
+    Assert.assertEquals(2, enums.length);
+    Assert.assertTrue(enumNames.contains(heartName));
+    Assert.assertTrue(enumNames.contains(clubName));
   }
 
   /**
@@ -4617,6 +4875,8 @@ public class EntityGenTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testGenericSetStandaloneDTO() throws Exception
   {
     boolean bIn = true;
@@ -4647,12 +4907,14 @@ public class EntityGenTest extends TestCase
       enumNames.add(business.getValue("enumName"));
     }
 
-    assertEquals(bIn, bOut);
-    assertEquals(cIn, cOut);
-    assertEquals(1, enums.length);
-    assertTrue(enumNames.contains(heartName));
+    Assert.assertEquals(bIn, bOut);
+    Assert.assertEquals(cIn, cOut);
+    Assert.assertEquals(1, enums.length);
+    Assert.assertTrue(enumNames.contains(heartName));
   }
 
+  @Request
+  @Test
   public void testSetStructBooleanDTO() throws Exception
   {
     boolean in = true;
@@ -4674,9 +4936,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     boolean out = Boolean.parseBoolean(businessDAO.getStructValue("aStruct", "structBoolean"));
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetStructCharacterDTO() throws Exception
   {
     String in = "Dwight Schrute";
@@ -4698,9 +4962,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     String out = businessDAO.getStructValue("aStruct", "structCharacter");
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetStructEnumerationDTO() throws Exception
   {
     String suitDTO = suitEnum.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -4735,11 +5001,13 @@ public class EntityGenTest extends TestCase
       enumNames.add(business.getValue("enumName"));
     }
 
-    assertEquals(2, enums.length);
-    assertTrue(enumNames.contains(heartName));
-    assertTrue(enumNames.contains(clubName));
+    Assert.assertEquals(2, enums.length);
+    Assert.assertTrue(enumNames.contains(heartName));
+    Assert.assertTrue(enumNames.contains(clubName));
   }
 
+  @Request
+  @Test
   public void testSetSymmetricDTO() throws Exception
   {
     String in = "My rims never spin - to the contrary";
@@ -4755,9 +5023,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     String out = businessDAO.getValue("aSym");
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetTextDTO() throws Exception
   {
     String in = "But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.";
@@ -4773,9 +5043,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     String out = businessDAO.getValue("aText");
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetClobDTO() throws Exception
   {
     String in = "CLOB: But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.";
@@ -4791,9 +5063,11 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     String out = businessDAO.getValue("aClob");
 
-    assertEquals(in, out);
+    Assert.assertEquals(in, out);
   }
 
+  @Request
+  @Test
   public void testSetTimeDTO() throws Exception
   {
     Date in = new Date(System.currentTimeMillis());
@@ -4810,18 +5084,22 @@ public class EntityGenTest extends TestCase
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     Date out = sdf.parse(businessDAO.getValue("aTime"));
 
-    assertEquals(sdf.format(in), sdf.format(out));
+    Assert.assertEquals(sdf.format(in), sdf.format(out));
   }
 
+  @Request
+  @Test
   public void testGetState() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
     Business object = (Business) collectionClass.getConstructor().newInstance();
     object.apply();
 
-    assertEquals("Preparing", object.getState());
+    Assert.assertEquals("Preparing", object.getState());
   }
 
+  @Request
+  @Test
   public void testGetStateDTO() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -4830,9 +5108,11 @@ public class EntityGenTest extends TestCase
 
     createDTO.invoke(object);
 
-    assertEquals("Preparing", object.getState());
+    Assert.assertEquals("Preparing", object.getState());
   }
 
+  @Request
+  @Test
   public void testTransition() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -4842,9 +5122,11 @@ public class EntityGenTest extends TestCase
     collectionClass.getMethod("setup").invoke(object);
     collectionClass.getMethod("teardown").invoke(object);
 
-    assertEquals("Finished", object.getState());
+    Assert.assertEquals("Finished", object.getState());
   }
 
+  @Request
+  @Test
   public void testNewTransition() throws Exception
   {
     TransitionDAO newTransition = mdState.addTransition("BackAgain", state3.getId(), state1.getId());
@@ -4860,7 +5142,7 @@ public class EntityGenTest extends TestCase
       collectionClass.getMethod("teardown").invoke(object);
       collectionClass.getMethod("backAgain").invoke(object);
 
-      assertEquals("Preparing", object.getState());
+      Assert.assertEquals("Preparing", object.getState());
     }
     finally
     {
@@ -4871,7 +5153,7 @@ public class EntityGenTest extends TestCase
     {
       collectionClass = LoaderDecorator.load(collectionType);
       collectionClass.getMethod("backAgain").invoke(object);
-      fail("A transition was deleted yet the source code for the owning class was not properly regenerated.");
+      Assert.fail("A transition was deleted yet the source code for the owning class was not properly regenerated.");
     }
     catch (NoSuchMethodException ex)
     {
@@ -4879,6 +5161,8 @@ public class EntityGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTransitionDTO() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -4895,9 +5179,11 @@ public class EntityGenTest extends TestCase
     // Lock the BusinessDTO
     collectionClass.getMethod("unlock").invoke(object);
 
-    assertEquals("Collecting", object.getState());
+    Assert.assertEquals("Collecting", object.getState());
   }
 
+  @Request
+  @Test
   public void testStaticTransitionDTO() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -4915,9 +5201,11 @@ public class EntityGenTest extends TestCase
     // unLock the BusinessDTO
     collectionClass.getMethod("unlock", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, id);
 
-    assertEquals("Collecting", output.getState());
+    Assert.assertEquals("Collecting", output.getState());
   }
 
+  @Request
+  @Test
   public void testAddRemoveEnumerationDTO() throws Exception
   {
     // Create the existing BusinessDAO
@@ -4940,10 +5228,12 @@ public class EntityGenTest extends TestCase
     StructDAO structDAO = ( (AttributeStructIF) obj.getAttributeIF("aStruct") ).getStructDAO();
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttribute("structEnumeration") ).dereference();
 
-    assertEquals(1, enums.length);
-    assertEquals(clubsId, enums[0].getId());
+    Assert.assertEquals(1, enums.length);
+    Assert.assertEquals(clubsId, enums[0].getId());
   }
 
+  @Request
+  @Test
   public void testUpdateDTO() throws Exception
   {
     long longIn = 142;
@@ -4990,10 +5280,10 @@ public class EntityGenTest extends TestCase
     String outBoolean = obj.getStructValue("aStruct", "structBoolean");
     String outLong = obj.getValue("aLong");
 
-    assertEquals(1, enums.length);
-    assertEquals(clubsId, enums[0].getId());
-    assertEquals(Long.toString(longIn), outLong);
-    assertEquals(Boolean.toString(booleanIn), outBoolean);
+    Assert.assertEquals(1, enums.length);
+    Assert.assertEquals(clubsId, enums[0].getId());
+    Assert.assertEquals(Long.toString(longIn), outLong);
+    Assert.assertEquals(Boolean.toString(booleanIn), outBoolean);
 
   }
 
@@ -5007,6 +5297,8 @@ public class EntityGenTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testGenericUpdateDTO() throws Exception
   {
     long longIn = 142;
@@ -5046,10 +5338,10 @@ public class EntityGenTest extends TestCase
     String outBoolean = obj.getStructValue("aStruct", "structBoolean");
     String outLong = obj.getValue("aLong");
 
-    assertEquals(1, enums.length);
-    assertEquals(clubsId, enums[0].getId());
-    assertEquals(Long.toString(longIn), outLong);
-    assertEquals(Boolean.toString(booleanIn), outBoolean);
+    Assert.assertEquals(1, enums.length);
+    Assert.assertEquals(clubsId, enums[0].getId());
+    Assert.assertEquals(Long.toString(longIn), outLong);
+    Assert.assertEquals(Boolean.toString(booleanIn), outBoolean);
   }
 
   /**
@@ -5063,13 +5355,15 @@ public class EntityGenTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testDeletedClassStillReferenced() throws Exception
   {
     String originalCollectionStubSource = new String();
     originalCollectionStubSource = collection.getValue(MdClassInfo.STUB_SOURCE);
 
     // Build the new source for Collection.java
-    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX  + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
+    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
 
     // Write the new stub, and compile tom ake sure it's valid
     MdBusinessDAO updateCollection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
@@ -5084,7 +5378,7 @@ public class EntityGenTest extends TestCase
 
       // If we get to here, the exception didn't get thrown.
       GenerationManager.generate(collection);
-      fail("Class " + car.definesType() + " was deleted even though it is referenced in business code.");
+      Assert.fail("Class " + car.definesType() + " was deleted even though it is referenced in business code.");
     }
     catch (CompilerException e)
     {
@@ -5108,10 +5402,12 @@ public class EntityGenTest extends TestCase
   /**
    * Overwrites the source in Collection.java to add some references to
    * test.generated.Car, and then attempts to delete Car. This tests the
-   * compiler, ensuring that it finds the dependency. 
+   * compiler, ensuring that it finds the dependency.
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testDeletedAttributeStillReferenced() throws Exception
   {
     // Add a new 'Top Speed' attribute to car
@@ -5143,7 +5439,7 @@ public class EntityGenTest extends TestCase
     String originalCollectionStubSource = collection.getValue(MdClassInfo.STUB_SOURCE);
 
     // Build the new source for Collection.java
-    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX  + "\n" + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "    car.setTopSpeed(120);\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
+    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "    car.setTopSpeed(120);\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
 
     // Write the new stub, and compile to make sure it's valid
     MdBusinessDAO updateCollection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
@@ -5158,7 +5454,7 @@ public class EntityGenTest extends TestCase
 
       // If we get to here, the exception didn't get thrown.
       GenerationManager.generate(collection);
-      fail("Class " + car.definesType() + " was deleted even though it is referenced in business code.");
+      Assert.fail("Class " + car.definesType() + " was deleted even though it is referenced in business code.");
     }
     catch (CompilerException e)
     {
@@ -5180,7 +5476,7 @@ public class EntityGenTest extends TestCase
 
     // The critical test is to see if the source/class for Car got rolled back
     // to a safe state - namely one that still has setTopSpeed(int)
-    //LoaderDecorator.reload();
+    // LoaderDecorator.reload();
 
     car = (MdBusinessDAO) MdTypeDAO.getMdTypeDAO("test.generated.Car");
     Class<?> carClass = LoaderDecorator.load(car.definesType());
@@ -5203,23 +5499,27 @@ public class EntityGenTest extends TestCase
     TestFixtureFactory.delete(topSpeed);
   }
 
+  @Request
+  @Test
   public void testTypeMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     // test on a new instance
-    assertEquals(collection.getDisplayLabel(CommonProperties.getDefaultLocale()), object.getMd().getDisplayLabel());
-    assertEquals(collection.getDescription(CommonProperties.getDefaultLocale()), object.getMd().getDescription());
+    Assert.assertEquals(collection.getDisplayLabel(CommonProperties.getDefaultLocale()), object.getMd().getDisplayLabel());
+    Assert.assertEquals(collection.getDescription(CommonProperties.getDefaultLocale()), object.getMd().getDescription());
 
     // test on an applied instance (to make sure the proxies persisted the
     // metadata)
     collectionClass.getMethod("apply").invoke(object);
-    assertEquals(collection.getDisplayLabel(CommonProperties.getDefaultLocale()), object.getMd().getDisplayLabel());
-    assertEquals(collection.getDescription(CommonProperties.getDefaultLocale()), object.getMd().getDescription());
-    assertEquals(collection.getId(), object.getMd().getId());
+    Assert.assertEquals(collection.getDisplayLabel(CommonProperties.getDefaultLocale()), object.getMd().getDisplayLabel());
+    Assert.assertEquals(collection.getDescription(CommonProperties.getDefaultLocale()), object.getMd().getDescription());
+    Assert.assertEquals(collection.getId(), object.getMd().getId());
   }
 
+  @Request
+  @Test
   public void testBlobMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5230,6 +5530,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionBlob, mdDTO);
   }
 
+  @Request
+  @Test
   public void testDateTimeMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5240,6 +5542,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionDateTime, mdDTO);
   }
 
+  @Request
+  @Test
   public void testDateMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5250,6 +5554,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionDate, mdDTO);
   }
 
+  @Request
+  @Test
   public void testTimeMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5260,6 +5566,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionTime, mdDTO);
   }
 
+  @Request
+  @Test
   public void testBooleanMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5270,6 +5578,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionBoolean, mdDTO);
   }
 
+  @Request
+  @Test
   public void testReferenceMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5279,9 +5589,11 @@ public class EntityGenTest extends TestCase
 
     checkAttributeMd(collectionReference, mdDTO);
 
-    assertEquals(collectionReference.isSystem(), mdDTO.isSystem());
+    Assert.assertEquals(collectionReference.isSystem(), mdDTO.isSystem());
   }
 
+  @Request
+  @Test
   public void testTermMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5291,10 +5603,12 @@ public class EntityGenTest extends TestCase
 
     checkAttributeMd(collectionTerm, mdDTO);
 
-    assertEquals(collectionTerm.isSystem(), mdDTO.isSystem());
-    assertTrue(mdDTO instanceof AttributeTermMdDTO);
+    Assert.assertEquals(collectionTerm.isSystem(), mdDTO.isSystem());
+    Assert.assertTrue(mdDTO instanceof AttributeTermMdDTO);
   }
 
+  @Request
+  @Test
   public void testIntegerMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5303,9 +5617,11 @@ public class EntityGenTest extends TestCase
     AttributeNumberMdDTO mdDTO = (AttributeNumberMdDTO) collectionClass.getMethod("getAnIntegerMd").invoke(object);
 
     checkAttributeMd(collectionInteger, mdDTO);
-    assertEquals(Boolean.parseBoolean(collectionInteger.isPositiveRejected()), mdDTO.rejectPositive());
+    Assert.assertEquals(Boolean.parseBoolean(collectionInteger.isPositiveRejected()), mdDTO.rejectPositive());
   }
 
+  @Request
+  @Test
   public void testLongMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5316,6 +5632,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionLong, mdDTO);
   }
 
+  @Request
+  @Test
   public void testCharacterMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5324,9 +5642,11 @@ public class EntityGenTest extends TestCase
     AttributeCharacterMdDTO mdDTO = (AttributeCharacterMdDTO) collectionClass.getMethod("getACharacterMd").invoke(object);
 
     checkAttributeMd(collectionCharacter, mdDTO);
-    assertEquals(Integer.parseInt(collectionCharacter.getSize()), mdDTO.getSize());
+    Assert.assertEquals(Integer.parseInt(collectionCharacter.getSize()), mdDTO.getSize());
   }
 
+  @Request
+  @Test
   public void testStructMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5335,9 +5655,11 @@ public class EntityGenTest extends TestCase
     AttributeStructMdDTO mdDTO = (AttributeStructMdDTO) collectionClass.getMethod("getAStructMd").invoke(object);
 
     checkAttributeMd(collectionStruct, mdDTO);
-    assertEquals(collectionStruct.getMdStructDAOIF().definesType(), mdDTO.getDefiningMdStruct());
+    Assert.assertEquals(collectionStruct.getMdStructDAOIF().definesType(), mdDTO.getDefiningMdStruct());
   }
 
+  @Request
+  @Test
   public void testDecimalMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5348,6 +5670,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionDecimal, mdDTO);
   }
 
+  @Request
+  @Test
   public void testDoubleMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5358,6 +5682,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionDouble, mdDTO);
   }
 
+  @Request
+  @Test
   public void testFloatMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5368,6 +5694,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionFloat, mdDTO);
   }
 
+  @Request
+  @Test
   public void testEnumerationMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5376,9 +5704,11 @@ public class EntityGenTest extends TestCase
     AttributeEnumerationMdDTO mdDTO = (AttributeEnumerationMdDTO) collectionClass.getMethod("getAnEnumMd").invoke(object);
 
     checkAttributeMd(collectionEnumeration, mdDTO);
-    assertEquals(collectionEnumeration.selectMultiple(), mdDTO.selectMultiple());
+    Assert.assertEquals(collectionEnumeration.selectMultiple(), mdDTO.selectMultiple());
   }
 
+  @Request
+  @Test
   public void testTextMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5389,6 +5719,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionText, mdDTO);
   }
 
+  @Request
+  @Test
   public void testClobMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5399,6 +5731,8 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionClob, mdDTO);
   }
 
+  @Request
+  @Test
   public void testHashMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5407,9 +5741,11 @@ public class EntityGenTest extends TestCase
     AttributeEncryptionMdDTO mdDTO = (AttributeEncryptionMdDTO) collectionClass.getMethod("getAHashMd").invoke(object);
 
     checkAttributeMd(collectionHash, mdDTO);
-    assertEquals(collectionHash.getEncryptionMethod(), mdDTO.getEncryptionMethod());
+    Assert.assertEquals(collectionHash.getEncryptionMethod(), mdDTO.getEncryptionMethod());
   }
 
+  @Request
+  @Test
   public void testSymmetricMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5418,9 +5754,11 @@ public class EntityGenTest extends TestCase
     AttributeEncryptionMdDTO mdDTO = (AttributeEncryptionMdDTO) collectionClass.getMethod("getASymMd").invoke(object);
 
     checkAttributeMd(collectionSymmetric, mdDTO);
-    assertEquals(collectionSymmetric.getEncryptionMethod(), mdDTO.getEncryptionMethod());
+    Assert.assertEquals(collectionSymmetric.getEncryptionMethod(), mdDTO.getEncryptionMethod());
   }
 
+  @Request
+  @Test
   public void testStructCharacterMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5431,9 +5769,11 @@ public class EntityGenTest extends TestCase
     AttributeCharacterMdDTO mdDTO = (AttributeCharacterMdDTO) structClass.getMethod("getStructCharacterMd").invoke(structDTO);
 
     checkAttributeMd(structCharacter, mdDTO);
-    assertEquals(Integer.parseInt(structCharacter.getSize()), mdDTO.getSize());
+    Assert.assertEquals(Integer.parseInt(structCharacter.getSize()), mdDTO.getSize());
   }
 
+  @Request
+  @Test
   public void testFileMetadata() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
@@ -5454,22 +5794,22 @@ public class EntityGenTest extends TestCase
    */
   private void checkAttributeMd(MdAttributeConcreteDAOIF mdAttribute, AttributeMdDTO mdDTO)
   {
-    assertEquals(mdAttribute.getDisplayLabel(CommonProperties.getDefaultLocale()), mdDTO.getDisplayLabel());
-    assertEquals(mdAttribute.getDescription(CommonProperties.getDefaultLocale()), mdDTO.getDescription());
-    assertEquals(mdAttribute.isImmutable(), mdDTO.isImmutable());
-    assertEquals(mdAttribute.isRequired(), mdDTO.isRequired());
-    assertEquals(mdAttribute.getId(), mdDTO.getId());
-    assertEquals(mdAttribute.isSystem(), mdDTO.isSystem());
-    assertEquals(mdAttribute.definesAttribute(), mdDTO.getName());
+    Assert.assertEquals(mdAttribute.getDisplayLabel(CommonProperties.getDefaultLocale()), mdDTO.getDisplayLabel());
+    Assert.assertEquals(mdAttribute.getDescription(CommonProperties.getDefaultLocale()), mdDTO.getDescription());
+    Assert.assertEquals(mdAttribute.isImmutable(), mdDTO.isImmutable());
+    Assert.assertEquals(mdAttribute.isRequired(), mdDTO.isRequired());
+    Assert.assertEquals(mdAttribute.getId(), mdDTO.getId());
+    Assert.assertEquals(mdAttribute.isSystem(), mdDTO.isSystem());
+    Assert.assertEquals(mdAttribute.definesAttribute(), mdDTO.getName());
 
     if (mdDTO instanceof AttributeNumberMdDTO)
     {
       AttributeNumberMdDTO numberMdDTO = (AttributeNumberMdDTO) mdDTO;
       MdAttributeNumberDAOIF mdAttributeNumber = (MdAttributeNumberDAOIF) mdAttribute;
 
-      assertEquals(Boolean.parseBoolean(mdAttributeNumber.isZeroRejected()), numberMdDTO.rejectZero());
-      assertEquals(Boolean.parseBoolean(mdAttributeNumber.isNegativeRejected()), numberMdDTO.rejectNegative());
-      assertEquals(Boolean.parseBoolean(mdAttributeNumber.isPositiveRejected()), numberMdDTO.rejectPositive());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttributeNumber.isZeroRejected()), numberMdDTO.rejectZero());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttributeNumber.isNegativeRejected()), numberMdDTO.rejectNegative());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttributeNumber.isPositiveRejected()), numberMdDTO.rejectPositive());
     }
 
     if (mdDTO instanceof AttributeDecMdDTO)
@@ -5477,8 +5817,8 @@ public class EntityGenTest extends TestCase
       AttributeDecMdDTO decMdDTO = (AttributeDecMdDTO) mdDTO;
       MdAttributeDecDAOIF mdAttributeDec = (MdAttributeDecDAOIF) mdAttribute;
 
-      assertEquals(Integer.parseInt(mdAttributeDec.getLength()), decMdDTO.getTotalLength());
-      assertEquals(Integer.parseInt(mdAttributeDec.getDecimal()), decMdDTO.getDecimalLength());
+      Assert.assertEquals(Integer.parseInt(mdAttributeDec.getLength()), decMdDTO.getTotalLength());
+      Assert.assertEquals(Integer.parseInt(mdAttributeDec.getDecimal()), decMdDTO.getDecimalLength());
     }
   }
 }

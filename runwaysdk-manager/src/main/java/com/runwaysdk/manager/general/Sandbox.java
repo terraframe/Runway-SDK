@@ -85,7 +85,7 @@ public class Sandbox
 //      TransactionThread testThread = new TransactionThread(state)
 //      {
 //        @Override
-//         public void test()
+//         @Request @Test public void test()
 //        {
 //          Thread thread = RequestState.getCurrentRequestState().getMainThread();
 //          System.out.println(thread.getName());

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -27,11 +27,13 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
-import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.constants.ClientRequestIF;
@@ -48,17 +50,15 @@ import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.UserInfo;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.conversion.json.JSONReturnObject;
 import com.runwaysdk.transport.metadata.AttributeMultiReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMultiTermMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.web.json.JSONController;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
 
-public class JSONConversionTest extends TestCase implements DoNotWeave
+public class JSONConversionTest implements DoNotWeave
 {
   protected static String          pack                         = "com.test.controller";
 
@@ -88,29 +88,6 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
 
   protected static String          termType                     = null;
 
-  public static Test suite()
-  {
-    TestSuiteTF suite = new TestSuiteTF();
-    suite.addTestSuite(JSONConversionTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-        clientRequest = systemSession.getRequest();
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   protected ClientSession createAnonymousSession()
   {
     return ClientSession.createAnonymousSession("default", new Locale[] { CommonProperties.getDefaultLocale() });
@@ -126,7 +103,17 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     return clientSession.getRequest();
   }
 
+  @BeforeClass
   public static void classSetUp()
+  {
+    systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
+    
+    classSetUpRequest();
+  }
+  
+  @Request
+  public static void classSetUpRequest()
   {
     // create a new TestUser type with a phone number struct
     testUserMd = clientRequest.newBusiness(MdBusinessInfo.CLASS);
@@ -211,6 +198,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     return pack + "." + mdBusinessDTO.getValue(MdTypeInfo.NAME);
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     clientRequest.delete(parentMdBusiness.getId());
@@ -226,6 +215,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     systemSession.logout();
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReference() throws JSONException
   {
     String attributeName = "aMultiReference";
@@ -270,6 +261,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceBrowserResponse() throws JSONException
   {
     String attributeName = "aMultiReference";
@@ -334,6 +327,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testAttributeTerm() throws JSONException
   {
     String attributeName = "aTerm";
@@ -374,6 +369,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceGeneration() throws JSONException
   {
     String javascript = JSONController.importTypes(clientRequest.getSessionId(), new String[] { parentMdBusinessType });
@@ -384,6 +381,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     Assert.assertTrue(javascript.contains("addAMultiReference : function(item)"));
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTerm() throws JSONException
   {
     String attributeName = "aMultiTerm";
@@ -428,6 +427,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTermBrowserResponse() throws JSONException
   {
     String attributeName = "aMultiTerm";
@@ -492,6 +493,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTermGeneration() throws JSONException
   {
     String javascript = JSONController.importTypes(clientRequest.getSessionId(), new String[] { parentMdBusinessType });

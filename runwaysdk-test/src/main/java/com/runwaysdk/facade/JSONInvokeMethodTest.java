@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.facade;
 
@@ -26,6 +26,9 @@ import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
@@ -34,76 +37,44 @@ import com.runwaysdk.business.MethodMetaData;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.JSONClientRequestIF;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.ServerConstants;
-import com.runwaysdk.constants.TestConstants;
-import com.runwaysdk.dataaccess.io.XMLImporter;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.conversion.json.JSONReturnObject;
 import com.runwaysdk.transport.conversion.json.JSONUtil;
 import com.runwaysdk.util.DTOConversionUtilInfo;
 import com.runwaysdk.web.json.JSONJavaClientRequest;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotWeave
 {
   protected static volatile JSONClientRequestIF jsonProxy = null;
-  
-  protected static Locale locale = CommonProperties.getDefaultLocale();
 
-  /**
-   * Launch-point for the standalone textui JUnit tests in this class.
-   * 
-   * @param args
-   */
-  public static void main(String[] args)
+  protected static Locale                       locale    = CommonProperties.getDefaultLocale();
+
+  @BeforeClass
+  public static void classSetUp()
   {
-    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
+    jsonProxy = new JSONJavaClientRequest("default", "");
 
-    junit.textui.TestRunner.run(JSONInvokeMethodTest.suite());
-  }
+    systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(JSONInvokeMethodTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
+    try
     {
-      protected void setUp()
-      {
-        jsonProxy = new JSONJavaClientRequest("default", "");
-
-        systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-
-        try
-        {
-          clientRequest = systemSession.getRequest();
-          classSetUp();
-          noPermissionSession = ClientSession.createUserSession("smethie", "aaa", new Locale[] { CommonProperties.getDefaultLocale() });
-          noPermissionRequest = noPermissionSession.getRequest();
-          finalizeSetup();
-        }
-        catch (Exception e)
-        {
-          systemSession.logout();
-        }
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
+      clientRequest = systemSession.getRequest();
+      classSetUpRequest();
+      noPermissionSession = ClientSession.createUserSession("smethie", "aaa", new Locale[] { CommonProperties.getDefaultLocale() });
+      noPermissionRequest = noPermissionSession.getRequest();
+      finalizeSetup();
+    }
+    catch (Exception e)
+    {
+      systemSession.logout();
+    }
   }
 
+  @Request
+  @Test
   public void testInvokeEmptyMethod() throws Exception
   {
     Class<?> collectionClass = this.getClass().getClassLoader().loadClass(collectionDTO);
@@ -132,12 +103,14 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     BusinessDTO output = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, jsonObject.toString());
 
-    assertEquals(new Long(142), new Long(output.getValue("aLong"))); // should
+    Assert.assertEquals(new Long(142), new Long(output.getValue("aLong"))); // should
     // be the
     // same
     // value
   }
 
+  @Request
+  @Test
   public void testInvokeArrayMethod() throws Exception
   {
     String booleanInput = Boolean.toString(true);
@@ -176,13 +149,15 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     if (!output.getType().equals(object.getType()))
     {
-      fail("The invoked method [sortNumbers] did not return an object of the proper type");
+      Assert.fail("The invoked method [sortNumbers] did not return an object of the proper type");
     }
 
-    assertEquals(Boolean.parseBoolean(booleanInput), Boolean.parseBoolean(output.getValue("aBoolean")));
-    assertEquals(new Long(3), new Long(Long.parseLong(output.getValue("aLong"))));
+    Assert.assertEquals(Boolean.parseBoolean(booleanInput), Boolean.parseBoolean(output.getValue("aBoolean")));
+    Assert.assertEquals(new Long(3), new Long(Long.parseLong(output.getValue("aLong"))));
   }
 
+  @Request
+  @Test
   public void testInvokeDefinedAttributeMethod() throws Exception
   {
     String input = "164";
@@ -221,10 +196,12 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
     JSONArray jsonArray = returnObject.getJSONArray(JSONReturnObject.RETURN_VALUE);
     BusinessDTO returnDTO = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(clientRequest.getSessionId(), locale, jsonArray.getString(DTOConversionUtilInfo.JSON_CALLED_OBJECT));
 
-    assertEquals(JSONObject.NULL, jsonArray.get(DTOConversionUtilInfo.JSON_RETURN_OBJECT));
-    assertEquals(Long.parseLong(input), Long.parseLong(returnDTO.getValue("aLong")));
+    Assert.assertEquals(JSONObject.NULL, jsonArray.get(DTOConversionUtilInfo.JSON_RETURN_OBJECT));
+    Assert.assertEquals(Long.parseLong(input), Long.parseLong(returnDTO.getValue("aLong")));
   }
 
+  @Request
+  @Test
   public void testInvokeDefinedArrayMethod() throws Exception
   {
     String input = "Har har bar bar";
@@ -270,17 +247,19 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     JSONArray output = jsonArray.getJSONArray(DTOConversionUtilInfo.JSON_RETURN_OBJECT);
 
-    assertEquals(Array.getLength(array), output.length());
+    Assert.assertEquals(Array.getLength(array), output.length());
 
     for (int i = 0; i < output.length(); i++)
     {
       BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, output.getString(i));
 
-      assertEquals(input, dto.getValue("aCharacter"));
-      assertEquals(longInput, dto.getValue("aLong"));
+      Assert.assertEquals(input, dto.getValue("aCharacter"));
+      Assert.assertEquals(longInput, dto.getValue("aLong"));
     }
   }
 
+  @Request
+  @Test
   public void testInvokeEmptyArrayMethod() throws Exception
   {
     String input = "Har har de dar dar";
@@ -324,17 +303,19 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     JSONArray output = jsonArray.getJSONArray(DTOConversionUtilInfo.JSON_RETURN_OBJECT);
 
-    assertEquals(dtoArr.length, output.length());
+    Assert.assertEquals(dtoArr.length, output.length());
 
     for (int i = 0; i < output.length(); i++)
     {
       BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, output.getString(i));
 
-      assertEquals(input, dto.getValue("aCharacter"));
-      assertEquals(longInput, dto.getValue("aLong"));
+      Assert.assertEquals(input, dto.getValue("aCharacter"));
+      Assert.assertEquals(longInput, dto.getValue("aLong"));
     }
   }
 
+  @Request
+  @Test
   public void testInvokeMultiArrayMethod() throws Exception
   {
     // Create the existing BusinessDAO
@@ -387,15 +368,17 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     JSONArray multi = jsonArray.getJSONArray(DTOConversionUtilInfo.JSON_RETURN_OBJECT);
 
-    assertEquals(2, multi.length());
-    assertEquals(2, multi.getJSONArray(0).length());
-    assertEquals("Yo my nizzle", multi.getJSONArray(0).getString(0));
-    assertEquals("Leroy Im witha or against ya.", multi.getJSONArray(0).getString(1));
-    assertEquals(2, multi.getJSONArray(1).length());
-    assertEquals("[[[[L" + collectionType + ";", multi.getJSONArray(1).getString(0));
-    assertEquals("Collection[][][][]", multi.getJSONArray(1).getString(1));
+    Assert.assertEquals(2, multi.length());
+    Assert.assertEquals(2, multi.getJSONArray(0).length());
+    Assert.assertEquals("Yo my nizzle", multi.getJSONArray(0).getString(0));
+    Assert.assertEquals("Leroy Im witha or against ya.", multi.getJSONArray(0).getString(1));
+    Assert.assertEquals(2, multi.getJSONArray(1).length());
+    Assert.assertEquals("[[[[L" + collectionType + ";", multi.getJSONArray(1).getString(0));
+    Assert.assertEquals("Collection[][][][]", multi.getJSONArray(1).getString(1));
   }
 
+  @Request
+  @Test
   public void testInvokeMethodOnSubclass() throws Exception
   {
     String longInput = "278";
@@ -435,10 +418,12 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
     JSONArray jsonArray = returnObject.getJSONArray(JSONReturnObject.RETURN_VALUE);
     BusinessDTO returnDTO = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(clientRequest.getSessionId(), locale, jsonArray.getString(DTOConversionUtilInfo.JSON_CALLED_OBJECT));
 
-    assertEquals(JSONObject.NULL, jsonArray.get(DTOConversionUtilInfo.JSON_RETURN_OBJECT));
-    assertEquals(Long.parseLong(longInput) + 10L, Long.parseLong(returnDTO.getValue("aLong")));
+    Assert.assertEquals(JSONObject.NULL, jsonArray.get(DTOConversionUtilInfo.JSON_RETURN_OBJECT));
+    Assert.assertEquals(Long.parseLong(longInput) + 10L, Long.parseLong(returnDTO.getValue("aLong")));
   }
 
+  @Request
+  @Test
   public void testInvokeMethodOnSubArray() throws Exception
   {
     String longInput = "142";
@@ -484,14 +469,14 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     JSONArray output = jsonArray.getJSONArray(DTOConversionUtilInfo.JSON_RETURN_OBJECT);
 
-    assertEquals(Array.getLength(array), output.length());
+    Assert.assertEquals(Array.getLength(array), output.length());
 
     for (int i = 0; i < output.length(); i++)
     {
       BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, output.getString(i));
 
-      assertEquals(input, dto.getValue("aCharacter"));
-      assertEquals(longInput, dto.getValue("aLong"));
+      Assert.assertEquals(input, dto.getValue("aCharacter"));
+      Assert.assertEquals(longInput, dto.getValue("aLong"));
     }
   }
 }

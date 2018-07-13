@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -28,6 +28,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -39,57 +44,16 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class ValueQueryTest extends TestCase
+public class ValueQueryTest
 {
   private static List<String> testObjectIdList = new LinkedList<String>();
 
   private static List<String> objectList;
 
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new QueryMasterSetup(ValueQueryTest.suite(), QueryMasterSetup.parentQueryInfo.getType(), QueryMasterSetup.parentRefQueryInfo.getType()));
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ValueQueryTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     BusinessDAO testQueryObject1 = BusinessDAO.newInstance(QueryMasterSetup.childMdBusiness.definesType());
@@ -122,6 +86,8 @@ public class ValueQueryTest extends TestCase
     objectList = MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childQueryInfo.getType());
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     for (String id : testObjectIdList)
@@ -132,27 +98,10 @@ public class ValueQueryTest extends TestCase
   }
 
   /**
-   * No setup needed non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  protected void setUp() throws Exception
-  {
-
-  }
-
-  /**
-   * No teardown neaded
-   * 
-   * @see junit.framework.TestCase#tearDown()
-   */
-  protected void tearDown() throws Exception
-  {
-  }
-
-  /**
    * Testing windowing functions on EntityQueries.
    */
+  @Request
+  @Test
   public void testWindowFunctionEntityQuery() throws Exception
   {
     OIterator<ValueObject> i = null;
@@ -237,10 +186,10 @@ public class ValueQueryTest extends TestCase
           }
 
           String[] windowValues = stringAgg.split(",");
-          assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
+          Assert.assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
           for (String windowValue : windowValues)
           {
-            assertTrue("Window function did not return an expected value from the STRING_AGG function", reqSet.contains(windowValue.trim()));
+            Assert.assertTrue("Window function did not return an expected value from the STRING_AGG function", reqSet.contains(windowValue.trim()));
           }
         }
       }
@@ -261,6 +210,8 @@ public class ValueQueryTest extends TestCase
   /**
    * Testing windowing functions on ValueQueries.
    */
+  @Request
+  @Test
   public void testWindowFunctionValueQuery() throws Exception
   {
     OIterator<ValueObject> i = null;
@@ -349,10 +300,10 @@ public class ValueQueryTest extends TestCase
           }
 
           String[] windowValues = stringAgg.split(",");
-          assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
+          Assert.assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
           for (String windowValue : windowValues)
           {
-            assertTrue("Window function did not return an expected value from the STRING_AGG function", reqSet.contains(windowValue.trim()));
+            Assert.assertTrue("Window function did not return an expected value from the STRING_AGG function", reqSet.contains(windowValue.trim()));
           }
         }
       }
@@ -370,6 +321,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testUnion()
   {
     OIterator<ValueObject> i = null;
@@ -396,7 +349,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       int count = 0;
@@ -427,12 +380,12 @@ public class ValueQueryTest extends TestCase
 
       if (expected != count)
       {
-        fail("The value query union did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
+        Assert.fail("The value query union did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -444,8 +397,12 @@ public class ValueQueryTest extends TestCase
   }
 
   /**
-   * The UNION ALL operator does not exclude duplicate rows so we test this through the API by UNION ALL a table with itself and ensuring there's twice the rows of a normal UNION
+   * The UNION ALL operator does not exclude duplicate rows so we test this
+   * through the API by UNION ALL a table with itself and ensuring there's twice
+   * the rows of a normal UNION
    */
+  @Request
+  @Test
   public void testUnionAll()
   {
     try
@@ -484,15 +441,17 @@ public class ValueQueryTest extends TestCase
 
       if (expected != count)
       {
-        fail("The value query UNION ALL did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
+        Assert.fail("The value query UNION ALL did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinEqualSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -512,7 +471,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -523,13 +482,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("queryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -538,6 +497,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinEqualQuery()
   {
     OIterator<ValueObject> i = null;
@@ -557,7 +518,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -568,13 +529,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -583,6 +544,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinNotEqualSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -602,7 +565,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -613,13 +576,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (o.getValue("queryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -628,6 +591,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinNotEqualQuery()
   {
     OIterator<ValueObject> i = null;
@@ -647,7 +612,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -658,13 +623,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -673,6 +638,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinGreaterOrEqualSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -692,7 +659,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -703,13 +670,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (Integer.parseInt(o.getValue("queryInteger")) < 200)
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -718,6 +685,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinGreaterOrEqualQuery()
   {
     OIterator<ValueObject> i = null;
@@ -737,7 +706,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -748,13 +717,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -763,6 +732,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinGreaterThanSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -782,7 +753,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -793,13 +764,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (Integer.parseInt(o.getValue("queryInteger")) <= 200)
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -808,6 +779,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinGreaterThanQuery()
   {
     OIterator<ValueObject> i = null;
@@ -827,7 +800,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -838,13 +811,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -853,6 +826,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinLessOrEqualSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -872,7 +847,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -883,13 +858,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (Integer.parseInt(o.getValue("queryInteger")) > 200)
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -898,6 +873,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinLessOrEqualQuery()
   {
     OIterator<ValueObject> i = null;
@@ -917,7 +894,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -928,13 +905,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -943,6 +920,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinLessThanSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -962,7 +941,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -973,13 +952,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (Integer.parseInt(o.getValue("queryInteger")) >= 200)
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -988,6 +967,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinLessThanQuery()
   {
     OIterator<ValueObject> i = null;
@@ -1007,7 +988,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -1018,13 +999,13 @@ public class ValueQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1033,6 +1014,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanEqualBoolean()
   {
     OIterator<ValueObject> i = null;
@@ -1060,7 +1043,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertTrue(value);
+        Assert.assertTrue(value);
 
         count++;
       }
@@ -1075,7 +1058,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query for false values that should find exactly 2
       // matches
@@ -1093,7 +1076,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertFalse(value);
+        Assert.assertFalse(value);
 
         count++;
       }
@@ -1108,11 +1091,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1121,6 +1104,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -1145,7 +1130,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertTrue(value);
+        Assert.assertTrue(value);
 
         count++;
       }
@@ -1160,7 +1145,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query for false values that should find exactly 2
       // matches
@@ -1178,7 +1163,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertFalse(value);
+        Assert.assertFalse(value);
 
         count++;
       }
@@ -1193,11 +1178,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1206,6 +1191,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -1234,7 +1221,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryBoolean");
 
-        assertEquals("", value);
+        Assert.assertEquals("", value);
 
         count++;
       }
@@ -1249,7 +1236,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query to find all objects with non-null queryBoolean
       // values
@@ -1278,11 +1265,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1294,6 +1281,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanNotEqualBoolean()
   {
     OIterator<ValueObject> i = null;
@@ -1318,7 +1307,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertTrue(value);
+        Assert.assertTrue(value);
 
         count++;
       }
@@ -1333,7 +1322,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query for false values that should find exactly 2
       // matches
@@ -1351,7 +1340,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertFalse(value);
+        Assert.assertFalse(value);
 
         count++;
       }
@@ -1366,11 +1355,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1379,6 +1368,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanNotEqualString()
   {
     try
@@ -1401,7 +1392,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertTrue(value);
+        Assert.assertTrue(value);
 
         count++;
       }
@@ -1416,7 +1407,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query for false values that should find exactly 2
       // matches
@@ -1434,7 +1425,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertFalse(value);
+        Assert.assertFalse(value);
 
         count++;
       }
@@ -1449,17 +1440,20 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
-   * Tests whether two selectables can be created and queried for the same attribute on a type.
+   * Tests whether two selectables can be created and queried for the same
+   * attribute on a type.
    */
+  @Request
+  @Test
   public void testCharacterEqualStringDuplicateSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -1484,12 +1478,12 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("attr1");
 
-        assertEquals("some character value", value);
-        
+        Assert.assertEquals("some character value", value);
+
         value = o.getValue("attr2");
 
-        assertEquals("some character value", value);
-        
+        Assert.assertEquals("some character value", value);
+
         count++;
       }
 
@@ -1503,11 +1497,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1515,7 +1509,9 @@ public class ValueQueryTest extends TestCase
         i.close();
     }
   }
-  
+
+  @Request
+  @Test
   public void testCharacterEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -1540,7 +1536,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -1555,7 +1551,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -1572,7 +1568,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("wrong character value", value);
+        Assert.assertEquals("wrong character value", value);
 
         count++;
       }
@@ -1587,11 +1583,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1600,6 +1596,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -1624,7 +1622,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -1639,7 +1637,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -1649,11 +1647,11 @@ public class ValueQueryTest extends TestCase
 
       i = vQ.getIterator();
 
-      assertFalse(i.hasNext());
+      Assert.assertFalse(i.hasNext());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1662,6 +1660,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualStringInArray()
   {
     OIterator<ValueObject> i = null;
@@ -1686,7 +1686,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -1701,7 +1701,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -1711,11 +1711,11 @@ public class ValueQueryTest extends TestCase
 
       i = vQ.getIterator();
 
-      assertFalse(i.hasNext());
+      Assert.assertFalse(i.hasNext());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1724,6 +1724,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualStringInArray_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -1748,7 +1750,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -1763,7 +1765,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -1773,11 +1775,11 @@ public class ValueQueryTest extends TestCase
 
       i = vQ.getIterator();
 
-      assertFalse(i.hasNext());
+      Assert.assertFalse(i.hasNext());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1786,6 +1788,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -1809,14 +1813,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1847,11 +1851,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1863,6 +1867,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterLikeString()
   {
     OIterator<ValueObject> i = null;
@@ -1887,7 +1893,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -1902,7 +1908,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -1912,11 +1918,11 @@ public class ValueQueryTest extends TestCase
 
       i = vQ.getIterator();
 
-      assertFalse(i.hasNext());
+      Assert.assertFalse(i.hasNext());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1925,6 +1931,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterLikeString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -1949,7 +1957,7 @@ public class ValueQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -1964,7 +1972,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -1974,11 +1982,11 @@ public class ValueQueryTest extends TestCase
 
       i = vQ.getIterator();
 
-      assertFalse(i.hasNext());
+      Assert.assertFalse(i.hasNext());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1987,6 +1995,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -2025,11 +2035,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2038,6 +2048,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -2076,11 +2088,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2089,6 +2101,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualStringInArray()
   {
     OIterator<ValueObject> i = null;
@@ -2127,11 +2141,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2140,6 +2154,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualStringInArray_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -2178,11 +2194,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2191,6 +2207,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotLikeString()
   {
     OIterator<ValueObject> i = null;
@@ -2229,11 +2247,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2242,6 +2260,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotLikeString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -2280,11 +2300,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2293,6 +2313,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateEqualDate()
   {
     OIterator<ValueObject> i = null;
@@ -2313,14 +2335,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2336,12 +2358,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2350,6 +2372,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -2369,14 +2393,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2390,12 +2414,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2404,6 +2428,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGTDate()
   {
     OIterator<ValueObject> i = null;
@@ -2424,14 +2450,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2447,12 +2473,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2461,6 +2487,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGTString()
   {
     OIterator<ValueObject> i = null;
@@ -2480,14 +2508,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2501,12 +2529,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2515,6 +2543,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGEDate()
   {
     OIterator<ValueObject> i = null;
@@ -2535,14 +2565,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2558,14 +2588,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2581,12 +2611,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2595,6 +2625,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGEString()
   {
     OIterator<ValueObject> i = null;
@@ -2614,14 +2646,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2635,14 +2667,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2656,12 +2688,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2670,6 +2702,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -2693,14 +2727,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       int count = 0;
 
       while (i.hasNext())
       {
-        assertTrue(i.next().getValue("queryDate").equals(""));
+        Assert.assertTrue(i.next().getValue("queryDate").equals(""));
 
         count++;
       }
@@ -2715,7 +2749,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -2727,12 +2761,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2744,6 +2778,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLTDate()
   {
     OIterator<ValueObject> i = null;
@@ -2764,14 +2800,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2787,12 +2823,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2801,6 +2837,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLTString()
   {
     OIterator<ValueObject> i = null;
@@ -2820,14 +2858,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2841,12 +2879,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2855,6 +2893,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLEDate()
   {
     OIterator<ValueObject> i = null;
@@ -2875,14 +2915,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2898,14 +2938,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2921,12 +2961,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2935,6 +2975,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLEString()
   {
     OIterator<ValueObject> i = null;
@@ -2954,14 +2996,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2975,14 +3017,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2996,12 +3038,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3010,6 +3052,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateNotEqualDate()
   {
     OIterator<ValueObject> i = null;
@@ -3030,14 +3074,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3053,12 +3097,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3067,6 +3111,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -3086,14 +3132,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3107,12 +3153,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3121,6 +3167,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeEqualDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -3141,14 +3189,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3164,12 +3212,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3178,6 +3226,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -3197,14 +3247,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3218,12 +3268,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3232,6 +3282,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeGTDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -3252,14 +3304,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3275,12 +3327,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3289,6 +3341,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeGTString()
   {
     OIterator<ValueObject> i = null;
@@ -3308,14 +3362,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3329,12 +3383,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3343,6 +3397,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeGEDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -3363,14 +3419,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3386,14 +3442,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3409,12 +3465,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3423,6 +3479,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeGEString()
   {
     OIterator<ValueObject> i = null;
@@ -3442,14 +3500,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3463,14 +3521,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3484,12 +3542,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3498,6 +3556,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -3521,14 +3581,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       int count = 0;
 
       while (i.hasNext())
       {
-        assertTrue(i.next().getValue("queryDateTime").equals(""));
+        Assert.assertTrue(i.next().getValue("queryDateTime").equals(""));
 
         count++;
       }
@@ -3543,7 +3603,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -3555,12 +3615,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3572,6 +3632,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeLTDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -3592,14 +3654,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3615,12 +3677,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3629,6 +3691,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeLTString()
   {
     OIterator<ValueObject> i = null;
@@ -3648,14 +3712,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3669,12 +3733,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3683,6 +3747,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeLEDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -3703,14 +3769,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3726,14 +3792,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3749,12 +3815,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3763,6 +3829,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeLEString()
   {
     OIterator<ValueObject> i = null;
@@ -3782,14 +3850,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3803,14 +3871,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3824,12 +3892,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3838,6 +3906,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeNotEqualDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -3858,14 +3928,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3881,12 +3951,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3895,6 +3965,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -3914,14 +3986,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3935,12 +4007,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3949,6 +4021,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalEqualDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -3968,14 +4042,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3989,12 +4063,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4003,6 +4077,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -4022,14 +4098,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4043,12 +4119,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4057,6 +4133,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalGTDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -4076,14 +4154,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4097,12 +4175,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4111,6 +4189,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalGTString()
   {
     OIterator<ValueObject> i = null;
@@ -4130,14 +4210,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4151,12 +4231,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4165,6 +4245,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalGEDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -4184,14 +4266,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4205,14 +4287,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4226,12 +4308,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4240,6 +4322,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalGEString()
   {
     OIterator<ValueObject> i = null;
@@ -4259,14 +4343,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4280,14 +4364,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4301,12 +4385,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4315,6 +4399,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -4338,14 +4424,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       int count = 0;
 
       while (i.hasNext())
       {
-        assertTrue(i.next().getValue("queryDecimal").equals(""));
+        Assert.assertTrue(i.next().getValue("queryDecimal").equals(""));
 
         count++;
       }
@@ -4360,7 +4446,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -4372,12 +4458,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4389,6 +4475,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalLTDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -4408,14 +4496,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4429,12 +4517,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4443,6 +4531,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalLTString()
   {
     OIterator<ValueObject> i = null;
@@ -4462,14 +4552,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4483,12 +4573,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4497,6 +4587,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalLEDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -4516,14 +4608,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4537,14 +4629,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4558,12 +4650,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4572,6 +4664,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalLEString()
   {
     OIterator<ValueObject> i = null;
@@ -4591,14 +4685,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4612,14 +4706,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4633,12 +4727,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4647,6 +4741,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalNotEqualDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -4666,14 +4762,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4687,12 +4783,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4701,6 +4797,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -4720,14 +4818,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4741,12 +4839,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4755,6 +4853,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleEqualDouble()
   {
     OIterator<ValueObject> i = null;
@@ -4774,14 +4874,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4795,12 +4895,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4809,6 +4909,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -4828,14 +4930,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4849,12 +4951,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4863,6 +4965,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGTDouble()
   {
     OIterator<ValueObject> i = null;
@@ -4882,14 +4986,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4903,12 +5007,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4917,6 +5021,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGTString()
   {
     OIterator<ValueObject> i = null;
@@ -4936,14 +5042,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4957,12 +5063,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4971,6 +5077,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGEDouble()
   {
     OIterator<ValueObject> i = null;
@@ -4990,14 +5098,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5011,14 +5119,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5032,12 +5140,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5046,6 +5154,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGEString()
   {
     OIterator<ValueObject> i = null;
@@ -5065,14 +5175,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5086,14 +5196,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5107,12 +5217,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5121,6 +5231,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -5144,14 +5256,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       int count = 0;
 
       while (i.hasNext())
       {
-        assertTrue(i.next().getValue("queryDouble").equals(""));
+        Assert.assertTrue(i.next().getValue("queryDouble").equals(""));
 
         count++;
       }
@@ -5166,7 +5278,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -5178,12 +5290,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5195,6 +5307,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLTDouble()
   {
     OIterator<ValueObject> i = null;
@@ -5214,14 +5328,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5235,12 +5349,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5249,6 +5363,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLTString()
   {
     OIterator<ValueObject> i = null;
@@ -5268,14 +5384,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5289,12 +5405,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5303,6 +5419,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLEDouble()
   {
     OIterator<ValueObject> i = null;
@@ -5322,14 +5440,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5343,14 +5461,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5364,12 +5482,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5378,6 +5496,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLEString()
   {
     OIterator<ValueObject> i = null;
@@ -5397,14 +5517,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5418,14 +5538,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5439,12 +5559,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5453,6 +5573,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleNotEqualDouble()
   {
     OIterator<ValueObject> i = null;
@@ -5472,14 +5594,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5493,12 +5615,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5507,6 +5629,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -5526,14 +5650,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5547,12 +5671,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5561,6 +5685,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatEqualFloat()
   {
     OIterator<ValueObject> i = null;
@@ -5580,14 +5706,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5601,12 +5727,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5615,6 +5741,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -5634,14 +5762,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5655,12 +5783,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5669,6 +5797,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatGTFloat()
   {
     OIterator<ValueObject> i = null;
@@ -5688,14 +5818,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5709,12 +5839,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5723,6 +5853,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatGTString()
   {
     OIterator<ValueObject> i = null;
@@ -5742,14 +5874,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5763,12 +5895,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5777,6 +5909,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatGEFloat()
   {
     OIterator<ValueObject> i = null;
@@ -5796,14 +5930,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5817,14 +5951,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5838,12 +5972,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5852,6 +5986,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatGEString()
   {
     OIterator<ValueObject> i = null;
@@ -5871,14 +6007,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5892,14 +6028,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5913,12 +6049,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5927,6 +6063,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -5950,14 +6088,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       int count = 0;
 
       while (i.hasNext())
       {
-        assertTrue(i.next().getValue("queryFloat").equals(""));
+        Assert.assertTrue(i.next().getValue("queryFloat").equals(""));
 
         count++;
       }
@@ -5972,7 +6110,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -5984,12 +6122,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6001,6 +6139,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatLTFloat()
   {
     OIterator<ValueObject> i = null;
@@ -6020,14 +6160,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6041,12 +6181,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6055,6 +6195,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatLTString()
   {
     OIterator<ValueObject> i = null;
@@ -6074,14 +6216,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6095,12 +6237,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6109,6 +6251,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatLEFloat()
   {
     OIterator<ValueObject> i = null;
@@ -6128,14 +6272,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6149,14 +6293,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6170,12 +6314,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6184,6 +6328,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatLEString()
   {
     OIterator<ValueObject> i = null;
@@ -6203,14 +6349,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6224,14 +6370,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6245,12 +6391,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6259,6 +6405,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatNotEqualFloat()
   {
     OIterator<ValueObject> i = null;
@@ -6278,14 +6426,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6299,12 +6447,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6313,6 +6461,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -6332,14 +6482,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6353,12 +6503,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6367,6 +6517,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerEqualInteger()
   {
     OIterator<ValueObject> i = null;
@@ -6386,14 +6538,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6407,12 +6559,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6421,6 +6573,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -6440,14 +6594,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6461,12 +6615,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6475,6 +6629,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerGTInteger()
   {
     OIterator<ValueObject> i = null;
@@ -6494,7 +6650,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
@@ -6503,7 +6659,7 @@ public class ValueQueryTest extends TestCase
 
         if (Integer.parseInt(o.getValue("queryInteger")) <= 10)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
 
@@ -6521,13 +6677,13 @@ public class ValueQueryTest extends TestCase
 
         if (Integer.parseInt(o.getValue("queryInteger")) <= 101)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6536,6 +6692,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerGTString()
   {
     OIterator<ValueObject> i = null;
@@ -6555,7 +6713,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
@@ -6564,7 +6722,7 @@ public class ValueQueryTest extends TestCase
 
         if (Integer.parseInt(o.getValue("queryInteger")) <= 10)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
 
@@ -6582,13 +6740,13 @@ public class ValueQueryTest extends TestCase
 
         if (Integer.parseInt(o.getValue("queryInteger")) <= 101)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6597,6 +6755,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerGEInteger()
   {
     OIterator<ValueObject> i = null;
@@ -6616,7 +6776,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
@@ -6625,7 +6785,7 @@ public class ValueQueryTest extends TestCase
 
         if (Integer.parseInt(o.getValue("queryInteger")) < 100)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
 
@@ -6639,7 +6799,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
@@ -6648,7 +6808,7 @@ public class ValueQueryTest extends TestCase
 
         if (Integer.parseInt(o.getValue("queryInteger")) < 10)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
 
@@ -6666,13 +6826,13 @@ public class ValueQueryTest extends TestCase
 
         if (Integer.parseInt(o.getValue("queryInteger")) < 101)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6681,6 +6841,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerGEString()
   {
     OIterator<ValueObject> i = null;
@@ -6700,7 +6862,7 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
@@ -6709,7 +6871,7 @@ public class ValueQueryTest extends TestCase
 
         if (Integer.parseInt(o.getValue("queryInteger")) < 100)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
 
@@ -6723,14 +6885,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (Integer.parseInt(i.next().getValue("queryInteger")) < 10)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
 
@@ -6746,13 +6908,13 @@ public class ValueQueryTest extends TestCase
       {
         if (Integer.parseInt(i.next().getValue("queryInteger")) < 101)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6761,6 +6923,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -6784,14 +6948,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       int count = 0;
 
       while (i.hasNext())
       {
-        assertTrue(i.next().getValue("queryInteger").equals(""));
+        Assert.assertTrue(i.next().getValue("queryInteger").equals(""));
 
         count++;
       }
@@ -6806,7 +6970,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query
       vQ = qf.valueQuery();
@@ -6820,7 +6984,7 @@ public class ValueQueryTest extends TestCase
 
       while (i.hasNext())
       {
-        assertTrue(!i.next().getValue("queryInteger").equals(""));
+        Assert.assertTrue(!i.next().getValue("queryInteger").equals(""));
 
         count++;
       }
@@ -6835,11 +6999,11 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6851,6 +7015,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerLTInteger()
   {
     OIterator<ValueObject> i = null;
@@ -6870,14 +7036,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6891,12 +7057,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6905,6 +7071,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerLTString()
   {
     OIterator<ValueObject> i = null;
@@ -6924,14 +7092,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6945,12 +7113,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6959,6 +7127,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerLEInteger()
   {
     OIterator<ValueObject> i = null;
@@ -6978,14 +7148,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6999,14 +7169,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7020,12 +7190,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7034,6 +7204,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerLEString()
   {
     OIterator<ValueObject> i = null;
@@ -7053,14 +7225,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7074,14 +7246,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7095,12 +7267,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7109,6 +7281,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerNotEqualInteger()
   {
     OIterator<ValueObject> i = null;
@@ -7128,14 +7302,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (Integer.parseInt(i.next().getValue("queryInteger")) == 101)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
 
@@ -7151,13 +7325,13 @@ public class ValueQueryTest extends TestCase
       {
         if (Integer.parseInt(i.next().getValue("queryInteger")) == 100)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7166,6 +7340,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -7185,14 +7361,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (Integer.parseInt(i.next().getValue("queryInteger")) == 101)
         {
-          fail("One of the objects returned by the query returned an object with incorrect integer attributes.");
+          Assert.fail("One of the objects returned by the query returned an object with incorrect integer attributes.");
         }
       }
 
@@ -7208,13 +7384,13 @@ public class ValueQueryTest extends TestCase
       {
         if (Integer.parseInt(i.next().getValue("queryInteger")) == 100)
         {
-          fail("One of the objects returned by the query had an incorrect integer attribute.");
+          Assert.fail("One of the objects returned by the query had an incorrect integer attribute.");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7223,6 +7399,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testReplaceSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -7238,13 +7416,13 @@ public class ValueQueryTest extends TestCase
       vQ.FROM("(SELECT 1 as one, 2 as two)", "numberSet");
       Selectable replaced = vQ.replaceSelectable(vQ.aSQLInteger("anInt", "two"));
 
-      assertEquals(replaced.getSQL(), original.getSQL());
-      assertEquals(vQ.getSelectableRefs().size(), 1);
-      assertEquals(vQ.getIterator().next().getValue("anInt"), "2");
+      Assert.assertEquals(replaced.getSQL(), original.getSQL());
+      Assert.assertEquals(vQ.getSelectableRefs().size(), 1);
+      Assert.assertEquals(vQ.getIterator().next().getValue("anInt"), "2");
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7253,6 +7431,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongEqualLong()
   {
     OIterator<ValueObject> i = null;
@@ -7272,14 +7452,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7293,12 +7473,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7307,6 +7487,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -7326,14 +7508,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7347,12 +7529,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7361,6 +7543,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGTLong()
   {
     OIterator<ValueObject> i = null;
@@ -7380,14 +7564,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7401,12 +7585,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7415,6 +7599,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGTString()
   {
     OIterator<ValueObject> i = null;
@@ -7434,14 +7620,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7455,12 +7641,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7469,6 +7655,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGELong()
   {
     OIterator<ValueObject> i = null;
@@ -7488,14 +7676,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7509,14 +7697,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7530,12 +7718,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7544,6 +7732,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGEString()
   {
     OIterator<ValueObject> i = null;
@@ -7563,14 +7753,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7584,14 +7774,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7605,12 +7795,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7619,6 +7809,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -7642,14 +7834,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       int count = 0;
 
       while (i.hasNext())
       {
-        assertTrue(i.next().getValue("queryLong").equals(""));
+        Assert.assertTrue(i.next().getValue("queryLong").equals(""));
 
         count++;
       }
@@ -7664,7 +7856,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -7679,12 +7871,12 @@ public class ValueQueryTest extends TestCase
         QueryMasterSetup.testQueryObject1.setValue("queryLong", origValue);
         QueryMasterSetup.testQueryObject1.apply();
 
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7696,6 +7888,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLTLong()
   {
     OIterator<ValueObject> i = null;
@@ -7715,14 +7909,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7736,12 +7930,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7750,6 +7944,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLTString()
   {
     OIterator<ValueObject> i = null;
@@ -7769,14 +7965,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7790,12 +7986,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7804,6 +8000,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLELong()
   {
     OIterator<ValueObject> i = null;
@@ -7823,14 +8021,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7844,14 +8042,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7865,12 +8063,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7879,6 +8077,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLEString()
   {
     OIterator<ValueObject> i = null;
@@ -7898,14 +8098,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7919,14 +8119,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7940,12 +8140,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -7954,6 +8154,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongNotEqualLong()
   {
     OIterator<ValueObject> i = null;
@@ -7973,14 +8175,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7994,12 +8196,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8008,6 +8210,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -8027,14 +8231,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8048,12 +8252,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8062,6 +8266,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -8081,14 +8287,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8102,12 +8308,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8116,6 +8322,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqualString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -8135,14 +8343,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8156,12 +8364,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8170,6 +8378,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqualStringInArray()
   {
     OIterator<ValueObject> i = null;
@@ -8189,14 +8399,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8210,12 +8420,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8224,6 +8434,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqualStringInArray_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -8243,14 +8455,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8264,12 +8476,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8278,6 +8490,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -8301,14 +8515,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       int count = 0;
 
       while (i.hasNext())
       {
-        assertTrue(i.next().getValue("queryText").equals(""));
+        Assert.assertTrue(i.next().getValue("queryText").equals(""));
 
         count++;
       }
@@ -8323,7 +8537,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -8335,12 +8549,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8352,6 +8566,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextLikeString()
   {
     OIterator<ValueObject> i = null;
@@ -8371,14 +8587,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8392,12 +8608,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8406,6 +8622,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextLikeString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -8425,14 +8643,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8446,12 +8664,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8460,6 +8678,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -8479,14 +8699,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8500,12 +8720,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8514,6 +8734,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextNotEqualString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -8533,14 +8755,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8554,12 +8776,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8568,6 +8790,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextNotEqualStringInArray()
   {
     OIterator<ValueObject> i = null;
@@ -8587,14 +8811,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8608,12 +8832,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8622,6 +8846,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextNotEqualStringInArray_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -8641,14 +8867,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8662,12 +8888,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8676,6 +8902,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextNotLikeString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -8695,14 +8923,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8716,12 +8944,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8730,6 +8958,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeEqualTime()
   {
     OIterator<ValueObject> i = null;
@@ -8750,14 +8980,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8773,12 +9003,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8787,6 +9017,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -8806,14 +9038,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8827,12 +9059,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8841,6 +9073,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeGTTime()
   {
     OIterator<ValueObject> i = null;
@@ -8861,14 +9095,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8884,12 +9118,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8898,6 +9132,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeGTString()
   {
     OIterator<ValueObject> i = null;
@@ -8917,14 +9153,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8938,12 +9174,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -8952,6 +9188,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeGETime()
   {
     OIterator<ValueObject> i = null;
@@ -8972,14 +9210,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8995,14 +9233,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9018,12 +9256,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -9032,6 +9270,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeGEString()
   {
     OIterator<ValueObject> i = null;
@@ -9051,14 +9291,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9072,14 +9312,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9093,12 +9333,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -9107,6 +9347,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -9129,14 +9371,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       int count = 0;
 
       while (i.hasNext())
       {
-        assertTrue(i.next().getValue("queryTime").equals(""));
+        Assert.assertTrue(i.next().getValue("queryTime").equals(""));
 
         count++;
       }
@@ -9151,7 +9393,7 @@ public class ValueQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -9163,12 +9405,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -9180,6 +9422,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeLTTime()
   {
     OIterator<ValueObject> i = null;
@@ -9200,14 +9444,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9223,12 +9467,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -9237,6 +9481,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeLTString()
   {
     OIterator<ValueObject> i = null;
@@ -9256,14 +9502,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9277,12 +9523,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -9291,6 +9537,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeLETime()
   {
     OIterator<ValueObject> i = null;
@@ -9311,14 +9559,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9334,14 +9582,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9357,12 +9605,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -9371,6 +9619,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeLEString()
   {
     OIterator<ValueObject> i = null;
@@ -9390,14 +9640,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9411,14 +9661,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9432,12 +9682,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -9446,6 +9696,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeNotEqualTime()
   {
     OIterator<ValueObject> i = null;
@@ -9466,14 +9718,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9489,12 +9741,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -9503,6 +9755,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -9522,14 +9776,14 @@ public class ValueQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -9543,12 +9797,12 @@ public class ValueQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -9557,6 +9811,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidSubSelectInSelectClause()
   {
     QueryFactory queryFactory = new QueryFactory();
@@ -9575,7 +9831,7 @@ public class ValueQueryTest extends TestCase
     try
     {
       valueQuery2.getIterator();
-      fail(failMsg);
+      Assert.fail(failMsg);
     }
     catch (SubSelectReturnedMultipleRowsException e)
     {
@@ -9583,10 +9839,12 @@ public class ValueQueryTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(failMsg);
+      Assert.fail(failMsg);
     }
   }
 
+  @Request
+  @Test
   public void testValidSubSelectInSelectClause()
   {
     QueryFactory queryFactory = new QueryFactory();
@@ -9608,7 +9866,7 @@ public class ValueQueryTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -9619,6 +9877,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testUsingEntityQueryForValueQuery()
   {
     QueryFactory qf = new QueryFactory();
@@ -9634,7 +9894,7 @@ public class ValueQueryTest extends TestCase
     try
     {
       mdClassQ.getIterator();
-      fail("Able to query for objects using an EntityQuery object that was defined for value queries. ");
+      Assert.fail("Able to query for objects using an EntityQuery object that was defined for value queries. ");
     }
     catch (QueryException e)
     {
@@ -9642,6 +9902,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFalseContainsSQLSelectable()
   {
     QueryFactory qf = new QueryFactory();
@@ -9651,9 +9913,11 @@ public class ValueQueryTest extends TestCase
 
     vQ.SELECT(query.aBoolean("queryBoolean"));
 
-    assertFalse(vQ.containsSelectableSQL());
+    Assert.assertFalse(vQ.containsSelectableSQL());
   }
 
+  @Request
+  @Test
   public void testContainsSQLSelectableInSelectStatement()
   {
     QueryFactory qf = new QueryFactory();
@@ -9664,9 +9928,11 @@ public class ValueQueryTest extends TestCase
     vQ.SELECT(query.aBoolean("queryBoolean"));
     vQ.SELECT(vQ.aSQLCharacter("testSelectable", "'A'"));
 
-    assertTrue(vQ.containsSelectableSQL());
+    Assert.assertTrue(vQ.containsSelectableSQL());
   }
 
+  @Request
+  @Test
   public void testContainsSQLSelectableInWhere()
   {
     QueryFactory qf = new QueryFactory();
@@ -9677,9 +9943,11 @@ public class ValueQueryTest extends TestCase
     vQ.SELECT(query.aBoolean("queryBoolean"));
     vQ.WHERE(query.aBoolean("queryBoolean").EQ(vQ.aSQLBoolean(TestFixConst.ATTRIBUTE_BOOLEAN, "1")));
 
-    assertTrue(vQ.containsSelectableSQL());
+    Assert.assertTrue(vQ.containsSelectableSQL());
   }
 
+  @Request
+  @Test
   public void testColumnAlias()
   {
     QueryFactory qf = new QueryFactory();
@@ -9699,11 +9967,11 @@ public class ValueQueryTest extends TestCase
     {
       List<ValueObject> results = iterator.getAll();
 
-      assertTrue(results.size() > 0);
+      Assert.assertTrue(results.size() > 0);
 
       for (ValueObject result : results)
       {
-        assertNotNull(result.getValue("test"));
+        Assert.assertNotNull(result.getValue("test"));
       }
     }
     finally
@@ -9712,6 +9980,8 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSameAttributeDifferentAliases()
   {
     QueryFactory qf = new QueryFactory();
@@ -9735,12 +10005,12 @@ public class ValueQueryTest extends TestCase
     {
       List<ValueObject> results = iterator.getAll();
 
-      assertTrue(results.size() > 0);
+      Assert.assertTrue(results.size() > 0);
 
       for (ValueObject result : results)
       {
-        assertNotNull(result.getValue("first"));
-        assertNotNull(result.getValue("second"));
+        Assert.assertNotNull(result.getValue("first"));
+        Assert.assertNotNull(result.getValue("second"));
       }
     }
     finally
@@ -9749,25 +10019,29 @@ public class ValueQueryTest extends TestCase
     }
   }
 
-
-  // public void testContainsSQLSelectableInJoin()
+  // @Request @Test public void testContainsSQLSelectableInJoin()
   // {
   // QueryFactory qf = new QueryFactory();
   //
   // ValueQuery vQ = qf.valueQuery();
   // ValueQuery vQ2 = qf.valueQuery();
-  // BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.selectedMdBusiness.getType());
-  // BusinessDAOQuery refQuery = qf.businessDAOQuery(QueryMasterSetup.childRefMdBusiness.getType());
+  // BusinessDAOQuery query =
+  // qf.businessDAOQuery(QueryMasterSetup.selectedMdBusiness.getType());
+  // BusinessDAOQuery refQuery =
+  // qf.businessDAOQuery(QueryMasterSetup.childRefMdBusiness.getType());
   //
   // AttributeCharacter attribute = refQuery.aCharacter("id");
   //
   // vQ.SELECT(query.aCharacter("id"));
   // vQ2.SELECT(attribute);
-  // vQ.WHERE(query.aReference("reference").LEFT_JOIN_EQ(vQ2.aSQLCharacter("left_join", vQ2.getTableAlias() + "." + attribute._getAttributeName())));
+  // vQ.WHERE(query.aReference("reference").LEFT_JOIN_EQ(vQ2.aSQLCharacter("left_join",
+  // vQ2.getTableAlias() + "." + attribute._getAttributeName())));
   //
-  // assertTrue(vQ.containsSelectableSQL());
+  // Assert.assertTrue(vQ.containsSelectableSQL());
   // }
 
+  @Request
+  @Test
   public void testCountBasic()
   {
     QueryFactory qf = new QueryFactory();
@@ -9790,10 +10064,12 @@ public class ValueQueryTest extends TestCase
 
     if (sqlCount != iteratorCount)
     {
-      assertEquals("getCount() method returned a different result than the query iterator.", iteratorCount, sqlCount);
+      Assert.assertEquals("getCount() method returned a different result than the query iterator.", iteratorCount, sqlCount);
     }
   }
 
+  @Request
+  @Test
   public void testCountExplicitGroupBy()
   {
     QueryFactory qf = new QueryFactory();
@@ -9817,10 +10093,12 @@ public class ValueQueryTest extends TestCase
 
     if (sqlCount != iteratorCount)
     {
-      assertEquals("getCount() method returned a different result than the query iterator.", iteratorCount, sqlCount);
+      Assert.assertEquals("getCount() method returned a different result than the query iterator.", iteratorCount, sqlCount);
     }
   }
 
+  @Request
+  @Test
   public void testCountImplicitGroupBy()
   {
     QueryFactory qf = new QueryFactory();
@@ -9844,36 +10122,51 @@ public class ValueQueryTest extends TestCase
 
     if (sqlCount != iteratorCount)
     {
-      assertEquals("getCount() method returned a different result than the query iterator.", iteratorCount, sqlCount);
+      Assert.assertEquals("getCount() method returned a different result than the query iterator.", iteratorCount, sqlCount);
     }
   }
 
   /*
-   * // FIXME find default MySQL equivalent public void testCountSelectable() { long total = 100; QueryFactory f = new QueryFactory(); ValueQuery v = new ValueQuery(f);
+   * // FIXME find default MySQL equivalent @Request @Test public void
+   * testCountSelectable() { long total = 100; QueryFactory f = new
+   * QueryFactory(); ValueQuery v = new ValueQuery(f);
    * 
-   * String gen = "gen"; String ct = "ct"; SelectableSQLInteger s = v.aSQLInteger(gen, gen, gen); SelectableSQLLong c = v.aSQLLong(ct, "count(*) over()", ct); v.SELECT(s, c);
+   * String gen = "gen"; String ct = "ct"; SelectableSQLInteger s =
+   * v.aSQLInteger(gen, gen, gen); SelectableSQLLong c = v.aSQLLong(ct,
+   * "count(*) over()", ct); v.SELECT(s, c);
    * 
    * v.setCountSelectable(c);
    * 
    * v.FROM("generate_series(1,"+total+")", gen);
    * 
-   * // restrict the rows. This not only gives us one result, which is all we need, // but it shows that the window count isn't affected by LIMIT v.restrictRows(1, 1);
+   * // restrict the rows. This not only gives us one result, which is all we
+   * need, // but it shows that the window count isn't affected by LIMIT
+   * v.restrictRows(1, 1);
    * 
-   * ValueObject o = v.getIterator().getAll().get(0); assertEquals(Long.parseLong(o.getValue(ct)), total); assertEquals(v.getCount(), total); }
+   * ValueObject o = v.getIterator().getAll().get(0);
+   * Assert.assertEquals(Long.parseLong(o.getValue(ct)), total);
+   * Assert.assertEquals(v.getCount(), total); }
    * 
-   * public void testAggregateCountSelectable() { long total = 100;
+   * @Request @Test public void testAggregateCountSelectable() { long total =
+   * 100;
    * 
    * QueryFactory f = new QueryFactory(); ValueQuery v = new ValueQuery(f);
    * 
-   * String gen = "gen"; String ct = "ct"; SelectableSQLInteger s = v.aSQLInteger(gen, gen, gen); SelectableSQLLong c = v.aSQLAggregateLong(ct, "count(*) over()", ct); v.SELECT(s, c);
+   * String gen = "gen"; String ct = "ct"; SelectableSQLInteger s =
+   * v.aSQLInteger(gen, gen, gen); SelectableSQLLong c = v.aSQLAggregateLong(ct,
+   * "count(*) over()", ct); v.SELECT(s, c);
    * 
    * v.setCountSelectable(c);
    * 
    * v.FROM("generate_series(1,"+total+")", gen); v.GROUP_BY(s);
    * 
-   * // restrict the rows. This not only gives us one result, which is all we need, // but it shows that the window count isn't affected by LIMIT v.restrictRows(1, 1);
+   * // restrict the rows. This not only gives us one result, which is all we
+   * need, // but it shows that the window count isn't affected by LIMIT
+   * v.restrictRows(1, 1);
    * 
-   * ValueObject o = v.getIterator().getAll().get(0); assertEquals(Long.parseLong(o.getValue(ct)), total); assertEquals(v.getCount(), total); }
+   * ValueObject o = v.getIterator().getAll().get(0);
+   * Assert.assertEquals(Long.parseLong(o.getValue(ct)), total);
+   * Assert.assertEquals(v.getCount(), total); }
    */
 
 }

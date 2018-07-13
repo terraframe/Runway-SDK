@@ -3,20 +3,25 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.IndexTypes;
@@ -25,39 +30,15 @@ import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-public class KeyTest extends TestCase
+public class KeyTest
 {
-  private static MdBusinessDAO  mdBusiness;
+  private static MdBusinessDAO mdBusiness;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(KeyTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-
-    };
-
-    return wrapper;
-  }
-
-  protected static void classSetUp()
+  @Request
+  @BeforeClass
+  public static void classSetUp()
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.setGenerateMdController(false);
@@ -65,21 +46,27 @@ public class KeyTest extends TestCase
     mdBusiness.apply();
   }
 
-  protected static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
     TestFixtureFactory.delete(mdBusiness);
   }
 
+  @Request
+  @Test
   public void testIndex()
   {
     MdAttributeConcreteDAOIF mdAttribute = mdBusiness.definesAttribute(EntityInfo.KEY);
     AttributeEnumerationIF attribute = (AttributeEnumerationIF) mdAttribute.getAttributeIF(MdAttributeEnumerationInfo.INDEX_TYPE);
     EnumerationItemDAOIF[] dereference = attribute.dereference();
 
-    assertEquals(1, dereference.length);
-    assertEquals(IndexTypes.UNIQUE_INDEX.getId(), dereference[0].getId());
+    Assert.assertEquals(1, dereference.length);
+    Assert.assertEquals(IndexTypes.UNIQUE_INDEX.getId(), dereference[0].getId());
   }
 
+  @Request
+  @Test
   public void testDuplicateKey()
   {
     String key = "test_key";
@@ -90,7 +77,7 @@ public class KeyTest extends TestCase
 
     BusinessDAOIF business1IF = BusinessDAO.get(business1.getId());
 
-    assertEquals(key, business1IF.getKey());
+    Assert.assertEquals(key, business1IF.getKey());
 
     try
     {
@@ -98,11 +85,11 @@ public class KeyTest extends TestCase
       business2.setKey(key);
       business2.apply();
 
-      fail("Failed to throw duplicate database exception when keys are the same");
+      Assert.fail("Failed to throw duplicate database exception when keys are the same");
     }
-    catch(DuplicateDataException e)
+    catch (DuplicateDataException e)
     {
-      //This is expected
+      // This is expected
     }
   }
 }

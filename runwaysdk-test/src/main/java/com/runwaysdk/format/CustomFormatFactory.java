@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -26,29 +26,29 @@ import java.util.Locale;
 import com.runwaysdk.constants.CommonProperties;
 
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 public class CustomFormatFactory implements FormatFactory
 {
-  
+
   private class StringFormat implements Format<String>
   {
-    
+
     /**
      * For testing. Displays the value by lowercasing the toString() value.
      * 
@@ -61,9 +61,12 @@ public class CustomFormatFactory implements FormatFactory
     {
       return value.toString().toLowerCase();
     }
-    
-    /* (non-Javadoc)
-     * @see com.runwaysdk.format.Format#display(java.lang.Object, java.util.Locale)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.format.Format#display(java.lang.Object,
+     * java.util.Locale)
      */
     @Override
     public String display(Object value, Locale locale) throws DisplayException
@@ -72,7 +75,8 @@ public class CustomFormatFactory implements FormatFactory
     }
 
     /**
-     * Formats the string by removing all the whitespace from the front and back.
+     * Formats the string by removing all the whitespace from the front and
+     * back.
      */
     @Override
     public String format(Object value, Locale locale) throws FormatException
@@ -80,7 +84,9 @@ public class CustomFormatFactory implements FormatFactory
       return value.toString().trim();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.runwaysdk.format.Format#format(java.lang.Object)
      */
     @Override
@@ -89,8 +95,11 @@ public class CustomFormatFactory implements FormatFactory
       return this.format(value, CommonProperties.getDefaultLocale());
     }
 
-    /* (non-Javadoc)
-     * @see com.runwaysdk.format.Format#parse(java.lang.Object, java.util.Locale)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.format.Format#parse(java.lang.Object,
+     * java.util.Locale)
      */
     @Override
     public String parse(Object value, Locale locale) throws ParseException
@@ -98,7 +107,9 @@ public class CustomFormatFactory implements FormatFactory
       return this.parse(value.toString(), locale);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.runwaysdk.format.Format#parse(java.lang.Object)
      */
     @Override
@@ -116,7 +127,9 @@ public class CustomFormatFactory implements FormatFactory
       return value.toUpperCase(locale);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.runwaysdk.format.Format#parse(java.lang.String)
      */
     @Override
@@ -124,22 +137,24 @@ public class CustomFormatFactory implements FormatFactory
     {
       return this.parse(value, CommonProperties.getDefaultLocale());
     }
-    
+
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.format.StandardFormat#getFormat(java.lang.Class)
    */
   @SuppressWarnings("unchecked")
   @Override
   public <T> Format<T> getFormat(Class<T> clazz)
   {
-    if(String.class.isAssignableFrom(clazz))
+    if (String.class.isAssignableFrom(clazz))
     {
       return (Format<T>) new StringFormat();
     }
-    
+
     return null;
   }
-  
+
 }

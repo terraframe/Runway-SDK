@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -23,7 +23,10 @@ package com.runwaysdk.dataaccess;
 
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
@@ -36,56 +39,15 @@ import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public class MdAttributeTermTest extends TestCase
+public class MdAttributeTermTest
 {
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdAttributeTermTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   /**
    * 
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
   }
@@ -93,10 +55,14 @@ public class MdAttributeTermTest extends TestCase
   /**
    * 
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
   }
 
+  @Request
+  @Test
   public void testCreateAndGet()
   {
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
@@ -146,6 +112,8 @@ public class MdAttributeTermTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidType()
   {
     MdBusinessDAO mdReference = TestFixtureFactory.createMdBusiness1();
@@ -188,6 +156,8 @@ public class MdAttributeTermTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAddAttributeRoots()
   {
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();

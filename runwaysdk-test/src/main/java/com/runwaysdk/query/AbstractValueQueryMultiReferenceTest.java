@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -24,6 +24,12 @@ package com.runwaysdk.query;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.Constants;
@@ -52,28 +58,9 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.session.Request;
 
-import junit.framework.TestCase;
-
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
+public abstract class AbstractValueQueryMultiReferenceTest
 {
 
   private static MdTermDAO                    mdTerm;
@@ -170,6 +157,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
   /**
   * 
   */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdBusiness);
@@ -191,7 +180,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
    * 
    * @see junit.framework.TestCase#setUp()
    */
-  @Override
+  @Request
+  @Before
   protected void setUp() throws Exception
   {
     term1 = this.createTerm();
@@ -205,7 +195,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
    * 
    * @see junit.framework.TestCase#tearDown()
    */
-  @Override
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
     mdBusiness.deleteAllRecords();
@@ -214,6 +205,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
   // test enumeration equal to enumeration
 
+  @Request
+  @Test
   public void testMultiReferenceContainsAny()
   {
 
@@ -234,14 +227,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -255,7 +248,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -265,6 +258,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMultiReferenceNotContainsAny()
   {
 
@@ -285,14 +280,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -306,7 +301,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -316,6 +311,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMultiReferenceContainsAll()
   {
     OIterator<ValueObject> i = null;
@@ -335,14 +332,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -356,7 +353,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -366,6 +363,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMultiReferenceNotContainsAll()
   {
     OIterator<ValueObject> i = null;
@@ -385,14 +384,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -406,7 +405,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -416,6 +415,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMultiReferenceContainsExactly()
   {
     OIterator<ValueObject> i = null;
@@ -435,14 +436,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -456,7 +457,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -466,6 +467,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanEqualBoolean()
   {
     OIterator<ValueObject> i = null;
@@ -485,14 +488,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -507,7 +510,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -517,6 +520,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -536,14 +541,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -558,7 +563,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -568,6 +573,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -597,14 +604,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -619,7 +626,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -635,6 +642,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanNotEqualBoolean()
   {
     OIterator<ValueObject> i = null;
@@ -654,14 +663,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -676,7 +685,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -686,6 +695,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanNotEqualString()
   {
     // perform a query for true values that should find exactly 2 matches
@@ -701,14 +712,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
     if (!i.hasNext())
     {
-      fail("A query did not return any results when it should have");
+      Assert.fail("A query did not return any results when it should have");
     }
 
     while (i.hasNext())
     {
       if (!i.next().getValue("objectId").equals(business.getId()))
       {
-        fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+        Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
       }
     }
 
@@ -723,10 +734,12 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
     if (i.hasNext())
     {
-      fail("A query based on attribute reference values returned objects when it shouldn't have.");
+      Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -746,14 +759,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -767,7 +780,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -777,6 +790,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -796,14 +811,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -817,7 +832,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -827,6 +842,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualStringInArray()
   {
     OIterator<ValueObject> i = null;
@@ -846,14 +863,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -867,7 +884,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -877,6 +894,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualStringInArray_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -896,14 +915,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -917,7 +936,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -927,6 +946,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -956,14 +977,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -977,7 +998,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -993,6 +1014,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterLikeString()
   {
     OIterator<ValueObject> i = null;
@@ -1012,14 +1035,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1033,7 +1056,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1043,6 +1066,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterLikeString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -1062,14 +1087,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1083,7 +1108,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1093,6 +1118,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -1112,14 +1139,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1133,7 +1160,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1143,6 +1170,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -1162,14 +1191,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1183,7 +1212,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1193,6 +1222,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualStringInArray()
   {
     OIterator<ValueObject> i = null;
@@ -1212,14 +1243,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1233,7 +1264,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1243,6 +1274,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualStringInArray_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -1262,14 +1295,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1283,7 +1316,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1293,6 +1326,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotLikeString()
   {
     OIterator<ValueObject> i = null;
@@ -1312,14 +1347,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1333,7 +1368,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1343,6 +1378,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotLikeString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -1362,14 +1399,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1383,7 +1420,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1393,6 +1430,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateEqualDate()
   {
     OIterator<ValueObject> i = null;
@@ -1413,14 +1452,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1436,7 +1475,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1446,6 +1485,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -1465,14 +1506,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1486,7 +1527,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1496,6 +1537,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGTDate()
   {
     OIterator<ValueObject> i = null;
@@ -1516,14 +1559,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1539,7 +1582,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1549,6 +1592,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGTString()
   {
     OIterator<ValueObject> i = null;
@@ -1568,14 +1613,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1589,7 +1634,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1599,6 +1644,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGEDate()
   {
     OIterator<ValueObject> i = null;
@@ -1619,14 +1666,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1642,14 +1689,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1665,7 +1712,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1675,6 +1722,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGEString()
   {
     OIterator<ValueObject> i = null;
@@ -1694,14 +1743,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1715,14 +1764,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1736,7 +1785,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1746,6 +1795,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -1775,14 +1826,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1796,7 +1847,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1812,6 +1863,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLTDate()
   {
     OIterator<ValueObject> i = null;
@@ -1832,14 +1885,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1855,7 +1908,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1865,6 +1918,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLTString()
   {
     OIterator<ValueObject> i = null;
@@ -1884,14 +1939,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1905,7 +1960,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1915,6 +1970,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLEDate()
   {
     OIterator<ValueObject> i = null;
@@ -1935,14 +1992,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1958,14 +2015,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -1981,7 +2038,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -1991,6 +2048,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLEString()
   {
     OIterator<ValueObject> i = null;
@@ -2010,14 +2069,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2031,14 +2090,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2052,7 +2111,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2062,6 +2121,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateNotEqualDate()
   {
     OIterator<ValueObject> i = null;
@@ -2082,14 +2143,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2105,7 +2166,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2115,6 +2176,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -2134,14 +2197,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2155,7 +2218,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2165,6 +2228,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeEqualDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -2185,14 +2250,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2208,7 +2273,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2218,6 +2283,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -2237,14 +2304,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2258,7 +2325,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2268,6 +2335,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeGTDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -2288,14 +2357,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2311,7 +2380,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2321,6 +2390,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeGTString()
   {
     OIterator<ValueObject> i = null;
@@ -2340,14 +2411,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2361,7 +2432,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2371,6 +2442,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeGEDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -2391,14 +2464,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2414,14 +2487,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2437,7 +2510,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2447,6 +2520,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeGEString()
   {
     OIterator<ValueObject> i = null;
@@ -2466,14 +2541,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2487,14 +2562,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2508,7 +2583,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2518,6 +2593,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -2547,14 +2624,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2568,7 +2645,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2584,6 +2661,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeLTDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -2604,14 +2683,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2627,7 +2706,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2637,6 +2716,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeLTString()
   {
     OIterator<ValueObject> i = null;
@@ -2656,14 +2737,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2677,7 +2758,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2687,6 +2768,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeLEDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -2707,14 +2790,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2730,14 +2813,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2753,7 +2836,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2763,6 +2846,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeLEString()
   {
     OIterator<ValueObject> i = null;
@@ -2782,14 +2867,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2803,14 +2888,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2824,7 +2909,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2834,6 +2919,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeNotEqualDateTime()
   {
     OIterator<ValueObject> i = null;
@@ -2854,14 +2941,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2877,7 +2964,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2887,6 +2974,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateTimeNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -2906,14 +2995,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date time values did not return any results when it should have");
+        Assert.fail("A query based on attribute date time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2927,7 +3016,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2937,6 +3026,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalEqualDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -2956,14 +3047,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2977,7 +3068,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -2987,6 +3078,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -3006,14 +3099,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3027,7 +3120,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3037,6 +3130,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalGTDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -3056,14 +3151,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3077,7 +3172,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3087,6 +3182,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalGTString()
   {
     OIterator<ValueObject> i = null;
@@ -3106,14 +3203,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3127,7 +3224,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3137,6 +3234,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalGEDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -3156,14 +3255,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3177,14 +3276,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3198,7 +3297,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3208,6 +3307,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalGEString()
   {
     OIterator<ValueObject> i = null;
@@ -3227,14 +3328,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3248,14 +3349,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3269,7 +3370,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3279,6 +3380,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -3308,14 +3411,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3329,7 +3432,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3345,6 +3448,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalLTDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -3364,14 +3469,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3385,7 +3490,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3395,6 +3500,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalLTString()
   {
     OIterator<ValueObject> i = null;
@@ -3414,14 +3521,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3435,7 +3542,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3445,6 +3552,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalLEDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -3464,14 +3573,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3485,14 +3594,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3506,7 +3615,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3516,6 +3625,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalLEString()
   {
     OIterator<ValueObject> i = null;
@@ -3535,14 +3646,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3556,14 +3667,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3577,7 +3688,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3587,6 +3698,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalNotEqualDecimal()
   {
     OIterator<ValueObject> i = null;
@@ -3606,14 +3719,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3627,7 +3740,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3637,6 +3750,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDecimalNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -3656,14 +3771,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute decimal values did not return any results when it should have");
+        Assert.fail("A query based on attribute decimal values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3677,7 +3792,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3687,6 +3802,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleEqualDouble()
   {
     OIterator<ValueObject> i = null;
@@ -3706,14 +3823,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3727,7 +3844,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3737,6 +3854,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -3756,14 +3875,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3777,7 +3896,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3787,6 +3906,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGTDouble()
   {
     OIterator<ValueObject> i = null;
@@ -3806,14 +3927,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3827,7 +3948,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3837,6 +3958,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGTString()
   {
     OIterator<ValueObject> i = null;
@@ -3856,14 +3979,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3877,7 +4000,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3887,6 +4010,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGEDouble()
   {
     OIterator<ValueObject> i = null;
@@ -3906,14 +4031,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3927,14 +4052,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3948,7 +4073,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -3958,6 +4083,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGEString()
   {
     OIterator<ValueObject> i = null;
@@ -3977,14 +4104,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3998,14 +4125,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4019,7 +4146,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4029,6 +4156,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -4058,14 +4187,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4079,7 +4208,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4095,6 +4224,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLTDouble()
   {
     OIterator<ValueObject> i = null;
@@ -4114,14 +4245,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4135,7 +4266,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4145,6 +4276,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLTString()
   {
     OIterator<ValueObject> i = null;
@@ -4164,14 +4297,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4185,7 +4318,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4195,6 +4328,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLEDouble()
   {
     OIterator<ValueObject> i = null;
@@ -4214,14 +4349,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4235,14 +4370,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4256,7 +4391,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4266,6 +4401,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLEString()
   {
     OIterator<ValueObject> i = null;
@@ -4285,14 +4422,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4306,14 +4443,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4327,7 +4464,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4337,6 +4474,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleNotEqualDouble()
   {
     OIterator<ValueObject> i = null;
@@ -4356,14 +4495,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4377,7 +4516,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4387,6 +4526,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -4406,14 +4547,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute double values did not return any results when it should have");
+        Assert.fail("A query based on attribute double values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4427,7 +4568,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute double values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4437,6 +4578,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatEqualFloat()
   {
     OIterator<ValueObject> i = null;
@@ -4456,14 +4599,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4477,7 +4620,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4487,6 +4630,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -4506,14 +4651,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4527,7 +4672,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4537,6 +4682,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatGTFloat()
   {
     OIterator<ValueObject> i = null;
@@ -4556,14 +4703,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4577,7 +4724,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4587,6 +4734,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatGTString()
   {
     OIterator<ValueObject> i = null;
@@ -4606,14 +4755,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4627,7 +4776,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4637,6 +4786,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatGEFloat()
   {
     OIterator<ValueObject> i = null;
@@ -4656,14 +4807,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4677,14 +4828,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4698,7 +4849,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4708,6 +4859,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatGEString()
   {
     OIterator<ValueObject> i = null;
@@ -4727,14 +4880,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4748,14 +4901,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4769,7 +4922,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4779,6 +4932,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -4808,14 +4963,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4829,7 +4984,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4845,6 +5000,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatLTFloat()
   {
     OIterator<ValueObject> i = null;
@@ -4864,14 +5021,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4885,7 +5042,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4895,6 +5052,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatLTString()
   {
     OIterator<ValueObject> i = null;
@@ -4914,14 +5073,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4935,7 +5094,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -4945,6 +5104,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatLEFloat()
   {
     OIterator<ValueObject> i = null;
@@ -4964,14 +5125,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -4985,14 +5146,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5006,7 +5167,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5016,6 +5177,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatLEString()
   {
     OIterator<ValueObject> i = null;
@@ -5035,14 +5198,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5056,14 +5219,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5077,7 +5240,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5087,6 +5250,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatNotEqualFloat()
   {
     OIterator<ValueObject> i = null;
@@ -5106,14 +5271,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5127,7 +5292,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5137,6 +5302,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFloatNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -5156,14 +5323,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute float values did not return any results when it should have");
+        Assert.fail("A query based on attribute float values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5177,7 +5344,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute float values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5187,6 +5354,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerEqualInteger()
   {
     OIterator<ValueObject> i = null;
@@ -5206,14 +5375,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5227,7 +5396,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5237,6 +5406,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -5256,14 +5427,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5277,7 +5448,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5287,6 +5458,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerGTInteger()
   {
     OIterator<ValueObject> i = null;
@@ -5306,14 +5479,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5327,7 +5500,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5337,6 +5510,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerGTString()
   {
     OIterator<ValueObject> i = null;
@@ -5356,14 +5531,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5377,7 +5552,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5387,6 +5562,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerGEInteger()
   {
     OIterator<ValueObject> i = null;
@@ -5406,14 +5583,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5427,14 +5604,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5448,7 +5625,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5458,6 +5635,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerGEString()
   {
     OIterator<ValueObject> i = null;
@@ -5477,14 +5656,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5498,14 +5677,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5519,7 +5698,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5529,6 +5708,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -5558,14 +5739,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5579,7 +5760,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5595,6 +5776,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerLTInteger()
   {
     OIterator<ValueObject> i = null;
@@ -5614,14 +5797,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5635,7 +5818,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5645,6 +5828,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerLTString()
   {
     OIterator<ValueObject> i = null;
@@ -5664,14 +5849,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5685,7 +5870,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5695,6 +5880,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerLEInteger()
   {
     OIterator<ValueObject> i = null;
@@ -5714,14 +5901,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5735,14 +5922,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5756,7 +5943,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5766,6 +5953,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerLEString()
   {
     OIterator<ValueObject> i = null;
@@ -5785,14 +5974,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5806,14 +5995,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5827,7 +6016,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5837,6 +6026,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerNotEqualInteger()
   {
     OIterator<ValueObject> i = null;
@@ -5856,14 +6047,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5877,7 +6068,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5887,6 +6078,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testIntegerNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -5906,14 +6099,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute integer values did not return any results when it should have");
+        Assert.fail("A query based on attribute integer values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5927,7 +6120,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute integer values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5937,6 +6130,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongEqualLong()
   {
     OIterator<ValueObject> i = null;
@@ -5956,14 +6151,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -5977,7 +6172,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -5987,6 +6182,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -6006,14 +6203,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6027,7 +6224,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6037,6 +6234,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGTLong()
   {
     OIterator<ValueObject> i = null;
@@ -6056,14 +6255,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6077,7 +6276,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6087,6 +6286,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGTString()
   {
     OIterator<ValueObject> i = null;
@@ -6106,14 +6307,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6127,7 +6328,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6137,6 +6338,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGELong()
   {
     OIterator<ValueObject> i = null;
@@ -6156,14 +6359,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6177,14 +6380,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6198,7 +6401,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6208,6 +6411,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGEString()
   {
     OIterator<ValueObject> i = null;
@@ -6227,14 +6432,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6248,14 +6453,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6269,7 +6474,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6279,6 +6484,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -6308,14 +6515,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6329,7 +6536,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6345,6 +6552,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLTLong()
   {
     OIterator<ValueObject> i = null;
@@ -6364,14 +6573,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6385,7 +6594,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6395,6 +6604,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLTString()
   {
     OIterator<ValueObject> i = null;
@@ -6414,14 +6625,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6435,7 +6646,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6445,6 +6656,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLELong()
   {
     OIterator<ValueObject> i = null;
@@ -6464,14 +6677,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6485,14 +6698,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6506,7 +6719,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6516,6 +6729,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLEString()
   {
     OIterator<ValueObject> i = null;
@@ -6535,14 +6750,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6556,14 +6771,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6577,7 +6792,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6587,6 +6802,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongNotEqualLong()
   {
     OIterator<ValueObject> i = null;
@@ -6606,14 +6823,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6627,7 +6844,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6637,6 +6854,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -6656,14 +6875,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute long values did not return any results when it should have");
+        Assert.fail("A query based on attribute long values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6677,7 +6896,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute long values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6687,6 +6906,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -6706,14 +6927,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6727,7 +6948,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6737,6 +6958,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqualString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -6756,14 +6979,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6777,7 +7000,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6787,6 +7010,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqualStringInArray()
   {
     OIterator<ValueObject> i = null;
@@ -6806,14 +7031,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6827,7 +7052,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6837,6 +7062,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqualStringInArray_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -6856,14 +7083,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6877,7 +7104,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6887,6 +7114,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -6916,14 +7145,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6937,7 +7166,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -6953,6 +7182,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextLikeString()
   {
     OIterator<ValueObject> i = null;
@@ -6972,14 +7203,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -6993,7 +7224,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7003,6 +7234,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextLikeString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -7022,14 +7255,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7043,7 +7276,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7053,6 +7286,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -7072,14 +7307,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7093,7 +7328,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7103,6 +7338,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextNotEqualString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -7122,14 +7359,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7143,7 +7380,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7153,6 +7390,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextNotEqualStringInArray()
   {
     OIterator<ValueObject> i = null;
@@ -7172,14 +7411,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7193,7 +7432,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7203,6 +7442,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextNotEqualStringInArray_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -7222,14 +7463,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7243,7 +7484,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7253,6 +7494,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTextNotLikeString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -7272,14 +7515,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute text values did not return any results when it should have");
+        Assert.fail("A query based on attribute text values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7293,7 +7536,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute text values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7303,6 +7546,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeEqualTime()
   {
     OIterator<ValueObject> i = null;
@@ -7323,14 +7568,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7346,7 +7591,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7356,6 +7601,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -7375,14 +7622,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7396,7 +7643,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7406,6 +7653,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeGTTime()
   {
     OIterator<ValueObject> i = null;
@@ -7426,14 +7675,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7449,7 +7698,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7459,6 +7708,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeGTString()
   {
     OIterator<ValueObject> i = null;
@@ -7478,14 +7729,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7499,7 +7750,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7509,6 +7760,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeGETime()
   {
     OIterator<ValueObject> i = null;
@@ -7529,14 +7782,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7552,14 +7805,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7575,7 +7828,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7585,6 +7838,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeGEString()
   {
     OIterator<ValueObject> i = null;
@@ -7604,14 +7859,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7625,14 +7880,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7646,7 +7901,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7656,6 +7911,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -7685,14 +7942,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7706,7 +7963,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7722,6 +7979,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeLTTime()
   {
     OIterator<ValueObject> i = null;
@@ -7742,14 +8001,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7765,7 +8024,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7775,6 +8034,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeLTString()
   {
     OIterator<ValueObject> i = null;
@@ -7794,14 +8055,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7815,7 +8076,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7825,6 +8086,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeLETime()
   {
     OIterator<ValueObject> i = null;
@@ -7845,14 +8108,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7868,14 +8131,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7891,7 +8154,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7901,6 +8164,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeLEString()
   {
     OIterator<ValueObject> i = null;
@@ -7920,14 +8185,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7941,14 +8206,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -7962,7 +8227,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -7972,6 +8237,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeNotEqualTime()
   {
     OIterator<ValueObject> i = null;
@@ -7992,14 +8259,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8015,7 +8282,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally
@@ -8025,6 +8292,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTimeNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -8044,14 +8313,14 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute time values did not return any results when it should have");
+        Assert.fail("A query based on attribute time values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(business.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -8065,7 +8334,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute time values returned objects when it shouldn't have.");
       }
     }
     finally

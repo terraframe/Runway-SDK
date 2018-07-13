@@ -24,14 +24,16 @@ package com.runwaysdk.dataaccess;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import com.runwaysdk.dataaccess.io.SAXParseTest;
+
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ LocalizationTest.class })
+@Suite.SuiteClasses({ LocalizationTest.class, SAXParseTest.class })
 public class DataAccessTestSuite
 {
   // nothing
 }
 
-// public class DataAccessTestSuite extends TestSuite
+// public class DataAccessTestSuite
 // {
 // @Override
 // public void run(TestResult testResult)

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc;
 
@@ -22,7 +22,10 @@ import java.io.ByteArrayOutputStream;
 import java.util.Locale;
 
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
@@ -45,14 +48,9 @@ import com.runwaysdk.controller.ServletMethod;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class RestResponseTest extends TestCase implements DoNotWeave
+public class RestResponseTest implements DoNotWeave
 {
   private static ClientSession session;
 
@@ -60,41 +58,8 @@ public class RestResponseTest extends TestCase implements DoNotWeave
 
   private static BusinessDTO   mdRelationship;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(RestResponseTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      @Override
-      protected void setUp() throws Exception
-      {
-        classSetup();
-      }
-
-      @Override
-      protected void tearDown() throws Exception
-      {
-        classTeardown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetup()
   {
     session = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -140,6 +105,8 @@ public class RestResponseTest extends TestCase implements DoNotWeave
 
   }
 
+  @Request
+  @AfterClass
   public static void classTeardown()
   {
     ClientRequestIF request = session.getRequest();
@@ -149,6 +116,8 @@ public class RestResponseTest extends TestCase implements DoNotWeave
     session.logout();
   }
 
+  @Request
+  @Test
   public void testHandleBusinessParameter() throws Exception
   {
     String value = "Test Value";
@@ -181,6 +150,8 @@ public class RestResponseTest extends TestCase implements DoNotWeave
     Assert.assertEquals(type, test.get(EntityInfo.TYPE));
   }
 
+  @Request
+  @Test
   public void testHandleJsonConfiguration() throws Exception
   {
     String value = "Test Value";
@@ -228,6 +199,8 @@ public class RestResponseTest extends TestCase implements DoNotWeave
     Assert.assertEquals(type, test.get(EntityInfo.TYPE));
   }
 
+  @Request
+  @Test
   public void testHandleRelationshipParameter() throws Exception
   {
     String type = "test.TestRelationship";
@@ -269,6 +242,8 @@ public class RestResponseTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testHandleBasicParameter() throws Exception
   {
     Integer value = new Integer(12);
@@ -291,6 +266,8 @@ public class RestResponseTest extends TestCase implements DoNotWeave
     Assert.assertEquals(value, object.get("basic"));
   }
 
+  @Request
+  @Test
   public void testHandleSerializableParameter() throws Exception
   {
     String businessType = "test.TestBusiness";

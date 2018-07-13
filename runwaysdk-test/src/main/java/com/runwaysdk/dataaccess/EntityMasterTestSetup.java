@@ -3,23 +3,26 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on Jun 15, 2005
  */
 package com.runwaysdk.dataaccess;
+
+import org.junit.After;
+import org.junit.Before;
 
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -30,10 +33,7 @@ import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestResult;
+import com.runwaysdk.session.Request;
 
 /**
  * EntityMasterTestSetup is a wrapper for various Test classes. It contains
@@ -50,14 +50,8 @@ import junit.framework.TestResult;
  * @version $Revision 1.0 $
  * @since
  */
-public class EntityMasterTestSetup extends TestSetup
+public class EntityMasterTestSetup
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   public static final String   JUNIT_PACKAGE   = "temporary.junit.test";
 
   public static final TypeInfo TEST_CLASS      = new TypeInfo(JUNIT_PACKAGE, "Test");
@@ -86,9 +80,8 @@ public class EntityMasterTestSetup extends TestSetup
    * 
    * @param suite
    */
-  public EntityMasterTestSetup(Test suite)
+  public EntityMasterTestSetup()
   {
-    super(suite);
     cache_code = EntityCacheMaster.CACHE_EVERYTHING.getCacheCode();
   }
 
@@ -103,9 +96,8 @@ public class EntityMasterTestSetup extends TestSetup
    *          Specifies the desired caching on the
    *          EntityMasterTestSetup.TEST_CLASS class
    */
-  public EntityMasterTestSetup(Test suite, int c)
+  public EntityMasterTestSetup(int c)
   {
-    super(suite);
     cache_code = c;
   }
 
@@ -116,6 +108,8 @@ public class EntityMasterTestSetup extends TestSetup
    * can then be used to run tests on.
    */
   @Transaction
+  @Request
+  @Before
   protected void setUp() throws Exception
   {
 
@@ -178,6 +172,8 @@ public class EntityMasterTestSetup extends TestSetup
    * transitively deletes all of the attributes as well.
    */
   @Transaction
+  @Request
+  @After
   protected void tearDown()
   {
     try

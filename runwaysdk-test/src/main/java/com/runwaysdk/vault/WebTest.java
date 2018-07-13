@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.vault;
 
@@ -24,32 +24,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import com.runwaysdk.dataaccess.io.FileReadException;
 import com.runwaysdk.dataaccess.io.SAXParseTest;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.util.FileIO;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
-
-public class WebTest extends TestCase
+public class WebTest
 {
-
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    *
    */
@@ -70,31 +56,11 @@ public class WebTest extends TestCase
    */
   private static final String filePath = SAXParseTest.FILTER_SET;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTestSuite(WebTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   /**
    * The setup done before the test suite is run
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     File file = new File(filePath);
@@ -110,26 +76,12 @@ public class WebTest extends TestCase
   }
 
   /**
-   * The tear down done after all the test in the test suite have run
-   */
-  public static void classTearDown()
-  {
-  }
-
-  /**
-   * No setup needed non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  protected void setUp() throws Exception
-  {
-  }
-
-  /**
    * Delete all MetaData objects which were created in the class
    * 
    * @see junit.framework.TestCase#tearDown()
    */
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
     if (file != null)
@@ -146,6 +98,8 @@ public class WebTest extends TestCase
   /**
    * Test creating a file
    */
+  @Request
+  @Test
   public void testCreateFile()
   {
     file = WebFileDAO.newInstance();
@@ -154,13 +108,15 @@ public class WebTest extends TestCase
     file.setExtension("xml");
     file.setFilePath("test/");
 
-    assertEquals("testFile", file.getFileName());
-    assertEquals("xml", file.getExtension());
-    assertEquals("test/", file.getFilePath());
+    Assert.assertEquals("testFile", file.getFileName());
+    Assert.assertEquals("xml", file.getExtension());
+    Assert.assertEquals("test/", file.getFilePath());
 
     file.apply();
   }
 
+  @Request
+  @Test
   public void testUnspecifiedPath()
   {
     file = WebFileDAO.newInstance();
@@ -168,9 +124,9 @@ public class WebTest extends TestCase
     file.setFileName("testFile");
     file.setExtension("xml");
 
-    assertEquals("testFile", file.getFileName());
-    assertEquals("xml", file.getExtension());
-    assertTrue(!file.getFilePath().equals(""));
+    Assert.assertEquals("testFile", file.getFileName());
+    Assert.assertEquals("xml", file.getExtension());
+    Assert.assertTrue(!file.getFilePath().equals(""));
 
     file.apply();
   }
@@ -178,6 +134,8 @@ public class WebTest extends TestCase
   /**
    * Test writting and getting the bytes from a file in a vault
    */
+  @Request
+  @Test
   public void testPutFile()
   {
     file = WebFileDAO.newInstance();
@@ -194,8 +152,8 @@ public class WebTest extends TestCase
 
     File f = new File(path);
 
-    assertTrue(f.exists());
-    assertTrue(f.isFile());
+    Assert.assertTrue(f.exists());
+    Assert.assertTrue(f.isFile());
 
     // Ensure that the file is the same
     // Ensure that the file is the same
@@ -206,7 +164,7 @@ public class WebTest extends TestCase
     {
       while (bytes1.ready() || bytes2.ready())
       {
-        assertEquals(bytes1.read(), bytes2.read());
+        Assert.assertEquals(bytes1.read(), bytes2.read());
       }
 
       bytes1.close();
@@ -214,13 +172,15 @@ public class WebTest extends TestCase
     }
     catch (IOException e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
   }
 
   /**
    * Test deleting a file in a vault
    */
+  @Request
+  @Test
   public void testDeleteFile()
   {
     file = WebFileDAO.newInstance();
@@ -239,12 +199,14 @@ public class WebTest extends TestCase
     file = null;
 
     File f = new File(path);
-    assertFalse(f.exists());
+    Assert.assertFalse(f.exists());
   }
 
   /**
    * Test deleting an empty file in a vault
    */
+  @Request
+  @Test
   public void testDeleteFile2()
   {
     file = WebFileDAO.newInstance();
@@ -256,14 +218,5 @@ public class WebTest extends TestCase
 
     file.delete();
     file = null;
-  }
-
-  public static void main(String[] args)
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTest(WebTest.suite());
-
-    TestRunner.run(suite);
   }
 }

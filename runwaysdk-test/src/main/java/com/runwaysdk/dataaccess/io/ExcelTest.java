@@ -3,23 +3,30 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
 import java.io.IOException;
 import java.util.Locale;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;
@@ -43,63 +50,29 @@ import com.runwaysdk.system.metadata.MdStruct;
 import com.runwaysdk.transport.conversion.ExcelErrors;
 import com.runwaysdk.util.FileIO;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class ExcelTest extends TestCase
+public class ExcelTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    * List of all XML files to test on
    */
-  public static final String path = TestConstants.Path.XLSFiles + "/";
-  public static final String CORRECT = ExcelTest.path + "correct.xls";
-  public static final String REQUIRED = ExcelTest.path + "required.xls";
-  public static final String GENERATED = ExcelTest.path + "generated.xls";
+  public static final String  path      = TestConstants.Path.XLSFiles + "/";
 
-  private String sessionId;
-  //private ExcelImporter importer;
+  public static final String  CORRECT   = ExcelTest.path + "correct.xls";
+
+  public static final String  REQUIRED  = ExcelTest.path + "required.xls";
+
+  public static final String  GENERATED = ExcelTest.path + "generated.xls";
+
+  private String              sessionId;
+
+  // private ExcelImporter importer;
   private static final String BOOK_TYPE = "test.library.Book";
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ExcelTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
 
   /**
    * The setup done before the test suite is run
    */
   @Request
+  @BeforeClass
   public static void classSetUp()
   {
     MdStruct dimensions = new MdStruct();
@@ -172,19 +145,22 @@ public class ExcelTest extends TestCase
   /**
    * The tear down done after all the test in the test suite have run
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     new MdPackage("test.library").delete();
   }
 
-  @Override
+  @Request
+  @Before
   public void setUp()
   {
-    sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
-    //importer = new ExcelImporter();
+    sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
   }
 
-  @Override
+  @Request
+  @After
   public void tearDown()
   {
     Facade.logout(sessionId);
@@ -202,6 +178,8 @@ public class ExcelTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBasicImport() throws Exception
   {
     basicImport(sessionId);
@@ -211,14 +189,16 @@ public class ExcelTest extends TestCase
   private void basicImport(String sessionId) throws IOException
   {
     ExcelErrors errors = read(CORRECT);
-    if (errors.size()!=0)
-      fail("Expected no problems, but got " + errors.size());
+    if (errors.size() != 0)
+      Assert.fail("Expected no problems, but got " + errors.size());
 
     int size = MdBusinessDAO.getEntityIdsDB(BOOK_TYPE).size();
-    if (size!=3)
-      fail("Expected to create 3 Books, but found " + size);
+    if (size != 3)
+      Assert.fail("Expected to create 3 Books, but found " + size);
   }
 
+  @Request
+  @Test
   public void testFailRequired() throws Exception
   {
     failRequired(sessionId);
@@ -228,10 +208,12 @@ public class ExcelTest extends TestCase
   private void failRequired(String sessionId) throws IOException
   {
     ExcelErrors errors = read(REQUIRED);
-    if (errors.size()!=3)
-      fail("Expected 3 problems, but got " + errors.size());
+    if (errors.size() != 3)
+      Assert.fail("Expected 3 problems, but got " + errors.size());
   }
 
+  @Request
+  @Test
   public void testGenerateTemplate() throws IOException
   {
     ExcelExporter exporter = new ExcelExporter();
@@ -241,8 +223,10 @@ public class ExcelTest extends TestCase
 
   private ExcelErrors read(String fileName) throws IOException
   {
-//    return importer.read(new BufferedInputStream(new FileInputStream(fileName)));
-    // This is not even close to right.  I need to extract information from the xls file.
+    // return importer.read(new BufferedInputStream(new
+    // FileInputStream(fileName)));
+    // This is not even close to right. I need to extract information from the
+    // xls file.
     return null;
   }
 }

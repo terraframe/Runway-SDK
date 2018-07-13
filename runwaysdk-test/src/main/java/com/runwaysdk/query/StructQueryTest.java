@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -24,59 +24,26 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.runwaysdk.business.generation.BusinessQueryAPIGenerator;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.StructQueryAPIGenerator;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
-import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class StructQueryTest extends TestCase
+public class StructQueryTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(StructQueryTest.suite()));
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(StructQueryTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp() {}
-
-      protected void tearDown(){}
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @Test
   public void testStructEnumerationContainsAll()
   {
     try
@@ -87,16 +54,16 @@ public class StructQueryTest extends TestCase
       query.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").containsAll(QueryMasterSetup.connecticutItemId, QueryMasterSetup.coloradoItemId));
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
@@ -108,16 +75,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructEnumerationContainsAll_Generated()
   {
     try
@@ -128,8 +96,8 @@ public class StructQueryTest extends TestCase
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
@@ -137,16 +105,16 @@ public class StructQueryTest extends TestCase
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
-      String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
+      String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
       Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableStruct attributeStruct = (SelectableStruct)queryClass.getMethod("getQueryStruct").invoke(queryObject);
+      SelectableStruct attributeStruct = (SelectableStruct) queryClass.getMethod("getQueryStruct").invoke(queryObject);
       Object attributeEnumeration = basicStructQueryClassIF.getMethod("getStructQueryEnumeration").invoke(attributeStruct);
       Object enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CT", "CO");
       Method method = stateEnumQueryIFClass.getMethod("containsAll", Array.newInstance(stateEnumClass, 0).getClass());
-      Condition condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      Condition condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
@@ -154,46 +122,48 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeStruct = (SelectableStruct)queryClass.getMethod("getQueryStruct").invoke(queryObject);
+      attributeStruct = (SelectableStruct) queryClass.getMethod("getQueryStruct").invoke(queryObject);
       attributeEnumeration = basicStructQueryClassIF.getMethod("getStructQueryEnumeration").invoke(attributeStruct);
       enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CA", "CO");
       method = stateEnumQueryIFClass.getMethod("containsAll", Array.newInstance(stateEnumClass, 0).getClass());
-      condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructEnumerationContainsAny()
   {
     try
@@ -204,16 +174,16 @@ public class StructQueryTest extends TestCase
       query.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").containsAny(QueryMasterSetup.californiaItemId, QueryMasterSetup.coloradoItemId));
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
@@ -225,16 +195,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructEnumerationContainsAny_Generated()
   {
     try
@@ -245,8 +216,8 @@ public class StructQueryTest extends TestCase
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
@@ -254,16 +225,16 @@ public class StructQueryTest extends TestCase
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
-      String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
+      String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
       Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableStruct attributeStruct = (SelectableStruct)queryClass.getMethod("getQueryStruct").invoke(queryObject);
+      SelectableStruct attributeStruct = (SelectableStruct) queryClass.getMethod("getQueryStruct").invoke(queryObject);
       Object attributeEnumeration = basicStructQueryClassIF.getMethod("getStructQueryEnumeration").invoke(attributeStruct);
       Object enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CA", "CO");
       Method method = stateEnumQueryIFClass.getMethod("containsAny", Array.newInstance(stateEnumClass, 0).getClass());
-      Condition condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      Condition condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
@@ -271,46 +242,48 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeStruct = (SelectableStruct)queryClass.getMethod("getQueryStruct").invoke(queryObject);
+      attributeStruct = (SelectableStruct) queryClass.getMethod("getQueryStruct").invoke(queryObject);
       attributeEnumeration = basicStructQueryClassIF.getMethod("getStructQueryEnumeration").invoke(attributeStruct);
       enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CA");
       method = stateEnumQueryIFClass.getMethod("containsAny", Array.newInstance(stateEnumClass, 0).getClass());
-      condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructEnumerationContainsExactly()
   {
     try
@@ -321,16 +294,16 @@ public class StructQueryTest extends TestCase
       query.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").containsExactly(QueryMasterSetup.connecticutItemId, QueryMasterSetup.coloradoItemId));
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
@@ -342,16 +315,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructEnumerationContainsExactly_Generated()
   {
     try
@@ -362,8 +336,8 @@ public class StructQueryTest extends TestCase
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
@@ -371,16 +345,16 @@ public class StructQueryTest extends TestCase
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
-      String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
+      String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
       Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableStruct attributeStruct = (SelectableStruct)queryClass.getMethod("getQueryStruct").invoke(queryObject);
+      SelectableStruct attributeStruct = (SelectableStruct) queryClass.getMethod("getQueryStruct").invoke(queryObject);
       Object attributeEnumeration = basicStructQueryClassIF.getMethod("getStructQueryEnumeration").invoke(attributeStruct);
       Object enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CT", "CO");
       Method method = stateEnumQueryIFClass.getMethod("containsExactly", Array.newInstance(stateEnumClass, 0).getClass());
-      Condition condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      Condition condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
@@ -388,46 +362,48 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeStruct = (SelectableStruct)queryClass.getMethod("getQueryStruct").invoke(queryObject);
+      attributeStruct = (SelectableStruct) queryClass.getMethod("getQueryStruct").invoke(queryObject);
       attributeEnumeration = basicStructQueryClassIF.getMethod("getStructQueryEnumeration").invoke(attributeStruct);
       enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CO", "CA", "CT");
       method = stateEnumQueryIFClass.getMethod("containsExactly", Array.newInstance(stateEnumClass, 0).getClass());
-      condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructEnumerationNotContainsAll()
   {
     try
@@ -438,16 +414,16 @@ public class StructQueryTest extends TestCase
       query.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").notContainsAll(QueryMasterSetup.coloradoItemId, QueryMasterSetup.kansasItemId));
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
@@ -459,16 +435,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructEnumerationNotContainsAll_Generated()
   {
     try
@@ -479,8 +456,8 @@ public class StructQueryTest extends TestCase
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
@@ -488,16 +465,16 @@ public class StructQueryTest extends TestCase
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
-      String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
+      String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
       Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableStruct attributeStruct = (SelectableStruct)queryClass.getMethod("getQueryStruct").invoke(queryObject);
+      SelectableStruct attributeStruct = (SelectableStruct) queryClass.getMethod("getQueryStruct").invoke(queryObject);
       Object attributeEnumeration = basicStructQueryClassIF.getMethod("getStructQueryEnumeration").invoke(attributeStruct);
       Object enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CO", "KS");
       Method method = stateEnumQueryIFClass.getMethod("notContainsAll", Array.newInstance(stateEnumClass, 0).getClass());
-      Condition condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      Condition condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
@@ -505,46 +482,48 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeStruct = (SelectableStruct)queryClass.getMethod("getQueryStruct").invoke(queryObject);
+      attributeStruct = (SelectableStruct) queryClass.getMethod("getQueryStruct").invoke(queryObject);
       attributeEnumeration = basicStructQueryClassIF.getMethod("getStructQueryEnumeration").invoke(attributeStruct);
       enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CT", "CO");
       method = stateEnumQueryIFClass.getMethod("notContainsAll", Array.newInstance(stateEnumClass, 0).getClass());
-      condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructEnumerationNotContainsAny()
   {
     try
@@ -555,16 +534,16 @@ public class StructQueryTest extends TestCase
       query.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").notContainsAny(QueryMasterSetup.californiaItemId, QueryMasterSetup.kansasItemId));
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
@@ -576,16 +555,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructEnumerationNotContainsAny_Generated()
   {
     try
@@ -596,8 +576,8 @@ public class StructQueryTest extends TestCase
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
       // Load the reference query class
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       String stateEnumType = QueryMasterSetup.stateEnum_all.getType();
@@ -605,16 +585,16 @@ public class StructQueryTest extends TestCase
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
-      String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
+      String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
       Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableStruct attributeStruct = (SelectableStruct)queryClass.getMethod("getQueryStruct").invoke(queryObject);
+      SelectableStruct attributeStruct = (SelectableStruct) queryClass.getMethod("getQueryStruct").invoke(queryObject);
       Object attributeEnumeration = basicStructQueryClassIF.getMethod("getStructQueryEnumeration").invoke(attributeStruct);
       Object enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CA", "KS");
       Method method = stateEnumQueryIFClass.getMethod("notContainsAny", Array.newInstance(stateEnumClass, 0).getClass());
-      Condition condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      Condition condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
@@ -622,46 +602,48 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeStruct = (SelectableStruct)queryClass.getMethod("getQueryStruct").invoke(queryObject);
+      attributeStruct = (SelectableStruct) queryClass.getMethod("getQueryStruct").invoke(queryObject);
       attributeEnumeration = basicStructQueryClassIF.getMethod("getStructQueryEnumeration").invoke(attributeStruct);
       enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CO");
       method = stateEnumQueryIFClass.getMethod("notContainsAny", Array.newInstance(stateEnumClass, 0).getClass());
-      condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructBooleanEqBoolean()
   {
     try
@@ -672,16 +654,16 @@ public class StructQueryTest extends TestCase
       query.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").EQ(true));
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
@@ -693,15 +675,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructBooleanEqString()
   {
     try
@@ -713,16 +697,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
@@ -734,16 +718,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructBooleanEqBoolean_Generated()
   {
     try
@@ -753,14 +738,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableBoolean attributeBoolean = (SelectableBoolean)basicStructQueryClassIF.getMethod("getStructQueryBoolean").invoke(attributeStruct);
+      SelectableBoolean attributeBoolean = (SelectableBoolean) basicStructQueryClassIF.getMethod("getStructQueryBoolean").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.EQ(true));
 
       // Load the iterator class
@@ -768,43 +753,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeBoolean = (SelectableBoolean)basicStructQueryClassIF.getMethod("getStructQueryBoolean").invoke(attributeStruct);
+      attributeBoolean = (SelectableBoolean) basicStructQueryClassIF.getMethod("getStructQueryBoolean").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.EQ(false));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructBooleanNotEqString()
   {
     try
@@ -816,16 +803,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
@@ -837,15 +824,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructBooleanNotEqBoolean()
   {
     try
@@ -857,16 +846,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
@@ -878,16 +867,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructBooleanNotEqBoolean_Generated()
   {
     try
@@ -897,14 +887,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableBoolean attributeBoolean = (SelectableBoolean)basicStructQueryClassIF.getMethod("getStructQueryBoolean").invoke(attributeStruct);
+      SelectableBoolean attributeBoolean = (SelectableBoolean) basicStructQueryClassIF.getMethod("getStructQueryBoolean").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.NE(false));
 
       // Load the iterator class
@@ -912,43 +902,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeBoolean = (SelectableBoolean)basicStructQueryClassIF.getMethod("getStructQueryBoolean").invoke(attributeStruct);
+      attributeBoolean = (SelectableBoolean) basicStructQueryClassIF.getMethod("getStructQueryBoolean").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.NE(true));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructCharacterEqString()
   {
     try
@@ -960,16 +952,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -981,16 +973,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterEqString_Generated()
   {
     try
@@ -1000,14 +993,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQ("basic character value"));
 
       // Load the iterator class
@@ -1015,43 +1008,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQ("wrong character value"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructCharacterEqIgnoreCaseString()
   {
     try
@@ -1063,16 +1058,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -1084,16 +1079,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterEqIgnoreCaseString_Generated()
   {
     try
@@ -1103,14 +1099,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQi("BASIC CHARACTER VALUE"));
 
       // Load the iterator class
@@ -1118,43 +1114,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQi("WRONG CHARACTER VALUE"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructCharacterInIgnoreCaseStringArray()
   {
     try
@@ -1166,16 +1164,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -1187,16 +1185,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterInIgnoreCaseStringArray_Generated()
   {
     try
@@ -1206,14 +1205,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.INi("WRONG VALUE 1", "BASIC CHARACTER VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
@@ -1221,43 +1220,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.INi("WRONG VALUE 1", "WRONG VALUE 2", "WRONG VALUE 3"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructCharacterInStringArray()
   {
     try
@@ -1269,16 +1270,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -1290,16 +1291,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterInStringArray_Generated()
   {
     try
@@ -1309,14 +1311,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.IN("wrong value 1", "basic character value", "wrong value 2"));
 
       // Load the iterator class
@@ -1324,43 +1326,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.IN("wrong value 1", "wrong value 2", "wrong value 3"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructCharacterLikeIgnoreCaseString()
   {
     try
@@ -1372,16 +1376,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -1393,16 +1397,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterLikeIgnoreCaseString_Generated()
   {
     try
@@ -1412,14 +1417,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.LIKEi("%CHARACTER%"));
 
       // Load the iterator class
@@ -1427,43 +1432,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.LIKEi("%CHARACTER"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructCharacterLikeString()
   {
     try
@@ -1475,16 +1482,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -1496,16 +1503,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute structcharacter values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute structcharacter values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterLikeString_Generated()
   {
     try
@@ -1515,14 +1523,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.LIKE("%character%"));
 
       // Load the iterator class
@@ -1530,43 +1538,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.LIKE("%character"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructCharacterNotEqIgnoreCaseString()
   {
     try
@@ -1578,16 +1588,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -1599,16 +1609,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterNotEqIgnoreCaseString_Generated()
   {
     try
@@ -1618,14 +1629,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NEi("WRONG CHARACTER STRING"));
 
       // Load the iterator class
@@ -1633,43 +1644,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NEi("BASIC CHARACTER VALUE"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructCharacterNotEqString()
   {
     try
@@ -1681,16 +1694,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -1702,16 +1715,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterNotEqString_Generated()
   {
     try
@@ -1721,14 +1735,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NE("wrong character value"));
 
       // Load the iterator class
@@ -1736,44 +1750,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NE("basic character value"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testStructCharacterNotInIgnoreCaseStringArray()
   {
     try
@@ -1785,16 +1800,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -1806,16 +1821,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -1825,14 +1841,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
@@ -1840,44 +1856,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NIi("WRONG 1", "BASIC CHARACTER VALUE", "WRONG 2"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testStructCharacterNotInStringArray()
   {
     try
@@ -1889,16 +1906,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -1910,16 +1927,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterNotInStringArray_Generated()
   {
     try
@@ -1929,14 +1947,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
@@ -1944,43 +1962,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NI("wrong 1", "basic character value", "wrong 2"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructCharacterNotLikeIgnoreCaseString()
   {
     try
@@ -1992,16 +2012,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute basicerence character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute basicerence character values are incorrect.");
         }
       }
 
@@ -2013,16 +2033,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -2032,14 +2053,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NLIKEi("%WRONG%"));
 
       // Load the iterator class
@@ -2047,43 +2068,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NLIKEi("%CHARACTER%"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructCharacterNotLikeString()
   {
     try
@@ -2095,16 +2118,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct character values are incorrect.");
         }
       }
 
@@ -2116,16 +2139,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructCharacterNotLikeString_Generated()
   {
     try
@@ -2135,14 +2159,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      SelectableChar attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NLIKE("%wrong%"));
 
       // Load the iterator class
@@ -2150,43 +2174,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeCharacter = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
+      attributeCharacter = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryCharacter").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NLIKE("%character%"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateEqString()
   {
     try
@@ -2198,16 +2224,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
@@ -2219,21 +2245,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute basicernce field date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute basicernce field date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testStructDateEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -2242,20 +2269,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-05-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-05-05", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -2265,35 +2292,36 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute basicernce field date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute basicernce field date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateEq_Generated()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
       // Load the iterator class
@@ -2301,45 +2329,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-05-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-05-05", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateGtEqString()
   {
     try
@@ -2351,16 +2381,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
@@ -2369,16 +2399,16 @@ public class StructQueryTest extends TestCase
       query.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GE("2008-11-05"));
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
@@ -2390,20 +2420,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateGtEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -2412,40 +2444,40 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match based on greater than
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       query.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GE(date));
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -2455,36 +2487,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateGtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       // Load the iterator class
@@ -2492,71 +2525,73 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
       // perform a query that WILL find a match based on greater than
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateGtString()
   {
     try
@@ -2568,16 +2603,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
@@ -2589,20 +2624,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateGt()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -2611,20 +2648,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -2634,36 +2671,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateGt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
       // Load the iterator class
@@ -2671,45 +2709,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateLtEqString()
   {
     try
@@ -2721,16 +2761,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
@@ -2740,16 +2780,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
@@ -2761,20 +2801,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateLtEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -2783,20 +2825,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match based on less than
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -2804,20 +2846,20 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -2827,36 +2869,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateLtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       // Load the iterator class
@@ -2864,71 +2907,73 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
       // perform a query that WILL find a match based on less than
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateLtString()
   {
     try
@@ -2940,16 +2985,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
@@ -2961,21 +3006,23 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateLt()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -2984,21 +3031,21 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05", new java.text.ParsePosition(0));
 
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       query.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LT(date));
@@ -3007,36 +3054,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateLt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-07", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
       // Load the iterator class
@@ -3044,45 +3092,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateNotEqString()
   {
     try
@@ -3094,16 +3144,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
@@ -3115,20 +3165,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateNotEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -3137,20 +3189,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct date values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -3160,36 +3212,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateNotEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-05", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
       // Load the iterator class
@@ -3197,45 +3250,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2008-11-06", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDate").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeEqString()
   {
     try
@@ -3247,16 +3302,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
@@ -3268,20 +3323,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -3290,20 +3347,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-05-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-05-05 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -3313,36 +3370,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateTimeEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
       // Load the iterator class
@@ -3350,45 +3408,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-05-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-05-05 13:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeGtEqString()
   {
     try
@@ -3400,16 +3460,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
@@ -3417,18 +3477,18 @@ public class StructQueryTest extends TestCase
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       query.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GE("2008-11-05 13:00:00"));
 
-       iterator = query.getIterator();
+      iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
@@ -3440,21 +3500,23 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeGtEq()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -3463,41 +3525,41 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00", new java.text.ParsePosition(0));
 
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       query.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GE(date));
 
-       iterator = query.getIterator();
+      iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-07 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -3507,36 +3569,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateTimeGtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       // Load the iterator class
@@ -3544,72 +3607,74 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-07 13:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeGtString()
   {
     try
@@ -3621,16 +3686,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
@@ -3642,21 +3707,23 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeGt()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -3665,20 +3732,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-07 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -3688,36 +3755,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateTimeGt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
       // Load the iterator class
@@ -3725,45 +3793,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-07 13:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeLtEqString()
   {
     try
@@ -3775,16 +3845,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
@@ -3794,16 +3864,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
@@ -3815,20 +3885,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeLtEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
@@ -3837,20 +3909,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-07 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match based on less than
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -3858,20 +3930,20 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -3881,36 +3953,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateTimeLtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       // Load the iterator class
@@ -3918,72 +3991,74 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-07 13:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeLtString()
   {
     try
@@ -3995,16 +4070,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
@@ -4016,20 +4091,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeLt()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-07 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-07 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -4038,20 +4115,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -4061,36 +4138,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateTimeLt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-07 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-07 13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
       // Load the iterator class
@@ -4098,45 +4176,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-05 13:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeNotEqString()
   {
     try
@@ -4148,16 +4228,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
@@ -4169,20 +4249,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDateTimeNotEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-05 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-05 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -4191,20 +4273,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct datetime values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -4214,36 +4296,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDateTimeNotEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-05 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-12-05 13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
       // Load the iterator class
@@ -4251,45 +4334,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2008-11-06 12:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryDateTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalEqString()
   {
     try
@@ -4301,16 +4386,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
       }
 
@@ -4322,15 +4407,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalEq()
   {
     try
@@ -4342,16 +4429,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
       }
 
@@ -4363,16 +4450,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDecimalEq_Generated()
   {
     try
@@ -4382,14 +4470,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.EQ(new BigDecimal(300.5)));
 
       // Load the iterator class
@@ -4397,43 +4485,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.EQ(new BigDecimal(301.5)));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalGtString()
   {
     try
@@ -4445,16 +4535,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -4466,15 +4556,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalGt()
   {
     try
@@ -4486,16 +4578,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -4507,16 +4599,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDecimalGt_Generated()
   {
     try
@@ -4526,14 +4619,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(new BigDecimal(300)));
 
       // Load the iterator class
@@ -4541,43 +4634,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(new BigDecimal(301)));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalGtEqString()
   {
     try
@@ -4589,16 +4684,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -4608,16 +4703,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -4629,15 +4724,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalGtEq()
   {
     try
@@ -4649,16 +4746,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -4668,16 +4765,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -4689,16 +4786,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDecimalGtEq_Generated()
   {
     try
@@ -4708,15 +4806,15 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(new BigDecimal(300.5)));
 
       // Load the iterator class
@@ -4724,69 +4822,70 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(new BigDecimal(300)));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(new BigDecimal(301)));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalLtString()
   {
     try
@@ -4798,16 +4897,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -4819,15 +4918,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalLt()
   {
     try
@@ -4839,16 +4940,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -4860,16 +4961,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDecimalLt_Generated()
   {
     try
@@ -4879,14 +4981,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LT(new BigDecimal(301)));
 
       // Load the iterator class
@@ -4894,43 +4996,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LT(new BigDecimal(300)));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalLtEqString()
   {
     try
@@ -4942,16 +5046,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -4961,16 +5065,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -4982,15 +5086,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalLtEq()
   {
     try
@@ -5002,16 +5108,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -5021,16 +5127,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -5042,16 +5148,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDecimalLtEq_Generated()
   {
     try
@@ -5061,15 +5168,15 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(new BigDecimal(300.5)));
 
       // Load the iterator class
@@ -5077,68 +5184,70 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(new BigDecimal(301)));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(new BigDecimal(299)));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalNotEqString()
   {
     try
@@ -5150,16 +5259,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -5171,15 +5280,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDecimalNotEq()
   {
     try
@@ -5191,16 +5302,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct decimal values are incorrect.");
         }
       }
 
@@ -5212,16 +5323,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDecimalNotEq_Generated()
   {
     try
@@ -5231,14 +5343,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(new BigDecimal(301)));
 
       // Load the iterator class
@@ -5246,43 +5358,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDecimal = (SelectableDecimal)basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
+      attributeDecimal = (SelectableDecimal) basicStructQueryClassIF.getMethod("getStructQueryDecimal").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(new BigDecimal(300.5)));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDoubleEqString()
   {
     try
@@ -5294,16 +5408,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
@@ -5315,15 +5429,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDoubleEq()
   {
     try
@@ -5335,16 +5451,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
@@ -5356,17 +5472,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
-  
+  @Request
+  @Test
   public void testStructDoubleEq_Generated()
   {
     try
@@ -5376,14 +5492,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDouble attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      SelectableDouble attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.EQ(300.5));
 
       // Load the iterator class
@@ -5391,43 +5507,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.EQ(301.5));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDoubleGtString()
   {
     try
@@ -5439,16 +5557,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
@@ -5460,15 +5578,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDoubleGt()
   {
     try
@@ -5476,41 +5596,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GT((double)300));
+      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GT((double) 300));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GT((double)301));
+      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GT((double) 301));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDoubleGt_Generated()
   {
     try
@@ -5520,58 +5641,60 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDouble attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT((double)300));
+      SelectableDouble attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT((double) 300));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT((double)301));
+      attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT((double) 301));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDoubleGtEqString()
   {
     try
@@ -5583,16 +5706,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
@@ -5602,16 +5725,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
@@ -5623,15 +5746,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDoubleGtEq()
   {
     try
@@ -5643,56 +5768,57 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GE((double)300));
+      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GE((double) 300));
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GE((double)301));
+      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GE((double) 301));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDoubleGtEq_Generated()
   {
     try
@@ -5703,14 +5829,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDouble attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      SelectableDouble attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE(300.5));
 
       // Load the iterator class
@@ -5718,68 +5844,70 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE((double)300));
+      attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE((double) 300));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE((double)301));
+      attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE((double) 301));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDoubleLtString()
   {
     try
@@ -5791,16 +5919,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
@@ -5812,16 +5940,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDoubleLt_Generated()
   {
     try
@@ -5829,40 +5958,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LT((double)301));
+      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LT((double) 301));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LT((double)300));
+      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LT((double) 300));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDoubleLtEqString()
   {
     try
@@ -5874,16 +6005,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
@@ -5893,16 +6024,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
@@ -5914,15 +6045,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDoubleLtEq()
   {
     try
@@ -5934,56 +6067,57 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on less than
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LE((double)301));
+      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LE((double) 301));
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LE((double)299));
+      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LE((double) 299));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDoubleLtEq_Generated()
   {
     try
@@ -5994,14 +6128,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDouble attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      SelectableDouble attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE(300.5));
 
       // Load the iterator class
@@ -6009,68 +6143,70 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on less than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE((double)301));
+      attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE((double) 301));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE((double)299));
+      attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE((double) 299));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructDoubleNotEqString()
   {
     try
@@ -6082,16 +6218,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
@@ -6103,16 +6239,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testStructDoubleNotEq()
   {
     try
@@ -6120,41 +6257,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").NE((double)301));
+      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").NE((double) 301));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct double values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").NE((double)300.5));
+      query.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").NE((double) 300.5));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructDoubleNotEq_Generated()
   {
     try
@@ -6165,58 +6303,60 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableDouble attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE((double)301));
+      SelectableDouble attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE((double) 301));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeDouble = (SelectableDouble)basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE((double)300.5));
+      attributeDouble = (SelectableDouble) basicStructQueryClassIF.getMethod("getStructQueryDouble").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE((double) 300.5));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatEqString()
   {
     try
@@ -6228,16 +6368,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
@@ -6249,15 +6389,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatEq()
   {
     try
@@ -6265,41 +6407,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").EQ((float)300.5));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").EQ((float) 300.5));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").EQ((float)301.5));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").EQ((float) 301.5));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructFloatEq_Generated()
   {
     try
@@ -6310,58 +6453,60 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableFloat attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ((float)300.5));
+      SelectableFloat attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ((float) 300.5));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ((float)301.5));
+      attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ((float) 301.5));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatGtString()
   {
     try
@@ -6373,16 +6518,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
@@ -6394,15 +6539,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatGt()
   {
     try
@@ -6410,41 +6557,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GT((float)300));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GT((float) 300));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GT((float)301));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GT((float) 301));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructFloatGt_Generated()
   {
     try
@@ -6455,58 +6603,60 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableFloat attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT((float)300));
+      SelectableFloat attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT((float) 300));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT((float)301));
+      attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT((float) 301));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatGtEqString()
   {
     try
@@ -6518,16 +6668,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
@@ -6537,16 +6687,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
@@ -6558,15 +6708,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatGtEq()
   {
     try
@@ -6574,60 +6726,61 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE((float)300.5));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE((float) 300.5));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE((float)300));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE((float) 300));
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE((float)301));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE((float) 301));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructFloatGtEq_Generated()
   {
     try
@@ -6638,83 +6791,85 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableFloat attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE((float)300.5));
+      SelectableFloat attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE((float) 300.5));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE((float)300));
+      attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE((float) 300));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE((float)301));
+      attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE((float) 301));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatLtString()
   {
     try
@@ -6726,16 +6881,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
@@ -6747,15 +6902,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatLt()
   {
     try
@@ -6763,41 +6920,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LT((float)301));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LT((float) 301));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LT((float)300));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LT((float) 300));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructFloatLt_Generated()
   {
     try
@@ -6808,58 +6966,60 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableFloat attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT((float)301));
+      SelectableFloat attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT((float) 301));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT((float)300));
+      attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT((float) 300));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatLtEqString()
   {
     try
@@ -6871,16 +7031,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
@@ -6890,16 +7050,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
@@ -6911,15 +7071,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatLtEq()
   {
     try
@@ -6927,60 +7089,61 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE((float)300.5));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE((float) 300.5));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on less than
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE((float)301));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE((float) 301));
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE((float)299));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE((float) 299));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructFloatLtEq_Generated()
   {
     try
@@ -6991,83 +7154,85 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableFloat attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE((float)300.5));
+      SelectableFloat attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE((float) 300.5));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE((float)301));
+      attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE((float) 301));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE((float)299));
+      attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE((float) 299));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatNotEqString()
   {
     try
@@ -7079,16 +7244,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
@@ -7100,15 +7265,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructFloatNotEq()
   {
     try
@@ -7116,41 +7283,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").NE((float)301));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").NE((float) 301));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct float values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").NE((float)300.5));
+      query.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").NE((float) 300.5));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructFloatNotEq_Generated()
   {
     try
@@ -7161,58 +7329,60 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableFloat attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE((float)301));
+      SelectableFloat attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE((float) 301));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeFloat = (SelectableFloat)basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE((float)300.5));
+      attributeFloat = (SelectableFloat) basicStructQueryClassIF.getMethod("getStructQueryFloat").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE((float) 300.5));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerEqString()
   {
     try
@@ -7224,16 +7394,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7245,15 +7415,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerEq()
   {
     try
@@ -7265,16 +7437,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7286,16 +7458,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructIntegerEq_Generated()
   {
     try
@@ -7306,14 +7479,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableInteger attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      SelectableInteger attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(300));
 
       // Load the iterator class
@@ -7321,43 +7494,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(301));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerGtString()
   {
     try
@@ -7369,16 +7544,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7390,15 +7565,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerGt()
   {
     try
@@ -7410,16 +7587,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7431,16 +7608,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructIntegerGt_Generated()
   {
     try
@@ -7451,14 +7629,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableInteger attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      SelectableInteger attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(299));
 
       // Load the iterator class
@@ -7466,43 +7644,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(301));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerGtEqString()
   {
     try
@@ -7514,16 +7694,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7533,16 +7713,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7554,15 +7734,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerGtEq()
   {
     try
@@ -7574,16 +7756,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7593,16 +7775,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7614,16 +7796,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructIntegerGtEq_Generated()
   {
     try
@@ -7634,14 +7817,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableInteger attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      SelectableInteger attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(300));
 
       // Load the iterator class
@@ -7649,68 +7832,70 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(299));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(301));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerLtString()
   {
     try
@@ -7722,16 +7907,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7743,15 +7928,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerLt()
   {
     try
@@ -7763,16 +7950,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7784,16 +7971,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructIntegerLt_Generated()
   {
     try
@@ -7804,14 +7992,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableInteger attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      SelectableInteger attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LT(301));
 
       // Load the iterator class
@@ -7819,43 +8007,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LT(300));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerLtEqString()
   {
     try
@@ -7867,16 +8057,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7886,16 +8076,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7907,15 +8097,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerLtEq()
   {
     try
@@ -7927,16 +8119,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7946,16 +8138,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -7967,16 +8159,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructIntegerLtEq_Generated()
   {
     try
@@ -7987,14 +8180,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableInteger attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      SelectableInteger attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(300));
 
       // Load the iterator class
@@ -8002,68 +8195,70 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(301));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(299));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerNotEqString()
   {
     try
@@ -8075,16 +8270,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -8096,15 +8291,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructIntegerNotEq()
   {
     try
@@ -8116,16 +8313,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct integer values are incorrect.");
         }
       }
 
@@ -8137,16 +8334,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructIntegerNotEq_Generated()
   {
     try
@@ -8157,14 +8355,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableInteger attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      SelectableInteger attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(301));
 
       // Load the iterator class
@@ -8172,43 +8370,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeInteger = (SelectableInteger)basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
+      attributeInteger = (SelectableInteger) basicStructQueryClassIF.getMethod("getStructQueryInteger").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(300));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongEqString()
   {
     try
@@ -8220,16 +8420,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
@@ -8241,15 +8441,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongEq()
   {
     try
@@ -8257,41 +8459,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").EQ((long)300));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").EQ((long) 300));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").EQ((long)301));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").EQ((long) 301));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructLongEq_Generated()
   {
     try
@@ -8302,58 +8505,60 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableLong attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ((long)300));
+      SelectableLong attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ((long) 300));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ((long)301));
+      attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ((long) 301));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongGtString()
   {
     try
@@ -8365,16 +8570,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
@@ -8386,15 +8591,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongGt()
   {
     try
@@ -8402,41 +8609,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GT((long)299));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GT((long) 299));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GT((long)301));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GT((long) 301));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructLongGt_Generated()
   {
     try
@@ -8447,58 +8655,60 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableLong attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT((long)299));
+      SelectableLong attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT((long) 299));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT((long)301));
+      attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT((long) 301));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongGtEqString()
   {
     try
@@ -8510,16 +8720,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
@@ -8529,16 +8739,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
@@ -8550,15 +8760,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongGtEq()
   {
     try
@@ -8566,60 +8778,61 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match based on equals
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE((long)300));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE((long) 300));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE((long)299));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE((long) 299));
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE((long)301));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE((long) 301));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructLongGtEq_Generated()
   {
     try
@@ -8630,83 +8843,85 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableLong attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE((long)300));
+      SelectableLong attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE((long) 300));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on greater than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE((long)299));
+      attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE((long) 299));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE((long)301));
+      attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE((long) 301));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongLtString()
   {
     try
@@ -8718,16 +8933,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
@@ -8739,15 +8954,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongLt()
   {
     try
@@ -8755,41 +8972,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LT((long)301));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LT((long) 301));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LT((long)300));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LT((long) 300));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructLongLt_Generated()
   {
     try
@@ -8800,58 +9018,60 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableLong attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT((long)301));
+      SelectableLong attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT((long) 301));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT((long)300));
+      attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT((long) 300));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongLtEqString()
   {
     try
@@ -8863,16 +9083,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
@@ -8882,16 +9102,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
@@ -8903,15 +9123,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongLtEq()
   {
     try
@@ -8919,60 +9141,61 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE((long)300));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE((long) 300));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on less than
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE((long)301));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE((long) 301));
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE((long)299));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE((long) 299));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructLongLtEq_Generated()
   {
     try
@@ -8983,83 +9206,85 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableLong attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE((long)300));
+      SelectableLong attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE((long) 300));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       // perform a query that WILL find a match based on less than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE((long)301));
+      attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE((long) 301));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE((long)299));
+      attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE((long) 299));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongNotEqString()
   {
     try
@@ -9071,16 +9296,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
@@ -9092,15 +9317,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructLongNotEq()
   {
     try
@@ -9108,41 +9335,42 @@ public class StructQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").NE((long)301));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").NE((long) 301));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct long values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").NE((long)300));
+      query.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").NE((long) 300));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructLongNotEq_Generated()
   {
     try
@@ -9153,58 +9381,60 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableLong attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE((long)301));
+      SelectableLong attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE((long) 301));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeLong = (SelectableLong)basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE((long)300));
+      attributeLong = (SelectableLong) basicStructQueryClassIF.getMethod("getStructQueryLong").invoke(attributeStruct);
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE((long) 300));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTextEqString()
   {
     try
@@ -9216,16 +9446,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -9237,15 +9467,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobEqString()
   {
     try
@@ -9257,16 +9489,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -9278,16 +9510,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTextEqString_Generated()
   {
     try
@@ -9298,14 +9531,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQ("basic text value"));
 
       // Load the iterator class
@@ -9313,44 +9546,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQ("wrong text value"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobEqString_Generated()
   {
     try
@@ -9361,14 +9595,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQ("basic clob value"));
 
       // Load the iterator class
@@ -9376,44 +9610,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQ("wrong clob value"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testStructTextEqIgnoreCaseString()
   {
     try
@@ -9425,16 +9660,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -9446,15 +9681,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobEqIgnoreCaseString()
   {
     try
@@ -9466,16 +9703,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -9487,16 +9724,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTextEqIgnoreCaseString_Generated()
   {
     try
@@ -9507,14 +9745,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQi("BASIC TEXT VALUE"));
 
       // Load the iterator class
@@ -9522,44 +9760,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQi("WRONG TEXT VALUE"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobEqIgnoreCaseString_Generated()
   {
     try
@@ -9570,14 +9809,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQi("BASIC CLOB VALUE"));
 
       // Load the iterator class
@@ -9585,43 +9824,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQi("WRONG CLOB VALUE"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTextInStringArray()
   {
     try
@@ -9633,16 +9874,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -9654,15 +9895,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobInStringArray()
   {
     try
@@ -9674,16 +9917,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -9695,16 +9938,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTextInStringArray_Generated()
   {
     try
@@ -9715,14 +9959,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.IN("wrong value 1", "basic text value", "wrong value 2"));
 
       // Load the iterator class
@@ -9730,44 +9974,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.IN("wrong value 1", "wrong value 2", "wrong value 3"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobInStringArray_Generated()
   {
     try
@@ -9778,14 +10023,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.IN("wrong value 1", "basic clob value", "wrong value 2"));
 
       // Load the iterator class
@@ -9793,43 +10038,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.IN("wrong value 1", "wrong value 2", "wrong value 3"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTextInIgnoreCaseStringArray()
   {
     try
@@ -9841,16 +10088,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -9862,15 +10109,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobInIgnoreCaseStringArray()
   {
     try
@@ -9882,16 +10131,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -9903,16 +10152,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTextInIgnoreCaseStringArray_Generated()
   {
     try
@@ -9923,14 +10173,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.INi("WRONG VALUE 1", "BASIC TEXT VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
@@ -9938,44 +10188,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.INi("WRONG VALUE 1", "WRONG VALUE 2", "WRONG VALUE 3"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobInIgnoreCaseStringArray_Generated()
   {
     try
@@ -9986,14 +10237,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.INi("WRONG VALUE 1", "BASIC CLOB VALUE", "WRONG VALUE 2"));
 
       // Load the iterator class
@@ -10001,44 +10252,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.INi("WRONG VALUE 1", "WRONG VALUE 2", "WRONG VALUE 3"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testStructTextLikeString()
   {
     try
@@ -10050,16 +10302,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -10071,15 +10323,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobLikeString()
   {
     try
@@ -10091,16 +10345,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -10112,16 +10366,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTextLikeString_Generated()
   {
     try
@@ -10132,14 +10387,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKE("%text%"));
 
       // Load the iterator class
@@ -10147,44 +10402,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKE("%text"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobLikeString_Generated()
   {
     try
@@ -10195,14 +10451,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKE("%clob%"));
 
       // Load the iterator class
@@ -10210,43 +10466,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKE("%clob"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTextLikeIgnoreCaseString()
   {
     try
@@ -10258,16 +10516,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -10279,15 +10537,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobLikeIgnoreCaseString()
   {
     try
@@ -10299,16 +10559,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -10320,16 +10580,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTextLikeIgnoreCaseString_Generated()
   {
     try
@@ -10340,14 +10601,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKEi("%TEXT%"));
 
       // Load the iterator class
@@ -10355,44 +10616,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKEi("%TEXT"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobLikeIgnoreCaseString_Generated()
   {
     try
@@ -10403,14 +10665,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKEi("%CLOB%"));
 
       // Load the iterator class
@@ -10418,43 +10680,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.LIKEi("%CLOB"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTextNotEqString()
   {
     try
@@ -10466,16 +10730,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -10487,15 +10751,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobNotEqString()
   {
     try
@@ -10507,16 +10773,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -10528,16 +10794,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTextNotEqString_Generated()
   {
     try
@@ -10548,14 +10815,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NE("wrong text value"));
 
       // Load the iterator class
@@ -10563,44 +10830,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NE("basic text value"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobNotEqString_Generated()
   {
     try
@@ -10611,14 +10879,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NE("wrong clob value"));
 
       // Load the iterator class
@@ -10626,43 +10894,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NE("basic clob value"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTextNotEqIgnoreCaseString()
   {
     try
@@ -10674,16 +10944,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -10695,15 +10965,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobNotEqIgnoreCaseString()
   {
     try
@@ -10715,16 +10987,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -10736,16 +11008,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTextNotEqIgnoreCaseString_Generated()
   {
     try
@@ -10756,14 +11029,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NEi("WRONG TEXT STRING"));
 
       // Load the iterator class
@@ -10771,44 +11044,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NEi("BASIC TEXT VALUE"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobNotEqIgnoreCaseString_Generated()
   {
     try
@@ -10819,14 +11093,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NEi("WRONG CLOB STRING"));
 
       // Load the iterator class
@@ -10834,44 +11108,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NEi("BASIC CLOB VALUE"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testStructTextNotInStringArray()
   {
     try
@@ -10883,16 +11158,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -10904,15 +11179,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobNotInStringArray()
   {
     try
@@ -10924,16 +11201,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -10945,16 +11222,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTextNotInStringArray_Generated()
   {
     try
@@ -10965,14 +11243,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
@@ -10980,44 +11258,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NI("wrong 1", "basic text value", "wrong 2"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobNotInStringArray_Generated()
   {
     try
@@ -11028,14 +11307,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NI("wrong 1", "wrong 2", "wrong 3"));
 
       // Load the iterator class
@@ -11043,43 +11322,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NI("wrong 1", "basic clob value", "wrong 2"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTextNotInIgnoreCaseStringArray()
   {
     try
@@ -11091,16 +11372,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -11112,15 +11393,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobNotInIgnoreCaseStringArray()
   {
     try
@@ -11132,16 +11415,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -11153,16 +11436,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTextNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -11173,14 +11457,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
@@ -11188,44 +11472,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NIi("WRONG 1", "BASIC TEXT VALUE", "WRONG 2"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -11236,14 +11521,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       // Load the iterator class
@@ -11251,43 +11536,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NIi("WRONG 1", "BASIC CLOB VALUE", "WRONG 2"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTextNotLikeString()
   {
     try
@@ -11299,16 +11586,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -11320,15 +11607,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobNotLikeString()
   {
     try
@@ -11340,16 +11629,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -11361,17 +11650,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
-  
+  @Request
+  @Test
   public void testStructTextNotLikeString_Generated()
   {
     try
@@ -11382,14 +11671,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKE("%wrong%"));
 
       // Load the iterator class
@@ -11397,44 +11686,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKE("%text%"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobNotLikeString_Generated()
   {
     try
@@ -11445,14 +11735,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKE("%wrong%"));
 
       // Load the iterator class
@@ -11460,43 +11750,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKE("%clob%"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTextNotLikeIgnoreCaseString()
   {
     try
@@ -11508,16 +11800,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct text values are incorrect.");
         }
       }
 
@@ -11529,15 +11821,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructClobNotLikeIgnoreCaseString()
   {
     try
@@ -11549,16 +11843,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct Clob values are incorrect.");
         }
       }
 
@@ -11570,17 +11864,17 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
-  
+  @Request
+  @Test
   public void testStructTextNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -11591,14 +11885,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKEi("%WRONG%"));
 
       // Load the iterator class
@@ -11606,44 +11900,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryText").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKEi("%TEXT%"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructClobNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -11654,14 +11949,14 @@ public class StructQueryTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableChar attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      SelectableChar attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKEi("%WRONG%"));
 
       // Load the iterator class
@@ -11669,43 +11964,45 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeChar = (SelectableChar)basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
+      attributeChar = (SelectableChar) basicStructQueryClassIF.getMethod("getStructQueryClob").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.NLIKEi("%CLOB%"));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeEqString()
   {
     try
@@ -11717,16 +12014,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
@@ -11738,20 +12035,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11760,20 +12059,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -11783,36 +12082,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTimeEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
       // Load the iterator class
@@ -11820,45 +12120,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.EQ(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeGtString()
   {
     try
@@ -11870,16 +12172,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
@@ -11891,20 +12193,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeGt()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -11913,20 +12217,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -11936,36 +12240,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTimeGt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
       // Load the iterator class
@@ -11973,45 +12278,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GT(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeGtEqString()
   {
     try
@@ -12023,16 +12330,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
@@ -12041,16 +12348,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
@@ -12062,20 +12369,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeGtEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -12084,40 +12393,40 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00", new java.text.ParsePosition(0));
 
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       query.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GE(date));
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -12127,36 +12436,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTimeGtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       // Load the iterator class
@@ -12164,71 +12474,73 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.GE(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeLtString()
   {
     try
@@ -12240,16 +12552,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
@@ -12261,20 +12573,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeLt()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -12283,20 +12597,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -12306,36 +12620,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTimeLt_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
       // Load the iterator class
@@ -12343,45 +12658,47 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LT(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeLtEqString()
   {
     try
@@ -12393,16 +12710,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
@@ -12411,16 +12728,16 @@ public class StructQueryTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
@@ -12432,20 +12749,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeLtEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -12454,40 +12773,40 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       query.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LE(date));
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -12497,36 +12816,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTimeLtEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       // Load the iterator class
@@ -12534,71 +12854,73 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("11:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.LE(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeNotEqString()
   {
     try
@@ -12610,16 +12932,16 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
@@ -12631,20 +12953,22 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testStructTimeNotEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -12653,20 +12977,20 @@ public class StructQueryTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
         if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct time values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -12676,36 +13000,37 @@ public class StructQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute struct time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testStructTimeNotEq_Generated()
   {
     try
     {
       // perform a query that WILL find a match based on equals
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class<?> objectClass = LoaderDecorator.load(type);
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
 
-      MdStructDAOIF mdStructIF = (MdStructDAOIF)MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
-      String basicStructQueryIFType =  StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
+      MdStructDAOIF mdStructIF = (MdStructDAOIF) MdStructDAO.getMdStructDAO(QueryMasterSetup.mdStruct.definesType());
+      String basicStructQueryIFType = StructQueryAPIGenerator.getAttrStructInterfaceCompiled(mdStructIF);
       Class<?> basicStructQueryClassIF = LoaderDecorator.load(basicStructQueryIFType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      SelectableMoment attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      SelectableMoment attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
       // Load the iterator class
@@ -12713,42 +13038,42 @@ public class StructQueryTest extends TestCase
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("The objects returned by a query based on attribute struct values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute struct values are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeStruct = queryClass.getMethod("getQueryStruct").invoke(queryObject);
-      attributeMoment = (SelectableMoment)basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
+      attributeMoment = (SelectableMoment) basicStructQueryClassIF.getMethod("getStructQueryTime").invoke(attributeStruct);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeMoment.NE(date));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute struct values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute struct values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 }

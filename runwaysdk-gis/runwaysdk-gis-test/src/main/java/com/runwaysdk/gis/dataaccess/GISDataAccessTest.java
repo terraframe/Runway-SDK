@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis.dataaccess;
 
@@ -24,6 +24,9 @@ import static org.junit.Assert.fail;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -58,20 +61,8 @@ import com.vividsolutions.jts.io.WKTReader;
 
 public class GISDataAccessTest extends GISAbstractTest
 {
-  @BeforeClass
   @Request
-  public static void classSetUp()
-  {
-  }
-
-  @AfterClass
-  @Request
-  public static void classTearDown()
-  {
-  }
-
   @Test
-  @Request
   public void testInvalidDimension()
   {
     MdAttributePointDAO mdAttributePointDAO = MdAttributePointDAO.newInstance();
@@ -80,16 +71,14 @@ public class GISDataAccessTest extends GISAbstractTest
     {
       mdAttributePointDAO.setValue(MdAttributePointInfo.NAME, "inalidPoint");
       mdAttributePointDAO.setValue(MdAttributePointInfo.DISPLAY_LABEL, "Invalid Point");
-      mdAttributePointDAO.setValue(MdAttributePointInfo.DESCRIPTION,
-          "An invalid point with an invalid dimension");
+      mdAttributePointDAO.setValue(MdAttributePointInfo.DESCRIPTION, "An invalid point with an invalid dimension");
       mdAttributePointDAO.setValue(MdAttributePointInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributePointDAO.setValue(MdAttributePointInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
       mdAttributePointDAO.setValue(MdAttributePointInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributePointDAO.setValue(MdAttributePointInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
       mdAttributePointDAO.setValue(MdAttributePointInfo.SRID, "4326");
       mdAttributePointDAO.setValue(MdAttributePointInfo.DIMENSION, "5");
-      mdAttributePointDAO.setValue(MdAttributePointInfo.DEFINING_MD_CLASS,
-          GISMasterTestSetup.testClassMdBusinessDAO.getId());
+      mdAttributePointDAO.setValue(MdAttributePointInfo.DEFINING_MD_CLASS, GISMasterTestSetup.testClassMdBusinessDAO.getId());
       mdAttributePointDAO.apply();
     }
     catch (InvalidDimensionException e)
@@ -108,8 +97,8 @@ public class GISDataAccessTest extends GISAbstractTest
   /**
    *
    */
-  @Test
   @Request
+  @Test
   public void testPointCRUD()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -122,8 +111,8 @@ public class GISDataAccessTest extends GISAbstractTest
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
       Point point = ( (AttributePointIF) businessDAOIF.getAttributeIF("testPoint") ).getPoint();
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
 
       businessDAO = businessDAOIF.getBusinessDAO();
       ( (AttributePoint) businessDAO.getAttribute("testPoint") ).setValue(191108, 243242);
@@ -132,8 +121,8 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       point = ( (AttributePointIF) businessDAOIF.getAttributeIF("testPoint") ).getPoint();
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
     }
 
     finally
@@ -149,8 +138,8 @@ public class GISDataAccessTest extends GISAbstractTest
   /**
   *
   */
-  @Test
   @Request
+  @Test
   public void testPointCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -163,8 +152,8 @@ public class GISDataAccessTest extends GISAbstractTest
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
       Point point = ( (AttributePointIF) businessDAOIF.getAttributeIF("testPoint") ).getPoint();
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
 
       businessDAO = businessDAOIF.getBusinessDAO();
       ( (AttributePoint) businessDAO.getAttribute("testPoint") ).setValue("POINT(191108 243242)");
@@ -173,8 +162,8 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       point = ( (AttributePointIF) businessDAOIF.getAttributeIF("testPoint") ).getPoint();
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
     }
     finally
     {
@@ -190,6 +179,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
+  @Request
+  @Test
   public void testLineStringCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -202,13 +193,12 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      LineString lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") )
-          .getLineString();
+      LineString lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") ).getLineString();
 
       WKTReader reader = new WKTReader();
       LineString expectedLine = (LineString) reader.read(lineStringText1);
 
-      assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
+      Assert.assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
 
       String lineStringText2 = "LINESTRING (189141 244158, 189265 244817)";
 
@@ -217,16 +207,15 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") )
-          .getLineString();
+      lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") ).getLineString();
 
       expectedLine = (LineString) reader.read(lineStringText2);
 
-      assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
+      Assert.assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -242,6 +231,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
+  @Request
+  @Test
   public void testPolygonCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -254,13 +245,12 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      Polygon polygon = ( (AttributePolygonIF) businessDAOIF.getAttributeIF("testPolygon") )
-          .getPolygon();
+      Polygon polygon = ( (AttributePolygonIF) businessDAOIF.getAttributeIF("testPolygon") ).getPolygon();
 
       WKTReader reader = new WKTReader();
       Polygon expectedPolygon = (Polygon) reader.read(polygonText1);
 
-      assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
+      Assert.assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
 
       String polygonText2 = "POLYGON (( 10 10, 15 25, 40 40, 30 25, 10 10))";
 
@@ -273,11 +263,11 @@ public class GISDataAccessTest extends GISAbstractTest
 
       expectedPolygon = (Polygon) reader.read(polygonText2);
 
-      assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
+      Assert.assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -293,6 +283,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
+  @Request
+  @Test
   public void testMultiPointCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -305,13 +297,12 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      MultiPoint multiPoint = ( (AttributeMultiPointIF) businessDAOIF.getAttributeIF("testMultiPoint") )
-          .getMultiPoint();
+      MultiPoint multiPoint = ( (AttributeMultiPointIF) businessDAOIF.getAttributeIF("testMultiPoint") ).getMultiPoint();
 
       WKTReader reader = new WKTReader();
       MultiPoint expectedMultiPoint = (MultiPoint) reader.read(multiPointText1);
 
-      assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
+      Assert.assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
 
       String multiPointText2 = "MULTIPOINT(191108 243242, 30000 40000)";
 
@@ -320,16 +311,15 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiPoint = ( (AttributeMultiPoint) businessDAOIF.getAttributeIF("testMultiPoint") )
-          .getMultiPoint();
+      multiPoint = ( (AttributeMultiPoint) businessDAOIF.getAttributeIF("testMultiPoint") ).getMultiPoint();
 
       expectedMultiPoint = (MultiPoint) reader.read(multiPointText2);
 
-      assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
+      Assert.assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -345,6 +335,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
+  @Request
+  @Test
   public void testMultiLineStringCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -353,39 +345,33 @@ public class GISDataAccessTest extends GISAbstractTest
     {
       String multiLineStringText1 = "MULTILINESTRING ((191232 243118, 191108 243242, 200000 250000, 275000 300000))";
 
-      ( (AttributeMultiLineString) businessDAO.getAttribute("testMultiLineString") )
-          .setValue(multiLineStringText1);
+      ( (AttributeMultiLineString) businessDAO.getAttribute("testMultiLineString") ).setValue(multiLineStringText1);
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      MultiLineString multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF
-          .getAttributeIF("testMultiLineString") ).getMultiLineString();
+      MultiLineString multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF.getAttributeIF("testMultiLineString") ).getMultiLineString();
 
       WKTReader reader = new WKTReader();
       MultiLineString expectedMultiLineString = (MultiLineString) reader.read(multiLineStringText1);
 
-      assertTrue("MultiLineString was not the expected value.",
-          expectedMultiLineString.equalsExact(multiLineString));
+      Assert.assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
 
       String multiLineStringText2 = "MULTILINESTRING ((189141 244158, 189265 244817, 100000 150000, 175000 200000))";
 
       businessDAO = businessDAOIF.getBusinessDAO();
-      ( (AttributeMultiLineString) businessDAO.getAttribute("testMultiLineString") )
-          .setValue(multiLineStringText2);
+      ( (AttributeMultiLineString) businessDAO.getAttribute("testMultiLineString") ).setValue(multiLineStringText2);
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF
-          .getAttributeIF("testMultiLineString") ).getMultiLineString();
+      multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF.getAttributeIF("testMultiLineString") ).getMultiLineString();
 
       expectedMultiLineString = (MultiLineString) reader.read(multiLineStringText2);
 
-      assertTrue("MultiLineString was not the expected value.",
-          expectedMultiLineString.equalsExact(multiLineString));
+      Assert.assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -401,6 +387,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
+  @Request
+  @Test
   public void testMultiPolygonCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -409,39 +397,33 @@ public class GISDataAccessTest extends GISAbstractTest
     {
       String multiPolygonText1 = "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
 
-      ( (AttributeMultiPolygon) businessDAO.getAttribute("testMultiPolygon") )
-          .setValue(multiPolygonText1);
+      ( (AttributeMultiPolygon) businessDAO.getAttribute("testMultiPolygon") ).setValue(multiPolygonText1);
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      MultiPolygon multiPolygon = ( (AttributeMultiPolygonIF) businessDAOIF
-          .getAttributeIF("testMultiPolygon") ).getMultiPolygon();
+      MultiPolygon multiPolygon = ( (AttributeMultiPolygonIF) businessDAOIF.getAttributeIF("testMultiPolygon") ).getMultiPolygon();
 
       WKTReader reader = new WKTReader();
       MultiPolygon expectedMultiPolygon = (MultiPolygon) reader.read(multiPolygonText1);
 
-      assertTrue("MultiPolygon was not the expected value.",
-          expectedMultiPolygon.equalsExact(multiPolygon));
+      Assert.assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
 
       String multiPolygonText2 = "MULTIPOLYGON(((1 1,5 1,10 10,1 5,1 1),(2 2, 3 2, 6 6, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
 
       businessDAO = businessDAOIF.getBusinessDAO();
-      ( (AttributeMultiPolygon) businessDAO.getAttribute("testMultiPolygon") )
-          .setValue(multiPolygonText2);
+      ( (AttributeMultiPolygon) businessDAO.getAttribute("testMultiPolygon") ).setValue(multiPolygonText2);
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiPolygon = ( (AttributeMultiPolygon) businessDAOIF.getAttributeIF("testMultiPolygon") )
-          .getMultiPolygon();
+      multiPolygon = ( (AttributeMultiPolygon) businessDAOIF.getAttributeIF("testMultiPolygon") ).getMultiPolygon();
 
       expectedMultiPolygon = (MultiPolygon) reader.read(multiPolygonText2);
 
-      assertTrue("MultiPolygon was not the expected value.",
-          expectedMultiPolygon.equalsExact(multiPolygon));
+      Assert.assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -453,8 +435,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testNullPointObject()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -467,7 +449,7 @@ public class GISDataAccessTest extends GISAbstractTest
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
       Point point = ( (AttributePointIF) businessDAOIF.getAttributeIF("testPoint") ).getPoint();
 
-      assertEquals("Object Created. Point object should be null.", null, point);
+      Assert.assertEquals("Object Created. Point object should be null.", null, point);
 
       businessDAO = businessDAOIF.getBusinessDAO();
       ( (AttributePoint) businessDAO.getAttribute("testPoint") ).setValue(191108, 243242);
@@ -476,8 +458,8 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       point = ( (AttributePointIF) businessDAOIF.getAttributeIF("testPoint") ).getPoint();
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
 
       businessDAO = businessDAOIF.getBusinessDAO();
       ( (AttributePoint) businessDAO.getAttribute("testPoint") ).setPoint(null);
@@ -486,7 +468,7 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       point = ( (AttributePointIF) businessDAOIF.getAttributeIF("testPoint") ).getPoint();
 
-      assertEquals("Object Updated. Point object should be null.", null, point);
+      Assert.assertEquals("Object Updated. Point object should be null.", null, point);
     }
     finally
     {
@@ -498,8 +480,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testNullLineStringObject()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -512,37 +494,34 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      LineString lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") )
-          .getLineString();
+      LineString lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") ).getLineString();
 
-      assertEquals("Object Created. LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object Created. LineString object should be null.", null, lineString);
 
       businessDAO = businessDAOIF.getBusinessDAO();
       ( (AttributeLineString) businessDAO.getAttribute("testLineString") ).setValue(lineStringText1);
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") )
-          .getLineString();
+      lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") ).getLineString();
 
       WKTReader reader = new WKTReader();
       LineString expectedLine = (LineString) reader.read(lineStringText1);
 
-      assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
+      Assert.assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
 
       businessDAO = businessDAOIF.getBusinessDAO();
       ( (AttributeLineString) businessDAO.getAttribute("testLineString") ).setLineString(null);
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") )
-          .getLineString();
+      lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") ).getLineString();
 
-      assertEquals("Object Updated. LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object Updated. LineString object should be null.", null, lineString);
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -558,8 +537,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
-  @Test
   @Request
+  @Test
   public void testNullPolygonCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -570,10 +549,9 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      Polygon polygon = ( (AttributePolygonIF) businessDAOIF.getAttributeIF("testPolygon") )
-          .getPolygon();
+      Polygon polygon = ( (AttributePolygonIF) businessDAOIF.getAttributeIF("testPolygon") ).getPolygon();
 
-      assertEquals("Object Created. Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object Created. Polygon object should be null.", null, polygon);
 
       String polygonText2 = "POLYGON (( 10 10, 15 25, 40 40, 30 25, 10 10))";
 
@@ -589,7 +567,7 @@ public class GISDataAccessTest extends GISAbstractTest
 
       expectedPolygon = (Polygon) reader.read(polygonText2);
 
-      assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
+      Assert.assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
 
       ( (AttributePolygon) businessDAO.getAttribute("testPolygon") ).setPolygon(null);
       businessDAO.apply();
@@ -597,11 +575,11 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       polygon = ( (AttributePolygonIF) businessDAOIF.getAttributeIF("testPolygon") ).getPolygon();
 
-      assertEquals("Object Created. Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object Created. Polygon object should be null.", null, polygon);
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -617,8 +595,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
-  @Test
   @Request
+  @Test
   public void testNullMultiPointCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -630,10 +608,9 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      MultiPoint multiPoint = ( (AttributeMultiPointIF) businessDAOIF.getAttributeIF("testMultiPoint") )
-          .getMultiPoint();
+      MultiPoint multiPoint = ( (AttributeMultiPointIF) businessDAOIF.getAttributeIF("testMultiPoint") ).getMultiPoint();
 
-      assertEquals("Object Created. MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object Created. MultiPoint object should be null.", null, multiPoint);
 
       String multiPointText2 = "MULTIPOINT(191108 243242, 30000 40000)";
 
@@ -642,13 +619,12 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiPoint = ( (AttributeMultiPoint) businessDAOIF.getAttributeIF("testMultiPoint") )
-          .getMultiPoint();
+      multiPoint = ( (AttributeMultiPoint) businessDAOIF.getAttributeIF("testMultiPoint") ).getMultiPoint();
 
       WKTReader reader = new WKTReader();
       MultiPoint expectedMultiPoint = (MultiPoint) reader.read(multiPointText2);
 
-      assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
+      Assert.assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       businessDAO = businessDAOIF.getBusinessDAO();
@@ -656,14 +632,13 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiPoint = ( (AttributeMultiPointIF) businessDAOIF.getAttributeIF("testMultiPoint") )
-          .getMultiPoint();
+      multiPoint = ( (AttributeMultiPointIF) businessDAOIF.getAttributeIF("testMultiPoint") ).getMultiPoint();
 
-      assertEquals("Object Created. MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object Created. MultiPoint object should be null.", null, multiPoint);
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -679,8 +654,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
-  @Test
   @Request
+  @Test
   public void testNullMultiLineStringCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -691,27 +666,23 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      MultiLineString multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF
-          .getAttributeIF("testMultiLineString") ).getMultiLineString();
+      MultiLineString multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF.getAttributeIF("testMultiLineString") ).getMultiLineString();
 
-      assertEquals("Object Created. MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object Created. MultiLineString object should be null.", null, multiLineString);
 
       String multiLineStringText2 = "MULTILINESTRING ((189141 244158, 189265 244817, 100000 150000, 175000 200000))";
 
       businessDAO = businessDAOIF.getBusinessDAO();
-      ( (AttributeMultiLineString) businessDAO.getAttribute("testMultiLineString") )
-          .setValue(multiLineStringText2);
+      ( (AttributeMultiLineString) businessDAO.getAttribute("testMultiLineString") ).setValue(multiLineStringText2);
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF
-          .getAttributeIF("testMultiLineString") ).getMultiLineString();
+      multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF.getAttributeIF("testMultiLineString") ).getMultiLineString();
 
       WKTReader reader = new WKTReader();
       MultiLineString expectedMultiLineString = (MultiLineString) reader.read(multiLineStringText2);
 
-      assertTrue("MultiLineString was not the expected value.",
-          expectedMultiLineString.equalsExact(multiLineString));
+      Assert.assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       businessDAO = businessDAOIF.getBusinessDAO();
@@ -720,14 +691,13 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF
-          .getAttributeIF("testMultiLineString") ).getMultiLineString();
+      multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF.getAttributeIF("testMultiLineString") ).getMultiLineString();
 
-      assertEquals("Object Created. MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object Created. MultiLineString object should be null.", null, multiLineString);
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -743,8 +713,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
-  @Test
   @Request
+  @Test
   public void testNullMultiPolygonCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -755,28 +725,24 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      MultiPolygon multiPolygon = ( (AttributeMultiPolygonIF) businessDAOIF
-          .getAttributeIF("testMultiPolygon") ).getMultiPolygon();
+      MultiPolygon multiPolygon = ( (AttributeMultiPolygonIF) businessDAOIF.getAttributeIF("testMultiPolygon") ).getMultiPolygon();
 
-      assertEquals("Object Created. MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object Created. MultiPolygon object should be null.", null, multiPolygon);
 
       String multiPolygonText2 = "MULTIPOLYGON(((1 1,5 1,10 10,1 5,1 1),(2 2, 3 2, 6 6, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
       ;
 
       businessDAO = businessDAOIF.getBusinessDAO();
-      ( (AttributeMultiPolygon) businessDAO.getAttribute("testMultiPolygon") )
-          .setValue(multiPolygonText2);
+      ( (AttributeMultiPolygon) businessDAO.getAttribute("testMultiPolygon") ).setValue(multiPolygonText2);
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiPolygon = ( (AttributeMultiPolygon) businessDAOIF.getAttributeIF("testMultiPolygon") )
-          .getMultiPolygon();
+      multiPolygon = ( (AttributeMultiPolygon) businessDAOIF.getAttributeIF("testMultiPolygon") ).getMultiPolygon();
 
       WKTReader reader = new WKTReader();
       MultiPolygon expectedMultiPolygon = (MultiPolygon) reader.read(multiPolygonText2);
 
-      assertTrue("MultiPolygon was not the expected value.",
-          expectedMultiPolygon.equalsExact(multiPolygon));
+      Assert.assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       businessDAO = businessDAOIF.getBusinessDAO();
@@ -784,14 +750,13 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiPolygon = ( (AttributeMultiPolygon) businessDAOIF.getAttributeIF("testMultiPolygon") )
-          .getMultiPolygon();
+      multiPolygon = ( (AttributeMultiPolygon) businessDAOIF.getAttributeIF("testMultiPolygon") ).getMultiPolygon();
 
-      assertEquals("Object Created. MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object Created. MultiPolygon object should be null.", null, multiPolygon);
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -803,8 +768,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testEmptyStringPointObject()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -817,7 +782,7 @@ public class GISDataAccessTest extends GISAbstractTest
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
       Point point = ( (AttributePointIF) businessDAOIF.getAttributeIF("testPoint") ).getPoint();
 
-      assertEquals("Object Created. Point object should be null.", null, point);
+      Assert.assertEquals("Object Created. Point object should be null.", null, point);
 
       businessDAO = businessDAOIF.getBusinessDAO();
       ( (AttributePoint) businessDAO.getAttribute("testPoint") ).setValue(191108, 243242);
@@ -826,8 +791,8 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       point = ( (AttributePointIF) businessDAOIF.getAttributeIF("testPoint") ).getPoint();
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
 
       businessDAO = businessDAOIF.getBusinessDAO();
       businessDAO.setValue("testPoint", "");
@@ -836,7 +801,7 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       point = ( (AttributePointIF) businessDAOIF.getAttributeIF("testPoint") ).getPoint();
 
-      assertEquals("Object Updated. Point object should be null.", null, point);
+      Assert.assertEquals("Object Updated. Point object should be null.", null, point);
 
     }
 
@@ -850,8 +815,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testEmptyStringLineStringObject()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -864,37 +829,34 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      LineString lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") )
-          .getLineString();
+      LineString lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") ).getLineString();
 
-      assertEquals("Object Created. LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object Created. LineString object should be null.", null, lineString);
 
       businessDAO = businessDAOIF.getBusinessDAO();
       ( (AttributeLineString) businessDAO.getAttribute("testLineString") ).setValue(lineStringText1);
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") )
-          .getLineString();
+      lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") ).getLineString();
 
       WKTReader reader = new WKTReader();
       LineString expectedLine = (LineString) reader.read(lineStringText1);
 
-      assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
+      Assert.assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
 
       businessDAO = businessDAOIF.getBusinessDAO();
       businessDAO.setValue("testLineString", "");
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") )
-          .getLineString();
+      lineString = ( (AttributeLineStringIF) businessDAOIF.getAttributeIF("testLineString") ).getLineString();
 
-      assertEquals("Object Updated. LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object Updated. LineString object should be null.", null, lineString);
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -906,8 +868,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testEmptyStringPolygonObject()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -920,10 +882,9 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      Polygon polygon = ( (AttributePolygonIF) businessDAOIF.getAttributeIF("testPolygon") )
-          .getPolygon();
+      Polygon polygon = ( (AttributePolygonIF) businessDAOIF.getAttributeIF("testPolygon") ).getPolygon();
 
-      assertEquals("Object Created. Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object Created. Polygon object should be null.", null, polygon);
 
       businessDAO = businessDAOIF.getBusinessDAO();
       ( (AttributePolygon) businessDAO.getAttribute("testPolygon") ).setValue(polygonText1);
@@ -935,21 +896,20 @@ public class GISDataAccessTest extends GISAbstractTest
       WKTReader reader = new WKTReader();
       Polygon expectedPolygon = (Polygon) reader.read(polygonText1);
 
-      assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(expectedPolygon));
+      Assert.assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(expectedPolygon));
 
       businessDAO = businessDAOIF.getBusinessDAO();
       businessDAO.setValue("testPolygon", "");
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      expectedPolygon = ( (AttributePolygonIF) businessDAOIF.getAttributeIF("testPolygon") )
-          .getPolygon();
+      expectedPolygon = ( (AttributePolygonIF) businessDAOIF.getAttributeIF("testPolygon") ).getPolygon();
 
-      assertEquals("Object Updated. Polygon object should be null.", null, expectedPolygon);
+      Assert.assertEquals("Object Updated. Polygon object should be null.", null, expectedPolygon);
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -965,8 +925,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
-  @Test
   @Request
+  @Test
   public void testEmptyStringMultiPointObject()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -978,10 +938,9 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      MultiPoint multiPoint = ( (AttributeMultiPointIF) businessDAOIF.getAttributeIF("testMultiPoint") )
-          .getMultiPoint();
+      MultiPoint multiPoint = ( (AttributeMultiPointIF) businessDAOIF.getAttributeIF("testMultiPoint") ).getMultiPoint();
 
-      assertEquals("Object Created. MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object Created. MultiPoint object should be null.", null, multiPoint);
 
       String multiPointText2 = "MULTIPOINT(191108 243242, 30000 40000)";
 
@@ -990,13 +949,12 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiPoint = ( (AttributeMultiPoint) businessDAOIF.getAttributeIF("testMultiPoint") )
-          .getMultiPoint();
+      multiPoint = ( (AttributeMultiPoint) businessDAOIF.getAttributeIF("testMultiPoint") ).getMultiPoint();
 
       WKTReader reader = new WKTReader();
       MultiPoint expectedMultiPoint = (MultiPoint) reader.read(multiPointText2);
 
-      assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
+      Assert.assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       businessDAO = businessDAOIF.getBusinessDAO();
@@ -1004,14 +962,13 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiPoint = ( (AttributeMultiPointIF) businessDAOIF.getAttributeIF("testMultiPoint") )
-          .getMultiPoint();
+      multiPoint = ( (AttributeMultiPointIF) businessDAOIF.getAttributeIF("testMultiPoint") ).getMultiPoint();
 
-      assertEquals("Object Created. MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object Created. MultiPoint object should be null.", null, multiPoint);
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1027,8 +984,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
-  @Test
   @Request
+  @Test
   public void testEmptyMultiLineStringCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -1039,27 +996,23 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      MultiLineString multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF
-          .getAttributeIF("testMultiLineString") ).getMultiLineString();
+      MultiLineString multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF.getAttributeIF("testMultiLineString") ).getMultiLineString();
 
-      assertEquals("Object Created. MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object Created. MultiLineString object should be null.", null, multiLineString);
 
       String multiLineStringText2 = "MULTILINESTRING ((189141 244158, 189265 244817, 100000 150000, 175000 200000))";
 
       businessDAO = businessDAOIF.getBusinessDAO();
-      ( (AttributeMultiLineString) businessDAO.getAttribute("testMultiLineString") )
-          .setValue(multiLineStringText2);
+      ( (AttributeMultiLineString) businessDAO.getAttribute("testMultiLineString") ).setValue(multiLineStringText2);
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF
-          .getAttributeIF("testMultiLineString") ).getMultiLineString();
+      multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF.getAttributeIF("testMultiLineString") ).getMultiLineString();
 
       WKTReader reader = new WKTReader();
       MultiLineString expectedMultiLineString = (MultiLineString) reader.read(multiLineStringText2);
 
-      assertTrue("MultiLineString was not the expected value.",
-          expectedMultiLineString.equalsExact(multiLineString));
+      Assert.assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       businessDAO = businessDAOIF.getBusinessDAO();
@@ -1068,14 +1021,13 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF
-          .getAttributeIF("testMultiLineString") ).getMultiLineString();
+      multiLineString = ( (AttributeMultiLineStringIF) businessDAOIF.getAttributeIF("testMultiLineString") ).getMultiLineString();
 
-      assertEquals("Object Created. MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object Created. MultiLineString object should be null.", null, multiLineString);
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1091,8 +1043,8 @@ public class GISDataAccessTest extends GISAbstractTest
    * @throws
    * 
    */
-  @Test
   @Request
+  @Test
   public void testEmptyStringMultiPolygonCRUD_WKT()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -1103,28 +1055,24 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      MultiPolygon multiPolygon = ( (AttributeMultiPolygonIF) businessDAOIF
-          .getAttributeIF("testMultiPolygon") ).getMultiPolygon();
+      MultiPolygon multiPolygon = ( (AttributeMultiPolygonIF) businessDAOIF.getAttributeIF("testMultiPolygon") ).getMultiPolygon();
 
-      assertEquals("Object Created. MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object Created. MultiPolygon object should be null.", null, multiPolygon);
 
       String multiPolygonText2 = "MULTIPOLYGON(((1 1,5 1,10 10,1 5,1 1),(2 2, 3 2, 6 6, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
       ;
 
       businessDAO = businessDAOIF.getBusinessDAO();
-      ( (AttributeMultiPolygon) businessDAO.getAttribute("testMultiPolygon") )
-          .setValue(multiPolygonText2);
+      ( (AttributeMultiPolygon) businessDAO.getAttribute("testMultiPolygon") ).setValue(multiPolygonText2);
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiPolygon = ( (AttributeMultiPolygon) businessDAOIF.getAttributeIF("testMultiPolygon") )
-          .getMultiPolygon();
+      multiPolygon = ( (AttributeMultiPolygon) businessDAOIF.getAttributeIF("testMultiPolygon") ).getMultiPolygon();
 
       WKTReader reader = new WKTReader();
       MultiPolygon expectedMultiPolygon = (MultiPolygon) reader.read(multiPolygonText2);
 
-      assertTrue("MultiPolygon was not the expected value.",
-          expectedMultiPolygon.equalsExact(multiPolygon));
+      Assert.assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
       businessDAO = businessDAOIF.getBusinessDAO();
@@ -1132,14 +1080,13 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.apply();
 
       businessDAOIF = BusinessDAO.get(businessDAO.getId());
-      multiPolygon = ( (AttributeMultiPolygon) businessDAOIF.getAttributeIF("testMultiPolygon") )
-          .getMultiPolygon();
+      multiPolygon = ( (AttributeMultiPolygon) businessDAOIF.getAttributeIF("testMultiPolygon") ).getMultiPolygon();
 
-      assertEquals("Object Created. MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object Created. MultiPolygon object should be null.", null, multiPolygon);
     }
     catch (ParseException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1151,8 +1098,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidPointStringObject()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -1162,7 +1109,7 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.setValue("testPoint", "Total Garbage");
       businessDAO.apply();
 
-      fail("An invalid WKT value was set on a point attribute.");
+      Assert.fail("An invalid WKT value was set on a point attribute.");
     }
     catch (AttributePointParseException e)
     {
@@ -1179,8 +1126,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidLineStringStringObject()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -1190,7 +1137,7 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.setValue("testLineString", "Total Garbage");
       businessDAO.apply();
 
-      fail("An invalid WKT value was set on a LineString attribute.");
+      Assert.fail("An invalid WKT value was set on a LineString attribute.");
     }
     catch (AttributeLineStringParseException e)
     {
@@ -1207,8 +1154,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidPolygonString()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -1218,7 +1165,7 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.setValue("testPolygon", "Total Garbage");
       businessDAO.apply();
 
-      fail("An invalid WKT value was set on a Polygon attribute.");
+      Assert.fail("An invalid WKT value was set on a Polygon attribute.");
     }
     catch (AttributePolygonParseException e)
     {
@@ -1235,8 +1182,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidMultiPointString()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -1246,7 +1193,7 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.setValue("testMultiPoint", "Total Garbage");
       businessDAO.apply();
 
-      fail("An invalid WKT value was set on a MultiPoint attribute.");
+      Assert.fail("An invalid WKT value was set on a MultiPoint attribute.");
     }
     catch (AttributeMultiPointParseException e)
     {
@@ -1263,8 +1210,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidMultiLineStringString()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -1274,7 +1221,7 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.setValue("testMultiLineString", "Total Garbage");
       businessDAO.apply();
 
-      fail("An invalid WKT value was set on a MultiLineString attribute.");
+      Assert.fail("An invalid WKT value was set on a MultiLineString attribute.");
     }
     catch (AttributeMultiLineStringParseException e)
     {
@@ -1291,8 +1238,8 @@ public class GISDataAccessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidMultiPolygonString()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
@@ -1302,7 +1249,7 @@ public class GISDataAccessTest extends GISAbstractTest
       businessDAO.setValue("testMultiPolygon", "Total Garbage");
       businessDAO.apply();
 
-      fail("An invalid WKT value was set on a MultiPolygon attribute.");
+      Assert.fail("An invalid WKT value was set on a MultiPolygon attribute.");
     }
     catch (AttributeMultiPolygonParseException e)
     {

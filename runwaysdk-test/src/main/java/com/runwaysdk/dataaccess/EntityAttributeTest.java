@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on Jun 13, 2005
@@ -33,10 +33,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.ThreadTransactionCallable;
-import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.IndexAttributeInfo;
@@ -63,7 +69,6 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.TermInfo;
-import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthByteException;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
@@ -95,7 +100,6 @@ import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
 import com.runwaysdk.dataaccess.database.general.PostgreSQL;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
-import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -124,12 +128,6 @@ import com.runwaysdk.dataaccess.transaction.TransactionType;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 /**
  * J-Unit tests for class Attribute. Adds several attributes to the
  * MasterTestSetup.TEST_CLASS class:
@@ -152,20 +150,8 @@ import junit.framework.TestSuite;
  * 
  * @author Eric G
  */
-public class EntityAttributeTest extends TestCase
+public class EntityAttributeTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    * <code>testObject</code> is a BusinessDAO that is mapped to a new instance
    * of the MasterTestSetup.TEST_CLASS class for each test. Values are set and
@@ -187,50 +173,8 @@ public class EntityAttributeTest extends TestCase
 
   private static MdTermDAO                            testTerm;
 
-  /**
-   * The launch point for the Junit tests.
-   * 
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-
-    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
-
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(EntityAttributeTest.suite()));
-
-  }
-
-  /**
-   * A suite() takes <b>this </b> <code>EntityAttributeTest.class</code> and
-   * wraps it in <code>MasterTestSetup</code>. The returned class is a suite of
-   * all the tests in <code>AttributeTest</code>, with the global setUp() and
-   * tearDown() methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(EntityAttributeTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     definitions = new LinkedList<MdAttributeConcreteDAOIF>();
@@ -575,6 +519,8 @@ public class EntityAttributeTest extends TestCase
     // database
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     // Delete all of the attributes created by this class
@@ -585,7 +531,7 @@ public class EntityAttributeTest extends TestCase
       temp.delete();
     }
 
-    someTree = (MdTreeDAO)MdTreeDAO.get(someTree.getId()).getBusinessDAO();
+    someTree = (MdTreeDAO) MdTreeDAO.get(someTree.getId()).getBusinessDAO();
     someTree.delete();
 
     TestFixtureFactory.delete(testTerm);
@@ -595,20 +541,22 @@ public class EntityAttributeTest extends TestCase
    * Set the testObject to a new Instance of the MasterTestSetup.TEST_CLASS
    * class.
    */
+  @Request
+  @Before
   protected void setUp() throws Exception
   {
-    super.setUp();
     testObject = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
   }
 
   /**
    * If testObject was applied, it is removed from the database.
    * 
-   * @see TestCase#tearDown()
+   * 
    */
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
-    super.tearDown();
     if (!testObject.isNew())
     {
       testObject = BusinessDAO.get(testObject.getId()).getBusinessDAO();
@@ -616,16 +564,8 @@ public class EntityAttributeTest extends TestCase
     }
   }
 
-  /**
-   * Constructor for AttributeTest.
-   * 
-   * @param name
-   */
-  public EntityAttributeTest(String name)
-  {
-    super(name);
-  }
-
+  @Request
+  @Test
   public void testRollbackSavepointObjectState() throws SQLException
   {
     this.rollbackSavepointObjectState();
@@ -644,18 +584,18 @@ public class EntityAttributeTest extends TestCase
 
     try
     {
-      assertEquals("Checking the state of the object before the actual test.  The new object should not be applied to the database.", false, testObject.isAppliedToDB());
+      Assert.assertEquals("Checking the state of the object before the actual test.  The new object should not be applied to the database.", false, testObject.isAppliedToDB());
 
       testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value");
       testObject.apply();
 
-      assertEquals("Within a savepoint new object was incorrectly marked as not new.", true, testObject.isNew());
-      assertEquals("Within a savepoint new object was applied and applied to database should have been set to true.", true, testObject.isAppliedToDB());
+      Assert.assertEquals("Within a savepoint new object was incorrectly marked as not new.", true, testObject.isNew());
+      Assert.assertEquals("Within a savepoint new object was applied and applied to database should have been set to true.", true, testObject.isAppliedToDB());
 
       testObject.rollbackState(savepointId);
 
-      assertEquals("Savepoint was rolledback but the object state was incorrectly set to true.", true, testObject.isNew());
-      assertEquals("Savepoint was rolledback but the object did not have the applied to database flag changed back to false.", false, testObject.isAppliedToDB());
+      Assert.assertEquals("Savepoint was rolledback but the object state was incorrectly set to true.", true, testObject.isNew());
+      Assert.assertEquals("Savepoint was rolledback but the object did not have the applied to database flag changed back to false.", false, testObject.isAppliedToDB());
 
       Database.rollbackSavepoint(savepoint);
     }
@@ -673,6 +613,8 @@ public class EntityAttributeTest extends TestCase
    * Tests Attribute.validateRequired() where the value is defined but not
    * required
    */
+  @Request
+  @Test
   public void testNotRequired()
   {
     try
@@ -681,7 +623,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -689,6 +631,8 @@ public class EntityAttributeTest extends TestCase
    * Tests Attribute.validateRequired() where the value is defined but not
    * required
    */
+  @Request
+  @Test
   public void testNotRequired_Thread()
   {
     ThreadTransactionCallable<Object> callable = new ThreadTransactionCallable<Object>()
@@ -725,7 +669,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
@@ -733,6 +677,8 @@ public class EntityAttributeTest extends TestCase
    * Tests Attribute.validateRequired() where the value is not defined but not
    * required
    */
+  @Request
+  @Test
   public void testNotRequiredBlankValue()
   {
     try
@@ -741,7 +687,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -749,6 +695,8 @@ public class EntityAttributeTest extends TestCase
    * Tests Attribute.validateRequired() where the value is not defined but not
    * required
    */
+  @Request
+  @Test
   public void testNotRequiredBlankValue_Thread()
   {
     ThreadTransactionCallable<Object> callable = new ThreadTransactionCallable<Object>()
@@ -785,48 +733,51 @@ public class EntityAttributeTest extends TestCase
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Tests to ensure an object's state is properly rolled back
    */
+  @Request
+  @Test
   public void testRollbackState()
   {
     // Establish a base Sequence Number
     testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value 1");
     testObject.apply();
-    
+
     String oldSequence = testObject.getValue(ElementInfo.SEQUENCE);
-    
+
     try
     {
       rollbackStateTransaction();
-      fail("Transaction Failed to Rollback");
+      Assert.fail("Transaction Failed to Rollback");
     }
     catch (ProblemException e)
     {
-      assertEquals("Sequence number failed to roll back after an aborted transaction", oldSequence, testObject.getValue(ElementInfo.SEQUENCE));
+      Assert.assertEquals("Sequence number failed to roll back after an aborted transaction", oldSequence, testObject.getValue(ElementInfo.SEQUENCE));
     }
   }
-  
+
   @Transaction
   private void rollbackStateTransaction()
   {
     // A successful nested transaction which will update the sequence number
     testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value 2");
     testObject.apply();
-    
-    // A nested transaction that should fail 
+
+    // A nested transaction that should fail
     testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
     testObject.apply();
   }
-  
-  
+
   /**
    * Tests Attribute.validateRequired() where the value is defined and required
    */
+  @Request
+  @Test
   public void testRequired()
   {
     try
@@ -836,13 +787,15 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests Attribute.validateRequired() where the value is defined and required
    */
+  @Request
+  @Test
   public void testRequired_Thread()
   {
     ThreadTransactionCallable<Object> callable = new ThreadTransactionCallable<Object>()
@@ -880,13 +833,15 @@ public class EntityAttributeTest extends TestCase
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Tests Attribute.validateRequired() where the value is defined and required
    */
+  @Request
+  @Test
   public void testRequiredValidateMethod()
   {
     try
@@ -896,13 +851,15 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests Attribute.validateRequired() where the value is defined and required
    */
+  @Request
+  @Test
   public void testRequiredValidateMethod_Thread()
   {
     ThreadTransactionCallable<Object> callable = new ThreadTransactionCallable<Object>()
@@ -940,7 +897,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
@@ -949,13 +906,15 @@ public class EntityAttributeTest extends TestCase
    * defined. This is expected to fail, so the Exception is caught and compared
    * to its expected value.
    */
+  @Request
+  @Test
   public void testRequiredWithBlankValue()
   {
     try
     {
       testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
       testObject.apply();
-      fail("Attribute.validateRequired() accepted a blank value on a required field.");
+      Assert.fail("Attribute.validateRequired() accepted a blank value on a required field.");
     }
     catch (ProblemException e)
     {
@@ -967,7 +926,7 @@ public class EntityAttributeTest extends TestCase
       }
       else
       {
-        fail(EmptyValueProblem.class.getName() + " was not thrown.");
+        Assert.fail(EmptyValueProblem.class.getName() + " was not thrown.");
       }
     }
   }
@@ -977,6 +936,8 @@ public class EntityAttributeTest extends TestCase
    * defined. This is expected to fail, so the Exception is caught and compared
    * to its expected value.
    */
+  @Request
+  @Test
   public void testRequiredWithBlankValue_Thread()
   {
     ThreadTransactionCallable<Object> callable = new ThreadTransactionCallable<Object>()
@@ -1011,7 +972,7 @@ public class EntityAttributeTest extends TestCase
     try
     {
       threadTransactionHelper(callable);
-      fail("Attribute.validateRequired() accepted a blank value on a required field.");
+      Assert.fail("Attribute.validateRequired() accepted a blank value on a required field.");
     }
     catch (ProblemException e)
     {
@@ -1023,12 +984,12 @@ public class EntityAttributeTest extends TestCase
       }
       else
       {
-        fail(EmptyValueProblem.class.getName() + " was not thrown.");
+        Assert.fail(EmptyValueProblem.class.getName() + " was not thrown.");
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
@@ -1037,12 +998,14 @@ public class EntityAttributeTest extends TestCase
    * defined. This is expected to fail, so the Exception is caught and compared
    * to its expected value.
    */
+  @Request
+  @Test
   public void testRequiredWithBlankValueValidateMethod()
   {
     try
     {
       requiredWithBlankValueValidateMethod();
-      fail("Attribute.validateRequired() accepted a blank value on a required field.");
+      Assert.fail("Attribute.validateRequired() accepted a blank value on a required field.");
     }
     catch (ProblemException e)
     {
@@ -1054,7 +1017,7 @@ public class EntityAttributeTest extends TestCase
       }
       else
       {
-        fail(EmptyValueProblem.class.getName() + " was not thrown.");
+        Assert.fail(EmptyValueProblem.class.getName() + " was not thrown.");
       }
     }
   }
@@ -1064,6 +1027,8 @@ public class EntityAttributeTest extends TestCase
    * defined. This is expected to fail, so the Exception is caught and compared
    * to its expected value.
    */
+  @Request
+  @Test
   public void testRequiredWithBlankValueValidateMethod_Thread()
   {
     ThreadTransactionCallable<Object> callable = new ThreadTransactionCallable<Object>()
@@ -1097,7 +1062,7 @@ public class EntityAttributeTest extends TestCase
     try
     {
       threadTransactionHelper(callable);
-      fail("Attribute.validateRequired() accepted a blank value on a required field.");
+      Assert.fail("Attribute.validateRequired() accepted a blank value on a required field.");
     }
     catch (ProblemException e)
     {
@@ -1109,12 +1074,12 @@ public class EntityAttributeTest extends TestCase
       }
       else
       {
-        fail(EmptyValueProblem.class.getName() + " was not thrown.");
+        Assert.fail(EmptyValueProblem.class.getName() + " was not thrown.");
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
@@ -1129,13 +1094,15 @@ public class EntityAttributeTest extends TestCase
    * Tests Attribute.validateSystem() by trying to modify a system-only
    * attribute.
    */
+  @Request
+  @Test
   public void testImmutable()
   {
     try
     {
       testObject.apply();
       immutable();
-      fail("Attribute.validateMutable() allowed a user to modify an immutable attribute.");
+      Assert.fail("Attribute.validateMutable() allowed a user to modify an immutable attribute.");
     }
     catch (ProblemException e)
     {
@@ -1147,7 +1114,7 @@ public class EntityAttributeTest extends TestCase
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
   }
@@ -1156,6 +1123,8 @@ public class EntityAttributeTest extends TestCase
    * Tests Attribute.validateSystem() by trying to modify a system-only
    * attribute.
    */
+  @Request
+  @Test
   public void testImmutable_Thread()
   {
     ThreadTransactionCallable<Object> callable = new ThreadTransactionCallable<Object>()
@@ -1199,7 +1168,7 @@ public class EntityAttributeTest extends TestCase
 
       testObject.apply();
       threadTransactionHelper(callable);
-      fail("Attribute.validateMutable() allowed a user to modify an immutable attribute.");
+      Assert.fail("Attribute.validateMutable() allowed a user to modify an immutable attribute.");
     }
     catch (ProblemException e)
     {
@@ -1211,12 +1180,12 @@ public class EntityAttributeTest extends TestCase
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
@@ -1232,12 +1201,14 @@ public class EntityAttributeTest extends TestCase
    * Tests Attribute.validateMutable() by trying to modify an immutable
    * attribute.
    */
+  @Request
+  @Test
   public void testSystem()
   {
     try
     {
       system();
-      fail("Attribute.validateSystem() allowed a user to modify a SYSTEM attribute.");
+      Assert.fail("Attribute.validateSystem() allowed a user to modify a SYSTEM attribute.");
     }
     catch (ProblemException e)
     {
@@ -1249,7 +1220,7 @@ public class EntityAttributeTest extends TestCase
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
   }
@@ -1258,6 +1229,8 @@ public class EntityAttributeTest extends TestCase
    * Tests Attribute.validateMutable() by trying to modify an immutable
    * attribute.
    */
+  @Request
+  @Test
   public void testSystem_Thread()
   {
     ThreadTransactionCallable<Object> callable = new ThreadTransactionCallable<Object>()
@@ -1291,7 +1264,7 @@ public class EntityAttributeTest extends TestCase
     try
     {
       threadTransactionHelper(callable);
-      fail("Attribute.validateSystem() allowed a user to modify a SYSTEM attribute.");
+      Assert.fail("Attribute.validateSystem() allowed a user to modify a SYSTEM attribute.");
     }
     catch (ProblemException e)
     {
@@ -1303,12 +1276,12 @@ public class EntityAttributeTest extends TestCase
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
@@ -1365,6 +1338,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests Attribute.validateUnique() with a unique value.
    */
+  @Request
+  @Test
   public void testUnique()
   {
     // We test against this instance for uniqueness
@@ -1378,7 +1353,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -1389,6 +1364,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests Attribute.validateUnique() with a non-unique value.
    */
+  @Request
+  @Test
   public void testUniqueFail()
   {
     // We test against this instance for uniqueness
@@ -1401,7 +1378,7 @@ public class EntityAttributeTest extends TestCase
       // We're trying to set a non-unique value to a unique field
       testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Not Unique");
       testObject.apply();
-      fail("Attribute.validateUnique() accepted a non-unique value on a unique field.");
+      Assert.fail("Attribute.validateUnique() accepted a non-unique value on a unique field.");
     }
     catch (DuplicateDataException e)
     {
@@ -1417,6 +1394,8 @@ public class EntityAttributeTest extends TestCase
    * Test a group of attributes set to be unique on a class. Two objects do not
    * contain the same values for a set of attributes and should not fail.
    */
+  @Request
+  @Test
   public void testUniqueGroup()
   {
     MdAttributeCharacterDAO mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
@@ -1441,7 +1420,7 @@ public class EntityAttributeTest extends TestCase
 
       if (!indexExists)
       {
-        fail("Database index does not exist when it should.");
+        Assert.fail("Database index does not exist when it should.");
       }
 
       object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1461,7 +1440,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -1474,6 +1453,8 @@ public class EntityAttributeTest extends TestCase
    * Test a group of attributes set to be unique on a class. Two objects do not
    * contain the same values for a set of attributes and should not fail.
    */
+  @Request
+  @Test
   public void testUniqueGroupTransaction()
   {
     MdAttributeCharacterDAO mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
@@ -1498,7 +1479,7 @@ public class EntityAttributeTest extends TestCase
 
       if (!indexExists)
       {
-        fail("Database index does not exist when it should.");
+        Assert.fail("Database index does not exist when it should.");
       }
 
       object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1518,7 +1499,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -1605,6 +1586,8 @@ public class EntityAttributeTest extends TestCase
    * basically to ensure that SQL code that generates the database indexes does
    * not have a syntax error.
    */
+  @Request
+  @Test
   public void testNonUniqueGroup()
   {
     MdAttributeCharacterDAO mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
@@ -1644,7 +1627,7 @@ public class EntityAttributeTest extends TestCase
 
       if (!containsAttribute1 && !containsAttribute2)
       {
-        fail("Non unique attribute group did not contain specified attributes.");
+        Assert.fail("Non unique attribute group did not contain specified attributes.");
       }
 
       object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1664,7 +1647,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -1677,6 +1660,8 @@ public class EntityAttributeTest extends TestCase
    * basically to ensure that SQL code that generates the database indexes does
    * not have a syntax error.
    */
+  @Request
+  @Test
   public void testNonUniqueGroupTransaction()
   {
     MdAttributeCharacterDAO mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
@@ -1719,7 +1704,7 @@ public class EntityAttributeTest extends TestCase
 
       if (!containsAttribute1 && !containsAttribute2)
       {
-        fail("Non unique attribute group did not contain specified attributes.");
+        Assert.fail("Non unique attribute group did not contain specified attributes.");
       }
 
       object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1739,7 +1724,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -1797,13 +1782,15 @@ public class EntityAttributeTest extends TestCase
    * Test to see if the correct exception is thrown when one tries to activate
    * an index yet no attributes for the index have been defined.
    */
+  @Request
+  @Test
   public void testMdIndexNoAttributes()
   {
     try
     {
       this.mdIndexNoAttributes();
 
-      fail("Able to activate an MdIndex without any attributes.");
+      Assert.fail("Able to activate an MdIndex without any attributes.");
     }
     catch (NoAttributeOnIndexException e)
     {
@@ -1815,13 +1802,15 @@ public class EntityAttributeTest extends TestCase
    * Test to see if the correct exception is thrown when one tries to activate
    * an index yet no attributes for the index have been defined.
    */
+  @Request
+  @Test
   public void testMdIndexNoAttributesTransaction()
   {
     try
     {
       this.mdIndexNoAttributesTransaction();
 
-      fail("Able to activate an MdIndex without any attributes.");
+      Assert.fail("Able to activate an MdIndex without any attributes.");
     }
     catch (NoAttributeOnIndexException e)
     {
@@ -1866,6 +1855,8 @@ public class EntityAttributeTest extends TestCase
    * Ensures that a database index is dropped when an MdIndex is set to
    * inactive.
    */
+  @Request
+  @Test
   public void testMdIndexSetInactive()
   {
     MdAttributeCharacterDAO mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
@@ -1887,7 +1878,7 @@ public class EntityAttributeTest extends TestCase
 
       if (!indexExists)
       {
-        fail("Database index does not exist when it should.");
+        Assert.fail("Database index does not exist when it should.");
       }
 
       mdIndex = MdIndexDAO.get(mdIndex.getId()).getBusinessDAO();
@@ -1899,13 +1890,13 @@ public class EntityAttributeTest extends TestCase
 
       if (indexExists)
       {
-        fail("Database index exists when it should not.  The MdIndex set the [" + MdIndexInfo.ACTIVE + "] attribute to [" + MdAttributeBooleanInfo.FALSE + "].");
+        Assert.fail("Database index exists when it should not.  The MdIndex set the [" + MdIndexInfo.ACTIVE + "] attribute to [" + MdAttributeBooleanInfo.FALSE + "].");
       }
 
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -1922,6 +1913,8 @@ public class EntityAttributeTest extends TestCase
    * Ensures that a database index is dropped when an MdIndex is set to
    * inactive.
    */
+  @Request
+  @Test
   public void testMdIndexSetInactiveTransaction()
   {
     MdAttributeCharacterDAO mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
@@ -1943,7 +1936,7 @@ public class EntityAttributeTest extends TestCase
 
       if (!indexExists)
       {
-        fail("Database index does not exist when it should.");
+        Assert.fail("Database index does not exist when it should.");
       }
 
       mdIndex = MdIndexDAO.get(mdIndex.getId()).getBusinessDAO();
@@ -1955,13 +1948,13 @@ public class EntityAttributeTest extends TestCase
 
       if (indexExists)
       {
-        fail("Database index exists when it should not.  The MdIndex set the [" + MdIndexInfo.ACTIVE + "] attribute to [" + MdAttributeBooleanInfo.FALSE + "].");
+        Assert.fail("Database index exists when it should not.  The MdIndex set the [" + MdIndexInfo.ACTIVE + "] attribute to [" + MdAttributeBooleanInfo.FALSE + "].");
       }
 
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -2044,6 +2037,8 @@ public class EntityAttributeTest extends TestCase
    * Test a group of attributes set to be unique on a class. Two objects contain
    * the same values for a set of attributes and should fail.
    */
+  @Request
+  @Test
   public void testUniqueGroupFail()
   {
     MdAttributeCharacterDAO mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
@@ -2078,7 +2073,7 @@ public class EntityAttributeTest extends TestCase
       object2.setValue("testAttrGroupInteger3", "100");
       object2.apply();
 
-      fail("Unique attribute group constraint violation.");
+      Assert.fail("Unique attribute group constraint violation.");
 
     }
     catch (DuplicateDataException e)
@@ -2095,6 +2090,8 @@ public class EntityAttributeTest extends TestCase
    * Test a group of attributes set to be unique on a class. Two objects contain
    * the same values for a set of attributes and should fail.
    */
+  @Request
+  @Test
   public void testUniqueGroupFailTransaction()
   {
     MdAttributeCharacterDAO mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
@@ -2129,7 +2126,7 @@ public class EntityAttributeTest extends TestCase
       object2.setValue("testAttrGroupInteger3", "100");
       object2.apply();
 
-      fail("Unique attribute group constraint violation.");
+      Assert.fail("Unique attribute group constraint violation.");
 
     }
     catch (DuplicateDataException e)
@@ -2194,6 +2191,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal character and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testCharacter()
   {
     try
@@ -2210,25 +2209,27 @@ public class EntityAttributeTest extends TestCase
 
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a String that is too long
    */
+  @Request
+  @Test
   public void testCharWithLongString()
   {
     try
     {
       // TEST_CHARACTER has a limit of 10 characters
       testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "This string is too long.");
-      fail("Accepted a String that was too large.");
+      Assert.fail("Accepted a String that was too large.");
     }
     catch (AttributeLengthCharacterException e)
     {
@@ -2239,6 +2240,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Changes the DB size of an attribute.
    */
+  @Request
+  @Test
   public void testCharChangeSize()
   {
     MdAttributeCharacterDAO mdAttributeCharacter = (MdAttributeCharacterDAO) ( testObject.getAttributeIF("testCharacterChangeSize").getMdAttribute() ).getBusinessDAO();
@@ -2254,8 +2257,9 @@ public class EntityAttributeTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
-      // fail("Attribute testCharacterChangeSize originally was defined to a size of 16.  An attempt to redefine it to 32 failed.");
+      Assert.fail(e.getMessage());
+      // Assert.fail("Attribute testCharacterChangeSize originally was defined
+      // to a size of 16. An attempt to redefine it to 32 failed.");
       return;
     }
 
@@ -2263,7 +2267,7 @@ public class EntityAttributeTest extends TestCase
     {
       // Test with a string of 33 characters
       testObject.setValue("testCharacterChangeSize", "012345678901234567890123456789012");
-      fail("Attribute testCharacterChangeSize originally was redefined to a size of 32, but it accepted a string of size 33.");
+      Assert.fail("Attribute testCharacterChangeSize originally was redefined to a size of 32, but it accepted a string of size 33.");
     }
     catch (AttributeLengthCharacterException e)
     {
@@ -2275,6 +2279,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal text and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testTextStoreRetrieve()
   {
     try
@@ -2291,12 +2297,12 @@ public class EntityAttributeTest extends TestCase
 
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -2304,6 +2310,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal CLOB and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testClobStoreRetrieve()
   {
     try
@@ -2320,12 +2328,12 @@ public class EntityAttributeTest extends TestCase
 
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -2333,6 +2341,8 @@ public class EntityAttributeTest extends TestCase
    * Creates a normal CLOB, deletes the object, and then fetches the CLOB value
    * from the stale object to ensure a database error is not thrown.
    */
+  @Request
+  @Test
   public void testClobStoreRetrieveAfterDelete()
   {
     try
@@ -2350,12 +2360,12 @@ public class EntityAttributeTest extends TestCase
       AttributeClob retrieved = (AttributeClob) testClobObject.getAttributeIF(key);
       if (!retrieved.getValue().equals(""))
       {
-        fail("Retrieving a CLOB value from the database from an object that was deleted and an empty string was not returned.");
+        Assert.fail("Retrieving a CLOB value from the database from an object that was deleted and an empty string was not returned.");
       }
     }
     catch (DatabaseException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -2367,6 +2377,8 @@ public class EntityAttributeTest extends TestCase
    * The value is then set after applying and tested to make sure it's using the
    * database CLOB bytes and not the cached ones.
    */
+  @Request
+  @Test
   public void testClobAddValuePostApply()
   {
     try
@@ -2390,18 +2402,20 @@ public class EntityAttributeTest extends TestCase
 
       if (!databaseValue.equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Tests some text that is too long
    */
+  @Request
+  @Test
   public void testTooLongText()
   {
     if (! ( Database.instance() instanceof PostgreSQL ))
@@ -2420,7 +2434,7 @@ public class EntityAttributeTest extends TestCase
         // TEST_CHARACTER has a limit MdAttributeText.getMaxLength()
         testObject.setValue("testText", buffer.toString());
 
-        fail("Accepted a String that was too large.");
+        Assert.fail("Accepted a String that was too large.");
       }
       catch (AttributeLengthCharacterException e)
       {
@@ -2432,6 +2446,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests a blank (which is acceptable) String
    */
+  @Request
+  @Test
   public void testCharWithEmptyString()
   {
     try
@@ -2440,7 +2456,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -2448,6 +2464,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal boolean and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testBoolean()
   {
     try
@@ -2464,12 +2482,12 @@ public class EntityAttributeTest extends TestCase
 
       if (Boolean.parseBoolean(retrieved.getValue()) != Boolean.parseBoolean( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -2478,12 +2496,14 @@ public class EntityAttributeTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testBooleanInvalid() throws Exception
   {
     try
     {
       testObject.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "rawr");
-      fail("AttributeBoolean accepted an invalid value.");
+      Assert.fail("AttributeBoolean accepted an invalid value.");
     }
     catch (AttributeValueException e)
     {
@@ -2508,6 +2528,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal integer and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testInteger()
   {
     try
@@ -2524,25 +2546,27 @@ public class EntityAttributeTest extends TestCase
 
       if (Integer.parseInt(retrieved.getValue()) != Integer.parseInt( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an integer with an alphabetic String
    */
+  @Request
+  @Test
   public void testIntegerWithAlphas()
   {
     try
     {
       // Try to set an alphabetic string to an int
       testObject.setValue("testInteger", "This isn't a number");
-      fail("An integer accepted alpha input");
+      Assert.fail("An integer accepted alpha input");
     }
     catch (AttributeValueException e)
     {
@@ -2553,13 +2577,15 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests an unacceptably large number
    */
+  @Request
+  @Test
   public void testIntegerWithLargeNumber()
   {
     try
     {
       // This number is far too large to fit in an int
       testObject.setValue("testInteger", "2147483648");
-      fail("Accepted a number too large to fit in an integer");
+      Assert.fail("Accepted a number too large to fit in an integer");
     }
     catch (AttributeValueException e)
     {
@@ -2571,6 +2597,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal long and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testLong()
   {
     try
@@ -2587,25 +2615,27 @@ public class EntityAttributeTest extends TestCase
 
       if (Long.parseLong(retrieved.getValue()) != Long.parseLong( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an alphabetic String
    */
+  @Request
+  @Test
   public void testLongWithAlphas()
   {
     try
     {
       // Try to set an alphabetic string to a long
       testObject.setValue("testLong", "This isn't a number");
-      fail("Accepted alpha input into a long");
+      Assert.fail("Accepted alpha input into a long");
     }
     catch (DataAccessException e)
     {
@@ -2616,13 +2646,15 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests an unacceptably large number
    */
+  @Request
+  @Test
   public void testLongWithLargeNumber()
   {
     try
     {
       // This number is far too large to fit in a long
       testObject.setValue("testLong", "1234567890123456789012345678901234567890");
-      fail("Accepted a number too large to fit in a long");
+      Assert.fail("Accepted a number too large to fit in a long");
     }
     catch (AttributeValueException e)
     {
@@ -2634,6 +2666,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal float and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testFloat()
   {
     try
@@ -2650,18 +2684,20 @@ public class EntityAttributeTest extends TestCase
 
       if (Float.parseFloat(retrieved.getValue()) != Float.parseFloat( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an int cast to a float
    */
+  @Request
+  @Test
   public void testFloatWithInt()
   {
     try
@@ -2670,13 +2706,15 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a large (exponent) number
    */
+  @Request
+  @Test
   public void testFloatWithExponent()
   {
     try
@@ -2685,13 +2723,15 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a large (but acceptable) number
    */
+  @Request
+  @Test
   public void testFloatWithLong()
   {
     try
@@ -2700,20 +2740,22 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an unacceptably large float
    */
+  @Request
+  @Test
   public void testFloatWithLargeNumber()
   {
     try
     {
       // This number is far too large to fit in a float
       testObject.setValue("testFloat", "12345678901234567890123456789012345678901234567890");
-      fail("Accepted a number too large to fit in a float");
+      Assert.fail("Accepted a number too large to fit in a float");
     }
     catch (AttributeValueException e)
     {
@@ -2725,6 +2767,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal double and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testDouble()
   {
     try
@@ -2741,18 +2785,20 @@ public class EntityAttributeTest extends TestCase
 
       if (Double.parseDouble(retrieved.getValue()) != Double.parseDouble( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an int cast to a double
    */
+  @Request
+  @Test
   public void testDoubleWithInt()
   {
     try
@@ -2761,13 +2807,15 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a large (exponent) number into a double
    */
+  @Request
+  @Test
   public void testDoubleWithExponent()
   {
     try
@@ -2776,19 +2824,21 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an unacceptably large exponent double
    */
+  @Request
+  @Test
   public void testDoubleWithLargeExponent()
   {
     try
     {
       testObject.setValue("testDouble", "123.456E7890");
-      fail("Accepted a number too large to fit in a double");
+      Assert.fail("Accepted a number too large to fit in a double");
     }
     catch (AttributeValueException e)
     {
@@ -2800,6 +2850,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal decimal and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testDecimal()
   {
     try
@@ -2816,18 +2868,20 @@ public class EntityAttributeTest extends TestCase
 
       if (Double.parseDouble(retrieved.getValue()) != Double.parseDouble( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an int cast to a decimal
    */
+  @Request
+  @Test
   public void testDecimalWithInt()
   {
     try
@@ -2836,13 +2890,15 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a large (exponent) number into a decimal
    */
+  @Request
+  @Test
   public void testDecimalWithExponent()
   {
     try
@@ -2851,20 +2907,22 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a large (exponent) number into a decimal
    */
+  @Request
+  @Test
   public void testDecimalWithTooLargeExponent()
   {
     try
     {
       testObject.setValue("testDecimal", "12.0E10");
 
-      fail("A decimal was set with an exponet that would produce a decimal that is too long.");
+      Assert.fail("A decimal was set with an exponet that would produce a decimal that is too long.");
     }
     catch (AttributeValueException e)
     {
@@ -2876,6 +2934,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal time and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testTime()
   {
     try
@@ -2891,24 +2951,26 @@ public class EntityAttributeTest extends TestCase
       AttributeTime retrieved = (AttributeTime) appliedObject.getAttributeIF(key);
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value.");
+        Assert.fail("The stored database value for " + key + " does not equal the input value.");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests with a completely invalid time
    */
+  @Request
+  @Test
   public void testTimeInvalid()
   {
     try
     {
       testObject.setValue("testTime", "This isn't a time");
-      fail("Attribute accepted an invalid time");
+      Assert.fail("Attribute accepted an invalid time");
     }
     catch (AttributeValueException e)
     {
@@ -2919,12 +2981,14 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests a time that is too early
    */
+  @Request
+  @Test
   public void testTimeLowerBound()
   {
     try
     {
       testObject.setValue("testTime", "-00:00:01");
-      fail("Accepted too early of a time");
+      Assert.fail("Accepted too early of a time");
     }
     catch (AttributeValueException e)
     {
@@ -2935,12 +2999,14 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests a time that is too late
    */
+  @Request
+  @Test
   public void testTimeUpperBound()
   {
     try
     {
       testObject.setValue("testTime", "23:59:60");
-      fail("Accepted too late of a time");
+      Assert.fail("Accepted too late of a time");
     }
     catch (AttributeValueException e)
     {
@@ -2952,6 +3018,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal date and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testDate()
   {
     try
@@ -2968,25 +3036,27 @@ public class EntityAttributeTest extends TestCase
 
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a completely invalid date
    */
+  @Request
+  @Test
   public void testDateInvalid()
   {
     try
     {
       // This is a datetime, not a date
       testObject.setValue("testDate", "2005-12-31 2:15:32");
-      fail("Attribute accepted an invalid Date");
+      Assert.fail("Attribute accepted an invalid Date");
     }
     catch (DataAccessException e)
     {
@@ -2997,12 +3067,14 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests a date that is too early
    */
+  @Request
+  @Test
   public void testDateLowerBound()
   {
     try
     {
       testObject.setValue("testDate", "1752-01-01");
-      fail("Accepted too early of a date");
+      Assert.fail("Accepted too early of a date");
     }
     catch (AttributeValueException e)
     {
@@ -3013,12 +3085,14 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests a date that is too late
    */
+  @Request
+  @Test
   public void testDateUpperBound()
   {
     try
     {
       testObject.setValue("testDate", "2005-01-32");
-      fail("Accepted too late of a date");
+      Assert.fail("Accepted too late of a date");
     }
     catch (DataAccessException e)
     {
@@ -3030,6 +3104,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a normal date and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testDateTime()
   {
     try
@@ -3046,25 +3122,27 @@ public class EntityAttributeTest extends TestCase
 
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests with a completely invalid date
    */
+  @Request
+  @Test
   public void testDateTimeInvalid()
   {
     try
     {
       // This is a date, not a time
       testObject.setValue("testDateTime", "2005-06-15");
-      fail("Accepted an invalid String");
+      Assert.fail("Accepted an invalid String");
     }
     catch (AttributeValueException e)
     {
@@ -3075,12 +3153,14 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests a datetime that is too early
    */
+  @Request
+  @Test
   public void testDateTimeLowerBound()
   {
     try
     {
       testObject.setValue("testDateTime", "1752-01-01 00:00:00");
-      fail("Accepted too early of a datetime");
+      Assert.fail("Accepted too early of a datetime");
     }
     catch (AttributeValueException e)
     {
@@ -3091,12 +3171,14 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests a datetime that is too late
    */
+  @Request
+  @Test
   public void testDateTimeUpperBound()
   {
     try
     {
       testObject.setValue("testDateTime", "2005-13-01 23:59:59");
-      fail("Accepted too late of a datetime");
+      Assert.fail("Accepted too late of a datetime");
     }
     catch (AttributeValueException e)
     {
@@ -3109,6 +3191,8 @@ public class EntityAttributeTest extends TestCase
    * instances.
    * 
    */
+  @Request
+  @Test
   public void testAddStructToClassWithInstances()
   {
     BusinessDAO testObj = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -3131,7 +3215,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail("Failed to retrieve an object that existed prior to adding a struct attribute.");
+      Assert.fail("Failed to retrieve an object that existed prior to adding a struct attribute.");
     }
     finally
     {
@@ -3150,6 +3234,8 @@ public class EntityAttributeTest extends TestCase
    * instances.
    * 
    */
+  @Request
+  @Test
   public void testAddStructToClassWithInstancesAndApply()
   {
     BusinessDAO testObj = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -3179,13 +3265,13 @@ public class EntityAttributeTest extends TestCase
 
       if (!testObj.getStructValue("homePhoneTest", "areaCode").equals("303") || !testObj.getStructValue("homePhoneTest", "prefix").equals("979") || !testObj.getStructValue("homePhoneTest", "suffix").equals("7745"))
       {
-        fail("Failed to set values for a struct attribute that was added to a type that already had instances. ");
+        Assert.fail("Failed to set values for a struct attribute that was added to a type that already had instances. ");
       }
 
     }
     catch (DataAccessException e)
     {
-      fail("Failed to retrieve an object that existed prior to adding a struct attribute.");
+      Assert.fail("Failed to retrieve an object that existed prior to adding a struct attribute.");
     }
     finally
     {
@@ -3201,6 +3287,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests setting a reference.
    */
+  @Request
+  @Test
   public void testReference()
   {
     BusinessDAO reference = BusinessDAO.newInstance(EntityMasterTestSetup.REFERENCE_CLASS.getType());
@@ -3209,11 +3297,11 @@ public class EntityAttributeTest extends TestCase
     try
     {
       testObject.setValue("testReference", reference.getId());
-      assertTrue(testObject.getAttributeIF("testReference") instanceof AttributeReference);
+      Assert.assertTrue(testObject.getAttributeIF("testReference") instanceof AttributeReference);
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -3224,6 +3312,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests setting a reference attribute to an invalid target object.
    */
+  @Request
+  @Test
   public void testSetInvalidReference()
   {
     BusinessDAO reference = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -3233,7 +3323,7 @@ public class EntityAttributeTest extends TestCase
     {
       testObject.setValue("testReference", reference.getId());
       testObject.getAttributeIF("testReference");
-      fail("AttributeReference accepted a reference to an object of the wrong type.");
+      Assert.fail("AttributeReference accepted a reference to an object of the wrong type.");
     }
     catch (InvalidReferenceException e)
     {
@@ -3248,6 +3338,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests dereferencing a reference.
    */
+  @Request
+  @Test
   public void testDereferenceReference()
   {
     BusinessDAO reference = BusinessDAO.newInstance(EntityMasterTestSetup.REFERENCE_CLASS.getType());
@@ -3258,13 +3350,13 @@ public class EntityAttributeTest extends TestCase
       testObject.setValue("testReference", reference.getId());
       testObject.apply();
       AttributeReference fo = (AttributeReference) testObject.getAttributeIF("testReference");
-      assertEquals(reference.getId(), testObject.getAttributeIF("testReference").getValue());
-      assertEquals(reference.getId(), fo.dereference().getId());
-      assertEquals(reference.getAttributeIF("refChar").getValue(), fo.dereference().getAttributeIF("refChar").getValue());
+      Assert.assertEquals(reference.getId(), testObject.getAttributeIF("testReference").getValue());
+      Assert.assertEquals(reference.getId(), fo.dereference().getId());
+      Assert.assertEquals(reference.getAttributeIF("refChar").getValue(), fo.dereference().getAttributeIF("refChar").getValue());
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -3275,6 +3367,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests setting a term.
    */
+  @Request
+  @Test
   public void testTerm()
   {
     BusinessDAO term = BusinessDAO.newInstance(testTerm.definesType());
@@ -3284,11 +3378,11 @@ public class EntityAttributeTest extends TestCase
     try
     {
       testObject.setValue("testTerm", term.getId());
-      assertTrue(testObject.getAttributeIF("testTerm") instanceof AttributeTerm);
+      Assert.assertTrue(testObject.getAttributeIF("testTerm") instanceof AttributeTerm);
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -3299,6 +3393,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests setting a term attribute to an invalid target object.
    */
+  @Request
+  @Test
   public void testSetInvalidTerm()
   {
     BusinessDAO reference = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -3308,7 +3404,7 @@ public class EntityAttributeTest extends TestCase
     {
       testObject.setValue("testTerm", reference.getId());
       testObject.getAttributeIF("testTerm");
-      fail("AttributeReference accepted a reference to an object of the wrong type.");
+      Assert.fail("AttributeReference accepted a reference to an object of the wrong type.");
     }
     catch (InvalidReferenceException e)
     {
@@ -3323,6 +3419,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests dereferencing a term attribute.
    */
+  @Request
+  @Test
   public void testDereferenceTerm()
   {
     BusinessDAO term = BusinessDAO.newInstance(testTerm.definesType());
@@ -3334,12 +3432,12 @@ public class EntityAttributeTest extends TestCase
       testObject.setValue("testTerm", term.getId());
       testObject.apply();
       AttributeTerm fo = (AttributeTerm) testObject.getAttributeIF("testTerm");
-      assertEquals(term.getId(), testObject.getAttributeIF("testTerm").getValue());
-      assertEquals(term.getId(), fo.dereference().getId());
+      Assert.assertEquals(term.getId(), testObject.getAttributeIF("testTerm").getValue());
+      Assert.assertEquals(term.getId(), fo.dereference().getId());
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -3347,6 +3445,8 @@ public class EntityAttributeTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testStruct()
   {
     try
@@ -3372,22 +3472,22 @@ public class EntityAttributeTest extends TestCase
       // get the three phone numbers
       if (!testObject.getStructValue("homePhone", "areaCode").equals("303") || !testObject.getStructValue("homePhone", "prefix").equals("979") || !testObject.getStructValue("homePhone", "suffix").equals("7745"))
       {
-        fail("Failed to correctly persist and retrieve a struct attribute value.");
+        Assert.fail("Failed to correctly persist and retrieve a struct attribute value.");
       }
 
       if (!testObject.getStructValue("cellPhone", "areaCode").equals("720") || !testObject.getStructValue("cellPhone", "prefix").equals("363") || !testObject.getStructValue("cellPhone", "suffix").equals("8174"))
       {
-        fail("Failed to correctly persist and retrieve a struct attribute value.");
+        Assert.fail("Failed to correctly persist and retrieve a struct attribute value.");
       }
 
       if (!testObject.getStructValue("workPhone", "areaCode").equals("606") || !testObject.getStructValue("workPhone", "prefix").equals("980") || !testObject.getStructValue("workPhone", "suffix").equals("4370"))
       {
-        fail("Failed to correctly persist and retrieve a struct attribute value.");
+        Assert.fail("Failed to correctly persist and retrieve a struct attribute value.");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -3395,6 +3495,8 @@ public class EntityAttributeTest extends TestCase
    * Make sure we cannot add an attribute to a class with the same name as an
    * attribute inherited from a supertype.
    */
+  @Request
+  @Test
   public void testDuplicateInheritedAttribute()
   {
     MdBusinessDAO other = null;
@@ -3430,7 +3532,7 @@ public class EntityAttributeTest extends TestCase
       float1DO.apply();
 
       // if we hit the line below, then our check failed
-      fail("A subclass was able to declare an attribute of the same name as held by its superclass.");
+      Assert.fail("A subclass was able to declare an attribute of the same name as held by its superclass.");
     }
     catch (DataAccessException e)
     {
@@ -3446,6 +3548,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Test to ensure that a non unique attribute is set and handled properly.
    */
+  @Request
+  @Test
   public void testNonUniqueAttribute()
   {
     try
@@ -3458,7 +3562,7 @@ public class EntityAttributeTest extends TestCase
       // check for correctness
       if (!Database.nonUniqueAttributeExists(testMdBusinessIF.getTableName(), "test_index_float", mdFloatAttr.getIndexName()))
       {
-        fail("An attribute with an index of type non unique was not correctly created.");
+        Assert.fail("An attribute with an index of type non unique was not correctly created.");
       }
 
       // now take away the index
@@ -3468,12 +3572,12 @@ public class EntityAttributeTest extends TestCase
       // make sure the change was correctly saved.
       if (Database.nonUniqueAttributeExists(testMdBusinessIF.getTableName(), "test_index_float", mdFloatAttr.getIndexName()))
       {
-        fail("An attribute's index of type non unique was not deleted correctly.");
+        Assert.fail("An attribute's index of type non unique was not deleted correctly.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
@@ -3481,6 +3585,8 @@ public class EntityAttributeTest extends TestCase
    * A test to make sure that attribute names cannot exceed
    * Constants.MAX_DB_IDENTIFIER_SIZE in length.
    */
+  @Request
+  @Test
   public void testMaxIdentifierSize()
   {
     MdAttributeFloatDAO float1DO = null;
@@ -3506,7 +3612,7 @@ public class EntityAttributeTest extends TestCase
       float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
       float1DO.apply();
 
-      fail("An attribute identifier length is too long, but was accepted by the system.");
+      Assert.fail("An attribute identifier length is too long, but was accepted by the system.");
     }
     catch (AttributeLengthCharacterException e)
     {
@@ -3525,6 +3631,8 @@ public class EntityAttributeTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testRejectedBounds() throws Exception
   {
     try
@@ -3533,7 +3641,7 @@ public class EntityAttributeTest extends TestCase
       testObject.setValue("floatBounds", "-1.00");
       testObject.apply();
 
-      fail("An attribute number instance was able to violate the positive, zero, or negative restrictions.");
+      Assert.fail("An attribute number instance was able to violate the positive, zero, or negative restrictions.");
     }
     catch (ProblemException e)
     {
@@ -3553,6 +3661,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * A reference should only be allowed to reference a class, never an object.
    */
+  @Request
+  @Test
   public void testReferenceReferenceRelationship()
   {
     try
@@ -3567,7 +3677,7 @@ public class EntityAttributeTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
       mdAttributeReference.apply();
 
-      fail("A reference was incorrectly able to reference a relationship.");
+      Assert.fail("A reference was incorrectly able to reference a relationship.");
     }
     catch (InvalidReferenceException e)
     {
@@ -3579,6 +3689,8 @@ public class EntityAttributeTest extends TestCase
    * Make sure MdAttributeReference only reference BusinessDAOs and not
    * Relationships
    */
+  @Request
+  @Test
   public void testReferenceReference()
   {
     try
@@ -3593,7 +3705,7 @@ public class EntityAttributeTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testObject.getId());
       mdAttributeReference.apply();
 
-      fail("An " + MdAttributeReferenceDAO.CLASS + " was incorrectly able to reference a relatioship.");
+      Assert.fail("An " + MdAttributeReferenceDAO.CLASS + " was incorrectly able to reference a relatioship.");
     }
     catch (InvalidReferenceException e)
     {
@@ -3606,6 +3718,8 @@ public class EntityAttributeTest extends TestCase
    * required attribute on another object.
    * 
    */
+  @Request
+  @Test
   public void testDeletedRequiredReference()
   {
     BusinessDAO someTestObject = null;
@@ -3638,7 +3752,7 @@ public class EntityAttributeTest extends TestCase
       // Delete the object that is referenced by someTestObject.
       someReference.delete();
 
-      fail("An object was deleted that is referenced by a required attribute on another object.");
+      Assert.fail("An object was deleted that is referenced by a required attribute on another object.");
 
     }
     catch (CannotDeleteReferencedObject e)
@@ -3666,6 +3780,8 @@ public class EntityAttributeTest extends TestCase
   /**
    * Tests a valid blob using a byte array.
    */
+  @Request
+  @Test
   public void testBlobWithBytes()
   {
     try
@@ -3679,7 +3795,7 @@ public class EntityAttributeTest extends TestCase
       // make sure the cached blob value is correct
       if (!EntityAttributeTest.equalsBytes(value, blob.getBlobAsBytes()))
       {
-        fail("The cached value for " + key + " does not equal the input value");
+        Assert.fail("The cached value for " + key + " does not equal the input value");
       }
       testObject.apply();
 
@@ -3689,12 +3805,12 @@ public class EntityAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(value, blobRetrieved.getBlobAsBytes()))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -3703,6 +3819,8 @@ public class EntityAttributeTest extends TestCase
    * blob. This method won't apply the blob data to the database as it tests the
    * attribute's ability to manipulate data without using the JDBC API.
    */
+  @Request
+  @Test
   public void testBlobManipulationCache()
   {
     try
@@ -3722,7 +3840,7 @@ public class EntityAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(target, blob.getBlobAsBytes()))
       {
-        fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: first round.");
+        Assert.fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: first round.");
       }
 
       // change the blob value again
@@ -3734,7 +3852,7 @@ public class EntityAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(target2, blob.getBlobAsBytes()))
       {
-        fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: second round.");
+        Assert.fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: second round.");
       }
 
       // final manipulation to write past the end of the current blob
@@ -3746,12 +3864,12 @@ public class EntityAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(target3, blob.getBlobAsBytes()))
       {
-        fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: final round.");
+        Assert.fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: final round.");
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -3760,6 +3878,8 @@ public class EntityAttributeTest extends TestCase
    * blob. This method applies the blob data to the database and performs
    * manipulations using the JDBC API.
    */
+  @Request
+  @Test
   public void testBlobManipulationDatabase()
   {
     try
@@ -3780,7 +3900,7 @@ public class EntityAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(target, blob.getBlobAsBytes()))
       {
-        fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: first round.");
+        Assert.fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: first round.");
       }
 
       // change the blob value again
@@ -3792,7 +3912,7 @@ public class EntityAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(target2, blob.getBlobAsBytes()))
       {
-        fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: second round.");
+        Assert.fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: second round.");
       }
 
       // final manipulation to write past the end of the current blob
@@ -3804,18 +3924,20 @@ public class EntityAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(target3, blob.getBlobAsBytes()))
       {
-        fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: final round.");
+        Assert.fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: final round.");
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Truncates a blob in the cache and tests to make sure it is successful.
    */
+  @Request
+  @Test
   public void testBlobTruncateCache()
   {
     try
@@ -3830,18 +3952,20 @@ public class EntityAttributeTest extends TestCase
 
       if (length != 3)
       {
-        fail("The cached blob value did not get truncated correctly.");
+        Assert.fail("The cached blob value did not get truncated correctly.");
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Truncates a blob in the database and tests to make sure it is successful.
    */
+  @Request
+  @Test
   public void testBlobTruncateDatabase()
   {
     try
@@ -3858,18 +3982,20 @@ public class EntityAttributeTest extends TestCase
 
       if (length != 3)
       {
-        fail("The cached blob value did not get truncated correctly.");
+        Assert.fail("The cached blob value did not get truncated correctly.");
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Changes the size of a blob to test if the size is truncated if necessary.
    */
+  @Request
+  @Test
   public void testBlobChangeSize()
   {
     try
@@ -3890,12 +4016,12 @@ public class EntityAttributeTest extends TestCase
 
       if (length != value2.length || !equalsBytes(rValue, value2))
       {
-        fail("The cached blob value did not get truncated correctly when the size changed.");
+        Assert.fail("The cached blob value did not get truncated correctly when the size changed.");
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -3903,6 +4029,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a blob by storing bytes in the blob cache and then getting it back
    * and testing for correctness.
    */
+  @Request
+  @Test
   public void testBlobGetBytesCache()
   {
     try
@@ -3918,14 +4046,14 @@ public class EntityAttributeTest extends TestCase
       // test all bytes
       if (value.length != allBytes.length)
       {
-        fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
+        Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
       }
 
       for (int i = 0; i < value.length; i++)
       {
         if (value[i] != allBytes[i])
         {
-          fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
+          Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
           break;
         }
       }
@@ -3936,21 +4064,21 @@ public class EntityAttributeTest extends TestCase
 
       if (subBytes.length != target.length)
       {
-        fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
+        Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
       }
 
       for (int i = 0; i < target.length; i++)
       {
         if (subBytes[i] != target[i])
         {
-          fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
+          Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
           break;
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -3958,6 +4086,8 @@ public class EntityAttributeTest extends TestCase
    * Tests a blob by storing bytes in the database and then getting it back and
    * testing for correctness.
    */
+  @Request
+  @Test
   public void testBlobGetBytesDatabase()
   {
     try
@@ -3974,14 +4104,14 @@ public class EntityAttributeTest extends TestCase
 
       if (value.length != allBytes.length)
       {
-        fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
+        Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
       }
 
       for (int i = 0; i < value.length; i++)
       {
         if (value[i] != allBytes[i])
         {
-          fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
+          Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
           break;
         }
       }
@@ -3992,21 +4122,21 @@ public class EntityAttributeTest extends TestCase
 
       if (subBytes.length != target.length)
       {
-        fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
+        Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
       }
 
       for (int i = 0; i < target.length; i++)
       {
         if (subBytes[i] != target[i])
         {
-          fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
+          Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
           break;
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -4015,6 +4145,8 @@ public class EntityAttributeTest extends TestCase
    * The value is then set after applying and tested to make sure it's using the
    * database blob bytes and not the cached ones.
    */
+  @Request
+  @Test
   public void testBlobAddValuePostApply()
   {
     try
@@ -4032,18 +4164,20 @@ public class EntityAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(value, blob.getBlobAsBytes()))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Tests a blob attribute with a size that is too large.
    */
+  @Request
+  @Test
   public void testBlobInvalidSize()
   {
     try
@@ -4054,7 +4188,7 @@ public class EntityAttributeTest extends TestCase
       AttributeBlob blob = (AttributeBlob) testObject.getAttribute(key);
       blob.setBlobAsBytes(value);
 
-      fail("An attribute blob was able to exceed the maximum size.");
+      Assert.fail("An attribute blob was able to exceed the maximum size.");
     }
     catch (AttributeLengthByteException e)
     {

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis.business;
 
@@ -24,6 +24,9 @@ import static org.junit.Assert.fail;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.business.Business;
@@ -44,21 +47,11 @@ import com.vividsolutions.jts.io.WKTReader;
 public class GISBusinessTest extends GISAbstractTest
 {
 
-  @BeforeClass
-  public static void classSetUp()
-  {
-  }
-
-  @AfterClass
-  public static void classTearDown()
-  {
-  }
-
   /**
    *
    */
-  @Test
   @Request
+  @Test
   public void testPointCRUD() throws Throwable
   {
     Business business = null;
@@ -77,13 +70,9 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       Point newPoint = (Point) testClass.getMethod("getTestPoint").invoke(business);
 
-      assertEquals("X Coordinate on the point was not the expected value.", point.getX(),
-          newPoint.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", point.getY(),
-          newPoint.getY(), 0.001);
-      assertTrue(
-          "Returned point from the database does not match the point that was set on the object.",
-          point.equalsExact(newPoint));
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", point.getX(), newPoint.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", point.getY(), newPoint.getY(), 0.001);
+      Assert.assertTrue("Returned point from the database does not match the point that was set on the object.", point.equalsExact(newPoint));
 
       point = geometryFactory.createPoint(new Coordinate(191108, 243242));
       testClass.getMethod("setTestPoint", Point.class).invoke(business, point);
@@ -92,13 +81,9 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       newPoint = (Point) testClass.getMethod("getTestPoint").invoke(business);
 
-      assertEquals("X Coordinate on the point was not the expected value.", point.getX(),
-          newPoint.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", point.getY(),
-          newPoint.getY(), 0.001);
-      assertTrue(
-          "Returned point from the database does not match the point that was set on the object.",
-          point.equalsExact(newPoint));
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", point.getX(), newPoint.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", point.getY(), newPoint.getY(), 0.001);
+      Assert.assertTrue("Returned point from the database does not match the point that was set on the object.", point.equalsExact(newPoint));
     }
     finally
     {
@@ -112,8 +97,8 @@ public class GISBusinessTest extends GISAbstractTest
   /**
   *
   */
-  @Test
   @Request
+  @Test
   public void testLineStringCRUD() throws Throwable
   {
     Business business = null;
@@ -123,8 +108,7 @@ public class GISBusinessTest extends GISAbstractTest
       Class<?> testClass = LoaderDecorator.load(GISMasterTestSetup.TEST_CLASS.getType());
 
       GeometryFactory geometryFactory = new GeometryFactory();
-      LineString lineString = geometryFactory.createLineString(new Coordinate[] {
-          new Coordinate(191232, 243118), new Coordinate(191108, 243242) });
+      LineString lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(191232, 243118), new Coordinate(191108, 243242) });
 
       business = (Business) testClass.getConstructor().newInstance();
       testClass.getMethod("setTestLineString", LineString.class).invoke(business, lineString);
@@ -133,21 +117,16 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       LineString newLineString = (LineString) testClass.getMethod("getTestLineString").invoke(business);
 
-      assertTrue(
-          "Returned LineString from the database does not match the LineString that was set on the object.",
-          lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
-      lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(189141, 244158),
-          new Coordinate(189265, 244817) });
+      lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(189141, 244158), new Coordinate(189265, 244817) });
       testClass.getMethod("setTestLineString", LineString.class).invoke(business, lineString);
       testClass.getMethod("apply").invoke(business);
 
       business = Business.get(business.getId());
       newLineString = (LineString) testClass.getMethod("getTestLineString").invoke(business);
 
-      assertTrue(
-          "Returned LineString from the database does not match the LineString that was set on the object.",
-          lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
     }
     finally
     {
@@ -159,8 +138,10 @@ public class GISBusinessTest extends GISAbstractTest
   }
 
   /**
- *
- */
+  *
+  */
+  @Request
+  @Test
   public void testPolygonCRUD() throws Throwable
   {
     Business business = null;
@@ -181,9 +162,7 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       Polygon newPolygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(business);
 
-      assertTrue(
-          "Returned Polygon from the database does not match the Polygon that was set on the object.",
-          polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       String polygonText2 = "POLYGON (( 10 10, 15 25, 40 40, 30 25, 10 10))";
       polygon = (Polygon) reader.read(polygonText2);
@@ -194,9 +173,7 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       newPolygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(business);
 
-      assertTrue(
-          "Returned Polygon from the database does not match the Polygon that was set on the object.",
-          polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
     }
     finally
     {
@@ -208,8 +185,10 @@ public class GISBusinessTest extends GISAbstractTest
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiPointCRUD() throws Throwable
   {
     Business business = null;
@@ -230,9 +209,7 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       MultiPoint newMultiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(business);
 
-      assertTrue(
-          "Returned MultiPoint from the database does not match the MultiPoint that was set on the object.",
-          multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       String multiPointText2 = "MULTIPOINT(191108 243242, 30000 40000)";
       multiPoint = (MultiPoint) reader.read(multiPointText2);
@@ -243,9 +220,7 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       newMultiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(business);
 
-      assertTrue(
-          "Returned MultiPoint from the database does not match the MultiPoint that was set on the object.",
-          multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
     }
     finally
     {
@@ -257,8 +232,10 @@ public class GISBusinessTest extends GISAbstractTest
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiLineStringCRUD() throws Throwable
   {
     Business business = null;
@@ -273,32 +250,24 @@ public class GISBusinessTest extends GISAbstractTest
       MultiLineString multiLineString = (MultiLineString) reader.read(multiLineString1);
 
       business = (Business) testClass.getConstructor().newInstance();
-      testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(business,
-          multiLineString);
+      testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(business, multiLineString);
       testClass.getMethod("apply").invoke(business);
 
       business = Business.get(business.getId());
-      MultiLineString newMultiLineString = (MultiLineString) testClass.getMethod(
-          "getTestMultiLineString").invoke(business);
+      MultiLineString newMultiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(business);
 
-      assertTrue(
-          "Returned MultiLineString from the database does not match the MultiLineString that was set on the object.",
-          multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       String multiLineString2 = "MULTILINESTRING ((189141 244158, 189265 244817, 100000 150000, 175000 200000))";
       multiLineString = (MultiLineString) reader.read(multiLineString2);
 
-      testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(business,
-          multiLineString);
+      testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(business, multiLineString);
       testClass.getMethod("apply").invoke(business);
 
       business = Business.get(business.getId());
-      newMultiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(
-          business);
+      newMultiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(business);
 
-      assertTrue(
-          "Returned MultiLineString from the database does not match the MultiLineString that was set on the object.",
-          multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
     }
 
     finally
@@ -311,8 +280,10 @@ public class GISBusinessTest extends GISAbstractTest
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiPolygonCRUD() throws Throwable
   {
     Business business = null;
@@ -331,12 +302,9 @@ public class GISBusinessTest extends GISAbstractTest
       testClass.getMethod("apply").invoke(business);
 
       business = Business.get(business.getId());
-      MultiPolygon newMultiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(
-          business);
+      MultiPolygon newMultiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(business);
 
-      assertTrue(
-          "Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.",
-          multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
       String multiLineString2 = "MULTIPOLYGON(((1 1,5 1,10 10,1 5,1 1),(2 2, 3 2, 6 6, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
       multiPolygon = (MultiPolygon) reader.read(multiLineString2);
@@ -347,9 +315,7 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       newMultiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(business);
 
-      assertTrue(
-          "Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.",
-          multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
     }
 
     finally
@@ -361,8 +327,8 @@ public class GISBusinessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testNullPointObject() throws Throwable
   {
     Business business = null;
@@ -378,7 +344,7 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       Point point = (Point) testClass.getMethod("getTestPoint").invoke(business);
 
-      assertEquals("Point object should be null.", null, point);
+      Assert.assertEquals("Point object should be null.", null, point);
     }
 
     finally
@@ -390,8 +356,8 @@ public class GISBusinessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testNullLineStringObject() throws Throwable
   {
     Business business = null;
@@ -407,7 +373,7 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       LineString lineString = (LineString) testClass.getMethod("getTestLineString").invoke(business);
 
-      assertEquals("LineString object should be null.", null, lineString);
+      Assert.assertEquals("LineString object should be null.", null, lineString);
     }
 
     finally
@@ -419,8 +385,8 @@ public class GISBusinessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testNullPolygonObject() throws Throwable
   {
     Business business = null;
@@ -436,7 +402,7 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       Polygon polygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(business);
 
-      assertEquals("Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Polygon object should be null.", null, polygon);
     }
 
     finally
@@ -448,8 +414,8 @@ public class GISBusinessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testNullMultiPointObject() throws Throwable
   {
     Business business = null;
@@ -465,7 +431,7 @@ public class GISBusinessTest extends GISAbstractTest
       business = Business.get(business.getId());
       MultiPoint multiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(business);
 
-      assertEquals("MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("MultiPoint object should be null.", null, multiPoint);
     }
 
     finally
@@ -477,8 +443,8 @@ public class GISBusinessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testNullMultiLineStringObject() throws Throwable
   {
     Business business = null;
@@ -488,15 +454,13 @@ public class GISBusinessTest extends GISAbstractTest
       Class<?> testClass = LoaderDecorator.load(GISMasterTestSetup.TEST_CLASS.getType());
 
       business = (Business) testClass.getConstructor().newInstance();
-      testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(business,
-          (MultiLineString) null);
+      testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(business, (MultiLineString) null);
       testClass.getMethod("apply").invoke(business);
 
       business = Business.get(business.getId());
-      MultiLineString multiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString")
-          .invoke(business);
+      MultiLineString multiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(business);
 
-      assertEquals("MulitLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("MulitLineString object should be null.", null, multiLineString);
     }
 
     finally
@@ -508,8 +472,8 @@ public class GISBusinessTest extends GISAbstractTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testNullMultiPolygonObject() throws Throwable
   {
     Business business = null;
@@ -519,15 +483,13 @@ public class GISBusinessTest extends GISAbstractTest
       Class<?> testClass = LoaderDecorator.load(GISMasterTestSetup.TEST_CLASS.getType());
 
       business = (Business) testClass.getConstructor().newInstance();
-      testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(business,
-          (MultiPolygon) null);
+      testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(business, (MultiPolygon) null);
       testClass.getMethod("apply").invoke(business);
 
       business = Business.get(business.getId());
-      MultiPolygon multipolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(
-          business);
+      MultiPolygon multipolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(business);
 
-      assertEquals("MultiPolygon object should be null.", null, multipolygon);
+      Assert.assertEquals("MultiPolygon object should be null.", null, multipolygon);
     }
 
     finally

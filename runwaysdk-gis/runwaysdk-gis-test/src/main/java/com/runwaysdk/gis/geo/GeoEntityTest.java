@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis.geo;
 
@@ -23,6 +23,9 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
@@ -56,8 +59,8 @@ public class GeoEntityTest
 
   private static Universal uE;
 
-  @BeforeClass
   @Request
+  @BeforeClass
   public static void classSetUp()
   {
     /*
@@ -99,8 +102,8 @@ public class GeoEntityTest
     uE.addLink(root, AllowedIn.CLASS);
   }
 
-  @AfterClass
   @Request
+  @AfterClass
   public static void classTearDown()
   {
     /*
@@ -119,8 +122,8 @@ public class GeoEntityTest
     GeoEntity.getStrategy().shutdown();
   }
 
-  @Test
   @Request
+  @Test
   public void testGetRoot()
   {
     GeoEntity root = GeoEntity.getRoot();
@@ -130,8 +133,8 @@ public class GeoEntityTest
     Assert.assertEquals(Universal.ROOT, root.getUniversal().getUniversalId());
   }
 
-  @Test
   @Request
+  @Test
   public void testGeoEntityCRUD()
   {
     GeoEntity entity = new GeoEntity();
@@ -155,8 +158,8 @@ public class GeoEntityTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testLocatedInCRUD()
   {
     GeoEntity parent = new GeoEntity();
@@ -199,8 +202,8 @@ public class GeoEntityTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testLocatedInCycle()
   {
     GeoEntity parent = new GeoEntity();
@@ -246,8 +249,8 @@ public class GeoEntityTest
   /**
    * Tests that multiple parents are supported.
    */
-  @Test
   @Request
+  @Test
   public void testMulitpleParents()
   {
     try
@@ -272,8 +275,8 @@ public class GeoEntityTest
   /**
    * Tests all recursive descendants of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testAllDescendants()
   {
     try
@@ -303,8 +306,8 @@ public class GeoEntityTest
   /**
    * Tests all recursive ancestors of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testAllAncestors()
   {
     try
@@ -333,8 +336,8 @@ public class GeoEntityTest
   /**
    * Tests all direct ancestors of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testDirectAncestors()
   {
     try
@@ -364,8 +367,8 @@ public class GeoEntityTest
   /**
    * Tests all direct descendants of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testDirectDescendants()
   {
     try
@@ -396,8 +399,8 @@ public class GeoEntityTest
   /**
    * Appends a Universal leaf node to D that is then deleted.
    */
-  @Test
   @Request
+  @Test
   public void testDeleteLeaf()
   {
     try
@@ -433,8 +436,8 @@ public class GeoEntityTest
    * Appends a sub tree whose root is deleted then checks to make sure the
    * orphaned Universal objects are placed beneath the root.
    */
-  @Test
   @Request
+  @Test
   public void testDeleteNonLeaf()
   {
     try
@@ -470,8 +473,8 @@ public class GeoEntityTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testMove()
   {
     try
@@ -512,8 +515,8 @@ public class GeoEntityTest
   /**
    * Tests the direct parent of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testDirectParents()
   {
     try
@@ -548,8 +551,8 @@ public class GeoEntityTest
   /**
    * Tests that the root universal cannot have a parent.
    */
-  @Test
   @Request
+  @Test
   public void testAddParentToRoot()
   {
     try
@@ -623,8 +626,8 @@ public class GeoEntityTest
    * Test to ensure that a geo entity can be assigned to a parent with a
    * non-direct descendant universal of the parent's universal
    */
-  @Test
   @Request
+  @Test
   public void testDescendantUniversal()
   {
     try
@@ -641,58 +644,71 @@ public class GeoEntityTest
       GISTestFactory.deleteGeoEntities("B", "E");
     }
   }
-  
+
   /**
-   * This test attempts to invalidate the GeoEntity tree by modifying the Universal tree, and asserts that a proper exception is thrown
+   * This test attempts to invalidate the GeoEntity tree by modifying the
+   * Universal tree, and asserts that a proper exception is thrown
    */
-  @Test
   @Request
-  public void testInvalidateGeoEntityTree() {
-    try {
+  @Test
+  public void testInvalidateGeoEntityTree()
+  {
+    try
+    {
       Universal uUSA = GISTestFactory.createAndApplyUniversal("USA", Universal.getRoot());
       Universal uState = GISTestFactory.createAndApplyUniversal("State", uUSA);
       Universal uCity = GISTestFactory.createAndApplyUniversal("City", uState);
       Universal uUganda = GISTestFactory.createAndApplyUniversal("Uganda", Universal.getRoot());
-  //    uState.addLink(uUganda, AllowedIn.CLASS);
-      
+      // uState.addLink(uUganda, AllowedIn.CLASS);
+
       GeoEntity gUSA = GISTestFactory.createAndApplyGeoEntity("USA", uUSA, GeoEntity.getRoot());
       GeoEntity gColorado = GISTestFactory.createAndApplyGeoEntity("Colorado", uState, gUSA);
       GeoEntity gDenver = GISTestFactory.createAndApplyGeoEntity("Denver", uCity, gColorado);
-      
+
       // Test 1) Most basic remove link that should fail.
-      try {
+      try
+      {
         uCity.removeLink(uState, AllowedIn.CLASS);
         Assert.fail("An exception was not thrown on the 1st removeLink test.");
       }
-      catch (InvalidUniversalRemoveLinkException e) {
+      catch (InvalidUniversalRemoveLinkException e)
+      {
         // Expected
       }
-      
-      // Test 2) Move Denver under USA. We should then be able to move the City Universal under USA and the enforcement check should pass.
+
+      // Test 2) Move Denver under USA. We should then be able to move the City
+      // Universal under USA and the enforcement check should pass.
       TermUtil.addAndRemoveLink(gDenver.getId(), gColorado.getId(), LocatedIn.CLASS, gUSA.getId(), LocatedIn.CLASS);
       TermUtil.addAndRemoveLink(uCity.getId(), uState.getId(), AllowedIn.CLASS, uUSA.getId(), AllowedIn.CLASS);
-      TermUtil.addAndRemoveLink(uCity.getId(), uUSA.getId(), AllowedIn.CLASS, uState.getId(), AllowedIn.CLASS); // Undo it
-      TermUtil.addAndRemoveLink(gDenver.getId(), gUSA.getId(), LocatedIn.CLASS, gColorado.getId(), LocatedIn.CLASS); // Undo it
-      
+      TermUtil.addAndRemoveLink(uCity.getId(), uUSA.getId(), AllowedIn.CLASS, uState.getId(), AllowedIn.CLASS); // Undo
+                                                                                                                // it
+      TermUtil.addAndRemoveLink(gDenver.getId(), gUSA.getId(), LocatedIn.CLASS, gColorado.getId(), LocatedIn.CLASS); // Undo
+                                                                                                                     // it
+
       // Test 3) Moving the State Universal to Uganda should fail.
-      try {
+      try
+      {
         TermUtil.addAndRemoveLink(uState.getId(), uUSA.getId(), AllowedIn.CLASS, uUganda.getId(), AllowedIn.CLASS);
         Assert.fail("An exception was not thrown on the 3rd removeLink test.");
       }
-      catch (InvalidUniversalRemoveLinkException e) {
+      catch (InvalidUniversalRemoveLinkException e)
+      {
         // Expected
       }
-      
+
       // Test 4) Moving the City Universal to Uganda should fail.
-      try {
+      try
+      {
         TermUtil.addAndRemoveLink(uCity.getId(), uState.getId(), AllowedIn.CLASS, uUganda.getId(), AllowedIn.CLASS);
         Assert.fail("An exception was not thrown on the 4th removeLink test.");
       }
-      catch (InvalidUniversalRemoveLinkException e) {
+      catch (InvalidUniversalRemoveLinkException e)
+      {
         // Expected
       }
     }
-    finally {
+    finally
+    {
       GISTestFactory.deleteUniversals("USA", "State", "City", "Uganda");
     }
   }

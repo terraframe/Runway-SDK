@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -26,6 +26,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.Constants;
@@ -56,67 +61,24 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTableDAO;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class MdTableQueryTest extends TestCase
+public class MdTableQueryTest
 {
-  private static List<String>          testObjectIdList         = new LinkedList<String>();
+  private static List<String>     testObjectIdList       = new LinkedList<String>();
 
-  private static List<String>          objectList;
-  
-  protected static final TypeInfo      childTableQueryInfo      = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "ChildQueryTable");
+  private static List<String>     objectList;
 
-  protected static final TypeInfo      childRefTableQueryInfo   = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "ChildRefQueryTable");
+  protected static final TypeInfo childTableQueryInfo    = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "ChildQueryTable");
 
+  protected static final TypeInfo childRefTableQueryInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "ChildRefQueryTable");
 
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new QueryMasterSetup(MdTableQueryTest.suite(), QueryMasterSetup.parentQueryInfo.getType(), QueryMasterSetup.parentRefQueryInfo.getType()));
-  }
-
-  
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-  
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdTableQueryTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-  
   /**
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
-  { 
+  {
     BusinessDAO testQueryObject1 = BusinessDAO.newInstance(QueryMasterSetup.childMdBusiness.definesType());
     testQueryObject1.setValue("queryBoolean", MdAttributeBooleanInfo.TRUE);
     testQueryObject1.setValue("queryInteger", "200");
@@ -145,14 +107,11 @@ public class MdTableQueryTest extends TestCase
     testObjectIdList.add(testQueryObject4.getId());
 
     objectList = MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childQueryInfo.getType());
-    
-    
- 
+
     MdBusinessDAOIF mdBusChildType = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childQueryInfo.getType());
-    MdBusinessDAOIF mdBusChildRefType  = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryInfo.getType());
-    
- 
-    // Table pointing to child class   
+    MdBusinessDAOIF mdBusChildRefType = MdBusinessDAO.getMdBusinessDAO(QueryMasterSetup.childRefQueryInfo.getType());
+
+    // Table pointing to child class
     MdTableDAO mdTableChild = MdTableDAO.newInstance();
     mdTableChild.setValue(MdTableInfo.NAME, childTableQueryInfo.getTypeName());
     mdTableChild.setValue(MdTableInfo.PACKAGE, childTableQueryInfo.getPackageName());
@@ -165,32 +124,32 @@ public class MdTableQueryTest extends TestCase
     MdAttributeCharacterDAO mdTableChildIdAttr = TestFixtureFactory.addCharacterAttribute(mdTableChild, "childObjId");
     mdTableChildIdAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, ComponentInfo.ID);
     mdTableChildIdAttr.apply();
-    
-    MdAttributeCharacterDAOIF mdClassQueryCharAttr = (MdAttributeCharacterDAOIF)mdBusChildType.definesAttribute("queryCharacter");   
+
+    MdAttributeCharacterDAOIF mdClassQueryCharAttr = (MdAttributeCharacterDAOIF) mdBusChildType.definesAttribute("queryCharacter");
     MdAttributeCharacterDAO mdTableQueryCharAttr = TestFixtureFactory.addCharacterAttribute(mdTableChild, mdClassQueryCharAttr.definesAttribute());
     mdTableQueryCharAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, mdClassQueryCharAttr.getColumnName());
     mdTableQueryCharAttr.apply();
-    
-    MdAttributeBooleanDAOIF mdClassBoolAttr = (MdAttributeBooleanDAOIF)mdBusChildType.definesAttribute("queryBoolean");   
+
+    MdAttributeBooleanDAOIF mdClassBoolAttr = (MdAttributeBooleanDAOIF) mdBusChildType.definesAttribute("queryBoolean");
     MdAttributeBooleanDAO mdTableChildBoolAttr = TestFixtureFactory.addBooleanAttribute(mdTableChild, mdClassBoolAttr.definesAttribute());
     mdTableChildBoolAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, mdClassBoolAttr.getColumnName());
     mdTableChildBoolAttr.apply();
-    
-    MdAttributeIntegerDAOIF mdClassIntAttr = (MdAttributeIntegerDAOIF)mdBusChildType.definesAttribute("queryInteger");  
+
+    MdAttributeIntegerDAOIF mdClassIntAttr = (MdAttributeIntegerDAOIF) mdBusChildType.definesAttribute("queryInteger");
     MdAttributeIntegerDAO mdTableChildIntAttr = TestFixtureFactory.addIntegerAttribute(mdTableChild, mdClassIntAttr.definesAttribute());
     mdTableChildIntAttr.setValue(MdAttributeIntegerInfo.COLUMN_NAME, mdClassIntAttr.getColumnName());
     mdTableChildIntAttr.apply();
-    
-    MdAttributeDateDAOIF mdClassDateAttr = (MdAttributeDateDAOIF)mdBusChildType.definesAttribute("queryDate"); 
+
+    MdAttributeDateDAOIF mdClassDateAttr = (MdAttributeDateDAOIF) mdBusChildType.definesAttribute("queryDate");
     MdAttributeDateDAO mdTableChildDateAttr = TestFixtureFactory.addDateAttribute(mdTableChild, mdClassDateAttr.definesAttribute());
     mdTableChildDateAttr.setValue(MdAttributeDateInfo.COLUMN_NAME, mdClassDateAttr.getColumnName());
     mdTableChildDateAttr.apply();
-    
-    MdAttributeReferenceDAOIF mdClassRefAttr = (MdAttributeReferenceDAOIF)mdBusChildType.definesAttribute( "reference");    
+
+    MdAttributeReferenceDAOIF mdClassRefAttr = (MdAttributeReferenceDAOIF) mdBusChildType.definesAttribute("reference");
     MdAttributeReferenceDAO mdTableChildRefAttr = TestFixtureFactory.addReferenceAttribute(mdTableChild, mdBusChildRefType, mdClassRefAttr.definesAttribute());
     mdTableChildRefAttr.setValue(MdAttributeReferenceInfo.COLUMN_NAME, mdClassRefAttr.getColumnName());
     mdTableChildRefAttr.apply();
-    
+
     // Table pointing to child reference class
     MdTableDAO mdTableChildRef = MdTableDAO.newInstance();
     mdTableChildRef.setValue(MdTableInfo.NAME, childRefTableQueryInfo.getTypeName());
@@ -199,55 +158,58 @@ public class MdTableQueryTest extends TestCase
     mdTableChildRef.setValue(MdTableInfo.TABLE_NAME, mdBusChildRefType.getTableName());
     mdTableChildRef.setValue(MdTableInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTableChildRef.apply();
-    
+
     MdAttributeCharacterDAO mdTableChildRefIdAttr = TestFixtureFactory.addCharacterAttribute(mdTableChildRef, "childRefObjId");
     mdTableChildRefIdAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, ComponentInfo.ID);
     mdTableChildRefIdAttr.apply();
-    
-    MdAttributeCharacterDAOIF mdClassRefQueryCharAttr = (MdAttributeCharacterDAOIF)mdBusChildRefType.definesAttribute("refQueryCharacter");   
+
+    MdAttributeCharacterDAOIF mdClassRefQueryCharAttr = (MdAttributeCharacterDAOIF) mdBusChildRefType.definesAttribute("refQueryCharacter");
     MdAttributeCharacterDAO mdTableChildRefQueryCharAttr = TestFixtureFactory.addCharacterAttribute(mdTableChildRef, mdClassRefQueryCharAttr.definesAttribute());
     mdTableChildRefQueryCharAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, mdClassRefQueryCharAttr.getColumnName());
     mdTableChildRefQueryCharAttr.apply();
-    
-    MdAttributeIntegerDAOIF mdClassRefIntAttr = (MdAttributeIntegerDAOIF)mdBusChildRefType.definesAttribute("refQueryInteger");  
+
+    MdAttributeIntegerDAOIF mdClassRefIntAttr = (MdAttributeIntegerDAOIF) mdBusChildRefType.definesAttribute("refQueryInteger");
     MdAttributeIntegerDAO mdTableChildRefIntAttr = TestFixtureFactory.addIntegerAttribute(mdTableChildRef, mdClassRefIntAttr.definesAttribute());
     mdTableChildRefIntAttr.setValue(MdAttributeIntegerInfo.COLUMN_NAME, mdClassRefIntAttr.getColumnName());
     mdTableChildRefIntAttr.apply();
-    
+
   }
-  
-  
+
   /**
    * Deletes the abstract relationship.
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
-//    MdBusinessDAO testClassMdBusiness1 = MdBusinessDAO.getMdBusinessDAO(TestFixConst.TEST_CLASS1_TYPE).getBusinessDAO();
-//    testClassMdBusiness1.delete();
-//    
+    // MdBusinessDAO testClassMdBusiness1 =
+    // MdBusinessDAO.getMdBusinessDAO(TestFixConst.TEST_CLASS1_TYPE).getBusinessDAO();
+    // testClassMdBusiness1.delete();
+    //
     MdTableDAO mdTableChild = MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()).getBusinessDAO();
     mdTableChild.delete();
-    
+
     MdTableDAO mdTableChildRef = MdTableDAO.getMdTableDAO(childRefTableQueryInfo.getType()).getBusinessDAO();
     mdTableChildRef.delete();
-    
+
     for (String id : testObjectIdList)
     {
       BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
       testQueryObject.delete();
     }
   }
-  
+
   /**
    * Testing windowing functions on EntityQueries.
    */
+  @Request
+  @Test
   public void testWindowFunctionEntityQuery() throws Exception
   {
     MdBusinessDAOIF mdBusMdAttrConcrete = MdBusinessDAO.getMdBusinessDAO(MdAttributeConcreteInfo.CLASS);
-    
+
     MdTableDAO mdTabledAttrConcrete = MdTableDAO.newInstance();
-    
-    
+
     OIterator<ValueObject> i = null;
 
     try
@@ -258,17 +220,17 @@ public class MdTableQueryTest extends TestCase
       mdTabledAttrConcrete.setValue(MdTableInfo.TABLE_NAME, mdBusMdAttrConcrete.getTableName());
       mdTabledAttrConcrete.setValue(MdTableInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTabledAttrConcrete.apply();
-      
-      MdAttributeCharacterDAOIF mdBusMdAttrConcreteColname = (MdAttributeCharacterDAOIF)mdBusMdAttrConcrete.definesAttribute(MdAttributeConcreteInfo.NAME); 
+
+      MdAttributeCharacterDAOIF mdBusMdAttrConcreteColname = (MdAttributeCharacterDAOIF) mdBusMdAttrConcrete.definesAttribute(MdAttributeConcreteInfo.NAME);
       MdAttributeCharacterDAO mdTableMdAttrConcreteColname = TestFixtureFactory.addCharacterAttribute(mdTabledAttrConcrete, mdBusMdAttrConcreteColname.definesAttribute());
       mdTableMdAttrConcreteColname.setValue(MdAttributeCharacterInfo.COLUMN_NAME, mdBusMdAttrConcreteColname.getColumnName());
       mdTableMdAttrConcreteColname.apply();
-      
-      MdAttributeBooleanDAOIF mdBusMdAttrConcreteReq = (MdAttributeBooleanDAOIF)mdBusMdAttrConcrete.definesAttribute(MdAttributeConcreteInfo.REQUIRED); 
+
+      MdAttributeBooleanDAOIF mdBusMdAttrConcreteReq = (MdAttributeBooleanDAOIF) mdBusMdAttrConcrete.definesAttribute(MdAttributeConcreteInfo.REQUIRED);
       MdAttributeBooleanDAO mdTableChildBoolAttr = TestFixtureFactory.addBooleanAttribute(mdTabledAttrConcrete, mdBusMdAttrConcreteReq.definesAttribute());
       mdTableChildBoolAttr.setValue(MdAttributeBooleanInfo.COLUMN_NAME, mdBusMdAttrConcreteReq.getColumnName());
       mdTableChildBoolAttr.apply();
-      
+
       QueryFactory qf = new QueryFactory();
 
       // Query number of ID fields
@@ -347,10 +309,10 @@ public class MdTableQueryTest extends TestCase
           }
 
           String[] windowValues = stringAgg.split(",");
-          assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
+          Assert.assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
           for (String windowValue : windowValues)
           {
-            assertTrue("Window function did not return an expected value from the STRING_AGG function", reqSet.contains(windowValue.trim()));
+            Assert.assertTrue("Window function did not return an expected value from the STRING_AGG function", reqSet.contains(windowValue.trim()));
           }
         }
       }
@@ -365,7 +327,7 @@ public class MdTableQueryTest extends TestCase
       {
         i.close();
       }
-      
+
       if (mdTabledAttrConcrete != null && !mdTabledAttrConcrete.isNew())
       {
         mdTabledAttrConcrete.delete();
@@ -376,12 +338,14 @@ public class MdTableQueryTest extends TestCase
   /**
    * Testing windowing functions on ValueQueries.
    */
+  @Request
+  @Test
   public void testWindowFunctionValueQuery() throws Exception
   {
     MdBusinessDAOIF mdBusMdAttrConcrete = MdBusinessDAO.getMdBusinessDAO(MdAttributeConcreteInfo.CLASS);
-    
+
     MdTableDAO mdTabledAttrConcrete = MdTableDAO.newInstance();
-    
+
     OIterator<ValueObject> i = null;
 
     try
@@ -392,17 +356,17 @@ public class MdTableQueryTest extends TestCase
       mdTabledAttrConcrete.setValue(MdTableInfo.TABLE_NAME, mdBusMdAttrConcrete.getTableName());
       mdTabledAttrConcrete.setValue(MdTableInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTabledAttrConcrete.apply();
-      
-      MdAttributeCharacterDAOIF mdBusMdAttrConcreteColname = (MdAttributeCharacterDAOIF)mdBusMdAttrConcrete.definesAttribute(MdAttributeConcreteInfo.NAME); 
+
+      MdAttributeCharacterDAOIF mdBusMdAttrConcreteColname = (MdAttributeCharacterDAOIF) mdBusMdAttrConcrete.definesAttribute(MdAttributeConcreteInfo.NAME);
       MdAttributeCharacterDAO mdTableMdAttrConcreteColname = TestFixtureFactory.addCharacterAttribute(mdTabledAttrConcrete, mdBusMdAttrConcreteColname.definesAttribute());
       mdTableMdAttrConcreteColname.setValue(MdAttributeCharacterInfo.COLUMN_NAME, mdBusMdAttrConcreteColname.getColumnName());
       mdTableMdAttrConcreteColname.apply();
-      
-      MdAttributeBooleanDAOIF mdBusMdAttrConcreteReq = (MdAttributeBooleanDAOIF)mdBusMdAttrConcrete.definesAttribute(MdAttributeConcreteInfo.REQUIRED); 
+
+      MdAttributeBooleanDAOIF mdBusMdAttrConcreteReq = (MdAttributeBooleanDAOIF) mdBusMdAttrConcrete.definesAttribute(MdAttributeConcreteInfo.REQUIRED);
       MdAttributeBooleanDAO mdTableChildBoolAttr = TestFixtureFactory.addBooleanAttribute(mdTabledAttrConcrete, mdBusMdAttrConcreteReq.definesAttribute());
       mdTableChildBoolAttr.setValue(MdAttributeBooleanInfo.COLUMN_NAME, mdBusMdAttrConcreteReq.getColumnName());
       mdTableChildBoolAttr.apply();
-      
+
       QueryFactory qf = new QueryFactory();
 
       // Query number of ID fields
@@ -485,10 +449,10 @@ public class MdTableQueryTest extends TestCase
           }
 
           String[] windowValues = stringAgg.split(",");
-          assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
+          Assert.assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
           for (String windowValue : windowValues)
           {
-            assertTrue("Window function did not return an expected value from the STRING_AGG function", reqSet.contains(windowValue.trim()));
+            Assert.assertTrue("Window function did not return an expected value from the STRING_AGG function", reqSet.contains(windowValue.trim()));
           }
         }
       }
@@ -503,7 +467,7 @@ public class MdTableQueryTest extends TestCase
       {
         i.close();
       }
-      
+
       if (mdTabledAttrConcrete != null && !mdTabledAttrConcrete.isNew())
       {
         mdTabledAttrConcrete.delete();
@@ -511,6 +475,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testUnion()
   {
     OIterator<ValueObject> i = null;
@@ -537,7 +503,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       int count = 0;
@@ -568,12 +534,12 @@ public class MdTableQueryTest extends TestCase
 
       if (expected != count)
       {
-        fail("The value query union did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
+        Assert.fail("The value query union did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -583,10 +549,14 @@ public class MdTableQueryTest extends TestCase
       }
     }
   }
-  
+
   /**
-   * The UNION ALL operator does not exclude duplicate rows so we test this through the API by UNION ALL a table with itself and ensuring there's twice the rows of a normal UNION
+   * The UNION ALL operator does not exclude duplicate rows so we test this
+   * through the API by UNION ALL a table with itself and ensuring there's twice
+   * the rows of a normal UNION
    */
+  @Request
+  @Test
   public void testUnionAll()
   {
     try
@@ -625,18 +595,22 @@ public class MdTableQueryTest extends TestCase
 
       if (expected != count)
       {
-        fail("The value query UNION ALL did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
+        Assert.fail("The value query UNION ALL did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
-   * The UNION ALL operator does not exclude duplicate rows so we test this through the API by UNION ALL a table with itself and ensuring there's twice the rows of a normal UNION
+   * The UNION ALL operator does not exclude duplicate rows so we test this
+   * through the API by UNION ALL a table with itself and ensuring there's twice
+   * the rows of a normal UNION
    */
+  @Request
+  @Test
   public void testUnionAll_Generated()
   {
     try
@@ -648,8 +622,8 @@ public class MdTableQueryTest extends TestCase
       ValueQuery vQ2 = qf.valueQuery();
       ValueQuery vQ3 = qf.valueQuery();
       GenericTableQuery childQuery1 = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);
-      GenericTableQuery childQuery2 = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);       
-      
+      GenericTableQuery childQuery2 = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);
+
       vQ.SELECT(childQuery1.get("childObjId"));
       vQ2.SELECT(childQuery2.get("childObjId"));
 
@@ -664,7 +638,7 @@ public class MdTableQueryTest extends TestCase
       vQ2 = qf.valueQuery();
       vQ3 = qf.valueQuery();
       childQuery1 = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);
-      childQuery2 = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);    
+      childQuery2 = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);
 
       vQ.SELECT(childQuery1.get("childObjId"));
       vQ2.SELECT(childQuery2.get("childObjId"));
@@ -675,15 +649,17 @@ public class MdTableQueryTest extends TestCase
 
       if (expected != count)
       {
-        fail("The value query UNION ALL did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
+        Assert.fail("The value query UNION ALL did not return the proper number of results. Expected is " + expected + ", it returned " + count + ".");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinEqualSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -696,7 +672,7 @@ public class MdTableQueryTest extends TestCase
       TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
-      // 
+      //
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childQuery.aBoolean("queryBoolean"), childQuery.aReference("reference"), childQuery.aInteger("queryInteger"));
       vQ.WHERE(childQuery.aInteger("queryInteger").LEFT_JOIN_EQ(childRefQuery.aInteger("refQueryInteger")));
 
@@ -704,7 +680,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -715,13 +691,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("queryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -729,7 +705,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
+
+  @Request
+  @Test
   public void testLeftJoinEqualSelectable_Generated()
   {
     OIterator<ValueObject> i = null;
@@ -739,11 +717,11 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      
-      GenericTableQuery childRefQuery = new GenericTableQuery(MdTableDAO.getMdTableDAO(childRefTableQueryInfo.getType()), qf);
-      GenericTableQuery childQuery = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);  
 
-      // 
+      GenericTableQuery childRefQuery = new GenericTableQuery(MdTableDAO.getMdTableDAO(childRefTableQueryInfo.getType()), qf);
+      GenericTableQuery childQuery = new GenericTableQuery(MdTableDAO.getMdTableDAO(childTableQueryInfo.getType()), qf);
+
+      //
       vQ.SELECT(childRefQuery.get("refQueryCharacter"), childQuery.get("queryBoolean"), childQuery.get("reference"), childQuery.get("queryInteger"));
       vQ.WHERE(childQuery.get("queryInteger").LEFT_JOIN_EQ(childRefQuery.get("refQueryInteger")));
 
@@ -751,7 +729,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -762,13 +740,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("queryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -777,6 +755,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinEqualQuery()
   {
     OIterator<ValueObject> i = null;
@@ -796,7 +776,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -807,13 +787,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -821,7 +801,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
+
+  @Request
+  @Test
   public void testLeftJoinNotEqualSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -831,7 +813,7 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo .getType());
+      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childQuery.aBoolean("queryBoolean"), childQuery.aReference("reference"), childQuery.aInteger("queryInteger"));
@@ -841,7 +823,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -852,13 +834,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (o.getValue("queryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -866,7 +848,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
+
+  @Request
+  @Test
   public void testLeftJoinNotEqualQuery()
   {
     OIterator<ValueObject> i = null;
@@ -876,7 +860,7 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo .getType());
+      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childRefQuery.aInteger("refQueryInteger"));
@@ -886,7 +870,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -897,13 +881,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -912,6 +896,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinGreaterOrEqualSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -921,7 +907,7 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo .getType());
+      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childQuery.aBoolean("queryBoolean"), childQuery.aReference("reference"), childQuery.aInteger("queryInteger"));
@@ -931,7 +917,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -942,13 +928,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (Integer.parseInt(o.getValue("queryInteger")) < 200)
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -956,8 +942,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
 
+  @Request
+  @Test
   public void testLeftJoinGreaterOrEqualQuery()
   {
     OIterator<ValueObject> i = null;
@@ -967,7 +954,7 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo .getType());
+      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childRefQuery.aInteger("refQueryInteger"));
@@ -977,7 +964,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -988,13 +975,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1002,7 +989,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
+
+  @Request
+  @Test
   public void testLeftJoinGreaterThanSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -1012,7 +1001,7 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo .getType());
+      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childQuery.aBoolean("queryBoolean"), childQuery.aReference("reference"), childQuery.aInteger("queryInteger"));
@@ -1022,7 +1011,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -1033,13 +1022,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (Integer.parseInt(o.getValue("queryInteger")) <= 200)
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1047,8 +1036,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
 
+  @Request
+  @Test
   public void testLeftJoinGreaterThanQuery()
   {
     OIterator<ValueObject> i = null;
@@ -1058,7 +1048,7 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo .getType());
+      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childRefQuery.aInteger("refQueryInteger"));
@@ -1068,7 +1058,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -1079,13 +1069,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1093,8 +1083,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
 
+  @Request
+  @Test
   public void testLeftJoinLessOrEqualSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -1104,7 +1095,7 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo .getType());
+      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childQuery.aBoolean("queryBoolean"), childQuery.aReference("reference"), childQuery.aInteger("queryInteger"));
@@ -1114,7 +1105,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -1125,13 +1116,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (Integer.parseInt(o.getValue("queryInteger")) > 200)
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1139,7 +1130,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
+
+  @Request
+  @Test
   public void testLeftJoinLessOrEqualQuery()
   {
     OIterator<ValueObject> i = null;
@@ -1149,7 +1142,7 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo .getType());
+      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childRefQuery.aInteger("refQueryInteger"));
@@ -1159,7 +1152,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -1170,13 +1163,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1184,7 +1177,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
+
+  @Request
+  @Test
   public void testLeftJoinLessThanSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -1194,7 +1189,7 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo .getType());
+      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childQuery.aBoolean("queryBoolean"), childQuery.aReference("reference"), childQuery.aInteger("queryInteger"));
@@ -1204,7 +1199,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -1215,13 +1210,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (Integer.parseInt(o.getValue("queryInteger")) >= 200)
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. queryInteger = '" + o.getValue("queryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1230,6 +1225,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLeftJoinLessThanQuery()
   {
     OIterator<ValueObject> i = null;
@@ -1239,7 +1236,7 @@ public class MdTableQueryTest extends TestCase
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo .getType());
+      TableQuery childRefQuery = qf.tableQuery(childRefTableQueryInfo.getType());
       TableQuery childQuery = qf.tableQuery(childTableQueryInfo.getType());
 
       vQ.SELECT(childRefQuery.aCharacter("refQueryCharacter"), childRefQuery.aInteger("refQueryInteger"));
@@ -1249,7 +1246,7 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("The query did not return any results when it should have.");
+        Assert.fail("The query did not return any results when it should have.");
       }
 
       while (i.hasNext())
@@ -1260,13 +1257,13 @@ public class MdTableQueryTest extends TestCase
         // from childRefQuery
         {
           if (!o.getValue("refQueryInteger").equals("200"))
-            fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
+            Assert.fail("The Left Join query returned a resultant object with incorrect integer attributes. refQueryInteger = '" + o.getValue("refQueryInteger") + "'");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1274,7 +1271,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
+
+  @Request
+  @Test
   public void testBooleanEqualBoolean()
   {
     OIterator<ValueObject> i = null;
@@ -1286,7 +1285,7 @@ public class MdTableQueryTest extends TestCase
 
       ValueQuery vQ = qf.valueQuery();
       TableQuery query = qf.tableQuery(childTableQueryInfo.getType());
-      
+
       vQ.SELECT(query.aBoolean("queryBoolean"), query.get("childObjId", "objectId"));
       vQ.WHERE(query.aBoolean("queryBoolean").EQ(true));
 
@@ -1302,7 +1301,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertTrue(value);
+        Assert.assertTrue(value);
 
         count++;
       }
@@ -1317,7 +1316,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query for false values that should find exactly 2
       // matches
@@ -1335,7 +1334,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertFalse(value);
+        Assert.assertFalse(value);
 
         count++;
       }
@@ -1350,11 +1349,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1363,7 +1362,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
-
+  @Request
+  @Test
   public void testBooleanEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -1388,7 +1388,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertTrue(value);
+        Assert.assertTrue(value);
 
         count++;
       }
@@ -1403,7 +1403,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query for false values that should find exactly 2
       // matches
@@ -1421,7 +1421,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertFalse(value);
+        Assert.assertFalse(value);
 
         count++;
       }
@@ -1436,11 +1436,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1449,6 +1449,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -1459,7 +1461,7 @@ public class MdTableQueryTest extends TestCase
 
     try
     {
-        // perform a query for null values
+      // perform a query for null values
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
@@ -1477,7 +1479,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryBoolean");
 
-        assertEquals("", value);
+        Assert.assertEquals("", value);
 
         count++;
       }
@@ -1492,7 +1494,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query to find all objects with non-null queryBoolean
       // values
@@ -1521,11 +1523,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1537,6 +1539,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBooleanNotEqualBoolean()
   {
     OIterator<ValueObject> i = null;
@@ -1561,7 +1565,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertTrue(value);
+        Assert.assertTrue(value);
 
         count++;
       }
@@ -1576,7 +1580,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query for false values that should find exactly 2
       // matches
@@ -1594,7 +1598,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertFalse(value);
+        Assert.assertFalse(value);
 
         count++;
       }
@@ -1609,11 +1613,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1622,7 +1626,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
-
+  @Request
+  @Test
   public void testBooleanNotEqualString()
   {
     try
@@ -1645,7 +1650,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertTrue(value);
+        Assert.assertTrue(value);
 
         count++;
       }
@@ -1660,7 +1665,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query for false values that should find exactly 2
       // matches
@@ -1678,7 +1683,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
-        assertFalse(value);
+        Assert.assertFalse(value);
 
         count++;
       }
@@ -1693,17 +1698,20 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
-   * Tests whether two selectables can be created and queried for the same attribute on a type.
+   * Tests whether two selectables can be created and queried for the same
+   * attribute on a type.
    */
+  @Request
+  @Test
   public void testCharacterEqualStringDuplicateSelectable()
   {
     OIterator<ValueObject> i = null;
@@ -1728,12 +1736,12 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("attr1");
 
-        assertEquals("some character value", value);
-        
+        Assert.assertEquals("some character value", value);
+
         value = o.getValue("attr2");
 
-        assertEquals("some character value", value);
-        
+        Assert.assertEquals("some character value", value);
+
         count++;
       }
 
@@ -1747,11 +1755,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1759,8 +1767,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
-  
+
+  @Request
+  @Test
   public void testCharacterEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -1785,7 +1794,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -1800,7 +1809,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -1817,7 +1826,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("wrong character value", value);
+        Assert.assertEquals("wrong character value", value);
 
         count++;
       }
@@ -1832,11 +1841,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1844,7 +1853,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
+
+  @Request
+  @Test
   public void testCharacterEqualString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -1869,7 +1880,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -1884,7 +1895,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -1894,11 +1905,11 @@ public class MdTableQueryTest extends TestCase
 
       i = vQ.getIterator();
 
-      assertFalse(i.hasNext());
+      Assert.assertFalse(i.hasNext());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1907,7 +1918,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
-
+  @Request
+  @Test
   public void testCharacterEqualStringInArray()
   {
     OIterator<ValueObject> i = null;
@@ -1932,7 +1944,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -1947,7 +1959,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -1957,11 +1969,11 @@ public class MdTableQueryTest extends TestCase
 
       i = vQ.getIterator();
 
-      assertFalse(i.hasNext());
+      Assert.assertFalse(i.hasNext());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1970,6 +1982,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualStringInArray_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -1994,7 +2008,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -2009,7 +2023,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -2019,11 +2033,11 @@ public class MdTableQueryTest extends TestCase
 
       i = vQ.getIterator();
 
-      assertFalse(i.hasNext());
+      Assert.assertFalse(i.hasNext());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2032,6 +2046,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -2055,14 +2071,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("childObjId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2093,11 +2109,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2109,6 +2125,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterLikeString()
   {
     OIterator<ValueObject> i = null;
@@ -2133,7 +2151,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -2148,7 +2166,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -2158,11 +2176,11 @@ public class MdTableQueryTest extends TestCase
 
       i = vQ.getIterator();
 
-      assertFalse(i.hasNext());
+      Assert.assertFalse(i.hasNext());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2171,6 +2189,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterLikeString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -2195,7 +2215,7 @@ public class MdTableQueryTest extends TestCase
         ValueObject o = i.next();
         String value = o.getValue("queryCharacter");
 
-        assertEquals("some character value", value);
+        Assert.assertEquals("some character value", value);
 
         count++;
       }
@@ -2210,7 +2230,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -2220,11 +2240,11 @@ public class MdTableQueryTest extends TestCase
 
       i = vQ.getIterator();
 
-      assertFalse(i.hasNext());
+      Assert.assertFalse(i.hasNext());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2233,6 +2253,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -2271,11 +2293,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2284,6 +2306,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -2322,11 +2346,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2335,6 +2359,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualStringInArray()
   {
     OIterator<ValueObject> i = null;
@@ -2373,11 +2399,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2386,6 +2412,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotEqualStringInArray_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -2424,11 +2452,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2437,6 +2465,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNotLikeString()
   {
     OIterator<ValueObject> i = null;
@@ -2475,11 +2505,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2487,8 +2517,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
 
+  @Request
+  @Test
   public void testCharacterNotLikeString_IgnoreCase()
   {
     OIterator<ValueObject> i = null;
@@ -2527,11 +2558,11 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2539,8 +2570,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
 
+  @Request
+  @Test
   public void testDateEqualDate()
   {
     OIterator<ValueObject> i = null;
@@ -2561,14 +2593,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2584,12 +2616,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2598,6 +2630,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -2617,14 +2651,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2638,12 +2672,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2652,6 +2686,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGTDate()
   {
     OIterator<ValueObject> i = null;
@@ -2672,14 +2708,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2695,12 +2731,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2709,6 +2745,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGTString()
   {
     OIterator<ValueObject> i = null;
@@ -2728,14 +2766,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2749,12 +2787,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2763,6 +2801,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGEDate()
   {
     OIterator<ValueObject> i = null;
@@ -2783,14 +2823,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2806,14 +2846,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2829,12 +2869,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2843,6 +2883,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGEString()
   {
     OIterator<ValueObject> i = null;
@@ -2862,14 +2904,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2883,14 +2925,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -2904,12 +2946,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2918,6 +2960,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateEqualNull()
   {
     OIterator<ValueObject> i = null;
@@ -2941,14 +2985,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       int count = 0;
 
       while (i.hasNext())
       {
-        assertTrue(i.next().getValue("queryDate").equals(""));
+        Assert.assertTrue(i.next().getValue("queryDate").equals(""));
 
         count++;
       }
@@ -2963,7 +3007,7 @@ public class MdTableQueryTest extends TestCase
           expected++;
       }
 
-      assertEquals(expected, count);
+      Assert.assertEquals(expected, count);
 
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
@@ -2975,12 +3019,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2992,6 +3036,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLTDate()
   {
     OIterator<ValueObject> i = null;
@@ -3012,14 +3058,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3035,12 +3081,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3049,6 +3095,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLTString()
   {
     OIterator<ValueObject> i = null;
@@ -3068,14 +3116,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3089,12 +3137,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3103,6 +3151,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLEDate()
   {
     OIterator<ValueObject> i = null;
@@ -3123,14 +3173,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3146,14 +3196,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3169,12 +3219,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3183,6 +3233,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLEString()
   {
     OIterator<ValueObject> i = null;
@@ -3202,14 +3254,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3223,14 +3275,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3244,12 +3296,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3258,6 +3310,8 @@ public class MdTableQueryTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateNotEqualDate()
   {
     OIterator<ValueObject> i = null;
@@ -3278,14 +3332,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3301,12 +3355,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3314,7 +3368,9 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
+
+  @Request
+  @Test
   public void testDateNotEqualString()
   {
     OIterator<ValueObject> i = null;
@@ -3334,14 +3390,14 @@ public class MdTableQueryTest extends TestCase
 
       if (!i.hasNext())
       {
-        fail("A query based on attribute date values did not return any results when it should have");
+        Assert.fail("A query based on attribute date values did not return any results when it should have");
       }
 
       while (i.hasNext())
       {
         if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
         {
-          fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
+          Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
       }
 
@@ -3355,12 +3411,12 @@ public class MdTableQueryTest extends TestCase
 
       if (i.hasNext())
       {
-        fail("A query based on attribute date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3368,5 +3424,5 @@ public class MdTableQueryTest extends TestCase
         i.close();
     }
   }
-  
+
 }

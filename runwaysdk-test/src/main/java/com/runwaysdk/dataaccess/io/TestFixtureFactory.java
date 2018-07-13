@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -230,11 +230,11 @@ public class TestFixtureFactory
     public static final String TEST_PACKAGE             = "test.xmlclasses";
 
     public static final String TEST_CLASS1              = "Class1";
-    
+
     public static final String TEST_CLASS1_TYPE         = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_CLASS1);
-    
+
     public static final String TEST_TABLE1              = "MdTable1";
-    
+
     public static final String TEST_TABLE1_TYPE         = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_TABLE1);
 
     public static final String TEST_SESSION_LIMIT       = "10";
@@ -353,23 +353,25 @@ public class TestFixtureFactory
   }
 
   /**
-   * Assumes that the {@link MdBusinessDAOIF} with name {@link TestFixConst#TEST_CLASS1} has been created.
+   * Assumes that the {@link MdBusinessDAOIF} with name
+   * {@link TestFixConst#TEST_CLASS1} has been created.
    *
-   * @return newly created {@link MdTableDAO} that points to class table {@link TestFixConst#TEST_CLASS1}.
+   * @return newly created {@link MdTableDAO} that points to class table
+   *         {@link TestFixConst#TEST_CLASS1}.
    */
   public static MdTableDAO createMdTableForMdBusiness1()
   {
     MdBusinessDAOIF testClassMdBusiness1 = MdBusinessDAO.getMdBusinessDAO(TestFixConst.TEST_CLASS1_TYPE);
-    
+
     MdTableDAO mdTable = MdTableDAO.newInstance();
     mdTable.setValue(MdTableInfo.NAME, TestFixConst.TEST_TABLE1);
     mdTable.setValue(MdTableInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdTable.setStructValue(MdTableInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdTable 1 Test");
     mdTable.setValue(MdTableInfo.TABLE_NAME, testClassMdBusiness1.getTableName());
-    
+
     return mdTable;
   }
-  
+
   public static MdBusinessDAO createMdBusiness1()
   {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
@@ -1067,8 +1069,8 @@ public class TestFixtureFactory
 
   public static String getMdBusinessDTOStub()
   {
-    String source = "package test.xmlclasses;\n" + "public class Class1DTO extends Class1DTOBase \n" + "{\n" + "  public static final long serialVersionUID = 1205173531292L;\n" + "  public Class1DTO(" + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n" + "    super(clientRequest);\n" + "  }\n" + "  /**\n" + "  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.\n" + "  * \n" + "  * @param businessDTO The BusinessDTO to duplicate\n" + "  * @param clientRequest The clientRequest this DTO should use to communicate with the server.\n" + "  */\n" + "  protected Class1DTO(" + BusinessDTO.class.getName() + " businessDTO, " + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n"
-        + "    super(businessDTO, clientRequest);\n" + "  }\n" + "  public static Class1DTO get(" + ClientRequestIF.class.getName() + " clientRequest, String id)\n" + "  {\n" + "    " + EntityDTO.class.getName() + " dto = (" + EntityDTO.class.getName() + ")clientRequest.get(id);\n" + "    return (Class1DTO) dto;\n" + "  }\n" + "  public void tempMethod()\n" + "  {\n" + "    return;\n" + "  }\n" + "}\n";
+    String source = "package test.xmlclasses;\n" + "public class Class1DTO extends Class1DTOBase \n" + "{\n" + "  public static final long serialVersionUID = 1205173531292L;\n" + "  public Class1DTO(" + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n" + "    super(clientRequest);\n" + "  }\n" + "  /**\n" + "  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.\n" + "  * \n" + "  * @param businessDTO The BusinessDTO to duplicate\n" + "  * @param clientRequest The clientRequest this DTO should use to communicate with the server.\n" + "  */\n" + "  protected Class1DTO(" + BusinessDTO.class.getName() + " businessDTO, " + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n" + "    super(businessDTO, clientRequest);\n"
+        + "  }\n" + "  public static Class1DTO get(" + ClientRequestIF.class.getName() + " clientRequest, String id)\n" + "  {\n" + "    " + EntityDTO.class.getName() + " dto = (" + EntityDTO.class.getName() + ")clientRequest.get(id);\n" + "    return (Class1DTO) dto;\n" + "  }\n" + "  public void tempMethod()\n" + "  {\n" + "    return;\n" + "  }\n" + "}\n";
 
     return source;
   }

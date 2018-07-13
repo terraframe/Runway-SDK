@@ -3,59 +3,36 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on Jun 22, 2005
  */
 package com.runwaysdk.business.ontology;
 
-import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
 
 /**
  * 
  * @author Richard Rowlands
  * @since 2.0.17
  **/
-public class OntologyTestSuite extends TestSuite
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ MdTermTest.class, OntologyStrategyTest.class, MdTermRelationshipTest.class, DatabaseAllPathsStrategyTest.class, DefaultStrategyTest.class })
+public class OntologyTestSuite
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String args[])
-  {
-    junit.textui.TestRunner.run(OntologyTestSuite.suite());
-  }
-
-  public static Test suite()
-  {
-    TestSuite testSuite = new TestSuite(OntologyTestSuite.class.getSimpleName());
-    testSuite.setName(OntologyTestSuite.class.getName());
-
-    testSuite.addTest(MdTermTest.suite());
-    testSuite.addTest(OntologyStrategyTest.suite());
-    testSuite.addTest(MdTermRelationshipTest.suite());
-    testSuite.addTest(DatabaseAllPathsStrategyTest.suite());
-    testSuite.addTest(DefaultStrategyTest.suite());
-
-    return testSuite;
-  }
 }

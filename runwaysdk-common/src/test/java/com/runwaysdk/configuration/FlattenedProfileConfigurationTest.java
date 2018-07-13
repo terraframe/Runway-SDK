@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * 
@@ -31,6 +31,7 @@ import java.util.Scanner;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.constants.CommonProperties;
@@ -62,21 +63,21 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
   ConfigurationResolverIF getConfigResolver()
   {
     ConfigurationManager.setConfigResolver(new ProfileConfigurationResolver());
-    
+
     baseDir = CommonProperties.getProjectBasedir();
     CommonProperties.dumpInstance();
-    
+
     ProfileFlattener.main(new String[] { "flat" });
 
     ProfileManager.setProfileHome(baseDir + "/target/test-classes/flat");
 
     return new ProfileConfigurationResolver();
-  } 
-  
+  }
+
   @Test
   public void testIsLegacy()
   {
-    assertTrue(LegacyPropertiesSupport.isLegacy());
+    Assert.assertTrue(LegacyPropertiesSupport.isLegacy());
   }
 
   @Test
@@ -97,7 +98,7 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
         CommonProperties.dumpInstance();
         String appName = CommonProperties.getDeployAppName();
 
-        assertEquals("Actually Using Flattened Profile", appName);
+        Assert.assertEquals("Actually Using Flattened Profile", appName);
       }
       finally
       {
@@ -113,19 +114,20 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
 
     CommonProperties.dumpInstance();
   }
-  
+
   @Test
   public void testNotWritingNewProperties() throws FileNotFoundException
   {
     Scanner scanner = null;
-    
+
     try
     {
       scanner = new Scanner(new File(baseDir + "/target/test-classes/flat/database.properties"));
-      
-      // Make sure we don't have any weird bugs that cause the ProfileFlattener to write the migrated properties instead of the legacy ones
+
+      // Make sure we don't have any weird bugs that cause the ProfileFlattener
+      // to write the migrated properties instead of the legacy ones
       String dbProps = scanner.useDelimiter("\\Z").next();
-      assertFalse(dbProps.contains("database.port"));
+      Assert.assertFalse(dbProps.contains("database.port"));
     }
     finally
     {

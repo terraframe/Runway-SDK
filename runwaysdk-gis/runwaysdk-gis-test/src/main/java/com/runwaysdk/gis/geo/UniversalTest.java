@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis.geo;
 
@@ -23,6 +23,9 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
@@ -56,16 +59,16 @@ public class UniversalTest
     }
   }
 
-  @AfterClass
   @Request
+  @AfterClass
   public static void classTearDown()
   {
     OntologyStrategyIF strategy = Universal.getStrategy();
     strategy.shutdown();
   }
 
-  @Test
   @Request
+  @Test
   public void testGetRoot()
   {
     Universal root = Universal.getRoot();
@@ -74,8 +77,8 @@ public class UniversalTest
     Assert.assertEquals(Universal.ROOT, root.getUniversalId());
   }
 
-  @Test
   @Request
+  @Test
   public void testUniversalCRUD()
   {
     Universal universal = new Universal();
@@ -100,8 +103,8 @@ public class UniversalTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testAllowedInCRUD()
   {
     Universal parent = new Universal();
@@ -144,8 +147,8 @@ public class UniversalTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testCycle()
   {
     Universal parent = new Universal();
@@ -192,8 +195,8 @@ public class UniversalTest
   /**
    * Tests all recursive descendants of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testAllDescendants()
   {
     try
@@ -227,8 +230,8 @@ public class UniversalTest
   /**
    * Tests all recursive ancestors of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testAllAncestors()
   {
     try
@@ -261,8 +264,8 @@ public class UniversalTest
   /**
    * Tests all direct ancestors of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testDirectAncestors()
   {
     try
@@ -296,8 +299,8 @@ public class UniversalTest
   /**
    * Tests all direct descendants of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testDirectDescendants()
   {
     try
@@ -332,8 +335,8 @@ public class UniversalTest
   /**
    * Tests that multiple parents are supported.
    */
-  @Test
   @Request
+  @Test
   public void testMulitpleParents()
   {
     try
@@ -360,8 +363,8 @@ public class UniversalTest
   /**
    * Appends a Universal leaf node to D that is then deleted.
    */
-  @Test
   @Request
+  @Test
   public void testDeleteLeaf()
   {
     try
@@ -401,8 +404,8 @@ public class UniversalTest
    * Appends a sub tree whose root is deleted then checks to make sure the
    * orphaned Universal objects are placed beneath the root.
    */
-  @Test
   @Request
+  @Test
   public void testDeleteNonLeaf()
   {
     try
@@ -443,36 +446,36 @@ public class UniversalTest
     }
   }
 
-//  /**
-//   * Ensures that the Root universal exists as the default parent of created
-//   * Universals A and E.
-//   */
-//  @Test
-//  @Request
-//  public void tesRootUniversalAsDefault()
-//  {
-//    try
-//    {
-//      Universal uA = GISTestFactory.createAndApplyUniversal("A");
-//
-//      Universal root = Universal.getRoot();
-//
-//      List<Term> ancestors = uA.getAllAncestors(AllowedIn.CLASS);
-//
-//      Assert.assertEquals(1, ancestors.size());
-//      Assert.assertEquals(root.getId(), ancestors.get(0).getId());
-//    }
-//    finally
-//    {
-//      GISTestFactory.deleteUniversals("A", "B", "C", "D", "E");
-//    }
-//  }
+  // /**
+  // * Ensures that the Root universal exists as the default parent of created
+  // * Universals A and E.
+  // */
+  // @Test
+  // @Request
+  // public void tesRootUniversalAsDefault()
+  // {
+  // try
+  // {
+  // Universal uA = GISTestFactory.createAndApplyUniversal("A");
+  //
+  // Universal root = Universal.getRoot();
+  //
+  // List<Term> ancestors = uA.getAllAncestors(AllowedIn.CLASS);
+  //
+  // Assert.assertEquals(1, ancestors.size());
+  // Assert.assertEquals(root.getId(), ancestors.get(0).getId());
+  // }
+  // finally
+  // {
+  // GISTestFactory.deleteUniversals("A", "B", "C", "D", "E");
+  // }
+  // }
 
   /**
    * Tests the direct parent of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testDirectParents()
   {
     try
@@ -512,8 +515,8 @@ public class UniversalTest
   /**
    * Tests that the root universal cannot have a parent.
    */
-  @Test
   @Request
+  @Test
   public void testAddParentToRoot()
   {
     try
@@ -590,5 +593,5 @@ public class UniversalTest
       iter.close();
     }
   }
-  
+
 }

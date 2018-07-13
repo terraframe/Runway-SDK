@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
@@ -22,20 +22,22 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.form.FormObject;
 import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
+import com.runwaysdk.session.Request;
 
-import junit.framework.TestCase;
-
-public class MofoParserTest extends TestCase
+public class MofoParserTest
 {
   public final class MockClass
   {
     @ActionParameters(parameters = "com.runwaysdk.form.FormObject:criteria, java.lang.String:type, java.lang.String:sortAttribute, java.lang.Boolean:isAscending, java.lang.Integer:pageSize, java.lang.Integer:pageNumber", post = true)
+    @Request
+    @Test
     public void testMethod(FormObject critiera, String type, String sortAttribute, Boolean isAscending, Integer pageSize, Integer pageNumber)
     {
 
@@ -54,6 +56,8 @@ public class MofoParserTest extends TestCase
     return annotation;
   }
 
+  @Request
+  @Test
   public void testNullFormObject() throws NoSuchMethodException, SecurityException
   {
     ClientSession session = ClientSession.createUserSession("default", "SYSTEM", "SYSTEM", new Locale[] { CommonProperties.getDefaultLocale() });

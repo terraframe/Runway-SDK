@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.facade;
 
@@ -33,12 +33,15 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.ProblemExceptionDTO;
 import com.runwaysdk.ServerSideException;
-import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.AttributeProblemDTO;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
@@ -120,7 +123,6 @@ import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.DuplicateDataExceptionDTO;
-import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
@@ -147,6 +149,7 @@ import com.runwaysdk.session.ReadChildPermissionExceptionDTO;
 import com.runwaysdk.session.ReadParentPermissionExceptionDTO;
 import com.runwaysdk.session.ReadPermissionExceptionDTO;
 import com.runwaysdk.session.ReadTypePermissionExceptionDTO;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RevokeAttributePermissionExceptionDTO;
 import com.runwaysdk.session.RevokeAttributeStatePermissionExceptionDTO;
 import com.runwaysdk.session.RevokeStatePermissionExceptionDTO;
@@ -185,11 +188,7 @@ import com.runwaysdk.util.FileIO;
 import com.runwaysdk.util.IDGenerator;
 import com.runwaysdk.web.AdminScreenAccessExceptionDTO;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-
-public class AdapterTest extends TestCase implements DoNotWeave
+public class AdapterTest implements DoNotWeave
 {
   protected static String            pack                           = "com.test.controller";
 
@@ -338,30 +337,6 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
   protected static final byte[]      bytes2                         = { 2, 3, 4, 5, 6 };
 
-  public static Test suite()
-  {
-    TestSuiteTF suite = new TestSuiteTF();
-    suite.addTestSuite(AdapterTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-        clientRequest = systemSession.getRequest();
-        classSetUp();
-        finalizeSetup();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   protected ClientSession createAnonymousSession()
   {
     return ClientSession.createAnonymousSession("default", new Locale[] { CommonProperties.getDefaultLocale() });
@@ -377,8 +352,19 @@ public class AdapterTest extends TestCase implements DoNotWeave
     return clientSession.getRequest();
   }
 
+  @BeforeClass
   public static void classSetUp()
   {
+    systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
+    requestClassSetUp();
+    finalizeSetup();
+  }
+
+  @Request
+  public static void requestClassSetUp()
+  {
+
     // create a new TestUser type with a phone number struct
     testUserMd = clientRequest.newBusiness(MdBusinessInfo.CLASS);
     testUserMd.setValue(MdBusinessInfo.NAME, "TestUser");
@@ -910,8 +896,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     addAttributesToQuery(mdView.getId());
 
-    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase \n" + "{\n" + "\n" + "  private ParentTestQuery parentTest;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     parentTest = new ParentTestQuery(componentQueryFactory);\n" + "\n" + "     this.map(" + objectIdConst + ", parentTest.getId());\n" + "     this.map(" + queryBooleanConst + ", parentTest.getQueryBoolean());\n" + "     this.map(" + queryCharConst + ", parentTest.getQueryChar());\n" + "     this.map(" + aCharConst + ", parentTest.getACharacter());\n" + "     this.map(" + queryLongConst
-        + ", parentTest.getQueryLong());\n" + "     this.map(" + queryTimeConst + ", parentTest.getQueryTime());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
+    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase \n" + "{\n" + "\n" + "  private ParentTestQuery parentTest;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     parentTest = new ParentTestQuery(componentQueryFactory);\n" + "\n" + "     this.map(" + objectIdConst + ", parentTest.getId());\n" + "     this.map(" + queryBooleanConst + ", parentTest.getQueryBoolean());\n" + "     this.map(" + queryCharConst + ", parentTest.getQueryChar());\n" + "     this.map(" + aCharConst + ", parentTest.getACharacter());\n" + "     this.map(" + queryLongConst + ", parentTest.getQueryLong());\n"
+        + "     this.map(" + queryTimeConst + ", parentTest.getQueryTime());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
 
     clientRequest.lock(mdView);
     mdView.setValue(MdViewInfo.QUERY_STUB_SOURCE, queryStubSource);
@@ -1053,6 +1039,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     clientRequest.update(_mdAttributeEnumerationDTO);
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     clientRequest.delete(mdView.getId());
@@ -1146,11 +1134,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     return _parentInstance;
   }
 
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(AdapterTest.suite()));
-  }
-
+  @Request
+  @Test
   public void testUserRoleMap()
   {
     clientRequest.assignMember(tommyUser.getId(), RoleDAOIF.ROLE_ADMIN_ROLE, RoleDAOIF.DEVELOPER_ROLE);
@@ -1160,45 +1145,49 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     Map<String, String> roleMap = tommyRequest.getSessionUserRoles();
 
-    assertEquals(roleMap.size(), 2);
-    assertTrue(roleMap.containsKey(RoleDAOIF.ROLE_ADMIN_ROLE));
-    assertTrue(roleMap.containsKey(RoleDAOIF.DEVELOPER_ROLE));
+    Assert.assertEquals(roleMap.size(), 2);
+    Assert.assertTrue(roleMap.containsKey(RoleDAOIF.ROLE_ADMIN_ROLE));
+    Assert.assertTrue(roleMap.containsKey(RoleDAOIF.DEVELOPER_ROLE));
 
     tommySession.logout();
 
     clientRequest.removeMember(tommyUser.getId(), RoleDAOIF.ROLE_ADMIN_ROLE, RoleDAOIF.DEVELOPER_ROLE);
   }
 
+  @Request
+  @Test
   public void testGetAllBusinessDTOsForEnumItems()
   {
     Class<?> masterEnumClass = LoaderDecorator.load(suitMasterType + EntityDTOBaseGenerator.DTO_SUFFIX);
 
     List<? extends BusinessDTO> enumItems = clientRequest.getAllEnumerations(suitMdEnumerationType);
 
-    assertEquals("Did not return the correct number of enumeration items.", suitEnumNames.size(), enumItems.size());
+    Assert.assertEquals("Did not return the correct number of enumeration items.", suitEnumNames.size(), enumItems.size());
 
     for (BusinessDTO enumItem : enumItems)
     {
       if (!masterEnumClass.isInstance(enumItem))
       {
-        fail(BusinessDTO.class.getName() + "s representing enumeration items were returned of the wrong type.");
+        Assert.fail(BusinessDTO.class.getName() + "s representing enumeration items were returned of the wrong type.");
       }
       else
       {
         if (!suitEnumNames.contains(enumItem.getValue(EnumerationMasterInfo.NAME)))
         {
-          fail("Did not return all of the enumerations for the given [" + MdEnumerationInfo.CLASS + "]");
+          Assert.fail("Did not return all of the enumerations for the given [" + MdEnumerationInfo.CLASS + "]");
         }
         else
         {
           int index = suitEnumNames.indexOf(enumItem.getValue(EnumerationMasterInfo.NAME));
-          assertEquals("Returned the wrong enumeration name display label.", suitEnumDisplayLabels.get(index), enumItem.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+          Assert.assertEquals("Returned the wrong enumeration name display label.", suitEnumDisplayLabels.get(index), enumItem.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
         }
       }
     }
 
   }
 
+  @Request
+  @Test
   public void testGetBusinessDTOsForEnumItems()
   {
     Class<?> masterEnumClass = LoaderDecorator.load(suitMasterType + EntityDTOBaseGenerator.DTO_SUFFIX);
@@ -1215,25 +1204,27 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     List<? extends BusinessDTO> enumItems = clientRequest.getEnumerations(suitMdEnumerationType, requestedNames);
 
-    assertEquals("Did not return the correct number of enumeration items.", requestedNames.length, enumItems.size());
+    Assert.assertEquals("Did not return the correct number of enumeration items.", requestedNames.length, enumItems.size());
 
     for (BusinessDTO enumItem : enumItems)
     {
       if (!masterEnumClass.isInstance(enumItem))
       {
-        fail(BusinessDTO.class.getName() + "s representing enumeration items were returned of the wrong type.");
+        Assert.fail(BusinessDTO.class.getName() + "s representing enumeration items were returned of the wrong type.");
       }
       else
       {
         if (!requestedNamesList.contains(enumItem.getValue(EnumerationMasterInfo.NAME)))
         {
-          fail("Did not return all of the enumerations for the given [" + MdEnumerationInfo.CLASS + "]");
+          Assert.fail("Did not return all of the enumerations for the given [" + MdEnumerationInfo.CLASS + "]");
         }
       }
     }
 
   }
 
+  @Request
+  @Test
   public void testGetInvalidEnumeration()
   {
     List<String> requestedNamesList = new ArrayList<String>();
@@ -1258,14 +1249,16 @@ public class AdapterTest extends TestCase implements DoNotWeave
     {
       // this is expected
       String expectedMessage = "The enummeration name [" + invalidEnumName + "] is not valid for enumeration [" + suitMdEnumeration.getStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE) + "].";
-      assertEquals("Wrong localized message.", expectedMessage, e.getMessage());
+      Assert.assertEquals("Wrong localized message.", expectedMessage, e.getMessage());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testEmptyValueProblem()
   {
     BusinessDTO parent = clientRequest.newBusiness(parentMdBusinessType);
@@ -1273,7 +1266,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       clientRequest.update(parent);
-      fail("Able to apply an object without supplying values to required attributes");
+      Assert.fail("Able to apply an object without supplying values to required attributes");
     }
     catch (ProblemExceptionDTO e)
     {
@@ -1295,26 +1288,26 @@ public class AdapterTest extends TestCase implements DoNotWeave
           if (emptyValueProblemDTO.getAttributeName().equals("aCharacter"))
           {
             aCharacterProblem = true;
-            assertEquals("A Character", emptyValueProblemDTO.getAttributeDisplayLabel());
-            assertEquals(parentMdBusinessType, emptyValueProblemDTO.getDefiningType());
-            assertEquals("A simple test parent", emptyValueProblemDTO.getDefiningTypeDisplayLabel());
+            Assert.assertEquals("A Character", emptyValueProblemDTO.getAttributeDisplayLabel());
+            Assert.assertEquals(parentMdBusinessType, emptyValueProblemDTO.getDefiningType());
+            Assert.assertEquals("A simple test parent", emptyValueProblemDTO.getDefiningTypeDisplayLabel());
           }
           else if (emptyValueProblemDTO.getAttributeName().equals("aHiddenCharacter"))
           {
             aHiddenCharacterProblem = true;
-            assertEquals("A Hidden Character", emptyValueProblemDTO.getAttributeDisplayLabel());
-            assertEquals(parentMdBusinessType, emptyValueProblemDTO.getDefiningType());
-            assertEquals("A simple test parent", emptyValueProblemDTO.getDefiningTypeDisplayLabel());
+            Assert.assertEquals("A Hidden Character", emptyValueProblemDTO.getAttributeDisplayLabel());
+            Assert.assertEquals(parentMdBusinessType, emptyValueProblemDTO.getDefiningType());
+            Assert.assertEquals("A simple test parent", emptyValueProblemDTO.getDefiningTypeDisplayLabel());
           }
           else if (emptyValueProblemDTO.getAttributeName().equals("aCharacterGroupIndex1"))
           {
             groupIndex1Problem = true;
-            assertEquals("A Character Group Index 1", emptyValueProblemDTO.getAttributeDisplayLabel());
+            Assert.assertEquals("A Character Group Index 1", emptyValueProblemDTO.getAttributeDisplayLabel());
           }
           else if (emptyValueProblemDTO.getAttributeName().equals("aCharacterGroupIndex2"))
           {
             groupIndex2Problem = true;
-            assertEquals("A Character Group Index 2", emptyValueProblemDTO.getAttributeDisplayLabel());
+            Assert.assertEquals("A Character Group Index 2", emptyValueProblemDTO.getAttributeDisplayLabel());
           }
         }
       }
@@ -1325,7 +1318,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       }
       else
       {
-        fail("The wrong number and/or types of problems were thrown.");
+        Assert.fail("The wrong number and/or types of problems were thrown.");
       }
 
       // Make sure the metadata is able to identify the attribute that violates
@@ -1340,6 +1333,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testDuplicateColumnDataInDatabase()
   {
     BusinessDTO parent1 = createParentInstance(clientRequest);
@@ -1351,7 +1346,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       clientRequest.update(parent2);
-      fail("Able to violate a uniqueness constraint defined on an attribute.");
+      Assert.fail("Able to violate a uniqueness constraint defined on an attribute.");
     }
     catch (DuplicateDataExceptionDTO e)
     {
@@ -1359,13 +1354,14 @@ public class AdapterTest extends TestCase implements DoNotWeave
       // Make sure the metadata is able to identify the attribute that violates
       // the constraint
       // if (!e.getDeveloperMessage().contains("[aCharacter]")) {
-      // fail("Expected to find the string \"[aCharacter]\" within the exception's developer message: ["
+      // Assert.fail("Expected to find the string \"[aCharacter]\" within the
+      // exception's developer message: ["
       // + e.getDeveloperMessage() + "].");
       // }
       String check = "[A Character]";
       if (!e.getMessage().contains(check))
       {
-        fail("Expected to find the string \"" + check + "\" within the exception's message: [" + e.getMessage() + "].");
+        Assert.fail("Expected to find the string \"" + check + "\" within the exception's message: [" + e.getMessage() + "].");
       }
     }
     finally
@@ -1378,6 +1374,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testDuplicateGroupColumnIndexInDatabase()
   {
     BusinessDTO parent1 = createParentInstance(clientRequest);
@@ -1390,7 +1388,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       clientRequest.update(parent2);
-      fail("Able to violate a uniqueness constraint defined on an attribute.");
+      Assert.fail("Able to violate a uniqueness constraint defined on an attribute.");
     }
     catch (DuplicateDataExceptionDTO e)
     {
@@ -1403,12 +1401,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
       String check = "[A Character Group Index 1]";
       if (!e.getMessage().contains(check))
       {
-        fail("Expected to find the string \"" + check + "\" within the exception's message: [" + e.getMessage() + "].");
+        Assert.fail("Expected to find the string \"" + check + "\" within the exception's message: [" + e.getMessage() + "].");
       }
       check = "[A Character Group Index 2]";
       if (!e.getMessage().contains(check))
       {
-        fail("Expected to find the string \"" + check + "\" within the exception's message: [" + e.getMessage() + "].");
+        Assert.fail("Expected to find the string \"" + check + "\" within the exception's message: [" + e.getMessage() + "].");
       }
     }
     finally
@@ -1422,6 +1420,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
   }
 
+  @Request
+  @Test
   public void testJSONObjectQuery() throws JSONException
   {
     createQueryInstances();
@@ -1452,10 +1452,10 @@ public class AdapterTest extends TestCase implements DoNotWeave
       BusinessQueryDTO returnQuery = clientRequest.queryBusinesses(queryDTO);
 
       List<? extends BusinessDTO> results = returnQuery.getResultSet();
-      assertEquals(results.size(), 1);
+      Assert.assertEquals(results.size(), 1);
 
       BusinessDTO result = results.get(0);
-      assertEquals(charVal, result.getValue("aCharacter"));
+      Assert.assertEquals(charVal, result.getValue("aCharacter"));
     }
     finally
     {
@@ -1463,6 +1463,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGetChildren()
   {
     BusinessDTO child1 = null;
@@ -1515,7 +1517,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
         }
         if (!foundMatch)
         {
-          fail("The returned list of RelationshipDTO objects from the facade's getChildRelationships() is invalid");
+          Assert.fail("The returned list of RelationshipDTO objects from the facade's getChildRelationships() is invalid");
         }
       }
     }
@@ -1535,6 +1537,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGetParents()
   {
     BusinessDTO parent1 = null;
@@ -1585,7 +1589,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
         }
         if (!foundMatch)
         {
-          fail("The returned list of RelationshipDTO objects from the facade's getChildRelationships() is invalid");
+          Assert.fail("The returned list of RelationshipDTO objects from the facade's getChildRelationships() is invalid");
         }
       }
     }
@@ -1609,6 +1613,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
    * Creates a few relationships and then gets the children.
    */
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testGetChildRelationships()
   {
     BusinessDTO child1 = null;
@@ -1664,7 +1670,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
         }
         if (!foundMatch)
         {
-          fail("The returned list of RelationshipDTO objects from the facade's getChildRelationships() is invalid");
+          Assert.fail("The returned list of RelationshipDTO objects from the facade's getChildRelationships() is invalid");
         }
       }
     }
@@ -1688,6 +1694,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
    * Creates a few relationships and then gets the parents.
    */
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testGetParentRelationships()
   {
     BusinessDTO parent1 = null;
@@ -1743,7 +1751,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
         }
         if (!foundMatch)
         {
-          fail("The returned list of RelationshipDTO objects from the facade's getParentRelationships() is invalid");
+          Assert.fail("The returned list of RelationshipDTO objects from the facade's getParentRelationships() is invalid");
         }
       }
     }
@@ -1766,6 +1774,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Adds a child to a relationship.
    */
+  @Request
+  @Test
   public void testAddChild()
   {
     BusinessDTO child = null;
@@ -1792,6 +1802,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Deletes a child in a relationship.
    */
+  @Request
+  @Test
   public void testDeleteChild()
   {
     BusinessDTO child = null;
@@ -1822,6 +1834,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testDeleteChildren()
   {
     BusinessDTO child1 = null;
@@ -1859,7 +1873,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       // there should not be any children
       if (retrievedChildren.size() != 0)
       {
-        fail("A facade call to deleteChildren() failed to delete all children.");
+        Assert.fail("A facade call to deleteChildren() failed to delete all children.");
       }
     }
     finally
@@ -1879,6 +1893,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testDeleteParents()
   {
     BusinessDTO parent1 = null;
@@ -1914,7 +1930,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       // there should not be any parents
       if (retrievedParents.size() != 0)
       {
-        fail("A facade call to deleteParents() failed to delete all parents.");
+        Assert.fail("A facade call to deleteParents() failed to delete all parents.");
       }
     }
     finally
@@ -1933,6 +1949,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testDeleteParent()
   {
     BusinessDTO child = null;
@@ -1964,6 +1982,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Adds an invalid child to a relationship.
    */
+  @Request
+  @Test
   public void testAddChildInvalid()
   {
     BusinessDTO child = null;
@@ -1975,7 +1995,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       RelationshipDTO relDTO = clientRequest.addChild(child.getId(), child.getId(), mdRelationshipType);
       clientRequest.createRelationship(relDTO);
 
-      fail("An invalid relationship occured through Facade.addChild()");
+      Assert.fail("An invalid relationship occured through Facade.addChild()");
     }
     catch (UnexpectedTypeExceptionDTO e)
     {
@@ -1983,7 +2003,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1997,6 +2017,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Adds a valid parent to a relationship.
    */
+  @Request
+  @Test
   public void testAddParent()
   {
     BusinessDTO child = null;
@@ -2025,6 +2047,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Adds an invalid parent to a relationship.
    */
+  @Request
+  @Test
   public void testAddParentInvalid()
   {
     BusinessDTO parent = null;
@@ -2035,7 +2059,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       RelationshipDTO relDTO = clientRequest.addParent(parent.getId(), parent.getId(), mdRelationshipType);
       clientRequest.createRelationship(relDTO);
 
-      fail("An invalid relationship occured through Facade.addParent()");
+      Assert.fail("An invalid relationship occured through Facade.addParent()");
     }
     catch (UnexpectedTypeExceptionDTO e)
     {
@@ -2043,7 +2067,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2055,6 +2079,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Updates an entity through the controller.
    */
+  @Request
+  @Test
   public void testUpdateEntity()
   {
     // attributes for the new business object
@@ -2077,16 +2103,16 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       clientRequest.update(testDTO);
 
-      assertEquals(testDTO.getValue("aCharacter"), "hello");
-      assertEquals(testDTO.getValue("aText"), "purple monkey dishwasher");
-      assertEquals(testDTO.getValue("aClob"), "a very large purple monkey dishwasher");
-      assertEquals(testDTO.getValue("aFloat"), "12.34");
-      assertEquals(testDTO.getValue("aBoolean"), MdAttributeBooleanInfo.TRUE);
-      assertEquals(testDTO.getValue("anInteger"), "976");
+      Assert.assertEquals(testDTO.getValue("aCharacter"), "hello");
+      Assert.assertEquals(testDTO.getValue("aText"), "purple monkey dishwasher");
+      Assert.assertEquals(testDTO.getValue("aClob"), "a very large purple monkey dishwasher");
+      Assert.assertEquals(testDTO.getValue("aFloat"), "12.34");
+      Assert.assertEquals(testDTO.getValue("aBoolean"), MdAttributeBooleanInfo.TRUE);
+      Assert.assertEquals(testDTO.getValue("anInteger"), "976");
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2101,6 +2127,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Updates an entity through the controller.
    */
+  @Request
+  @Test
   public void testImmutableAttributeEntity()
   {
     // attributes for the new business object
@@ -2124,7 +2152,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (problemList.size() != 1)
       {
-        fail("Wrong number of problems returned");
+        Assert.fail("Wrong number of problems returned");
       }
       else
       {
@@ -2132,7 +2160,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
         if (! ( problemDTOIF instanceof ImmutableAttributeProblemDTO ))
         {
-          fail("Wrong problem class returned for an immutable attribute violation.");
+          Assert.fail("Wrong problem class returned for an immutable attribute violation.");
         }
       }
     }
@@ -2149,6 +2177,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Updates an entity in an invalid fashion by setting an attribute incorrectly
    */
+  @Request
+  @Test
   public void testUpateEntityInvalid()
   {
     BusinessDTO testDTO = null;
@@ -2164,7 +2194,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       testDTO.setValue("anInteger", "-100");
       clientRequest.update(testDTO);
 
-      fail("The controller allowed for an erroneous attribute to be set.");
+      Assert.fail("The controller allowed for an erroneous attribute to be set.");
     }
     catch (ProblemExceptionDTO e)
     {
@@ -2175,11 +2205,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
           return;
         }
       }
-      fail("Did not find [" + AttributeProblemDTO.CLASS + "] in the problem list.");
+      Assert.fail("Did not find [" + AttributeProblemDTO.CLASS + "] in the problem list.");
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2194,6 +2224,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Deletes an entity.
    */
+  @Request
+  @Test
   public void testDeleteEntity()
   {
     BusinessDTO businessDTO = null;
@@ -2209,7 +2241,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       // Now try to get the object that was created. If it was deleted, it
       // should error out.
       clientRequest.get(businessDTO.getId());
-      fail("An entity was not correctly deleted");
+      Assert.fail("An entity was not correctly deleted");
     }
     catch (DataNotFoundExceptionDTO e)
     {
@@ -2217,20 +2249,22 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Tries to double-delete an entity, which should fail.
    */
+  @Request
+  @Test
   public void testDeleteEntityInvalid()
   {
     try
     {
       // try to delete an entity that doesn't exist
       clientRequest.delete("999999999999999999999999999999999-this.class.should.not.exist.Blah");
-      fail("An entity was able to deleted that doesn't exist.");
+      Assert.fail("An entity was able to deleted that doesn't exist.");
     }
     catch (DataNotFoundExceptionDTO e)
     {
@@ -2238,13 +2272,15 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Creates a valid instance of a type.
    */
+  @Request
+  @Test
   public void testNewInstance()
   {
     BusinessDTO businessDTO = null;
@@ -2255,25 +2291,27 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (!businessDTO.getType().equals(parentMdBusinessType))
       {
-        fail("A new instance type did not match its defining entity.");
+        Assert.fail("A new instance type did not match its defining entity.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Attempts to create an invalid instance of a fake type.
    */
+  @Request
+  @Test
   public void testNewInstanceInvalid()
   {
     try
     {
       // try to delete an entity that doesn't exist
       clientRequest.newBusiness("this.class.should.not.exist.Blah");
-      fail("A new instance was created that doesn't exist.");
+      Assert.fail("A new instance was created that doesn't exist.");
     }
     catch (DataNotFoundExceptionDTO e)
     {
@@ -2281,13 +2319,15 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Get all instances.
    */
+  @Request
+  @Test
   public void testGetAllInstances()
   {
     BusinessDTO businessDTO = null;
@@ -2301,11 +2341,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       List<? extends EntityDTO> resultSet = query.getResultSet();
 
-      assertTrue("The [getAllInstances] method should return one or more results", resultSet.size() >= 1);
+      Assert.assertTrue("The [getAllInstances] method should return one or more results", resultSet.size() >= 1);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2320,6 +2360,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
    * Ensures that the id changes between a new <code>BusinessDTO</code> and when
    * the DTO is applied
    */
+  @Request
+  @Test
   public void testSameId()
   {
     BusinessDTO businessDTO = null;
@@ -2332,11 +2374,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       clientRequest.createBusiness(businessDTO);
 
-      assertFalse("ID of a new " + BusinessDTO.class.getName() + " did not change when it was applied.", id.equals(businessDTO.getId()));
+      Assert.assertFalse("ID of a new " + BusinessDTO.class.getName() + " did not change when it was applied.", id.equals(businessDTO.getId()));
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2350,6 +2392,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Get all instances.
    */
+  @Request
+  @Test
   public void testGetAllInstancesEmpty()
   {
     try
@@ -2358,17 +2402,19 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       List<? extends EntityDTO> resultSet = query.getResultSet();
 
-      assertEquals("The [getAllInstances] method should have no results", 0, resultSet.size());
+      Assert.assertEquals("The [getAllInstances] method should have no results", 0, resultSet.size());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Get all instances.
    */
+  @Request
+  @Test
   public void testGetAllInstancesNullSortAttribute()
   {
     try
@@ -2377,17 +2423,19 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       List<? extends EntityDTO> resultSet = query.getResultSet();
 
-      assertEquals("The [getAllInstances] method should have no results", 2, resultSet.size());
+      Assert.assertEquals("The [getAllInstances] method should have no results", 2, resultSet.size());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Get all instances.
    */
+  @Request
+  @Test
   public void testGetAllInstancesNegativePageSize()
   {
     try
@@ -2396,17 +2444,19 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       List<? extends EntityDTO> resultSet = query.getResultSet();
 
-      assertEquals("The [getAllInstances] method should have no results", 2, resultSet.size());
+      Assert.assertEquals("The [getAllInstances] method should have no results", 2, resultSet.size());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Get all instances.
    */
+  @Request
+  @Test
   public void testGetAllInstancesNegativePageNumber()
   {
     try
@@ -2415,17 +2465,19 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       List<? extends EntityDTO> resultSet = query.getResultSet();
 
-      assertEquals("The [getAllInstances] method should have all of the results results", 2, resultSet.size());
+      Assert.assertEquals("The [getAllInstances] method should have all of the results results", 2, resultSet.size());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Get all instances.
    */
+  @Request
+  @Test
   public void testGetAllInstancesInvalidPageNumber()
   {
     BusinessDTO businessDTO = null;
@@ -2439,11 +2491,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       List<? extends EntityDTO> resultSet = query.getResultSet();
 
-      assertEquals("The [getAllInstances] method should have no results for an out of range page", 0, resultSet.size());
+      Assert.assertEquals("The [getAllInstances] method should have no results for an out of range page", 0, resultSet.size());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2457,6 +2509,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Gets a valid instance.
    */
+  @Request
+  @Test
   public void testInstance()
   {
     BusinessDTO businessDTO = null;
@@ -2468,12 +2522,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       BusinessDTO retrieved = (BusinessDTO) clientRequest.get(businessDTO.getId());
 
-      assertEquals(businessDTO.getId(), retrieved.getId());
+      Assert.assertEquals(businessDTO.getId(), retrieved.getId());
 
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2487,13 +2541,15 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Attempts to grab an invalid instance.
    */
+  @Request
+  @Test
   public void testInstanceInvalid()
   {
     try
     {
       // try to delete an entity that doesn't exist
       clientRequest.get("");
-      fail("An instance was retrieved that doesn't exist.");
+      Assert.fail("An instance was retrieved that doesn't exist.");
     }
     catch (ProgrammingErrorExceptionDTO e)
     {
@@ -2501,13 +2557,15 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Tests a valid login through the controller.
    */
+  @Request
+  @Test
   public void testLogin()
   {
     BusinessDTO user = null;
@@ -2523,7 +2581,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ServerSideException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2538,6 +2596,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Tests a valid login through the controller.
    */
+  @Request
+  @Test
   public void testLoginAnonymous()
   {
     ClientSession anonymousSession = null;
@@ -2548,7 +2608,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ServerSideException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2562,6 +2622,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Tests a valid login through the controller.
    */
+  @Request
+  @Test
   public void testChangeLogin()
   {
     ClientSession anonymousSession = this.createAnonymousSession();
@@ -2578,7 +2640,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ServerSideException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2590,6 +2652,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGetSessionUser()
   {
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(UserInfo.CLASS);
@@ -2605,11 +2669,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     {
       BusinessDTO userDTO = tommyProxy.getSessionUser();
 
-      assertEquals("Tommy", userDTO.getValue(UserInfo.USERNAME));
+      Assert.assertEquals("Tommy", userDTO.getValue(UserInfo.USERNAME));
     }
     catch (ServerSideException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2624,12 +2688,14 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Log in an invalid user.
    */
+  @Request
+  @Test
   public void testLoginInvalid()
   {
     try
     {
       ClientSession.createUserSession("not_a_user", "not_a_password", new Locale[] { CommonProperties.getDefaultLocale() });
-      fail("Server did not throw an exception for invalid username and password.");
+      Assert.fail("Server did not throw an exception for invalid username and password.");
     }
     catch (InvalidLoginExceptionDTO e)
     {
@@ -2637,10 +2703,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail("Wrong exception for invalid login: " + e.getMessage());
+      Assert.fail("Wrong exception for invalid login: " + e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationDTO()
   {
     try
@@ -2649,19 +2717,21 @@ public class AdapterTest extends TestCase implements DoNotWeave
       List<? extends BusinessDTO> suit = user.getEnumValues("anEnum");
 
       // make sure there is only one Locale
-      assertEquals(suit.size(), 1);
+      Assert.assertEquals(suit.size(), 1);
 
       BusinessDTO locale = suit.get(0);
 
       // test the values on the locale. English is the default.
-      assertEquals(locale.getId(), diamonds.getId());
+      Assert.assertEquals(locale.getId(), diamonds.getId());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testNoAccessorConversion()
   {
     BusinessDTO parent = null;
@@ -2671,7 +2741,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       parent = this.createParentInstance(clientRequest);
       String value = parent.getValue("aHiddenCharacter");
 
-      assertTrue(value != null && !value.equals(""));
+      Assert.assertTrue(value != null && !value.equals(""));
     }
     finally
     {
@@ -2682,6 +2752,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testBlob()
   {
     BusinessDTO instance = null;
@@ -2699,7 +2771,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       {
         if (value[i] != retVal[i])
         {
-          fail("A new instance did not store blob bytes correctly.");
+          Assert.fail("A new instance did not store blob bytes correctly.");
         }
       }
 
@@ -2710,13 +2782,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
       {
         if (value[i] != retVal[i])
         {
-          fail("An updated instance did not store the blob bytes correctly.");
+          Assert.fail("An updated instance did not store the blob bytes correctly.");
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2728,6 +2800,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReference()
   {
     String attributeName = "aMultiReference";
@@ -2750,8 +2824,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
         List<String> results = test.getMultiItems(attributeName);
 
-        assertEquals(1, results.size());
-        assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(term.getId(), results.get(0));
       }
       finally
       {
@@ -2767,6 +2841,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceGeneration() throws Exception
   {
     BusinessDTO term = clientRequest.newBusiness(termType);
@@ -2786,8 +2862,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
         List<String> results = (List<String>) test.getClass().getMethod("getAMultiReference").invoke(test);
 
-        assertEquals(1, results.size());
-        assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(term.getId(), results.get(0));
       }
       finally
       {
@@ -2802,6 +2878,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTerm()
   {
     String attributeName = "aMultiTerm";
@@ -2824,8 +2902,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
         List<String> results = test.getMultiItems(attributeName);
 
-        assertEquals(1, results.size());
-        assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(term.getId(), results.get(0));
       }
       finally
       {
@@ -2841,6 +2919,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiTermGeneration() throws Exception
   {
     BusinessDTO term = clientRequest.newBusiness(termType);
@@ -2860,8 +2940,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
         List<String> results = (List<String>) test.getClass().getMethod("getAMultiTerm").invoke(test);
 
-        assertEquals(1, results.size());
-        assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(term.getId(), results.get(0));
       }
       finally
       {
@@ -2876,6 +2956,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testStructDTO()
   {
     BusinessDTO user = null;
@@ -2896,7 +2978,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       AttributeStructDTO createdPhone = ComponentDTOFacade.getAttributeStructDTO(user, "phoneNumber");
       if (!phone.getValue(PhoneNumberInfo.AREACODE).equals(createdPhone.getValue(PhoneNumberInfo.AREACODE)) || !phone.getValue(PhoneNumberInfo.PREFIX).equals(createdPhone.getValue(PhoneNumberInfo.PREFIX)) || !phone.getValue(PhoneNumberInfo.SUFFIX).equals(createdPhone.getValue(PhoneNumberInfo.SUFFIX)))
       {
-        fail("The values for a created struct do not match the set values.");
+        Assert.fail("The values for a created struct do not match the set values.");
       }
 
       // update the user
@@ -2910,12 +2992,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
       AttributeStructDTO updatedPhone = ComponentDTOFacade.getAttributeStructDTO(user, "phoneNumber");
       if (!createdPhone.getValue(PhoneNumberInfo.AREACODE).equals(updatedPhone.getValue(PhoneNumberInfo.AREACODE)) || !createdPhone.getValue(PhoneNumberInfo.PREFIX).equals(updatedPhone.getValue(PhoneNumberInfo.PREFIX)) || !createdPhone.getValue(PhoneNumberInfo.SUFFIX).equals(updatedPhone.getValue(PhoneNumberInfo.SUFFIX)))
       {
-        fail("The values for an updated struct do not match the set values.");
+        Assert.fail("The values for an updated struct do not match the set values.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2927,6 +3009,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildRelationshipsPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_CHILD.name());
@@ -2948,11 +3032,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
-      fail("Unable to read child relationships with READ_CHILD permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read child relationships with READ_CHILD permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2965,6 +3049,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildRelationshipsPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
@@ -2986,11 +3072,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
-      fail("Unable to read child relationships with READ_CHILD permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read child relationships with READ_CHILD permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3003,6 +3089,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadChildRelationshipsPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -3019,7 +3107,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       tommyProxy.getChildRelationships(parentInstance.getId(), mdRelationshipType);
-      fail("Able to read child relationships without READ_CHILD permissions.");
+      Assert.fail("Able to read child relationships without READ_CHILD permissions.");
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
@@ -3027,7 +3115,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3038,6 +3126,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildrenPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_CHILD.name());
@@ -3059,11 +3149,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
-      fail("Unable to read child relationships with READ_CHILD permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read child relationships with READ_CHILD permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3076,6 +3166,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildrenPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
@@ -3097,11 +3189,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadPermissionExceptionDTO e)
     {
-      fail("Unable to read child relationships with READ permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read child relationships with READ permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3114,6 +3206,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadChildrenPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -3130,7 +3224,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       tommyProxy.getChildren(parentInstance.getId(), mdRelationshipType);
-      fail("Able to read child relationships without READ_CHILD permissions.");
+      Assert.fail("Able to read child relationships without READ_CHILD permissions.");
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
@@ -3138,7 +3232,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3149,6 +3243,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentRelationshipsPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_PARENT.name());
@@ -3170,11 +3266,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
-      fail("Unable to read parent relationships with READ_PARENT permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read parent relationships with READ_PARENT permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3187,6 +3283,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentRelationshipsPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
@@ -3208,11 +3306,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadPermissionExceptionDTO e)
     {
-      fail("Unable to read parent relationships with READ permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read parent relationships with READ permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3225,6 +3323,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadParentRelationshipsPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -3241,7 +3341,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       tommyProxy.getParentRelationships(parentInstance.getId(), mdRelationshipType);
-      fail("Able to read parent relationships without READ_PARENT permissions.");
+      Assert.fail("Able to read parent relationships without READ_PARENT permissions.");
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
@@ -3249,7 +3349,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3260,6 +3360,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentsPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_PARENT.name());
@@ -3281,11 +3383,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
-      fail("Unable to read parent relationships with READ_PARENT permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read parent relationships with READ_PARENT permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3298,6 +3400,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentsPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
@@ -3319,11 +3423,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadPermissionExceptionDTO e)
     {
-      fail("Unable to read parent relationships with READ_PARENT permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read parent relationships with READ_PARENT permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3336,6 +3440,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadParentsPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -3352,7 +3458,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       tommyProxy.getParents(parentInstance.getId(), mdRelationshipType);
-      fail("Able to read parent relationships without READ_PARENT permissions.");
+      Assert.fail("Able to read parent relationships without READ_PARENT permissions.");
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
@@ -3360,7 +3466,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3371,6 +3477,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadChildRelationshipsPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3398,11 +3506,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
-      fail("Unable to read child relationships with READ_CHILD permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read child relationships with READ_CHILD permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3415,6 +3523,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadChildRelationshipsPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3437,7 +3547,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       tommyProxy.getChildRelationships(parentInstance.getId(), mdRelationshipType);
-      fail("Able to read child relationships without READ_CHILD permissions on owner.");
+      Assert.fail("Able to read child relationships without READ_CHILD permissions on owner.");
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
@@ -3445,7 +3555,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3458,6 +3568,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadChildRelationshipsPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3486,11 +3598,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadPermissionExceptionDTO e)
     {
-      fail("Unable to read child relationships with READ permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read child relationships with READ permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3503,6 +3615,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadChildRelationshipsPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3529,7 +3643,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       tommyProxy.get(relationshipDTO.getId());
-      fail("Able to read child relationships with READ permissions on owner, but user is not the owner.");
+      Assert.fail("Able to read child relationships with READ permissions on owner, but user is not the owner.");
     }
     catch (ReadPermissionExceptionDTO e)
     {
@@ -3537,7 +3651,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3550,6 +3664,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadParentRelationshipsPermissions()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3576,11 +3692,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
-      fail("Unable to read parent relationships with READ_PARENT permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read parent relationships with READ_PARENT permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3593,6 +3709,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadParentRelationshipsPermissions()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3615,7 +3733,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       tommyProxy.getParentRelationships(childInstance.getId(), mdRelationshipType);
-      fail("Able to read parent relationships without READ_PARENT permissions on owner.");
+      Assert.fail("Able to read parent relationships without READ_PARENT permissions on owner.");
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
@@ -3623,7 +3741,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3636,6 +3754,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadParentsPermissions()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3662,11 +3782,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
-      fail("Unable to read parent relationships with READ_PARENT permissions. \n" + e.getMessage());
+      Assert.fail("Unable to read parent relationships with READ_PARENT permissions. \n" + e.getMessage());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3679,6 +3799,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadParentsPermissions()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3701,7 +3823,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       tommyProxy.getParents(childInstance.getId(), mdRelationshipType);
-      fail("Able to read parent relationships without READ_PARENT permissions on owner.");
+      Assert.fail("Able to read parent relationships without READ_PARENT permissions on owner.");
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
@@ -3709,7 +3831,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3722,6 +3844,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantGrantTypePermission()
   {
     BusinessDTO testObject = null;
@@ -3756,7 +3880,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3772,6 +3896,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantGrantPermission()
   {
     ClientSession tommySession = null;
@@ -3789,7 +3915,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3800,6 +3926,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantRevokePermission()
   {
     ClientSession tommySession = null;
@@ -3817,7 +3945,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3828,6 +3956,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantGrantStateAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -3870,7 +4000,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3886,6 +4016,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantGrantStateAttributePermission()
   {
     ClientSession tommySession = null;
@@ -3904,7 +4036,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3915,6 +4047,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantRevokeStateAttributePermission()
   {
     ClientSession tommySession = null;
@@ -3933,7 +4067,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3944,6 +4078,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantGrantAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -3986,7 +4122,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4002,6 +4138,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantGrantAttributePermission()
   {
     ClientSession tommySession = null;
@@ -4020,7 +4158,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4031,6 +4169,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantRevokeAttributePermission()
   {
     ClientSession tommySession = null;
@@ -4049,7 +4189,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4060,6 +4200,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantGrantStatePermission()
   {
     BusinessDTO testObject = null;
@@ -4094,7 +4236,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4110,6 +4252,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantGrantStatePermission()
   {
     ClientSession tommySession = null;
@@ -4128,7 +4272,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4139,6 +4283,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantRevokeStatePermission()
   {
     ClientSession tommySession = null;
@@ -4157,7 +4303,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4168,6 +4314,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeReadWritePermission()
   {
     BusinessDTO testObject = null;
@@ -4190,7 +4338,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       // make sure the readable and writable flag is set to true
       if (!businessDTO.isReadable() || !businessDTO.isWritable())
       {
-        fail("Read or Write permission on a type were not properly set in the DTO");
+        Assert.fail("Read or Write permission on a type were not properly set in the DTO");
       }
     }
     finally
@@ -4210,6 +4358,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoWritePermission()
   {
     BusinessDTO testObject = null;
@@ -4231,7 +4381,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       // make sure the readable and writable flag is set to true
       if (businessDTO.isWritable())
       {
-        fail("Read or Write permission on a type were not properly set in the DTO");
+        Assert.fail("Read or Write permission on a type were not properly set in the DTO");
       }
     }
     finally
@@ -4247,6 +4397,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoReadPermission_DeveloperMessage()
   {
     BusinessDTO testObject = null;
@@ -4265,17 +4417,17 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       tommyProxy.get(testObject.getId());
 
-      fail("Read or Write permission on a type were not properly set in the DTO");
+      Assert.fail("Read or Write permission on a type were not properly set in the DTO");
     }
     catch (ReadPermissionExceptionDTO e)
     {
       // We want to land here
       // Make sure there is a developer message
-      assertTrue(!e.getDeveloperMessage().equals(""));
+      Assert.assertTrue(!e.getDeveloperMessage().equals(""));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4291,6 +4443,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoReadPermission_NoDeveloperMessage()
   {
     BusinessDTO testObject = null;
@@ -4308,17 +4462,17 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       tommyProxy.get(testObject.getId());
 
-      fail("Read or Write permission on a type were not properly set in the DTO");
+      Assert.fail("Read or Write permission on a type were not properly set in the DTO");
     }
     catch (ReadPermissionExceptionDTO e)
     {
       // We want to land here
       // Make sure there is no developer message
-      assertTrue(e.getDeveloperMessage().equals(""));
+      Assert.assertTrue(e.getDeveloperMessage().equals(""));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4333,6 +4487,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermission()
   {
     BusinessDTO testObject = null;
@@ -4356,7 +4512,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4367,6 +4523,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeReadEnumWritePermission()
   {
     BusinessDTO enumItem = null;
@@ -4389,11 +4547,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadPermissionExceptionDTO e)
     {
-      fail("Unable to read an enumeration with adequate read permissions.");
+      Assert.fail("Unable to read an enumeration with adequate read permissions.");
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4408,6 +4566,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoReadEnumWritePermission()
   {
     BusinessDTO enumItem = null;
@@ -4425,7 +4585,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       tommyProxy = getRequest(tommySession);
 
       tommyProxy.getEnumeration(suitMdEnumerationType, "ENUM1");
-      fail("Able to read an enumeration with inadequate read permissions.");
+      Assert.fail("Able to read an enumeration with inadequate read permissions.");
     }
     catch (ReadPermissionExceptionDTO e)
     {
@@ -4433,7 +4593,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4446,6 +4606,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantStatePermission()
   {
     BusinessDTO testObject = null;
@@ -4468,7 +4630,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4479,6 +4641,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -4509,7 +4673,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4520,6 +4684,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantStateAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -4549,7 +4715,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4560,13 +4726,15 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissionInvalid()
   {
     try
     {
       clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), "not_a_proper_permission");
 
-      fail("An invalid type of permission was added to a user.");
+      Assert.fail("An invalid type of permission was added to a user.");
     }
     catch (InvalidEnumerationNameDTO e)
     {
@@ -4574,10 +4742,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissions()
   {
     BusinessDTO testObject = null;
@@ -4599,7 +4769,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4610,6 +4780,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantStatePermissions()
   {
     BusinessDTO testObject = null;
@@ -4630,7 +4802,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4643,6 +4815,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantAttributePermissions()
   {
     BusinessDTO testObject = null;
@@ -4669,7 +4843,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4684,6 +4858,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantAttributePermissionsInvalid()
   {
     BusinessDTO testObject = null;
@@ -4703,7 +4879,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       testObject.setValue("refChar", "I am all that is man!");
       tommyProxy.update(testObject);
 
-      fail("User was able to update an attribute value without permission.");
+      Assert.fail("User was able to update an attribute value without permission.");
     }
     catch (AttributeWritePermissionExceptionDTO e)
     {
@@ -4711,7 +4887,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
     finally
     {
@@ -4729,6 +4905,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantStateAttributePermissions()
   {
     BusinessDTO testObject = null;
@@ -4755,7 +4933,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4770,6 +4948,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissionsInvalid()
   {
     BusinessDTO testObject = null;
@@ -4787,7 +4967,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       tommyProxy.lock(testObject);
       tommyProxy.delete(testObject.getId());
 
-      fail("A user was able to delete an object without permission.");
+      Assert.fail("A user was able to delete an object without permission.");
     }
     catch (DeletePermissionExceptionDTO e)
     {
@@ -4795,7 +4975,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
     finally
     {
@@ -4815,6 +4995,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testQueryUserExactMatch()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(testUserType);
@@ -4824,17 +5006,19 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     if (users.size() != 1)
     {
-      fail("A query did not return the correct number of results.");
+      Assert.fail("A query did not return the correct number of results.");
     }
 
     BusinessDTO user = users.get(0);
     if (!user.getId().equals(tommyUser.getId()))
     {
-      fail("The user 'Tommy' couldn't be found with a query.");
+      Assert.fail("The user 'Tommy' couldn't be found with a query.");
     }
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testQueryUserExactMatchComplicated()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(testUserType);
@@ -4844,17 +5028,19 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     if (users.size() != 1)
     {
-      fail("A query did not return the correct number of results.");
+      Assert.fail("A query did not return the correct number of results.");
     }
 
     BusinessDTO user = users.get(0);
     if (!user.getId().equals(tommyUser.getId()))
     {
-      fail("The user 'Tommy' couldn't be found with a query.");
+      Assert.fail("The user 'Tommy' couldn't be found with a query.");
     }
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testQueryUserWildCard()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(testUserType);
@@ -4864,17 +5050,19 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     if (users.size() != 1)
     {
-      fail("A query did not return the correct number of results.");
+      Assert.fail("A query did not return the correct number of results.");
     }
 
     BusinessDTO user = users.get(0);
     if (!user.getId().equals(tommyUser.getId()))
     {
-      fail("The user 'Tommy' couldn't be found with a query.");
+      Assert.fail("The user 'Tommy' couldn't be found with a query.");
     }
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryNumber()
   {
     createQueryInstances();
@@ -4888,13 +5076,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       BusinessDTO instance = parents.get(0);
       if (!instance.getId().equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test LT
@@ -4905,13 +5093,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = parents.get(0);
       if (!instance.getId().equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test GT_EQ
@@ -4923,18 +5111,18 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = parents.get(0);
       if (!instance.getId().equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4943,6 +5131,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryChar()
   {
     createQueryInstances();
@@ -4956,13 +5146,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       BusinessDTO instance = parents.get(0);
       if (!instance.getId().equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test NOT_EQUALS
@@ -4971,18 +5161,18 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = parents.get(0);
       if (!instance.getId().equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4991,6 +5181,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testViewObjectQueryChar()
   {
     createQueryInstances();
@@ -5004,13 +5196,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       ViewDTO instance = parents.get(0);
       if (!instance.getValue("objectId").equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test NOT_EQUALS
@@ -5019,18 +5211,18 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = parents.get(0);
       if (!instance.getValue("objectId").equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5039,6 +5231,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryBoolean()
   {
     createQueryInstances();
@@ -5052,13 +5246,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       BusinessDTO instance = parents.get(0);
       if (!instance.getId().equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test NOT_EQUALS
@@ -5067,18 +5261,18 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = parents.get(0);
       if (!instance.getId().equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5087,6 +5281,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testViewObjectQueryBoolean()
   {
     createQueryInstances();
@@ -5100,13 +5296,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       ViewDTO instance = parents.get(0);
       if (!instance.getValue("objectId").equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test NOT_EQUALS
@@ -5115,18 +5311,18 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (parents.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = parents.get(0);
       if (!instance.getValue("objectId").equals(parentInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5135,6 +5331,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinessRelationshipQueryMoment()
   {
     createQueryInstances();
@@ -5148,13 +5346,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       RelationshipDTO instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test LT
@@ -5165,13 +5363,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test GT_EQ
@@ -5183,18 +5381,18 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5203,6 +5401,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesRelationshipQueryNumber()
   {
     createQueryInstances();
@@ -5216,13 +5416,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       RelationshipDTO instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test LT
@@ -5233,13 +5433,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test GT_EQ
@@ -5251,18 +5451,18 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5271,6 +5471,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesRelationshipQueryChar()
   {
     createQueryInstances();
@@ -5284,13 +5486,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       RelationshipDTO instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test NOT_EQUALS
@@ -5299,18 +5501,18 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5319,6 +5521,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesRelationshipQueryBoolean()
   {
     createQueryInstances();
@@ -5332,13 +5536,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       RelationshipDTO instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test NOT_EQUALS
@@ -5347,18 +5551,18 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5367,6 +5571,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryMoment()
   {
     createQueryInstances();
@@ -5380,13 +5586,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       RelationshipDTO instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test LT
@@ -5397,13 +5603,13 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
 
       // test GT_EQ
@@ -5415,18 +5621,18 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (rels.size() != 1)
       {
-        fail("A query did not return the correct number of results.");
+        Assert.fail("A query did not return the correct number of results.");
       }
 
       instance = rels.get(0);
       if (!instance.getId().equals(relInstance.getId()))
       {
-        fail("A query did not find a proper match.");
+        Assert.fail("A query did not find a proper match.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5434,6 +5640,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testBusinesObjectQueryReadPermission()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.READ.name());
@@ -5453,11 +5661,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadTypePermissionExceptionDTO e)
     {
-      fail("Unable to perform a query on a type with adequate read permissions.");
+      Assert.fail("Unable to perform a query on a type with adequate read permissions.");
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5467,6 +5675,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testViewObjectQueryReadPermission()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdView.getId(), Operation.READ.name());
@@ -5486,11 +5696,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadTypePermissionExceptionDTO e)
     {
-      fail("Unable to perform a query on a type with adequate read permissions.");
+      Assert.fail("Unable to perform a query on a type with adequate read permissions.");
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5500,6 +5710,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testViewVirtualAttributeReadPermission()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdView.getId(), Operation.READ.name());
@@ -5522,12 +5734,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
       // make sure the readable and writable flag is set to true
       if (!attributeDTO.isReadable())
       {
-        fail("Read permission on a virtual attribute failed.  Permission was set on the concrete attribute.");
+        Assert.fail("Read permission on a virtual attribute failed.  Permission was set on the concrete attribute.");
       }
     }
     catch (ReadTypePermissionExceptionDTO e)
     {
-      fail("Unable to perform a query on a type with adequate read permissions.");
+      Assert.fail("Unable to perform a query on a type with adequate read permissions.");
     }
     catch (ProblemExceptionDTO pe)
     {
@@ -5535,12 +5747,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       for (ProblemDTOIF problemDTOIF : problemList)
       {
-        fail(problemDTOIF.getMessage());
+        Assert.fail(problemDTOIF.getMessage());
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5551,6 +5763,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testViewVirtualAttributeN0ReadPermission()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdView.getId(), Operation.READ.name());
@@ -5572,12 +5786,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
       // make sure the readable and writable flag is set to true
       if (attributeDTO.isReadable())
       {
-        fail("Read permission on a virtual attribute failed.  Permission was not set on the concrete attribute but the virtual attribute was readable.");
+        Assert.fail("Read permission on a virtual attribute failed.  Permission was not set on the concrete attribute but the virtual attribute was readable.");
       }
     }
     catch (ReadTypePermissionExceptionDTO e)
     {
-      fail("Unable to perform a query on a type with adequate read permissions.");
+      Assert.fail("Unable to perform a query on a type with adequate read permissions.");
     }
     catch (ProblemExceptionDTO pe)
     {
@@ -5585,12 +5799,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       for (ProblemDTOIF problemDTOIF : problemList)
       {
-        fail(problemDTOIF.getMessage());
+        Assert.fail(problemDTOIF.getMessage());
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5600,6 +5814,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testBusinesObjectNoQueryReadPermission()
   {
     clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.READ.name());
@@ -5617,7 +5833,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       tommyProxy.queryBusinesses(queryDTO);
 
-      fail("Able to perform a query on a type without adequate read permissions.");
+      Assert.fail("Able to perform a query on a type without adequate read permissions.");
     }
     catch (ReadTypePermissionExceptionDTO e)
     {
@@ -5630,6 +5846,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testViewObjectNoQueryReadPermission()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -5645,7 +5863,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       tommyProxy.queryViews(queryDTO);
 
-      fail("Able to perform a query on a type without adequate read permissions.");
+      Assert.fail("Able to perform a query on a type without adequate read permissions.");
     }
     catch (ReadTypePermissionExceptionDTO e)
     {
@@ -5653,7 +5871,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5662,6 +5880,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipQueryReadPermission()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
@@ -5678,11 +5898,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ReadTypePermissionExceptionDTO e)
     {
-      fail("Unable to perform a query on a type with adequate read permissions.");
+      Assert.fail("Unable to perform a query on a type with adequate read permissions.");
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5692,6 +5912,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipQueryNoReadPermission()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -5710,7 +5932,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5725,7 +5947,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
   // return the hash value.
   // Due to security concerns, we return an empty string for hash values, so
   // this test will always fail.
-  // public void testHashDTO()
+  // @Request @Test public void testHashDTO()
   // {
   // try
   // {
@@ -5744,25 +5966,25 @@ public class AdapterTest extends TestCase implements DoNotWeave
   // }
   // catch (NoSuchAlgorithmException e)
   // {
-  // fail(e.getMessage());
+  // Assert.fail(e.getMessage());
   // }
   //
   // // compare the hashes
   // if (hashDTO.encryptionEquals(manualHash, true) != true)
   // {
-  // fail("HashDTO did not propery represent a hashed attribute (manual
+  // Assert.fail("HashDTO did not propery represent a hashed attribute (manual
   // hash).");
   // }
   //
   // if (hashDTO.encryptionEquals("music", false) != true)
   // {
-  // fail("HashDTO did not propery represent a hashed attribute (auto
+  // Assert.fail("HashDTO did not propery represent a hashed attribute (auto
   // hash).");
   // }
   // }
   // catch (Exception e)
   // {
-  // fail(e.getMessage());
+  // Assert.fail(e.getMessage());
   // }
   // }
 
@@ -5771,6 +5993,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
    * EntityDTO.isLockedByCurrentUser() return true if the object is locked by
    * the current user and false otherwise.
    */
+  @Request
+  @Test
   public void testCurrentUserLockValue()
   {
     BusinessDTO testObject = null;
@@ -5791,7 +6015,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       // make sure Tommy has the lock value set to true
       if (!testObject.isLockedByCurrentUser())
       {
-        fail("The Tommy user is not marked as locking an object which it did.");
+        Assert.fail("The Tommy user is not marked as locking an object which it did.");
       }
 
       // now make sure the SYSTEM user has the lock value set to false
@@ -5800,12 +6024,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
       BusinessDTO temp = (BusinessDTO) clientRequest.get(testObject.getId());
       if (temp.isLockedByCurrentUser())
       {
-        fail("The SYSTEM user is marked as locking an object which it did not.");
+        Assert.fail("The SYSTEM user is marked as locking an object which it did not.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -5821,37 +6045,45 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
 
-    assertEquals(parentMdBusiness.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDisplayLabel());
-    assertEquals(parentMdBusiness.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDescription());
-    assertEquals(parentMdBusiness.getId(), instance.getMd().getId());
+    Assert.assertEquals(parentMdBusiness.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDisplayLabel());
+    Assert.assertEquals(parentMdBusiness.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDescription());
+    Assert.assertEquals(parentMdBusiness.getId(), instance.getMd().getId());
   }
 
+  @Request
+  @Test
   public void testRelationshipMetadata()
   {
     RelationshipDTO instance = (RelationshipDTO) clientRequest.newMutable(mdRelationshipType);
 
-    assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDisplayLabel());
-    assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDescription());
-    assertEquals(mdRelationship.getId(), instance.getMd().getId());
+    Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDisplayLabel());
+    Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDescription());
+    Assert.assertEquals(mdRelationship.getId(), instance.getMd().getId());
 
-    assertEquals(parentMdBusinessType, instance.getMd().getParentMdBusiness());
-    assertEquals(childMdBusinessType, instance.getMd().getChildMdBusiness());
+    Assert.assertEquals(parentMdBusinessType, instance.getMd().getParentMdBusiness());
+    Assert.assertEquals(childMdBusinessType, instance.getMd().getChildMdBusiness());
   }
 
+  @Request
+  @Test
   public void testBooleanMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
     AttributeBooleanMdDTO md = (AttributeBooleanMdDTO) ComponentDTOFacade.getAttributeDTO(instance, "aBoolean").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeBooleanDTO, md);
-    assertEquals(mdAttributeBooleanDTO.getStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getPositiveDisplayLabel());
-    assertEquals(mdAttributeBooleanDTO.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getNegativeDisplayLabel());
+    Assert.assertEquals(mdAttributeBooleanDTO.getStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getPositiveDisplayLabel());
+    Assert.assertEquals(mdAttributeBooleanDTO.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getNegativeDisplayLabel());
   }
 
+  @Request
+  @Test
   public void testBlobMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5860,6 +6092,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeBlobDTO, md);
   }
 
+  @Request
+  @Test
   public void testReferenceMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5867,9 +6101,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     checkAttributeMd(mdAttributeReferenceDTO, md);
 
-    assertEquals(md.getReferencedMdBusiness(), refType);
+    Assert.assertEquals(md.getReferencedMdBusiness(), refType);
   }
 
+  @Request
+  @Test
   public void testTermMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5877,9 +6113,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     checkAttributeMd(mdAttributeTermDTO, md);
 
-    assertEquals(md.getReferencedMdBusiness(), termType);
+    Assert.assertEquals(md.getReferencedMdBusiness(), termType);
   }
 
+  @Request
+  @Test
   public void testMultiReferenceMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5887,9 +6125,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     checkAttributeMd(mdAttributeMultiReferenceDTO, md);
 
-    assertEquals(md.getReferencedMdBusiness(), termType);
+    Assert.assertEquals(md.getReferencedMdBusiness(), termType);
   }
 
+  @Request
+  @Test
   public void testMultiTermMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5897,9 +6137,11 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     checkAttributeMd(mdAttributeMultiTermDTO, md);
 
-    assertEquals(md.getReferencedMdBusiness(), termType);
+    Assert.assertEquals(md.getReferencedMdBusiness(), termType);
   }
 
+  @Request
+  @Test
   public void testDateTimeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5908,6 +6150,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeDateTimeDTO, md);
   }
 
+  @Request
+  @Test
   public void testDateMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5916,6 +6160,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeDateDTO, md);
   }
 
+  @Request
+  @Test
   public void testTimeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5924,26 +6170,32 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeTimeDTO, md);
   }
 
+  @Request
+  @Test
   public void testIdMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
     AttributeCharacterMdDTO md = instance.getIdMd();
 
-    assertEquals(md.getName(), EntityInfo.ID);
-    assertEquals(md.isRequired(), true);
-    assertEquals(md.isSystem(), true);
+    Assert.assertEquals(md.getName(), EntityInfo.ID);
+    Assert.assertEquals(md.isRequired(), true);
+    Assert.assertEquals(md.isSystem(), true);
   }
 
+  @Request
+  @Test
   public void testTypeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
     AttributeCharacterMdDTO md = instance.getTypeMd();
 
-    assertEquals(md.getName(), EntityInfo.TYPE);
-    assertEquals(md.isRequired(), true);
-    assertEquals(md.isSystem(), true);
+    Assert.assertEquals(md.getName(), EntityInfo.TYPE);
+    Assert.assertEquals(md.isRequired(), true);
+    Assert.assertEquals(md.isSystem(), true);
   }
 
+  @Request
+  @Test
   public void testIntegerMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5952,6 +6204,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeIntegerDTO, md);
   }
 
+  @Request
+  @Test
   public void testLongMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5960,6 +6214,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeLongDTO, md);
   }
 
+  @Request
+  @Test
   public void testDecimalMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5968,6 +6224,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeDecimalDTO, md);
   }
 
+  @Request
+  @Test
   public void testDoubleMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5976,6 +6234,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeDoubleDTO, md);
   }
 
+  @Request
+  @Test
   public void testFloatMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5984,6 +6244,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeFloatDTO, md);
   }
 
+  @Request
+  @Test
   public void testTextMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5992,6 +6254,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeTextDTO, md);
   }
 
+  @Request
+  @Test
   public void testClobMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -6000,34 +6264,40 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeClobDTO, md);
   }
 
+  @Request
+  @Test
   public void testCharacterMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
     AttributeCharacterMdDTO md = ComponentDTOFacade.getAttributeCharacterDTO(instance, "aCharacter").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeCharacterDTO, md);
-    assertEquals(Integer.parseInt(mdAttributeCharacterDTO.getValue(MdAttributeCharacterInfo.SIZE)), md.getSize());
+    Assert.assertEquals(Integer.parseInt(mdAttributeCharacterDTO.getValue(MdAttributeCharacterInfo.SIZE)), md.getSize());
   }
 
+  @Request
+  @Test
   public void testStructMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
     AttributeStructMdDTO md = ComponentDTOFacade.getAttributeStructDTO(instance, "aStruct").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeStructDTO, md);
-    assertEquals(EntityTypes.PHONE_NUMBER.getType(), md.getDefiningMdStruct());
+    Assert.assertEquals(EntityTypes.PHONE_NUMBER.getType(), md.getDefiningMdStruct());
   }
 
+  @Request
+  @Test
   public void testEnumerationMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
     AttributeEnumerationMdDTO md = ComponentDTOFacade.getAttributeEnumerationDTO(instance, "anEnum").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeEnumerationDTO, md);
-    assertEquals(Boolean.parseBoolean(mdAttributeEnumerationDTO.getValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE)), md.selectMultiple());
-    assertEquals("anEnum", md.getName());
-    assertEquals(suitMdEnumerationType, md.getReferencedMdEnumeration());
-    assertEquals(suitMdEnumerationType + TypeGeneratorInfo.DTO_SUFFIX, md.getJavaType().getName());
+    Assert.assertEquals(Boolean.parseBoolean(mdAttributeEnumerationDTO.getValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE)), md.selectMultiple());
+    Assert.assertEquals("anEnum", md.getName());
+    Assert.assertEquals(suitMdEnumerationType, md.getReferencedMdEnumeration());
+    Assert.assertEquals(suitMdEnumerationType + TypeGeneratorInfo.DTO_SUFFIX, md.getJavaType().getName());
 
     // check all enum values
     Map<String, String> enumNameMap = md.getEnumItems();
@@ -6036,29 +6306,35 @@ public class AdapterTest extends TestCase implements DoNotWeave
       String expectedName = suit.getValue(EnumerationMasterInfo.NAME);
       if (!enumNameMap.containsKey(expectedName))
       {
-        fail("The enumeration values on the enumeration metadata was incorrect.");
+        Assert.fail("The enumeration values on the enumeration metadata was incorrect.");
       }
     }
   }
 
+  @Request
+  @Test
   public void testHashMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
     AttributeEncryptionMdDTO md = ComponentDTOFacade.getAttributeHashDTO(instance, "aHash").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeHashDTO, md);
-    assertEquals(HashMethods.MD5.getMessageDigest(), md.getEncryptionMethod());
+    Assert.assertEquals(HashMethods.MD5.getMessageDigest(), md.getEncryptionMethod());
   }
 
+  @Request
+  @Test
   public void testSymmetricMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
     AttributeEncryptionMdDTO md = ComponentDTOFacade.getAttributeSymmetricDTO(instance, "aSym").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeSymmetricDTO, md);
-    assertEquals(SymmetricMethods.DES.getTransformation(), md.getEncryptionMethod());
+    Assert.assertEquals(SymmetricMethods.DES.getTransformation(), md.getEncryptionMethod());
   }
 
+  @Request
+  @Test
   public void testNewVaultFile()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
@@ -6073,7 +6349,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     {
       while (bytes1.ready() || bytes2.ready())
       {
-        assertEquals(bytes1.read(), bytes2.read());
+        Assert.assertEquals(bytes1.read(), bytes2.read());
       }
 
       bytes1.close();
@@ -6081,10 +6357,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (IOException e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
   }
 
+  @Request
+  @Test
   public void testGetVaultFile()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
@@ -6100,7 +6378,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (IOException e1)
     {
-      fail(e1.getMessage());
+      Assert.fail(e1.getMessage());
     }
 
     InputStream stream = clientRequest.getSecureFile("aFile", businessDTO.getType(), fileDTO.getId());
@@ -6114,7 +6392,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     {
       while (bytes1.ready() || bytes2.ready())
       {
-        assertEquals(bytes1.read(), bytes2.read());
+        Assert.assertEquals(bytes1.read(), bytes2.read());
         i++;
       }
 
@@ -6123,12 +6401,14 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (IOException e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
 
-    assertEquals(i, bytes.length);
+    Assert.assertEquals(i, bytes.length);
   }
 
+  @Request
+  @Test
   public void testGetVaultFileNotCached()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
@@ -6148,7 +6428,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     {
       while (bytes1.ready() || bytes2.ready())
       {
-        assertEquals(bytes1.read(), bytes2.read());
+        Assert.assertEquals(bytes1.read(), bytes2.read());
         i++;
       }
 
@@ -6157,13 +6437,15 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (IOException e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
 
-    assertEquals(i, bytes.length);
+    Assert.assertEquals(i, bytes.length);
 
   }
 
+  @Request
+  @Test
   public void testNoPermissionGetVaultFile()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -6179,7 +6461,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     {
       tommyProxy.getSecureFile("aFile", businessDTO.getType(), businessDTO.getId());
 
-      fail("Able to retrieve a cached secure file without permissions");
+      Assert.fail("Able to retrieve a cached secure file without permissions");
     }
     catch (ReadPermissionExceptionDTO e)
     {
@@ -6187,7 +6469,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6195,6 +6477,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testDeleteVaultFile()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
@@ -6205,7 +6489,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     try
     {
       clientRequest.getSecureFile(fileId);
-      fail("Able to retrieve a file that should have been deleted");
+      Assert.fail("Able to retrieve a file that should have been deleted");
     }
     catch (DataNotFoundExceptionDTO e)
     {
@@ -6213,10 +6497,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testNewFile()
   {
     // FIXME fix for web services
@@ -6236,7 +6522,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
         {
           while (bytes1.ready() || bytes2.ready())
           {
-            assertEquals(bytes1.read(), bytes2.read());
+            Assert.assertEquals(bytes1.read(), bytes2.read());
           }
 
           bytes1.close();
@@ -6244,7 +6530,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
         }
         catch (IOException e)
         {
-          fail(e.getLocalizedMessage());
+          Assert.fail(e.getLocalizedMessage());
         }
       }
       finally
@@ -6254,6 +6540,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testDeleteFile()
   {
     // FIXME fix for web services
@@ -6267,7 +6555,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       try
       {
         clientRequest.getSecureFile(fileId);
-        fail("Able to retrieve a file that should have been deleted");
+        Assert.fail("Able to retrieve a file that should have been deleted");
       }
       catch (DataNotFoundExceptionDTO e)
       {
@@ -6275,7 +6563,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       }
       catch (Throwable e)
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
   }
@@ -6283,36 +6571,36 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * This method does all the checks for attribute metadata on DTOs. All checks,
    * except for attribute specific metadata is consolidated here (it's better
-   * than copying/pasting the same checks into a dozen different tests). 
+   * than copying/pasting the same checks into a dozen different tests).
    * 
    * @param mdAttribute
    * @param mdDTO
    */
   protected static void checkAttributeMd(BusinessDTO mdAttribute, AttributeMdDTO md)
   {
-    assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDisplayLabel());
-    assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDescription());
-    assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.REQUIRED)), md.isRequired());
-    assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.IMMUTABLE)), md.isImmutable());
-    assertEquals(mdAttribute.getId(), md.getId());
-    assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.SYSTEM)), md.isSystem());
-    assertEquals(mdAttribute.getValue(MdAttributeConcreteInfo.NAME), md.getName());
+    Assert.assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDisplayLabel());
+    Assert.assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDescription());
+    Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.REQUIRED)), md.isRequired());
+    Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.IMMUTABLE)), md.isImmutable());
+    Assert.assertEquals(mdAttribute.getId(), md.getId());
+    Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.SYSTEM)), md.isSystem());
+    Assert.assertEquals(mdAttribute.getValue(MdAttributeConcreteInfo.NAME), md.getName());
 
     if (md instanceof AttributeNumberMdDTO)
     {
       AttributeNumberMdDTO numberMdDTO = (AttributeNumberMdDTO) md;
 
-      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_ZERO)), numberMdDTO.rejectZero());
-      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_NEGATIVE)), numberMdDTO.rejectNegative());
-      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_POSITIVE)), numberMdDTO.rejectPositive());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_ZERO)), numberMdDTO.rejectZero());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_NEGATIVE)), numberMdDTO.rejectNegative());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_POSITIVE)), numberMdDTO.rejectPositive());
     }
 
     if (md instanceof AttributeDecMdDTO)
     {
       AttributeDecMdDTO decMdDTO = (AttributeDecMdDTO) md;
 
-      assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.LENGTH)), decMdDTO.getTotalLength());
-      assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.DECIMAL)), decMdDTO.getDecimalLength());
+      Assert.assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.LENGTH)), decMdDTO.getTotalLength());
+      Assert.assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.DECIMAL)), decMdDTO.getDecimalLength());
     }
 
   }
@@ -6320,6 +6608,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    *
    */
+  @Request
+  @Test
   public void testDirectionalDeleteChild()
   {
     ClientSession tommySession = null;
@@ -6345,7 +6635,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ServerSideException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6359,6 +6649,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testDirectionalDeleteChildInvalid()
   {
     ClientSession tommySession = null;
@@ -6380,7 +6672,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       tommyProxy.deleteChild(relationshipDTO.getId());
 
-      fail("The user Tommy does not have permission to delete a child");
+      Assert.fail("The user Tommy does not have permission to delete a child");
     }
     catch (DeleteChildPermissionExceptionDTO e)
     {
@@ -6388,7 +6680,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ServerSideException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6401,6 +6693,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testDirectionalDeleteParent()
   {
     ClientSession tommySession = null;
@@ -6426,7 +6720,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ServerSideException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6446,6 +6740,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testDirectionalDeleteParentInvalid()
   {
     ClientSession tommySession = null;
@@ -6467,7 +6763,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       tommyProxy.deleteParent(relationshipDTO.getId());
 
-      fail("The user Tommy does not have permission to delete a child");
+      Assert.fail("The user Tommy does not have permission to delete a child");
     }
     catch (DeleteParentPermissionExceptionDTO e)
     {
@@ -6475,7 +6771,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ServerSideException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6492,6 +6788,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
    * Makes sure that a queryDTO for a given type returns the attributes that the
    * query type defines.
    */
+  @Request
+  @Test
   public void testQueryDTODefinedAttributes()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(parentMdBusinessType);
@@ -6548,6 +6846,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     checkAttributeMd(mdAttributeDateDTO, aDate.getAttributeMdDTO());
   }
 
+  @Request
+  @Test
   public void testToString()
   {
     BusinessDTO businessDTO = null;
@@ -6561,27 +6861,27 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
       if (!expectedToString.equals(toString))
       {
-        fail("The toString() value on an EntityDTO is incorrect.");
+        Assert.fail("The toString() value on an EntityDTO is incorrect.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   // TODO enable once the state machines have been fixed (bugzilla task for
   // naifeh)
-  // public void test_StateInfoOnBusinessDTO()
+  // @Request @Test public void test_StateInfoOnBusinessDTO()
   // {
   // BusinessDTO instance = clientRequest.newBusiness(childMdBusinessType);
   // clientRequest.createBusiness(instance);
   //
-  // assertEquals(instance.getState(),
+  // Assert.assertEquals(instance.getState(),
   // state1.getValue(StateMasterIF.STATE_NAME));
   //
   // List<String> transitions = instance.getTransitions();
-  // assertEquals(transitions.size(), 2);
+  // Assert.assertEquals(transitions.size(), 2);
   //
   // String tranName1 = transition.getValue(StateMasterIF.TRANSITION_NAME);
   // String tranName2 = transition2.getValue(StateMasterIF.TRANSITION_NAME);
@@ -6591,20 +6891,22 @@ public class AdapterTest extends TestCase implements DoNotWeave
   //
   // if (!tran1.equals(tranName1) && !tran1.equals(tranName2))
   // {
-  // fail("Invalid transistion information was returned");
+  // Assert.fail("Invalid transistion information was returned");
   // }
   //
   // if (!tran2.equals(tranName1) && !tran2.equals(tranName2))
   // {
-  // fail("Invalid transistion information was returned");
+  // Assert.fail("Invalid transistion information was returned");
   // }
   //
   // if (tran1.equals(tran2))
   // {
-  // fail("Invalid transistion information was returned");
+  // Assert.fail("Invalid transistion information was returned");
   // }
   // }
 
+  @Request
+  @Test
   public void testQueryDTObasics()
   {
     // queries for objects using the basic properties of the queryDTO
@@ -6621,55 +6923,63 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     queryDTO = clientRequest.queryStructs(queryDTO);
 
-    assertEquals(queryDTO.isCountEnabled(), true);
-    assertEquals(queryDTO.getCount(), 10);
-    assertEquals(queryDTO.getPageNumber(), 2);
-    assertEquals(queryDTO.getPageSize(), 3);
-    assertEquals(queryDTO.getResultSet().size(), 3);
+    Assert.assertEquals(queryDTO.isCountEnabled(), true);
+    Assert.assertEquals(queryDTO.getCount(), 10);
+    Assert.assertEquals(queryDTO.getPageNumber(), 2);
+    Assert.assertEquals(queryDTO.getPageSize(), 3);
+    Assert.assertEquals(queryDTO.getResultSet().size(), 3);
   }
 
+  @Request
+  @Test
   public void testStructQueryDTO()
   {
     StructQueryDTO queryDTO = (StructQueryDTO) clientRequest.getQuery(structType);
 
     AttributeCharacterDTO charDTO = (AttributeCharacterDTO) queryDTO.getAttributeDTO(structMdAttributeCharDTO.getValue(MdAttributeCharacterInfo.NAME));
-    assertNotNull(charDTO);
+    Assert.assertNotNull(charDTO);
 
-    assertEquals(queryDTO.getType(), structType);
+    Assert.assertEquals(queryDTO.getType(), structType);
   }
 
+  @Request
+  @Test
   public void testRelationshipQueryDTO()
   {
     RelationshipQueryDTO queryDTO = (RelationshipQueryDTO) clientRequest.getQuery(mdRelationshipType);
 
     AttributeLongDTO longDTO = (AttributeLongDTO) queryDTO.getAttributeDTO(relMdAttributeLongDTO.getValue(MdAttributeCharacterInfo.NAME));
-    assertNotNull(longDTO);
-    assertEquals(longDTO.getValue(), "123321"); // test the default value
+    Assert.assertNotNull(longDTO);
+    Assert.assertEquals(longDTO.getValue(), "123321"); // test the default value
 
-    assertEquals(queryDTO.getParentMdBusiness(), parentMdBusinessType);
-    assertEquals(queryDTO.getChildMdBusiness(), childMdBusinessType);
-    assertEquals(queryDTO.getType(), mdRelationshipType);
+    Assert.assertEquals(queryDTO.getParentMdBusiness(), parentMdBusinessType);
+    Assert.assertEquals(queryDTO.getChildMdBusiness(), childMdBusinessType);
+    Assert.assertEquals(queryDTO.getType(), mdRelationshipType);
   }
 
+  @Request
+  @Test
   public void testBusinessQueryDTO()
   {
     BusinessQueryDTO parentQueryDTO = (BusinessQueryDTO) clientRequest.getQuery(parentMdBusinessType);
     List<TypeInMdRelationshipAsParent> asParents = parentQueryDTO.getTypeInMdRelationshipAsParentList();
-    assertEquals(asParents.size(), 1);
+    Assert.assertEquals(asParents.size(), 1);
 
     TypeInMdRelationshipAsParent asParent = asParents.get(0);
-    assertEquals(asParent.getParentDisplayLabel(), mdRelationship.getStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(asParent.getRelationshipType(), mdRelationshipType);
+    Assert.assertEquals(asParent.getParentDisplayLabel(), mdRelationship.getStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(asParent.getRelationshipType(), mdRelationshipType);
 
     BusinessQueryDTO childQueryDTO = (BusinessQueryDTO) clientRequest.getQuery(childMdBusinessType);
     List<TypeInMdRelationshipAsChild> asChilds = childQueryDTO.getTypeInMdRelationshipAsChildList();
-    assertEquals(asChilds.size(), 1);
+    Assert.assertEquals(asChilds.size(), 1);
 
     TypeInMdRelationshipAsChild asChild = asChilds.get(0);
-    assertEquals(asChild.getChildDisplayLabel(), mdRelationship.getStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(asChild.getRelationshipType(), mdRelationshipType);
+    Assert.assertEquals(asChild.getChildDisplayLabel(), mdRelationship.getStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(asChild.getRelationshipType(), mdRelationshipType);
   }
 
+  @Request
+  @Test
   public void testImportDomainModel()
   {
     String location = TestConstants.Path.XMLFiles + "/standaloneSetTest.xml";
@@ -6689,7 +6999,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
       queryDTO = clientRequest.queryBusinesses(queryDTO);
       List<? extends BusinessDTO> resultSet = queryDTO.getResultSet();
 
-      assertEquals(1, resultSet.size());
+      Assert.assertEquals(1, resultSet.size());
       clientRequest.delete(resultSet.get(0).getId());
     }
     catch (IOException e)
@@ -6698,6 +7008,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testNoPermissionImportDomainModel()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -6712,7 +7024,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (IOException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     catch (ImportDomainExecuteExceptionDTO e)
     {
@@ -6720,7 +7032,7 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
     catch (ServerSideException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6728,6 +7040,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testAccessAdminValid()
   {
     try
@@ -6737,10 +7051,12 @@ public class AdapterTest extends TestCase implements DoNotWeave
     catch (AdminScreenAccessExceptionDTO e)
     {
       String error = "The SYSTEM user failed to access the admin screen.";
-      fail(error);
+      Assert.fail(error);
     }
   }
 
+  @Request
+  @Test
   public void testAccessAdminInvalid()
   {
     ClientSession tommySession = null;
@@ -6766,6 +7082,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
     }
   }
 
+  @Request
+  @Test
   public void testProxyLoggedIn()
   {
     ClientSession anonymousSession = this.createAnonymousSession();
@@ -6776,33 +7094,33 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
     try
     {
-      assertEquals(true, publicProxy.isLoggedIn());
-      assertEquals(true, publicProxy.isPublicUser());
+      Assert.assertEquals(true, publicProxy.isLoggedIn());
+      Assert.assertEquals(true, publicProxy.isPublicUser());
 
       anonymousSession.changeLogin("Tommy", "music");
 
-      assertEquals(true, publicProxy.isLoggedIn());
-      assertEquals(false, publicProxy.isPublicUser());
+      Assert.assertEquals(true, publicProxy.isLoggedIn());
+      Assert.assertEquals(false, publicProxy.isPublicUser());
 
       anonymousSession.logout();
 
       userSession = this.createSession("Tommy", "music");
       userProxy = getRequest(userSession);
 
-      assertEquals(false, publicProxy.isLoggedIn());
-      assertEquals(false, publicProxy.isPublicUser());
+      Assert.assertEquals(false, publicProxy.isLoggedIn());
+      Assert.assertEquals(false, publicProxy.isPublicUser());
 
-      assertEquals(true, userProxy.isLoggedIn());
-      assertEquals(false, userProxy.isPublicUser());
+      Assert.assertEquals(true, userProxy.isLoggedIn());
+      Assert.assertEquals(false, userProxy.isPublicUser());
 
       userSession.logout();
 
-      assertEquals(false, publicProxy.isLoggedIn());
-      assertEquals(false, publicProxy.isPublicUser());
+      Assert.assertEquals(false, publicProxy.isLoggedIn());
+      Assert.assertEquals(false, publicProxy.isPublicUser());
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -6818,6 +7136,8 @@ public class AdapterTest extends TestCase implements DoNotWeave
   /**
    * Creates a valid instance of a type.
    */
+  @Request
+  @Test
   public void testNewDisconnectedEntity()
   {
     BusinessDTO user = clientRequest.newBusiness(testUserType);
@@ -6838,10 +7158,10 @@ public class AdapterTest extends TestCase implements DoNotWeave
 
         EntityDTO entityDTO = request.newDisconnectedEntity(parentMdBusinessType);
 
-        assertEquals(parentMdBusinessType, entityDTO.getType());
+        Assert.assertEquals(parentMdBusinessType, entityDTO.getType());
 
         // Ensure that the disconnected flag is set to true
-        assertTrue(entityDTO.isDisconnected());
+        Assert.assertTrue(entityDTO.isDisconnected());
 
         // Ensure the the user can set values
         entityDTO.setValue("aBoolean", MdAttributeBooleanInfo.TRUE);

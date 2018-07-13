@@ -78,7 +78,7 @@ public class GenerationManager
         {
           try
           {
-            Class<?> aClass = GeneratedLoader.createClassLoader().loadClass(generator.getJavaType());
+            Class<?> aClass = GeneratedLoader.isolatedClassLoader().loadClass(generator.getJavaType());
             Annotation annotation = aClass.getAnnotation(ClassSignature.class);
             ClassSignature classSignature = (ClassSignature) annotation;
 
@@ -133,7 +133,7 @@ public class GenerationManager
         {
           try
           {
-            Class<?> aClass = GeneratedLoader.createClassLoader().loadClass(generator.getJavaType());
+            Class<?> aClass = GeneratedLoader.isolatedClassLoader().loadClass(generator.getJavaType());
             Annotation annotation = aClass.getAnnotation(ClassSignature.class);
             ClassSignature classSignature = (ClassSignature) annotation;
 
@@ -182,7 +182,7 @@ public class GenerationManager
         {
           try
           {
-            Class<?> aClass = GeneratedLoader.createClassLoader().loadClass(generator.getJavaType());
+            Class<?> aClass = GeneratedLoader.isolatedClassLoader().loadClass(generator.getJavaType());
             Annotation annotation = aClass.getAnnotation(ClassSignature.class);
             ClassSignature classSignature = (ClassSignature) annotation;
 

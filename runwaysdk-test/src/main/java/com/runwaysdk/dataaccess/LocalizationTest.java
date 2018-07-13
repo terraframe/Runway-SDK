@@ -86,8 +86,8 @@ public class LocalizationTest
 
   private static String                       defaultApology = "This is my default apology";
 
-  @BeforeClass
   @Request
+  @BeforeClass
   public static void classSetUp()
   {
     phrases = MdBusinessDAO.newInstance();
@@ -128,15 +128,15 @@ public class LocalizationTest
     greetingId = greetingDAO.apply();
   }
 
-  @AfterClass
   @Request
+  @AfterClass
   public static void classTearDown()
   {
     new MdPackage(pack).delete();
   }
 
-  @Test
   @Request
+  @Test
   public void testRequiredAttribute()
   {
     BusinessDAO businessDAO1 = null;
@@ -220,8 +220,8 @@ public class LocalizationTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testCreateLocalizableNoStruct()
   {
     String structType = pack + ".PhrasesHello";
@@ -252,8 +252,8 @@ public class LocalizationTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testCreateLocalizableCustomStruct()
   {
     String structType = pack + ".PhrasesGoodbye";
@@ -281,8 +281,8 @@ public class LocalizationTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testAddDeleteLocale() throws Exception
   {
     String fr_fr = Locale.FRANCE.toString();
@@ -316,8 +316,8 @@ public class LocalizationTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testGetLocalText() throws Exception
   {
     String fr_fr = Locale.FRANCE.toString();
@@ -351,8 +351,8 @@ public class LocalizationTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testUserLocale() throws Exception
   {
     lang.addLocale(Locale.GERMAN);
@@ -381,8 +381,8 @@ public class LocalizationTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testUserLocaleDTO() throws Exception
   {
     lang.addLocale(Locale.GERMAN);
@@ -420,8 +420,8 @@ public class LocalizationTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testTextDTO() throws Exception
   {
     lang.addLocale(Locale.GERMAN);
@@ -463,8 +463,8 @@ public class LocalizationTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testDefaultCharacterDTO() throws Exception
   {
     lang.addLocale(Locale.GERMAN);
@@ -503,8 +503,8 @@ public class LocalizationTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testDefaultTextDTO() throws Exception
   {
     lang.addLocale(Locale.GERMAN);
@@ -543,8 +543,8 @@ public class LocalizationTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testLocalizeDefaultDimensionQuery()
   {
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
@@ -607,8 +607,8 @@ public class LocalizationTest
     Assert.assertEquals("the dimensional default apology should have been returned.", dimensionDefault, out);
   }
 
-  @Test
   @Request
+  @Test
   public void testLocalizeDefaultDimension()
   {
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
@@ -657,8 +657,8 @@ public class LocalizationTest
   /**
    * The dimension default has a value, but not the locale dimension.
    */
-  @Test
   @Request
+  @Test
   public void testLocalizedLocaleWithDimensionDefault()
   {
     this.addLocale(Locale.GERMAN);
@@ -740,8 +740,8 @@ public class LocalizationTest
   /**
    * The dimension default has a value, but not the locale dimension.
    */
-  @Test
   @Request
+  @Test
   public void testLocalizedLocaleWithDimensionDefaultQuery()
   {
     this.addLocale(Locale.GERMAN);
@@ -851,8 +851,8 @@ public class LocalizationTest
     Assert.assertEquals("the dimensional local apology should have been returned.", dimensionLocale, out);
   }
 
-  @Test
   @Request
+  @Test
   public void testAddSupportedLocales()
   {
     MdLocalStructDAOIF mdLocalStructDAOIF = MdLocalStructDAO.getMdLocalStructDAO(EntityTypes.METADATADISPLAYLABEL.getType());
@@ -873,8 +873,8 @@ public class LocalizationTest
     Assert.assertEquals("Removing a supported locale did not automatically remove an attribute from a local struct type.", null, mdLocalStructDAOIF.definesAttribute(Locale.ITALY.toString()));
   }
 
-  @Test
   @Request
+  @Test
   public void testAddDimension()
   {
     MdLocalStructDAOIF mdLocalStructDAOIF = MdLocalStructDAO.getMdLocalStructDAO(EntityTypes.METADATADISPLAYLABEL.getType());
@@ -898,8 +898,8 @@ public class LocalizationTest
     Assert.assertEquals("Removing a dimension did not automatically remove an attribute from a local struct type.", null, mdLocalStructDAOIF.definesAttribute(mdDimensionDAO.getDefaultLocaleAttributeName()));
   }
 
-  @Test
   @Request
+  @Test
   public void testAddDimensionToLocales()
   {
     this.addLocale(Locale.ITALY);
@@ -927,8 +927,8 @@ public class LocalizationTest
     this.deleteLocale(Locale.ITALY);
   }
 
-  @Test
   @Request
+  @Test
   public void testAddLocaleToDimension()
   {
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
@@ -957,8 +957,8 @@ public class LocalizationTest
   }
 
   // Test columns on local attributes
-  @Test
   @Request
+  @Test
   public void testLocaleAttributes()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
@@ -1001,8 +1001,8 @@ public class LocalizationTest
   }
 
   // Test columns on local attributes
-  @Test
   @Request
+  @Test
   public void testLocaleAttributesWithDefaultLocaleStruct()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();

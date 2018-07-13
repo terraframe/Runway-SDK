@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -28,7 +28,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.Business;
@@ -61,28 +64,9 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 
-import junit.framework.TestCase;
-
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public abstract class AbstractMultiReferenceQueryTest extends TestCase
+public abstract class AbstractMultiReferenceQueryTest
 {
   private static MdTermDAO                    mdTerm;
 
@@ -168,6 +152,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   /**
   * 
   */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdBusiness);
@@ -181,7 +167,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
    * 
    * @see junit.framework.TestCase#tearDown()
    */
-  @Override
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
     mdBusiness.deleteAllRecords();
@@ -196,6 +183,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     return mdAttributeMultiReference;
   }
 
+  @Request
+  @Test
   public void testBasicQueryForOjbectWithAttributeMultiReference()
   {
     BusinessDAO value = this.createTerm();
@@ -216,6 +205,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertTrue(result.contains(value.getId()));
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnCharacter()
   {
     BusinessDAO term = this.createTerm();
@@ -255,6 +246,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnCharacter_2()
   {
     BusinessDAO term = this.createTerm();
@@ -273,6 +266,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnBoolean()
   {
     BusinessDAO term = this.createTerm();
@@ -312,6 +307,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDate()
   {
     BusinessDAO term = this.createTerm();
@@ -351,6 +348,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDateTime()
   {
     BusinessDAO term = this.createTerm();
@@ -390,6 +389,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnTime()
   {
     BusinessDAO term = this.createTerm();
@@ -429,6 +430,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDecimal()
   {
     BusinessDAO term = this.createTerm();
@@ -468,6 +471,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDouble()
   {
     BusinessDAO term = this.createTerm();
@@ -507,6 +512,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnFloat()
   {
     BusinessDAO term = this.createTerm();
@@ -546,6 +553,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnInteger()
   {
     BusinessDAO term = this.createTerm();
@@ -585,6 +594,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnLong()
   {
     BusinessDAO term = this.createTerm();
@@ -624,6 +635,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnText()
   {
     BusinessDAO term = this.createTerm();
@@ -663,6 +676,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeContainsAll()
   {
     BusinessDAO term1 = this.createTerm();
@@ -704,6 +719,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeContainsAny()
   {
     BusinessDAO term1 = this.createTerm();
@@ -743,6 +760,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeContainsExactly()
   {
     BusinessDAO term2 = this.createTerm();
@@ -783,6 +802,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeNotContainsAll()
   {
     BusinessDAO term1 = this.createTerm();
@@ -824,6 +845,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeNotContainsAny()
   {
     BusinessDAO term1 = this.createTerm();
@@ -863,6 +886,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testEQ()
   {
     BusinessDAO term1 = this.createTerm();
@@ -901,6 +926,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testNE()
   {
     BusinessDAO term1 = this.createTerm();
@@ -943,6 +970,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
    * Generated AttributeMultiReference query test
    */
 
+  @Request
+  @Test
   public void testBasicQueryForOjbectWithAttributeMultiReference_Generated() throws Exception
   {
     BusinessDAO value = this.createTerm();
@@ -967,6 +996,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnCharacter_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1018,6 +1049,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnBoolean_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1064,6 +1097,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDate_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1108,6 +1143,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDateTime_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1152,6 +1189,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnTime_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1197,6 +1236,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDecimal_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1241,6 +1282,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDouble_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1285,6 +1328,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnFloat_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1329,6 +1374,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnInteger_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1373,6 +1420,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnLong_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1417,6 +1466,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeContainsAll_Generated() throws Exception
   {
     Business term1 = BusinessFacade.get(this.createTerm());
@@ -1469,6 +1520,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeContainsAny_Generated() throws Exception
   {
     Business term1 = BusinessFacade.get(this.createTerm());
@@ -1519,6 +1572,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeContainsExactly_Generated() throws Exception
   {
     Business term1 = BusinessFacade.get(this.createTerm());

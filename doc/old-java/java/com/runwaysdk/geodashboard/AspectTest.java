@@ -3,7 +3,7 @@ package com.runwaysdk.geodashboard;
 import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.Assert; import org.junit.Test;
 
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -15,7 +15,7 @@ import com.runwaysdk.geodashboard.ServerSourceAspectTest;
 public class AspectTest
 {
   @Test
-  public void testServerTransactions()
+  @Request @Test public void testServerTransactions()
   {
     try
     {
@@ -50,7 +50,7 @@ public class AspectTest
   }
   
   @Test
-  public void testTestTransactions()
+  @Request @Test public void testTestTransactions()
   {
     try
     {

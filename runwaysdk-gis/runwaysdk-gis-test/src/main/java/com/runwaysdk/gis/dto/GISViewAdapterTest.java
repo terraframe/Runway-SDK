@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis.dto;
 
@@ -27,6 +27,9 @@ import java.util.Locale;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
@@ -68,6 +71,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
   protected static ClientRequestIF clientRequest = null;
 
+  @Request
   @BeforeClass
   public static void classSetUp()
   {
@@ -80,6 +84,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     clientRequest.createBusiness(tommyUser);
   }
 
+  @Request
   @AfterClass
   public static void classTearDown()
   {
@@ -101,8 +106,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   /**
   *
   */
-  @Test
   @Request
+  @Test
   public void testPointCRUDTypeUnsafe()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -128,8 +133,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       point = (Point) viewDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
 
       point = geometryFactory.createPoint(new Coordinate(191108, 243242));
       viewDTO.setValue("testPoint", point);
@@ -138,8 +143,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       point = (Point) viewDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
     }
     finally
     {
@@ -154,8 +159,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testLineStringCRUDTypeUnsafe()
@@ -183,7 +188,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       LineString newLineString = (LineString) viewDTO.getObjectValue("testLineString");
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
       lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(189141, 244158), new Coordinate(189265, 244817) });
       viewDTO.setValue("testLineString", lineString);
@@ -192,7 +197,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       newLineString = (LineString) viewDTO.getObjectValue("testLineString");
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
     }
     finally
     {
@@ -235,7 +240,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       Polygon newPolygon = (Polygon) viewDTO.getObjectValue("testPolygon");
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       String polygonText2 = "POLYGON (( 10 10, 15 25, 40 40, 30 25, 10 10))";
       polygon = (Polygon) reader.read(polygonText2);
@@ -246,11 +251,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       newPolygon = (Polygon) viewDTO.getObjectValue("testPolygon");
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -293,7 +298,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       MultiPoint newMultiPoint = (MultiPoint) viewDTO.getObjectValue("testMultiPoint");
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       String polygonText2 = "MULTIPOINT(191108 243242, 30000 40000)";
       multiPoint = (MultiPoint) reader.read(polygonText2);
@@ -304,11 +309,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       newMultiPoint = (MultiPoint) viewDTO.getObjectValue("testMultiPoint");
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -351,7 +356,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       MultiLineString newMultiLineString = (MultiLineString) viewDTO.getObjectValue("testMultiLineString");
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       String polygonText2 = "MULTILINESTRING ((189141 244158, 189265 244817, 100000 150000, 175000 200000))";
       multiLineString = (MultiLineString) reader.read(polygonText2);
@@ -362,11 +367,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       newMultiLineString = (MultiLineString) viewDTO.getObjectValue("testMultiLineString");
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -409,7 +414,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       MultiPolygon newMultiPolygon = (MultiPolygon) viewDTO.getObjectValue("testMultiPolygon");
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
       String multiPolyton2 = "MULTIPOLYGON(((1 1,5 1,10 10,1 5,1 1),(2 2, 3 2, 6 6, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
       multiPolygon = (MultiPolygon) reader.read(multiPolyton2);
@@ -420,11 +425,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       newMultiPolygon = (MultiPolygon) viewDTO.getObjectValue("testMultiPolygon");
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -439,8 +444,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testPointCRUDTypeUnsafe_WKT()
@@ -465,8 +470,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       Point point = (Point) viewDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
 
       viewDTO.setValue("testPoint", "POINT(191108 243242)");
       tommyRequest.update(viewDTO);
@@ -474,8 +479,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       point = (Point) viewDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
     }
     finally
     {
@@ -490,8 +495,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testLineStringCRUDTypeUnsafe_WKT()
@@ -520,7 +525,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       WKTReader reader = new WKTReader();
       LineString expectedLine = (LineString) reader.read(lineStringText1);
 
-      assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
+      Assert.assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
 
       String lineStringText2 = "LINESTRING (189141 244158, 189265 244817)";
 
@@ -532,11 +537,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       expectedLine = (LineString) reader.read(lineStringText2);
 
-      assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
+      Assert.assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -551,8 +556,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testPolygonCRUDTypeUnsafe_WKT()
@@ -581,7 +586,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       WKTReader reader = new WKTReader();
       Polygon expectedPolygon = (Polygon) reader.read(polygonText1);
 
-      assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
+      Assert.assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
 
       String polygonText2 = "POLYGON (( 10 10, 15 25, 40 40, 30 25, 10 10))";
 
@@ -593,11 +598,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       expectedPolygon = (Polygon) reader.read(polygonText2);
 
-      assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
+      Assert.assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -612,8 +617,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testMultiPointCRUDTypeUnsafe_WKT()
@@ -642,7 +647,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       WKTReader reader = new WKTReader();
       MultiPoint expectedMultiPoint = (MultiPoint) reader.read(multiPointText1);
 
-      assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
+      Assert.assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
 
       String multiPointText2 = "MULTIPOINT(191108 243242, 30000 40000)";
 
@@ -654,11 +659,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       expectedMultiPoint = (MultiPoint) reader.read(multiPointText2);
 
-      assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
+      Assert.assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -673,8 +678,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testMultiLineStringCRUDTypeUnsafe_WKT()
@@ -703,7 +708,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       WKTReader reader = new WKTReader();
       MultiLineString expectedMultiLineString = (MultiLineString) reader.read(multiLineStringText1);
 
-      assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
+      Assert.assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
 
       String multiLineStringText2 = "MULTILINESTRING ((189141 244158, 189265 244817, 100000 150000, 175000 200000))";
 
@@ -715,11 +720,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       expectedMultiLineString = (MultiLineString) reader.read(multiLineStringText2);
 
-      assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
+      Assert.assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -734,8 +739,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testMultiPolygonCRUDTypeUnsafe_WKT()
@@ -764,7 +769,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       WKTReader reader = new WKTReader();
       MultiPolygon expectedMultiPolygon = (MultiPolygon) reader.read(multiPolygonText1);
 
-      assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
+      Assert.assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
 
       String multiPolygonText2 = "MULTIPOLYGON(((1 1,5 1,10 10,1 5,1 1),(2 2, 3 2, 6 6, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
 
@@ -776,11 +781,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
 
       expectedMultiPolygon = (MultiPolygon) reader.read(multiPolygonText2);
 
-      assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
+      Assert.assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -795,8 +800,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testPointCRUDTypeSafe()
@@ -826,8 +831,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       point = (Point) testClass.getMethod("getTestPoint").invoke(viewDTO);
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
 
       point = geometryFactory.createPoint(new Coordinate(191108, 243242));
 
@@ -837,12 +842,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       point = (Point) testClass.getMethod("getTestPoint").invoke(viewDTO);
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -857,8 +862,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testLineStringCRUDTypeSafe()
@@ -888,7 +893,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       LineString newLineString = (LineString) testClass.getMethod("getTestLineString").invoke(viewDTO);
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
       lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(189141, 244158), new Coordinate(189265, 244817) });
 
@@ -898,11 +903,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       newLineString = (LineString) testClass.getMethod("getTestLineString").invoke(viewDTO);
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -917,8 +922,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testPolygonCRUDTypeSafe()
@@ -950,7 +955,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       Polygon newPolygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(viewDTO);
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       String polygonText2 = "POLYGON (( 10 10, 15 25, 40 40, 30 25, 10 10))";
       polygon = (Polygon) reader.read(polygonText2);
@@ -961,11 +966,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       newPolygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(viewDTO);
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -980,8 +985,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testMultiPointCRUDTypeSafe()
@@ -1013,7 +1018,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       MultiPoint newMultiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(viewDTO);
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       String polygonText2 = "MULTIPOINT(191108 243242, 30000 40000)";
       multiPoint = (MultiPoint) reader.read(polygonText2);
@@ -1024,11 +1029,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       newMultiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(viewDTO);
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1043,8 +1048,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testMultiLineStringCRUDTypeSafe()
@@ -1076,7 +1081,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       MultiLineString newMultiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(viewDTO);
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       String polygonText2 = "MULTILINESTRING ((189141 244158, 189265 244817, 100000 150000, 175000 200000))";
       multiLineString = (MultiLineString) reader.read(polygonText2);
@@ -1087,11 +1092,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       newMultiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(viewDTO);
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1106,8 +1111,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testMultiPolygonCRUDTypeSafe()
@@ -1139,7 +1144,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       MultiPolygon newMultiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(viewDTO);
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
       String polygonText2 = "MULTIPOLYGON(((1 1,5 1,10 10,1 5,1 1),(2 2, 3 2, 6 6, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
       multiPolygon = (MultiPolygon) reader.read(polygonText2);
@@ -1150,11 +1155,11 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       newMultiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(viewDTO);
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1169,8 +1174,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testPointInvalidReadPermissionTypeSafe()
@@ -1199,7 +1204,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       point = (Point) testClass.getMethod("getTestPoint").invoke(viewDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the point.", null, point);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the point.", null, point);
     }
     catch (Throwable e)
     {
@@ -1214,12 +1219,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1234,8 +1239,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testLineStringInvalidReadPermissionTypeSafe()
@@ -1264,7 +1269,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       lineString = (LineString) testClass.getMethod("getTestLineString").invoke(viewDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the LineString.", null, lineString);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the LineString.", null, lineString);
     }
     catch (Throwable e)
     {
@@ -1279,12 +1284,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1299,8 +1304,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testPolygonInvalidReadPermissionTypeSafe()
@@ -1331,7 +1336,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       polygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(viewDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the Polygon.", null, polygon);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the Polygon.", null, polygon);
     }
     catch (Throwable e)
     {
@@ -1346,12 +1351,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1366,8 +1371,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testMultiPointInvalidReadPermissionTypeSafe()
@@ -1398,7 +1403,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       multiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(viewDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiPoint.", null, multiPoint);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiPoint.", null, multiPoint);
     }
     catch (Throwable e)
     {
@@ -1413,12 +1418,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1433,8 +1438,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testMultiLineStringInvalidReadPermissionTypeSafe()
@@ -1465,7 +1470,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       multiPoint = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(viewDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiLineString.", null, multiPoint);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiLineString.", null, multiPoint);
     }
     catch (Throwable e)
     {
@@ -1480,12 +1485,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1500,8 +1505,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testMultiPolygonInvalidReadPermissionTypeSafe()
@@ -1532,7 +1537,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       multiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiLineString").invoke(viewDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiPolygon.", null, multiPolygon);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiPolygon.", null, multiPolygon);
     }
     catch (Throwable e)
     {
@@ -1547,12 +1552,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1567,8 +1572,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullPointObjectTypeUnsafe()
@@ -1594,7 +1599,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       Point point = (Point) viewDTO.getObjectValue("testPoint");
-      assertEquals("Object created.  Point object should be null.", null, point);
+      Assert.assertEquals("Object created.  Point object should be null.", null, point);
 
       point = geometryFactory.createPoint(new Coordinate(191108, 243242));
       viewDTO.setValue("testPoint", point);
@@ -1603,20 +1608,20 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       point = (Point) viewDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
 
       viewDTO.setValue("testPoint", null);
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       point = (Point) viewDTO.getObjectValue("testPoint");
-      assertEquals("Object Updated. Point object should be null.", null, point);
+      Assert.assertEquals("Object Updated. Point object should be null.", null, point);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1631,8 +1636,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullLineStringObjectTypeUnsafe()
@@ -1658,7 +1663,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       LineString lineString = (LineString) viewDTO.getObjectValue("testLineString");
-      assertEquals("Object created.  LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object created.  LineString object should be null.", null, lineString);
 
       lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(189141, 244158), new Coordinate(189265, 244817) });
       viewDTO.setValue("testLineString", lineString);
@@ -1667,19 +1672,19 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       LineString newLineString = (LineString) viewDTO.getObjectValue("testLineString");
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
       viewDTO.setValue("testLineString", null);
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       lineString = (LineString) viewDTO.getObjectValue("testLineString");
-      assertEquals("Object Updated. LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object Updated. LineString object should be null.", null, lineString);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1694,8 +1699,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullPolygonObjectTypeUnsafe()
@@ -1719,7 +1724,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       Polygon polygon = (Polygon) viewDTO.getObjectValue("testPolygon");
-      assertEquals("Object created.  Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object created.  Polygon object should be null.", null, polygon);
 
       String polygonText1 = "POLYGON (( 10 10, 10 20, 20 20, 20 15, 10 10))";
 
@@ -1732,19 +1737,19 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       Polygon newPolygon = (Polygon) viewDTO.getObjectValue("testPolygon");
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       viewDTO.setValue("testPolygon", null);
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       polygon = (Polygon) viewDTO.getObjectValue("testPolygon");
-      assertEquals("Object Updated. Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object Updated. Polygon object should be null.", null, polygon);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1759,8 +1764,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullMultiPointObjectTypeUnsafe()
@@ -1784,7 +1789,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       MultiPoint multiPoint = (MultiPoint) viewDTO.getObjectValue("testMultiPoint");
-      assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
 
       String polygonText1 = "MULTIPOINT(191232 243118, 10000 20000)";
 
@@ -1797,19 +1802,19 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       MultiPoint newMultiPoint = (MultiPoint) viewDTO.getObjectValue("testMultiPoint");
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       viewDTO.setValue("testMultiPoint", null);
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       multiPoint = (MultiPoint) viewDTO.getObjectValue("testMultiPoint");
-      assertEquals("Object Updated. MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object Updated. MultiPoint object should be null.", null, multiPoint);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1824,8 +1829,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullMultiLineStringObjectTypeUnsafe()
@@ -1849,7 +1854,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       MultiLineString multiLineString = (MultiLineString) viewDTO.getObjectValue("testMultiLineString");
-      assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
 
       String polygonText1 = "MULTILINESTRING ((191232 243118, 191108 243242, 200000 250000, 275000 300000))";
 
@@ -1862,19 +1867,19 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       MultiLineString newMultiLineString = (MultiLineString) viewDTO.getObjectValue("testMultiLineString");
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       viewDTO.setValue("testMultiLineString", null);
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       multiLineString = (MultiLineString) viewDTO.getObjectValue("testMultiLineString");
-      assertEquals("Object Updated. MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object Updated. MultiLineString object should be null.", null, multiLineString);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1889,8 +1894,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullMultiPolygonObjectTypeUnsafe()
@@ -1914,7 +1919,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       MultiPolygon multiPolygon = (MultiPolygon) viewDTO.getObjectValue("testMultiPolygon");
-      assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
 
       String polygonText1 = "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
 
@@ -1927,19 +1932,19 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       MultiPolygon newMultiPolygon = (MultiPolygon) viewDTO.getObjectValue("testMultiPolygon");
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
       viewDTO.setValue("testMultiPolygon", null);
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       multiPolygon = (MultiPolygon) viewDTO.getObjectValue("testMultiPolygon");
-      assertEquals("Object Updated. MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object Updated. MultiPolygon object should be null.", null, multiPolygon);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1954,8 +1959,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullPointObjectTypeSafe()
@@ -1984,7 +1989,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       Point point = (Point) testClass.getMethod("getTestPoint").invoke(viewDTO);
 
-      assertEquals("Object created.  Point object should be null.", null, point);
+      Assert.assertEquals("Object created.  Point object should be null.", null, point);
 
       point = geometryFactory.createPoint(new Coordinate(191108, 243242));
 
@@ -1994,8 +1999,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       point = (Point) testClass.getMethod("getTestPoint").invoke(viewDTO);
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
 
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       testClass.getMethod("setTestPoint", Point.class).invoke(viewDTO, (Point) null);
@@ -2004,12 +2009,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       point = (Point) testClass.getMethod("getTestPoint").invoke(viewDTO);
 
-      assertEquals("Object created.  Point object should be null.", null, point);
+      Assert.assertEquals("Object created.  Point object should be null.", null, point);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2024,8 +2029,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullLineStringObjectTypeSafe()
@@ -2054,7 +2059,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       LineString lineString = (LineString) testClass.getMethod("getTestLineString").invoke(viewDTO);
 
-      assertEquals("Object created.  LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object created.  LineString object should be null.", null, lineString);
 
       lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(189141, 244158), new Coordinate(189265, 244817) });
 
@@ -2064,7 +2069,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       LineString newLineString = (LineString) testClass.getMethod("getTestLineString").invoke(viewDTO);
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       testClass.getMethod("setTestLineString", LineString.class).invoke(viewDTO, (LineString) null);
@@ -2073,12 +2078,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       lineString = (LineString) testClass.getMethod("getTestLineString").invoke(viewDTO);
 
-      assertEquals("Object created.  LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object created.  LineString object should be null.", null, lineString);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2093,8 +2098,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullPolygonObjectTypeSafe()
@@ -2121,7 +2126,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       Polygon polygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(viewDTO);
 
-      assertEquals("Object created.  Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object created.  Polygon object should be null.", null, polygon);
 
       String polygonText1 = "POLYGON (( 10 10, 10 20, 20 20, 20 15, 10 10))";
 
@@ -2134,7 +2139,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       Polygon newPolygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(viewDTO);
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       testClass.getMethod("setTestPolygon", Polygon.class).invoke(viewDTO, (Polygon) null);
@@ -2143,12 +2148,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       polygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(viewDTO);
 
-      assertEquals("Object created.  Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object created.  Polygon object should be null.", null, polygon);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2163,8 +2168,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullMultiPointObjectTypeSafe()
@@ -2191,7 +2196,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       MultiPoint multiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(viewDTO);
 
-      assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
 
       String polygonText1 = "MULTIPOINT(191108 243242, 30000 40000)";
 
@@ -2204,7 +2209,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       MultiPoint newMultiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(viewDTO);
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       testClass.getMethod("setTestMultiPoint", MultiPoint.class).invoke(viewDTO, (MultiPoint) null);
@@ -2213,12 +2218,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       multiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(viewDTO);
 
-      assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2233,8 +2238,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   }
 
   /**
-*
-*/
+  *
+  */
   @Request
   @Test
   public void testNullMultiLineStringObjectTypeSafe()
@@ -2261,7 +2266,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       MultiLineString multiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(viewDTO);
 
-      assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
 
       String multiLineStringText1 = "MULTILINESTRING ((189141 244158, 189265 244817, 100000 150000, 175000 200000))";
 
@@ -2274,7 +2279,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       MultiLineString newMultiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(viewDTO);
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(viewDTO, (MultiLineString) null);
@@ -2283,12 +2288,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       multiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(viewDTO);
 
-      assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2331,7 +2336,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       MultiPolygon multiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(viewDTO);
 
-      assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
 
       String multiPolygonText1 = "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
 
@@ -2344,7 +2349,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       MultiPolygon newMultiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(viewDTO);
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(viewDTO, (MultiLineString) null);
@@ -2353,12 +2358,12 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getId());
       multiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(viewDTO);
 
-      assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2375,8 +2380,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   /**
   *
   */
-  @Test
   @Request
+  @Test
   public void testEmptyStringPointTypeUnsafe()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2400,7 +2405,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       Point point = (Point) viewDTO.getObjectValue("testPoint");
-      assertEquals("Object created.  Point object should be null.", null, point);
+      Assert.assertEquals("Object created.  Point object should be null.", null, point);
 
       point = geometryFactory.createPoint(new Coordinate(191108, 243242));
       viewDTO.setValue("testPoint", point);
@@ -2409,19 +2414,19 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       point = (Point) viewDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
 
       viewDTO.setValue("testPoint", "");
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       point = (Point) viewDTO.getObjectValue("testPoint");
-      assertEquals("Object Updated. Point object should be null.", null, point);
+      Assert.assertEquals("Object Updated. Point object should be null.", null, point);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2438,8 +2443,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   /**
    *
    */
-  @Test
   @Request
+  @Test
   public void testEmptyStringLineStringTypeUnsafe()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2463,7 +2468,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       LineString lineString = (LineString) viewDTO.getObjectValue("testLineString");
-      assertEquals("Object created.  LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object created.  LineString object should be null.", null, lineString);
 
       lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(189141, 244158), new Coordinate(189265, 244817) });
       viewDTO.setValue("testLineString", lineString);
@@ -2472,18 +2477,18 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       LineString newLineString = (LineString) viewDTO.getObjectValue("testLineString");
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
       viewDTO.setValue("testLineString", "");
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       lineString = (LineString) viewDTO.getObjectValue("testLineString");
-      assertEquals("Object Updated. LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object Updated. LineString object should be null.", null, lineString);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2500,8 +2505,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   /**
    *
    */
-  @Test
   @Request
+  @Test
   public void testEmptyStringPolygonTypeUnsafe()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2523,7 +2528,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       Polygon polygon = (Polygon) viewDTO.getObjectValue("testPolygon");
-      assertEquals("Object created.  Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object created.  Polygon object should be null.", null, polygon);
 
       String polygonText1 = "POLYGON (( 10 10, 10 20, 20 20, 20 15, 10 10))";
 
@@ -2535,18 +2540,18 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       Polygon newPolygon = (Polygon) viewDTO.getObjectValue("testPolygon");
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       viewDTO.setValue("testPolygon", "");
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       polygon = (Polygon) viewDTO.getObjectValue("testPolygon");
-      assertEquals("Object Updated. Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object Updated. Polygon object should be null.", null, polygon);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2563,8 +2568,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   /**
    *
    */
-  @Test
   @Request
+  @Test
   public void testEmptyStringMultiPointTypeUnsafe()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2586,7 +2591,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       MultiPoint multiPoint = (MultiPoint) viewDTO.getObjectValue("testMultiPoint");
-      assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
 
       String multiPointText1 = "MULTIPOINT(191232 243118, 10000 20000)";
 
@@ -2598,18 +2603,18 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       MultiPoint newMultiPoint = (MultiPoint) viewDTO.getObjectValue("testMultiPoint");
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       viewDTO.setValue("testMultiPoint", "");
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       multiPoint = (MultiPoint) viewDTO.getObjectValue("testMultiPoint");
-      assertEquals("Object Updated. MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object Updated. MultiPoint object should be null.", null, multiPoint);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2626,8 +2631,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   /**
    *
    */
-  @Test
   @Request
+  @Test
   public void testEmptyStringMultiLineStringTypeUnsafe()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2649,7 +2654,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       MultiLineString multiLineString = (MultiLineString) viewDTO.getObjectValue("testMultiLineString");
-      assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
 
       String multiLineString1 = "MULTILINESTRING ((191232 243118, 191108 243242, 200000 250000, 275000 300000))";
 
@@ -2661,18 +2666,18 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       MultiLineString newMultiLineString = (MultiLineString) viewDTO.getObjectValue("testMultiLineString");
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       viewDTO.setValue("testMultiLineString", "");
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       multiLineString = (MultiLineString) viewDTO.getObjectValue("testMultiLineString");
-      assertEquals("Object Updated. MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object Updated. MultiLineString object should be null.", null, multiLineString);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2689,8 +2694,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
   /**
    *
    */
-  @Test
   @Request
+  @Test
   public void testEmptyStringMultiPolygonTypeUnsafe()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2712,7 +2717,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
 
       MultiPolygon multiPolygon = (MultiPolygon) viewDTO.getObjectValue("testMultiPolygon");
-      assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
 
       String multiPolygon1 = "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
 
@@ -2724,18 +2729,18 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       MultiPolygon newMultiPolygon = (MultiPolygon) viewDTO.getObjectValue("testMultiPolygon");
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
       viewDTO.setValue("testMultiPolygon", "");
       tommyRequest.update(viewDTO);
 
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getId());
       multiPolygon = (MultiPolygon) viewDTO.getObjectValue("testMultiPolygon");
-      assertEquals("Object Updated. MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object Updated. MultiPolygon object should be null.", null, multiPolygon);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2749,8 +2754,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidPointStringObject()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2769,7 +2774,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO.setValue("testPoint", "Total Garbage");
       tommyRequest.createSessionComponent(viewDTO);
 
-      fail("An invalid WKT value was set on a point attribute.");
+      Assert.fail("An invalid WKT value was set on a point attribute.");
     }
     catch (AttributePointParseExceptionDTO e)
     {
@@ -2777,7 +2782,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2791,8 +2796,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidLineStringStringObject()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2811,7 +2816,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO.setValue("testLineString", "Total Garbage");
       tommyRequest.createSessionComponent(viewDTO);
 
-      fail("An invalid WKT value was set on a LineString attribute.");
+      Assert.fail("An invalid WKT value was set on a LineString attribute.");
     }
     catch (AttributeLineStringParseExceptionDTO e)
     {
@@ -2819,7 +2824,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2833,8 +2838,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidPolygonString()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2853,7 +2858,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO.setValue("testPolygon", "Total Garbage");
       tommyRequest.createSessionComponent(viewDTO);
 
-      fail("An invalid WKT value was set on a Polygon attribute.");
+      Assert.fail("An invalid WKT value was set on a Polygon attribute.");
     }
     catch (AttributePolygonParseExceptionDTO e)
     {
@@ -2861,7 +2866,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2875,8 +2880,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidMultiPointString()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2895,7 +2900,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO.setValue("testMultiPoint", "Total Garbage");
       tommyRequest.createSessionComponent(viewDTO);
 
-      fail("An invalid WKT value was set on a MultiPoint attribute.");
+      Assert.fail("An invalid WKT value was set on a MultiPoint attribute.");
     }
     catch (AttributeMultiPointParseExceptionDTO e)
     {
@@ -2903,7 +2908,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2917,8 +2922,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidMultiLineStringString()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2937,7 +2942,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO.setValue("testMultiLineString", "Total Garbage");
       tommyRequest.createSessionComponent(viewDTO);
 
-      fail("An invalid WKT value was set on a MultiLineString attribute.");
+      Assert.fail("An invalid WKT value was set on a MultiLineString attribute.");
     }
     catch (AttributeMultiLineStringParseExceptionDTO e)
     {
@@ -2945,7 +2950,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2959,8 +2964,8 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidMultiPolygonString()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdViewDAO.getId(), Operation.CREATE.name());
@@ -2979,7 +2984,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO.setValue("testMultiPolygon", "Total Garbage");
       tommyRequest.createSessionComponent(viewDTO);
 
-      fail("An invalid WKT value was set on a MultiPolygon attribute.");
+      Assert.fail("An invalid WKT value was set on a MultiPolygon attribute.");
     }
     catch (AttributeMultiPolygonParseExceptionDTO e)
     {
@@ -2987,7 +2992,7 @@ public class GISViewAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {

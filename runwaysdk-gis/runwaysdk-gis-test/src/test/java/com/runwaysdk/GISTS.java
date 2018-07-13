@@ -29,7 +29,7 @@ import com.runwaysdk.gis.GISTestSuite;
 @Suite.SuiteClasses({
   GISTestSuite.class
 })
-public class GISTS extends TestSuite
+public class GISTS
 {
 
 }

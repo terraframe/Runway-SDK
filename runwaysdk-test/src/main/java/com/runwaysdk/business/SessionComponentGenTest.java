@@ -33,6 +33,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.SystemException;
 import com.runwaysdk.business.generation.CompilerException;
@@ -127,25 +133,11 @@ import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 import com.runwaysdk.util.FileIO;
 
-import junit.framework.TestCase;
-import junit.framework.TestResult;
 import sun.security.provider.Sun;
 
 @SuppressWarnings("unchecked")
-public abstract class SessionComponentGenTest extends TestCase
+public abstract class SessionComponentGenTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   public static final String               path           = TestConstants.Path.XMLFiles + "/";
 
   public static final String               EXCEPTION_XML  = path + "customException.xml";
@@ -232,7 +224,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
   protected static String                  superMdSessionAttributeNameHack;
 
-  protected static void classSetUp()
+  public static void sessionClassSetUp()
   {
     suitMaster = MdBusinessDAO.newInstance();
     suitMaster.setValue(MdBusinessInfo.NAME, "SuitMaster");
@@ -562,18 +554,23 @@ public abstract class SessionComponentGenTest extends TestCase
     collectionSubDTO = collectionSub.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
   }
 
-  protected static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
     new MdPackage(pack).delete();
   }
 
+  @Request
+  @Before
   protected void setUp()
   {
     systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     _clientReaqest = systemSession.getRequest();
   }
 
-  @Override
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
     systemSession.logout();
@@ -612,7 +609,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     if (!id.equals(sessionComponent.getId()))
     {
-      fail("An applied instance did not match the retrieved instance.");
+      Assert.fail("An applied instance did not match the retrieved instance.");
     }
   }
 
@@ -644,7 +641,7 @@ public abstract class SessionComponentGenTest extends TestCase
     SessionComponent sessionComponent = SessionComponent.get(id);
 
     if (!sessionComponent.getValue("topSpeed").equals("200"))
-      fail("setTopSpeed was not invoked correctly");
+      Assert.fail("setTopSpeed was not invoked correctly");
 
     topSpeed.delete();
   }
@@ -661,7 +658,7 @@ public abstract class SessionComponentGenTest extends TestCase
       Method setTopSpeedMethod = carClass.getMethod("setTopSpeed", Integer.TYPE);
       Object newObject = carClass.getConstructor().newInstance();
       setTopSpeedMethod.invoke(newObject, 200);
-      fail("The class invoked a method that doesn't exist yet");
+      Assert.fail("The class invoked a method that doesn't exist yet");
     }
     catch (NoSuchMethodException e)
     {
@@ -698,7 +695,7 @@ public abstract class SessionComponentGenTest extends TestCase
       Method setBlobDataMethod = carClass.getMethod("setBlobData", byte[].class);
       Object newObject = carClass.getConstructor().newInstance();
       setBlobDataMethod.invoke(newObject, data);
-      fail("The class invoked a method that doesn't exist yet");
+      Assert.fail("The class invoked a method that doesn't exist yet");
     }
     catch (NoSuchMethodException e)
     {
@@ -727,7 +724,7 @@ public abstract class SessionComponentGenTest extends TestCase
     car.delete();
 
     if (MdSessionDAO.isDefined(pack + ".Car"))
-      fail("Car was not deleted!");
+      Assert.fail("Car was not deleted!");
 
     makeCar();
   }
@@ -756,13 +753,13 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (in.length != out.length)
       {
-        fail("Stored and Retrieved blobs are different sizes.");
+        Assert.fail("Stored and Retrieved blobs are different sizes.");
       }
       for (int i = 0; i < in.length; i++)
       {
         if (in[i] != out[i])
         {
-          fail("Stored and Retrieved blobs have different values.");
+          Assert.fail("Stored and Retrieved blobs have different values.");
         }
       }
     }
@@ -795,7 +792,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (in != out)
       {
-        fail("Stored and Retrieved booleans have different values.");
+        Assert.fail("Stored and Retrieved booleans have different values.");
       }
     }
     finally
@@ -828,7 +825,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out != null)
       {
-        fail("A Boolean getter method was supposed to return null.");
+        Assert.fail("A Boolean getter method was supposed to return null.");
       }
     }
     finally
@@ -861,7 +858,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (!in.equals(out))
       {
-        fail("Stored and Retrieved Characters have different values.");
+        Assert.fail("Stored and Retrieved Characters have different values.");
       }
     }
     finally
@@ -895,7 +892,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (in.subtract(out).abs().doubleValue() > .0000001)
       {
-        fail("Stored and Retrieved Decimals have different values.");
+        Assert.fail("Stored and Retrieved Decimals have different values.");
       }
     }
     finally
@@ -931,7 +928,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out != null)
       {
-        fail("A Decimal getter method was supposed to return null.");
+        Assert.fail("A Decimal getter method was supposed to return null.");
       }
     }
     finally
@@ -964,7 +961,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (in != out)
       {
-        fail("Stored and Retrieved Doubles have different values.");
+        Assert.fail("Stored and Retrieved Doubles have different values.");
       }
     }
     finally
@@ -998,7 +995,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out != null)
       {
-        fail("A Double getter method was supposed to return null.");
+        Assert.fail("A Double getter method was supposed to return null.");
       }
     }
     finally
@@ -1031,7 +1028,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (in != out)
       {
-        fail("Stored and Retrieved Floats have different values.");
+        Assert.fail("Stored and Retrieved Floats have different values.");
       }
     }
     finally
@@ -1065,7 +1062,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out != null)
       {
-        fail("A Float getter method was supposed to return null.");
+        Assert.fail("A Float getter method was supposed to return null.");
       }
     }
     finally
@@ -1101,7 +1098,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (!out)
       {
-        fail("Stored Hash did not equal equivalent value.");
+        Assert.fail("Stored Hash did not equal equivalent value.");
       }
     }
     finally
@@ -1134,7 +1131,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (!in.equals(out))
       {
-        fail("Stored and Retrieved Symmetric encrypted attributes have different values.");
+        Assert.fail("Stored and Retrieved Symmetric encrypted attributes have different values.");
       }
     }
     finally
@@ -1167,7 +1164,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (in != out)
       {
-        fail("Stored and Retrieved Integers have different values.");
+        Assert.fail("Stored and Retrieved Integers have different values.");
       }
     }
     finally
@@ -1201,7 +1198,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out != null)
       {
-        fail("An Integer getter method was supposed to return null.");
+        Assert.fail("An Integer getter method was supposed to return null.");
       }
     }
     finally
@@ -1235,7 +1232,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (in != out)
       {
-        fail("Stored and Retrieved Longs have different values.");
+        Assert.fail("Stored and Retrieved Longs have different values.");
       }
     }
     finally
@@ -1269,7 +1266,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out != null)
       {
-        fail("A Long getter method was supposed to return null.");
+        Assert.fail("A Long getter method was supposed to return null.");
       }
     }
     finally
@@ -1303,7 +1300,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (!sdf.format(in).equals(sdf.format(out)))
       {
-        fail("Stored and Retrieved Dates have different values.");
+        Assert.fail("Stored and Retrieved Dates have different values.");
       }
     }
     finally
@@ -1337,7 +1334,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out != null)
       {
-        fail("A Date getter method was supposed to return null.");
+        Assert.fail("A Date getter method was supposed to return null.");
       }
     }
     finally
@@ -1371,7 +1368,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (!sdf.format(in).equals(sdf.format(out)))
       {
-        fail("Stored and Retrieved DateTimes have different values.");
+        Assert.fail("Stored and Retrieved DateTimes have different values.");
       }
     }
     finally
@@ -1404,7 +1401,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out != null)
       {
-        fail("A DateTime getter method was supposed to return null.");
+        Assert.fail("A DateTime getter method was supposed to return null.");
       }
     }
     finally
@@ -1438,7 +1435,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (!sdf.format(in).equals(sdf.format(out)))
       {
-        fail("Stored and Retrieved Times have different values.");
+        Assert.fail("Stored and Retrieved Times have different values.");
       }
     }
     finally
@@ -1472,7 +1469,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out != null)
       {
-        fail("A Time getter method was supposed to return null.");
+        Assert.fail("A Time getter method was supposed to return null.");
       }
     }
     finally
@@ -1505,7 +1502,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (!in.equals(out))
       {
-        fail("Stored and Retrieved Texts have different values.");
+        Assert.fail("Stored and Retrieved Texts have different values.");
       }
     }
     finally
@@ -1540,8 +1537,8 @@ public abstract class SessionComponentGenTest extends TestCase
     StructDAO structDAO = ( (AttributeStructIF) transientDAO.getAttributeIF("aStruct") ).getStructDAO();
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttribute("structEnumeration") ).dereference();
 
-    assertEquals(1, enums.length);
-    assertEquals(heartsId, enums[0].getId());
+    Assert.assertEquals(1, enums.length);
+    Assert.assertEquals(heartsId, enums[0].getId());
   }
 
   public void ignoreGetStructEnumeration() throws Exception
@@ -1578,9 +1575,9 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(input, structChar);
-      assertEquals(1, out.size());
-      assertEquals(heartsId, outId);
+      Assert.assertEquals(input, structChar);
+      Assert.assertEquals(1, out.size());
+      Assert.assertEquals(heartsId, outId);
     }
     finally
     {
@@ -1616,7 +1613,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (in != out)
       {
-        fail("Stored and Retrieved StructBooleans have different values.");
+        Assert.fail("Stored and Retrieved StructBooleans have different values.");
       }
     }
     finally
@@ -1651,7 +1648,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (!in.getId().equalsIgnoreCase(out.getId()))
       {
-        fail("Stored and Retrieved References are different.");
+        Assert.fail("Stored and Retrieved References are different.");
       }
     }
     finally
@@ -1690,13 +1687,13 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (ids.size() != 1)
       {
-        fail("Expected 1 enum value, found " + ids.size());
+        Assert.fail("Expected 1 enum value, found " + ids.size());
       }
       String out = BusinessDAO.get(ids.iterator().next()).getValue(EnumerationMasterInfo.NAME);
 
       if (!out.equals(diamondName))
       {
-        fail("Stored and Retrieved enums have different values.");
+        Assert.fail("Stored and Retrieved enums have different values.");
       }
     }
     finally
@@ -1733,7 +1730,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (!inId.equalsIgnoreCase(outId))
       {
-        fail("Stored and Retrieved enums have different values.");
+        Assert.fail("Stored and Retrieved enums have different values.");
       }
     }
     finally
@@ -1772,7 +1769,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out.size() != 0)
       {
-        fail("Failed to remove an enumerated value.");
+        Assert.fail("Failed to remove an enumerated value.");
       }
     }
     finally
@@ -1810,7 +1807,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (out.size() != 0)
       {
-        fail("Failed to clear an enumerated value.");
+        Assert.fail("Failed to clear an enumerated value.");
       }
     }
     finally
@@ -1842,7 +1839,7 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       object = collectionClass.getMethod("get", String.class).invoke(null, id);
 
-      fail("Delete businessDTO did not delete the entity");
+      Assert.fail("Delete businessDTO did not delete the entity");
     }
     catch (Exception e)
     {
@@ -1852,7 +1849,7 @@ public abstract class SessionComponentGenTest extends TestCase
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
 
     }
@@ -1884,14 +1881,14 @@ public abstract class SessionComponentGenTest extends TestCase
     {
       if (in.length != out.length)
       {
-        fail("Stored and Retrieved blobs are different sizes.");
+        Assert.fail("Stored and Retrieved blobs are different sizes.");
       }
 
       for (int i = 0; i < in.length; i++)
       {
         if (in[i] != out[i])
         {
-          fail("Stored and Retrieved blobs have different values.");
+          Assert.fail("Stored and Retrieved blobs have different values.");
         }
       }
     }
@@ -1928,7 +1925,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(in, out);
+      Assert.assertEquals(in, out);
     }
     finally
     {
@@ -1958,7 +1955,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertNull(null, out);
+      Assert.assertNull(null, out);
     }
     finally
     {
@@ -1989,7 +1986,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(in, out);
+      Assert.assertEquals(in, out);
     }
     finally
     {
@@ -2016,7 +2013,7 @@ public abstract class SessionComponentGenTest extends TestCase
         get = collectionClass.getConstructor(ClientRequestIF.class);
         get.newInstance(_clientReaqest);
 
-        fail("Able to load a DTO class that was set to not be published");
+        Assert.fail("Able to load a DTO class that was set to not be published");
       }
       catch (RuntimeException ex)
       {
@@ -2032,7 +2029,7 @@ public abstract class SessionComponentGenTest extends TestCase
         get = collectionSubClass.getConstructor(ClientRequestIF.class);
         get.newInstance(_clientReaqest);
 
-        fail("Able to load a DTO class that was set to not be published");
+        Assert.fail("Able to load a DTO class that was set to not be published");
       }
       catch (RuntimeException ex)
       {
@@ -2135,7 +2132,7 @@ public abstract class SessionComponentGenTest extends TestCase
     int modifiers = colletionBaseClass.getDeclaredMethod("getACharacter").getModifiers();
     if (!Modifier.isPublic(modifiers))
     {
-      fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
     }
 
     // Make sure the accessor method is there
@@ -2152,7 +2149,7 @@ public abstract class SessionComponentGenTest extends TestCase
       modifiers = colletionBaseClass.getDeclaredMethod("getACharacter").getModifiers();
       if (!Modifier.isProtected(modifiers))
       {
-        fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
       }
 
       try
@@ -2161,7 +2158,7 @@ public abstract class SessionComponentGenTest extends TestCase
         object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
         collectionDTOclass.getMethod("getACharacter").invoke(object);
 
-        fail("Able to access a getter method on a DTO for an attribute that is [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].");
+        Assert.fail("Able to access a getter method on a DTO for an attribute that is [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].");
       }
       catch (NoSuchMethodException e)
       {
@@ -2184,7 +2181,7 @@ public abstract class SessionComponentGenTest extends TestCase
       modifiers = colletionBaseClass.getDeclaredMethod("getACharacter").getModifiers();
       if (!Modifier.isPublic(modifiers))
       {
-        fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
       }
 
       // Make sure the accessor method is back
@@ -2211,7 +2208,7 @@ public abstract class SessionComponentGenTest extends TestCase
     int modifiers = colletionBaseClass.getDeclaredMethod("setACharacter", String.class).getModifiers();
     if (!Modifier.isPublic(modifiers))
     {
-      fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+      Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
     }
 
     // Make sure the accessor method is there
@@ -2229,7 +2226,7 @@ public abstract class SessionComponentGenTest extends TestCase
       modifiers = colletionBaseClass.getDeclaredMethod("setACharacter", String.class).getModifiers();
       if (!Modifier.isProtected(modifiers))
       {
-        fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
+        Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
       }
 
       try
@@ -2238,7 +2235,7 @@ public abstract class SessionComponentGenTest extends TestCase
         object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
         collectionDTOclass.getMethod("setACharacter", String.class).invoke(object, "123");
 
-        fail("Able to access a setter method on a DTO for an attribute that is [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].");
+        Assert.fail("Able to access a setter method on a DTO for an attribute that is [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].");
       }
       catch (NoSuchMethodException e)
       {
@@ -2257,7 +2254,7 @@ public abstract class SessionComponentGenTest extends TestCase
       modifiers = colletionBaseClass.getDeclaredMethod("setACharacter", String.class).getModifiers();
       if (!Modifier.isPublic(modifiers))
       {
-        fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
+        Assert.fail("Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
       }
 
       // Make sure the accessor method is back
@@ -2286,7 +2283,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(sdf.format(in), sdf.format(out));
+      Assert.assertEquals(sdf.format(in), sdf.format(out));
     }
     finally
     {
@@ -2311,7 +2308,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertNull(out);
+      Assert.assertNull(out);
     }
     finally
     {
@@ -2338,7 +2335,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(sdf.format(in), sdf.format(out));
+      Assert.assertEquals(sdf.format(in), sdf.format(out));
     }
     finally
     {
@@ -2363,7 +2360,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertNull(out);
+      Assert.assertNull(out);
     }
     finally
     {
@@ -2387,7 +2384,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(out.doubleValue(), in.doubleValue());
+      Assert.assertEquals(out.doubleValue(), in.doubleValue());
     }
     finally
     {
@@ -2411,7 +2408,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertNull(out);
+      Assert.assertNull(out);
     }
     finally
     {
@@ -2435,7 +2432,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(in, out);
+      Assert.assertEquals(in, out);
     }
     finally
     {
@@ -2459,7 +2456,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertNull(out);
+      Assert.assertNull(out);
     }
     finally
     {
@@ -2483,7 +2480,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(in, out);
+      Assert.assertEquals(in, out);
     }
     finally
     {
@@ -2507,7 +2504,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertNull(out);
+      Assert.assertNull(out);
     }
     finally
     {
@@ -2531,7 +2528,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(in, out);
+      Assert.assertEquals(in, out);
     }
     finally
     {
@@ -2555,7 +2552,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertNull(out);
+      Assert.assertNull(out);
     }
     finally
     {
@@ -2579,7 +2576,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(in, out);
+      Assert.assertEquals(in, out);
     }
     finally
     {
@@ -2603,7 +2600,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertNull(out);
+      Assert.assertNull(out);
     }
     finally
     {
@@ -2630,7 +2627,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(in.getId(), out.getId());
+      Assert.assertEquals(in.getId(), out.getId());
     }
     finally
     {
@@ -2656,8 +2653,9 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals("", out); // the return value should be empty for a DTO (for
-                             // security)
+      Assert.assertEquals("", out); // the return value should be empty for a
+                                    // DTO (for
+      // security)
     }
     finally
     {
@@ -2682,7 +2680,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(in, out);
+      Assert.assertEquals(in, out);
     }
     finally
     {
@@ -2709,7 +2707,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(sdf.format(in), sdf.format(out));
+      Assert.assertEquals(sdf.format(in), sdf.format(out));
     }
     finally
     {
@@ -2734,7 +2732,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertNull(out);
+      Assert.assertNull(out);
     }
     finally
     {
@@ -2759,7 +2757,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertTrue(out);
+      Assert.assertTrue(out);
     }
     finally
     {
@@ -2784,7 +2782,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertTrue(out);
+      Assert.assertTrue(out);
     }
     finally
     {
@@ -2813,7 +2811,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(heartName, out);
+      Assert.assertEquals(heartName, out);
     }
     finally
     {
@@ -2855,7 +2853,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(0, out.size());
+      Assert.assertEquals(0, out.size());
     }
     finally
     {
@@ -2887,7 +2885,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(in, out);
+      Assert.assertEquals(in, out);
     }
     finally
     {
@@ -2909,7 +2907,7 @@ public abstract class SessionComponentGenTest extends TestCase
     ComponentDTOFacade.getAttributeStructDTO(objectDTO, "aStruct").setValue("structBoolean", in);
 
     AttributeStructDTO struct = ComponentDTOFacade.getAttributeStructDTO(objectDTO, "aStruct");
-    assertEquals(in, struct.getValue("structBoolean"));
+    Assert.assertEquals(in, struct.getValue("structBoolean"));
 
     _clientReaqest.createSessionComponent(objectDTO);
 
@@ -2922,7 +2920,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(in, out);
+      Assert.assertEquals(in, out);
     }
     finally
     {
@@ -2963,8 +2961,8 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(1, enums.length);
-      assertEquals(clubsId, enums[0].getId());
+      Assert.assertEquals(1, enums.length);
+      Assert.assertEquals(clubsId, enums[0].getId());
     }
     finally
     {
@@ -3028,10 +3026,10 @@ public abstract class SessionComponentGenTest extends TestCase
 
     try
     {
-      assertEquals(1, enums.length);
-      assertEquals(clubsId, enums[0].getId());
-      assertEquals(Long.toString(longIn), outLong);
-      assertEquals(Boolean.toString(booleanIn), outBoolean);
+      Assert.assertEquals(1, enums.length);
+      Assert.assertEquals(clubsId, enums[0].getId());
+      Assert.assertEquals(Long.toString(longIn), outLong);
+      Assert.assertEquals(Boolean.toString(booleanIn), outBoolean);
     }
     finally
     {
@@ -3069,7 +3067,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
       // If we get to here, the exception didn't get thrown.
       GenerationManager.generate(collection);
-      fail("Class " + car.definesType() + " was deleted even though it is referenced in business code.");
+      Assert.fail("Class " + car.definesType() + " was deleted even though it is referenced in business code.");
     }
     catch (CompilerException e)
     {
@@ -3102,6 +3100,8 @@ public abstract class SessionComponentGenTest extends TestCase
    *
    * @throws Exception
    */
+  @Request
+  @Test
   public void testDeletedAttributeStillReferenced() throws Exception
   {
     makeCar();
@@ -3150,7 +3150,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
       // If we get to here, the exception didn't get thrown.
       GenerationManager.generate(collection);
-      fail("Class " + car.definesType() + " was deleted even though it is referenced in business code.");
+      Assert.fail("Class " + car.definesType() + " was deleted even though it is referenced in business code.");
     }
     catch (CompilerException e)
     {
@@ -3200,15 +3200,15 @@ public abstract class SessionComponentGenTest extends TestCase
     SessionDTO object = (SessionDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
 
     // test on a new instance
-    assertEquals(collection.getDisplayLabel(CommonProperties.getDefaultLocale()), object.getMd().getDisplayLabel());
-    assertEquals(collection.getDescription(CommonProperties.getDefaultLocale()), object.getMd().getDescription());
+    Assert.assertEquals(collection.getDisplayLabel(CommonProperties.getDefaultLocale()), object.getMd().getDisplayLabel());
+    Assert.assertEquals(collection.getDescription(CommonProperties.getDefaultLocale()), object.getMd().getDescription());
 
     // test on an applied instance (to make sure the proxies persisted the
     // metadata)
     collectionClass.getMethod("apply").invoke(object);
-    assertEquals(collection.getDisplayLabel(CommonProperties.getDefaultLocale()), object.getMd().getDisplayLabel());
-    assertEquals(collection.getDescription(CommonProperties.getDefaultLocale()), object.getMd().getDescription());
-    assertEquals(collection.getId(), object.getMd().getId());
+    Assert.assertEquals(collection.getDisplayLabel(CommonProperties.getDefaultLocale()), object.getMd().getDisplayLabel());
+    Assert.assertEquals(collection.getDescription(CommonProperties.getDefaultLocale()), object.getMd().getDescription());
+    Assert.assertEquals(collection.getId(), object.getMd().getId());
   }
 
   public void ignoreBlobMetadata() throws Exception
@@ -3270,7 +3270,7 @@ public abstract class SessionComponentGenTest extends TestCase
 
     checkAttributeMd(collectionReference, mdDTO);
 
-    assertEquals(collectionReference.isSystem(), mdDTO.isSystem());
+    Assert.assertEquals(collectionReference.isSystem(), mdDTO.isSystem());
   }
 
   public void ignoreIntegerMetadata() throws Exception
@@ -3281,7 +3281,7 @@ public abstract class SessionComponentGenTest extends TestCase
     AttributeNumberMdDTO mdDTO = (AttributeNumberMdDTO) collectionClass.getMethod(ClassDTOBaseGenerator.ATTRIBUTE_MD_PREFIX + "AnInteger" + ClassDTOBaseGenerator.ATTRIBUTE_MD_SUFFIX).invoke(object);
 
     checkAttributeMd(collectionInteger, mdDTO);
-    assertEquals(Boolean.parseBoolean(collectionInteger.isPositiveRejected()), mdDTO.rejectPositive());
+    Assert.assertEquals(Boolean.parseBoolean(collectionInteger.isPositiveRejected()), mdDTO.rejectPositive());
   }
 
   public void ignoreLongMetadata() throws Exception
@@ -3302,7 +3302,7 @@ public abstract class SessionComponentGenTest extends TestCase
     AttributeCharacterMdDTO mdDTO = (AttributeCharacterMdDTO) collectionClass.getMethod(ClassDTOBaseGenerator.ATTRIBUTE_MD_PREFIX + "ACharacter" + ClassDTOBaseGenerator.ATTRIBUTE_MD_SUFFIX).invoke(object);
 
     checkAttributeMd(collectionCharacter, mdDTO);
-    assertEquals(Integer.parseInt(collectionCharacter.getSize()), mdDTO.getSize());
+    Assert.assertEquals(Integer.parseInt(collectionCharacter.getSize()), mdDTO.getSize());
   }
 
   public void ignoreStructMetadata() throws Exception
@@ -3313,7 +3313,7 @@ public abstract class SessionComponentGenTest extends TestCase
     AttributeStructMdDTO mdDTO = (AttributeStructMdDTO) collectionClass.getMethod(ClassDTOBaseGenerator.ATTRIBUTE_MD_PREFIX + "AStruct" + ClassDTOBaseGenerator.ATTRIBUTE_MD_SUFFIX).invoke(object);
 
     checkAttributeMd(collectionStruct, mdDTO);
-    assertEquals(collectionStruct.getMdStructDAOIF().definesType(), mdDTO.getDefiningMdStruct());
+    Assert.assertEquals(collectionStruct.getMdStructDAOIF().definesType(), mdDTO.getDefiningMdStruct());
   }
 
   public void ignoreDecimalMetadata() throws Exception
@@ -3354,7 +3354,7 @@ public abstract class SessionComponentGenTest extends TestCase
     AttributeEnumerationMdDTO mdDTO = (AttributeEnumerationMdDTO) collectionClass.getMethod(ClassDTOBaseGenerator.ATTRIBUTE_MD_PREFIX + "AnEnum" + ClassDTOBaseGenerator.ATTRIBUTE_MD_SUFFIX).invoke(object);
 
     checkAttributeMd(collectionEnumeration, mdDTO);
-    assertEquals(collectionEnumeration.selectMultiple(), mdDTO.selectMultiple());
+    Assert.assertEquals(collectionEnumeration.selectMultiple(), mdDTO.selectMultiple());
   }
 
   public void ignoreTextMetadata() throws Exception
@@ -3385,7 +3385,7 @@ public abstract class SessionComponentGenTest extends TestCase
     AttributeEncryptionMdDTO mdDTO = (AttributeEncryptionMdDTO) collectionClass.getMethod(ClassDTOBaseGenerator.ATTRIBUTE_MD_PREFIX + "AHash" + ClassDTOBaseGenerator.ATTRIBUTE_MD_SUFFIX).invoke(object);
 
     checkAttributeMd(collectionHash, mdDTO);
-    assertEquals(collectionHash.getEncryptionMethod(), mdDTO.getEncryptionMethod());
+    Assert.assertEquals(collectionHash.getEncryptionMethod(), mdDTO.getEncryptionMethod());
   }
 
   public void ignoreSymmetricMetadata() throws Exception
@@ -3396,7 +3396,7 @@ public abstract class SessionComponentGenTest extends TestCase
     AttributeEncryptionMdDTO mdDTO = (AttributeEncryptionMdDTO) collectionClass.getMethod(ClassDTOBaseGenerator.ATTRIBUTE_MD_PREFIX + "ASym" + ClassDTOBaseGenerator.ATTRIBUTE_MD_SUFFIX).invoke(object);
 
     checkAttributeMd(collectionSymmetric, mdDTO);
-    assertEquals(collectionSymmetric.getEncryptionMethod(), mdDTO.getEncryptionMethod());
+    Assert.assertEquals(collectionSymmetric.getEncryptionMethod(), mdDTO.getEncryptionMethod());
   }
 
   public void ignoreStructCharacterMetadata() throws Exception
@@ -3409,7 +3409,7 @@ public abstract class SessionComponentGenTest extends TestCase
     AttributeCharacterMdDTO mdDTO = (AttributeCharacterMdDTO) structClass.getMethod(ClassDTOBaseGenerator.ATTRIBUTE_MD_PREFIX + "StructCharacter" + ClassDTOBaseGenerator.ATTRIBUTE_MD_SUFFIX).invoke(structDTO);
 
     checkAttributeMd(structCharacter, mdDTO);
-    assertEquals(Integer.parseInt(structCharacter.getSize()), mdDTO.getSize());
+    Assert.assertEquals(Integer.parseInt(structCharacter.getSize()), mdDTO.getSize());
   }
 
   public void ignoreFileMetadata() throws Exception
@@ -3432,22 +3432,22 @@ public abstract class SessionComponentGenTest extends TestCase
    */
   private void checkAttributeMd(MdAttributeConcreteDAOIF mdAttribute, AttributeMdDTO mdDTO)
   {
-    assertEquals(mdAttribute.getDisplayLabel(CommonProperties.getDefaultLocale()), mdDTO.getDisplayLabel());
-    assertEquals(mdAttribute.getDescription(CommonProperties.getDefaultLocale()), mdDTO.getDescription());
-    assertEquals(mdAttribute.isImmutable(), mdDTO.isImmutable());
-    assertEquals(mdAttribute.isRequired(), mdDTO.isRequired());
-    assertEquals(mdAttribute.getId(), mdDTO.getId());
-    assertEquals(mdAttribute.isSystem(), mdDTO.isSystem());
-    assertEquals(mdAttribute.definesAttribute(), mdDTO.getName());
+    Assert.assertEquals(mdAttribute.getDisplayLabel(CommonProperties.getDefaultLocale()), mdDTO.getDisplayLabel());
+    Assert.assertEquals(mdAttribute.getDescription(CommonProperties.getDefaultLocale()), mdDTO.getDescription());
+    Assert.assertEquals(mdAttribute.isImmutable(), mdDTO.isImmutable());
+    Assert.assertEquals(mdAttribute.isRequired(), mdDTO.isRequired());
+    Assert.assertEquals(mdAttribute.getId(), mdDTO.getId());
+    Assert.assertEquals(mdAttribute.isSystem(), mdDTO.isSystem());
+    Assert.assertEquals(mdAttribute.definesAttribute(), mdDTO.getName());
 
     if (mdDTO instanceof AttributeNumberMdDTO)
     {
       AttributeNumberMdDTO numberMdDTO = (AttributeNumberMdDTO) mdDTO;
       MdAttributeNumberDAOIF mdAttributeNumber = (MdAttributeNumberDAOIF) mdAttribute;
 
-      assertEquals(Boolean.parseBoolean(mdAttributeNumber.isZeroRejected()), numberMdDTO.rejectZero());
-      assertEquals(Boolean.parseBoolean(mdAttributeNumber.isNegativeRejected()), numberMdDTO.rejectNegative());
-      assertEquals(Boolean.parseBoolean(mdAttributeNumber.isPositiveRejected()), numberMdDTO.rejectPositive());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttributeNumber.isZeroRejected()), numberMdDTO.rejectZero());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttributeNumber.isNegativeRejected()), numberMdDTO.rejectNegative());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttributeNumber.isPositiveRejected()), numberMdDTO.rejectPositive());
     }
 
     if (mdDTO instanceof AttributeDecMdDTO)
@@ -3455,8 +3455,8 @@ public abstract class SessionComponentGenTest extends TestCase
       AttributeDecMdDTO decMdDTO = (AttributeDecMdDTO) mdDTO;
       MdAttributeDecDAOIF mdAttributeDec = (MdAttributeDecDAOIF) mdAttribute;
 
-      assertEquals(Integer.parseInt(mdAttributeDec.getLength()), decMdDTO.getTotalLength());
-      assertEquals(Integer.parseInt(mdAttributeDec.getDecimal()), decMdDTO.getDecimalLength());
+      Assert.assertEquals(Integer.parseInt(mdAttributeDec.getLength()), decMdDTO.getTotalLength());
+      Assert.assertEquals(Integer.parseInt(mdAttributeDec.getDecimal()), decMdDTO.getDecimalLength());
     }
   }
 }

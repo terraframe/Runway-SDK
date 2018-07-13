@@ -3,24 +3,26 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.facade;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import org.junit.AfterClass;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
@@ -52,10 +54,9 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.query.GeneratedComponentQuery;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.session.Request;
 
-import junit.framework.TestCase;
-
-public class InvokeMethodTestBase extends TestCase implements DoNotWeave
+public class InvokeMethodTestBase implements DoNotWeave
 {
   protected static ClientSession   systemSession        = null;
 
@@ -165,7 +166,8 @@ public class InvokeMethodTestBase extends TestCase implements DoNotWeave
 
   protected static BusinessDTO     mdAttributeLong;
 
-  public static void classSetUp()
+  @Request
+  public static void classSetUpRequest()
   {
     collection = clientRequest.newBusiness(MdBusinessInfo.CLASS);
     collection.setValue(MdBusinessInfo.NAME, "Collection");
@@ -620,6 +622,8 @@ public class InvokeMethodTestBase extends TestCase implements DoNotWeave
     clientRequest.createBusiness(businessDTO);
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     try
@@ -726,8 +730,8 @@ public class InvokeMethodTestBase extends TestCase implements DoNotWeave
     String aDoubleConst = TypeGenerator.buildAttributeConstant(collectionType, "aDouble");
     String aLongConst = TypeGenerator.buildAttributeConstant(collectionType, "aLong");
 
-    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase \n" + "{\n" + "\n" + "  private " + collectionQueryClass + " collectionQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     collectionQuery = new " + collectionQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + aBooleanConst + ", collectionQuery.getABoolean());\n" + "     this.map(" + aCharacterConst + ", collectionQuery.getACharacter());\n" + "     this.map(" + aDoubleConst + ", collectionQuery.getADouble());\n" + "     this.map(" + aLongConst
-        + ", collectionQuery.getALong());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
+    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase \n" + "{\n" + "\n" + "  private " + collectionQueryClass + " collectionQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     collectionQuery = new " + collectionQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + aBooleanConst + ", collectionQuery.getABoolean());\n" + "     this.map(" + aCharacterConst + ", collectionQuery.getACharacter());\n" + "     this.map(" + aDoubleConst + ", collectionQuery.getADouble());\n" + "     this.map(" + aLongConst + ", collectionQuery.getALong());\n" + "\n"
+        + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
 
     return queryStubSource;
   }

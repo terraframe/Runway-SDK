@@ -42,7 +42,7 @@ public class SmokeTest
 
 //  @Test
 //  @Request
-//  public void testCreateAndExportMetadata()
+//  @Request @Test public void testCreateAndExportMetadata()
 //  {
 //    genSource();
 //    // doTestCreateAndExportMetadata();
@@ -107,13 +107,13 @@ public class SmokeTest
       // List<String> ids =
       // EntityDAO.getEntityIdsDB("com.runwaysdk.smoke.Smoking");
       //
-      // assertEquals(1, ids.size());
+      // Assert.assertEquals(1, ids.size());
       //
       // BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
       // AttributeLocalCharacter attribute = (AttributeLocalCharacter)
       // businessDAOIF.getAttributeIF("smokeCharAttribute");
       //
-      // assertEquals("Yo Diggidy", attribute.getValue());
+      // Assert.assertEquals("Yo Diggidy", attribute.getValue());
     }
     finally
     {

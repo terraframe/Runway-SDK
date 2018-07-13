@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
 
@@ -26,6 +26,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.business.generation.GeneratorIF;
@@ -47,13 +52,9 @@ import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.ParameterDefinitionException_InvalidType;
 import com.runwaysdk.dataaccess.metadata.ParameterDefinitionException_NameExists;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-public class MdControllerTest extends TestCase
+public class MdControllerTest
 {
   private static MdControllerDAO mdController;
 
@@ -67,29 +68,9 @@ public class MdControllerTest extends TestCase
 
   private static MdParameterDAO  testParameter;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdControllerTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-
-    };
-
-    return wrapper;
-  }
-
-  protected static void classSetUp()
+  @Request
+  @BeforeClass
+  public static void classSetUp()
   {
     try
     {
@@ -154,33 +135,41 @@ public class MdControllerTest extends TestCase
     // mdController.apply();
   }
 
-  protected static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
     TestFixtureFactory.delete(mdAction);
     TestFixtureFactory.delete(mdController);
     TestFixtureFactory.delete(mdController2);
   }
 
+  @Request
+  @Test
   public void testGetMdController()
   {
     MdControllerDAOIF mdControllerIF = MdControllerDAO.get(mdController.getId());
 
-    assertEquals("TestController", mdControllerIF.getValue(MdControllerInfo.NAME));
-    assertEquals("com.test", mdControllerIF.getValue(MdControllerInfo.PACKAGE));
-    assertEquals("Test Controller", mdControllerIF.getStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals("Test Controller", mdControllerIF.getStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("TestController", mdControllerIF.getValue(MdControllerInfo.NAME));
+    Assert.assertEquals("com.test", mdControllerIF.getValue(MdControllerInfo.PACKAGE));
+    Assert.assertEquals("Test Controller", mdControllerIF.getStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Test Controller", mdControllerIF.getStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
   }
 
+  @Request
+  @Test
   public void testGetMdAction()
   {
     MdActionDAOIF mdActionIF = MdActionDAO.get(mdAction.getId());
 
-    assertEquals("testAction", mdActionIF.getValue(MdActionInfo.NAME));
-    assertEquals(mdController.getId(), mdActionIF.getValue(MdActionInfo.ENCLOSING_MD_CONTROLLER));
-    assertEquals("Test Action", mdActionIF.getStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals("Test Action", mdActionIF.getStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("testAction", mdActionIF.getValue(MdActionInfo.NAME));
+    Assert.assertEquals(mdController.getId(), mdActionIF.getValue(MdActionInfo.ENCLOSING_MD_CONTROLLER));
+    Assert.assertEquals("Test Action", mdActionIF.getStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Test Action", mdActionIF.getStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
   }
 
+  @Request
+  @Test
   public void testGetMdActions()
   {
     MdControllerDAOIF mdControllerIF = MdControllerDAO.get(mdController.getId());
@@ -192,11 +181,13 @@ public class MdControllerTest extends TestCase
       ids.add(mdAction.getId());
     }
 
-    assertEquals(3, ids.size());
-    assertTrue(ids.contains(mdAction.getId()));
-    assertTrue(ids.contains(mdAction3.getId()));
+    Assert.assertEquals(3, ids.size());
+    Assert.assertTrue(ids.contains(mdAction.getId()));
+    Assert.assertTrue(ids.contains(mdAction3.getId()));
   }
 
+  @Request
+  @Test
   public void testGetMultipleMdActions()
   {
     MdActionDAO mdAction2 = MdActionDAO.newInstance();
@@ -223,20 +214,24 @@ public class MdControllerTest extends TestCase
       mdAction2.delete();
     }
 
-    assertEquals(4, ids.size());
-    assertTrue(ids.contains(id));
-    assertTrue(ids.contains(mdAction.getId()));
-    assertTrue(ids.contains(mdAction3.getId()));
+    Assert.assertEquals(4, ids.size());
+    Assert.assertTrue(ids.contains(id));
+    Assert.assertTrue(ids.contains(mdAction.getId()));
+    Assert.assertTrue(ids.contains(mdAction3.getId()));
   }
 
+  @Request
+  @Test
   public void testGetParameters()
   {
     List<MdParameterDAOIF> mdParameters = mdAction.getMdParameterDAOs();
 
-    assertEquals(1, mdParameters.size());
-    assertEquals(testParameter.getId(), mdParameters.get(0).getId());
+    Assert.assertEquals(1, mdParameters.size());
+    Assert.assertEquals(testParameter.getId(), mdParameters.get(0).getId());
   }
 
+  @Request
+  @Test
   public void testInvalidMdActionName()
   {
     try
@@ -247,7 +242,7 @@ public class MdControllerTest extends TestCase
       invalidAction.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Invalid Action");
       invalidAction.apply();
 
-      fail("Able to define a MdAction with a name that does not follow java naming conventions");
+      Assert.fail("Able to define a MdAction with a name that does not follow java naming conventions");
     }
     catch (InvalidIdentifierException e)
     {
@@ -255,6 +250,8 @@ public class MdControllerTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMdActionMultiApply()
   {
     MdActionDAO mdAction2 = MdActionDAO.newInstance();
@@ -270,7 +267,7 @@ public class MdControllerTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
     finally
     {
@@ -278,6 +275,8 @@ public class MdControllerTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNamingConstraint()
   {
     try
@@ -289,7 +288,7 @@ public class MdControllerTest extends TestCase
       duplicateMdAction.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Action");
       duplicateMdAction.apply();
 
-      fail("Able to create a MdAction with duplicate name");
+      Assert.fail("Able to create a MdAction with duplicate name");
     }
     catch (Exception e)
     {
@@ -301,6 +300,8 @@ public class MdControllerTest extends TestCase
    * Ensure it is possible to create duplicate action names on different
    * MdControllers
    */
+  @Request
+  @Test
   public void testNamingConstraint2()
   {
     MdActionDAO duplicateMdAction = MdActionDAO.newInstance();
@@ -315,7 +316,7 @@ public class MdControllerTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
     finally
     {
@@ -326,6 +327,8 @@ public class MdControllerTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidParameterName()
   {
     try
@@ -339,7 +342,7 @@ public class MdControllerTest extends TestCase
       mdParameter.apply();
 
       mdParameter.delete();
-      fail("Able to add a parameter where the name does not follow java naming conventions");
+      Assert.fail("Able to add a parameter where the name does not follow java naming conventions");
     }
     catch (InvalidIdentifierException e)
     {
@@ -347,6 +350,8 @@ public class MdControllerTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidParameterType()
   {
     try
@@ -360,7 +365,7 @@ public class MdControllerTest extends TestCase
       mdParameter.apply();
 
       mdParameter.delete();
-      fail("Able to add a parameter where the type is undefined");
+      Assert.fail("Able to add a parameter where the type is undefined");
     }
     catch (ParameterDefinitionException_InvalidType e)
     {
@@ -368,6 +373,8 @@ public class MdControllerTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testArrayParameterType()
   {
     try
@@ -381,7 +388,7 @@ public class MdControllerTest extends TestCase
       mdParameter.apply();
 
       mdParameter.delete();
-      fail("Able to add a multi-dimensional array as a action parameter");
+      Assert.fail("Able to add a multi-dimensional array as a action parameter");
     }
     catch (ParameterDefinitionException_InvalidType e)
     {
@@ -392,6 +399,8 @@ public class MdControllerTest extends TestCase
   /**
    * Test parameters of the same name on different methods
    */
+  @Request
+  @Test
   public void testParameterNameOnDifferentMethods()
   {
     MdParameterDAO mdParameter = null;
@@ -408,7 +417,7 @@ public class MdControllerTest extends TestCase
     catch (Exception e)
     {
       e.printStackTrace();
-      fail("Unable to create a MdParameter of an existing name on a different MdMethod: " + e.getLocalizedMessage());
+      Assert.fail("Unable to create a MdParameter of an existing name on a different MdMethod: " + e.getLocalizedMessage());
     }
 
     if (mdParameter != null)
@@ -417,6 +426,8 @@ public class MdControllerTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDuplicateParameter()
   {
     try
@@ -430,7 +441,7 @@ public class MdControllerTest extends TestCase
       mdParameter.apply();
 
       mdParameter.delete();
-      fail("Able to add a parameter of identical name as another parameter on the same method");
+      Assert.fail("Able to add a parameter of identical name as another parameter on the same method");
     }
     catch (ParameterDefinitionException_NameExists e)
     {
@@ -438,6 +449,8 @@ public class MdControllerTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testEnclosingTypeForParameters()
   {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
@@ -457,7 +470,7 @@ public class MdControllerTest extends TestCase
       mdParameter.setValue(MdParameterInfo.ORDER, "100");
       mdParameter.apply();
 
-      fail("Able to add a MdParameter to an invalid enclosing type");
+      Assert.fail("Able to add a MdParameter to an invalid enclosing type");
     }
     catch (Exception e)
     {
@@ -469,6 +482,8 @@ public class MdControllerTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetActionParameters()
   {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
@@ -488,7 +503,7 @@ public class MdControllerTest extends TestCase
       mdParameter.setValue(MdParameterInfo.ORDER, "100");
       mdParameter.apply();
 
-      fail("Able to add a defined type to a MdParameter on a GET action");
+      Assert.fail("Able to add a defined type to a MdParameter on a GET action");
     }
     catch (ParameterDefinitionException_InvalidType e)
     {
@@ -501,6 +516,8 @@ public class MdControllerTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testGetActionArray()
   {
     try
@@ -513,7 +530,7 @@ public class MdControllerTest extends TestCase
       mdParameter.setValue(MdParameterInfo.ORDER, "100");
       mdParameter.apply();
 
-      fail("Able to add a primitive array to a MdParameter on a GET action");
+      Assert.fail("Able to add a primitive array to a MdParameter on a GET action");
     }
     catch (ParameterDefinitionException_InvalidType e)
     {
@@ -524,6 +541,8 @@ public class MdControllerTest extends TestCase
   /**
    * Ensure that the query parameters are defined
    */
+  @Request
+  @Test
   public void testQueryAction()
   {
     boolean sortAttribute = false;
@@ -558,15 +577,17 @@ public class MdControllerTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
-    assertTrue(sortAttribute);
-    assertTrue(isAscending);
-    assertTrue(pageNumber);
-    assertTrue(pageSize);
+    Assert.assertTrue(sortAttribute);
+    Assert.assertTrue(isAscending);
+    Assert.assertTrue(pageNumber);
+    Assert.assertTrue(pageSize);
   }
 
+  @Request
+  @Test
   public void testFileGeneration()
   {
     for (GeneratorIF gen : mdController.getGenerators())
@@ -577,11 +598,13 @@ public class MdControllerTest extends TestCase
 
       if (!source.exists())
       {
-        fail("File: " + source.getAbsolutePath() + " was not generated.");
+        Assert.fail("File: " + source.getAbsolutePath() + " was not generated.");
       }
     }
   }
 
+  @Request
+  @Test
   public void testOverwriteGenericJSPs() throws IOException
   {
     String testString = "This is a test file";
@@ -601,14 +624,14 @@ public class MdControllerTest extends TestCase
       {
         file.getParentFile().mkdirs();
       }
-      
+
       BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
       writer.write(testString);
       writer.flush();
       writer.close();
 
-      assertTrue(file.exists());
+      Assert.assertTrue(file.exists());
     }
 
     mdBusiness.apply();
@@ -621,7 +644,7 @@ public class MdControllerTest extends TestCase
 
         try
         {
-          assertEquals(testString, reader.readLine());
+          Assert.assertEquals(testString, reader.readLine());
         }
         finally
         {

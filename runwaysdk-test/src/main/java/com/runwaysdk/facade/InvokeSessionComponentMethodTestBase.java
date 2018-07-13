@@ -3,22 +3,22 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.facade;
 
-
+import org.junit.AfterClass;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.BusinessDTO;
@@ -41,63 +41,93 @@ import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.session.Request;
 
-import junit.framework.TestCase;
-
-public class InvokeSessionComponentMethodTestBase extends TestCase
+public class InvokeSessionComponentMethodTestBase
 {
-  protected static ClientSession       systemSession;
-  protected static ClientRequestIF     clientRequest = null;
+  protected static ClientSession   systemSession;
 
-  protected static final String pack = "test.generated";
+  protected static ClientRequestIF clientRequest     = null;
 
-  protected static String              sessionTypeName = "Session";
-  protected static String              bagTypeName = "Bag";
-  protected static String              stateTypeName = "AllStates";
-  protected static String              utilParamTypeName = "UtilParam";
-  protected static String              viewParamTypeName = "ViewParam";
+  protected static final String    pack              = "test.generated";
 
-  protected static String              sessionType = pack +"."+sessionTypeName;
-  protected static String              bagType  = pack +"."+bagTypeName;
-  protected static String              bagDTO = bagType + ComponentDTOGenerator.DTO_SUFFIX;
-  protected static String              stateType = pack + "."+stateTypeName;
-  protected static String              sessionDTOtype = sessionType + ComponentDTOGenerator.DTO_SUFFIX;
-  protected static BusinessDTO         mdSessionDTO;
-  protected static BusinessDTO         bag;
-  protected static BusinessDTO         states;
-  protected static BusinessDTO         stateEnum;
-  protected static BusinessDTO         colorado;
+  protected static String          sessionTypeName   = "Session";
 
-  protected static String              utilParamType = pack +"."+utilParamTypeName;
-  protected static String              utilParamDTO = utilParamType + ComponentDTOGenerator.DTO_SUFFIX;
-  protected static BusinessDTO         mdUtilParam;
+  protected static String          bagTypeName       = "Bag";
 
-  protected static String              viewParamType = pack +"."+viewParamTypeName;
-  protected static String              viewParamDTO = viewParamType + ComponentDTOGenerator.DTO_SUFFIX;
-  protected static BusinessDTO         mdViewParam;
+  protected static String          stateTypeName     = "AllStates";
 
-  protected static BusinessDTO         mdMethod1;
-  protected static BusinessDTO         mdMethod2;
-  protected static BusinessDTO         mdMethod3;
-  protected static BusinessDTO         mdMethod4;
-  protected static BusinessDTO         mdMethod5;
-  protected static BusinessDTO         mdMethod7;
-  protected static BusinessDTO         mdMethod8;
-  protected static BusinessDTO         mdMethod9;
-  protected static BusinessDTO         mdMethod10;
-  protected static BusinessDTO         mdMethod11;
-  protected static BusinessDTO         mdMethod12;
-  protected static BusinessDTO         mdMethod13;
+  protected static String          utilParamTypeName = "UtilParam";
 
-  protected static String superClassField;
-  protected static String getterMethodImplementation;
+  protected static String          viewParamTypeName = "ViewParam";
+
+  protected static String          sessionType       = pack + "." + sessionTypeName;
+
+  protected static String          bagType           = pack + "." + bagTypeName;
+
+  protected static String          bagDTO            = bagType + ComponentDTOGenerator.DTO_SUFFIX;
+
+  protected static String          stateType         = pack + "." + stateTypeName;
+
+  protected static String          sessionDTOtype    = sessionType + ComponentDTOGenerator.DTO_SUFFIX;
+
+  protected static BusinessDTO     mdSessionDTO;
+
+  protected static BusinessDTO     bag;
+
+  protected static BusinessDTO     states;
+
+  protected static BusinessDTO     stateEnum;
+
+  protected static BusinessDTO     colorado;
+
+  protected static String          utilParamType     = pack + "." + utilParamTypeName;
+
+  protected static String          utilParamDTO      = utilParamType + ComponentDTOGenerator.DTO_SUFFIX;
+
+  protected static BusinessDTO     mdUtilParam;
+
+  protected static String          viewParamType     = pack + "." + viewParamTypeName;
+
+  protected static String          viewParamDTO      = viewParamType + ComponentDTOGenerator.DTO_SUFFIX;
+
+  protected static BusinessDTO     mdViewParam;
+
+  protected static BusinessDTO     mdMethod1;
+
+  protected static BusinessDTO     mdMethod2;
+
+  protected static BusinessDTO     mdMethod3;
+
+  protected static BusinessDTO     mdMethod4;
+
+  protected static BusinessDTO     mdMethod5;
+
+  protected static BusinessDTO     mdMethod7;
+
+  protected static BusinessDTO     mdMethod8;
+
+  protected static BusinessDTO     mdMethod9;
+
+  protected static BusinessDTO     mdMethod10;
+
+  protected static BusinessDTO     mdMethod11;
+
+  protected static BusinessDTO     mdMethod12;
+
+  protected static BusinessDTO     mdMethod13;
+
+  protected static String          superClassField;
+
+  protected static String          getterMethodImplementation;
 
   protected ClientRequestIF getRequest(ClientSession clientSession)
   {
     return clientSession.getRequest();
   }
 
-  public static void classSetUp()
+  @Request
+  public static void classSetUpRequest()
   {
     mdSessionDTO.setValue(MdSessionInfo.NAME, sessionTypeName);
     mdSessionDTO.setValue(MdSessionInfo.PACKAGE, pack);
@@ -157,7 +187,7 @@ public class InvokeSessionComponentMethodTestBase extends TestCase
 
     BusinessDTO viewCharacter = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
     viewCharacter.setValue(MdAttributeCharacterInfo.NAME, "aCharacter");
-    viewCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL,MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
+    viewCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
     viewCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
     viewCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdViewParam.getId());
     clientRequest.createBusiness(viewCharacter);
@@ -382,8 +412,8 @@ public class InvokeSessionComponentMethodTestBase extends TestCase
     clientRequest.createBusiness(mdParameter15);
   }
 
-
-
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     // Clear the stub source
@@ -406,7 +436,6 @@ public class InvokeSessionComponentMethodTestBase extends TestCase
     systemSession.logout();
   }
 
-
   public static void finalizeSetup()
   {
     // we set the stub source here since it references other objects that
@@ -424,117 +453,16 @@ public class InvokeSessionComponentMethodTestBase extends TestCase
 
   private static String getMethodStub()
   {
-    String[] sessionStubSource = {
-        "package "+pack+";",
-        "public class "+sessionTypeName+" extends "+sessionTypeName+TypeGeneratorInfo.BASE_SUFFIX ,
-        "{",
-        "  public "+sessionTypeName+"()",
-        "  {",
-        "    super();",
-        "  }",
-        "  public static "+sessionTypeName+" get(String id)",
-        "  {",
-        getterMethodImplementation,
-        "  }",
-        "  public void testMethod("+sessionType+" session)",
-        "  {",
-        "     if(session instanceof "+bagType+")",
-        "     {",
-        "       this.setALong(session.getALong() + 10L);",
-        "     }",
-        "     else",
-        "     {",
-        "       this.setALong(session.getALong());",
-        "     }",
-        "     this.apply();",
-        "  }",
-        "  public "+sessionType+" sortNumbers(Long[] numbers, Boolean ascending)",
-        "  {",
-        "     "+sessionType+" session = new "+sessionType+"();",
-        "     if(numbers.length > 0)",
-        "     {",
-        "       session.setALong(numbers[0]);",
-        "     }",
-        "     session.setABoolean(ascending);",
-        "     return session;",
-        "  }",
-        "  public "+sessionType+"[] sortSessions("+sessionType+"[] sessions, String sessionName)",
-        "  {",
-        "     "+sessionType+"[] out = new "+sessionType+"[sessions.length];",
-        "     for(int i = 0; i < sessions.length; i++)",
-        "     {",
-        "       out[i] = new "+sessionType+"();",
-        "       out[i].setACharacter(sessionName);",
-        "       out[i].setALong(sessions[i].getALong());",
-        "     }",
-        "     return out;",
-        "  }",
-        "  public java.lang.String[][] testMultiArray("+sessionType+"[][][][] session4)",
-        "  {",
-        "    String[][] output = new String[2][];",
-        "    output[0] = new String[]{\"Yo my nizzle\", \"Leroy Im witha or against ya.\"};",
-        "    output[1] = new String[]{session4.getClass().getName(), session4.getClass().getSimpleName()};",
+    String[] sessionStubSource = { "package " + pack + ";", "public class " + sessionTypeName + " extends " + sessionTypeName + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public " + sessionTypeName + "()", "  {", "    super();", "  }", "  public static " + sessionTypeName + " get(String id)", "  {", getterMethodImplementation, "  }", "  @Request @Test public void testMethod(" + sessionType + " session)", "  {", "     if(session instanceof " + bagType + ")", "     {", "       this.setALong(session.getALong() + 10L);", "     }", "     else", "     {", "       this.setALong(session.getALong());", "     }", "     this.apply();", "  }", "  public " + sessionType + " sortNumbers(Long[] numbers, Boolean ascending)", "  {", "     " + sessionType + " session = new " + sessionType + "();",
+        "     if(numbers.length > 0)", "     {", "       session.setALong(numbers[0]);", "     }", "     session.setABoolean(ascending);", "     return session;", "  }", "  public " + sessionType + "[] sortSessions(" + sessionType + "[] sessions, String sessionName)", "  {", "     " + sessionType + "[] out = new " + sessionType + "[sessions.length];", "     for(int i = 0; i < sessions.length; i++)", "     {", "       out[i] = new " + sessionType + "();", "       out[i].setACharacter(sessionName);", "       out[i].setALong(sessions[i].getALong());", "     }", "     return out;", "  }", "  public java.lang.String[][] testMultiArray(" + sessionType + "[][][][] session4)", "  {", "    String[][] output = new String[2][];",
+        "    output[0] = new String[]{\"Yo my nizzle\", \"Leroy Im witha or against ya.\"};", "    output[1] = new String[]{session4.getClass().getName(), session4.getClass().getSimpleName()};",
 
-        "    return output;",
-        "  }",
-        "  public void poopNothing()",
-        "  {",
-        "  }",
-        "  public "+stateType+"[] getStates("+stateType+" state)",
-        "  {",
-        "    "+stateType+"[] array = new "+stateType+"[5];",
-        "    for(int i = 0; i < 5; i++)",
-        "      array[i] = state;",
-        "    return array;",
-        "  }",
-        "  public static java.lang.Integer[] sortIntegers(java.lang.Integer[] integers)",
-        "  {",
-        "    java.lang.Integer[] array = new Integer[integers.length];",
-        "    java.util.List<Integer> list = java.util.Arrays.asList(integers);",
-        "    java.util.Collections.sort(list);",
-        "    return list.toArray(array);",
-        "  }",
-        "  public static java.util.Date[] getDates(java.util.Date date)",
-        "  {",
-        "    java.util.Date[] array = new java.util.Date[4];",
-        "    array[0] = new java.util.Date(date.getTime() + 0L);",
-        "    array[1] = new java.util.Date(date.getTime() + 10L);",
-        "    array[2] = new java.util.Date(date.getTime() + 20L);",
-        "    array[3] = new java.util.Date(date.getTime() + 30L);",
-        "    return array;",
-        "  }",
-        "  public "+utilParamType+" getUtil("+utilParamType+" util)",
-        "  {",
-        "    return util;",
-        "  }",
-        "  public "+viewParamType+" getView("+viewParamType+" view)",
-        "  {",
-        "    return view;",
-        "  }",
-        "  public "+utilParamType+"[] utilArray("+utilParamType+"[] utilArray)",
-        "  {",
-        "     "+utilParamType+"[] out = new "+utilParamType+"[utilArray.length];",
-        "     for(int i = 0; i< utilArray.length; i++)",
-        "     {",
-        "       out[i] = new "+utilParamType+"();",
-        "       out[i].setACharacter(utilArray[i].getACharacter());",
-        "     }",
-        "     return out;",
-        "  }",
-        "  public "+viewParamType+"[] viewArray("+viewParamType+"[] viewArray)",
-        "  {",
-        "     "+viewParamType+"[] out = new "+viewParamType+"[viewArray.length];",
-        "     for(int i = 0; i< viewArray.length; i++)",
-        "     {",
-        "       out[i] = new "+viewParamType+"();",
-        "       out[i].setACharacter(viewArray[i].getACharacter());",
-        "     }",
-        "     return out;",
-        "  }",
-        "}"};
+        "    return output;", "  }", "  public void poopNothing()", "  {", "  }", "  public " + stateType + "[] getStates(" + stateType + " state)", "  {", "    " + stateType + "[] array = new " + stateType + "[5];", "    for(int i = 0; i < 5; i++)", "      array[i] = state;", "    return array;", "  }", "  public static java.lang.Integer[] sortIntegers(java.lang.Integer[] integers)", "  {", "    java.lang.Integer[] array = new Integer[integers.length];", "    java.util.List<Integer> list = java.util.Arrays.asList(integers);", "    java.util.Collections.sort(list);", "    return list.toArray(array);", "  }", "  public static java.util.Date[] getDates(java.util.Date date)", "  {", "    java.util.Date[] array = new java.util.Date[4];",
+        "    array[0] = new java.util.Date(date.getTime() + 0L);", "    array[1] = new java.util.Date(date.getTime() + 10L);", "    array[2] = new java.util.Date(date.getTime() + 20L);", "    array[3] = new java.util.Date(date.getTime() + 30L);", "    return array;", "  }", "  public " + utilParamType + " getUtil(" + utilParamType + " util)", "  {", "    return util;", "  }", "  public " + viewParamType + " getView(" + viewParamType + " view)", "  {", "    return view;", "  }", "  public " + utilParamType + "[] utilArray(" + utilParamType + "[] utilArray)", "  {", "     " + utilParamType + "[] out = new " + utilParamType + "[utilArray.length];", "     for(int i = 0; i< utilArray.length; i++)", "     {", "       out[i] = new " + utilParamType + "();",
+        "       out[i].setACharacter(utilArray[i].getACharacter());", "     }", "     return out;", "  }", "  public " + viewParamType + "[] viewArray(" + viewParamType + "[] viewArray)", "  {", "     " + viewParamType + "[] out = new " + viewParamType + "[viewArray.length];", "     for(int i = 0; i< viewArray.length; i++)", "     {", "       out[i] = new " + viewParamType + "();", "       out[i].setACharacter(viewArray[i].getACharacter());", "     }", "     return out;", "  }", "}" };
 
     String source = "";
-    for(String s : sessionStubSource)
+    for (String s : sessionStubSource)
     {
       source += s + "\n";
     }
@@ -544,18 +472,10 @@ public class InvokeSessionComponentMethodTestBase extends TestCase
 
   private static String getBlankMethodStub()
   {
-    String[] sessionStubSource = {
-        "package "+pack+";",
-        "public class "+sessionTypeName+" extends "+sessionTypeName+TypeGeneratorInfo.BASE_SUFFIX ,
-        "{",
-        "  public "+sessionTypeName+"()",
-        "  {",
-        "    super();",
-        "  }",
-        "}"};
+    String[] sessionStubSource = { "package " + pack + ";", "public class " + sessionTypeName + " extends " + sessionTypeName + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public " + sessionTypeName + "()", "  {", "    super();", "  }", "}" };
 
     String source = "";
-    for(String s : sessionStubSource)
+    for (String s : sessionStubSource)
     {
       source += s + "\n";
     }

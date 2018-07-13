@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -23,6 +23,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.rbac.MethodActorDAO;
@@ -241,32 +246,15 @@ import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.RelationshipDAOQuery;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
 
 /**
  * @author Justin
  * 
  */
-public class SAXParseTest extends TestCase
+public class SAXParseTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   public static final String   path                        = TestConstants.Path.XMLFiles + "/";
 
   public static final String   SCHEMA                      = XMLConstants.DATATYPE_XSD;
@@ -350,24 +338,12 @@ public class SAXParseTest extends TestCase
   public static final String[] classNames                  = { RELATIONSHIP, RELATIONSHIP2, FILTER, FILTER2, CLASS, CLASS2, CLASS3, ENUM_CLASS };
 
   /**
-   * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps it in <code>MasterTestSetup</code>. The returned class is a suite of all the tests in <code>AttributeTest</code>, with the
-   * global setUp() and tearDown() methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(SAXParseTest.class);
-
-    return suite;
-  }
-
-  /**
    * No setup needed non-Javadoc)
    * 
    * @see junit.framework.TestCase#setUp()
    */
+  @Request
+  @Before
   protected void setUp() throws Exception
   {
 
@@ -378,6 +354,8 @@ public class SAXParseTest extends TestCase
    * 
    * @see junit.framework.TestCase#tearDown()
    */
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
     new MdPackage("test.xmlclasses").delete();
@@ -409,10 +387,13 @@ public class SAXParseTest extends TestCase
 
     }
   }
-  
+
   /**
-   * Test setting of attributes on the local text datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the local text datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testNoSource()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -422,8 +403,11 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the local text datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the local text datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateLocalText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -446,21 +430,24 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeLocalTextDAOIF mdAttributeIF = (MdAttributeLocalTextDAOIF) mdEntityIF.definesAttribute("testLocalText");
 
-    assertEquals(mdAttributeIF.getStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Local Text Test");
+    Assert.assertEquals(mdAttributeIF.getStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Local Text Test");
 
     List<String> ids = EntityDAO.getEntityIdsDB(CLASS);
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
     AttributeLocalText attribute = (AttributeLocalText) businessDAOIF.getAttributeIF("testLocalText");
 
-    assertEquals("Yo Diggidy", attribute.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Yo Diggidy", attribute.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE));
   }
 
   /**
-   * Test setting of attributes on the local character datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the local character datatype minus any
+   * overlapping attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateLocalCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -483,21 +470,23 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF mdAttributeIF = mdEntityIF.definesAttribute("testLocalCharacter");
 
-    assertEquals(mdAttributeIF.getStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Local Character Test");
+    Assert.assertEquals(mdAttributeIF.getStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Local Character Test");
 
     List<String> ids = EntityDAO.getEntityIdsDB(CLASS);
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
     AttributeLocalCharacter attribute = (AttributeLocalCharacter) businessDAOIF.getAttributeIF("testLocalCharacter");
 
-    assertEquals("Yo Diggidy", attribute.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Yo Diggidy", attribute.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE));
   }
 
   /**
    * Test setting of attributes on a blob datatype
    */
+  @Request
+  @Test
   public void testCreateBlob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -517,17 +506,19 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO attribute = (MdAttributeConcreteDAO) ( mdEntityIF.definesAttribute("testBlob") ).getBusinessDAO();
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Blob Set Test");
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.IMMUTABLE), MdAttributeBooleanInfo.FALSE);
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeConcreteInfo.REQUIRED));
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeConcreteInfo.REMOVE));
-    assertEquals(attribute.getStructValue(MdAttributeConcreteInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Blob Test");
-    assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Blob Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.IMMUTABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeConcreteInfo.REQUIRED));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeConcreteInfo.REMOVE));
+    Assert.assertEquals(attribute.getStructValue(MdAttributeConcreteInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Blob Test");
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
   }
 
   /**
    * Test setting of attributes on a boolean datatype
    */
+  @Request
+  @Test
   public void testCreateBoolean()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -562,32 +553,35 @@ public class SAXParseTest extends TestCase
     SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
-    assertEquals(TestFixtureFactory.getMdBusinessDTOStub().trim(), mdEntityIF.getValue(MdBusinessInfo.DTO_STUB_SOURCE).trim());
+    Assert.assertEquals(TestFixtureFactory.getMdBusinessDTOStub().trim(), mdEntityIF.getValue(MdBusinessInfo.DTO_STUB_SOURCE).trim());
 
     MdAttributeBooleanDAO attribute = (MdAttributeBooleanDAO) ( mdEntityIF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN) ).getBusinessDAO();
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Boolean Set Test");
-    assertEquals(attribute.getValue(MdAttributeBooleanInfo.DEFAULT_VALUE), MdAttributeBooleanInfo.FALSE);
-    assertEquals(attribute.getValue(MdAttributeBooleanInfo.IMMUTABLE), MdAttributeBooleanInfo.FALSE);
-    assertEquals(attribute.getValue(MdAttributeBooleanInfo.REQUIRED), MdAttributeBooleanInfo.TRUE);
-    assertEquals(attribute.getValue(MdAttributeBooleanInfo.REMOVE), MdAttributeBooleanInfo.FALSE);
-    assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Boolean Test");
-    assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), MdAttributeBooleanInfo.FALSE);
-    assertEquals(index.dereference()[0].getId(), IndexTypes.UNIQUE_INDEX.getId());
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeBooleanInfo.IS_EXPRESSION));
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeBooleanInfo.EXPRESSION));
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Boolean Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeBooleanInfo.DEFAULT_VALUE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(attribute.getValue(MdAttributeBooleanInfo.IMMUTABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(attribute.getValue(MdAttributeBooleanInfo.REQUIRED), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getValue(MdAttributeBooleanInfo.REMOVE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Boolean Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.UNIQUE_INDEX.getId());
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeBooleanInfo.IS_EXPRESSION));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeBooleanInfo.EXPRESSION));
 
     attribute.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    assertEquals(attribute.getValue(MdAttributeBooleanInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getValue(MdAttributeBooleanInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
 
     attribute.apply();
   }
 
   /**
-   * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the character datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -609,15 +603,18 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Character Set Test");
-    assertEquals(attribute.getValue(MdAttributeCharacterInfo.SIZE), "200");
-    assertEquals(attribute.getValue(MdAttributeCharacterInfo.IMMUTABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Character Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeCharacterInfo.SIZE), "200");
+    Assert.assertEquals(attribute.getValue(MdAttributeCharacterInfo.IMMUTABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
   }
 
   /**
-   * Test the manual setting of the column name, as well as automatically generated column name collisions.
+   * Test the manual setting of the column name, as well as automatically
+   * generated column name collisions.
    */
+  @Request
+  @Test
   public void testColumnNames()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -649,14 +646,17 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF mdAttributeDAOIF_3 = mdEntityIF.definesAttribute("testCharacterCharacterCharacterCharacter2");
 
     // Test manual column name
-    assertEquals(mdAttributeDAOIF_1.getValue(MdAttributeCharacterInfo.COLUMN_NAME), "test_char");
-    assertEquals(mdAttributeDAOIF_2.getValue(MdAttributeCharacterInfo.COLUMN_NAME), "test_character_character_cha");
-    assertEquals(mdAttributeDAOIF_3.getValue(MdAttributeCharacterInfo.COLUMN_NAME), "test_character_character_ch0");
+    Assert.assertEquals(mdAttributeDAOIF_1.getValue(MdAttributeCharacterInfo.COLUMN_NAME), "test_char");
+    Assert.assertEquals(mdAttributeDAOIF_2.getValue(MdAttributeCharacterInfo.COLUMN_NAME), "test_character_character_cha");
+    Assert.assertEquals(mdAttributeDAOIF_3.getValue(MdAttributeCharacterInfo.COLUMN_NAME), "test_character_character_ch0");
   }
 
   /**
-   * Test setting of attributes on the date datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the date datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateDate()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -676,15 +676,18 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDate");
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeMomentInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Date Set Test");
-    assertEquals(attribute.getValue(MdAttributeMomentInfo.REQUIRED), MdAttributeBooleanInfo.TRUE);
-    assertEquals(attribute.getValue(MdAttributeMomentInfo.DEFAULT_VALUE), "2006-02-11");
-    assertEquals(index.dereference()[0].getId(), IndexTypes.UNIQUE_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeMomentInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Date Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeMomentInfo.REQUIRED), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getValue(MdAttributeMomentInfo.DEFAULT_VALUE), "2006-02-11");
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.UNIQUE_INDEX.getId());
   }
 
   /**
-   * Test setting of attributes on the date datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the date datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testRequiredForDimension()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
@@ -716,11 +719,11 @@ public class SAXParseTest extends TestCase
       MdAttributeDimensionDAOIF mdAttributeDimensionIF = mdAttributeIF.getMdAttributeDimension(mdDimension);
       AttributeEnumerationIF index = (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-      assertEquals(mdAttributeDimensionIF.getValue(MdAttributeDimensionInfo.REQUIRED), MdAttributeBooleanInfo.TRUE);
-      assertEquals(mdAttributeIF.getStructValue(MdAttributeMomentInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Date Set Test");
-      assertEquals(mdAttributeIF.getValue(MdAttributeMomentInfo.REQUIRED), MdAttributeBooleanInfo.TRUE);
-      assertEquals(mdAttributeIF.getValue(MdAttributeMomentInfo.DEFAULT_VALUE), "2006-02-11");
-      assertEquals(index.dereference()[0].getId(), IndexTypes.UNIQUE_INDEX.getId());
+      Assert.assertEquals(mdAttributeDimensionIF.getValue(MdAttributeDimensionInfo.REQUIRED), MdAttributeBooleanInfo.TRUE);
+      Assert.assertEquals(mdAttributeIF.getStructValue(MdAttributeMomentInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Date Set Test");
+      Assert.assertEquals(mdAttributeIF.getValue(MdAttributeMomentInfo.REQUIRED), MdAttributeBooleanInfo.TRUE);
+      Assert.assertEquals(mdAttributeIF.getValue(MdAttributeMomentInfo.DEFAULT_VALUE), "2006-02-11");
+      Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.UNIQUE_INDEX.getId());
     }
     finally
     {
@@ -729,8 +732,11 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the dateTime datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the dateTime datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateDateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -750,13 +756,16 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDateTime");
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "dateTime Set Test");
-    assertEquals(index.dereference()[0].getId(), IndexTypes.NON_UNIQUE_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "dateTime Set Test");
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NON_UNIQUE_INDEX.getId());
   }
 
   /**
-   * Test setting of attributes on the decimal datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the decimal datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateDecimal()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -775,15 +784,18 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDecimal");
 
-    assertEquals(attribute.getStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Decimal Set Test");
-    assertEquals(attribute.getValue(MdAttributeDecimalInfo.LENGTH), "10");
-    assertEquals(attribute.getValue(MdAttributeDecimalInfo.DECIMAL), "2");
-    assertEquals(attribute.getValue(MdAttributeDecimalInfo.REJECT_NEGATIVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Decimal Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeDecimalInfo.LENGTH), "10");
+    Assert.assertEquals(attribute.getValue(MdAttributeDecimalInfo.DECIMAL), "2");
+    Assert.assertEquals(attribute.getValue(MdAttributeDecimalInfo.REJECT_NEGATIVE), MdAttributeBooleanInfo.TRUE);
   }
 
   /**
-   * Test setting of attributes on the double datatype minus any overlapping attributes from the boolean and decimal test
+   * Test setting of attributes on the double datatype minus any overlapping
+   * attributes from the boolean and decimal test
    */
+  @Request
+  @Test
   public void testCreateDouble()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -802,15 +814,18 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDouble");
 
-    assertEquals(attribute.getStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Double Set Test");
-    assertEquals(attribute.getValue(MdAttributeDoubleInfo.LENGTH), "9");
-    assertEquals(attribute.getValue(MdAttributeDoubleInfo.DECIMAL), "4");
-    assertEquals(attribute.getValue(MdAttributeDoubleInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Double Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeDoubleInfo.LENGTH), "9");
+    Assert.assertEquals(attribute.getValue(MdAttributeDoubleInfo.DECIMAL), "4");
+    Assert.assertEquals(attribute.getValue(MdAttributeDoubleInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
   }
 
   /**
-   * Test setting of attributes on the double datatype minus any overlapping attributes from the boolean and decimal test
+   * Test setting of attributes on the double datatype minus any overlapping
+   * attributes from the boolean and decimal test
    */
+  @Request
+  @Test
   public void testCreateVirtual()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -838,18 +853,22 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDouble");
     MdAttributeDAOIF virtual = mdViewIF.definesAttribute("testVirtual");
 
-    assertEquals(virtual.getValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE), attribute.getId());
+    Assert.assertEquals(virtual.getValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE), attribute.getId());
   }
 
   /**
-   * Test setting of attributes on the enumeration datatype minus any overlapping attributes from the boolean test As a side effect does testing on setting instance/instance_value tags
+   * Test setting of attributes on the enumeration datatype minus any
+   * overlapping attributes from the boolean test As a side effect does testing
+   * on setting instance/instance_value tags
    */
+  @Request
+  @Test
   public void testCreateEnumeration()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
     mdBusinessEnum1.setGenerateMdController(false);
     mdBusinessEnum1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -887,24 +906,26 @@ public class SAXParseTest extends TestCase
     MdEnumerationDAOIF mdEnumerationIF = MdEnumerationDAO.getMdEnumerationDAO(FILTER);
     String defaultValue = mdAttributeIF.getDefaultValue();
 
-    assertEquals("Enumeration Set Test", mdAttributeIF.getStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributeIF.getValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE));
-    assertEquals("CO", BusinessDAO.get(defaultValue).getValue(EnumerationMasterInfo.NAME));
-    assertEquals("Colorado", BusinessDAO.get(defaultValue).getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Enumeration Set Test", mdAttributeIF.getStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributeIF.getValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE));
+    Assert.assertEquals("CO", BusinessDAO.get(defaultValue).getValue(EnumerationMasterInfo.NAME));
+    Assert.assertEquals("Colorado", BusinessDAO.get(defaultValue).getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
     // Ensure that the enumeration is reference the correct enumeration class
-    assertEquals(mdAttributeIF.getValue(MdAttributeEnumerationInfo.MD_ENUMERATION), mdEnumerationIF.getId());
+    Assert.assertEquals(mdAttributeIF.getValue(MdAttributeEnumerationInfo.MD_ENUMERATION), mdEnumerationIF.getId());
 
     MdBusinessDAOIF testMdBusinessEnum1 = MdBusinessDAO.getMdBusinessDAO(mdBusinessEnum1.definesType());
     List<MdAttributeEnumerationDAOIF> attributes = testMdBusinessEnum1.getAllEnumerationAttributes();
 
-    assertEquals(1, attributes.size());
-    assertEquals(mdAttributeIF.getId(), attributes.get(0).getId());
+    Assert.assertEquals(1, attributes.size());
+    Assert.assertEquals(mdAttributeIF.getId(), attributes.get(0).getId());
   }
 
   /**
    * Test setting of attributes on a blob datatype
    */
+  @Request
+  @Test
   public void testCreateFile()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -924,17 +945,20 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO attribute = (MdAttributeConcreteDAO) ( mdEntityIF.definesAttribute("testFile") ).getBusinessDAO();
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeFileInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "File Set Test");
-    assertEquals(attribute.getValue(MdAttributeFileInfo.IMMUTABLE), MdAttributeBooleanInfo.FALSE);
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeFileInfo.REQUIRED));
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeFileInfo.REMOVE));
-    assertEquals(attribute.getStructValue(MetadataInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "File Test");
-    assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeFileInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "File Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeFileInfo.IMMUTABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeFileInfo.REQUIRED));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeFileInfo.REMOVE));
+    Assert.assertEquals(attribute.getStructValue(MetadataInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "File Test");
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
   }
 
   /**
-   * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean, decimal, and double test
+   * Test setting of attributes on the character datatype minus any overlapping
+   * attributes from the boolean, decimal, and double test
    */
+  @Request
+  @Test
   public void testCreateFloat()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -953,26 +977,28 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testFloat");
 
-    assertEquals(attribute.getStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Float Set Test");
-    assertEquals(attribute.getValue(MdAttributeFloatInfo.LENGTH), "10");
-    assertEquals(attribute.getValue(MdAttributeFloatInfo.DECIMAL), "2");
-    assertEquals(attribute.getValue(MdAttributeFloatInfo.REJECT_POSITIVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(attribute.getValue(MdAttributeFloatInfo.REJECT_NEGATIVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Float Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeFloatInfo.LENGTH), "10");
+    Assert.assertEquals(attribute.getValue(MdAttributeFloatInfo.DECIMAL), "2");
+    Assert.assertEquals(attribute.getValue(MdAttributeFloatInfo.REJECT_POSITIVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getValue(MdAttributeFloatInfo.REJECT_NEGATIVE), MdAttributeBooleanInfo.TRUE);
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
 
     mdBusiness1.apply();
     mdBusiness2.apply();
@@ -998,22 +1024,25 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testReference");
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(CLASS2);
 
-    assertEquals(attribute.getStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Reference Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Reference Test");
 
     // Ensure that the reference is referencing the correct class
-    assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateMultiReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness1.apply();
-    
+
     MdBusinessDAO mdTerm = TestFixtureFactory.createMdTerm();
     mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -1046,10 +1075,10 @@ public class SAXParseTest extends TestCase
 
       String actual = attribute.getStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
       String expected = mdAttribute.getStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
-      assertEquals(expected, actual);
+      Assert.assertEquals(expected, actual);
 
       // Ensure that the reference is referencing the correct class
-      assertEquals(attribute.getValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
+      Assert.assertEquals(attribute.getValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
     }
     finally
     {
@@ -1058,8 +1087,11 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1119,20 +1151,20 @@ public class SAXParseTest extends TestCase
 
       String actual = mdAttributeMultiTermIF.getStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
       String expected = mdAttribute.getStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
-      assertEquals(expected, actual);
+      Assert.assertEquals(expected, actual);
 
       // Ensure that the reference is referencing the correct class
-      assertEquals(mdAttributeMultiTermIF.getValue(MdAttributeMultiTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+      Assert.assertEquals(mdAttributeMultiTermIF.getValue(MdAttributeMultiTermInfo.REF_MD_ENTITY), mdTermIF.getId());
 
       // Ensure the correct attribute roots were set
       List<RelationshipDAOIF> roots = ( (TermAttributeDAOIF) mdAttributeMultiTermIF ).getAllAttributeRoots();
 
-      assertTrue(roots.size() > 0);
+      Assert.assertTrue(roots.size() > 0);
 
       RelationshipDAOIF rootIF = roots.get(0);
 
-      assertEquals(mdAttributeMultiTermIF.getKey(), rootIF.getParent().getKey());
-      assertEquals(parent.getKey(), rootIF.getChild().getKey());
+      Assert.assertEquals(mdAttributeMultiTermIF.getKey(), rootIF.getParent().getKey());
+      Assert.assertEquals(parent.getKey(), rootIF.getChild().getKey());
     }
     finally
     {
@@ -1141,8 +1173,11 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1197,10 +1232,10 @@ public class SAXParseTest extends TestCase
 
     MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
-    assertEquals(mdAttributeTermIF.getStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Term Test");
+    Assert.assertEquals(mdAttributeTermIF.getStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Term Test");
 
     // Ensure that the reference is referencing the correct class
-    assertEquals(mdAttributeTermIF.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+    Assert.assertEquals(mdAttributeTermIF.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
 
     // Ensure the correct attribute roots were set
     RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(mdTermIF.getTermAttributeRootsRelationshipType());
@@ -1210,12 +1245,12 @@ public class SAXParseTest extends TestCase
 
     try
     {
-      assertTrue(it.hasNext());
+      Assert.assertTrue(it.hasNext());
 
       RelationshipDAOIF rootIF = it.next();
 
-      assertEquals(mdAttributeTermIF.getKey(), rootIF.getParent().getKey());
-      assertEquals(parent.getKey(), rootIF.getChild().getKey());
+      Assert.assertEquals(mdAttributeTermIF.getKey(), rootIF.getParent().getKey());
+      Assert.assertEquals(parent.getKey(), rootIF.getChild().getKey());
     }
     finally
     {
@@ -1224,8 +1259,11 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the integer datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the integer datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateInteger()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1244,14 +1282,17 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testInteger");
 
-    assertEquals(attribute.getStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Integer Set Test");
-    assertEquals(attribute.getValue(MdAttributeIntegerInfo.REJECT_POSITIVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(attribute.getValue(MdAttributeIntegerInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Integer Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeIntegerInfo.REJECT_POSITIVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getValue(MdAttributeIntegerInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
   }
 
   /**
-   * Test setting of attributes on the long datatype minus any overlapping attributes from the boolean test.
+   * Test setting of attributes on the long datatype minus any overlapping
+   * attributes from the boolean test.
    */
+  @Request
+  @Test
   public void testCreateLong()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1270,13 +1311,16 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testLong");
 
-    assertEquals(attribute.getStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Long Set Test");
-    assertEquals(attribute.getValue(MdAttributeLongInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Long Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeLongInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
   }
 
   /**
-   * Test setting of attributes on the text datatype minus any overlapping attributes from the boolean test.
+   * Test setting of attributes on the text datatype minus any overlapping
+   * attributes from the boolean test.
    */
+  @Request
+  @Test
   public void testCreateText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1295,12 +1339,15 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testText");
 
-    assertEquals(attribute.getStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Text Set Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Text Set Test");
   }
 
   /**
-   * Test setting of attributes on the text datatype minus any overlapping attributes from the boolean test.
+   * Test setting of attributes on the text datatype minus any overlapping
+   * attributes from the boolean test.
    */
+  @Request
+  @Test
   public void testCreateClob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1319,12 +1366,15 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testClob");
 
-    assertEquals(attribute.getStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Clob Set Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Clob Set Test");
   }
 
   /**
-   * Test setting of attributes on the time datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the time datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1343,12 +1393,15 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testTime");
 
-    assertEquals(attribute.getStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Time Set Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Time Set Test");
   }
 
   /**
-   * Test setting of attributes on the struct datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the struct datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testCreateStruct()
   {
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
@@ -1387,25 +1440,27 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF mdAttributeIF = mdEntityIF.definesAttribute("testStruct");
     MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(structType);
 
-    assertEquals(mdAttributeIF.getStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Struct Set Test");
-    assertEquals(mdStructIF.getValue(MdBusinessInfo.CACHE_SIZE), "525");
+    Assert.assertEquals(mdAttributeIF.getStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Struct Set Test");
+    Assert.assertEquals(mdStructIF.getValue(MdBusinessInfo.CACHE_SIZE), "525");
 
     // Ensure that the correct class is being referenced
-    assertEquals(mdAttributeIF.getValue(MdAttributeStructInfo.MD_STRUCT), mdStructIF.getId());
+    Assert.assertEquals(mdAttributeIF.getValue(MdAttributeStructInfo.MD_STRUCT), mdStructIF.getId());
 
     List<String> ids = EntityDAO.getEntityIdsDB(CLASS);
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
     AttributeStruct attribute = (AttributeStruct) businessDAOIF.getAttributeIF("testStruct");
 
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
   }
 
   /**
    * Test setting of symmetric attribute specific value s
    */
+  @Request
+  @Test
   public void testCreateSymmetric()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1426,13 +1481,15 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the symmetric encryption method is set
     AttributeEnumerationIF method = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeSymmetricInfo.SYMMETRIC_METHOD);
-    assertEquals(SymmetricMethods.DES.getId(), method.dereference()[0].getId());
-    assertEquals("56", attribute.getValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE));
+    Assert.assertEquals(SymmetricMethods.DES.getId(), method.dereference()[0].getId());
+    Assert.assertEquals("56", attribute.getValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE));
   }
 
   /**
    * Test setting of mdHash attribute specific values
    */
+  @Request
+  @Test
   public void testCreateHash()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1453,12 +1510,14 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the hash encryption method is set
     AttributeEnumerationIF method = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeHashInfo.HASH_METHOD);
-    assertEquals(HashMethods.MD5.getId(), method.dereference()[0].getId());
+    Assert.assertEquals(HashMethods.MD5.getId(), method.dereference()[0].getId());
   }
 
   /**
    * Test the setting of cache size on both class and struct.
    */
+  @Request
+  @Test
   public void testCacheAlgorithmSet()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1502,20 +1561,22 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the correct cache size is set on standard classes
     AttributeEnumerationIF attribute = (AttributeEnumerationIF) mdBusinessIF.getAttributeIF(MdElementInfo.CACHE_ALGORITHM);
-    assertEquals(EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId(), attribute.dereference()[0].getId());
+    Assert.assertEquals(EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId(), attribute.dereference()[0].getId());
 
     // Ensure that the correct cache size is set on structs
     attribute = (AttributeEnumerationIF) mdStruct2.getAttributeIF(MdElementInfo.CACHE_ALGORITHM);
-    assertEquals(EntityCacheMaster.CACHE_EVERYTHING.getId(), attribute.dereference()[0].getId());
+    Assert.assertEquals(EntityCacheMaster.CACHE_EVERYTHING.getId(), attribute.dereference()[0].getId());
 
     // Ensure that the correct cache algorithm is set on a relationship
     attribute = (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdElementInfo.CACHE_ALGORITHM);
-    assertEquals(EntityCacheMaster.CACHE_NOTHING.getId(), attribute.dereference()[0].getId());
+    Assert.assertEquals(EntityCacheMaster.CACHE_NOTHING.getId(), attribute.dereference()[0].getId());
   }
 
   /**
    * Test setting of attributes of and on the class datatype
    */
+  @Request
+  @Test
   public void testCreateMdBusiness()
   {
     // Create test MdBusiness
@@ -1588,57 +1649,57 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdBusiness1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdBusiness Set Test");
-    assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdBusiness Attributes Test");
-    assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.CACHE_SIZE), "50");
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdBusiness1IF.getValue(MdBusinessInfo.PUBLISH));
-    assertEquals(TestFixtureFactory.getMdBusinessStub().trim(), mdBusiness1IF.getValue(MdBusinessInfo.STUB_SOURCE).trim());
+    Assert.assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdBusiness Set Test");
+    Assert.assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdBusiness Attributes Test");
+    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.CACHE_SIZE), "50");
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdBusiness1IF.getValue(MdBusinessInfo.PUBLISH));
+    Assert.assertEquals(TestFixtureFactory.getMdBusinessStub().trim(), mdBusiness1IF.getValue(MdBusinessInfo.STUB_SOURCE).trim());
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdBusiness1IF.getValue(MetadataInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdBusiness2IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdBusiness1IF.getValue(MetadataInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdBusiness2IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdBusiness2IF.getValue(MdBusinessInfo.SUPER_MD_BUSINESS), mdBusiness1IF.getId());
+    Assert.assertEquals(mdBusiness2IF.getValue(MdBusinessInfo.SUPER_MD_BUSINESS), mdBusiness1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdBusiness1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdBusiness1IF.getId());
 
     // Test that the MdStateMachine on the MdBusiness was correctly set
     MdStateMachineDAOIF mdStateMachineIF = mdBusiness1IF.definesMdStateMachine();
 
-    assertNotNull(mdStateMachineIF);
-    assertEquals(3, mdStateMachineIF.definesStateMasters().size());
+    Assert.assertNotNull(mdStateMachineIF);
+    Assert.assertEquals(3, mdStateMachineIF.definesStateMasters().size());
 
     // Ensure that the states were imported correctly
     StateMasterDAOIF available = mdStateMachineIF.definesStateMaster("Available");
-    assertEquals(true, available.isDefaultState());
-    assertEquals(true, available.isEntryState());
+    Assert.assertEquals(true, available.isDefaultState());
+    Assert.assertEquals(true, available.isEntryState());
 
     StateMasterDAOIF checkedOut = mdStateMachineIF.definesStateMaster("CheckedOut");
-    assertEquals(false, checkedOut.isDefaultState());
-    assertEquals(false, checkedOut.isEntryState());
+    Assert.assertEquals(false, checkedOut.isDefaultState());
+    Assert.assertEquals(false, checkedOut.isEntryState());
 
     StateMasterDAOIF checkedIn = mdStateMachineIF.definesStateMaster("CheckedIn");
-    assertEquals(false, checkedIn.isDefaultState());
-    assertEquals(true, checkedIn.isEntryState());
+    Assert.assertEquals(false, checkedIn.isDefaultState());
+    Assert.assertEquals(true, checkedIn.isEntryState());
 
     // Ensure that the transitions were imported correctly
-    assertEquals(3, mdStateMachineIF.definesTransitions().size());
+    Assert.assertEquals(3, mdStateMachineIF.definesTransitions().size());
 
     TransitionDAOIF checkOut = mdStateMachineIF.definesTransition("CheckOut");
-    assertEquals(available.getId(), checkOut.getParentId());
-    assertEquals(checkedOut.getId(), checkOut.getChildId());
+    Assert.assertEquals(available.getId(), checkOut.getParentId());
+    Assert.assertEquals(checkedOut.getId(), checkOut.getChildId());
 
     RelationshipDAOIF checkIn = mdStateMachineIF.definesTransition("CheckIn");
-    assertEquals(checkedOut.getId(), checkIn.getParentId());
-    assertEquals(checkedIn.getId(), checkIn.getChildId());
+    Assert.assertEquals(checkedOut.getId(), checkIn.getParentId());
+    Assert.assertEquals(checkedIn.getId(), checkIn.getChildId());
 
     RelationshipDAOIF stock = mdStateMachineIF.definesTransition("Stock");
-    assertEquals(checkedIn.getId(), stock.getParentId());
-    assertEquals(available.getId(), stock.getChildId());
+    Assert.assertEquals(checkedIn.getId(), stock.getParentId());
+    Assert.assertEquals(available.getId(), stock.getChildId());
 
     mdBusiness2 = mdBusiness2IF.getBusinessDAO();
     mdBusiness2.setValue(MetadataInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -1648,6 +1709,8 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the struct datatype,
    */
+  @Request
+  @Test
   public void testCreateMdStruct()
   {
     SAXImporter.runImport(new File(STANDALONE_STRUCT_SET));
@@ -1655,17 +1718,19 @@ public class SAXParseTest extends TestCase
     MdStructDAO mdStruct = ( (MdStructDAO) MdStructDAO.getMdStructDAO(CLASS) ).getBusinessDAO();
     MdAttributeConcreteDAOIF attribute = mdStruct.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals("Struct Set Test", mdStruct.getStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals("Set Struct Attributes Test", mdStruct.getStructValue(MdAttributeStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdStruct.getValue(MdAttributeStructInfo.REMOVE));
+    Assert.assertEquals("Struct Set Test", mdStruct.getStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Set Struct Attributes Test", mdStruct.getStructValue(MdAttributeStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdStruct.getValue(MdAttributeStructInfo.REMOVE));
 
     // Ensure the attributes are linked to the struct
-    assertEquals(mdStruct.getId(), attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS));
+    Assert.assertEquals(mdStruct.getId(), attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS));
   }
 
   /**
    * Test setting of attributes of and on the relationship datatype
    */
+  @Request
+  @Test
   public void testCreateMdRelationship()
   {
     try
@@ -1677,32 +1742,32 @@ public class SAXParseTest extends TestCase
       MdBusinessDAOIF mdBusiness2 = MdBusinessDAO.getMdBusinessDAO(CLASS2);
       MdAttributeConcreteDAOIF attribute = mdRelationship.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-      assertEquals("Relationship Set Test", mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-      assertEquals("Relationship Test", mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-      assertEquals(MdAttributeBooleanInfo.FALSE, mdRelationship.getValue(MdRelationshipInfo.REMOVE));
-      assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.EXTENDABLE));
-      assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.ABSTRACT));
+      Assert.assertEquals("Relationship Set Test", mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+      Assert.assertEquals("Relationship Test", mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+      Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdRelationship.getValue(MdRelationshipInfo.REMOVE));
+      Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.EXTENDABLE));
+      Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.ABSTRACT));
 
       // Ensure the parent attributes are correctly set
-      assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_MD_BUSINESS), mdBusiness1.getId());
-      assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_CARDINALITY), "1");
-      assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Parent Set Test");
+      Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_MD_BUSINESS), mdBusiness1.getId());
+      Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_CARDINALITY), "1");
+      Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Parent Set Test");
 
       // Ensure the child attributes are correctly set
-      assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_MD_BUSINESS), mdBusiness2.getId());
-      assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_CARDINALITY), "*");
-      assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Child Set Test");
+      Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_MD_BUSINESS), mdBusiness2.getId());
+      Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_CARDINALITY), "*");
+      Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Child Set Test");
 
       // Ensure the attributes are linked to the relationship
-      assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdRelationship.getId());
+      Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdRelationship.getId());
 
       mdRelationship.setValue(MetadataInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       mdRelationship.apply();
 
       // Test the sub relationship
       MdRelationshipDAO mdRelationship2 = MdRelationshipDAO.getMdRelationshipDAO(RELATIONSHIP2).getBusinessDAO();
-      assertEquals(mdRelationship.getId(), mdRelationship2.getValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP));
-      assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
+      Assert.assertEquals(mdRelationship.getId(), mdRelationship2.getValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP));
+      Assert.assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
     }
     catch (RuntimeException e)
     {
@@ -1714,6 +1779,8 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the class datatype
    */
+  @Request
+  @Test
   public void testCreateMdProblem()
   {
     // Create test MdBusiness
@@ -1746,26 +1813,28 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdProblem1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdProblem Set Test");
-    assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdProblem Attributes Test");
-    assertEquals(mdProblem1IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdProblem1IF.getValue(MdProblemInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdProblem1IF.getValue(MdProblemInfo.PUBLISH));
+    Assert.assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdProblem Set Test");
+    Assert.assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdProblem Attributes Test");
+    Assert.assertEquals(mdProblem1IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdProblem1IF.getValue(MdProblemInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdProblem1IF.getValue(MdProblemInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdProblem1IF.getValue(MdProblemInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdProblem2IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdProblem1IF.getValue(MdProblemInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdProblem2IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdProblem2IF.getValue(MdProblemInfo.SUPER_MD_PROBLEM), mdProblem1IF.getId());
+    Assert.assertEquals(mdProblem2IF.getValue(MdProblemInfo.SUPER_MD_PROBLEM), mdProblem1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdProblem1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdProblem1IF.getId());
   }
 
   /**
    * Test setting of attributes of and on the class datatype
    */
+  @Request
+  @Test
   public void testCreateMdInformation()
   {
     // Create test MdBusiness
@@ -1798,26 +1867,28 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdInformation1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdInformation Set Test");
-    assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdInformation Attributes Test");
-    assertEquals(mdInformation1IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdInformation1IF.getValue(MdInformationInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdInformation1IF.getValue(MdInformationInfo.PUBLISH));
+    Assert.assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdInformation Set Test");
+    Assert.assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdInformation Attributes Test");
+    Assert.assertEquals(mdInformation1IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdInformation1IF.getValue(MdInformationInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdInformation1IF.getValue(MdInformationInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdInformation1IF.getValue(MdInformationInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdInformation2IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdInformation1IF.getValue(MdInformationInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdInformation2IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdInformation2IF.getValue(MdInformationInfo.SUPER_MD_INFORMATION), mdInformation1IF.getId());
+    Assert.assertEquals(mdInformation2IF.getValue(MdInformationInfo.SUPER_MD_INFORMATION), mdInformation1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdInformation1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdInformation1IF.getId());
   }
 
   /**
    * Test setting of attributes of and on the class datatype
    */
+  @Request
+  @Test
   public void testCreateMdWarning()
   {
     // Create test MdBusiness
@@ -1851,26 +1922,28 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdWarning1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdWarning1IF.getStructValue(MdWarningInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdWarning Set Test");
-    assertEquals(mdWarning1IF.getStructValue(MdWarningInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdWarning Attributes Test");
-    assertEquals(mdWarning1IF.getValue(MdWarningInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdWarning1IF.getValue(MdWarningInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdWarning1IF.getValue(MdWarningInfo.PUBLISH));
+    Assert.assertEquals(mdWarning1IF.getStructValue(MdWarningInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdWarning Set Test");
+    Assert.assertEquals(mdWarning1IF.getStructValue(MdWarningInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdWarning Attributes Test");
+    Assert.assertEquals(mdWarning1IF.getValue(MdWarningInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdWarning1IF.getValue(MdWarningInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdWarning1IF.getValue(MdWarningInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdWarning1IF.getValue(MdWarningInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdWarning2IF.getValue(MdWarningInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdWarning1IF.getValue(MdWarningInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdWarning2IF.getValue(MdWarningInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdWarning2IF.getValue(MdWarningInfo.SUPER_MD_WARNING), mdWarning1IF.getId());
+    Assert.assertEquals(mdWarning2IF.getValue(MdWarningInfo.SUPER_MD_WARNING), mdWarning1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdWarning1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdWarning1IF.getId());
   }
 
   /**
    * Test setting of attributes of and on the class datatype
    */
+  @Request
+  @Test
   public void testCreateMdException()
   {
     // Create test MdBusiness
@@ -1903,23 +1976,25 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdException1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdException1IF.getStructValue(MdExceptionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
-    assertEquals(mdException1IF.getStructValue(MdExceptionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
-    assertEquals(mdException1IF.getValue(MdExceptionInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdException1IF.getValue(MdExceptionInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdException1IF.getValue(MdBusinessInfo.PUBLISH));
+    Assert.assertEquals(mdException1IF.getStructValue(MdExceptionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
+    Assert.assertEquals(mdException1IF.getStructValue(MdExceptionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
+    Assert.assertEquals(mdException1IF.getValue(MdExceptionInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdException1IF.getValue(MdExceptionInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdException1IF.getValue(MdBusinessInfo.PUBLISH));
 
     // Change to false when cascading delete is implemented
-    assertEquals(mdException1IF.getValue(MdExceptionInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdException2IF.getValue(MdExceptionInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdException1IF.getValue(MdExceptionInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdException2IF.getValue(MdExceptionInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdException2IF.getValue(MdExceptionInfo.SUPER_MD_EXCEPTION), mdException1IF.getId());
+    Assert.assertEquals(mdException2IF.getValue(MdExceptionInfo.SUPER_MD_EXCEPTION), mdException1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdException1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdException1IF.getId());
   }
 
+  @Request
+  @Test
   public void testCreateMdView()
   {
     // Create test MdView
@@ -1947,7 +2022,7 @@ public class SAXParseTest extends TestCase
     mdView2.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdView2.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdView2.apply();
-    
+
     // Export the test entities
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdView2, mdView1 }));
 
@@ -1966,33 +2041,35 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdView1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdView1IF.getStructValue(MdViewInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
-    assertEquals(mdView1IF.getStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
-    assertEquals(mdView1IF.getValue(MdViewInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdView1IF.getValue(MdViewInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdView1IF.getValue(MdBusinessInfo.PUBLISH));
+    Assert.assertEquals(mdView1IF.getStructValue(MdViewInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
+    Assert.assertEquals(mdView1IF.getStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
+    Assert.assertEquals(mdView1IF.getValue(MdViewInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdView1IF.getValue(MdViewInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdView1IF.getValue(MdBusinessInfo.PUBLISH));
 
     // Change to false when cascading delete is implemented
-    assertEquals(mdView1IF.getValue(MdViewInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdView2IF.getValue(MdViewInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdView1IF.getValue(MdViewInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdView2IF.getValue(MdViewInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdView2IF.getValue(MdViewInfo.SUPER_MD_VIEW), mdView1IF.getId());
+    Assert.assertEquals(mdView2IF.getValue(MdViewInfo.SUPER_MD_VIEW), mdView1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdView1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdView1IF.getId());
 
     List<MdMethodDAOIF> mdMethods = mdView1IF.getMdMethods();
 
-    assertEquals(1, mdMethods.size());
+    Assert.assertEquals(1, mdMethods.size());
 
-    assertEquals(true, mdMethods.get(0).isStatic());
-    assertEquals("checkin", mdMethods.get(0).getName());
-    assertTrue(mdMethods.get(0).getReturnType().isVoid());
-    assertEquals("checkin", mdMethods.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkin", mdMethods.get(0).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(true, mdMethods.get(0).isStatic());
+    Assert.assertEquals("checkin", mdMethods.get(0).getName());
+    Assert.assertTrue(mdMethods.get(0).getReturnType().isVoid());
+    Assert.assertEquals("checkin", mdMethods.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkin", mdMethods.get(0).getDescription(CommonProperties.getDefaultLocale()));
   }
 
+  @Request
+  @Test
   public void testCreateMdUtil()
   {
     // Create test MdView
@@ -2020,7 +2097,7 @@ public class SAXParseTest extends TestCase
     mdUtil2.setValue(MdUtilInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdUtil2.setValue(MdUtilInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdUtil2.apply();
-    
+
     // Export the test entities
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdUtil2, mdUtil1 }));
 
@@ -2039,34 +2116,34 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdUtil1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdUtil1IF.getStructValue(MdUtilInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
-    assertEquals(mdUtil1IF.getStructValue(MdUtilInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
-    assertEquals(mdUtil1IF.getValue(MdUtilInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdUtil1IF.getValue(MdUtilInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdUtil1IF.getValue(MdBusinessInfo.PUBLISH));
+    Assert.assertEquals(mdUtil1IF.getStructValue(MdUtilInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
+    Assert.assertEquals(mdUtil1IF.getStructValue(MdUtilInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
+    Assert.assertEquals(mdUtil1IF.getValue(MdUtilInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdUtil1IF.getValue(MdUtilInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdUtil1IF.getValue(MdBusinessInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdUtil1IF.getValue(MdUtilInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdUtil2IF.getValue(MdUtilInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdUtil1IF.getValue(MdUtilInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdUtil2IF.getValue(MdUtilInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdUtil2IF.getValue(MdUtilInfo.SUPER_MD_UTIL), mdUtil1IF.getId());
+    Assert.assertEquals(mdUtil2IF.getValue(MdUtilInfo.SUPER_MD_UTIL), mdUtil1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdUtil1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdUtil1IF.getId());
 
     List<MdMethodDAOIF> mdMethods = mdUtil1IF.getMdMethods();
 
-    assertEquals(1, mdMethods.size());
+    Assert.assertEquals(1, mdMethods.size());
 
-    assertEquals(true, mdMethods.get(0).isStatic());
-    assertEquals("checkin", mdMethods.get(0).getName());
-    assertTrue(mdMethods.get(0).getReturnType().isVoid());
-    assertEquals("checkin", mdMethods.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkin", mdMethods.get(0).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(true, mdMethods.get(0).isStatic());
+    Assert.assertEquals("checkin", mdMethods.get(0).getName());
+    Assert.assertTrue(mdMethods.get(0).getReturnType().isVoid());
+    Assert.assertEquals("checkin", mdMethods.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkin", mdMethods.get(0).getDescription(CommonProperties.getDefaultLocale()));
   }
 
-  // public void testCreateMdWebForm()
+  // @Request @Test public void testCreateMdWebForm()
   // {
   // MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
   // mdBusiness2.apply();
@@ -2153,30 +2230,34 @@ public class SAXParseTest extends TestCase
   // MdWebFormDAOIF test = (MdWebFormDAOIF)
   // MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
   //
-  // assertEquals(mdWebForm.getFormName(), test.getFormName());
-  // assertEquals(mdBusiness.definesType(),
+  // Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+  // Assert.assertEquals(mdBusiness.definesType(),
   // test.getFormMdClass().definesType());
-  // assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()),
+  // Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()),
   // test.getDescription(CommonProperties.getDefaultLocale()));
-  // assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()),
+  // Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()),
   // test.getDisplayLabel(CommonProperties.getDefaultLocale()));
   //
   // List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
   //
-  // assertEquals(8, fields.size());
+  // Assert.assertEquals(8, fields.size());
   //
   // MdWebCharacterDAO testField = (MdWebCharacterDAO) fields.get(0);
   //
-  // assertEquals(mdWebCharacter.getFieldName(), testField.getFieldName());
-  // assertEquals(mdWebCharacter.getFieldOrder(), testField.getFieldOrder());
-  // assertEquals(mdWebCharacter.getDescription(CommonProperties.getDefaultLocale()),
+  // Assert.assertEquals(mdWebCharacter.getFieldName(),
+  // testField.getFieldName());
+  // Assert.assertEquals(mdWebCharacter.getFieldOrder(),
+  // testField.getFieldOrder());
+  // Assert.assertEquals(mdWebCharacter.getDescription(CommonProperties.getDefaultLocale()),
   // testField.getDescription(CommonProperties.getDefaultLocale()));
-  // assertEquals(mdWebCharacter.getDisplayLabel(CommonProperties.getDefaultLocale()),
+  // Assert.assertEquals(mdWebCharacter.getDisplayLabel(CommonProperties.getDefaultLocale()),
   // testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-  // assertEquals(mdAttributeCharacter.definesAttribute(),
+  // Assert.assertEquals(mdAttributeCharacter.definesAttribute(),
   // testField.getDefiningMdAttribute().definesAttribute());
   // }
 
+  @Request
+  @Test
   public void testCreateMdWebDate()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2202,30 +2283,32 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebDateDAO testField = (MdWebDateDAO) fields.get(0);
 
-    assertEquals(mdWebDate.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebDate.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebDate.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebDate.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeDate.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
-    assertEquals(mdWebDate.getValue(MdWebDateInfo.AFTER_TODAY_EXCLUSIVE), testField.getValue(MdWebDateInfo.AFTER_TODAY_EXCLUSIVE));
-    assertEquals(mdWebDate.getValue(MdWebDateInfo.AFTER_TODAY_INCLUSIVE), testField.getValue(MdWebDateInfo.AFTER_TODAY_INCLUSIVE));
-    assertEquals(mdWebDate.getValue(MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE), testField.getValue(MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE));
-    assertEquals(mdWebDate.getValue(MdWebDateInfo.BEFORE_TODAY_INCLUSIVE), testField.getValue(MdWebDateInfo.BEFORE_TODAY_INCLUSIVE));
-    assertEquals(mdWebDate.getValue(MdWebDateInfo.START_DATE), testField.getValue(MdWebDateInfo.START_DATE));
-    assertEquals(mdWebDate.getValue(MdWebDateInfo.END_DATE), testField.getValue(MdWebDateInfo.END_DATE));
+    Assert.assertEquals(mdWebDate.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebDate.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebDate.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebDate.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeDate.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebDate.getValue(MdWebDateInfo.AFTER_TODAY_EXCLUSIVE), testField.getValue(MdWebDateInfo.AFTER_TODAY_EXCLUSIVE));
+    Assert.assertEquals(mdWebDate.getValue(MdWebDateInfo.AFTER_TODAY_INCLUSIVE), testField.getValue(MdWebDateInfo.AFTER_TODAY_INCLUSIVE));
+    Assert.assertEquals(mdWebDate.getValue(MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE), testField.getValue(MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE));
+    Assert.assertEquals(mdWebDate.getValue(MdWebDateInfo.BEFORE_TODAY_INCLUSIVE), testField.getValue(MdWebDateInfo.BEFORE_TODAY_INCLUSIVE));
+    Assert.assertEquals(mdWebDate.getValue(MdWebDateInfo.START_DATE), testField.getValue(MdWebDateInfo.START_DATE));
+    Assert.assertEquals(mdWebDate.getValue(MdWebDateInfo.END_DATE), testField.getValue(MdWebDateInfo.END_DATE));
   }
 
+  @Request
+  @Test
   public void testCreateMdWebText()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2251,26 +2334,28 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebTextDAO testField = (MdWebTextDAO) fields.get(0);
 
-    assertEquals(mdWebText.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebText.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebText.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebText.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeText.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
-    assertEquals(mdWebText.getValue(MdWebTextInfo.HEIGHT), testField.getValue(MdWebTextInfo.HEIGHT));
-    assertEquals(mdWebText.getValue(MdWebTextInfo.WIDTH), testField.getValue(MdWebTextInfo.WIDTH));
+    Assert.assertEquals(mdWebText.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebText.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebText.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebText.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeText.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebText.getValue(MdWebTextInfo.HEIGHT), testField.getValue(MdWebTextInfo.HEIGHT));
+    Assert.assertEquals(mdWebText.getValue(MdWebTextInfo.WIDTH), testField.getValue(MdWebTextInfo.WIDTH));
   }
 
+  @Request
+  @Test
   public void testCreateMdWebInteger()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2296,26 +2381,28 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebIntegerDAO testField = (MdWebIntegerDAO) fields.get(0);
 
-    assertEquals(mdWebInteger.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebInteger.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebInteger.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebInteger.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeInteger.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
-    assertEquals(mdWebInteger.getValue(MdWebIntegerInfo.STARTRANGE), testField.getValue(MdWebIntegerInfo.STARTRANGE));
-    assertEquals(mdWebInteger.getValue(MdWebIntegerInfo.ENDRANGE), testField.getValue(MdWebIntegerInfo.ENDRANGE));
+    Assert.assertEquals(mdWebInteger.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebInteger.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebInteger.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebInteger.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeInteger.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebInteger.getValue(MdWebIntegerInfo.STARTRANGE), testField.getValue(MdWebIntegerInfo.STARTRANGE));
+    Assert.assertEquals(mdWebInteger.getValue(MdWebIntegerInfo.ENDRANGE), testField.getValue(MdWebIntegerInfo.ENDRANGE));
   }
 
+  @Request
+  @Test
   public void testCreateMdWebLong()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2341,26 +2428,28 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebLongDAO testField = (MdWebLongDAO) fields.get(0);
 
-    assertEquals(mdWebLong.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebLong.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebLong.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebLong.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeLong.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
-    assertEquals(mdWebLong.getValue(MdWebLongInfo.STARTRANGE), testField.getValue(MdWebLongInfo.STARTRANGE));
-    assertEquals(mdWebLong.getValue(MdWebLongInfo.ENDRANGE), testField.getValue(MdWebLongInfo.ENDRANGE));
+    Assert.assertEquals(mdWebLong.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebLong.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebLong.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebLong.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeLong.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebLong.getValue(MdWebLongInfo.STARTRANGE), testField.getValue(MdWebLongInfo.STARTRANGE));
+    Assert.assertEquals(mdWebLong.getValue(MdWebLongInfo.ENDRANGE), testField.getValue(MdWebLongInfo.ENDRANGE));
   }
 
+  @Request
+  @Test
   public void testCreateMdWebDouble()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2386,28 +2475,30 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebDoubleDAO testField = (MdWebDoubleDAO) fields.get(0);
 
-    assertEquals(mdWebDouble.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebDouble.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebDouble.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebDouble.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeDouble.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
-    assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.STARTRANGE), testField.getValue(MdWebDoubleInfo.STARTRANGE));
-    assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.ENDRANGE), testField.getValue(MdWebDoubleInfo.ENDRANGE));
-    assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.DECPRECISION), testField.getValue(MdWebDoubleInfo.DECPRECISION));
-    assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.DECSCALE), testField.getValue(MdWebDoubleInfo.DECSCALE));
+    Assert.assertEquals(mdWebDouble.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebDouble.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebDouble.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebDouble.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeDouble.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.STARTRANGE), testField.getValue(MdWebDoubleInfo.STARTRANGE));
+    Assert.assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.ENDRANGE), testField.getValue(MdWebDoubleInfo.ENDRANGE));
+    Assert.assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.DECPRECISION), testField.getValue(MdWebDoubleInfo.DECPRECISION));
+    Assert.assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.DECSCALE), testField.getValue(MdWebDoubleInfo.DECSCALE));
   }
 
+  @Request
+  @Test
   public void testCreateMdWebFloat()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2433,28 +2524,30 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebFloatDAO testField = (MdWebFloatDAO) fields.get(0);
 
-    assertEquals(mdWebFloat.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebFloat.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebFloat.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebFloat.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeFloat.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
-    assertEquals(mdWebFloat.getValue(MdWebFloatInfo.STARTRANGE), testField.getValue(MdWebFloatInfo.STARTRANGE));
-    assertEquals(mdWebFloat.getValue(MdWebFloatInfo.ENDRANGE), testField.getValue(MdWebFloatInfo.ENDRANGE));
-    assertEquals(mdWebFloat.getValue(MdWebFloatInfo.DECPRECISION), testField.getValue(MdWebFloatInfo.DECPRECISION));
-    assertEquals(mdWebFloat.getValue(MdWebFloatInfo.DECSCALE), testField.getValue(MdWebFloatInfo.DECSCALE));
+    Assert.assertEquals(mdWebFloat.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebFloat.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebFloat.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebFloat.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeFloat.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebFloat.getValue(MdWebFloatInfo.STARTRANGE), testField.getValue(MdWebFloatInfo.STARTRANGE));
+    Assert.assertEquals(mdWebFloat.getValue(MdWebFloatInfo.ENDRANGE), testField.getValue(MdWebFloatInfo.ENDRANGE));
+    Assert.assertEquals(mdWebFloat.getValue(MdWebFloatInfo.DECPRECISION), testField.getValue(MdWebFloatInfo.DECPRECISION));
+    Assert.assertEquals(mdWebFloat.getValue(MdWebFloatInfo.DECSCALE), testField.getValue(MdWebFloatInfo.DECSCALE));
   }
 
+  @Request
+  @Test
   public void testCreateMdWebDecimal()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2480,28 +2573,30 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebDecimalDAO testField = (MdWebDecimalDAO) fields.get(0);
 
-    assertEquals(mdWebDecimal.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebDecimal.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebDecimal.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebDecimal.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeDecimal.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
-    assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.STARTRANGE), testField.getValue(MdWebDecimalInfo.STARTRANGE));
-    assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.ENDRANGE), testField.getValue(MdWebDecimalInfo.ENDRANGE));
-    assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.DECPRECISION), testField.getValue(MdWebDecimalInfo.DECPRECISION));
-    assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.DECSCALE), testField.getValue(MdWebDecimalInfo.DECSCALE));
+    Assert.assertEquals(mdWebDecimal.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebDecimal.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebDecimal.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebDecimal.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeDecimal.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.STARTRANGE), testField.getValue(MdWebDecimalInfo.STARTRANGE));
+    Assert.assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.ENDRANGE), testField.getValue(MdWebDecimalInfo.ENDRANGE));
+    Assert.assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.DECPRECISION), testField.getValue(MdWebDecimalInfo.DECPRECISION));
+    Assert.assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.DECSCALE), testField.getValue(MdWebDecimalInfo.DECSCALE));
   }
 
+  @Request
+  @Test
   public void testCreateMdWebGeo()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2532,24 +2627,26 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebGeoDAO testField = (MdWebGeoDAO) fields.get(0);
 
-    assertEquals(mdWebGeo.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebGeo.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebGeo.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebGeo.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebGeo.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebGeo.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebGeo.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebGeo.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
   }
 
+  @Request
+  @Test
   public void testCreateMdWebSingleTermGrid()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2590,27 +2687,27 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebSingleTermGridDAO testField = (MdWebSingleTermGridDAO) fields.get(0);
 
-    assertEquals(mdWebSingleTermGrid.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebSingleTermGrid.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebSingleTermGrid.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebSingleTermGrid.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebSingleTermGrid.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebSingleTermGrid.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebSingleTermGrid.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebSingleTermGrid.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
 
     // Test the fields MdWebLong
     List<RelationshipDAOIF> relationships = testField.getChildren(RelationshipTypes.WEB_GRID_FIELD.getType());
 
-    assertEquals(1, relationships.size());
+    Assert.assertEquals(1, relationships.size());
 
     if (relationships.size() > 0)
     {
@@ -2618,17 +2715,19 @@ public class SAXParseTest extends TestCase
       {
         MdWebLongDAOIF testWebLong = (MdWebLongDAOIF) MdWebPrimitiveDAO.get(relationship.getChildId());
 
-        assertEquals(mdWebLong.getFieldName(), testWebLong.getFieldName());
-        assertEquals(mdWebLong.getFieldOrder(), testWebLong.getFieldOrder());
-        assertEquals(mdWebLong.getDescription(CommonProperties.getDefaultLocale()), testWebLong.getDescription(CommonProperties.getDefaultLocale()));
-        assertEquals(mdWebLong.getDisplayLabel(CommonProperties.getDefaultLocale()), testWebLong.getDisplayLabel(CommonProperties.getDefaultLocale()));
-        assertEquals(mdAttributeLong.definesAttribute(), testWebLong.getDefiningMdAttribute().definesAttribute());
+        Assert.assertEquals(mdWebLong.getFieldName(), testWebLong.getFieldName());
+        Assert.assertEquals(mdWebLong.getFieldOrder(), testWebLong.getFieldOrder());
+        Assert.assertEquals(mdWebLong.getDescription(CommonProperties.getDefaultLocale()), testWebLong.getDescription(CommonProperties.getDefaultLocale()));
+        Assert.assertEquals(mdWebLong.getDisplayLabel(CommonProperties.getDefaultLocale()), testWebLong.getDisplayLabel(CommonProperties.getDefaultLocale()));
+        Assert.assertEquals(mdAttributeLong.definesAttribute(), testWebLong.getDefiningMdAttribute().definesAttribute());
 
         TestFixtureFactory.delete(testWebLong);
       }
     }
   }
 
+  @Request
+  @Test
   public void testCreateMdWebMultipleTerm()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2659,24 +2758,26 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebMultipleTermDAO testField = (MdWebMultipleTermDAO) fields.get(0);
 
-    assertEquals(mdWebMultipleTerm.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebMultipleTerm.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebMultipleTerm.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebMultipleTerm.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebMultipleTerm.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebMultipleTerm.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebMultipleTerm.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebMultipleTerm.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
   }
 
+  @Request
+  @Test
   public void testCreateMdWebBoolean()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2702,25 +2803,27 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(0);
 
-    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebBoolean.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebBoolean.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebBoolean.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeBoolean.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
-    assertEquals(mdWebBoolean.getValue(MdWebBooleanInfo.DEFAULT_VALUE), testField.getValue(MdWebBooleanInfo.DEFAULT_VALUE));
+    Assert.assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebBoolean.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebBoolean.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebBoolean.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeBoolean.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebBoolean.getValue(MdWebBooleanInfo.DEFAULT_VALUE), testField.getValue(MdWebBooleanInfo.DEFAULT_VALUE));
   }
 
+  @Request
+  @Test
   public void testCreateMdWebDateTime()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2746,24 +2849,26 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebDateTimeDAO testField = (MdWebDateTimeDAO) fields.get(0);
 
-    assertEquals(mdWebDateTime.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebDateTime.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebDateTime.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebDateTime.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeDateTime.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebDateTime.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebDateTime.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebDateTime.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebDateTime.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeDateTime.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
   }
 
+  @Request
+  @Test
   public void testCreateMdWebTime()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2789,24 +2894,26 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebTimeDAO testField = (MdWebTimeDAO) fields.get(0);
 
-    assertEquals(mdWebTime.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebTime.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebTime.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebTime.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeTime.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebTime.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebTime.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebTime.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebTime.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeTime.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
   }
 
+  @Request
+  @Test
   public void testCreateMdWebBreak()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2829,23 +2936,25 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebBreakDAO testField = (MdWebBreakDAO) fields.get(0);
 
-    assertEquals(mdWebBreak.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebBreak.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebBreak.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebBreak.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebBreak.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebBreak.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebBreak.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebBreak.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
+  @Request
+  @Test
   public void testCreateMdWebComment()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2868,23 +2977,25 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebCommentDAO testField = (MdWebCommentDAO) fields.get(0);
 
-    assertEquals(mdWebComment.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebComment.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebComment.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebComment.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebComment.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebComment.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebComment.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebComment.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
+  @Request
+  @Test
   public void testCreateMdWebGroup()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2932,31 +3043,33 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(4, fields.size());
+    Assert.assertEquals(4, fields.size());
 
     MdWebGroupDAO testGroup = (MdWebGroupDAO) fields.get(0);
 
-    assertEquals(mdWebGroup.getFieldName(), testGroup.getFieldName());
-    assertEquals(mdWebGroup.getFieldOrder(), testGroup.getFieldOrder());
-    assertEquals(mdWebGroup.getDescription(CommonProperties.getDefaultLocale()), testGroup.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebGroup.getDisplayLabel(CommonProperties.getDefaultLocale()), testGroup.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebGroup.getFieldName(), testGroup.getFieldName());
+    Assert.assertEquals(mdWebGroup.getFieldOrder(), testGroup.getFieldOrder());
+    Assert.assertEquals(mdWebGroup.getDescription(CommonProperties.getDefaultLocale()), testGroup.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebGroup.getDisplayLabel(CommonProperties.getDefaultLocale()), testGroup.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     MdWebCharacterDAO testCharaceter = (MdWebCharacterDAO) fields.get(1);
     MdWebDoubleDAO testDouble = (MdWebDoubleDAO) fields.get(2);
     MdWebBooleanDAO testBoolean = (MdWebBooleanDAO) fields.get(3);
 
-    assertEquals(testGroup.getId(), testCharaceter.getContainingGroup().getId());
-    assertEquals(testGroup.getId(), testDouble.getContainingGroup().getId());
-    assertNull(testBoolean.getContainingGroup());
+    Assert.assertEquals(testGroup.getId(), testCharaceter.getContainingGroup().getId());
+    Assert.assertEquals(testGroup.getId(), testDouble.getContainingGroup().getId());
+    Assert.assertNull(testBoolean.getContainingGroup());
   }
 
+  @Request
+  @Test
   public void testCreateMdWebHeader()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2979,23 +3092,25 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(1, fields.size());
+    Assert.assertEquals(1, fields.size());
 
     MdWebHeaderDAO testField = (MdWebHeaderDAO) fields.get(0);
 
-    assertEquals(mdWebHeader.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebHeader.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebHeader.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebHeader.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebHeader.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebHeader.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebHeader.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebHeader.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
+  @Request
+  @Test
   public void testCreateBasicDateCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3036,28 +3151,30 @@ public class SAXParseTest extends TestCase
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(2, fields.size());
+    Assert.assertEquals(2, fields.size());
 
     MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(1);
 
-    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
 
     String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
 
-    assertTrue(conditionId.length() > 0);
+    Assert.assertTrue(conditionId.length() > 0);
 
     MdWebDateDAOIF definingField = (MdWebDateDAOIF) fields.get(0);
     FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
 
-    assertTrue( ( testCondition instanceof DateConditionDAOIF ));
-    assertEquals(condition.getValue(DateConditionInfo.VALUE), testCondition.getValue(DateConditionInfo.VALUE));
+    Assert.assertTrue( ( testCondition instanceof DateConditionDAOIF ));
+    Assert.assertEquals(condition.getValue(DateConditionInfo.VALUE), testCondition.getValue(DateConditionInfo.VALUE));
 
     String testOperationId = this.getOperationId(testCondition);
 
-    assertEquals(operationId, testOperationId);
-    assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
+    Assert.assertEquals(operationId, testOperationId);
+    Assert.assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
   }
 
+  @Request
+  @Test
   public void testCreateBasicCharacterCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3098,28 +3215,30 @@ public class SAXParseTest extends TestCase
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(2, fields.size());
+    Assert.assertEquals(2, fields.size());
 
     MdWebBooleanDAOIF testField = (MdWebBooleanDAOIF) fields.get(1);
 
-    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
 
     String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
 
-    assertTrue(conditionId.length() > 0);
+    Assert.assertTrue(conditionId.length() > 0);
 
     MdWebCharacterDAOIF definingField = (MdWebCharacterDAOIF) fields.get(0);
     FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
 
-    assertTrue( ( testCondition instanceof CharacterConditionDAOIF ));
-    assertEquals(condition.getValue(CharacterConditionInfo.VALUE), testCondition.getValue(CharacterConditionInfo.VALUE));
+    Assert.assertTrue( ( testCondition instanceof CharacterConditionDAOIF ));
+    Assert.assertEquals(condition.getValue(CharacterConditionInfo.VALUE), testCondition.getValue(CharacterConditionInfo.VALUE));
 
     String testOperationId = this.getOperationId(testCondition);
 
-    assertEquals(operationId, testOperationId);
-    assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
+    Assert.assertEquals(operationId, testOperationId);
+    Assert.assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
   }
 
+  @Request
+  @Test
   public void testCreateBasicLongCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3160,28 +3279,30 @@ public class SAXParseTest extends TestCase
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(2, fields.size());
+    Assert.assertEquals(2, fields.size());
 
     MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(1);
 
-    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
 
     String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
 
-    assertTrue(conditionId.length() > 0);
+    Assert.assertTrue(conditionId.length() > 0);
 
     MdWebLongDAOIF definingField = (MdWebLongDAOIF) fields.get(0);
     FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
 
-    assertTrue( ( testCondition instanceof LongConditionDAOIF ));
-    assertEquals(condition.getValue(LongConditionInfo.VALUE), testCondition.getValue(LongConditionInfo.VALUE));
+    Assert.assertTrue( ( testCondition instanceof LongConditionDAOIF ));
+    Assert.assertEquals(condition.getValue(LongConditionInfo.VALUE), testCondition.getValue(LongConditionInfo.VALUE));
 
     String testOperationId = this.getOperationId(testCondition);
 
-    assertEquals(operationId, testOperationId);
-    assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
+    Assert.assertEquals(operationId, testOperationId);
+    Assert.assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
   }
 
+  @Request
+  @Test
   public void testCreateBasicDoubleCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3222,28 +3343,30 @@ public class SAXParseTest extends TestCase
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(2, fields.size());
+    Assert.assertEquals(2, fields.size());
 
     MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(1);
 
-    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
 
     String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
 
-    assertTrue(conditionId.length() > 0);
+    Assert.assertTrue(conditionId.length() > 0);
 
     MdWebDoubleDAOIF definingField = (MdWebDoubleDAOIF) fields.get(0);
     FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
 
-    assertTrue( ( testCondition instanceof DoubleConditionDAOIF ));
-    assertEquals("12.6000000000", testCondition.getValue(DoubleConditionInfo.VALUE));
+    Assert.assertTrue( ( testCondition instanceof DoubleConditionDAOIF ));
+    Assert.assertEquals("12.6000000000", testCondition.getValue(DoubleConditionInfo.VALUE));
 
     String testOperationId = this.getOperationId(testCondition);
 
-    assertEquals(operationId, testOperationId);
-    assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
+    Assert.assertEquals(operationId, testOperationId);
+    Assert.assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
   }
 
+  @Request
+  @Test
   public void testCreateAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3294,27 +3417,29 @@ public class SAXParseTest extends TestCase
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(3, fields.size());
+    Assert.assertEquals(3, fields.size());
 
     MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(2);
 
-    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
 
     String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
 
-    assertTrue(conditionId.length() > 0);
+    Assert.assertTrue(conditionId.length() > 0);
 
     FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
 
-    assertTrue( ( testCondition instanceof AndFieldConditionDAOIF ));
+    Assert.assertTrue( ( testCondition instanceof AndFieldConditionDAOIF ));
 
     FieldConditionDAOIF testFirstCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.FIRST_CONDITION));
     FieldConditionDAOIF testSecondCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.SECOND_CONDITION));
 
-    assertTrue( ( testFirstCondition instanceof CharacterConditionDAOIF ));
-    assertTrue( ( testSecondCondition instanceof DoubleConditionDAOIF ));
+    Assert.assertTrue( ( testFirstCondition instanceof CharacterConditionDAOIF ));
+    Assert.assertTrue( ( testSecondCondition instanceof DoubleConditionDAOIF ));
   }
 
+  @Request
+  @Test
   public void testCreateNestedAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3377,27 +3502,29 @@ public class SAXParseTest extends TestCase
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(4, fields.size());
+    Assert.assertEquals(4, fields.size());
 
     MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(3);
 
-    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
 
     String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
 
-    assertTrue(conditionId.length() > 0);
+    Assert.assertTrue(conditionId.length() > 0);
 
     FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
 
-    assertTrue( ( testCondition instanceof AndFieldConditionDAOIF ));
+    Assert.assertTrue( ( testCondition instanceof AndFieldConditionDAOIF ));
 
     FieldConditionDAOIF testFirstCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.FIRST_CONDITION));
     FieldConditionDAOIF testSecondCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.SECOND_CONDITION));
 
-    assertTrue( ( testFirstCondition instanceof AndFieldConditionDAOIF ));
-    assertTrue( ( testSecondCondition instanceof LongConditionDAOIF ));
+    Assert.assertTrue( ( testFirstCondition instanceof AndFieldConditionDAOIF ));
+    Assert.assertTrue( ( testSecondCondition instanceof LongConditionDAOIF ));
   }
 
+  @Request
+  @Test
   public void testCreateOrUpdateNestedAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3462,27 +3589,29 @@ public class SAXParseTest extends TestCase
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(4, fields.size());
+    Assert.assertEquals(4, fields.size());
 
     MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(3);
 
-    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
 
     String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
 
-    assertTrue(conditionId.length() > 0);
+    Assert.assertTrue(conditionId.length() > 0);
 
     FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
 
-    assertTrue( ( testCondition instanceof AndFieldConditionDAOIF ));
+    Assert.assertTrue( ( testCondition instanceof AndFieldConditionDAOIF ));
 
     FieldConditionDAOIF testFirstCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.FIRST_CONDITION));
     FieldConditionDAOIF testSecondCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.SECOND_CONDITION));
 
-    assertTrue( ( testFirstCondition instanceof AndFieldConditionDAOIF ));
-    assertTrue( ( testSecondCondition instanceof LongConditionDAOIF ));
+    Assert.assertTrue( ( testFirstCondition instanceof AndFieldConditionDAOIF ));
+    Assert.assertTrue( ( testSecondCondition instanceof LongConditionDAOIF ));
   }
 
+  @Request
+  @Test
   public void testSelectionSet()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
@@ -3548,7 +3677,7 @@ public class SAXParseTest extends TestCase
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
     List<String> ids = EntityDAO.getEntityIdsDB(mdBusinessIF.definesType());
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     String id = ids.get(0);
 
@@ -3557,60 +3686,64 @@ public class SAXParseTest extends TestCase
     AttributeEnumerationIF attribute = (AttributeEnumerationIF) businessDAO.getAttributeIF("testEnumeration");
     BusinessDAOIF[] enums = attribute.dereference();
 
-    assertEquals("23:45:32", businessDAO.getValue("testTime"));
-    assertEquals(2, enums.length);
-    assertTrue(enums[0].getValue(EnumerationMasterInfo.NAME).equals("ONE") || enums[0].getValue(EnumerationMasterInfo.NAME).equals("THREE"));
-    assertTrue(enums[0].getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).equals("One") || enums[0].getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).equals("Three"));
+    Assert.assertEquals("23:45:32", businessDAO.getValue("testTime"));
+    Assert.assertEquals(2, enums.length);
+    Assert.assertTrue(enums[0].getValue(EnumerationMasterInfo.NAME).equals("ONE") || enums[0].getValue(EnumerationMasterInfo.NAME).equals("THREE"));
+    Assert.assertTrue(enums[0].getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).equals("One") || enums[0].getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).equals("Three"));
 
-    assertTrue(enums[1].getValue(EnumerationMasterInfo.NAME).equals("ONE") || enums[1].getValue(EnumerationMasterInfo.NAME).equals("THREE"));
-    assertTrue(enums[1].getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).equals("One") || enums[1].getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).equals("Three"));
+    Assert.assertTrue(enums[1].getValue(EnumerationMasterInfo.NAME).equals("ONE") || enums[1].getValue(EnumerationMasterInfo.NAME).equals("THREE"));
+    Assert.assertTrue(enums[1].getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).equals("One") || enums[1].getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).equals("Three"));
   }
 
   /**
    * Test setting of attributes of and on the relationship datatype
    */
+  @Request
+  @Test
   public void testTreeSet()
   {
     SAXImporter.runImport(new File(TREE_SET));
 
-    assertTrue(MdTypeDAO.isDefined(RELATIONSHIP));
+    Assert.assertTrue(MdTypeDAO.isDefined(RELATIONSHIP));
 
     MdTreeDAO mdRelationship = MdTreeDAO.getMdTreeDAO(RELATIONSHIP).getBusinessDAO();
     MdBusinessDAOIF mdBusiness1 = MdBusinessDAO.getMdBusinessDAO(CLASS);
     MdBusinessDAOIF mdBusiness2 = MdBusinessDAO.getMdBusinessDAO(CLASS2);
     MdAttributeConcreteDAOIF attribute = mdRelationship.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals("Relationship Set Test", mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals("Relationship Test", mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdRelationship.getValue(MdRelationshipInfo.REMOVE));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.EXTENDABLE));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.ABSTRACT));
+    Assert.assertEquals("Relationship Set Test", mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Relationship Test", mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdRelationship.getValue(MdRelationshipInfo.REMOVE));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.EXTENDABLE));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.ABSTRACT));
 
     // Ensure the parent attributes are correctly set
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_MD_BUSINESS), mdBusiness1.getId());
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_CARDINALITY), "1");
-    assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Parent Set Test");
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_MD_BUSINESS), mdBusiness1.getId());
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_CARDINALITY), "1");
+    Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Parent Set Test");
 
     // Ensure the child attributes are correctly set
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_MD_BUSINESS), mdBusiness2.getId());
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_CARDINALITY), "*");
-    assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Child Set Test");
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_MD_BUSINESS), mdBusiness2.getId());
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_CARDINALITY), "*");
+    Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Child Set Test");
 
     // Ensure the attributes are linked to the relationship
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdRelationship.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdRelationship.getId());
 
     mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdRelationship.apply();
 
     // Test the sub relationship
     MdTreeDAO mdRelationship2 = MdTreeDAO.getMdTreeDAO(RELATIONSHIP2).getBusinessDAO();
-    assertEquals(mdRelationship.getId(), mdRelationship2.getValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP));
-    assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
+    Assert.assertEquals(mdRelationship.getId(), mdRelationship2.getValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP));
+    Assert.assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
   }
 
   /**
    * Test setting of attributes of and on the relationship datatype
    */
+  @Request
+  @Test
   public void testGraphSet()
   {
     SAXImporter.runImport(new File(GRAPH_SET));
@@ -3620,43 +3753,45 @@ public class SAXParseTest extends TestCase
     MdBusinessDAOIF mdBusiness2 = MdBusinessDAO.getMdBusinessDAO(CLASS2);
     MdAttributeConcreteDAOIF attribute = mdRelationship.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals("Relationship Set Test", mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals("Relationship Test", mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdRelationship.getValue(MdRelationshipInfo.REMOVE));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.EXTENDABLE));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.ABSTRACT));
+    Assert.assertEquals("Relationship Set Test", mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Relationship Test", mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdRelationship.getValue(MdRelationshipInfo.REMOVE));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.EXTENDABLE));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.ABSTRACT));
 
     // Ensure the parent attributes are correctly set
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_MD_BUSINESS), mdBusiness1.getId());
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_CARDINALITY), "1");
-    assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Parent Set Test");
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_MD_BUSINESS), mdBusiness1.getId());
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_CARDINALITY), "1");
+    Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Parent Set Test");
 
     // Ensure the child attributes are correctly set
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_MD_BUSINESS), mdBusiness2.getId());
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_CARDINALITY), "*");
-    assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Child Set Test");
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_MD_BUSINESS), mdBusiness2.getId());
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_CARDINALITY), "*");
+    Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Child Set Test");
 
     // Ensure the attributes are linked to the relationship
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdRelationship.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdRelationship.getId());
 
     mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdRelationship.apply();
 
     // Test the sub relationship
     MdGraphDAO mdRelationship2 = MdGraphDAO.getMdGraphDAO(RELATIONSHIP2).getBusinessDAO();
-    assertEquals(mdRelationship.getId(), mdRelationship2.getValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP));
-    assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
+    Assert.assertEquals(mdRelationship.getId(), mdRelationship2.getValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP));
+    Assert.assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
   }
 
   /**
    * Test creating Instances that reference other instances
    */
+  @Request
+  @Test
   public void testCreateObject()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -3698,9 +3833,11 @@ public class SAXParseTest extends TestCase
     BusinessDAOIF class2 = BusinessDAO.get(class2Ids.get(0));
 
     // Assert that the values of refTest refer to instances of CLASS
-    assertTrue(classIds.contains(class2.getValue("testReference")));
+    Assert.assertTrue(classIds.contains(class2.getValue("testReference")));
   }
 
+  @Request
+  @Test
   public void testCreateMdEnumeration()
   {
     SAXImporter.runImport(new File(FILTER_SET));
@@ -3710,34 +3847,36 @@ public class SAXParseTest extends TestCase
 
     List<BusinessDAOIF> items = mdEnumeration.getAllEnumItems();
 
-    assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Enumeration Filter Test");
-    assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Filter Set Test");
-    assertEquals(mdEnumeration.getValue(MdEnumerationInfo.REMOVE), MdAttributeBooleanInfo.FALSE);
-    assertEquals(mdEnumeration.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Enumeration Filter Test");
+    Assert.assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Filter Set Test");
+    Assert.assertEquals(mdEnumeration.getValue(MdEnumerationInfo.REMOVE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdEnumeration.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.FALSE);
 
     // Check that the instance of the filter are correctly mapped
-    assertEquals(items.size(), 2);
+    Assert.assertEquals(items.size(), 2);
 
-    assertTrue(items.get(0).getValue("testChar").equals("CO") || items.get(0).getValue("testChar").equals("CA"));
-    assertTrue(items.get(1).getValue("testChar").equals("CO") || items.get(1).getValue("testChar").equals("CA"));
+    Assert.assertTrue(items.get(0).getValue("testChar").equals("CO") || items.get(0).getValue("testChar").equals("CA"));
+    Assert.assertTrue(items.get(1).getValue("testChar").equals("CO") || items.get(1).getValue("testChar").equals("CA"));
 
-    assertEquals(mdEnumeration2.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdEnumeration2.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.TRUE);
 
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.apply();
   }
 
+  @Request
+  @Test
   public void testCreateRelationship()
   {
     // Create the Metadata entities
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     mdBusiness1.apply();
     mdBusiness2.apply();
 
@@ -3780,31 +3919,33 @@ public class SAXParseTest extends TestCase
     RelationshipDAOIF r1 = RelationshipDAO.get(r1Ids.get(0));
 
     // Ensure that the parent references the instance of CLASS
-    assertEquals(c1.getId(), r1.getParentId());
+    Assert.assertEquals(c1.getId(), r1.getParentId());
     // Ensure that the child reference the instance of CLASS2
-    assertEquals(c2.getId(), r1.getChildId());
+    Assert.assertEquals(c2.getId(), r1.getChildId());
     // Ensure that the value of testBoolean is true
-    assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
   }
 
+  @Request
+  @Test
   public void testCreateMdTree()
   {
     // Create the Metadata entities
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     mdBusiness1.apply();
     mdBusiness2.apply();
 
     MdTreeDAO mdTree1 = TestFixtureFactory.createMdTree(mdBusiness1, mdBusiness2);
     mdTree1.setGenerateMdController(false);
     mdTree1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     mdTree1.apply();
 
     TestFixtureFactory.addBooleanAttribute(mdTree1).apply();
@@ -3820,6 +3961,8 @@ public class SAXParseTest extends TestCase
     SAXImporter.runImport(new File(tempXMLFile));
   }
 
+  @Request
+  @Test
   public void testIndex()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -3854,19 +3997,21 @@ public class SAXParseTest extends TestCase
     MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO(CLASS);
 
     List<MdIndexDAOIF> indexs = mdBusiness.getIndexes();
-    assertEquals(1, indexs.size());
+    Assert.assertEquals(1, indexs.size());
 
     MdIndexDAOIF mdIndexIF = indexs.get(0);
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdIndexIF.getValue(MdIndexInfo.UNIQUE));
-    assertEquals("index", mdIndexIF.getStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdIndexIF.getValue(MdIndexInfo.UNIQUE));
+    Assert.assertEquals("index", mdIndexIF.getStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
     List<MdAttributeConcreteDAOIF> mdAttributes = mdIndexIF.getIndexedAttributes();
 
-    assertEquals(2, mdAttributes.size());
-    assertTrue(TestFixConst.ATTRIBUTE_BOOLEAN.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_BOOLEAN.equals(mdAttributes.get(1).definesAttribute()));
-    assertTrue(TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(1).definesAttribute()));
+    Assert.assertEquals(2, mdAttributes.size());
+    Assert.assertTrue(TestFixConst.ATTRIBUTE_BOOLEAN.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_BOOLEAN.equals(mdAttributes.get(1).definesAttribute()));
+    Assert.assertTrue(TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(1).definesAttribute()));
   }
 
+  @Request
+  @Test
   public void testMdMethod()
   {
     SAXImporter.runImport(new File(METHOD_SET_TEST));
@@ -3877,35 +4022,35 @@ public class SAXParseTest extends TestCase
 
     // There should be three methods: Two user defined methods, and the auto
     // generated query method
-    assertEquals(2, mdMethods.size());
+    Assert.assertEquals(2, mdMethods.size());
 
     for (MdMethodDAOIF mdMethod : mdMethods)
     {
       if (mdMethod.getName().equals("checkin"))
       {
-        assertTrue(mdMethod.getReturnType().isVoid());
+        Assert.assertTrue(mdMethod.getReturnType().isVoid());
         List<MdParameterDAOIF> mdParameters = mdMethod.getMdParameterDAOs();
-        assertEquals(1, mdParameters.size());
-        assertEquals("testClass2", mdParameters.get(0).getParameterName());
-        assertEquals("test.xmlclasses.Class2", mdParameters.get(0).getParameterType().getType());
-        assertEquals("1", mdParameters.get(0).getParameterOrder());
+        Assert.assertEquals(1, mdParameters.size());
+        Assert.assertEquals("testClass2", mdParameters.get(0).getParameterName());
+        Assert.assertEquals("test.xmlclasses.Class2", mdParameters.get(0).getParameterType().getType());
+        Assert.assertEquals("1", mdParameters.get(0).getParameterOrder());
       }
       else if (mdMethod.getName().equals("checkout"))
       {
-        assertEquals("checkout", mdMethod.getName());
-        assertTrue(mdMethod.getReturnType().isArray());
-        assertEquals("test.xmlclasses.Relationship1[]", mdMethod.getReturnType().getType());
+        Assert.assertEquals("checkout", mdMethod.getName());
+        Assert.assertTrue(mdMethod.getReturnType().isArray());
+        Assert.assertEquals("test.xmlclasses.Relationship1[]", mdMethod.getReturnType().getType());
 
         List<MdParameterDAOIF> mdParameters = mdMethod.getMdParameterDAOs();
-        assertEquals(2, mdParameters.size());
+        Assert.assertEquals(2, mdParameters.size());
 
-        assertEquals("testInteger", mdParameters.get(0).getParameterName());
-        assertEquals("java.lang.Integer", mdParameters.get(0).getParameterType().getType());
-        assertEquals("1", mdParameters.get(0).getParameterOrder());
+        Assert.assertEquals("testInteger", mdParameters.get(0).getParameterName());
+        Assert.assertEquals("java.lang.Integer", mdParameters.get(0).getParameterType().getType());
+        Assert.assertEquals("1", mdParameters.get(0).getParameterOrder());
 
-        assertEquals(TestFixConst.ATTRIBUTE_CHARACTER, mdParameters.get(1).getParameterName());
-        assertEquals("java.lang.String", mdParameters.get(1).getParameterType().getType());
-        assertEquals("4", mdParameters.get(1).getParameterOrder());
+        Assert.assertEquals(TestFixConst.ATTRIBUTE_CHARACTER, mdParameters.get(1).getParameterName());
+        Assert.assertEquals("java.lang.String", mdParameters.get(1).getParameterType().getType());
+        Assert.assertEquals("4", mdParameters.get(1).getParameterOrder());
       }
     }
 
@@ -3915,6 +4060,8 @@ public class SAXParseTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCreateMdController()
   {
     MdControllerDAO mdController = MdControllerDAO.newInstance();
@@ -3955,35 +4102,37 @@ public class SAXParseTest extends TestCase
 
     SAXImporter.runImport(new File(tempXMLFile));
 
-    assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
+    Assert.assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
 
     MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO("test.xmlclasses.Controller1");
-    assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<MdActionDAOIF> mdActions = mdControllerIF.getMdActionDAOs();
 
-    assertEquals(1, mdActions.size());
-    assertEquals("testAction", mdActions.get(0).getName());
-    assertEquals("testAction", mdActions.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("testAction", mdActions.get(0).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(1, mdActions.size());
+    Assert.assertEquals("testAction", mdActions.get(0).getName());
+    Assert.assertEquals("testAction", mdActions.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("testAction", mdActions.get(0).getDescription(CommonProperties.getDefaultLocale()));
 
     List<MdParameterDAOIF> mdParameters = mdActions.get(0).getMdParameterDAOs();
-    assertEquals(2, mdParameters.size());
-    assertEquals("param1", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(2, mdParameters.size());
+    Assert.assertEquals("param1", mdParameters.get(0).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
+    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
+    Assert.assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
 
-    assertEquals("param2", mdParameters.get(1).getParameterName());
-    assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
-    assertEquals("1", mdParameters.get(1).getParameterOrder());
-    assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param2", mdParameters.get(1).getParameterName());
+    Assert.assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
+    Assert.assertEquals("1", mdParameters.get(1).getParameterOrder());
+    Assert.assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     new File(tempXMLFile).delete();
   }
 
+  @Request
+  @Test
   public void testMdStateMachineExport()
   {
     String stateMachineName = "Blog";
@@ -4033,42 +4182,42 @@ public class SAXParseTest extends TestCase
 
     SAXImporter.runImport(new File(tempXMLFile));
 
-    assertTrue(MdBusinessDAO.isDefined("test.xmlclasses.Class1"));
+    Assert.assertTrue(MdBusinessDAO.isDefined("test.xmlclasses.Class1"));
 
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
 
     MdStateMachineDAOIF mdStateMachineIF = mdBusinessIF.definesMdStateMachine();
 
-    assertNotNull(mdStateMachine);
-    assertEquals(stateMachinePackage + "." + stateMachineName, mdStateMachineIF.definesType());
-    assertEquals(stateMachineLabel, mdStateMachineIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(stateMachineDescription, mdStateMachineIF.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertNotNull(mdStateMachine);
+    Assert.assertEquals(stateMachinePackage + "." + stateMachineName, mdStateMachineIF.definesType());
+    Assert.assertEquals(stateMachineLabel, mdStateMachineIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(stateMachineDescription, mdStateMachineIF.getDescription(CommonProperties.getDefaultLocale()));
 
-    assertEquals(3, mdStateMachine.definesStateMasters().size());
+    Assert.assertEquals(3, mdStateMachine.definesStateMasters().size());
 
     // Ensure that the states were imported correctly
     StateMasterDAOIF stateIF = mdStateMachine.definesStateMaster(stateName);
-    assertEquals(true, stateIF.isDefaultState());
-    assertEquals(true, stateIF.isEntryState());
+    Assert.assertEquals(true, stateIF.isDefaultState());
+    Assert.assertEquals(true, stateIF.isEntryState());
 
     StateMasterDAOIF state1IF = mdStateMachine.definesStateMaster(state1Name);
-    assertEquals(false, state1IF.isDefaultState());
-    assertEquals(false, state1IF.isEntryState());
+    Assert.assertEquals(false, state1IF.isDefaultState());
+    Assert.assertEquals(false, state1IF.isEntryState());
 
     StateMasterDAOIF state2IF = mdStateMachine.definesStateMaster(state2Name);
-    assertEquals(false, state2IF.isDefaultState());
-    assertEquals(true, state2IF.isEntryState());
+    Assert.assertEquals(false, state2IF.isDefaultState());
+    Assert.assertEquals(true, state2IF.isEntryState());
 
     // Ensure that the transitions were imported correctly
-    assertEquals(2, mdStateMachine.definesTransitions().size());
+    Assert.assertEquals(2, mdStateMachine.definesTransitions().size());
 
     TransitionDAOIF checkOut = mdStateMachine.definesTransition(transitionName);
-    assertEquals(stateIF.getId(), checkOut.getParentId());
-    assertEquals(state1IF.getId(), checkOut.getChildId());
+    Assert.assertEquals(stateIF.getId(), checkOut.getParentId());
+    Assert.assertEquals(state1IF.getId(), checkOut.getChildId());
 
     RelationshipDAOIF checkIn = mdStateMachine.definesTransition(transition1Name);
-    assertEquals(state1IF.getId(), checkIn.getParentId());
-    assertEquals(state2IF.getId(), checkIn.getChildId());
+    Assert.assertEquals(state1IF.getId(), checkIn.getParentId());
+    Assert.assertEquals(state2IF.getId(), checkIn.getChildId());
 
     new File(tempXMLFile).delete();
   }
@@ -4076,13 +4225,15 @@ public class SAXParseTest extends TestCase
   /**
    * Test for a thrown error on circular dependencies in the xml document
    */
+  @Request
+  @Test
   public void testCircularDependency()
   {
     try
     {
       SAXImporter.runImport(new File(CIRCULAR_TEST));
 
-      fail("Failed circular dependency check between two classes");
+      Assert.fail("Failed circular dependency check between two classes");
     }
     catch (XMLParseException e)
     {
@@ -4091,15 +4242,18 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test for a thrown error on duplicate attribute names in the same class in the xml
+   * Test for a thrown error on duplicate attribute names in the same class in
+   * the xml
    */
+  @Request
+  @Test
   public void testDuplicateAttribute()
   {
     try
     {
       SAXImporter.runImport(new File(DUPLICATE_TEST));
 
-      fail("Failed duplicate attribute name in the same class check");
+      Assert.fail("Failed duplicate attribute name in the same class check");
     }
     catch (XMLParseException e)
     {
@@ -4115,13 +4269,15 @@ public class SAXParseTest extends TestCase
   /**
    * Test for a thrown error on circular dependencies in the xml document
    */
+  @Request
+  @Test
   public void testInvalidSchema()
   {
     try
     {
       SAXImporter.runImport(new File(INVALID_SCHEMA_TEST));
 
-      fail("Failed invalid schema check");
+      Assert.fail("Failed invalid schema check");
     }
     catch (XMLParseException e)
     {
@@ -4132,13 +4288,15 @@ public class SAXParseTest extends TestCase
   /**
    * Test for a thrown error on circular dependencies in the xml document
    */
+  @Request
+  @Test
   public void testInvalidPuesdoId()
   {
     try
     {
       SAXImporter.runImport(new File(INVALID_ID));
 
-      fail("Failed invalid puesdo id check");
+      Assert.fail("Failed invalid puesdo id check");
     }
     catch (XMLException e)
     {
@@ -4146,6 +4304,8 @@ public class SAXParseTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSearchingOfDefinitionInAnUpdateTag()
   {
     // Create test MdBusiness
@@ -4180,9 +4340,11 @@ public class SAXParseTest extends TestCase
     MdViewDAOIF mdViewIF = MdViewDAO.getMdViewDAO(mdView.definesType());
     MdAttributeDAOIF mdAttributeVirtualIF = mdViewIF.definesAttribute(mdAttributeVirtual.definesAttribute());
 
-    assertNotNull(mdAttributeVirtualIF);
+    Assert.assertNotNull(mdAttributeVirtualIF);
   }
 
+  @Request
+  @Test
   public void testUserPermission()
   {
     try
@@ -4352,53 +4514,53 @@ public class SAXParseTest extends TestCase
       TypeTupleDAOIF tuple4IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state21.getId());
 
       Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
-      assertEquals(1, assignedRoles.size());
-      assertTrue(assignedRoles.contains(role));
+      Assert.assertEquals(1, assignedRoles.size());
+      Assert.assertTrue(assignedRoles.contains(role));
 
       Set<Operation> operations = userIF.getAllPermissions(mdBusiness1);
-      assertEquals(2, operations.size());
-      assertTrue(operations.contains(Operation.WRITE));
-      assertTrue(operations.contains(Operation.CREATE));
+      Assert.assertEquals(2, operations.size());
+      Assert.assertTrue(operations.contains(Operation.WRITE));
+      Assert.assertTrue(operations.contains(Operation.CREATE));
 
       operations = userIF.getAllPermissions(mdAttributeChar);
-      assertEquals(2, operations.size());
-      assertTrue(operations.contains(Operation.WRITE));
-      assertTrue(operations.contains(Operation.READ));
+      Assert.assertEquals(2, operations.size());
+      Assert.assertTrue(operations.contains(Operation.WRITE));
+      Assert.assertTrue(operations.contains(Operation.READ));
 
       operations = userIF.getAllPermissions(state11);
-      assertEquals(2, operations.size());
-      assertTrue(operations.contains(Operation.DELETE));
-      assertTrue(operations.contains(Operation.READ));
+      Assert.assertEquals(2, operations.size());
+      Assert.assertTrue(operations.contains(Operation.DELETE));
+      Assert.assertTrue(operations.contains(Operation.READ));
 
       operations = userIF.getAllPermissions(tupleIF);
-      assertEquals(1, operations.size());
-      assertTrue(operations.contains(Operation.WRITE));
+      Assert.assertEquals(1, operations.size());
+      Assert.assertTrue(operations.contains(Operation.WRITE));
 
       operations = userIF.getAllPermissions(mdRelationship);
-      assertEquals(2, operations.size());
-      assertTrue(operations.contains(Operation.DELETE));
-      assertTrue(operations.contains(Operation.CREATE));
+      Assert.assertEquals(2, operations.size());
+      Assert.assertTrue(operations.contains(Operation.DELETE));
+      Assert.assertTrue(operations.contains(Operation.CREATE));
 
       operations = userIF.getAllPermissions(mdAttributeBool);
-      assertEquals(1, operations.size());
-      assertTrue(operations.contains(Operation.READ));
+      Assert.assertEquals(1, operations.size());
+      Assert.assertTrue(operations.contains(Operation.READ));
 
       operations = userIF.getAllPermissions(tuple2IF);
-      assertEquals(2, operations.size());
-      assertTrue(operations.contains(Operation.ADD_CHILD));
-      assertTrue(operations.contains(Operation.READ_CHILD));
+      Assert.assertEquals(2, operations.size());
+      Assert.assertTrue(operations.contains(Operation.ADD_CHILD));
+      Assert.assertTrue(operations.contains(Operation.READ_CHILD));
 
       operations = userIF.getAllPermissions(tuple3IF);
-      assertEquals(1, operations.size());
-      assertTrue(operations.contains(Operation.WRITE_CHILD));
+      Assert.assertEquals(1, operations.size());
+      Assert.assertTrue(operations.contains(Operation.WRITE_CHILD));
 
       operations = userIF.getAllPermissions(tuple4IF);
-      assertEquals(1, operations.size());
-      assertTrue(operations.contains(Operation.ADD_PARENT));
+      Assert.assertEquals(1, operations.size());
+      Assert.assertTrue(operations.contains(Operation.ADD_PARENT));
 
       operations = userIF.getAllPermissions(mdStruct);
-      assertEquals(1, operations.size());
-      assertTrue(operations.contains(Operation.DELETE));
+      Assert.assertEquals(1, operations.size());
+      Assert.assertTrue(operations.contains(Operation.DELETE));
     }
     catch (Throwable e)
     {
@@ -4406,6 +4568,8 @@ public class SAXParseTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testRevokeUserPermission()
   {
     // Create a test User
@@ -4562,40 +4726,42 @@ public class SAXParseTest extends TestCase
     TypeTupleDAOIF tuple4IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state21.getId());
 
     Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
-    assertEquals(1, assignedRoles.size());
-    assertTrue(assignedRoles.contains(role));
+    Assert.assertEquals(1, assignedRoles.size());
+    Assert.assertTrue(assignedRoles.contains(role));
 
     Set<Operation> operations = userIF.getAllPermissions(mdBusiness1);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(mdAttributeChar);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(state11);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(tupleIF);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(mdRelationship);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(mdAttributeBool);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(tuple2IF);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(tuple3IF);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(tuple4IF);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(mdStruct);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
   }
 
+  @Request
+  @Test
   public void testGrantDenyPermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();
@@ -4653,34 +4819,36 @@ public class SAXParseTest extends TestCase
     RoleDAOIF roleIF = RoleDAO.findRole("runway.testRole");
 
     roleIF = RoleDAO.findRole("runway.testRole");
-    assertEquals("Test Role", roleIF.getStructValue(RoleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Test Role", roleIF.getStructValue(RoleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
     Set<Operation> operations = roleIF.getAllPermissions(mdBusiness1);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.DENY_CREATE));
-    assertTrue(operations.contains(Operation.DENY_WRITE));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.DENY_CREATE));
+    Assert.assertTrue(operations.contains(Operation.DENY_WRITE));
 
     operations = roleIF.getAllPermissions(mdView1);
-    assertEquals(3, operations.size());
-    assertTrue(operations.contains(Operation.DENY_READ));
-    assertTrue(operations.contains(Operation.DENY_DELETE));
-    assertTrue(operations.contains(Operation.DENY_WRITE));
+    Assert.assertEquals(3, operations.size());
+    Assert.assertTrue(operations.contains(Operation.DENY_READ));
+    Assert.assertTrue(operations.contains(Operation.DENY_DELETE));
+    Assert.assertTrue(operations.contains(Operation.DENY_WRITE));
 
     operations = roleIF.getAllPermissions(mdUtil1);
-    assertEquals(1, operations.size());
-    assertTrue(operations.contains(Operation.DENY_CREATE));
+    Assert.assertEquals(1, operations.size());
+    Assert.assertTrue(operations.contains(Operation.DENY_CREATE));
 
     operations = roleIF.getAllPermissions(mdStruct);
-    assertEquals(3, operations.size());
-    assertTrue(operations.contains(Operation.DENY_CREATE));
-    assertTrue(operations.contains(Operation.DENY_DELETE));
-    assertTrue(operations.contains(Operation.DENY_WRITE));
+    Assert.assertEquals(3, operations.size());
+    Assert.assertTrue(operations.contains(Operation.DENY_CREATE));
+    Assert.assertTrue(operations.contains(Operation.DENY_DELETE));
+    Assert.assertTrue(operations.contains(Operation.DENY_WRITE));
 
     Set<RoleDAOIF> superRoles = roleIF.getSuperRoles();
-    assertEquals(1, superRoles.size());
-    assertTrue(superRoles.contains(role2));
+    Assert.assertEquals(1, superRoles.size());
+    Assert.assertTrue(superRoles.contains(role2));
   }
 
+  @Request
+  @Test
   public void testRolePermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();
@@ -4738,34 +4906,36 @@ public class SAXParseTest extends TestCase
     RoleDAOIF roleIF = RoleDAO.findRole("runway.testRole");
 
     roleIF = RoleDAO.findRole("runway.testRole");
-    assertEquals("Test Role", roleIF.getStructValue(RoleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Test Role", roleIF.getStructValue(RoleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
     Set<Operation> operations = roleIF.getAllPermissions(mdBusiness1);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.CREATE));
-    assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertTrue(operations.contains(Operation.WRITE));
 
     operations = roleIF.getAllPermissions(mdView1);
-    assertEquals(3, operations.size());
-    assertTrue(operations.contains(Operation.READ));
-    assertTrue(operations.contains(Operation.DELETE));
-    assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertEquals(3, operations.size());
+    Assert.assertTrue(operations.contains(Operation.READ));
+    Assert.assertTrue(operations.contains(Operation.DELETE));
+    Assert.assertTrue(operations.contains(Operation.WRITE));
 
     operations = roleIF.getAllPermissions(mdUtil1);
-    assertEquals(1, operations.size());
-    assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertEquals(1, operations.size());
+    Assert.assertTrue(operations.contains(Operation.CREATE));
 
     operations = roleIF.getAllPermissions(mdStruct);
-    assertEquals(3, operations.size());
-    assertTrue(operations.contains(Operation.CREATE));
-    assertTrue(operations.contains(Operation.DELETE));
-    assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertEquals(3, operations.size());
+    Assert.assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertTrue(operations.contains(Operation.DELETE));
+    Assert.assertTrue(operations.contains(Operation.WRITE));
 
     Set<RoleDAOIF> superRoles = roleIF.getSuperRoles();
-    assertEquals(1, superRoles.size());
-    assertTrue(superRoles.contains(role2));
+    Assert.assertEquals(1, superRoles.size());
+    Assert.assertTrue(superRoles.contains(role2));
   }
 
+  @Request
+  @Test
   public void testRolePermissionsAll()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
@@ -4791,17 +4961,19 @@ public class SAXParseTest extends TestCase
     RoleDAOIF roleIF = RoleDAO.findRole("runway.testRole");
 
     roleIF = RoleDAO.findRole("runway.testRole");
-    assertEquals("Test Role", roleIF.getStructValue(RoleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Test Role", roleIF.getStructValue(RoleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
     Set<Operation> operations = roleIF.getAllPermissions(mdBusiness1);
-    assertTrue(operations.contains(Operation.CREATE));
-    assertTrue(operations.contains(Operation.WRITE));
-    assertTrue(operations.contains(Operation.READ));
-    assertTrue(operations.contains(Operation.DELETE));
-    assertTrue(operations.contains(Operation.READ_ALL));
-    assertTrue(operations.contains(Operation.WRITE_ALL));
+    Assert.assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertTrue(operations.contains(Operation.READ));
+    Assert.assertTrue(operations.contains(Operation.DELETE));
+    Assert.assertTrue(operations.contains(Operation.READ_ALL));
+    Assert.assertTrue(operations.contains(Operation.WRITE_ALL));
   }
 
+  @Request
+  @Test
   public void testRevokeRolePermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();
@@ -4856,25 +5028,27 @@ public class SAXParseTest extends TestCase
     RoleDAOIF roleIF = RoleDAO.findRole("runway.testRole");
 
     roleIF = RoleDAO.findRole("runway.testRole");
-    assertEquals("Test Role", roleIF.getStructValue(RoleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Test Role", roleIF.getStructValue(RoleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
     Set<Operation> operations = roleIF.getAllPermissions(mdBusiness1);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = roleIF.getAllPermissions(mdView1);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = roleIF.getAllPermissions(mdUtil1);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = roleIF.getAllPermissions(mdStruct);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     Set<RoleDAOIF> superRoles = roleIF.getSuperRoles();
-    assertEquals(1, superRoles.size());
-    assertTrue(superRoles.contains(role2));
+    Assert.assertEquals(1, superRoles.size());
+    Assert.assertTrue(superRoles.contains(role2));
   }
 
+  @Request
+  @Test
   public void testMethodPermissions()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -4938,34 +5112,36 @@ public class SAXParseTest extends TestCase
     RoleDAOIF roleIF = RoleDAO.get(role.getId());
 
     Set<RoleDAOIF> assignedRoles = methodActorIF.assignedRoles();
-    assertEquals(1, assignedRoles.size());
-    assertTrue(assignedRoles.contains(role));
+    Assert.assertEquals(1, assignedRoles.size());
+    Assert.assertTrue(assignedRoles.contains(role));
 
     Set<Operation> operations = methodActorIF.getAllPermissions(mdBusiness);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.CREATE));
-    assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertTrue(operations.contains(Operation.WRITE));
 
     operations = roleIF.getAllPermissions(mdMethod);
-    assertEquals(1, operations.size());
-    assertTrue(operations.contains(Operation.EXECUTE));
+    Assert.assertEquals(1, operations.size());
+    Assert.assertTrue(operations.contains(Operation.EXECUTE));
 
     operations = methodActorIF.getAllPermissions(mdView1);
-    assertEquals(3, operations.size());
-    assertTrue(operations.contains(Operation.READ));
-    assertTrue(operations.contains(Operation.DELETE));
-    assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertEquals(3, operations.size());
+    Assert.assertTrue(operations.contains(Operation.READ));
+    Assert.assertTrue(operations.contains(Operation.DELETE));
+    Assert.assertTrue(operations.contains(Operation.WRITE));
 
     operations = methodActorIF.getAllPermissions(mdUtil1);
-    assertEquals(1, operations.size());
-    assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertEquals(1, operations.size());
+    Assert.assertTrue(operations.contains(Operation.CREATE));
 
     operations = methodActorIF.getAllPermissions(mdStruct);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.DELETE));
-    assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.DELETE));
+    Assert.assertTrue(operations.contains(Operation.WRITE));
   }
 
+  @Request
+  @Test
   public void testRevokeMethodPermissions()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -5025,25 +5201,27 @@ public class SAXParseTest extends TestCase
     RoleDAOIF roleIF = RoleDAO.get(role.getId());
 
     Set<RoleDAOIF> assignedRoles = methodActorIF.assignedRoles();
-    assertEquals(1, assignedRoles.size());
-    assertTrue(assignedRoles.contains(role));
+    Assert.assertEquals(1, assignedRoles.size());
+    Assert.assertTrue(assignedRoles.contains(role));
 
     Set<Operation> operations = methodActorIF.getAllPermissions(mdBusiness);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = roleIF.getAllPermissions(mdMethod);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = methodActorIF.getAllPermissions(mdView1);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = methodActorIF.getAllPermissions(mdUtil1);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = methodActorIF.getAllPermissions(mdStruct);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
   }
 
+  @Request
+  @Test
   public void testUpdateMdStateMachine()
   {
     // Create test MdBusiness
@@ -5115,53 +5293,55 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdBusiness1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdBusiness Set Test");
-    assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdBusiness Attributes Test");
-    assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.CACHE_SIZE), "50");
+    Assert.assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdBusiness Set Test");
+    Assert.assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdBusiness Attributes Test");
+    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.CACHE_SIZE), "50");
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdBusiness1IF.getValue(MetadataInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdBusiness1IF.getValue(MetadataInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdBusiness1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdBusiness1IF.getId());
 
     // Test that the MdStateMachine on the MdBusiness was correctly set
     MdStateMachineDAOIF mdStateMachineIF = mdBusiness1IF.definesMdStateMachine();
 
-    assertNotNull(mdStateMachineIF);
-    assertEquals(3, mdStateMachineIF.definesStateMasters().size());
+    Assert.assertNotNull(mdStateMachineIF);
+    Assert.assertEquals(3, mdStateMachineIF.definesStateMasters().size());
 
     // Ensure that the states were imported correctly
     StateMasterDAOIF available = mdStateMachineIF.definesStateMaster("Available");
-    assertEquals(true, available.isDefaultState());
-    assertEquals(true, available.isEntryState());
+    Assert.assertEquals(true, available.isDefaultState());
+    Assert.assertEquals(true, available.isEntryState());
 
     StateMasterDAOIF checkedOut = mdStateMachineIF.definesStateMaster("CheckedOut");
-    assertEquals(false, checkedOut.isDefaultState());
-    assertEquals(false, checkedOut.isEntryState());
+    Assert.assertEquals(false, checkedOut.isDefaultState());
+    Assert.assertEquals(false, checkedOut.isEntryState());
 
     StateMasterDAOIF checkedIn = mdStateMachineIF.definesStateMaster("CheckedIn");
-    assertEquals(false, checkedIn.isDefaultState());
-    assertEquals(true, checkedIn.isEntryState());
+    Assert.assertEquals(false, checkedIn.isDefaultState());
+    Assert.assertEquals(true, checkedIn.isEntryState());
 
     // Ensure that the transitions were imported correctly
-    assertEquals(3, mdStateMachineIF.definesTransitions().size());
+    Assert.assertEquals(3, mdStateMachineIF.definesTransitions().size());
 
     TransitionDAOIF checkOut = mdStateMachineIF.definesTransition("CheckOut");
-    assertEquals(available.getId(), checkOut.getParentId());
-    assertEquals(checkedOut.getId(), checkOut.getChildId());
+    Assert.assertEquals(available.getId(), checkOut.getParentId());
+    Assert.assertEquals(checkedOut.getId(), checkOut.getChildId());
 
     RelationshipDAOIF checkIn = mdStateMachineIF.definesTransition("CheckIn");
-    assertEquals(checkedOut.getId(), checkIn.getParentId());
-    assertEquals(checkedIn.getId(), checkIn.getChildId());
+    Assert.assertEquals(checkedOut.getId(), checkIn.getParentId());
+    Assert.assertEquals(checkedIn.getId(), checkIn.getChildId());
 
     RelationshipDAOIF stock = mdStateMachineIF.definesTransition("Stock");
-    assertEquals(checkedIn.getId(), stock.getParentId());
-    assertEquals(available.getId(), stock.getChildId());
+    Assert.assertEquals(checkedIn.getId(), stock.getParentId());
+    Assert.assertEquals(available.getId(), stock.getChildId());
   }
 
+  @Request
+  @Test
   public void testUpdateMdBusiness()
   {
     // Create test MdBusiness
@@ -5232,56 +5412,58 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdBusiness1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdBusiness Set Test");
-    assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdBusiness Attributes Test");
-    assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.CACHE_SIZE), "50");
+    Assert.assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdBusiness Set Test");
+    Assert.assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdBusiness Attributes Test");
+    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.CACHE_SIZE), "50");
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdBusiness1IF.getValue(MetadataInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdBusiness1IF.getValue(MetadataInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdBusiness1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdBusiness1IF.getId());
 
     // Test that the MdStateMachine on the MdBusiness was correctly set
     MdStateMachineDAOIF mdStateMachineIF = mdBusiness1IF.definesMdStateMachine();
 
-    assertNotNull(mdStateMachineIF);
-    assertEquals(3, mdStateMachineIF.definesStateMasters().size());
+    Assert.assertNotNull(mdStateMachineIF);
+    Assert.assertEquals(3, mdStateMachineIF.definesStateMasters().size());
 
     // Ensure that the states were imported correctly
     StateMasterDAOIF available = mdStateMachineIF.definesStateMaster("Available");
-    assertEquals(true, available.isDefaultState());
-    assertEquals(true, available.isEntryState());
+    Assert.assertEquals(true, available.isDefaultState());
+    Assert.assertEquals(true, available.isEntryState());
 
     StateMasterDAOIF checkedOut = mdStateMachineIF.definesStateMaster("CheckedOut");
-    assertEquals(false, checkedOut.isDefaultState());
-    assertEquals(false, checkedOut.isEntryState());
+    Assert.assertEquals(false, checkedOut.isDefaultState());
+    Assert.assertEquals(false, checkedOut.isEntryState());
 
     StateMasterDAOIF checkedIn = mdStateMachineIF.definesStateMaster("CheckedIn");
-    assertEquals(false, checkedIn.isDefaultState());
-    assertEquals(true, checkedIn.isEntryState());
+    Assert.assertEquals(false, checkedIn.isDefaultState());
+    Assert.assertEquals(true, checkedIn.isEntryState());
 
     // Ensure that the transitions were imported correctly
-    assertEquals(3, mdStateMachineIF.definesTransitions().size());
+    Assert.assertEquals(3, mdStateMachineIF.definesTransitions().size());
 
     TransitionDAOIF checkOut = mdStateMachineIF.definesTransition("CheckOut");
-    assertEquals(available.getId(), checkOut.getParentId());
-    assertEquals(checkedOut.getId(), checkOut.getChildId());
+    Assert.assertEquals(available.getId(), checkOut.getParentId());
+    Assert.assertEquals(checkedOut.getId(), checkOut.getChildId());
 
     RelationshipDAOIF checkIn = mdStateMachineIF.definesTransition("CheckIn");
-    assertEquals(checkedOut.getId(), checkIn.getParentId());
-    assertEquals(checkedIn.getId(), checkIn.getChildId());
+    Assert.assertEquals(checkedOut.getId(), checkIn.getParentId());
+    Assert.assertEquals(checkedIn.getId(), checkIn.getChildId());
 
     RelationshipDAOIF stock = mdStateMachineIF.definesTransition("Stock");
-    assertEquals(checkedIn.getId(), stock.getParentId());
-    assertEquals(available.getId(), stock.getChildId());
+    Assert.assertEquals(checkedIn.getId(), stock.getParentId());
+    Assert.assertEquals(available.getId(), stock.getChildId());
   }
 
   /**
    * Test setting of attributes on a boolean datatype
    */
+  @Request
+  @Test
   public void testRenameAttribute()
   {
     String updatedName = "updatedName";
@@ -5312,18 +5494,20 @@ public class SAXParseTest extends TestCase
 
     MdAttributeBooleanDAO attribute = (MdAttributeBooleanDAO) ( mdEntityIF.definesAttribute(updatedName) ).getBusinessDAO();
 
-    assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Boolean Set Test");
-    assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Positive_Label");
-    assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Negative_Label");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Boolean Set Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Positive_Label");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Negative_Label");
 
     // This will fail until the object cached is fixed. It currently holds onto
     // the old attribute definition.
-    assertNull(mdEntityIF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
+    Assert.assertNull(mdEntityIF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
   }
 
   /**
    * Test setting of attributes on a boolean datatype
    */
+  @Request
+  @Test
   public void testUpdateBoolean()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5349,14 +5533,16 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeBooleanDAO attribute = (MdAttributeBooleanDAO) ( mdEntityIF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN) ).getBusinessDAO();
 
-    assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Boolean Set Test");
-    assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Positive_Label");
-    assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Negative_Label");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Boolean Set Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Positive_Label");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Negative_Label");
   }
 
   /**
    * Test setting of attributes on a blob datatype
    */
+  @Request
+  @Test
   public void testUpdateBlob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5381,17 +5567,20 @@ public class SAXParseTest extends TestCase
     MdAttributeBlobDAO attribute = (MdAttributeBlobDAO) ( mdEntityIF.definesAttribute("testBlob") ).getBusinessDAO();
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Blob Set Test");
-    assertEquals(attribute.getValue(MdAttributeBlobInfo.IMMUTABLE), MdAttributeBooleanInfo.FALSE);
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeBlobInfo.REQUIRED));
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeBlobInfo.REMOVE));
-    assertEquals(attribute.getStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Blob Test");
-    assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Blob Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeBlobInfo.IMMUTABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeBlobInfo.REQUIRED));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeBlobInfo.REMOVE));
+    Assert.assertEquals(attribute.getStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Blob Test");
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
   }
 
   /**
-   * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the character datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5418,15 +5607,18 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Character Set Test");
-    assertEquals(attribute.getValue(MdAttributeCharacterInfo.SIZE), "200");
-    assertEquals(attribute.getValue(MdAttributeCharacterInfo.IMMUTABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Character Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeCharacterInfo.SIZE), "200");
+    Assert.assertEquals(attribute.getValue(MdAttributeCharacterInfo.IMMUTABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
   }
 
   /**
-   * Test setting of attributes on the date datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the date datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateDate()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5451,15 +5643,18 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDate");
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Date Set Test");
-    assertEquals(attribute.getValue(MdAttributeDateInfo.REQUIRED), MdAttributeBooleanInfo.TRUE);
-    assertEquals(attribute.getValue(MdAttributeDateInfo.DEFAULT_VALUE), "2006-02-11");
-    assertEquals(index.dereference()[0].getId(), IndexTypes.UNIQUE_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Date Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeDateInfo.REQUIRED), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getValue(MdAttributeDateInfo.DEFAULT_VALUE), "2006-02-11");
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.UNIQUE_INDEX.getId());
   }
 
   /**
-   * Test setting of attributes on the dateTime datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the dateTime datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateDateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5481,13 +5676,16 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDateTime");
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "dateTime Set Test");
-    assertEquals(index.dereference()[0].getId(), IndexTypes.NON_UNIQUE_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "dateTime Set Test");
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NON_UNIQUE_INDEX.getId());
   }
 
   /**
-   * Test setting of attributes on the decimal datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the decimal datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateDecimal()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5511,17 +5709,20 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDecimal");
 
-    assertEquals(attribute.getStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Decimal Set Test");
-    assertEquals(attribute.getValue(MdAttributeDecimalInfo.LENGTH), "10");
-    assertEquals(attribute.getValue(MdAttributeDecimalInfo.DECIMAL), "2");
-    assertEquals(attribute.getValue(MdAttributeDecimalInfo.REJECT_NEGATIVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(attribute.getValue(MdAttributeDecimalInfo.REJECT_ZERO), MdAttributeBooleanInfo.FALSE);
-    assertEquals(attribute.getValue(MdAttributeDecimalInfo.REJECT_POSITIVE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Decimal Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeDecimalInfo.LENGTH), "10");
+    Assert.assertEquals(attribute.getValue(MdAttributeDecimalInfo.DECIMAL), "2");
+    Assert.assertEquals(attribute.getValue(MdAttributeDecimalInfo.REJECT_NEGATIVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getValue(MdAttributeDecimalInfo.REJECT_ZERO), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(attribute.getValue(MdAttributeDecimalInfo.REJECT_POSITIVE), MdAttributeBooleanInfo.FALSE);
   }
 
   /**
-   * Test setting of attributes on the double datatype minus any overlapping attributes from the boolean and decimal test
+   * Test setting of attributes on the double datatype minus any overlapping
+   * attributes from the boolean and decimal test
    */
+  @Request
+  @Test
   public void testUpdateDouble()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5545,12 +5746,14 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDouble");
 
-    assertEquals(attribute.getStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Double Set Test");
-    assertEquals(attribute.getValue(MdAttributeDoubleInfo.LENGTH), "9");
-    assertEquals(attribute.getValue(MdAttributeDoubleInfo.DECIMAL), "4");
-    assertEquals(attribute.getValue(MdAttributeDoubleInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Double Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeDoubleInfo.LENGTH), "9");
+    Assert.assertEquals(attribute.getValue(MdAttributeDoubleInfo.DECIMAL), "4");
+    Assert.assertEquals(attribute.getValue(MdAttributeDoubleInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
   }
 
+  @Request
+  @Test
   public void testUpdateVirtual()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5576,18 +5779,22 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDouble");
     MdAttributeDAOIF virtual = mdViewIF.definesAttribute("testVirtual");
 
-    assertEquals(virtual.getValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE), attribute.getId());
+    Assert.assertEquals(virtual.getValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE), attribute.getId());
   }
 
   /**
-   * Test setting of attributes on the enumeration datatype minus any overlapping attributes from the boolean test As a side effect does testing on setting instance/instance_value tags
+   * Test setting of attributes on the enumeration datatype minus any
+   * overlapping attributes from the boolean test As a side effect does testing
+   * on setting instance/instance_value tags
    */
+  @Request
+  @Test
   public void testUpdateEnumeration()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
     mdBusinessEnum1.setGenerateMdController(false);
     mdBusinessEnum1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -5622,16 +5829,18 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testEnumeration");
     MdEnumerationDAOIF enumeration = MdEnumerationDAO.getMdEnumerationDAO(FILTER);
 
-    assertEquals(attribute.getStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Enumeration Set Test");
-    assertEquals(attribute.getValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Enumeration Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure that the enumeration is reference the correct enumeration class
-    assertEquals(attribute.getValue(MdAttributeEnumerationInfo.MD_ENUMERATION), enumeration.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeEnumerationInfo.MD_ENUMERATION), enumeration.getId());
   }
 
   /**
    * Test setting of attributes on a blob datatype
    */
+  @Request
+  @Test
   public void testUpdateFile()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5656,17 +5865,20 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO attribute = (MdAttributeConcreteDAO) ( mdEntityIF.definesAttribute("testFile") ).getBusinessDAO();
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeFileInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "File Set Test");
-    assertEquals(attribute.getValue(MdAttributeFileInfo.IMMUTABLE), MdAttributeBooleanInfo.FALSE);
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeFileInfo.REQUIRED));
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeFileInfo.REMOVE));
-    assertEquals(attribute.getStructValue(MdAttributeFileInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "File Test");
-    assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeFileInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "File Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeFileInfo.IMMUTABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeFileInfo.REQUIRED));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeFileInfo.REMOVE));
+    Assert.assertEquals(attribute.getStructValue(MdAttributeFileInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "File Test");
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
   }
 
   /**
-   * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean, decimal, and double test
+   * Test setting of attributes on the character datatype minus any overlapping
+   * attributes from the boolean, decimal, and double test
    */
+  @Request
+  @Test
   public void testUpdateFloat()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5691,16 +5903,18 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testFloat");
 
-    assertEquals(attribute.getStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Float Set Test");
-    assertEquals(attribute.getValue(MdAttributeFloatInfo.LENGTH), "10");
-    assertEquals(attribute.getValue(MdAttributeFloatInfo.DECIMAL), "2");
-    assertEquals(attribute.getValue(MdAttributeFloatInfo.REJECT_POSITIVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(attribute.getValue(MdAttributeFloatInfo.REJECT_NEGATIVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Float Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeFloatInfo.LENGTH), "10");
+    Assert.assertEquals(attribute.getValue(MdAttributeFloatInfo.DECIMAL), "2");
+    Assert.assertEquals(attribute.getValue(MdAttributeFloatInfo.REJECT_POSITIVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getValue(MdAttributeFloatInfo.REJECT_NEGATIVE), MdAttributeBooleanInfo.TRUE);
   }
 
   /**
    * Test setting of mdHash attribute specific values
    */
+  @Request
+  @Test
   public void testUpdateHash()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5724,12 +5938,15 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the hash encryption method is set
     AttributeEnumerationIF method = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeHashInfo.HASH_METHOD);
-    assertEquals(HashMethods.MD5.getId(), method.dereference()[0].getId());
+    Assert.assertEquals(HashMethods.MD5.getId(), method.dereference()[0].getId());
   }
 
   /**
-   * Test setting of attributes on the integer datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the integer datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateInteger()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5752,14 +5969,17 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testInteger");
 
-    assertEquals(attribute.getStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Integer Set Test");
-    assertEquals(attribute.getValue(MdAttributeIntegerInfo.REJECT_POSITIVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(attribute.getValue(MdAttributeIntegerInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Integer Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeIntegerInfo.REJECT_POSITIVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getValue(MdAttributeIntegerInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
   }
 
   /**
-   * Test setting of attributes on the long datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the long datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateLong()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5781,23 +6001,26 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testLong");
 
-    assertEquals(attribute.getStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Long Set Test");
-    assertEquals(attribute.getValue(MdAttributeLongInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Long Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeLongInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     mdBusiness1.apply();
     mdBusiness2.apply();
 
@@ -5815,21 +6038,24 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testReference");
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(CLASS2);
 
-    assertEquals(attribute.getStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Reference Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Reference Test");
 
     // Ensure that the reference is referencing the correct class
-    assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateMultiReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -5855,10 +6081,10 @@ public class SAXParseTest extends TestCase
       MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(mdBusiness2.definesType());
 
       String actual = attribute.getStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
-      assertEquals("Term Test", actual);
+      Assert.assertEquals("Term Test", actual);
 
       // Ensure that the reference is referencing the correct class
-      assertEquals(attribute.getValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
+      Assert.assertEquals(attribute.getValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
     }
     finally
     {
@@ -5867,14 +6093,17 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
     mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -5900,10 +6129,10 @@ public class SAXParseTest extends TestCase
       MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
       String actual = attribute.getStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
-      assertEquals("Term Test", actual);
+      Assert.assertEquals("Term Test", actual);
 
       // Ensure that the reference is referencing the correct class
-      assertEquals(attribute.getValue(MdAttributeMultiTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+      Assert.assertEquals(attribute.getValue(MdAttributeMultiTermInfo.REF_MD_ENTITY), mdTermIF.getId());
     }
     finally
     {
@@ -5912,8 +6141,11 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5941,15 +6173,18 @@ public class SAXParseTest extends TestCase
 
     MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
-    assertEquals(attribute.getStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Term Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Term Test");
 
     // Ensure that the reference is referencing the correct class
-    assertEquals(attribute.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
   }
 
   /**
-   * Test setting of attributes on the struct datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the struct datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateStruct()
   {
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
@@ -5986,25 +6221,27 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF mdAttributeIF = mdEntityIF.definesAttribute("testStruct");
     MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(mdStruct.definesType());
 
-    assertEquals(mdAttributeIF.getStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Struct Set Test");
-    assertEquals(mdStructIF.getValue(MdBusinessInfo.CACHE_SIZE), "525");
+    Assert.assertEquals(mdAttributeIF.getStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Struct Set Test");
+    Assert.assertEquals(mdStructIF.getValue(MdBusinessInfo.CACHE_SIZE), "525");
 
     // Ensure that the correct class is being referenced
-    assertEquals(mdAttributeIF.getValue(MdAttributeStructInfo.MD_STRUCT), mdStructIF.getId());
+    Assert.assertEquals(mdAttributeIF.getValue(MdAttributeStructInfo.MD_STRUCT), mdStructIF.getId());
 
     List<String> ids = EntityDAO.getEntityIdsDB(CLASS);
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
     AttributeStruct attribute = (AttributeStruct) businessDAOIF.getAttributeIF("testStruct");
 
-    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
   }
 
   /**
    * Test setting of symmetric attribute specific value.
    */
+  @Request
+  @Test
   public void testUpdateSymmetric()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -6029,13 +6266,16 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the symmetric encryption method is set
     AttributeEnumerationIF method = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeSymmetricInfo.SYMMETRIC_METHOD);
-    assertEquals(SymmetricMethods.DES.getId(), method.dereference()[0].getId());
-    assertEquals("56", attribute.getValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE));
+    Assert.assertEquals(SymmetricMethods.DES.getId(), method.dereference()[0].getId());
+    Assert.assertEquals("56", attribute.getValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE));
   }
 
   /**
-   * Test updating of attributes on the text datatype minus any overlapping attributes from the boolean test.
+   * Test updating of attributes on the text datatype minus any overlapping
+   * attributes from the boolean test.
    */
+  @Request
+  @Test
   public void testUpdateClob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -6056,12 +6296,15 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testText");
 
-    assertEquals(attribute.getStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Text Set Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Text Set Test");
   }
 
   /**
-   * Test updating of attributes on the clob datatype minus any overlapping attributes from the boolean test.
+   * Test updating of attributes on the clob datatype minus any overlapping
+   * attributes from the boolean test.
    */
+  @Request
+  @Test
   public void testUpdateText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -6082,12 +6325,15 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testClob");
 
-    assertEquals(attribute.getStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Clob Set Test");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Clob Set Test");
   }
 
   /**
-   * Test setting of attributes on the time datatype minus any overlapping attributes from the boolean test
+   * Test setting of attributes on the time datatype minus any overlapping
+   * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testUpdateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -6116,13 +6362,15 @@ public class SAXParseTest extends TestCase
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testTime");
 
-    assertEquals(attribute.getStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Time Set Test");
-    assertEquals(mdEntityIF.definesAttribute("testTime2").getStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Time Set Test2");
+    Assert.assertEquals(attribute.getStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Time Set Test");
+    Assert.assertEquals(mdEntityIF.definesAttribute("testTime2").getStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Time Set Test2");
   }
 
   /**
    * Test setting of attributes of and on the relationship datatype
    */
+  @Request
+  @Test
   public void testUpdateMdRelationship()
   {
     SAXImporter.runImport(new File(RELATIONSHIP_SET));
@@ -6150,35 +6398,37 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdRelationship.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
     MdAttributeDAOIF attributeCharacter = mdRelationship.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
 
-    assertEquals("Relationship Set Test", mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals("Relationship Test", mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdRelationship.getValue(MdRelationshipInfo.REMOVE));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.EXTENDABLE));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.ABSTRACT));
+    Assert.assertEquals("Relationship Set Test", mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Relationship Test", mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdRelationship.getValue(MdRelationshipInfo.REMOVE));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.EXTENDABLE));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdRelationship.getValue(MdRelationshipInfo.ABSTRACT));
 
     // Ensure the parent attributes are correctly set
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_MD_BUSINESS), mdBusiness1.getId());
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_CARDINALITY), "1");
-    assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Parent Set Test");
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_MD_BUSINESS), mdBusiness1.getId());
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.PARENT_CARDINALITY), "1");
+    Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Parent Set Test");
 
     // Ensure the child attributes are correctly set
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_MD_BUSINESS), mdBusiness2.getId());
-    assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_CARDINALITY), "*");
-    assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Child Set Test");
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_MD_BUSINESS), mdBusiness2.getId());
+    Assert.assertEquals(mdRelationship.getValue(MdRelationshipInfo.CHILD_CARDINALITY), "*");
+    Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Child Set Test");
 
     // Ensure the attributes are linked to the relationship
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdRelationship.getId());
-    assertEquals(attributeCharacter.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdRelationship.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdRelationship.getId());
+    Assert.assertEquals(attributeCharacter.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdRelationship.getId());
 
     mdRelationship.setValue(MetadataInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdRelationship.apply();
 
     // Test the sub relationship
     MdRelationshipDAO mdRelationship2 = MdRelationshipDAO.getMdRelationshipDAO(RELATIONSHIP2).getBusinessDAO();
-    assertEquals(mdRelationship.getId(), mdRelationship2.getValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP));
-    assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
+    Assert.assertEquals(mdRelationship.getId(), mdRelationship2.getValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP));
+    Assert.assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
   }
 
+  @Request
+  @Test
   public void testUpdateMdController()
   {
     MdControllerDAO mdController = MdControllerDAO.newInstance();
@@ -6262,15 +6512,15 @@ public class SAXParseTest extends TestCase
 
     SAXImporter.runImport(new File(tempXMLFile));
 
-    assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
+    Assert.assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
 
     MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO("test.xmlclasses.Controller1");
-    assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<MdActionDAOIF> mdActions = mdControllerIF.getMdActionDAOs();
 
-    assertEquals(2, mdActions.size());
+    Assert.assertEquals(2, mdActions.size());
 
     int i = 0;
     int j = 1;
@@ -6281,43 +6531,45 @@ public class SAXParseTest extends TestCase
       j = 0;
     }
 
-    assertEquals("checkin", mdActions.get(i).getName());
-    assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkin", mdActions.get(i).getName());
+    Assert.assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
 
     List<MdParameterDAOIF> mdParameters = mdActions.get(i).getMdParameterDAOs();
-    assertEquals(3, mdParameters.size());
-    assertEquals("param1", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(3, mdParameters.size());
+    Assert.assertEquals("param1", mdParameters.get(0).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
+    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
+    Assert.assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
 
-    assertEquals("param2", mdParameters.get(1).getParameterName());
-    assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
-    assertEquals("1", mdParameters.get(1).getParameterOrder());
-    assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param2", mdParameters.get(1).getParameterName());
+    Assert.assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
+    Assert.assertEquals("1", mdParameters.get(1).getParameterOrder());
+    Assert.assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    assertEquals("param3", mdParameters.get(2).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(2).getParameterType().getType());
-    assertEquals("4", mdParameters.get(2).getParameterOrder());
-    assertEquals("param3", mdParameters.get(2).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param3", mdParameters.get(2).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(2).getParameterType().getType());
+    Assert.assertEquals("4", mdParameters.get(2).getParameterOrder());
+    Assert.assertEquals("param3", mdParameters.get(2).getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    assertEquals("checkout", mdActions.get(j).getName());
-    assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkout", mdActions.get(j).getName());
+    Assert.assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
 
     mdParameters = mdActions.get(j).getMdParameterDAOs();
-    assertEquals(1, mdParameters.size());
-    assertEquals("param4", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(1, mdParameters.size());
+    Assert.assertEquals("param4", mdParameters.get(0).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
+    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
+    Assert.assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
   /**
    * Test setting of attributes of and on the struct datatype,
    */
+  @Request
+  @Test
   public void testUpdateMdStruct()
   {
     SAXImporter.runImport(new File(STANDALONE_STRUCT_SET));
@@ -6345,18 +6597,20 @@ public class SAXParseTest extends TestCase
     MdAttributeDAOIF attribute = mdStruct.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
     MdAttributeDAOIF attributeCharacter = mdStruct.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
 
-    assertEquals("Struct Set Test", mdStruct.getStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals("Set Struct Attributes Test", mdStruct.getStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdStruct.getValue(MdStructInfo.REMOVE));
+    Assert.assertEquals("Struct Set Test", mdStruct.getStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Set Struct Attributes Test", mdStruct.getStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdStruct.getValue(MdStructInfo.REMOVE));
 
     // Ensure the attributes are linked to the struct
-    assertEquals(mdStruct.getId(), attribute.getValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS));
-    assertEquals(mdStruct.getId(), attributeCharacter.getValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS));
+    Assert.assertEquals(mdStruct.getId(), attribute.getValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS));
+    Assert.assertEquals(mdStruct.getId(), attributeCharacter.getValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS));
   }
 
   /**
    * Test setting of attributes of and on the class datatype
    */
+  @Request
+  @Test
   public void testUpdateMdException()
   {
     // Create test MdBusiness
@@ -6390,23 +6644,25 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdException1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdException1IF.getStructValue(MdElementInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
-    assertEquals(mdException1IF.getStructValue(MdElementInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
-    assertEquals(mdException1IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdException1IF.getValue(MdElementInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdException1IF.getValue(MdElementInfo.PUBLISH));
+    Assert.assertEquals(mdException1IF.getStructValue(MdElementInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
+    Assert.assertEquals(mdException1IF.getStructValue(MdElementInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
+    Assert.assertEquals(mdException1IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdException1IF.getValue(MdElementInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdException1IF.getValue(MdElementInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdException1IF.getValue(MdElementInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdException2IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdException1IF.getValue(MdElementInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdException2IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdException2IF.getValue(MdExceptionInfo.SUPER_MD_EXCEPTION), mdException1IF.getId());
+    Assert.assertEquals(mdException2IF.getValue(MdExceptionInfo.SUPER_MD_EXCEPTION), mdException1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdException1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdException1IF.getId());
   }
 
+  @Request
+  @Test
   public void testUpdateMdProblem()
   {
     // Create test MdBusiness
@@ -6438,23 +6694,25 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdProblem1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdProblem Set Test");
-    assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdProblem Attributes Test");
-    assertEquals(mdProblem1IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdProblem1IF.getValue(MdProblemInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdProblem1IF.getValue(MdProblemInfo.PUBLISH));
+    Assert.assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdProblem Set Test");
+    Assert.assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdProblem Attributes Test");
+    Assert.assertEquals(mdProblem1IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdProblem1IF.getValue(MdProblemInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdProblem1IF.getValue(MdProblemInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdProblem1IF.getValue(MdProblemInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdProblem2IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdProblem1IF.getValue(MdProblemInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdProblem2IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdProblem2IF.getValue(MdProblemInfo.SUPER_MD_PROBLEM), mdProblem1IF.getId());
+    Assert.assertEquals(mdProblem2IF.getValue(MdProblemInfo.SUPER_MD_PROBLEM), mdProblem1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdProblem1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdProblem1IF.getId());
   }
 
+  @Request
+  @Test
   public void testUpdateMdInformation()
   {
     // Create test MdBusiness
@@ -6488,23 +6746,25 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdInformation1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdInformation Set Test");
-    assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdInformation Attributes Test");
-    assertEquals(mdInformation1IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdInformation1IF.getValue(MdInformationInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdInformation1IF.getValue(MdInformationInfo.PUBLISH));
+    Assert.assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdInformation Set Test");
+    Assert.assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdInformation Attributes Test");
+    Assert.assertEquals(mdInformation1IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdInformation1IF.getValue(MdInformationInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdInformation1IF.getValue(MdInformationInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdInformation1IF.getValue(MdInformationInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdInformation2IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdInformation1IF.getValue(MdInformationInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdInformation2IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdInformation2IF.getValue(MdInformationInfo.SUPER_MD_INFORMATION), mdInformation1IF.getId());
+    Assert.assertEquals(mdInformation2IF.getValue(MdInformationInfo.SUPER_MD_INFORMATION), mdInformation1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdInformation1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdInformation1IF.getId());
   }
 
+  @Request
+  @Test
   public void testUpdateMdView()
   {
     // Create test MdView
@@ -6538,23 +6798,25 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdView1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdView1IF.getStructValue(MdViewInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
-    assertEquals(mdView1IF.getStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
-    assertEquals(mdView1IF.getValue(MdViewInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdView1IF.getValue(MdViewInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdView1IF.getValue(MdViewInfo.PUBLISH));
+    Assert.assertEquals(mdView1IF.getStructValue(MdViewInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
+    Assert.assertEquals(mdView1IF.getStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
+    Assert.assertEquals(mdView1IF.getValue(MdViewInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdView1IF.getValue(MdViewInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdView1IF.getValue(MdViewInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdView1IF.getValue(MdViewInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdView2IF.getValue(MdViewInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdView1IF.getValue(MdViewInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdView2IF.getValue(MdViewInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdView2IF.getValue(MdViewInfo.SUPER_MD_VIEW), mdView1IF.getId());
+    Assert.assertEquals(mdView2IF.getValue(MdViewInfo.SUPER_MD_VIEW), mdView1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdView1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdView1IF.getId());
   }
 
+  @Request
+  @Test
   public void testUpdateMdUtil()
   {
     // Create test MdView
@@ -6588,23 +6850,25 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdUtil1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdUtil1IF.getStructValue(MdUtilInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
-    assertEquals(mdUtil1IF.getStructValue(MdUtilInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
-    assertEquals(mdUtil1IF.getValue(MdUtilInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdUtil1IF.getValue(MdUtilInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdUtil1IF.getValue(MdUtilInfo.PUBLISH));
+    Assert.assertEquals(mdUtil1IF.getStructValue(MdUtilInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
+    Assert.assertEquals(mdUtil1IF.getStructValue(MdUtilInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
+    Assert.assertEquals(mdUtil1IF.getValue(MdUtilInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdUtil1IF.getValue(MdUtilInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdUtil1IF.getValue(MdUtilInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdUtil1IF.getValue(MdUtilInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdUtil2IF.getValue(MdUtilInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdUtil1IF.getValue(MdUtilInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdUtil2IF.getValue(MdUtilInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdUtil2IF.getValue(MdUtilInfo.SUPER_MD_UTIL), mdUtil1IF.getId());
+    Assert.assertEquals(mdUtil2IF.getValue(MdUtilInfo.SUPER_MD_UTIL), mdUtil1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdUtil1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdUtil1IF.getId());
   }
 
+  @Request
+  @Test
   public void testUpdateMdEnumeration()
   {
     SAXImporter.runImport(new File(FILTER_SET));
@@ -6636,15 +6900,15 @@ public class SAXParseTest extends TestCase
 
     items = mdEnumeration.getAllEnumItems();
 
-    assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Enumeration Filter Test");
-    assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Filter Set Test");
-    assertEquals(mdEnumeration.getValue(MdEnumerationInfo.REMOVE), MdAttributeBooleanInfo.FALSE);
-    assertEquals(mdEnumeration.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Enumeration Filter Test");
+    Assert.assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Filter Set Test");
+    Assert.assertEquals(mdEnumeration.getValue(MdEnumerationInfo.REMOVE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdEnumeration.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.FALSE);
 
     // Check that the instance of the filter are correctly mapped
-    assertEquals(2, items.size());
-    assertTrue(items.get(0).getValue("testChar").equals("CO") || items.get(0).getValue("testChar").equals("NY"));
-    assertEquals(mdEnumeration2.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(2, items.size());
+    Assert.assertTrue(items.get(0).getValue("testChar").equals("CO") || items.get(0).getValue("testChar").equals("NY"));
+    Assert.assertEquals(mdEnumeration2.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.TRUE);
 
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.apply();
@@ -6653,12 +6917,14 @@ public class SAXParseTest extends TestCase
   /**
    * Test creating Instances that reference other instances
    */
+  @Request
+  @Test
   public void testUpdateObject()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -6713,13 +6979,13 @@ public class SAXParseTest extends TestCase
     BusinessDAOIF class2 = BusinessDAO.get(class2Ids.get(0));
 
     // Assert that the values of refTest refer to instances of CLASS
-    assertTrue(classIds.contains(class2.getValue("testReference")));
+    Assert.assertTrue(classIds.contains(class2.getValue("testReference")));
 
     try
     {
       BusinessDAO.get(id);
 
-      fail("SAXImporter did not delete the businessDAO with the id [" + id + "]");
+      Assert.fail("SAXImporter did not delete the businessDAO with the id [" + id + "]");
     }
     catch (DataNotFoundException e)
     {
@@ -6730,6 +6996,8 @@ public class SAXParseTest extends TestCase
   /**
    * Test creating Instances that reference other instances
    */
+  @Request
+  @Test
   public void testRekeyObject()
   {
     final String newKey = "newKey";
@@ -6737,7 +7005,7 @@ public class SAXParseTest extends TestCase
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -6784,20 +7052,22 @@ public class SAXParseTest extends TestCase
 
     SAXImporter.runImport(new File(tempXMLFile));
 
-    assertNotNull(EntityDAO.get(mdBusiness1.definesType(), newKey));
+    Assert.assertNotNull(EntityDAO.get(mdBusiness1.definesType(), newKey));
   }
 
+  @Request
+  @Test
   public void testUpdateRelationship()
   {
     // Create the Metadata entities
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     mdBusiness1.apply();
     mdBusiness2.apply();
 
@@ -6825,7 +7095,7 @@ public class SAXParseTest extends TestCase
     relationshipDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
     String id = relationshipDAO2.apply();
 
-    assertEquals(2, MdRelationshipDAO.getEntityIdsDB(mdRelationship1.definesType()).size());
+    Assert.assertEquals(2, MdRelationshipDAO.getEntityIdsDB(mdRelationship1.definesType()).size());
 
     // Export the test entities
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { relationshipDAO1 });
@@ -6848,26 +7118,28 @@ public class SAXParseTest extends TestCase
     RelationshipDAOIF r1 = RelationshipDAO.get(r1Ids.get(0));
 
     // Ensure that the parent references the instance of CLASS
-    assertEquals(c1.getId(), r1.getParentId());
+    Assert.assertEquals(c1.getId(), r1.getParentId());
     // Ensure that the child reference the instance of CLASS2
-    assertEquals(c2.getId(), r1.getChildId());
+    Assert.assertEquals(c2.getId(), r1.getChildId());
     // Ensure that the value of testBoolean is true
-    assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
 
     try
     {
       RelationshipDAO.get(id);
 
-      fail("SAXImporter did not delete the RelationshipDAO with the id [" + id + "]");
+      Assert.fail("SAXImporter did not delete the RelationshipDAO with the id [" + id + "]");
     }
     catch (DataNotFoundException e)
     {
       // This is expected
     }
 
-    assertEquals(1, MdRelationshipDAO.getEntityIdsDB(mdRelationship1.definesType()).size());
+    Assert.assertEquals(1, MdRelationshipDAO.getEntityIdsDB(mdRelationship1.definesType()).size());
   }
 
+  @Request
+  @Test
   public void testRekeyRelationship()
   {
     final String newKey = "newKey";
@@ -6876,11 +7148,11 @@ public class SAXParseTest extends TestCase
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setGenerateMdController(false);
     mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     mdBusiness1.apply();
     mdBusiness2.apply();
 
@@ -6912,9 +7184,11 @@ public class SAXParseTest extends TestCase
 
     SAXImporter.runImport(new File(tempXMLFile));
 
-    assertNotNull(RelationshipDAO.get(mdRelationship1.definesType(), newKey));
+    Assert.assertNotNull(RelationshipDAO.get(mdRelationship1.definesType(), newKey));
   }
 
+  @Request
+  @Test
   public void testReadAndWriteAllPermissions()
   {
     SAXImporter.runImport(new File(TEST_ALL_PERMISSIONS));
@@ -6931,10 +7205,10 @@ public class SAXParseTest extends TestCase
       {
         Set<Operation> permissions = role.getAllPermissions(metadata);
 
-        assertTrue(permissions.contains(Operation.READ));
-        assertTrue(permissions.contains(Operation.READ_ALL));
-        assertTrue(permissions.contains(Operation.WRITE));
-        assertTrue(permissions.contains(Operation.WRITE_ALL));
+        Assert.assertTrue(permissions.contains(Operation.READ));
+        Assert.assertTrue(permissions.contains(Operation.READ_ALL));
+        Assert.assertTrue(permissions.contains(Operation.WRITE));
+        Assert.assertTrue(permissions.contains(Operation.WRITE_ALL));
       }
 
     }
@@ -6945,6 +7219,8 @@ public class SAXParseTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testMultiRolePermissions()
   {
     SAXImporter.runImport(new File(TEST_MULTI_ROLE_PERMISSIONS));
@@ -6968,10 +7244,10 @@ public class SAXParseTest extends TestCase
         {
           Set<Operation> permissions = role.getAllPermissions(metadata);
 
-          assertTrue(permissions.contains(Operation.READ));
-          assertTrue(permissions.contains(Operation.READ_ALL));
-          assertTrue(permissions.contains(Operation.WRITE));
-          assertTrue(permissions.contains(Operation.WRITE_ALL));
+          Assert.assertTrue(permissions.contains(Operation.READ));
+          Assert.assertTrue(permissions.contains(Operation.READ_ALL));
+          Assert.assertTrue(permissions.contains(Operation.WRITE));
+          Assert.assertTrue(permissions.contains(Operation.WRITE_ALL));
         }
       }
 
@@ -6984,6 +7260,8 @@ public class SAXParseTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testMultiUserPermissions()
   {
     SAXImporter.runImport(new File(TEST_MULTI_USER_PERMISSIONS));
@@ -7007,10 +7285,10 @@ public class SAXParseTest extends TestCase
         {
           Set<Operation> permissions = user.getAllPermissions(metadata);
 
-          assertTrue(permissions.contains(Operation.READ));
-          assertTrue(permissions.contains(Operation.READ_ALL));
-          assertTrue(permissions.contains(Operation.WRITE));
-          assertTrue(permissions.contains(Operation.WRITE_ALL));
+          Assert.assertTrue(permissions.contains(Operation.READ));
+          Assert.assertTrue(permissions.contains(Operation.READ_ALL));
+          Assert.assertTrue(permissions.contains(Operation.WRITE));
+          Assert.assertTrue(permissions.contains(Operation.WRITE_ALL));
         }
       }
     }
@@ -7023,8 +7301,11 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Import Object of different types with the same key, where one object references the other
+   * Import Object of different types with the same key, where one object
+   * references the other
    */
+  @Request
+  @Test
   public void testImportObjectsWithSameKey()
   {
     String KEY = "KEY";
@@ -7064,8 +7345,8 @@ public class SAXParseTest extends TestCase
 
         SAXImporter.runImport(new File(tempXMLFile));
 
-        assertNotNull(BusinessDAO.get(mdBusiness1.definesType(), KEY));
-        assertNotNull(BusinessDAO.get(mdBusiness2.definesType(), KEY));
+        Assert.assertNotNull(BusinessDAO.get(mdBusiness1.definesType(), KEY));
+        Assert.assertNotNull(BusinessDAO.get(mdBusiness2.definesType(), KEY));
       }
       finally
       {
@@ -7078,6 +7359,8 @@ public class SAXParseTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDimensionAttributePermissions()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
@@ -7128,8 +7411,8 @@ public class SAXParseTest extends TestCase
 
             Set<Operation> permissions = test.getAssignedPermissions(mdAttributeDimension);
 
-            assertTrue(permissions.contains(Operation.READ));
-            assertFalse(permissions.contains(Operation.WRITE));
+            Assert.assertTrue(permissions.contains(Operation.READ));
+            Assert.assertFalse(permissions.contains(Operation.WRITE));
           }
         }
       }
@@ -7146,6 +7429,8 @@ public class SAXParseTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testUpdateMdWebForm()
   {
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
@@ -7188,27 +7473,29 @@ public class SAXParseTest extends TestCase
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
-    assertEquals(mdWebForm.getFormName(), test.getFormName());
-    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
-    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getFormName(), test.getFormName());
+    Assert.assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    Assert.assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(3, fields.size());
+    Assert.assertEquals(3, fields.size());
 
     MdWebIntegerDAO testField = (MdWebIntegerDAO) fields.get(2);
 
-    assertEquals(mdWebInteger.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebInteger.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebInteger.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebInteger.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeInteger.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    Assert.assertEquals(mdWebInteger.getFieldName(), testField.getFieldName());
+    Assert.assertEquals(mdWebInteger.getFieldOrder(), testField.getFieldOrder());
+    Assert.assertEquals(mdWebInteger.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdWebInteger.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(mdAttributeInteger.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
   }
 
   /**
    * Test setting of attributes of and on the class datatype
    */
+  @Request
+  @Test
   public void testCreateMdTerm()
   {
     // Create test MdBusiness
@@ -7236,24 +7523,26 @@ public class SAXParseTest extends TestCase
 
     MdAttributeDAOIF attribute = mdTermIF.definesAttribute(mdBoolean.definesAttribute());
 
-    assertEquals(mdTerm.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermIF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(mdTerm.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermIF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(mdTerm.getValue(MdBusinessInfo.EXTENDABLE), mdTermIF.getValue(MdBusinessInfo.EXTENDABLE));
-    assertEquals(mdTerm.getValue(MdBusinessInfo.ABSTRACT), mdTermIF.getValue(MdBusinessInfo.ABSTRACT));
-    assertEquals(mdTerm.getValue(MdBusinessInfo.CACHE_SIZE), mdTermIF.getValue(MdBusinessInfo.CACHE_SIZE));
-    assertEquals(mdTerm.getValue(MdBusinessInfo.PUBLISH), mdTermIF.getValue(MdBusinessInfo.PUBLISH));
-    assertEquals(mdTerm.getValue(MdBusinessInfo.REMOVE), mdTermIF.getValue(MdBusinessInfo.REMOVE));
-    assertEquals(mdTerm.getValue(MdBusinessInfo.EXTENDABLE), mdTermIF.getValue(MdBusinessInfo.EXTENDABLE));
-    // assertEquals(mdTerm.getValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS),
+    Assert.assertEquals(mdTerm.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermIF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(mdTerm.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermIF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(mdTerm.getValue(MdBusinessInfo.EXTENDABLE), mdTermIF.getValue(MdBusinessInfo.EXTENDABLE));
+    Assert.assertEquals(mdTerm.getValue(MdBusinessInfo.ABSTRACT), mdTermIF.getValue(MdBusinessInfo.ABSTRACT));
+    Assert.assertEquals(mdTerm.getValue(MdBusinessInfo.CACHE_SIZE), mdTermIF.getValue(MdBusinessInfo.CACHE_SIZE));
+    Assert.assertEquals(mdTerm.getValue(MdBusinessInfo.PUBLISH), mdTermIF.getValue(MdBusinessInfo.PUBLISH));
+    Assert.assertEquals(mdTerm.getValue(MdBusinessInfo.REMOVE), mdTermIF.getValue(MdBusinessInfo.REMOVE));
+    Assert.assertEquals(mdTerm.getValue(MdBusinessInfo.EXTENDABLE), mdTermIF.getValue(MdBusinessInfo.EXTENDABLE));
+    // Assert.assertEquals(mdTerm.getValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS),
     // mdTermIF.getValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS));
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdTermIF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdTermIF.getId());
   }
 
   /**
    * Test setting of attributes of and on the class datatype
    */
+  @Request
+  @Test
   public void testCreateMdTermRelationship()
   {
     // Create test MdBusiness
@@ -7278,26 +7567,26 @@ public class SAXParseTest extends TestCase
 
     MdTermRelationshipDAOIF mdTermRelationshipIF = MdTermRelationshipDAO.getMdTermRelationshipDAO(mdTermRelationship.definesType());
 
-    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.EXTENDABLE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.EXTENDABLE));
-    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.ABSTRACT), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.ABSTRACT));
-    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CACHE_SIZE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CACHE_SIZE));
-    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PUBLISH), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PUBLISH));
-    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.REMOVE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.REMOVE));
-    assertEquals(mdTerm.definesType(), mdTermRelationshipIF.getParentMdBusiness().definesType());
-    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PARENT_CARDINALITY), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PARENT_CARDINALITY));
-    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PARENT_METHOD), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PARENT_METHOD));
-    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    assertEquals(mdTerm.definesType(), mdTermRelationshipIF.getChildMdBusiness().definesType());
-    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CHILD_CARDINALITY), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CHILD_CARDINALITY));
-    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CHILD_METHOD), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CHILD_METHOD));
-    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.EXTENDABLE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.EXTENDABLE));
+    Assert.assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.ABSTRACT), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.ABSTRACT));
+    Assert.assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CACHE_SIZE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CACHE_SIZE));
+    Assert.assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PUBLISH), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PUBLISH));
+    Assert.assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.REMOVE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.REMOVE));
+    Assert.assertEquals(mdTerm.definesType(), mdTermRelationshipIF.getParentMdBusiness().definesType());
+    Assert.assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PARENT_CARDINALITY), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PARENT_CARDINALITY));
+    Assert.assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PARENT_METHOD), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PARENT_METHOD));
+    Assert.assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(mdTerm.definesType(), mdTermRelationshipIF.getChildMdBusiness().definesType());
+    Assert.assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CHILD_CARDINALITY), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CHILD_CARDINALITY));
+    Assert.assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CHILD_METHOD), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CHILD_METHOD));
+    Assert.assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
     String expectedType = ( (AttributeEnumerationIF) mdTermRelationship.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getId();
     String actualType = ( (AttributeEnumerationIF) mdTermRelationshipIF.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getId();
 
-    assertEquals(expectedType, actualType);
+    Assert.assertEquals(expectedType, actualType);
   }
 
   /**
@@ -7319,10 +7608,5 @@ public class SAXParseTest extends TestCase
     }
 
     return null;
-  }
-
-  public static void main(String args[])
-  {
-    TestRunner.run(SAXParseTest.class);
   }
 }

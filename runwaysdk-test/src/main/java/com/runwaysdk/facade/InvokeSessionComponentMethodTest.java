@@ -22,6 +22,9 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Date;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.EnumerationDTOIF;
 import com.runwaysdk.business.SessionDTO;
@@ -30,10 +33,13 @@ import com.runwaysdk.business.ViewDTO;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.TypeGeneratorInfo;
+import com.runwaysdk.session.Request;
 
 public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComponentMethodTestBase
 {
 
+  @Request
+  @Test
   public void testInvokeArrayMethod() throws Exception
   {
     String booleanInput = Boolean.toString(true);
@@ -54,11 +60,13 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     SessionDTO output = (SessionDTO) sessionClass.getMethod("sortNumbers", array.getClass(), Boolean.class).invoke(object, array, bool);
 
-    assertTrue(sessionClass.isInstance(output));
-    assertEquals(Boolean.parseBoolean(booleanInput), sessionClass.getMethod("getABoolean").invoke(output));
-    assertEquals(new Long(3), sessionClass.getMethod("getALong").invoke(output));
+    Assert.assertTrue(sessionClass.isInstance(output));
+    Assert.assertEquals(Boolean.parseBoolean(booleanInput), sessionClass.getMethod("getABoolean").invoke(output));
+    Assert.assertEquals(new Long(3), sessionClass.getMethod("getALong").invoke(output));
   }
 
+  @Request
+  @Test
   public void testInvokeDefinedAttributeMethod() throws Exception
   {
     String input = "164";
@@ -81,10 +89,12 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     Object output = sessionClass.getMethod("testMethod", sessionClass).invoke(object, object2);
 
-    assertNull(output);
-    assertEquals(Long.parseLong(input), sessionClass.getMethod("getALong").invoke(object));
+    Assert.assertNull(output);
+    Assert.assertEquals(Long.parseLong(input), sessionClass.getMethod("getALong").invoke(object));
   }
 
+  @Request
+  @Test
   public void testInvokeDefinedArrayMethod() throws Exception
   {
     String input = "Har har bar bar";
@@ -111,15 +121,17 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     SessionDTO[] output = (SessionDTO[]) sessionClass.getMethod("sortSessions", array.getClass(), String.class).invoke(object, array, input);
 
-    assertEquals(Array.getLength(array), output.length);
+    Assert.assertEquals(Array.getLength(array), output.length);
 
     for (SessionDTO dto : output)
     {
-      assertEquals(input, dto.getValue("aCharacter"));
-      assertEquals(longInput, dto.getValue("aLong"));
+      Assert.assertEquals(input, dto.getValue("aCharacter"));
+      Assert.assertEquals(longInput, dto.getValue("aLong"));
     }
   }
 
+  @Request
+  @Test
   public void testInvokeEmptyArrayMethod() throws Exception
   {
     String input = "Har har de dar dar";
@@ -144,15 +156,17 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     SessionDTO[] output = (SessionDTO[]) sessionClass.getMethod("sortSessions", array.getClass(), String.class).invoke(object, array, input);
 
-    assertEquals(Array.getLength(array), output.length);
+    Assert.assertEquals(Array.getLength(array), output.length);
 
     for (SessionDTO dto : output)
     {
-      assertEquals(input, dto.getValue("aCharacter"));
-      assertEquals(longInput, dto.getValue("aLong"));
+      Assert.assertEquals(input, dto.getValue("aCharacter"));
+      Assert.assertEquals(longInput, dto.getValue("aLong"));
     }
   }
 
+  @Request
+  @Test
   public void testInvokeMultiArrayMethod() throws Exception
   {
     // Create the existing BusinessDAO
@@ -187,15 +201,17 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     String[][] output = (String[][]) sessionClass.getMethod("testMultiArray", array4.getClass()).invoke(object, array4);
 
-    assertEquals(2, output.length);
-    assertEquals(2, output[0].length);
-    assertEquals("Yo my nizzle", output[0][0]);
-    assertEquals("Leroy Im witha or against ya.", output[0][1]);
-    assertEquals(2, output[1].length);
-    assertEquals("[[[[L" + sessionType + ";", output[1][0]);
-    assertEquals(sessionTypeName + "[][][][]", output[1][1]);
+    Assert.assertEquals(2, output.length);
+    Assert.assertEquals(2, output[0].length);
+    Assert.assertEquals("Yo my nizzle", output[0][0]);
+    Assert.assertEquals("Leroy Im witha or against ya.", output[0][1]);
+    Assert.assertEquals(2, output[1].length);
+    Assert.assertEquals("[[[[L" + sessionType + ";", output[1][0]);
+    Assert.assertEquals(sessionTypeName + "[][][][]", output[1][1]);
   }
 
+  @Request
+  @Test
   public void testInvokeMethodOnSubclass() throws Exception
   {
     String longInput = "278";
@@ -219,10 +235,12 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     Object output = bagClass.getMethod("testMethod", sessionClass).invoke(object, object2);
 
-    assertNull(output);
-    assertEquals(Long.parseLong(longInput) + 10L, sessionClass.getMethod("getALong").invoke(object));
+    Assert.assertNull(output);
+    Assert.assertEquals(Long.parseLong(longInput) + 10L, sessionClass.getMethod("getALong").invoke(object));
   }
 
+  @Request
+  @Test
   public void testInvokeMethodOnSubArray() throws Exception
   {
     String longInput = "142";
@@ -251,15 +269,17 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     SessionDTO[] output = (SessionDTO[]) bagClass.getMethod("sortSessions", arrayClass, String.class).invoke(object, array, input);
 
-    assertEquals(Array.getLength(array), output.length);
+    Assert.assertEquals(Array.getLength(array), output.length);
 
     for (SessionDTO dto : output)
     {
-      assertEquals(input, dto.getValue("aCharacter"));
-      assertEquals("142", dto.getValue("aLong"));
+      Assert.assertEquals(input, dto.getValue("aCharacter"));
+      Assert.assertEquals("142", dto.getValue("aLong"));
     }
   }
 
+  @Request
+  @Test
   public void testInvokeNewDefinedAttributeMethod() throws Exception
   {
     String input = "164";
@@ -274,10 +294,12 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     Object output = sessionClass.getMethod("testMethod", sessionClass).invoke(sessionDTO1, sessionDTO2);
 
-    assertNull(output);
-    assertEquals(Long.parseLong(input), sessionClass.getMethod("getALong").invoke(sessionDTO1));
+    Assert.assertNull(output);
+    Assert.assertEquals(Long.parseLong(input), sessionClass.getMethod("getALong").invoke(sessionDTO1));
   }
 
+  @Request
+  @Test
   public void testInvokeEnumeration() throws Exception
   {
     Class<?> stateClass = this.getClass().getClassLoader().loadClass(stateType + TypeGeneratorInfo.DTO_SUFFIX);
@@ -286,9 +308,9 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     BusinessDTO colBusDTO = (BusinessDTO) stateClass.getMethod("item", ClientRequestIF.class).invoke(enumerationDTOIF, clientRequest);
 
-    assertEquals("item method on the enum returned the wrong object.", colorado.getId(), colBusDTO.getId());
+    Assert.assertEquals("item method on the enum returned the wrong object.", colorado.getId(), colBusDTO.getId());
 
-    assertEquals("item method on the enum returned an object of the wrong class.", colorado.getClass().getName(), colBusDTO.getClass().getName());
+    Assert.assertEquals("item method on the enum returned an object of the wrong class.", colorado.getClass().getName(), colBusDTO.getClass().getName());
 
     Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
 
@@ -298,11 +320,11 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     sessionClass.getMethod("apply").invoke(sessionDTO);
 
     EnumerationDTOIF[] output = (EnumerationDTOIF[]) sessionClass.getMethod("getStates", stateClass).invoke(sessionDTO, enumerationDTOIF);
-    assertEquals(5, output.length);
+    Assert.assertEquals(5, output.length);
 
     for (EnumerationDTOIF dto : output)
     {
-      assertEquals(enumerationDTOIF.name(), dto.name());
+      Assert.assertEquals(enumerationDTOIF.name(), dto.name());
     }
   }
 
@@ -312,6 +334,8 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testIsModified() throws Exception
   {
     Class<?> collectionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
@@ -332,21 +356,21 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO object2 = (SessionDTO) get.invoke(null, clientRequest, id2);
 
     object.setValue("aDouble", "46");
-    assertEquals(true, object.isModified());
-    assertEquals(true, object.isModified("aDouble"));
+    Assert.assertEquals(true, object.isModified());
+    Assert.assertEquals(true, object.isModified("aDouble"));
 
     Object output = collectionClass.getMethod("testMethod", collectionClass).invoke(object, object2);
 
-    assertNull(output);
-    assertEquals(Long.parseLong(input), collectionClass.getMethod("getALong").invoke(object));
+    Assert.assertNull(output);
+    Assert.assertEquals(Long.parseLong(input), collectionClass.getMethod("getALong").invoke(object));
 
     // Since object was applied to the database during the execution of the
     // invoked method
     // the isModified flag should be false because the returned object is the
     // current
     // value stored in the database.
-    assertEquals(false, object.isModified("aDouble"));
-    assertEquals(false, object.isModified());
+    Assert.assertEquals(false, object.isModified("aDouble"));
+    Assert.assertEquals(false, object.isModified());
   }
 
   /**
@@ -355,6 +379,8 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testIsModifiedNoApply() throws Exception
   {
     String booleanInput = Boolean.toString(true);
@@ -374,16 +400,16 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     Long[] array = new Long[] { 3L, 4L, 8L, 9L, 10923012910L };
 
     object.setValue("aDouble", "46");
-    assertEquals(true, object.isModified());
-    assertEquals(true, object.isModified("aDouble"));
+    Assert.assertEquals(true, object.isModified());
+    Assert.assertEquals(true, object.isModified("aDouble"));
 
     SessionDTO output = (SessionDTO) sessionClass.getMethod("sortNumbers", array.getClass(), Boolean.class).invoke(object, array, bool);
 
-    assertTrue(sessionClass.isInstance(output));
-    assertEquals(Boolean.parseBoolean(booleanInput), sessionClass.getMethod("getABoolean").invoke(output));
-    assertEquals(new Long(3), sessionClass.getMethod("getALong").invoke(output));
-    assertEquals(true, object.isModified("aDouble"));
-    assertEquals(true, object.isModified());
+    Assert.assertTrue(sessionClass.isInstance(output));
+    Assert.assertEquals(Boolean.parseBoolean(booleanInput), sessionClass.getMethod("getABoolean").invoke(output));
+    Assert.assertEquals(new Long(3), sessionClass.getMethod("getALong").invoke(output));
+    Assert.assertEquals(true, object.isModified("aDouble"));
+    Assert.assertEquals(true, object.isModified());
   }
 
   /**
@@ -392,6 +418,8 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testNotModified() throws Exception
   {
     Class<?> collectionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
@@ -406,14 +434,16 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     collectionClass.getMethod("poopNothing").invoke(object);
 
-    assertEquals(false, object.isModified());
+    Assert.assertEquals(false, object.isModified());
 
     for (String name : object.getAttributeNames())
     {
-      assertEquals(false, object.isModified(name));
+      Assert.assertEquals(false, object.isModified(name));
     }
   }
 
+  @Request
+  @Test
   public void testStaticMethod() throws Exception
   {
     Class<?> collectionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
@@ -421,14 +451,16 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     Integer[] output = (Integer[]) collectionClass.getMethod("sortIntegers", ClientRequestIF.class, integers.getClass()).invoke(null, clientRequest, (Object) integers);
 
-    assertEquals(integers.length, output.length);
+    Assert.assertEquals(integers.length, output.length);
 
     for (int i = 0; i < integers.length - 1; i++)
     {
-      assertTrue(output[i] < output[i + 1]);
+      Assert.assertTrue(output[i] < output[i + 1]);
     }
   }
 
+  @Request
+  @Test
   public void testDateMethod() throws Exception
   {
     Class<?> collectionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
@@ -436,14 +468,16 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     Date[] output = (Date[]) collectionClass.getMethod("getDates", ClientRequestIF.class, date.getClass()).invoke(null, clientRequest, date);
 
-    assertEquals(4, output.length);
+    Assert.assertEquals(4, output.length);
 
     for (int i = 0; i < output.length; i++)
     {
-      assertEquals(date.getTime() + 10L * i, output[i].getTime());
+      Assert.assertEquals(date.getTime() + 10L * i, output[i].getTime());
     }
   }
 
+  @Request
+  @Test
   public void testStaticInstanceMethod() throws Exception
   {
     String booleanInput = Boolean.toString(true);
@@ -459,11 +493,13 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     SessionDTO output = (SessionDTO) sessionClass.getMethod("sortNumbers", ClientRequestIF.class, String.class, array.getClass(), Boolean.class).invoke(null, clientRequest, id, array, bool);
 
-    assertTrue(sessionClass.isInstance(output));
-    assertEquals(Boolean.parseBoolean(booleanInput), sessionClass.getMethod("getABoolean").invoke(output));
-    assertEquals(new Long(3), sessionClass.getMethod("getALong").invoke(output));
+    Assert.assertTrue(sessionClass.isInstance(output));
+    Assert.assertEquals(Boolean.parseBoolean(booleanInput), sessionClass.getMethod("getABoolean").invoke(output));
+    Assert.assertEquals(new Long(3), sessionClass.getMethod("getALong").invoke(output));
   }
 
+  @Request
+  @Test
   public void testInvokeMethodWithUtilParam() throws Exception
   {
     // Create the existing SessionDTO
@@ -491,14 +527,16 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     String outputId = (String) utilClass.getMethod("getId").invoke(output);
 
-    assertEquals(inputId, outputId);
+    Assert.assertEquals(inputId, outputId);
 
-    assertEquals(someCharValue, someCharValue2);
+    Assert.assertEquals(someCharValue, someCharValue2);
 
     sessionClass.getMethod("delete").invoke(sessionDTO1);
     utilClass.getMethod("delete").invoke(input);
   }
 
+  @Request
+  @Test
   public void testInvokeMethodWithViewParam() throws Exception
   {
     // Create the existing SessionDTO
@@ -526,14 +564,16 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     String outputId = (String) viewClass.getMethod("getId").invoke(output);
 
-    assertEquals(inputId, outputId);
+    Assert.assertEquals(inputId, outputId);
 
-    assertEquals(someCharValue, someCharValue2);
+    Assert.assertEquals(someCharValue, someCharValue2);
 
     sessionClass.getMethod("delete").invoke(sessionDTO1);
     viewClass.getMethod("delete").invoke(input);
   }
 
+  @Request
+  @Test
   public void testInvokeMethodWithUtilArrayParam() throws Exception
   {
     // Create the existing SessionDTO
@@ -571,16 +611,18 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     UtilDTO[] output = (UtilDTO[]) sessionClass.getMethod("utilArray", array.getClass()).invoke(sessionDTO1, (Object) array);
 
-    assertEquals(array.length, output.length);
+    Assert.assertEquals(array.length, output.length);
 
     for (int i = 0; i < array.length; i++)
     {
-      assertEquals(array[i].getValue("aCharacter"), output[i].getValue("aCharacter"));
+      Assert.assertEquals(array[i].getValue("aCharacter"), output[i].getValue("aCharacter"));
     }
 
     sessionClass.getMethod("delete").invoke(sessionDTO1);
   }
 
+  @Request
+  @Test
   public void testInvokeMethodWithViewArrayParam() throws Exception
   {
     // Create the existing SessionDTO
@@ -618,11 +660,11 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     ViewDTO[] output = (ViewDTO[]) sessionClass.getMethod("viewArray", array.getClass()).invoke(businessDTO, (Object) array);
 
-    assertEquals(array.length, output.length);
+    Assert.assertEquals(array.length, output.length);
 
     for (int i = 0; i < array.length; i++)
     {
-      assertEquals(array[i].getValue("aCharacter"), output[i].getValue("aCharacter"));
+      Assert.assertEquals(array[i].getValue("aCharacter"), output[i].getValue("aCharacter"));
     }
 
     sessionClass.getMethod("delete").invoke(businessDTO);

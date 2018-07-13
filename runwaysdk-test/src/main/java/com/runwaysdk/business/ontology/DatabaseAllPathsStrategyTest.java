@@ -3,54 +3,31 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.ontology;
 
+import org.junit.Test;
+
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
-
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
 {
   public DatabaseAllPathsStrategyTest() throws Exception
   {
     super();
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(DatabaseAllPathsStrategyTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp() throws Exception
-      {
-//        classSetUp();
-      }
-
-      protected void tearDown() throws Exception
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
   }
 
   /*
@@ -76,30 +53,33 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
   {
     return "((" + DatabaseAllPathsStrategy.class.getCanonicalName() + ")strategy).configure(CLASS);";
   }
-  
+
+  @Request
+  @Test
   public void testDelete()
   {
     AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
-    
+
     util.destroyTestData();
     try
     {
       util.createTestData();
       util.validateAllpaths();
-      
+
       System.out.println("Invoking delete on a Term");
-      
+
       Term testRoot = Term.get(util.testRoot.getId());
-      
+
       long pre = System.nanoTime();
       testRoot.delete();
       long post = System.nanoTime();
-      long elapsed = (post - pre) / 1000000000;
+      long elapsed = ( post - pre ) / 1000000000;
       System.out.println("deleting a term took: " + elapsed + " seconds");
-      
+
       util.validateAllpaths();
       Term.get(util.f.getId()).delete(); // F exists outside the delRoot
-      Term.get(util.spacer.getId()).delete(); // Spacer exists outside the delRoot
+      Term.get(util.spacer.getId()).delete(); // Spacer exists outside the
+                                              // delRoot
       util.ensureNoTestDataExists();
     }
     finally
@@ -108,46 +88,48 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
     }
   }
 
-//  @Request
-//  public void testExportImport() throws Exception
-//  {
-//    AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
-//    
-//    util.destroyTestData();
-//    
-//    try
-//    {
-//      util.createTestData();
-//      
-//      OntologyExcelExporter.exportToFile(new File("OntologyExport2.xls"), Term.getByTermId("AllpathsTest Delete Root"));
-//      
-//      util.destroyTestData();
-//      
-//      OntologyExcelImporter.main(new String[]{"OntologyExport2.xls"});
-//      
-//      util.validateAllpaths();
-//    }
-//    finally
-//    {
-//      util.destroyTestData();
-//    }
-//  }
-  
+  // @Request
+  // @Request @Test public void testExportImport() throws Exception
+  // {
+  // AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
+  //
+  // util.destroyTestData();
+  //
+  // try
+  // {
+  // util.createTestData();
+  //
+  // OntologyExcelExporter.exportToFile(new File("OntologyExport2.xls"),
+  // Term.getByTermId("AllpathsTest Delete Root"));
+  //
+  // util.destroyTestData();
+  //
+  // OntologyExcelImporter.main(new String[]{"OntologyExport2.xls"});
+  //
+  // util.validateAllpaths();
+  // }
+  // finally
+  // {
+  // util.destroyTestData();
+  // }
+  // }
+
   @Request
+  @Test
   public void testRemoveLink() throws Exception
   {
     AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
-    
+
     util.destroyTestData();
-    
+
     try
     {
       util.createTestData();
       util.validateAllpaths();
-      
+
       Term delRoot = Term.get(util.testRoot.getId());
       Term b = Term.get(util.b.getId());
-      
+
       b.removeLink(delRoot, mdTermRelationship.definesType());
       util.validateAllpaths();
     }
@@ -156,30 +138,31 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
       util.destroyTestData();
     }
   }
-  
+
   @Request
+  @Test
   public void testDeleteRelationship() throws Exception
   {
     AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
-    
+
     util.destroyTestData();
-    
+
     try
     {
       util.createTestData();
       util.validateAllpaths();
-      
+
       Term a = Term.get(util.a.getId());
       Term b = Term.get(util.b.getId());
       Term delRoot = Term.get(util.testRoot.getId());
-      
+
       b.removeLink(delRoot, mdTermRelationship.definesType());
       b.addLink(a, mdTermRelationship.definesType());
       util.validateAllpaths();
-      
+
       b.addLink(delRoot, mdTermRelationship.definesType());
       util.validateAllpaths();
-      
+
       b.removeLink(a, mdTermRelationship.definesType());
       util.validateAllpaths();
     }

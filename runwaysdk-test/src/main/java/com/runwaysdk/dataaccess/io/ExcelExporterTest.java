@@ -34,6 +34,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -55,13 +59,7 @@ import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class ExcelExporterTest extends TestCase
+public class ExcelExporterTest
 {
   private final class MockExcelExportListener implements ExcelExportListener
   {
@@ -82,39 +80,6 @@ public class ExcelExporterTest extends TestCase
     }
   }
 
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ExcelExporterTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   private static MdBusinessDAO mdBusiness;
 
   private static MdBusinessDAO mdBusiness2;
@@ -127,6 +92,7 @@ public class ExcelExporterTest extends TestCase
    * The setup done before the test suite is run
    */
   @Request
+  @BeforeClass
   public static void classSetUp()
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -161,6 +127,8 @@ public class ExcelExporterTest extends TestCase
   /**
    * The tear down done after all the test in the test suite have run
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdForm);
@@ -168,6 +136,8 @@ public class ExcelExporterTest extends TestCase
     TestFixtureFactory.delete(mdBusiness2);
   }
 
+  @Request
+  @Test
   public void testExport() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new ExcelExporter();
@@ -176,14 +146,14 @@ public class ExcelExporterTest extends TestCase
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
-    assertEquals(1, workbook.getNumberOfSheets());
+    Assert.assertEquals(1, workbook.getNumberOfSheets());
 
     Sheet sheet = workbook.getSheetAt(0);
     Row typeRow = sheet.getRow(0);
     Row attributeRow = sheet.getRow(1);
     Row labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     List<? extends MdAttributeDAOIF> attributes = ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter());
 
@@ -194,15 +164,17 @@ public class ExcelExporterTest extends TestCase
       String attributeName = attributeRow.getCell(i).getRichStringCellValue().toString();
       String label = labelRow.getCell(i).getRichStringCellValue().toString();
 
-      assertEquals(mdAttribute.definesAttribute(), attributeName);
-      assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
+      Assert.assertEquals(mdAttribute.definesAttribute(), attributeName);
+      Assert.assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
     }
 
     // Ensure there aren't any extra columns
-    assertNull(attributeRow.getCell(attributes.size()));
-    assertNull(labelRow.getCell(attributes.size()));
+    Assert.assertNull(attributeRow.getCell(attributes.size()));
+    Assert.assertNull(labelRow.getCell(attributes.size()));
   }
 
+  @Request
+  @Test
   public void testFormExport() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new FormExcelExporter(new MdWebAttributeFilter());
@@ -211,14 +183,14 @@ public class ExcelExporterTest extends TestCase
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
-    assertEquals(1, workbook.getNumberOfSheets());
+    Assert.assertEquals(1, workbook.getNumberOfSheets());
 
     Sheet sheet = workbook.getSheetAt(0);
     Row typeRow = sheet.getRow(0);
     Row attributeRow = sheet.getRow(1);
     Row labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     List<? extends MdFieldDAOIF> fields = mdForm.getSortedFields();
 
@@ -230,15 +202,17 @@ public class ExcelExporterTest extends TestCase
       String attributeName = attributeRow.getCell(i).getRichStringCellValue().toString();
       String label = labelRow.getCell(i).getRichStringCellValue().toString();
 
-      assertEquals(mdAttribute.definesAttribute(), attributeName);
-      assertEquals(mdField.getDisplayLabel(Session.getCurrentLocale()), label);
+      Assert.assertEquals(mdAttribute.definesAttribute(), attributeName);
+      Assert.assertEquals(mdField.getDisplayLabel(Session.getCurrentLocale()), label);
     }
 
     // Ensure there aren't any extra columns
-    assertNull(attributeRow.getCell(fields.size()));
-    assertNull(labelRow.getCell(fields.size()));
+    Assert.assertNull(attributeRow.getCell(fields.size()));
+    Assert.assertNull(labelRow.getCell(fields.size()));
   }
 
+  @Request
+  @Test
   public void testExtraColumns() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new ExcelExporter();
@@ -248,24 +222,26 @@ public class ExcelExporterTest extends TestCase
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
-    assertEquals(1, workbook.getNumberOfSheets());
+    Assert.assertEquals(1, workbook.getNumberOfSheets());
 
     Sheet sheet = workbook.getSheetAt(0);
     Row typeRow = sheet.getRow(0);
     Row attributeRow = sheet.getRow(1);
     Row labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     int cellNum = ( (List<? extends MdAttributeDAOIF>) ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter()) ).size();
 
     String attributeName = attributeRow.getCell(cellNum).getRichStringCellValue().toString();
     String label = labelRow.getCell(cellNum).getRichStringCellValue().toString();
 
-    assertEquals(MockExcelExportListener.ATTRIBUTE_NAME, attributeName);
-    assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
+    Assert.assertEquals(MockExcelExportListener.ATTRIBUTE_NAME, attributeName);
+    Assert.assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
   }
 
+  @Request
+  @Test
   public void testAddRow() throws IOException, InvalidFormatException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -284,7 +260,7 @@ public class ExcelExporterTest extends TestCase
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
-    assertEquals(1, workbook.getNumberOfSheets());
+    Assert.assertEquals(1, workbook.getNumberOfSheets());
 
     Sheet sheet = workbook.getSheetAt(0);
     Row row = sheet.getRow(3);
@@ -296,10 +272,12 @@ public class ExcelExporterTest extends TestCase
       MdAttributeDAOIF mdAttribute = attributes.get(i);
       String value = ExcelUtil.getString(row.getCell(i));
 
-      assertEquals(business.getValue(mdAttribute.definesAttribute()), value);
+      Assert.assertEquals(business.getValue(mdAttribute.definesAttribute()), value);
     }
   }
 
+  @Request
+  @Test
   public void testOverwriteValue() throws IOException, InvalidFormatException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -321,7 +299,7 @@ public class ExcelExporterTest extends TestCase
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
-    assertEquals(1, workbook.getNumberOfSheets());
+    Assert.assertEquals(1, workbook.getNumberOfSheets());
 
     Sheet sheet = workbook.getSheetAt(0);
     Row row = sheet.getRow(3);
@@ -338,15 +316,17 @@ public class ExcelExporterTest extends TestCase
       {
         String value = ExcelUtil.getString(row.getCell(i));
 
-        assertEquals("20", value);
+        Assert.assertEquals("20", value);
 
         test = true;
       }
     }
 
-    assertTrue("Test did not execute", test);
+    Assert.assertTrue("Test did not execute", test);
   }
 
+  @Request
+  @Test
   public void testMultipleSheets() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new ExcelExporter();
@@ -356,14 +336,14 @@ public class ExcelExporterTest extends TestCase
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
-    assertEquals(2, workbook.getNumberOfSheets());
+    Assert.assertEquals(2, workbook.getNumberOfSheets());
 
     Sheet sheet = workbook.getSheetAt(0);
     Row typeRow = sheet.getRow(0);
     Row attributeRow = sheet.getRow(1);
     Row labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     List<? extends MdAttributeDAOIF> attributes = ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter());
 
@@ -374,20 +354,20 @@ public class ExcelExporterTest extends TestCase
       String attributeName = attributeRow.getCell(i).getRichStringCellValue().toString();
       String label = labelRow.getCell(i).getRichStringCellValue().toString();
 
-      assertEquals(mdAttribute.definesAttribute(), attributeName);
-      assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
+      Assert.assertEquals(mdAttribute.definesAttribute(), attributeName);
+      Assert.assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
     }
 
     // Ensure there aren't any extra columns
-    assertNull(attributeRow.getCell(attributes.size()));
-    assertNull(labelRow.getCell(attributes.size()));
+    Assert.assertNull(attributeRow.getCell(attributes.size()));
+    Assert.assertNull(labelRow.getCell(attributes.size()));
 
     sheet = workbook.getSheetAt(1);
     typeRow = sheet.getRow(0);
     attributeRow = sheet.getRow(1);
     labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness2.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness2.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     attributes = ExcelUtil.getAttributes(mdBusiness2, new DefaultExcelAttributeFilter());
 
@@ -398,15 +378,17 @@ public class ExcelExporterTest extends TestCase
       String attributeName = attributeRow.getCell(i).getRichStringCellValue().toString();
       String label = labelRow.getCell(i).getRichStringCellValue().toString();
 
-      assertEquals(mdAttribute.definesAttribute(), attributeName);
-      assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
+      Assert.assertEquals(mdAttribute.definesAttribute(), attributeName);
+      Assert.assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
     }
 
     // Ensure there aren't any extra columns
-    assertNull(attributeRow.getCell(attributes.size()));
-    assertNull(labelRow.getCell(attributes.size()));
+    Assert.assertNull(attributeRow.getCell(attributes.size()));
+    Assert.assertNull(labelRow.getCell(attributes.size()));
   }
 
+  @Request
+  @Test
   public void testMultipleSheetsWithDefaultListeners() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new ExcelExporter();
@@ -417,39 +399,41 @@ public class ExcelExporterTest extends TestCase
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
-    assertEquals(2, workbook.getNumberOfSheets());
+    Assert.assertEquals(2, workbook.getNumberOfSheets());
 
     Sheet sheet = workbook.getSheetAt(0);
     Row typeRow = sheet.getRow(0);
     Row attributeRow = sheet.getRow(1);
     Row labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     int cellNum = ( (List<? extends MdAttributeDAOIF>) ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter()) ).size();
 
     String attributeName = attributeRow.getCell(cellNum).getRichStringCellValue().toString();
     String label = labelRow.getCell(cellNum).getRichStringCellValue().toString();
 
-    assertEquals(MockExcelExportListener.ATTRIBUTE_NAME, attributeName);
-    assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
+    Assert.assertEquals(MockExcelExportListener.ATTRIBUTE_NAME, attributeName);
+    Assert.assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
 
     sheet = workbook.getSheetAt(1);
     typeRow = sheet.getRow(0);
     attributeRow = sheet.getRow(1);
     labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness2.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness2.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     cellNum = ( (List<? extends MdAttributeDAOIF>) ExcelUtil.getAttributes(mdBusiness2, new DefaultExcelAttributeFilter()) ).size();
 
     attributeName = attributeRow.getCell(cellNum).getRichStringCellValue().toString();
     label = labelRow.getCell(cellNum).getRichStringCellValue().toString();
 
-    assertEquals(MockExcelExportListener.ATTRIBUTE_NAME, attributeName);
-    assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
+    Assert.assertEquals(MockExcelExportListener.ATTRIBUTE_NAME, attributeName);
+    Assert.assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
   }
 
+  @Request
+  @Test
   public void testMultipleSheetsWithDifferentListeners() throws IOException, InvalidFormatException
   {
     List<ExcelExportListener> listeners = new LinkedList<ExcelExportListener>();
@@ -462,14 +446,14 @@ public class ExcelExporterTest extends TestCase
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
-    assertEquals(2, workbook.getNumberOfSheets());
+    Assert.assertEquals(2, workbook.getNumberOfSheets());
 
     Sheet sheet = workbook.getSheetAt(0);
     Row typeRow = sheet.getRow(0);
     Row attributeRow = sheet.getRow(1);
     Row labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     List<? extends MdAttributeDAOIF> attributes = ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter());
 
@@ -480,30 +464,32 @@ public class ExcelExporterTest extends TestCase
       String attributeName = attributeRow.getCell(i).getRichStringCellValue().toString();
       String label = labelRow.getCell(i).getRichStringCellValue().toString();
 
-      assertEquals(mdAttribute.definesAttribute(), attributeName);
-      assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
+      Assert.assertEquals(mdAttribute.definesAttribute(), attributeName);
+      Assert.assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
     }
 
     // Ensure there aren't any extra columns
-    assertNull(attributeRow.getCell(attributes.size()));
-    assertNull(labelRow.getCell(attributes.size()));
+    Assert.assertNull(attributeRow.getCell(attributes.size()));
+    Assert.assertNull(labelRow.getCell(attributes.size()));
 
     sheet = workbook.getSheetAt(1);
     typeRow = sheet.getRow(0);
     attributeRow = sheet.getRow(1);
     labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness2.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness2.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     int cellNum = ( (List<? extends MdAttributeDAOIF>) ExcelUtil.getAttributes(mdBusiness2, new DefaultExcelAttributeFilter()) ).size();
 
     String attributeName = attributeRow.getCell(cellNum).getRichStringCellValue().toString();
     String label = labelRow.getCell(cellNum).getRichStringCellValue().toString();
 
-    assertEquals(MockExcelExportListener.ATTRIBUTE_NAME, attributeName);
-    assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
+    Assert.assertEquals(MockExcelExportListener.ATTRIBUTE_NAME, attributeName);
+    Assert.assertEquals(MockExcelExportListener.DISPLAY_LABEL, label);
   }
 
+  @Request
+  @Test
   public void testInvalidSheetNames() throws IOException, InvalidFormatException
   {
     ExcelExporter exporter = new ExcelExporter();
@@ -514,14 +500,14 @@ public class ExcelExporterTest extends TestCase
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(bytes));
 
-    assertEquals(3, workbook.getNumberOfSheets());
+    Assert.assertEquals(3, workbook.getNumberOfSheets());
 
     Sheet sheet = workbook.getSheetAt(0);
     Row typeRow = sheet.getRow(0);
     Row attributeRow = sheet.getRow(1);
     Row labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     List<? extends MdAttributeDAOIF> attributes = ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter());
 
@@ -532,20 +518,20 @@ public class ExcelExporterTest extends TestCase
       String attributeName = attributeRow.getCell(i).getRichStringCellValue().toString();
       String label = labelRow.getCell(i).getRichStringCellValue().toString();
 
-      assertEquals(mdAttribute.definesAttribute(), attributeName);
-      assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
+      Assert.assertEquals(mdAttribute.definesAttribute(), attributeName);
+      Assert.assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
     }
 
     // Ensure there aren't any extra columns
-    assertNull(attributeRow.getCell(attributes.size()));
-    assertNull(labelRow.getCell(attributes.size()));
+    Assert.assertNull(attributeRow.getCell(attributes.size()));
+    Assert.assertNull(labelRow.getCell(attributes.size()));
 
     sheet = workbook.getSheetAt(1);
     typeRow = sheet.getRow(0);
     attributeRow = sheet.getRow(1);
     labelRow = sheet.getRow(2);
 
-    assertEquals(mdBusiness2.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness2.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     attributes = ExcelUtil.getAttributes(mdBusiness2, new DefaultExcelAttributeFilter());
 
@@ -556,13 +542,13 @@ public class ExcelExporterTest extends TestCase
       String attributeName = attributeRow.getCell(i).getRichStringCellValue().toString();
       String label = labelRow.getCell(i).getRichStringCellValue().toString();
 
-      assertEquals(mdAttribute.definesAttribute(), attributeName);
-      assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
+      Assert.assertEquals(mdAttribute.definesAttribute(), attributeName);
+      Assert.assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
     }
 
     // Ensure there aren't any extra columns
-    assertNull(attributeRow.getCell(attributes.size()));
-    assertNull(labelRow.getCell(attributes.size()));
+    Assert.assertNull(attributeRow.getCell(attributes.size()));
+    Assert.assertNull(labelRow.getCell(attributes.size()));
   }
 
   public static void writeFile(byte[] bytes) throws FileNotFoundException, IOException

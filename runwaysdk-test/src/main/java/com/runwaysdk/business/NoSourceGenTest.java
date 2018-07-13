@@ -3,24 +3,25 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
 import java.lang.reflect.Method;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -36,21 +37,12 @@ import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-public class NoSourceGenTest extends TestCase
+public class NoSourceGenTest
 {
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite(NoSourceGenTest.class.getSimpleName());
-    suite.addTestSuite(NoSourceGenTest.class);
-
-    return suite;
-  }
-
+  @Request
+  @Test
   public void testReferenceNoSource() throws Exception
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -85,6 +77,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMultiReferenceNoSource() throws Exception
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -113,6 +107,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testStructNoSource() throws Exception
   {
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
@@ -147,6 +143,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLocalStructNoSource() throws Exception
   {
     MdLocalStructDAO mdStruct = TestFixtureFactory.createMdLocalStruct();
@@ -181,6 +179,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testParentAndChildNoSource() throws Exception
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -212,6 +212,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipNoSource() throws Exception
   {
     MdBusinessDAO parentMdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -248,6 +250,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationNoSource() throws Exception
   {
     MdBusinessDAO enumMaster = TestFixtureFactory.createEnumClass1();
@@ -285,6 +289,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationAttributeNoSource() throws Exception
   {
     MdBusinessDAO enumMaster = TestFixtureFactory.createEnumClass1();

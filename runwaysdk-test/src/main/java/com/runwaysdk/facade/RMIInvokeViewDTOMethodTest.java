@@ -3,78 +3,51 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.facade;
 
 import java.util.Locale;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.ServerConstants;
-import com.runwaysdk.constants.TestConstants;
-import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.request.RMIClientRequest;
-
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 public class RMIInvokeViewDTOMethodTest extends InvokeViewDTOMethodTest
 {
-  /**
-   * Launch-point for the standalone textui JUnit tests in this class.
-   *
-   * @param args
-   */
-  public static void main(String[] args)
+  @BeforeClass
+  public static void classSetUp()
   {
-    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
+    TestRMIUtil.startServer();
 
-    junit.textui.TestRunner.run(RMIInvokeViewDTOMethodTest.suite());
+    systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
+
+    moreSetup();
+
+    classSetUpRequest();
+    finalizeSetup();
   }
 
-  public static Test suite()
+  @AfterClass
+  public static void stopServer()
   {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(InvokeViewDTOMethodTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        TestRMIUtil.startServer();
-
-        systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-        clientRequest = systemSession.getRequest();
-
-        moreSetup();
-
-        classSetUp();
-        finalizeSetup();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-        ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
-        RemoteAdapterServer.stopServer();
-      }
-    };
-
-    return wrapper;
+    ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
+    RemoteAdapterServer.stopServer();
   }
 }

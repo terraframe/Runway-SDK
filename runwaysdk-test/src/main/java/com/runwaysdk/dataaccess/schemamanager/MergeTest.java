@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.schemamanager;
 
@@ -24,6 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.rbac.MethodActorDAO;
@@ -131,13 +135,9 @@ import com.runwaysdk.dataaccess.metadata.MdWebBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
+import com.runwaysdk.session.Request;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class MergeTest extends TestCase
+public class MergeTest
 {
   private static final String SUSPENDED_STATE       = "SUSPENDED";
 
@@ -167,47 +167,19 @@ public class MergeTest extends TestCase
 
   private static final String METHOD_NAME           = "checkin";
 
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   public static final String path   = TestConstants.Path.XMLFiles + "/";
 
   public static final String SCHEMA = XMLConstants.VERSION_XSD;
 
   public static final String CLASS  = "test.xmlclasses.Class1";
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MergeTest.class);
-
-    return suite;
-  }
-
-  /**
-   * No setup needed non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  protected void setUp() throws Exception
-  {
-
-  }
-
   /**
    * Delete all MetaData objects which were created in the class
    * 
    * @see junit.framework.TestCase#tearDown()
    */
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
     new MdPackage("test.xmlclasses").delete();
@@ -252,6 +224,8 @@ public class MergeTest extends TestCase
    * Initial: a mdBusiness and a blob attribute Update : creates a blob
    * attribute in the mdBusiness
    */
+  @Request
+  @Test
   public void testUpdateBlobMerge()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -280,13 +254,15 @@ public class MergeTest extends TestCase
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeBlobDAO attribute = (MdAttributeBlobDAO) ( mdEntityIF.definesAttribute("testBlob") ).getBusinessDAO();
-    assertEquals("Blob Update Test", attribute.getStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals("Blob Update Test", attribute.getStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
   }
 
   /**
    * Initial: a mdBusiness and a blob attribute Update : creates a blob
    * attribute in the mdBusiness
    */
+  @Request
+  @Test
   public void testAttributeRename()
   {
     final String newAttributeName = "renamedAttribute";
@@ -323,14 +299,16 @@ public class MergeTest extends TestCase
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
 
-    assertNull(mdEntityIF.definesAttribute("testBlob"));
-    assertNull(mdEntityIF.definesAttribute(newAttributeName));
+    Assert.assertNull(mdEntityIF.definesAttribute("testBlob"));
+    Assert.assertNull(mdEntityIF.definesAttribute(newAttributeName));
   }
 
   /**
    * Initial: a mdBusiness and a blob attribute Update : creates a blob
    * attribute in the mdBusiness
    */
+  @Request
+  @Test
   public void testAttributeRenameWithPermissions()
   {
     final String newAttributeName = "renamedAttribute";
@@ -382,14 +360,16 @@ public class MergeTest extends TestCase
     RoleDAOIF roleIF = RoleDAO.findRole(role.getRoleName());
     Set<Operation> permissions = roleIF.getAllPermissions(mdAttributeIF);
 
-    assertNotNull(mdAttributeIF);
-    assertTrue(permissions.contains(Operation.READ));
-    assertTrue(permissions.contains(Operation.WRITE));
+    Assert.assertNotNull(mdAttributeIF);
+    Assert.assertTrue(permissions.contains(Operation.READ));
+    Assert.assertTrue(permissions.contains(Operation.WRITE));
   }
 
   /**
    * Test updating a created action on a auto defined controller
    */
+  @Request
+  @Test
   public void testControllerActionUpdateMerge()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -430,9 +410,9 @@ public class MergeTest extends TestCase
 
       MdActionDAOIF mdActionIF = mdControllerIF.definesMdAction(mdAction.getName());
 
-      assertNotNull(mdActionIF);
-      assertTrue(new Boolean(mdActionIF.getValue(MdActionInfo.IS_QUERY)).booleanValue());
-      assertTrue(new Boolean(mdActionIF.getValue(MdActionInfo.IS_POST)).booleanValue());
+      Assert.assertNotNull(mdActionIF);
+      Assert.assertTrue(new Boolean(mdActionIF.getValue(MdActionInfo.IS_QUERY)).booleanValue());
+      Assert.assertTrue(new Boolean(mdActionIF.getValue(MdActionInfo.IS_POST)).booleanValue());
     }
     finally
     {
@@ -448,6 +428,8 @@ public class MergeTest extends TestCase
    * struct type attributes
    * 
    */
+  @Request
+  @Test
   public void testUpdateStructMerge()
   {
     final MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
@@ -497,23 +479,23 @@ public class MergeTest extends TestCase
     MdAttributeDAOIF mdAttributeIF = mdEntityIF.definesAttribute("testStruct");
     MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(mdStruct.definesType());
 
-    assertEquals(mdAttributeIF.getStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Struct Update Test");
+    Assert.assertEquals(mdAttributeIF.getStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Struct Update Test");
 
-    assertEquals("600", mdStructIF.getValue(MdBusinessInfo.CACHE_SIZE));
+    Assert.assertEquals("600", mdStructIF.getValue(MdBusinessInfo.CACHE_SIZE));
 
     // Ensure that the correct class is being referenced
-    assertEquals(mdAttributeIF.getValue(MdAttributeStructInfo.MD_STRUCT), mdStructIF.getId());
+    Assert.assertEquals(mdAttributeIF.getValue(MdAttributeStructInfo.MD_STRUCT), mdStructIF.getId());
 
     // List<String> ids = EntityDAO.getEntityIdsDB(CLASS);
 
     // This condition is failing: fix
-    // assertEquals(1, ids.size());
+    // Assert.assertEquals(1, ids.size());
 
     // BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
     // AttributeStruct attribute = (AttributeStruct)
     // businessDAOIF.getAttributeIF("testStruct");
 
-    // assertEquals(MdAttributeBooleanInfo.TRUE,
+    // Assert.assertEquals(MdAttributeBooleanInfo.TRUE,
     // attribute.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
   }
 
@@ -521,6 +503,8 @@ public class MergeTest extends TestCase
    * Test setting of attributes of and on the class datatype
    */
 
+  @Request
+  @Test
   public void testUpdateMdInformationMerge()
   {
     // Create test MdBusiness
@@ -559,23 +543,25 @@ public class MergeTest extends TestCase
 
     MdAttributeDAOIF attribute = mdInformation1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdInformation Set Test");
-    assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdInformation Attributes Test");
-    assertEquals(mdInformation1IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdInformation1IF.getValue(MdInformationInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdInformation1IF.getValue(MdInformationInfo.PUBLISH));
+    Assert.assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdInformation Set Test");
+    Assert.assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdInformation Attributes Test");
+    Assert.assertEquals(mdInformation1IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdInformation1IF.getValue(MdInformationInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdInformation1IF.getValue(MdInformationInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdInformation1IF.getValue(MdInformationInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdInformation2IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdInformation1IF.getValue(MdInformationInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdInformation2IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdInformation2IF.getValue(MdInformationInfo.SUPER_MD_INFORMATION), mdInformation1IF.getId());
+    Assert.assertEquals(mdInformation2IF.getValue(MdInformationInfo.SUPER_MD_INFORMATION), mdInformation1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdInformation1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdInformation1IF.getId());
   }
 
+  @Request
+  @Test
   public void testUpdateMdEnumerationMerge()
   {
     VersionHandler.runImport(new File(SAXParseTest.REMOVABLE_FILTER_SET), Action.DO_IT, XMLConstants.VERSION_XSD);
@@ -611,26 +597,28 @@ public class MergeTest extends TestCase
     MdEnumerationDAO updatedmdEnumeration = MdEnumerationDAO.getMdEnumerationDAO(SAXParseTest.FILTER).getBusinessDAO();
     MdEnumerationDAO updatedmdEnumeration2 = MdEnumerationDAO.getMdEnumerationDAO(SAXParseTest.FILTER2).getBusinessDAO();
 
-    assertEquals(updatedmdEnumeration.getStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Enumeration Filter Test");
-    assertEquals(updatedmdEnumeration.getStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Filter Set Test");
-    assertEquals(updatedmdEnumeration.getAttributeIF(MdEnumerationInfo.REMOVE).getValue(), MdAttributeBooleanInfo.TRUE);
-    assertEquals(updatedmdEnumeration.getAttributeIF(MdEnumerationInfo.INCLUDE_ALL).getValue(), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(updatedmdEnumeration.getStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Enumeration Filter Test");
+    Assert.assertEquals(updatedmdEnumeration.getStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Filter Set Test");
+    Assert.assertEquals(updatedmdEnumeration.getAttributeIF(MdEnumerationInfo.REMOVE).getValue(), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(updatedmdEnumeration.getAttributeIF(MdEnumerationInfo.INCLUDE_ALL).getValue(), MdAttributeBooleanInfo.TRUE);
 
     List<BusinessDAOIF> updatedItems = updatedmdEnumeration.getAllEnumItems();
-    assertEquals(3, updatedItems.size());
+    Assert.assertEquals(3, updatedItems.size());
 
     List<BusinessDAOIF> updatedItems2 = updatedmdEnumeration2.getAllEnumItems();
-    assertEquals(updatedmdEnumeration2.getAttributeIF(MdEnumerationInfo.INCLUDE_ALL).getValue(), MdAttributeBooleanInfo.FALSE);
-    assertEquals(updatedItems2.size(), 2);
+    Assert.assertEquals(updatedmdEnumeration2.getAttributeIF(MdEnumerationInfo.INCLUDE_ALL).getValue(), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(updatedItems2.size(), 2);
 
     // Ensure that none of the items removed from MdEnumeration2 are still in
     // the enum items list.
     for (BusinessDAOIF item : updatedItems2)
     {
-      assertFalse(removedItems.contains(item));
+      Assert.assertFalse(removedItems.contains(item));
     }
   }
 
+  @Request
+  @Test
   public void testUpdateMdProblemMerge()
   {
     // Create test MdBusiness
@@ -668,21 +656,21 @@ public class MergeTest extends TestCase
 
     MdAttributeDAOIF attribute = mdProblem1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdProblem Set Test");
-    assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdProblem Attributes Test");
-    assertEquals(mdProblem1IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdProblem1IF.getValue(MdProblemInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdProblem1IF.getValue(MdProblemInfo.PUBLISH));
+    Assert.assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdProblem Set Test");
+    Assert.assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdProblem Attributes Test");
+    Assert.assertEquals(mdProblem1IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdProblem1IF.getValue(MdProblemInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdProblem1IF.getValue(MdProblemInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdProblem1IF.getValue(MdProblemInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdProblem2IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdProblem1IF.getValue(MdProblemInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdProblem2IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdProblem2IF.getValue(MdProblemInfo.SUPER_MD_PROBLEM), mdProblem1IF.getId());
+    Assert.assertEquals(mdProblem2IF.getValue(MdProblemInfo.SUPER_MD_PROBLEM), mdProblem1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdProblem1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdProblem1IF.getId());
   }
 
   /**
@@ -691,10 +679,11 @@ public class MergeTest extends TestCase
    * 
    */
   /*
-   * public void testDeleteRelationshipMerge() { // Create the Metadata entities
-   * final MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
-   * final MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
-   * mdBusiness1.apply(); mdBusiness2.apply();
+   * @Request @Test public void testDeleteRelationshipMerge() { // Create the
+   * Metadata entities final MdBusinessDAO mdBusiness1 =
+   * TestFixtureFactory.createMdBusiness1(); final MdBusinessDAO mdBusiness2 =
+   * TestFixtureFactory.createMdBusiness2(); mdBusiness1.apply();
+   * mdBusiness2.apply();
    * 
    * final MdRelationshipDAO mdRelationship1 =
    * TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
@@ -711,12 +700,14 @@ public class MergeTest extends TestCase
    * 
    * // Create Test RelationshipDAO RelationshipDAO relationshipDAO1 =
    * RelationshipDAO.newInstance(businessDAO1.getId(), businessDAO2 .getId(),
-   * mdRelationship1.definesType()); relationshipDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
+   * mdRelationship1.definesType());
+   * relationshipDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
    * MdAttributeBooleanInfo.TRUE); relationshipDAO1.apply();
    * 
    * final RelationshipDAO relationshipDAO2 =
    * RelationshipDAO.newInstance(businessDAO1.getId(), businessDAO2.getId(),
-   * mdRelationship1.definesType()); relationshipDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
+   * mdRelationship1.definesType());
+   * relationshipDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
    * MdAttributeBooleanInfo.TRUE); String id = relationshipDAO2.apply();
    * 
    * final ComponentIF[] componentArray = new ComponentIF[] { mdBusiness1,
@@ -738,20 +729,23 @@ public class MergeTest extends TestCase
    * RelationshipDAO.get(r1Ids.get(0));
    * 
    * // Ensure that the parent references the instance of CLASS
-   * assertEquals(c1.getId(), r1.getParentId()); // Ensure that the child
-   * reference the instance of CLASS2 assertEquals(c2.getId(), r1.getChildId());
-   * // Ensure that the value of testBoolean is true
-   * assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+   * Assert.assertEquals(c1.getId(), r1.getParentId()); // Ensure that the child
+   * reference the instance of CLASS2 Assert.assertEquals(c2.getId(),
+   * r1.getChildId()); // Ensure that the value of testBoolean is true
+   * Assert.assertEquals(MdAttributeBooleanInfo.TRUE,
+   * r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
    * 
    * try { RelationshipDAO.get(id);
    * 
-   * fail("SAXImporter did not delete the RelationshipDAO with the id [" + id +
-   * "]"); } catch (DataNotFoundException e) { // This is expected }
+   * Assert.fail("SAXImporter did not delete the RelationshipDAO with the id ["
+   * + id + "]"); } catch (DataNotFoundException e) { // This is expected }
    * 
-   * assertEquals(1,
+   * Assert.assertEquals(1,
    * MdRelationshipDAO.getEntityIdsDB(mdRelationship1.definesType()).size()); }
    */
 
+  @Request
+  @Test
   public void testUpdateMdControllerMerge()
   {
     final MdControllerDAO mdController = MdControllerDAO.newInstance();
@@ -821,15 +815,15 @@ public class MergeTest extends TestCase
       }
     });
 
-    assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
+    Assert.assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
 
     MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO("test.xmlclasses.Controller1");
-    assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<MdActionDAOIF> mdActions = mdControllerIF.getMdActionDAOs();
 
-    assertEquals(2, mdActions.size());
+    Assert.assertEquals(2, mdActions.size());
 
     int i = 0;
     int j = 1;
@@ -840,44 +834,46 @@ public class MergeTest extends TestCase
       j = 0;
     }
 
-    assertEquals("checkin", mdActions.get(i).getName());
-    assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkin", mdActions.get(i).getName());
+    Assert.assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
 
     List<MdParameterDAOIF> mdParameters = mdActions.get(i).getMdParameterDAOs();
-    assertEquals(3, mdParameters.size());
-    assertEquals("param1", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(3, mdParameters.size());
+    Assert.assertEquals("param1", mdParameters.get(0).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
+    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
+    Assert.assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
 
-    assertEquals("param2", mdParameters.get(1).getParameterName());
-    assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
-    assertEquals("1", mdParameters.get(1).getParameterOrder());
-    assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param2", mdParameters.get(1).getParameterName());
+    Assert.assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
+    Assert.assertEquals("1", mdParameters.get(1).getParameterOrder());
+    Assert.assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    assertEquals("param3", mdParameters.get(2).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(2).getParameterType().getType());
-    assertEquals("4", mdParameters.get(2).getParameterOrder());
-    assertEquals("param3", mdParameters.get(2).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param3", mdParameters.get(2).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(2).getParameterType().getType());
+    Assert.assertEquals("4", mdParameters.get(2).getParameterOrder());
+    Assert.assertEquals("param3", mdParameters.get(2).getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    assertEquals("checkout", mdActions.get(j).getName());
-    assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkout", mdActions.get(j).getName());
+    Assert.assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
 
     mdParameters = mdActions.get(j).getMdParameterDAOs();
-    assertEquals(1, mdParameters.size());
-    assertEquals("param4", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(1, mdParameters.size());
+    Assert.assertEquals("param4", mdParameters.get(0).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
+    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
+    Assert.assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
   /**
    * Test setting of attributes on the character datatype minus any overlapping
    * attributes from the boolean test
    */
+  @Request
+  @Test
   public void testAddAttributeToMdBusinessMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
@@ -915,12 +911,14 @@ public class MergeTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute(ATTRIBUTE_NAME);
     AttributeEnumerationIF index = (AttributeEnumerationIF) attribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-    assertEquals(attribute.getStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Character Set Test");
-    assertEquals(attribute.getValue(MdAttributeCharacterInfo.SIZE), "200");
-    assertEquals(attribute.getValue(MdAttributeCharacterInfo.IMMUTABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(attribute.getStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Character Set Test");
+    Assert.assertEquals(attribute.getValue(MdAttributeCharacterInfo.SIZE), "200");
+    Assert.assertEquals(attribute.getValue(MdAttributeCharacterInfo.IMMUTABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
   }
 
+  @Request
+  @Test
   public void testAddParameterToMdMethodMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
@@ -948,24 +946,26 @@ public class MergeTest extends TestCase
     {
       if (mdParameterDAOIF.getValue(MdParameterInfo.NAME).equals("validName"))
       {
-        assertTrue(true);
+        Assert.assertTrue(true);
       }
     }
 
   }
 
+  @Request
+  @Test
   public void testAddStateToStateMachineMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
     mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
-    
+
     MdStateMachineDAO mdStateMachine = createMdStateMachine(mdBusiness);
     mdStateMachine.setGenerateMdController(false);
     mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStateMachine.apply();
-    
+
     StateMasterDAO activeState = mdStateMachine.addState(ACTIVE_STATE, StateMasterDAOIF.Entry.ENTRY_STATE.getId());
     activeState.apply();
     StateMasterDAO passiveState = mdStateMachine.addState(PASSIVE_STATE, StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
@@ -993,17 +993,19 @@ public class MergeTest extends TestCase
     MdStateMachineDAOIF mdStateMachineDAOIF = mdBusinessDAOIF.definesMdStateMachine();
     StateMasterDAOIF active = mdStateMachineDAOIF.definesStateMaster(ACTIVE_STATE);
     StateMasterDAOIF suspended = mdStateMachineDAOIF.definesStateMaster(SUSPENDED_STATE);
-    assertTrue(active != null && suspended != null);
+    Assert.assertTrue(active != null && suspended != null);
 
   }
 
+  @Request
+  @Test
   public void testDeleteMerge()
   {
     final MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
-    
+
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -1025,7 +1027,7 @@ public class MergeTest extends TestCase
     {
       // The first mdBusiness must not exist
       MdElementDAO.getMdElementDAO(TestFixConst.TEST_PACKAGE + "." + TestFixConst.TEST_CLASS1);
-      fail();
+      Assert.fail();
     }
     catch (DataNotFoundException dataNotFoundException)
     {
@@ -1038,11 +1040,13 @@ public class MergeTest extends TestCase
     }
     catch (DataNotFoundException dataNotFoundException)
     {
-      fail();
+      Assert.fail();
     }
 
   }
 
+  @Request
+  @Test
   public void testUpdateMdExceptionMerge()
   { // Create test MdBusiness
     final MdExceptionDAO mdException1 = TestFixtureFactory.createMdException1();
@@ -1078,23 +1082,25 @@ public class MergeTest extends TestCase
 
     MdAttributeDAOIF attribute = mdException1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
 
-    assertEquals(mdException1IF.getStructValue(MdElementInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
-    assertEquals(mdException1IF.getStructValue(MdElementInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
-    assertEquals(mdException1IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdException1IF.getValue(MdElementInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdException1IF.getValue(MdElementInfo.PUBLISH));
+    Assert.assertEquals(mdException1IF.getStructValue(MdElementInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
+    Assert.assertEquals(mdException1IF.getStructValue(MdElementInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
+    Assert.assertEquals(mdException1IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdException1IF.getValue(MdElementInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdException1IF.getValue(MdElementInfo.PUBLISH));
 
     // Change to false when casscading delete is implemented
-    assertEquals(mdException1IF.getValue(MdElementInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-    assertEquals(mdException2IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+    Assert.assertEquals(mdException1IF.getValue(MdElementInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(mdException2IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    assertEquals(mdException2IF.getValue(MdExceptionInfo.SUPER_MD_EXCEPTION), mdException1IF.getId());
+    Assert.assertEquals(mdException2IF.getValue(MdExceptionInfo.SUPER_MD_EXCEPTION), mdException1IF.getId());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdException1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdException1IF.getId());
   }
 
+  @Request
+  @Test
   public void testRevokeUserPermissionMerge()
   {
     // Create a test User
@@ -1295,36 +1301,38 @@ public class MergeTest extends TestCase
     TypeTupleDAOIF tuple4IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state21.getId());
 
     Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
-    assertEquals(1, assignedRoles.size());
-    assertTrue(assignedRoles.contains(role));
+    Assert.assertEquals(1, assignedRoles.size());
+    Assert.assertTrue(assignedRoles.contains(role));
 
     Set<Operation> operations = userIF.getAllPermissions(mdBusiness1);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(mdAttributeChar);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(state11);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(mdRelationship);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(mdAttributeBool);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
 
-    assertNull(tupleIF);
-    assertNull(tuple2IF);
-    assertNull(tuple3IF);
+    Assert.assertNull(tupleIF);
+    Assert.assertNull(tuple2IF);
+    Assert.assertNull(tuple3IF);
 
     operations = userIF.getAllPermissions(tuple4IF);
-    assertEquals(1, operations.size());
-    assertTrue(operations.contains(Operation.ADD_PARENT));
+    Assert.assertEquals(1, operations.size());
+    Assert.assertTrue(operations.contains(Operation.ADD_PARENT));
 
     operations = userIF.getAllPermissions(mdStruct);
-    assertEquals(0, operations.size());
+    Assert.assertEquals(0, operations.size());
   }
 
+  @Request
+  @Test
   public void testUserPermissionMerge()
   {
     // Create a test User
@@ -1503,56 +1511,58 @@ public class MergeTest extends TestCase
     TypeTupleDAOIF tuple4IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state21.getId());
 
     Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
-    assertEquals(1, assignedRoles.size());
-    assertTrue(assignedRoles.contains(role));
+    Assert.assertEquals(1, assignedRoles.size());
+    Assert.assertTrue(assignedRoles.contains(role));
 
     Set<Operation> operations = userIF.getAllPermissions(mdBusiness1);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.WRITE));
-    assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertTrue(operations.contains(Operation.CREATE));
 
     operations = userIF.getAllPermissions(mdAttributeChar);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.WRITE));
-    assertTrue(operations.contains(Operation.READ));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertTrue(operations.contains(Operation.READ));
 
     operations = userIF.getAllPermissions(state11);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.DELETE));
-    assertTrue(operations.contains(Operation.READ));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.DELETE));
+    Assert.assertTrue(operations.contains(Operation.READ));
 
     operations = userIF.getAllPermissions(tupleIF);
-    assertEquals(1, operations.size());
-    assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertEquals(1, operations.size());
+    Assert.assertTrue(operations.contains(Operation.WRITE));
 
     operations = userIF.getAllPermissions(mdRelationship);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.DELETE));
-    assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.DELETE));
+    Assert.assertTrue(operations.contains(Operation.CREATE));
 
     operations = userIF.getAllPermissions(mdAttributeBool);
-    assertEquals(1, operations.size());
-    assertTrue(operations.contains(Operation.READ));
+    Assert.assertEquals(1, operations.size());
+    Assert.assertTrue(operations.contains(Operation.READ));
 
     operations = userIF.getAllPermissions(tuple2IF);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.ADD_CHILD));
-    assertTrue(operations.contains(Operation.READ_CHILD));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.ADD_CHILD));
+    Assert.assertTrue(operations.contains(Operation.READ_CHILD));
 
     operations = userIF.getAllPermissions(tuple3IF);
-    assertEquals(1, operations.size());
-    assertTrue(operations.contains(Operation.WRITE_CHILD));
+    Assert.assertEquals(1, operations.size());
+    Assert.assertTrue(operations.contains(Operation.WRITE_CHILD));
 
     operations = userIF.getAllPermissions(tuple4IF);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.ADD_PARENT));
-    assertTrue(operations.contains(Operation.DELETE_PARENT));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.ADD_PARENT));
+    Assert.assertTrue(operations.contains(Operation.DELETE_PARENT));
 
     operations = userIF.getAllPermissions(mdStruct);
-    assertEquals(1, operations.size());
-    assertTrue(operations.contains(Operation.DELETE));
+    Assert.assertEquals(1, operations.size());
+    Assert.assertTrue(operations.contains(Operation.DELETE));
   }
 
+  @Request
+  @Test
   public void testAttributePermissionDelete()
   {
     // Create a test User
@@ -1610,15 +1620,17 @@ public class MergeTest extends TestCase
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
 
     Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
-    assertEquals(1, assignedRoles.size());
-    assertTrue(assignedRoles.contains(role));
+    Assert.assertEquals(1, assignedRoles.size());
+    Assert.assertTrue(assignedRoles.contains(role));
 
     Set<Operation> operations = userIF.getAllPermissions(mdBusiness1IF);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.WRITE));
-    assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertTrue(operations.contains(Operation.CREATE));
   }
 
+  @Request
+  @Test
   public void testControllerDeleteOrdering()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1654,6 +1666,8 @@ public class MergeTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testControllerDeleteReverseOrdering()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1689,6 +1703,8 @@ public class MergeTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDeleteRelationshipAndController()
   {
     MdBusinessDAO parentMdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -1702,7 +1718,7 @@ public class MergeTest extends TestCase
     try
     {
       MdRelationshipDAO mdRelationship = TestFixtureFactory.createMdRelationship1(parentMdBusiness, childMdBusiness);
-      mdRelationship.setGenerateMdController(true);      
+      mdRelationship.setGenerateMdController(true);
       mdRelationship.apply();
 
       MdControllerDAOIF mdController = MdControllerDAO.getMdControllerDAO(mdRelationship.definesType() + "Controller");
@@ -1722,7 +1738,7 @@ public class MergeTest extends TestCase
       {
         MdRelationshipDAO.getMdRelationshipDAO(mdRelationship.definesType());
 
-        fail("Able to get a deleted MdRelationship");
+        Assert.fail("Able to get a deleted MdRelationship");
       }
       catch (DataNotFoundException e)
       {
@@ -1736,6 +1752,8 @@ public class MergeTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDeleteMdMethodPermission()
   {
     // Create a test User
@@ -1798,15 +1816,17 @@ public class MergeTest extends TestCase
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
 
     Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
-    assertEquals(1, assignedRoles.size());
-    assertTrue(assignedRoles.contains(role));
+    Assert.assertEquals(1, assignedRoles.size());
+    Assert.assertTrue(assignedRoles.contains(role));
 
     Set<Operation> operations = userIF.getAllPermissions(mdBusiness1IF);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.WRITE));
-    assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertTrue(operations.contains(Operation.CREATE));
   }
 
+  @Request
+  @Test
   public void testUpdatedAttributePermissionDelete()
   {
     // Create a test User
@@ -1875,15 +1895,17 @@ public class MergeTest extends TestCase
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
 
     Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
-    assertEquals(1, assignedRoles.size());
-    assertTrue(assignedRoles.contains(role));
+    Assert.assertEquals(1, assignedRoles.size());
+    Assert.assertTrue(assignedRoles.contains(role));
 
     Set<Operation> operations = userIF.getAllPermissions(mdBusiness1IF);
-    assertEquals(2, operations.size());
-    assertTrue(operations.contains(Operation.WRITE));
-    assertTrue(operations.contains(Operation.CREATE));
+    Assert.assertEquals(2, operations.size());
+    Assert.assertTrue(operations.contains(Operation.WRITE));
+    Assert.assertTrue(operations.contains(Operation.CREATE));
   }
 
+  @Request
+  @Test
   public void testUpdateOfCreatedAttributeOnPartialSchemaElement()
   {
     // Create test MdBusiness
@@ -1920,10 +1942,12 @@ public class MergeTest extends TestCase
 
     MdAttributeDAOIF mdAttributeIF = mdBusiness1IF.definesAttribute(mdAttributeChar.definesAttribute());
 
-    assertNotNull(mdAttributeIF);
-    assertEquals(displayLabel, mdAttributeIF.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, "defaultLocale"));
+    Assert.assertNotNull(mdAttributeIF);
+    Assert.assertEquals(displayLabel, mdAttributeIF.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, "defaultLocale"));
   }
 
+  @Request
+  @Test
   public void testUpdateOfCreatedMethodOnPartialSchemaElement()
   {
     // Create test MdBusiness
@@ -1963,15 +1987,17 @@ public class MergeTest extends TestCase
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
     MdMethodDAOIF mdMethodIF = mdBusiness1IF.getMdMethod(mdMethod.getName());
 
-    assertNotNull(mdMethodIF);
-    assertEquals(displayLabel, mdMethodIF.getStructValue(MdMethodInfo.DISPLAY_LABEL, "defaultLocale"));
+    Assert.assertNotNull(mdMethodIF);
+    Assert.assertEquals(displayLabel, mdMethodIF.getStructValue(MdMethodInfo.DISPLAY_LABEL, "defaultLocale"));
 
     List<MdParameterDAOIF> list = mdMethodIF.getMdParameterDAOs();
 
-    assertEquals(1, list.size());
-    assertEquals(displayLabel, list.get(0).getStructValue(MdParameterInfo.DISPLAY_LABEL, "defaultLocale"));
+    Assert.assertEquals(1, list.size());
+    Assert.assertEquals(displayLabel, list.get(0).getStructValue(MdParameterInfo.DISPLAY_LABEL, "defaultLocale"));
   }
 
+  @Request
+  @Test
   public void testDeleteThenUpdateOfMdMethod()
   {
     // Create test MdBusiness
@@ -2020,23 +2046,25 @@ public class MergeTest extends TestCase
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
     MdMethodDAOIF mdMethodIF = mdBusiness1IF.getMdMethod(TestFixConst.TEST_METHOD_NAME);
 
-    assertNotNull(mdMethodIF);
+    Assert.assertNotNull(mdMethodIF);
 
     List<MdParameterDAOIF> list = mdMethodIF.getMdParameterDAOs();
     List<String> names = new LinkedList<String>();
 
-    assertEquals(3, list.size());
+    Assert.assertEquals(3, list.size());
 
     for (MdParameterDAOIF mdParameterIF : list)
     {
       names.add(mdParameterIF.getParameterName());
     }
 
-    assertTrue(names.contains("parameter0"));
-    assertTrue(names.contains("parameter1"));
-    assertTrue(names.contains("parameter2"));
+    Assert.assertTrue(names.contains("parameter0"));
+    Assert.assertTrue(names.contains("parameter1"));
+    Assert.assertTrue(names.contains("parameter2"));
   }
 
+  @Request
+  @Test
   public void testDeleteOfReferencedAttributeType()
   {
     // Create test MdBusiness
@@ -2068,9 +2096,11 @@ public class MergeTest extends TestCase
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
     MdAttributeDAOIF mdAttributeIF = mdBusiness1IF.definesAttribute(mdAttribute.definesAttribute());
 
-    assertNull(mdAttributeIF);
+    Assert.assertNull(mdAttributeIF);
   }
 
+  @Request
+  @Test
   public void testDeleteOfEnumerationMasterWithItems()
   {
     // Create test MdBusiness
@@ -2099,7 +2129,7 @@ public class MergeTest extends TestCase
     {
       MdBusinessDAO.getMdBusinessDAO(enumerationMaster.definesType());
 
-      fail("Able to get an enumeration master which was suppose to be deleted");
+      Assert.fail("Able to get an enumeration master which was suppose to be deleted");
     }
     catch (DataNotFoundException e)
     {
@@ -2107,6 +2137,8 @@ public class MergeTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCreateThenDeleteThenCreateOfObject()
   {
     String key = "TestKey";
@@ -2159,15 +2191,17 @@ public class MergeTest extends TestCase
 
     List<String> ids = MdBusinessDAO.getEntityIdsDB(mdBusiness1.definesType());
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     BusinessDAOIF objectIF = BusinessDAO.get(ids.get(0));
 
-    assertNotNull(objectIF);
-    assertEquals("Updated Locale", objectIF.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-    assertEquals("Default Locale", objectIF.getStructValue("testLocalCharacter", "defaultLocale"));
+    Assert.assertNotNull(objectIF);
+    Assert.assertEquals("Updated Locale", objectIF.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+    Assert.assertEquals("Default Locale", objectIF.getStructValue("testLocalCharacter", "defaultLocale"));
   }
 
+  @Request
+  @Test
   public void testUpdateOfAttributeStructOnObject()
   {
     String key = "TestKey";
@@ -2217,11 +2251,13 @@ public class MergeTest extends TestCase
 
     BusinessDAOIF objectIF = BusinessDAO.get(mdBusiness1.definesType(), key);
 
-    assertNotNull(objectIF);
-    assertEquals(updatedValue, objectIF.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-    assertEquals(updatedValue, objectIF.getStructValue("testLocalCharacter", "defaultLocale"));
+    Assert.assertNotNull(objectIF);
+    Assert.assertEquals(updatedValue, objectIF.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+    Assert.assertEquals(updatedValue, objectIF.getStructValue("testLocalCharacter", "defaultLocale"));
   }
 
+  @Request
+  @Test
   public void testUpdateOfAttributeEnumerationOnObject()
   {
     String key = "TestKey";
@@ -2272,16 +2308,18 @@ public class MergeTest extends TestCase
 
     BusinessDAOIF objectIF = BusinessDAO.get(mdBusiness1.definesType(), key);
 
-    assertNotNull(objectIF);
+    Assert.assertNotNull(objectIF);
 
     AttributeEnumerationIF attributeIF = (AttributeEnumerationIF) objectIF.getAttributeIF(mdAttribute.definesAttribute());
     EnumerationItemDAOIF[] attributes = attributeIF.dereference();
 
-    assertEquals(2, attributes.length);
-    assertTrue(attributes[0].getName().equals(hearts.getName()) || attributes[1].getName().equals(hearts.getName()));
-    assertTrue(attributes[0].getName().equals(clubs.getName()) || attributes[1].getName().equals(clubs.getName()));
+    Assert.assertEquals(2, attributes.length);
+    Assert.assertTrue(attributes[0].getName().equals(hearts.getName()) || attributes[1].getName().equals(hearts.getName()));
+    Assert.assertTrue(attributes[0].getName().equals(clubs.getName()) || attributes[1].getName().equals(clubs.getName()));
   }
 
+  @Request
+  @Test
   public void testDeleteOfVirtualAttribute()
   {
     // Create test MdBusiness
@@ -2316,10 +2354,12 @@ public class MergeTest extends TestCase
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
     MdViewDAOIF mdViewIF = MdViewDAO.getMdViewDAO(mdView.definesType());
 
-    assertNull(mdBusinessIF.definesAttribute(mdAttribute.definesAttribute()));
-    assertNull(mdViewIF.definesAttribute(mdAttributeVirtual.definesAttribute()));
+    Assert.assertNull(mdBusinessIF.definesAttribute(mdAttribute.definesAttribute()));
+    Assert.assertNull(mdViewIF.definesAttribute(mdAttributeVirtual.definesAttribute()));
   }
 
+  @Request
+  @Test
   public void testDeleteOfPartialSchemaReferencedAttributeType()
   {
     // Create test MdBusiness
@@ -2354,9 +2394,11 @@ public class MergeTest extends TestCase
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
     MdAttributeDAOIF mdAttributeIF = mdBusiness1IF.definesAttribute(mdAttribute.definesAttribute());
 
-    assertNull(mdAttributeIF);
+    Assert.assertNull(mdAttributeIF);
   }
 
+  @Request
+  @Test
   public void testIndexMerge()
   {
     final MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -2400,23 +2442,25 @@ public class MergeTest extends TestCase
     MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO(CLASS);
 
     List<MdIndexDAOIF> indexs = mdBusiness.getIndexes();
-    assertEquals(1, indexs.size());
+    Assert.assertEquals(1, indexs.size());
 
     MdIndexDAOIF mdIndexIF = indexs.get(0);
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdIndexIF.getValue(MdIndexInfo.UNIQUE));
-    assertEquals("index", mdIndexIF.getStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdIndexIF.getValue(MdIndexInfo.UNIQUE));
+    Assert.assertEquals("index", mdIndexIF.getStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
     List<MdAttributeConcreteDAOIF> mdAttributes = mdIndexIF.getIndexedAttributes();
 
-    assertEquals(2, mdAttributes.size());
-    assertTrue(TestFixConst.ATTRIBUTE_BOOLEAN.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_BOOLEAN.equals(mdAttributes.get(1).definesAttribute()));
-    assertTrue(TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(1).definesAttribute()));
-    assertEquals(mdBusiness1.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdBusiness Update Test in Presence of Index");
+    Assert.assertEquals(2, mdAttributes.size());
+    Assert.assertTrue(TestFixConst.ATTRIBUTE_BOOLEAN.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_BOOLEAN.equals(mdAttributes.get(1).definesAttribute()));
+    Assert.assertTrue(TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(1).definesAttribute()));
+    Assert.assertEquals(mdBusiness1.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdBusiness Update Test in Presence of Index");
   }
 
   /**
    * Ensure that multiple indexes on the same type are not merged together.
    */
+  @Request
+  @Test
   public void testMultiIndexMerge()
   {
     final MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2482,9 +2526,11 @@ public class MergeTest extends TestCase
 
     List<MdIndexDAOIF> indexs = mdBusinessIF.getIndexes();
 
-    assertEquals(2, indexs.size());
+    Assert.assertEquals(2, indexs.size());
   }
 
+  @Request
+  @Test
   public void testAddMdActionParameterToPartialMdControllerMerge()
   {
     final MdControllerDAO mdController = MdControllerDAO.newInstance();
@@ -2557,15 +2603,15 @@ public class MergeTest extends TestCase
       }
     });
 
-    assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
+    Assert.assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
 
     MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO("test.xmlclasses.Controller1");
-    assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<MdActionDAOIF> mdActions = mdControllerIF.getMdActionDAOs();
 
-    assertEquals(2, mdActions.size());
+    Assert.assertEquals(2, mdActions.size());
 
     int i = 0;
     int j = 1;
@@ -2576,40 +2622,42 @@ public class MergeTest extends TestCase
       j = 0;
     }
 
-    assertEquals("checkin", mdActions.get(i).getName());
-    assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkin", mdActions.get(i).getName());
+    Assert.assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
 
     List<MdParameterDAOIF> mdParameters = mdActions.get(i).getMdParameterDAOs();
-    assertEquals(3, mdParameters.size());
-    assertEquals("param1", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(3, mdParameters.size());
+    Assert.assertEquals("param1", mdParameters.get(0).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
+    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
+    Assert.assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
 
-    assertEquals("param2", mdParameters.get(1).getParameterName());
-    assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
-    assertEquals("1", mdParameters.get(1).getParameterOrder());
-    assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param2", mdParameters.get(1).getParameterName());
+    Assert.assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
+    Assert.assertEquals("1", mdParameters.get(1).getParameterOrder());
+    Assert.assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    assertEquals("param3", mdParameters.get(2).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(2).getParameterType().getType());
-    assertEquals("4", mdParameters.get(2).getParameterOrder());
-    assertEquals("param3", mdParameters.get(2).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("param3", mdParameters.get(2).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(2).getParameterType().getType());
+    Assert.assertEquals("4", mdParameters.get(2).getParameterOrder());
+    Assert.assertEquals("param3", mdParameters.get(2).getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    assertEquals("checkout", mdActions.get(j).getName());
-    assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkout", mdActions.get(j).getName());
+    Assert.assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
 
     mdParameters = mdActions.get(j).getMdParameterDAOs();
-    assertEquals(1, mdParameters.size());
-    assertEquals("param4", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(1, mdParameters.size());
+    Assert.assertEquals("param4", mdParameters.get(0).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
+    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
+    Assert.assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
+  @Request
+  @Test
   public void testAddMdActionToPartialMdControllerMerge()
   {
     final MdControllerDAO mdController = MdControllerDAO.newInstance();
@@ -2663,15 +2711,15 @@ public class MergeTest extends TestCase
       }
     });
 
-    assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
+    Assert.assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
 
     MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO("test.xmlclasses.Controller1");
-    assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
     List<MdActionDAOIF> mdActions = mdControllerIF.getMdActionDAOs();
 
-    assertEquals(2, mdActions.size());
+    Assert.assertEquals(2, mdActions.size());
 
     int i = 0;
     int j = 1;
@@ -2682,34 +2730,34 @@ public class MergeTest extends TestCase
       j = 0;
     }
 
-    assertEquals("checkin", mdActions.get(i).getName());
-    assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkin", mdActions.get(i).getName());
+    Assert.assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
 
     List<MdParameterDAOIF> mdParameters = mdActions.get(i).getMdParameterDAOs();
-    assertEquals(1, mdParameters.size());
-    assertEquals("param4", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("0", mdParameters.get(0).getParameterOrder());
-    assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(1, mdParameters.size());
+    Assert.assertEquals("param4", mdParameters.get(0).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
+    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
+    Assert.assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    assertEquals("checkout", mdActions.get(j).getName());
-    assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkout", mdActions.get(j).getName());
+    Assert.assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
 
     mdParameters = mdActions.get(j).getMdParameterDAOs();
-    assertEquals(1, mdParameters.size());
-    assertEquals("param3", mdParameters.get(0).getParameterName());
-    assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    assertEquals("4", mdParameters.get(0).getParameterOrder());
-    assertEquals("param3", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
+    Assert.assertEquals(1, mdParameters.size());
+    Assert.assertEquals("param3", mdParameters.get(0).getParameterName());
+    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
+    Assert.assertEquals("4", mdParameters.get(0).getParameterOrder());
+    Assert.assertEquals("param3", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
 
   }
 
   /*
-   * public void testUpdateObjectMerge() { final MdBusinessDAO mdBusiness1 =
-   * TestFixtureFactory.createMdBusiness1(); final MdBusinessDAO mdBusiness2 =
-   * TestFixtureFactory.createMdBusiness2();
+   * @Request @Test public void testUpdateObjectMerge() { final MdBusinessDAO
+   * mdBusiness1 = TestFixtureFactory.createMdBusiness1(); final MdBusinessDAO
+   * mdBusiness2 = TestFixtureFactory.createMdBusiness2();
    * 
    * mdBusiness1.apply(); mdBusiness2.apply();
    * 
@@ -2720,12 +2768,15 @@ public class MergeTest extends TestCase
    * 
    * final BusinessDAO businessDAO1 =
    * BusinessDAO.newInstance(mdBusiness1.definesType());
-   * businessDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
-   * businessDAO1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "3"); businessDAO1.apply();
+   * businessDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
+   * MdAttributeBooleanInfo.TRUE);
+   * businessDAO1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "3");
+   * businessDAO1.apply();
    * 
    * final BusinessDAO businessDAO2 =
    * BusinessDAO.newInstance(mdBusiness1.definesType());
-   * businessDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.FALSE);
+   * businessDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
+   * MdAttributeBooleanInfo.FALSE);
    * businessDAO2.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Who are you?");
    * businessDAO2.apply();
    * 
@@ -2740,9 +2791,10 @@ public class MergeTest extends TestCase
    * 
    * final BusinessDAO businessDAO4 =
    * BusinessDAO.newInstance(mdBusiness1.definesType());
-   * businessDAO4.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
-   * businessDAO4.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Delete"); String id =
-   * businessDAO4.apply();
+   * businessDAO4.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
+   * MdAttributeBooleanInfo.TRUE);
+   * businessDAO4.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Delete");
+   * String id = businessDAO4.apply();
    * 
    * final ExportMetadata updateMetadata = new ExportMetadata();
    * generateMerge(updateMetadata, new ComponentIF[] {}, new ComponentIF[]
@@ -2759,8 +2811,8 @@ public class MergeTest extends TestCase
    * 
    * } });
    * 
-   * businessDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
-   * businessDAO2.apply();
+   * businessDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
+   * MdAttributeBooleanInfo.TRUE); businessDAO2.apply();
    * 
    * businessDAO3.setValue("testReference", businessDAO2.getId());
    * businessDAO3.apply();
@@ -2775,14 +2827,16 @@ public class MergeTest extends TestCase
    * BusinessDAOIF class2 = BusinessDAO.get(class2Ids.get(0));
    * 
    * // Assert that the values of refTest refer to instances of CLASS
-   * assertTrue(classIds.contains(class2.getValue("testReference")));
+   * Assert.assertTrue(classIds.contains(class2.getValue("testReference")));
    * 
    * try { BusinessDAO.get(id);
    * 
-   * fail("SAXImporter did not delete the businessDAO with the id [" + id +
-   * "]"); } catch (DataNotFoundException e) { // This is expected } }
+   * Assert.fail("SAXImporter did not delete the businessDAO with the id [" + id
+   * + "]"); } catch (DataNotFoundException e) { // This is expected } }
    */
 
+  @Request
+  @Test
   public void testDeleteAttributeFromMdBusinessMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
@@ -2810,19 +2864,21 @@ public class MergeTest extends TestCase
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute(ATTRIBUTE_NAME);
     if (attribute != null)
     {
-      fail("The attribute was not deleted");
+      Assert.fail("The attribute was not deleted");
     }
     else
-      assertTrue(true);
+      Assert.assertTrue(true);
   }
 
+  @Request
+  @Test
   public void testDeleteMdMethodFromMdBusinessMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
     mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
-    
+
     final MdMethodDAO mdMethod = createMethod(mdBusiness);
     mdMethod.apply();
     generateCreateSchema(new ComponentIF[] { mdBusiness });
@@ -2840,7 +2896,7 @@ public class MergeTest extends TestCase
     try
     {
       mdEntityIF.getMdMethod(METHOD_NAME);
-      fail("mdMethod could not be deleted");
+      Assert.fail("mdMethod could not be deleted");
     }
     catch (DataNotFoundException dataNotFoundException)
     {
@@ -2849,6 +2905,8 @@ public class MergeTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testDeleteMdMethodFromPartialSchema()
   {
     // Create test MdBusiness
@@ -2892,7 +2950,7 @@ public class MergeTest extends TestCase
     try
     {
       mdBusiness1IF.getMdMethod(mdMethod.getName());
-      fail("Able to retrieve ");
+      Assert.fail("Able to retrieve ");
     }
     catch (Exception e)
     {
@@ -2900,19 +2958,21 @@ public class MergeTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDeleteParameterFromMdMethodMerge()
   {
     MdBusinessDAO mdBusiness = createMdBusiness();
     mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
-    
+
     final MdMethodDAO mdMethod = createMethod(mdBusiness);
     mdMethod.apply();
-    
+
     final MdParameterDAO mdParameter = createMdParameter(mdMethod);
     mdParameter.apply();
-    
+
     generateCreateSchema(new ComponentIF[] { mdBusiness });
     final ExportMetadata updateMetadata = new ExportMetadata();
     generateMerge(updateMetadata, new ComponentIF[] {}, new ComponentIF[] { mdBusiness }, new UpdateActions()
@@ -2925,10 +2985,12 @@ public class MergeTest extends TestCase
     });
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdMethodDAOIF mdMethodIF = mdEntityIF.getMdMethod(METHOD_NAME);
-    assertEquals(mdMethodIF.getMdParameterDAOs().size(), 0);
+    Assert.assertEquals(mdMethodIF.getMdParameterDAOs().size(), 0);
 
   }
 
+  @Request
+  @Test
   public void testAddMdActionParameterToPartialMdControllerMergePreserveCreate()
   {
     final MdControllerDAO mdController = MdControllerDAO.newInstance();
@@ -2975,6 +3037,8 @@ public class MergeTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testPartialMergePreserveCreateWithChildren()
   {
     final MdControllerDAO mdController = MdControllerDAO.newInstance();
@@ -3029,6 +3093,8 @@ public class MergeTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testPartialMergeDeleteChildren()
   {
     final MdControllerDAO mdController = MdControllerDAO.newInstance();
@@ -3070,6 +3136,8 @@ public class MergeTest extends TestCase
     });
   }
 
+  @Request
+  @Test
   public void testAttributeDimension()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
@@ -3139,14 +3207,14 @@ public class MergeTest extends TestCase
           if (!mdAttribute.isSystem())
           {
             Set<Operation> permissions = test.getAssignedPermissions(mdAttribute);
-            assertTrue(permissions.contains(Operation.WRITE));
-            assertFalse(permissions.contains(Operation.READ));
+            Assert.assertTrue(permissions.contains(Operation.WRITE));
+            Assert.assertFalse(permissions.contains(Operation.READ));
 
             MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute.getMdAttributeDimension(mdDimension);
             Set<Operation> dimensionPermissions = test.getAssignedPermissions(mdAttributeDimension);
 
-            assertTrue(dimensionPermissions.contains(Operation.READ));
-            assertFalse(dimensionPermissions.contains(Operation.WRITE));
+            Assert.assertTrue(dimensionPermissions.contains(Operation.READ));
+            Assert.assertFalse(dimensionPermissions.contains(Operation.WRITE));
           }
         }
       }
@@ -3173,6 +3241,8 @@ public class MergeTest extends TestCase
    * Initial: a mdBusiness and a blob attribute Update : creates a blob
    * attribute in the mdBusiness
    */
+  @Request
+  @Test
   public void testAttributeOnRelationship()
   {
     MdBusinessDAO parentMdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3207,10 +3277,12 @@ public class MergeTest extends TestCase
 
     MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(mdRelationship.definesType());
 
-    assertNotNull(mdRelationshipIF);
-    assertNotNull(mdRelationshipIF.definesAttribute(mdAttributeCharacter.definesAttribute()));
+    Assert.assertNotNull(mdRelationshipIF);
+    Assert.assertNotNull(mdRelationshipIF.definesAttribute(mdAttributeCharacter.definesAttribute()));
   }
 
+  @Request
+  @Test
   public void testCreateUpdateThenDeleteOnObject()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3245,9 +3317,11 @@ public class MergeTest extends TestCase
     List<String> ids = BusinessDAO.getEntityIdsDB(mdBusiness.definesType());
 
     // Ensure that the object was deleted
-    assertEquals(0, ids.size());
+    Assert.assertEquals(0, ids.size());
   }
 
+  @Request
+  @Test
   public void testFormMerge()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -3282,9 +3356,11 @@ public class MergeTest extends TestCase
 
     MdTypeDAOIF testForm = MdWebFormDAO.getMdTypeDAO(mdForm.definesType());
 
-    assertNotNull(testForm);
+    Assert.assertNotNull(testForm);
   }
 
+  @Request
+  @Test
   public void testFieldReferenceOnAttributeRename()
   {
     final String newAttributeName = "renamedAttribute";
@@ -3325,9 +3401,11 @@ public class MergeTest extends TestCase
 
     MdTypeDAOIF testForm = MdWebFormDAO.getMdTypeDAO(mdForm.definesType());
 
-    assertNotNull(testForm);
+    Assert.assertNotNull(testForm);
   }
 
+  @Request
+  @Test
   public void testDeleteOfRenamedAttributeWithFieldReference()
   {
     final String newAttributeName = "renamedAttribute";
@@ -3371,7 +3449,7 @@ public class MergeTest extends TestCase
 
     MdTypeDAOIF testForm = MdWebFormDAO.getMdTypeDAO(mdForm.definesType());
 
-    assertNotNull(testForm);
+    Assert.assertNotNull(testForm);
   }
 
   private void mergeSchema(String... fileStrings)

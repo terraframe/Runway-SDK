@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
 
@@ -23,6 +23,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -57,27 +64,10 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class EnumerationTest extends TestCase
+public class EnumerationTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static final TypeInfo            stateClass           = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "US_State");
 
   private static final TypeInfo            stateEnum            = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "US_State_Enum");
@@ -169,49 +159,12 @@ public class EnumerationTest extends TestCase
   private static final String              SINGLE               = "enumStateSingle";
 
   /**
-   * The launch point for the Junit tests.
-   * 
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(EnumerationTest.suite()));
-  }
-
-  /**
-   * A suite() takes <b>this </b> <code>EnumerationTest.class</code> and wraps
-   * it in <code>MasterTestSetup</code>. The returned class is a suite of all
-   * the tests in <code>EnumerationTest</code>, with the global setUp() and
-   * tearDown() methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(EnumerationTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  /**
    * Provides setup operations required for all of the tests in this class.
    * Specifically, <code>classSetUp()</code> defines a new Enumerated Type
    * (STATE) and adds it as an attribute on the MasterTestSetup.TEST_CLASS type.
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     BusinessDAO businessDAO;
@@ -352,6 +305,8 @@ public class EnumerationTest extends TestCase
    * Deletes the previously defined STATE Enumeration after all tests have
    * completed.
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     BusinessDAO.get(singleAttrMdID).getBusinessDAO().delete();
@@ -367,20 +322,22 @@ public class EnumerationTest extends TestCase
    * Set the testObject to a new Instance of the MasterTestSetup.TEST_CLASS
    * class.
    */
+  @Request
+  @Before
   protected void setUp() throws Exception
   {
-    super.setUp();
     testObject = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
   }
 
   /**
    * If testObject was applied, it is removed from the database.
    * 
-   * @see TestCase#tearDown()
+   * 
    */
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
-    super.tearDown();
     if (testObject != null && !testObject.isNew())
     {
       testObject.delete();
@@ -486,6 +443,8 @@ public class EnumerationTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testGetStructEnumeration() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(testObject.getType());
@@ -500,21 +459,21 @@ public class EnumerationTest extends TestCase
 
       // Make sure the enumeration item can be dereferenced.
       BusinessDAOIF[] out = attrEnumIF.dereference();
-      assertEquals("Unable to dereference an enumeration item on an attribute that belongs to a struct.", 1, out.length);
-      assertEquals("Dereferenced the wront enumeration item on an attribute that belongs to a struct.", californiaItemId, out[0].getId());
+      Assert.assertEquals("Unable to dereference an enumeration item on an attribute that belongs to a struct.", 1, out.length);
+      Assert.assertEquals("Dereferenced the wront enumeration item on an attribute that belongs to a struct.", californiaItemId, out[0].getId());
 
       Set<String> cachedList = attrEnumIF.getCachedEnumItemIdSet();
-      assertEquals("The size of the enumItem cache on an AttributeEnumeration is wrong.", 1, cachedList.size());
-      assertEquals("The enumItem cache on an AttributeEnumeration references the wrong enumeration item.", californiaItemId, cachedList.iterator().next());
+      Assert.assertEquals("The size of the enumItem cache on an AttributeEnumeration is wrong.", 1, cachedList.size());
+      Assert.assertEquals("The enumItem cache on an AttributeEnumeration references the wrong enumeration item.", californiaItemId, cachedList.iterator().next());
 
       String cacheColumnName = ( (MdAttributeEnumerationDAOIF) attrEnumIF.getMdAttribute() ).getCacheColumnName();
       String databaseCachedStates = Database.getEnumCacheFieldInTable(mdStructIF.getTableName(), cacheColumnName, structDAO.getId());
 
-      assertEquals("The enumItem cache database column on an AttributeEnumeration references the wrong enumeration item.", californiaItemId, databaseCachedStates);
+      Assert.assertEquals("The enumItem cache database column on an AttributeEnumeration references the wrong enumeration item.", californiaItemId, databaseCachedStates);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -525,6 +484,8 @@ public class EnumerationTest extends TestCase
   /**
    * Tests a single value on an enumerated attribute
    */
+  @Request
+  @Test
   public void testSingle()
   {
     try
@@ -536,13 +497,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Sets and tests multiple values on an enumerated attribute
    */
+  @Request
+  @Test
   public void testAddMultiple()
   {
     try
@@ -556,13 +519,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests the default value on an enumerated attribute
    */
+  @Request
+  @Test
   public void testDefault()
   {
     try
@@ -573,13 +538,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testAdd()
   {
     try
@@ -591,13 +558,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testReplace()
   {
     try
@@ -614,7 +583,7 @@ public class EnumerationTest extends TestCase
 
       testObject.replaceItems(MULTIPLE, values);
 
-      assertTrue(testObject.getAttributeIF(MULTIPLE).isModified());
+      Assert.assertTrue(testObject.getAttributeIF(MULTIPLE).isModified());
 
       testObject.apply();
 
@@ -622,13 +591,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testReplaceNoChange()
   {
     try
@@ -644,7 +615,7 @@ public class EnumerationTest extends TestCase
 
       testObject.replaceItems(MULTIPLE, values);
 
-      assertFalse(testObject.getAttributeIF(MULTIPLE).isModified());
+      Assert.assertFalse(testObject.getAttributeIF(MULTIPLE).isModified());
 
       testObject.apply();
 
@@ -652,13 +623,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testReplaceSingle()
   {
     try
@@ -670,16 +643,16 @@ public class EnumerationTest extends TestCase
 
       Set<String> list = attribute.getCachedEnumItemIdSet();
       if (list.size() != 1)
-        fail("Single-select Enumeration allowed multiple items.");
+        Assert.fail("Single-select Enumeration allowed multiple items.");
       if (!list.contains(connecticutItemId))
-        fail("Single-select Enumeration did not update item selection.");
+        Assert.fail("Single-select Enumeration did not update item selection.");
 
       Collection<String> values = new TreeSet<String>();
       values.add(coloradoItemId);
 
       testObject.replaceItems(SINGLE, values);
 
-      assertTrue(testObject.getAttributeIF(SINGLE).isModified());
+      Assert.assertTrue(testObject.getAttributeIF(SINGLE).isModified());
 
       testObject.apply();
 
@@ -687,19 +660,21 @@ public class EnumerationTest extends TestCase
 
       list = attribute.getCachedEnumItemIdSet();
       if (list.size() != 1)
-        fail("Single-select Enumeration allowed multiple items.");
+        Assert.fail("Single-select Enumeration allowed multiple items.");
       if (!list.contains(coloradoItemId))
-        fail("Single-select Enumeration did not update item selection.");
+        Assert.fail("Single-select Enumeration did not update item selection.");
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testInvalidReplaceSingle()
   {
     try
@@ -711,9 +686,9 @@ public class EnumerationTest extends TestCase
 
       Set<String> list = attribute.getCachedEnumItemIdSet();
       if (list.size() != 1)
-        fail("Single-select Enumeration allowed multiple items.");
+        Assert.fail("Single-select Enumeration allowed multiple items.");
       if (!list.contains(connecticutItemId))
-        fail("Single-select Enumeration did not update item selection.");
+        Assert.fail("Single-select Enumeration did not update item selection.");
 
       Collection<String> values = new TreeSet<String>();
       values.add(coloradoItemId);
@@ -724,7 +699,7 @@ public class EnumerationTest extends TestCase
         testObject.replaceItems(SINGLE, values);
         testObject.apply();
 
-        fail("Able to replace a single select enumerated item with a multiple enumerated ids");
+        Assert.fail("Able to replace a single select enumerated item with a multiple enumerated ids");
       }
       catch (DataAccessException e)
       {
@@ -734,13 +709,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests deletion of an item (with other items still remaining)
    */
+  @Request
+  @Test
   public void testDelete()
   {
     try
@@ -754,7 +731,7 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -762,6 +739,8 @@ public class EnumerationTest extends TestCase
    * Tests adding an enumeration to a class with existing instances. Make sure
    * this does not break anything.
    */
+  @Request
+  @Test
   public void testEnumAttrToClassWithInstances()
   {
     MdBusinessDAOIF testMdBusiness = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -800,7 +779,7 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -815,6 +794,8 @@ public class EnumerationTest extends TestCase
   /**
    * Tests the deletion of the default item (leaving the value blank)
    */
+  @Request
+  @Test
   public void testDeleteDefault()
   {
     try
@@ -826,20 +807,22 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests the deletion of the default item (leaving the value blank)
    */
+  @Request
+  @Test
   public void testDeleteRequired()
   {
     try
     {
       testObject.removeItem(SINGLE, coloradoItemId);
       testObject.apply();
-      fail("An empty value on a required enumeration (" + SINGLE + ") was accepted.");
+      Assert.fail("An empty value on a required enumeration (" + SINGLE + ") was accepted.");
     }
     catch (ProblemException e)
     {
@@ -851,7 +834,7 @@ public class EnumerationTest extends TestCase
       }
       else
       {
-        fail(EmptyValueProblem.class.getName() + " was not thrown.");
+        Assert.fail(EmptyValueProblem.class.getName() + " was not thrown.");
       }
     }
   }
@@ -859,6 +842,8 @@ public class EnumerationTest extends TestCase
   /**
    * Tests explicitly adding the default item to the enumeration
    */
+  @Request
+  @Test
   public void testAddDefault()
   {
     try
@@ -870,7 +855,7 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -878,6 +863,8 @@ public class EnumerationTest extends TestCase
    * Tests adding an item to a single-select enumeration, which changes the
    * selection to the added item.
    */
+  @Request
+  @Test
   public void testAddToSingle()
   {
     testObject.apply();
@@ -889,14 +876,16 @@ public class EnumerationTest extends TestCase
     AttributeEnumeration attribute = (AttributeEnumeration) testObject.getAttribute(SINGLE);
     Set<String> list = attribute.getCachedEnumItemIdSet();
     if (list.size() != 1)
-      fail("Single-select Enumeration allowed multiple items.");
+      Assert.fail("Single-select Enumeration allowed multiple items.");
     if (!list.contains(californiaItemId))
-      fail("Single-select Enumeration did not update item selection.");
+      Assert.fail("Single-select Enumeration did not update item selection.");
   }
 
   /**
    * Tests adding the same items repeatedly to the enumeration
    */
+  @Request
+  @Test
   public void testRepeatedAdd()
   {
     try
@@ -918,7 +907,7 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -926,6 +915,8 @@ public class EnumerationTest extends TestCase
    * Tests deleting the same item multiple times (thus deleting an item that
    * isn't present)
    */
+  @Request
+  @Test
   public void testRepeatedDelete()
   {
     try
@@ -945,13 +936,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests deleting an item that isn't valid on the enumeration
    */
+  @Request
+  @Test
   public void testInvalidDelete()
   {
     try
@@ -964,13 +957,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests deleting an item that isn't valid on the enumeration
    */
+  @Request
+  @Test
   public void testInvalidAdd()
   {
     try
@@ -980,7 +975,7 @@ public class EnumerationTest extends TestCase
       testObject.apply();
 
       checkEnumState(coloradoItemId);
-      fail("State accepted an invalid item.");
+      Assert.fail("State accepted an invalid item.");
     }
     catch (AttributeValueException e)
     {
@@ -994,6 +989,8 @@ public class EnumerationTest extends TestCase
    * enumeration. Checks to make sure STATE_ENUM is deleted correctly, then
    * return the class to a testable state.
    */
+  @Request
+  @Test
   public void testDeleteAttribute()
   {
     BusinessDAO testObjects[] = new BusinessDAO[4];
@@ -1050,17 +1047,17 @@ public class EnumerationTest extends TestCase
 
       List<String> db = BusinessDAO.getEntityIdsFromDB(mdBusinessIF);
       if (db.size() != 4)
-        fail("Expected 4 entres in the " + mdBusinessIF.getTableName() + " table, found " + db.size());
+        Assert.fail("Expected 4 entres in the " + mdBusinessIF.getTableName() + " table, found " + db.size());
 
       BusinessDAO.get(multiAttrMdID).getBusinessDAO().delete();
 
       db = EntityDAO.getEntityIdsDB(mdBusinessIF.definesType());
       if (db.size() != 4)
-        fail("Expected 4 entres in the " + mdBusinessIF.getTableName() + " table, found " + db.size());
+        Assert.fail("Expected 4 entres in the " + mdBusinessIF.getTableName() + " table, found " + db.size());
 
       List<String> fields = Database.getColumnNames(mdBusinessIF.getTableName());
       if (fields.contains(MULTIPLE))
-        fail("Table ENUM_STATE was not deleted");
+        Assert.fail("Table ENUM_STATE was not deleted");
 
       // Count the number of rows in the stateMdEnumerationIF table
       int count = 0;
@@ -1073,11 +1070,11 @@ public class EnumerationTest extends TestCase
       // We expect 4 entries in the link table - 1 for each object's instance of
       // the multi-select enum
       if (count != origEnumNum + testObjects.length)
-        fail(stateMdEnumerationIF.getTableName() + " table still contains entries for deleted attribute");
+        Assert.fail(stateMdEnumerationIF.getTableName() + " table still contains entries for deleted attribute");
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -1117,6 +1114,8 @@ public class EnumerationTest extends TestCase
    * Tests that an attribute that should be unique should also be required.
    * 
    */
+  @Request
+  @Test
   public void testUniqueAttributeEnmeration()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1143,13 +1142,15 @@ public class EnumerationTest extends TestCase
     }
 
     mdAttrEnum.delete();
-    fail("An enumeration attribute was defined to be unique.  Enumeraiton attributes cannot participate in a uniqueness constraint.");
+    Assert.fail("An enumeration attribute was defined to be unique.  Enumeraiton attributes cannot participate in a uniqueness constraint.");
   }
 
   /**
    * Tests that an attribute that should be unique should also be required.
    * 
    */
+  @Request
+  @Test
   public void testUniqueAttributeGroupEnumeration()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1175,7 +1176,7 @@ public class EnumerationTest extends TestCase
     {
       // add the unique group index
       mdIndex.addAttribute(mdAttrEnum, 0);
-      fail("An enumeration attribute was defined to be part of a unique attribute group.  Enumeraiton attributes cannot participate in a uniqueness constraint.");
+      Assert.fail("An enumeration attribute was defined to be part of a unique attribute group.  Enumeraiton attributes cannot participate in a uniqueness constraint.");
     }
     catch (AttributeInvalidUniquenessConstraintException e)
     {
@@ -1192,6 +1193,8 @@ public class EnumerationTest extends TestCase
    * Make sure that enumerations only use a subclass of
    * Constants.ROOT_ENUMERATION_ATTRIBUTE_CLASS to define the master item list.
    */
+  @Request
+  @Test
   public void testEnumerationUsesValidClass()
   {
     MdBusinessDAOIF mdBusinessTestIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1219,13 +1222,15 @@ public class EnumerationTest extends TestCase
     }
     // should this test fail, delete this object
     mdEnumeration.delete();
-    fail("An enumeration was defined that did not use a class that is a subclass of " + EnumerationMasterInfo.CLASS + ".");
+    Assert.fail("An enumeration was defined that did not use a class that is a subclass of " + EnumerationMasterInfo.CLASS + ".");
   }
 
   /**
    * Make sure that enumerations only use a subclass of
    * Constants.ROOT_ENUMERATION_ATTRIBUTE_CLASS to define the master item list.
    */
+  @Request
+  @Test
   public void testNoDuplicateEnumerationTypeName()
   {
     TypeInfo classInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TEST_ENUMERATION_DEF");
@@ -1274,12 +1279,14 @@ public class EnumerationTest extends TestCase
       }
     }
 
-    fail("An enumeration was defined that did not use a class that is a subclass of [" + EnumerationMasterInfo.CLASS + "].");
+    Assert.fail("An enumeration was defined that did not use a class that is a subclass of [" + EnumerationMasterInfo.CLASS + "].");
   }
 
   /**
    * Tests to make sure that any Enumeration master list cannot be extended.
    */
+  @Request
+  @Test
   public void testEnumerationExtendable()
   {
     MdBusinessDAO mdBusiness1 = null;
@@ -1301,7 +1308,7 @@ public class EnumerationTest extends TestCase
       mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.apply();
 
-      fail("An enumerated type was (incorrectly) marked as extendable.");
+      Assert.fail("An enumerated type was (incorrectly) marked as extendable.");
     }
     catch (InheritanceException e)
     {
@@ -1319,6 +1326,8 @@ public class EnumerationTest extends TestCase
   /**
    * Tests to make sure that any Enumeration master list cannot be extended.
    */
+  @Request
+  @Test
   public void testEnumerationExtended()
   {
     MdBusinessDAO mdBusiness1 = null;
@@ -1354,7 +1363,7 @@ public class EnumerationTest extends TestCase
       mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness2.apply();
 
-      fail("An enumerated type was (incorrectly) able to extend an enumerated masterlist");
+      Assert.fail("An enumerated type was (incorrectly) able to extend an enumerated masterlist");
     }
     catch (InheritanceException e)
     {
@@ -1377,6 +1386,8 @@ public class EnumerationTest extends TestCase
    * Tests to make sure that any MdEnumerations are deleted whenever their
    * master lists are deleted.
    */
+  @Request
+  @Test
   public void testDeleteMdEnumerationFromDeleteMasterList()
   {
     createVoltronMasterList();
@@ -1386,7 +1397,7 @@ public class EnumerationTest extends TestCase
 
     if (MdTypeDAO.isDefined(voltronMdEnumeration.getType()))
     {
-      fail("Deleting the enumeration master list class failed to delete an MdEnumeration that uses it.");
+      Assert.fail("Deleting the enumeration master list class failed to delete an MdEnumeration that uses it.");
     }
 
   }
@@ -1395,6 +1406,8 @@ public class EnumerationTest extends TestCase
    * Tests to make sure that any MdAttributeEnumerations are deleted whenever
    * its MdEnumeration is deleted.
    */
+  @Request
+  @Test
   public void testDeleteMdAttributeEnumerationFromDeleteMdEnumeration()
   {
     createVoltronMasterList();
@@ -1458,14 +1471,14 @@ public class EnumerationTest extends TestCase
 
     if (l.size() != states.length)
     {
-      fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" expected " + states.length + " states in " + field + ", found " + l.size());
+      Assert.fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" expected " + states.length + " states in " + field + ", found " + l.size());
     }
 
     for (String state : states)
     {
       if (!l.contains(state))
       {
-        fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" does not contain all of the expected values in " + field);
+        Assert.fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" does not contain all of the expected values in " + field);
       }
     }
 
@@ -1487,7 +1500,7 @@ public class EnumerationTest extends TestCase
 
     if (databaseCachedStateArray.length != states.length)
     {
-      fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" expected " + states.length + " states in cached database column for " + field + ", found " + databaseCachedStateArray.length);
+      Assert.fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" expected " + states.length + " states in cached database column for " + field + ", found " + databaseCachedStateArray.length);
     }
 
   }
@@ -1509,14 +1522,14 @@ public class EnumerationTest extends TestCase
     Set<String> dbEnumItemIDs = Database.getEnumItemIds(tableName, testObject.getAttribute(field).getValue());
     if (dbEnumItemIDs.size() != states.length)
     {
-      fail(tableName + " table in an unexpected state.  Expected " + states.length + " rows, found " + dbEnumItemIDs.size());
+      Assert.fail(tableName + " table in an unexpected state.  Expected " + states.length + " rows, found " + dbEnumItemIDs.size());
     }
 
     for (String state : states)
     {
       if (!dbEnumItemIDs.contains(state))
       {
-        fail(tableName + " table in an unexpected state.  Did not find an expected value in the set.");
+        Assert.fail(tableName + " table in an unexpected state.  Did not find an expected value in the set.");
       }
     }
   }

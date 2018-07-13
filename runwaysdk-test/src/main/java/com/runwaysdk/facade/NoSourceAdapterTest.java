@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.facade;
 
@@ -33,12 +33,14 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.ProblemExceptionDTO;
 import com.runwaysdk.ServerSideException;
-import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.AttributeProblemDTO;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
@@ -112,7 +114,6 @@ import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.DuplicateDataExceptionDTO;
-import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
@@ -137,6 +138,7 @@ import com.runwaysdk.session.ReadChildPermissionExceptionDTO;
 import com.runwaysdk.session.ReadParentPermissionExceptionDTO;
 import com.runwaysdk.session.ReadPermissionExceptionDTO;
 import com.runwaysdk.session.ReadTypePermissionExceptionDTO;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RevokeAttributePermissionExceptionDTO;
 import com.runwaysdk.session.RevokeAttributeStatePermissionExceptionDTO;
 import com.runwaysdk.session.RevokeStatePermissionExceptionDTO;
@@ -175,11 +177,7 @@ import com.runwaysdk.util.FileIO;
 import com.runwaysdk.util.IDGenerator;
 import com.runwaysdk.web.AdminScreenAccessExceptionDTO;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-
-public class NoSourceAdapterTest extends TestCase
+public class NoSourceAdapterTest
 {
   protected static String            pack                           = "com.test.controller";
 
@@ -326,30 +324,6 @@ public class NoSourceAdapterTest extends TestCase
 
   protected static final byte[]      bytes2                         = { 2, 3, 4, 5, 6 };
 
-  public static Test suite()
-  {
-    TestSuiteTF suite = new TestSuiteTF();
-    suite.addTestSuite(NoSourceAdapterTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-        clientRequest = systemSession.getRequest();
-        classSetUp();
-        finalizeSetup();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   protected ClientSession createAnonymousSession()
   {
     return ClientSession.createAnonymousSession("default", new Locale[] { CommonProperties.getDefaultLocale() });
@@ -365,7 +339,17 @@ public class NoSourceAdapterTest extends TestCase
     return clientSession.getRequest();
   }
 
+  @BeforeClass
   public static void classSetUp()
+  {
+    systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
+    classSetUpRequest();
+    finalizeSetup();
+  }
+
+  @Request
+  public static void classSetUpRequest()
   {
     // create a new TestUser type with a phone number struct
     testUserMd = clientRequest.newBusiness(MdBusinessInfo.CLASS);
@@ -1003,6 +987,8 @@ public class NoSourceAdapterTest extends TestCase
     clientRequest.update(_mdAttributeEnumerationDTO);
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     clientRequest.delete(mdView.getId());
@@ -1096,11 +1082,8 @@ public class NoSourceAdapterTest extends TestCase
     return _parentInstance;
   }
 
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(AdapterTest.suite()));
-  }
-
+  @Request
+  @Test
   public void testUserRoleMap()
   {
     clientRequest.assignMember(tommyUser.getId(), RoleDAOIF.ROLE_ADMIN_ROLE, RoleDAOIF.DEVELOPER_ROLE);
@@ -1111,14 +1094,16 @@ public class NoSourceAdapterTest extends TestCase
     Map<String, String> roleMap = tommyRequest.getSessionUserRoles();
 
     Assert.assertEquals(roleMap.size(), 2);
-    assertTrue(roleMap.containsKey(RoleDAOIF.ROLE_ADMIN_ROLE));
-    assertTrue(roleMap.containsKey(RoleDAOIF.DEVELOPER_ROLE));
+    Assert.assertTrue(roleMap.containsKey(RoleDAOIF.ROLE_ADMIN_ROLE));
+    Assert.assertTrue(roleMap.containsKey(RoleDAOIF.DEVELOPER_ROLE));
 
     tommySession.logout();
 
     clientRequest.removeMember(tommyUser.getId(), RoleDAOIF.ROLE_ADMIN_ROLE, RoleDAOIF.DEVELOPER_ROLE);
   }
 
+  @Request
+  @Test
   public void testGetBusinessDTOsForEnumItems()
   {
     List<String> requestedNamesList = new ArrayList<String>();
@@ -1154,6 +1139,8 @@ public class NoSourceAdapterTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testGetInvalidEnumeration()
   {
     List<String> requestedNamesList = new ArrayList<String>();
@@ -1182,6 +1169,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testEmptyValueProblem()
   {
     BusinessDTO parent = clientRequest.newBusiness(parentMdBusinessType);
@@ -1256,6 +1245,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDuplicateColumnDataInDatabase()
   {
     BusinessDTO parent1 = createParentInstance(clientRequest);
@@ -1275,7 +1266,8 @@ public class NoSourceAdapterTest extends TestCase
       // Make sure the metadata is able to identify the attribute that violates
       // the constraint
       // if (!e.getDeveloperMessage().contains("[aCharacter]")) {
-      // Assert.fail("Expected to find the string \"[aCharacter]\" within the exception's developer message: ["
+      // Assert.fail("Expected to find the string \"[aCharacter]\" within the
+      // exception's developer message: ["
       // + e.getDeveloperMessage() + "].");
       // }
       String check = "[A Character]";
@@ -1294,6 +1286,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testJSONObjectQuery() throws JSONException
   {
     createQueryInstances();
@@ -1335,6 +1329,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetChildren()
   {
     BusinessDTO child1 = null;
@@ -1407,6 +1403,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetParents()
   {
     BusinessDTO parent1 = null;
@@ -1481,6 +1479,8 @@ public class NoSourceAdapterTest extends TestCase
    * Creates a few relationships and then gets the children.
    */
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testGetChildRelationships()
   {
     BusinessDTO child1 = null;
@@ -1560,6 +1560,8 @@ public class NoSourceAdapterTest extends TestCase
    * Creates a few relationships and then gets the parents.
    */
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testGetParentRelationships()
   {
     BusinessDTO parent1 = null;
@@ -1638,6 +1640,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Adds a child to a relationship.
    */
+  @Request
+  @Test
   public void testAddChild()
   {
     BusinessDTO child = null;
@@ -1664,6 +1668,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Deletes a child in a relationship.
    */
+  @Request
+  @Test
   public void testDeleteChild()
   {
     BusinessDTO child = null;
@@ -1694,6 +1700,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testDeleteChildren()
   {
     BusinessDTO child1 = null;
@@ -1751,6 +1759,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testDeleteParents()
   {
     BusinessDTO parent1 = null;
@@ -1805,6 +1815,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDeleteParent()
   {
     BusinessDTO child = null;
@@ -1840,6 +1852,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Adds an invalid child to a relationship.
    */
+  @Request
+  @Test
   public void testAddChildInvalid()
   {
     BusinessDTO child = null;
@@ -1869,6 +1883,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Adds a valid parent to a relationship.
    */
+  @Request
+  @Test
   public void testAddParent()
   {
     BusinessDTO child = null;
@@ -1901,6 +1917,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Adds an invalid parent to a relationship.
    */
+  @Request
+  @Test
   public void testAddParentInvalid()
   {
     BusinessDTO parent = null;
@@ -1929,6 +1947,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Updates an entity through the controller.
    */
+  @Request
+  @Test
   public void testUpdateEntity()
   {
     // attributes for the new business object
@@ -1971,6 +1991,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Updates an entity through the controller.
    */
+  @Request
+  @Test
   public void testImmutableAttributeEntity()
   {
     // attributes for the new business object
@@ -2019,6 +2041,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Updates an entity in an invalid fashion by setting an attribute incorrectly
    */
+  @Request
+  @Test
   public void testUpateEntityInvalid()
   {
     BusinessDTO testDTO = null;
@@ -2060,6 +2084,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Deletes an entity.
    */
+  @Request
+  @Test
   public void testDeleteEntity()
   {
     BusinessDTO businessDTO = null;
@@ -2087,6 +2113,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Tries to double-delete an entity, which should Assert.fail.
    */
+  @Request
+  @Test
   public void testDeleteEntityInvalid()
   {
     try
@@ -2105,6 +2133,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Creates a valid instance of a type.
    */
+  @Request
+  @Test
   public void testNewInstance()
   {
     BusinessDTO businessDTO = clientRequest.newBusiness(parentMdBusinessType);
@@ -2118,6 +2148,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Attempts to create an invalid instance of a fake type.
    */
+  @Request
+  @Test
   public void testNewInstanceInvalid()
   {
     try
@@ -2140,6 +2172,8 @@ public class NoSourceAdapterTest extends TestCase
    * Ensures that the id changes between a new <code>BusinessDTO</code> and when
    * the DTO is applied
    */
+  @Request
+  @Test
   public void testSameId()
   {
     BusinessDTO businessDTO = null;
@@ -2152,7 +2186,7 @@ public class NoSourceAdapterTest extends TestCase
 
       clientRequest.createBusiness(businessDTO);
 
-      assertFalse("ID of a new " + BusinessDTO.class.getName() + " did not change when it was applied.", id.equals(businessDTO.getId()));
+      Assert.assertFalse("ID of a new " + BusinessDTO.class.getName() + " did not change when it was applied.", id.equals(businessDTO.getId()));
     }
     finally
     {
@@ -2166,6 +2200,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Get all instances.
    */
+  @Request
+  @Test
   public void testGetAllInstancesEmpty()
   {
     try
@@ -2183,6 +2219,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Gets a valid instance.
    */
+  @Request
+  @Test
   public void testInstance()
   {
     BusinessDTO businessDTO = null;
@@ -2213,6 +2251,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Attempts to grab an invalid instance.
    */
+  @Request
+  @Test
   public void testInstanceInvalid()
   {
     try
@@ -2234,6 +2274,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Tests a valid login through the controller.
    */
+  @Request
+  @Test
   public void testLogin()
   {
     BusinessDTO user = null;
@@ -2264,6 +2306,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Tests a valid login through the controller.
    */
+  @Request
+  @Test
   public void testLoginAnonymous()
   {
     ClientSession anonymousSession = null;
@@ -2288,6 +2332,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Tests a valid login through the controller.
    */
+  @Request
+  @Test
   public void testChangeLogin()
   {
     ClientSession anonymousSession = this.createAnonymousSession();
@@ -2316,6 +2362,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetSessionUser()
   {
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(UserInfo.CLASS);
@@ -2350,6 +2398,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Log in an invalid user.
    */
+  @Request
+  @Test
   public void testLoginInvalid()
   {
     try
@@ -2367,6 +2417,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationDTO()
   {
     BusinessDTO user = clientRequest.newBusiness(parentMdBusinessType);
@@ -2381,6 +2433,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(locale.getId(), diamonds.getId());
   }
 
+  @Request
+  @Test
   public void testNoAccessorConversion()
   {
     BusinessDTO parent = null;
@@ -2390,7 +2444,7 @@ public class NoSourceAdapterTest extends TestCase
       parent = this.createParentInstance(clientRequest);
       String value = parent.getValue("aHiddenCharacter");
 
-      assertTrue(value != null && !value.equals(""));
+      Assert.assertTrue(value != null && !value.equals(""));
     }
     finally
     {
@@ -2401,6 +2455,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReference()
   {
     String attributeName = "aMultiReference";
@@ -2439,6 +2495,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceGeneration() throws Exception
   {
     BusinessDTO term = clientRequest.newBusiness(termType);
@@ -2474,6 +2532,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTerm()
   {
     String attributeName = "aMultiTerm";
@@ -2512,6 +2572,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTermGeneration() throws Exception
   {
     BusinessDTO term2 = clientRequest.newBusiness(termType);
@@ -2547,6 +2609,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testStructDTO()
   {
     BusinessDTO user = null;
@@ -2598,6 +2662,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildRelationshipsPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_CHILD.name());
@@ -2636,6 +2702,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildRelationshipsPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
@@ -2674,6 +2742,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadChildRelationshipsPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -2709,6 +2779,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildrenPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_CHILD.name());
@@ -2747,6 +2819,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildrenPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
@@ -2785,6 +2859,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadChildrenPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -2820,6 +2896,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentRelationshipsPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_PARENT.name());
@@ -2858,6 +2936,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentRelationshipsPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
@@ -2896,6 +2976,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadParentRelationshipsPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -2931,6 +3013,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentsPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_PARENT.name());
@@ -2969,6 +3053,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentsPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
@@ -3007,6 +3093,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadParentsPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -3042,6 +3130,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadChildRelationshipsPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3086,6 +3176,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadChildRelationshipsPermissions1()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3129,6 +3221,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadChildRelationshipsPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3174,6 +3268,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadChildRelationshipsPermissions2()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3221,6 +3317,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadParentRelationshipsPermissions()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3264,6 +3362,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadParentRelationshipsPermissions()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3307,6 +3407,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadParentsPermissions()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3350,6 +3452,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadParentsPermissions()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
@@ -3393,6 +3497,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantGrantTypePermission()
   {
     BusinessDTO testObject = null;
@@ -3443,6 +3549,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantGrantPermission()
   {
     ClientSession tommySession = null;
@@ -3471,6 +3579,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantRevokePermission()
   {
     ClientSession tommySession = null;
@@ -3499,6 +3609,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantGrantStateAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -3557,6 +3669,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantGrantStateAttributePermission()
   {
     ClientSession tommySession = null;
@@ -3586,6 +3700,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantRevokeStateAttributePermission()
   {
     ClientSession tommySession = null;
@@ -3615,6 +3731,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantGrantAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -3673,6 +3791,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantGrantAttributePermission()
   {
     ClientSession tommySession = null;
@@ -3702,6 +3822,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantRevokeAttributePermission()
   {
     ClientSession tommySession = null;
@@ -3731,6 +3853,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantGrantStatePermission()
   {
     BusinessDTO testObject = null;
@@ -3781,6 +3905,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantGrantStatePermission()
   {
     ClientSession tommySession = null;
@@ -3810,6 +3936,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantRevokeStatePermission()
   {
     ClientSession tommySession = null;
@@ -3839,6 +3967,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeReadWritePermission()
   {
     BusinessDTO testObject = null;
@@ -3881,6 +4011,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoWritePermission()
   {
     BusinessDTO testObject = null;
@@ -3918,6 +4050,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoReadPermission_DeveloperMessage()
   {
     BusinessDTO testObject = null;
@@ -3942,7 +4076,7 @@ public class NoSourceAdapterTest extends TestCase
     {
       // We want to land here
       // Make sure there is a developer message
-      assertTrue(!e.getDeveloperMessage().equals(""));
+      Assert.assertTrue(!e.getDeveloperMessage().equals(""));
     }
     catch (Throwable e)
     {
@@ -3962,6 +4096,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoReadPermission_NoDeveloperMessage()
   {
     BusinessDTO testObject = null;
@@ -3985,7 +4121,7 @@ public class NoSourceAdapterTest extends TestCase
     {
       // We want to land here
       // Make sure there is no developer message
-      assertTrue(e.getDeveloperMessage().equals(""));
+      Assert.assertTrue(e.getDeveloperMessage().equals(""));
     }
     catch (Throwable e)
     {
@@ -4004,6 +4140,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermission()
   {
     BusinessDTO testObject = null;
@@ -4038,6 +4176,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeReadEnumWritePermission()
   {
     BusinessDTO enumItem = null;
@@ -4079,6 +4219,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoReadEnumWritePermission()
   {
     BusinessDTO enumItem = null;
@@ -4117,6 +4259,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantStatePermission()
   {
     BusinessDTO testObject = null;
@@ -4150,6 +4294,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -4191,6 +4337,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantStateAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -4231,6 +4379,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissionInvalid()
   {
     try
@@ -4249,6 +4399,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissions()
   {
     BusinessDTO testObject = null;
@@ -4281,6 +4433,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantStatePermissions()
   {
     BusinessDTO testObject = null;
@@ -4314,6 +4468,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantAttributePermissions()
   {
     BusinessDTO testObject = null;
@@ -4355,6 +4511,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantAttributePermissionsInvalid()
   {
     BusinessDTO testObject = null;
@@ -4400,6 +4558,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantStateAttributePermissions()
   {
     BusinessDTO testObject = null;
@@ -4441,6 +4601,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissionsInvalid()
   {
     BusinessDTO testObject = null;
@@ -4486,6 +4648,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testQueryUserExactMatch()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(testUserType);
@@ -4506,6 +4670,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testQueryUserExactMatchComplicated()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(testUserType);
@@ -4526,6 +4692,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testQueryUserWildCard()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(testUserType);
@@ -4546,6 +4714,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryNumber()
   {
     createQueryInstances();
@@ -4614,6 +4784,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryChar()
   {
     createQueryInstances();
@@ -4662,6 +4834,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryBoolean()
   {
     createQueryInstances();
@@ -4710,6 +4884,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinessRelationshipQueryMoment()
   {
     createQueryInstances();
@@ -4778,6 +4954,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesRelationshipQueryNumber()
   {
     createQueryInstances();
@@ -4846,6 +5024,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesRelationshipQueryChar()
   {
     createQueryInstances();
@@ -4894,6 +5074,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesRelationshipQueryBoolean()
   {
     createQueryInstances();
@@ -4942,6 +5124,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryMoment()
   {
     createQueryInstances();
@@ -5009,6 +5193,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBusinesObjectQueryReadPermission()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.READ.name());
@@ -5042,6 +5228,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testViewVirtualAttributeReadPermission()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdView.getId(), Operation.READ.name());
@@ -5080,6 +5268,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testViewVirtualAttributeN0ReadPermission()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdView.getId(), Operation.READ.name());
@@ -5129,6 +5319,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBusinesObjectNoQueryReadPermission()
   {
     clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.READ.name());
@@ -5159,6 +5351,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testViewObjectNoQueryReadPermission()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -5191,6 +5385,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipQueryReadPermission()
   {
     clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
@@ -5221,6 +5417,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipQueryNoReadPermission()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -5254,7 +5452,7 @@ public class NoSourceAdapterTest extends TestCase
   // return the hash value.
   // Due to security concerns, we return an empty string for hash values, so
   // this test will always Assert.fail.
-  // public void testHashDTO()
+  // @Request @Test public void testHashDTO()
   // {
   // try
   // {
@@ -5300,6 +5498,8 @@ public class NoSourceAdapterTest extends TestCase
    * EntityDTO.isLockedByCurrentUser() return true if the object is locked by
    * the current user and false otherwise.
    */
+  @Request
+  @Test
   public void testCurrentUserLockValue()
   {
     BusinessDTO testObject = null;
@@ -5350,6 +5550,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5359,6 +5561,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(parentMdBusiness.getId(), instance.getMd().getId());
   }
 
+  @Request
+  @Test
   public void testRelationshipMetadata()
   {
     RelationshipDTO instance = (RelationshipDTO) clientRequest.newMutable(mdRelationshipType);
@@ -5371,6 +5575,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(childMdBusinessType, instance.getMd().getChildMdBusiness());
   }
 
+  @Request
+  @Test
   public void testBooleanMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5381,6 +5587,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(mdAttributeBooleanDTO.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getNegativeDisplayLabel());
   }
 
+  @Request
+  @Test
   public void testBlobMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5389,6 +5597,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeBlobDTO, md);
   }
 
+  @Request
+  @Test
   public void testReferenceMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5399,6 +5609,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.getReferencedMdBusiness(), refType);
   }
 
+  @Request
+  @Test
   public void testTermMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5409,6 +5621,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.getReferencedMdBusiness(), termType);
   }
 
+  @Request
+  @Test
   public void testMultiReferenceMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5419,6 +5633,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.getReferencedMdBusiness(), termType);
   }
 
+  @Request
+  @Test
   public void testMultiTermMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5429,6 +5645,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.getReferencedMdBusiness(), termType);
   }
 
+  @Request
+  @Test
   public void testDateTimeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5437,6 +5655,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeDateTimeDTO, md);
   }
 
+  @Request
+  @Test
   public void testDateMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5445,6 +5665,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeDateDTO, md);
   }
 
+  @Request
+  @Test
   public void testTimeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5453,6 +5675,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeTimeDTO, md);
   }
 
+  @Request
+  @Test
   public void testIdMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5463,6 +5687,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.isSystem(), true);
   }
 
+  @Request
+  @Test
   public void testTypeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5473,6 +5699,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.isSystem(), true);
   }
 
+  @Request
+  @Test
   public void testIntegerMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5481,6 +5709,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeIntegerDTO, md);
   }
 
+  @Request
+  @Test
   public void testLongMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5489,6 +5719,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeLongDTO, md);
   }
 
+  @Request
+  @Test
   public void testDecimalMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5497,6 +5729,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeDecimalDTO, md);
   }
 
+  @Request
+  @Test
   public void testDoubleMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5505,6 +5739,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeDoubleDTO, md);
   }
 
+  @Request
+  @Test
   public void testFloatMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5513,6 +5749,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeFloatDTO, md);
   }
 
+  @Request
+  @Test
   public void testTextMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5521,6 +5759,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeTextDTO, md);
   }
 
+  @Request
+  @Test
   public void testClobMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5529,6 +5769,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeClobDTO, md);
   }
 
+  @Request
+  @Test
   public void testCharacterMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5538,6 +5780,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(Integer.parseInt(mdAttributeCharacterDTO.getValue(MdAttributeCharacterInfo.SIZE)), md.getSize());
   }
 
+  @Request
+  @Test
   public void testStructMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5547,6 +5791,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(EntityTypes.PHONE_NUMBER.getType(), md.getDefiningMdStruct());
   }
 
+  @Request
+  @Test
   public void testEnumerationMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5569,6 +5815,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testHashMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5578,6 +5826,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(HashMethods.MD5.getMessageDigest(), md.getEncryptionMethod());
   }
 
+  @Request
+  @Test
   public void testSymmetricMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5587,6 +5837,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(SymmetricMethods.DES.getTransformation(), md.getEncryptionMethod());
   }
 
+  @Request
+  @Test
   public void testNewVaultFile()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
@@ -5613,6 +5865,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetVaultFile()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
@@ -5657,6 +5911,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(i, bytes.length);
   }
 
+  @Request
+  @Test
   public void testGetVaultFileNotCached()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
@@ -5692,6 +5948,8 @@ public class NoSourceAdapterTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testNoPermissionGetVaultFile()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -5723,6 +5981,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDeleteVaultFile()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
@@ -5745,6 +6005,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNewFile()
   {
     // FIXME fix for web services
@@ -5782,6 +6044,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDeleteFile()
   {
     // FIXME fix for web services
@@ -5848,6 +6112,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testDirectionalDeleteChild()
   {
     ClientSession tommySession = null;
@@ -5887,6 +6153,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDirectionalDeleteChildInvalid()
   {
     ClientSession tommySession = null;
@@ -5929,6 +6197,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDirectionalDeleteParent()
   {
     ClientSession tommySession = null;
@@ -5974,6 +6244,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDirectionalDeleteParentInvalid()
   {
     ClientSession tommySession = null;
@@ -6020,6 +6292,8 @@ public class NoSourceAdapterTest extends TestCase
    * Makes sure that a queryDTO for a given type returns the attributes that the
    * query type defines.
    */
+  @Request
+  @Test
   public void testQueryDTODefinedAttributes()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(parentMdBusinessType);
@@ -6076,6 +6350,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeDateDTO, aDate.getAttributeMdDTO());
   }
 
+  @Request
+  @Test
   public void testQueryDTObasics()
   {
     // queries for objects using the basic properties of the queryDTO
@@ -6099,22 +6375,26 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(queryDTO.getResultSet().size(), 3);
   }
 
+  @Request
+  @Test
   public void testStructQueryDTO()
   {
     StructQueryDTO queryDTO = (StructQueryDTO) clientRequest.getQuery(structType);
 
     AttributeCharacterDTO charDTO = (AttributeCharacterDTO) queryDTO.getAttributeDTO(structMdAttributeCharDTO.getValue(MdAttributeCharacterInfo.NAME));
-    assertNotNull(charDTO);
+    Assert.assertNotNull(charDTO);
 
     Assert.assertEquals(queryDTO.getType(), structType);
   }
 
+  @Request
+  @Test
   public void testRelationshipQueryDTO()
   {
     RelationshipQueryDTO queryDTO = (RelationshipQueryDTO) clientRequest.getQuery(mdRelationshipType);
 
     AttributeLongDTO longDTO = (AttributeLongDTO) queryDTO.getAttributeDTO(relMdAttributeLongDTO.getValue(MdAttributeCharacterInfo.NAME));
-    assertNotNull(longDTO);
+    Assert.assertNotNull(longDTO);
     Assert.assertEquals(longDTO.getValue(), "123321"); // test the default value
 
     Assert.assertEquals(queryDTO.getParentMdBusiness(), parentMdBusinessType);
@@ -6122,6 +6402,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(queryDTO.getType(), mdRelationshipType);
   }
 
+  @Request
+  @Test
   public void testBusinessQueryDTO()
   {
     BusinessQueryDTO parentQueryDTO = (BusinessQueryDTO) clientRequest.getQuery(parentMdBusinessType);
@@ -6141,6 +6423,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(asChild.getRelationshipType(), mdRelationshipType);
   }
 
+  @Request
+  @Test
   public void testImportDomainModel()
   {
     String location = TestConstants.Path.XMLFiles + "/standaloneSetTest.xml";
@@ -6169,6 +6453,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNoPermissionImportDomainModel()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -6199,6 +6485,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAccessAdminValid()
   {
     try
@@ -6212,6 +6500,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAccessAdminInvalid()
   {
     ClientSession tommySession = null;
@@ -6237,6 +6527,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testProxyLoggedIn()
   {
     ClientSession anonymousSession = this.createAnonymousSession();
@@ -6285,6 +6577,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Creates a valid instance of a type.
    */
+  @Request
+  @Test
   public void testNewDisconnectedEntity()
   {
     BusinessDTO user = clientRequest.newBusiness(testUserType);
@@ -6308,7 +6602,7 @@ public class NoSourceAdapterTest extends TestCase
         Assert.assertEquals(parentMdBusinessType, entityDTO.getType());
 
         // Ensure that the disconnected flag is set to true
-        assertTrue(entityDTO.isDisconnected());
+        Assert.assertTrue(entityDTO.isDisconnected());
 
         // Ensure the the user can set values
         entityDTO.setValue("aBoolean", MdAttributeBooleanInfo.TRUE);

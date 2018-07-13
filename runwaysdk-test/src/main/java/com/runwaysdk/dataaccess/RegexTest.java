@@ -3,20 +3,23 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
@@ -27,65 +30,16 @@ import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.NameConventionException;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class RegexTest extends TestCase
+public class RegexTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String args[])
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(RegexTest.suite()));
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(RegexTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  public static void classSetUp()
-  {
-  }
-
-  public static void classTearDown()
-  {
-  }
-
   /**
    * Creates a bunch of valid class types and makes sure they pass regex
    * filtering.
    */
+  @Request
+  @Test
   public void testValidClassTypes()
   {
     MdBusinessDAO testMdBusiness = null;
@@ -110,7 +64,7 @@ public class RegexTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
     TypeInfo my_ClassInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "My_Class");
@@ -133,7 +87,7 @@ public class RegexTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
     TypeInfo mYCLASSInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "MYCLASS");
@@ -156,7 +110,7 @@ public class RegexTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
     TypeInfo mClassInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "L");
@@ -179,7 +133,7 @@ public class RegexTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
@@ -208,7 +162,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to catch _MyClass as an invalid class type.");
+      Assert.fail("MdBusiness.validate() failed to catch _MyClass as an invalid class type.");
     }
     catch (NameConventionException e)
     {
@@ -232,7 +186,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to catch _MyClass as an invalid class type.");
+      Assert.fail("MdBusiness.validate() failed to catch _MyClass as an invalid class type.");
     }
     catch (NameConventionException e)
     {
@@ -256,7 +210,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to catch myClass as an invalid class type.");
+      Assert.fail("MdBusiness.validate() failed to catch myClass as an invalid class type.");
     }
     catch (NameConventionException e)
     {
@@ -280,7 +234,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to catch My%Class as an invalid class type.");
+      Assert.fail("MdBusiness.validate() failed to catch My%Class as an invalid class type.");
     }
     catch (NameConventionException e)
     {
@@ -304,7 +258,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to catch 3MyClass as an invalid class type.");
+      Assert.fail("MdBusiness.validate() failed to catch 3MyClass as an invalid class type.");
     }
     catch (NameConventionException e)
     {
@@ -316,6 +270,8 @@ public class RegexTest extends TestCase
    * Creates a bunch of valid attribute names and makes sure they pass regex
    * filtering.
    */
+  @Request
+  @Test
   public void testValidAttributeNames()
   {
     MdBusinessDAO testMdBusiness = null;
@@ -378,7 +334,7 @@ public class RegexTest extends TestCase
     {
       if (testMdBusiness != null)
         testMdBusiness.delete();
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
     TestFixtureFactory.delete(testMdBusiness);
@@ -388,6 +344,8 @@ public class RegexTest extends TestCase
    * Creates a bunch of invalid Attribute names and makes sure they fail regex
    * filtering.
    */
+  @Request
+  @Test
   public void testInvalidAttributeNames()
   {
     MdBusinessDAO testMdBusiness = null;
@@ -450,13 +408,15 @@ public class RegexTest extends TestCase
     {
       TestFixtureFactory.delete(testMdBusiness);
     }
-    fail("MdAttribute.validate() accepted incorrect attribute names.");
+    Assert.fail("MdAttribute.validate() accepted incorrect attribute names.");
   }
 
   /**
    * Creates a bunch of valid package names and makes sure they pass regex
    * filtering.
    */
+  @Request
+  @Test
   public void testValidPackageNames()
   {
     MdBusinessDAO testMdBusiness = null;
@@ -479,7 +439,7 @@ public class RegexTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
     // mr._sparkle_
@@ -500,7 +460,7 @@ public class RegexTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail("MdBusiness.validate() failed to valid the package, mr._sparkle_");
+      Assert.fail("MdBusiness.validate() failed to valid the package, mr._sparkle_");
     }
 
     // mr
@@ -521,7 +481,7 @@ public class RegexTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail("MdBusiness.validate() failed to valid the package, mr.");
+      Assert.fail("MdBusiness.validate() failed to valid the package, mr.");
     }
 
     // stateBlah
@@ -542,7 +502,7 @@ public class RegexTest extends TestCase
     }
     catch (NameConventionException e)
     {
-      fail("Created a package with an invalid name state");
+      Assert.fail("Created a package with an invalid name state");
     }
   }
 
@@ -550,6 +510,8 @@ public class RegexTest extends TestCase
    * Creates a bunch of invalid package names and makes sure they fail regex
    * filtering.
    */
+  @Request
+  @Test
   public void testInvalidPackageNames()
   {
     MdBusinessDAO testMdBusiness = null;
@@ -569,7 +531,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to valid the package ''");
+      Assert.fail("MdBusiness.validate() failed to valid the package ''");
     }
     catch (NameConventionException e)
     {
@@ -590,7 +552,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to valid the package, mr..sparkle");
+      Assert.fail("MdBusiness.validate() failed to valid the package, mr..sparkle");
     }
     catch (NameConventionException e)
     {
@@ -612,7 +574,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to valid the package, .mr.sparkle");
+      Assert.fail("MdBusiness.validate() failed to valid the package, .mr.sparkle");
     }
     catch (NameConventionException e)
     {
@@ -634,7 +596,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to valid the package, mr.sparkle.");
+      Assert.fail("MdBusiness.validate() failed to valid the package, mr.sparkle.");
     }
     catch (NameConventionException e)
     {
@@ -656,7 +618,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to valid the package, mr.spark&le");
+      Assert.fail("MdBusiness.validate() failed to valid the package, mr.spark&le");
     }
     catch (NameConventionException e)
     {
@@ -678,7 +640,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("Created a package with an invalid name 6mr5.1sparkle5");
+      Assert.fail("Created a package with an invalid name 6mr5.1sparkle5");
     }
     catch (NameConventionException e)
     {
@@ -700,7 +662,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("Created a package with an invalid name state");
+      Assert.fail("Created a package with an invalid name state");
     }
     catch (NameConventionException e)
     {
@@ -722,7 +684,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("Created a package with an invalid name state");
+      Assert.fail("Created a package with an invalid name state");
     }
     catch (NameConventionException e)
     {

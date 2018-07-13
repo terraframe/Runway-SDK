@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.facade;
 
@@ -22,6 +22,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
@@ -80,6 +84,7 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundExceptionDTO;
 import com.runwaysdk.session.AttributeReadPermissionExceptionDTO;
 import com.runwaysdk.session.DeletePermissionExceptionDTO;
 import com.runwaysdk.session.ReadPermissionExceptionDTO;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
 import com.runwaysdk.transport.metadata.AttributeDecMdDTO;
@@ -90,9 +95,7 @@ import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 
-import junit.framework.TestCase;
-
-public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWeave
+public abstract class SessionDTOAdapterTest implements DoNotWeave
 {
   protected static String            label;
 
@@ -229,7 +232,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     return clientSession.getRequest();
   }
 
-  public static void classSetUp()
+  @Request
+  public static void classSetUpRequest()
   {
     suitMaster = clientRequest.newBusiness(MdBusinessInfo.CLASS);
     suitMaster.setValue(MdBusinessInfo.NAME, suitMasterTypeName);
@@ -601,6 +605,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     suits.add(diamonds);
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     clientRequest.lock(childMdSession);
@@ -632,6 +638,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
   /**
    * Updates an entity in an invalid fashion by setting an attribute incorrectly
    */
+  @Request
+  @Test
   public void testUpateSessionComponentInvalid()
   {
     SessionDTO testDTO = null;
@@ -645,7 +653,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
       testDTO.setValue("anInteger", "-100");
       clientRequest.update(testDTO);
 
-      fail("The controller allowed for an erroneous attribute to be set.");
+      Assert.fail("The controller allowed for an erroneous attribute to be set.");
     }
     catch (ProblemExceptionDTO e)
     {
@@ -657,11 +665,11 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
         }
       }
 
-      fail("Did not find [" + AttributeProblemDTO.CLASS + "] in the problem list.");
+      Assert.fail("Did not find [" + AttributeProblemDTO.CLASS + "] in the problem list.");
     }
     catch (Throwable t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -675,6 +683,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
   /**
    * Deletes an entity.
    */
+  @Request
+  @Test
   public void testDeleteSessionComponent()
   {
     SessionDTO sessionDTO = null;
@@ -690,7 +700,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
       // Now try to get the object that was created. If it was deleted, it
       // should error out.
       clientRequest.get(sessionDTO.getId());
-      fail("An entity was not correctly deleted");
+      Assert.fail("An entity was not correctly deleted");
     }
     catch (DataNotFoundExceptionDTO e)
     {
@@ -698,20 +708,22 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Tries to double-delete an entity, which should fail.
    */
+  @Request
+  @Test
   public void testDeleteSessionInvalid()
   {
     try
     {
       // try to delete an entity that doesn't exist
       clientRequest.delete("999999999999999999999999999999999-this.class.should.not.exist.Blah");
-      fail("An entity was able to deleted that doesn't exist.");
+      Assert.fail("An entity was able to deleted that doesn't exist.");
     }
     catch (DataNotFoundExceptionDTO e)
     {
@@ -719,13 +731,15 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Creates a valid instance of a type.
    */
+  @Request
+  @Test
   public void testNewInstance()
   {
     SessionDTO sessionDTO = null;
@@ -736,25 +750,27 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
 
       if (!sessionDTO.getType().equals(parentMdSessionType))
       {
-        fail("A new instance type did not match its defining entity.");
+        Assert.fail("A new instance type did not match its defining entity.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Attempts to create an invalid instance of a fake type.
    */
+  @Request
+  @Test
   public void testNewInstanceInvalid()
   {
     try
     {
       // try to delete an entity that doesn't exist
       clientRequest.newMutable("this.class.should.not.exist.Blah");
-      fail("A new instance was created that doesn't exist.");
+      Assert.fail("A new instance was created that doesn't exist.");
     }
     catch (DataNotFoundExceptionDTO e)
     {
@@ -762,13 +778,15 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
   /**
    * Gets a valid instance.
    */
+  @Request
+  @Test
   public void testInstance()
   {
     SessionDTO sessionDTO = null;
@@ -781,12 +799,12 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
 
       SessionDTO retrieved = (SessionDTO) clientRequest.get(sessionDTO.getId());
 
-      assertEquals(sessionDTO.getId(), retrieved.getId());
+      Assert.assertEquals(sessionDTO.getId(), retrieved.getId());
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -800,13 +818,15 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
   /**
    * Attempts to grab an invalid instance.
    */
+  @Request
+  @Test
   public void testInstanceInvalid()
   {
     try
     {
       // try to delete an entity that doesn't exist
       clientRequest.get("");
-      fail("An instance was retrieved that doesn't exist.");
+      Assert.fail("An instance was retrieved that doesn't exist.");
     }
     catch (ProgrammingErrorExceptionDTO e)
     {
@@ -814,10 +834,12 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testBlob()
   {
     SessionDTO instance = null;
@@ -835,7 +857,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
       {
         if (value[i] != retVal[i])
         {
-          fail("A new instance did not store blob bytes correctly.");
+          Assert.fail("A new instance did not store blob bytes correctly.");
         }
       }
 
@@ -846,13 +868,13 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
       {
         if (value[i] != retVal[i])
         {
-          fail("An updated instance did not store the blob bytes correctly.");
+          Assert.fail("An updated instance did not store the blob bytes correctly.");
         }
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -863,6 +885,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testStructDTO()
   {
     SessionDTO sessionDTO = null;
@@ -881,7 +905,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
       AttributeStructDTO createdPhone = ComponentDTOFacade.getAttributeStructDTO(sessionDTO, "aStruct");
       if (!phone.getValue("areaCode").equals(createdPhone.getValue("areaCode")) || !phone.getValue("prefix").equals(createdPhone.getValue("prefix")) || !phone.getValue("suffix").equals(createdPhone.getValue("suffix")))
       {
-        fail("The values for a created struct do not match the set values.");
+        Assert.fail("The values for a created struct do not match the set values.");
       }
 
       // update the user
@@ -894,12 +918,12 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
       AttributeStructDTO updatedPhone = ComponentDTOFacade.getAttributeStructDTO(sessionDTO, "aStruct");
       if (!createdPhone.getValue("areaCode").equals(updatedPhone.getValue("areaCode")) || !createdPhone.getValue("prefix").equals(updatedPhone.getValue("prefix")) || !createdPhone.getValue("suffix").equals(updatedPhone.getValue("suffix")))
       {
-        fail("The values for an updated struct do not match the set values.");
+        Assert.fail("The values for an updated struct do not match the set values.");
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -910,6 +934,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeReadWritePermission()
   {
     SessionDTO testObject = null;
@@ -930,7 +956,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
       // make sure the readable and writable flag is set to true
       if (!sessionDTO.isReadable() || !sessionDTO.isWritable())
       {
-        fail("Read or Write permission on a type were not properly set in the DTO");
+        Assert.fail("Read or Write permission on a type were not properly set in the DTO");
       }
     }
     finally
@@ -949,6 +975,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoWritePermission()
   {
     SessionDTO testObject = null;
@@ -969,7 +997,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
       // make sure the readable and writable flag is set to true
       if (sessionDTO.isWritable())
       {
-        fail("Read or Write permission on a type were not properly set in the DTO");
+        Assert.fail("Read or Write permission on a type were not properly set in the DTO");
       }
     }
     finally
@@ -986,6 +1014,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoReadPermission()
   {
     SessionDTO testObject = null;
@@ -1003,7 +1033,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
 
       tommyProxy.get(testObject.getId());
 
-      fail("Read or Write permission on a type were not properly set in the DTO");
+      Assert.fail("Read or Write permission on a type were not properly set in the DTO");
     }
     catch (ReadPermissionExceptionDTO e)
     {
@@ -1011,7 +1041,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1027,6 +1057,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testGrantAttributePermission()
   {
     SessionDTO testObject = null;
@@ -1051,7 +1083,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1064,13 +1096,15 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissionInvalid()
   {
     try
     {
       clientRequest.grantTypePermission(newUser.getId(), childMdSession.getId(), "not_a_proper_permission");
 
-      fail("An invalid type of permission was added to a user.");
+      Assert.fail("An invalid type of permission was added to a user.");
     }
     catch (InvalidEnumerationNameDTO e)
     {
@@ -1078,10 +1112,12 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissions()
   {
     SessionDTO testObject = null;
@@ -1102,7 +1138,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1114,6 +1150,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testGrantAttributePermissions()
   {
     SessionDTO testObject = null;
@@ -1137,7 +1175,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1151,6 +1189,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissionsInvalid()
   {
     SessionDTO testObject = null;
@@ -1171,7 +1211,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
       // delete the object
       tommyProxy.delete(testObject.getId());
 
-      fail("A user was able to delete an object without permission.");
+      Assert.fail("A user was able to delete an object without permission.");
     }
     catch (DeletePermissionExceptionDTO e)
     {
@@ -1179,7 +1219,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getLocalizedMessage());
+      Assert.fail(e.getLocalizedMessage());
     }
     finally
     {
@@ -1194,6 +1234,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testGrantAttributePermissionsInvalid()
   {
     SessionDTO testObject = null;
@@ -1230,6 +1272,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testToString()
   {
     SessionDTO sessionDTO = null;
@@ -1243,15 +1287,17 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
 
       if (!expectedToString.equals(toString))
       {
-        fail("The toString() value on an SessionDTO is incorrect.");
+        Assert.fail("The toString() value on an SessionDTO is incorrect.");
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testGrantOwnerReadPermission()
   {
     SessionDTO testObject = null;
@@ -1272,7 +1318,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1289,6 +1335,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantOwnerReadPermission()
   {
     SessionDTO testObject = null;
@@ -1306,7 +1354,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
 
       tommyProxy.get(testObject.getId());
 
-      fail("Read or Write permission on a type were not properly set in the DTO");
+      Assert.fail("Read or Write permission on a type were not properly set in the DTO");
     }
     catch (ReadPermissionExceptionDTO e)
     {
@@ -1314,7 +1362,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1330,15 +1378,19 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
 
-    assertEquals(parentMdSession.getStructValue(MdSessionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDisplayLabel());
-    assertEquals(parentMdSession.getStructValue(MetadataInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDescription());
-    assertEquals(parentMdSession.getId(), instance.getMd().getId());
+    Assert.assertEquals(parentMdSession.getStructValue(MdSessionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDisplayLabel());
+    Assert.assertEquals(parentMdSession.getStructValue(MetadataInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDescription());
+    Assert.assertEquals(parentMdSession.getId(), instance.getMd().getId());
   }
 
+  @Request
+  @Test
   public void testBooleanMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1347,6 +1399,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeBooleanDTO, md);
   }
 
+  @Request
+  @Test
   public void testBlobMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1355,6 +1409,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeBlobDTO, md);
   }
 
+  @Request
+  @Test
   public void testReferenceMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1362,9 +1418,11 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
 
     checkAttributeMd(mdAttributeReferenceDTO, md);
 
-    assertEquals(md.getReferencedMdBusiness(), refType);
+    Assert.assertEquals(md.getReferencedMdBusiness(), refType);
   }
 
+  @Request
+  @Test
   public void testDateTimeMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1373,6 +1431,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeDateTimeDTO, md);
   }
 
+  @Request
+  @Test
   public void testDateMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1381,6 +1441,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeDateDTO, md);
   }
 
+  @Request
+  @Test
   public void testTimeMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1389,26 +1451,31 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeTimeDTO, md);
   }
 
+  @Request
+  @Test
   public void testIdMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
     AttributeCharacterMdDTO md = instance.getIdMd();
 
-    assertEquals(md.getName(), EntityInfo.ID);
-    assertEquals(md.isRequired(), true);
-    assertEquals(md.isSystem(), true);
+    Assert.assertEquals(md.getName(), EntityInfo.ID);
+    Assert.assertEquals(md.isRequired(), true);
+    Assert.assertEquals(md.isSystem(), true);
   }
 
   // TODO enable once type attribute has been moved to component
   /*
-   * public void testTypeMetadata() { MutableDTO instance =
+   * @Request @Test public void testTypeMetadata() { MutableDTO instance =
    * clientRequest.newMutable(parentMdSessionType); AttributeCharacterMdDTO md =
    * instance.getTypeMd();
    * 
-   * assertEquals(md.getName(), EntityInfo.TYPE); assertEquals(md.isRequired(),
-   * true); assertEquals(md.isSystem(), true); }
+   * Assert.assertEquals(md.getName(), EntityInfo.TYPE);
+   * Assert.assertEquals(md.isRequired(), true);
+   * Assert.assertEquals(md.isSystem(), true); }
    */
 
+  @Request
+  @Test
   public void testIntegerMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1417,6 +1484,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeIntegerDTO, md);
   }
 
+  @Request
+  @Test
   public void testLongMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1425,6 +1494,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeLongDTO, md);
   }
 
+  @Request
+  @Test
   public void testDecimalMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1433,6 +1504,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeDecimalDTO, md);
   }
 
+  @Request
+  @Test
   public void testDoubleMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1441,6 +1514,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeDoubleDTO, md);
   }
 
+  @Request
+  @Test
   public void testFloatMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1449,6 +1524,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeFloatDTO, md);
   }
 
+  @Request
+  @Test
   public void testTextMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1457,6 +1534,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeTextDTO, md);
   }
 
+  @Request
+  @Test
   public void testClobMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
@@ -1465,35 +1544,41 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     checkAttributeMd(mdAttributeClobDTO, md);
   }
 
+  @Request
+  @Test
   public void testCharacterMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
     AttributeCharacterMdDTO md = ComponentDTOFacade.getAttributeCharacterDTO(instance, "aCharacter").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeCharacterDTO, md);
-    assertEquals(Integer.parseInt(mdAttributeCharacterDTO.getValue(MdAttributeCharacterInfo.SIZE)), md.getSize());
+    Assert.assertEquals(Integer.parseInt(mdAttributeCharacterDTO.getValue(MdAttributeCharacterInfo.SIZE)), md.getSize());
   }
 
+  @Request
+  @Test
   public void testStructMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
     AttributeStructMdDTO md = ComponentDTOFacade.getAttributeStructDTO(instance, "aStruct").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeStructDTO, md);
-    assertEquals(EntityTypes.PHONE_NUMBER.getType(), md.getDefiningMdStruct());
+    Assert.assertEquals(EntityTypes.PHONE_NUMBER.getType(), md.getDefiningMdStruct());
   }
 
+  @Request
+  @Test
   public void testEnumerationMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
     AttributeEnumerationMdDTO md = ComponentDTOFacade.getAttributeEnumerationDTO(instance, "anEnum").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeEnumerationDTO, md);
-    assertEquals(Boolean.parseBoolean(mdAttributeEnumerationDTO.getValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE)), md.selectMultiple());
+    Assert.assertEquals(Boolean.parseBoolean(mdAttributeEnumerationDTO.getValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE)), md.selectMultiple());
 
-    assertEquals("anEnum", md.getName());
-    assertEquals(suitMdEnumerationType, md.getReferencedMdEnumeration());
-    assertEquals(suitMdEnumerationType + TypeGeneratorInfo.DTO_SUFFIX, md.getJavaType().getName());
+    Assert.assertEquals("anEnum", md.getName());
+    Assert.assertEquals(suitMdEnumerationType, md.getReferencedMdEnumeration());
+    Assert.assertEquals(suitMdEnumerationType + TypeGeneratorInfo.DTO_SUFFIX, md.getJavaType().getName());
 
     // check all enum values
     Map<String, String> enumNameMap = md.getEnumItems();
@@ -1502,27 +1587,31 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
       String expectedName = suit.getValue(EnumerationMasterInfo.NAME);
       if (!enumNameMap.containsKey(expectedName))
       {
-        fail("The enumeration values on the enumeration metadata was incorrect.");
+        Assert.fail("The enumeration values on the enumeration metadata was incorrect.");
       }
     }
   }
 
+  @Request
+  @Test
   public void testHashMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
     AttributeEncryptionMdDTO md = ComponentDTOFacade.getAttributeHashDTO(instance, "aHash").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeHashDTO, md);
-    assertEquals(HashMethods.MD5.getMessageDigest(), md.getEncryptionMethod());
+    Assert.assertEquals(HashMethods.MD5.getMessageDigest(), md.getEncryptionMethod());
   }
 
+  @Request
+  @Test
   public void testSymmetricMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
     AttributeEncryptionMdDTO md = ComponentDTOFacade.getAttributeSymmetricDTO(instance, "aSym").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeSymmetricDTO, md);
-    assertEquals(SymmetricMethods.DES.getTransformation(), md.getEncryptionMethod());
+    Assert.assertEquals(SymmetricMethods.DES.getTransformation(), md.getEncryptionMethod());
   }
 
   /**
@@ -1535,34 +1624,34 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
    */
   private void checkAttributeMd(BusinessDTO mdAttribute, AttributeMdDTO md)
   {
-    assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDisplayLabel());
-    assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDescription());
-    assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.REQUIRED)), md.isRequired());
-    assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.IMMUTABLE)), md.isImmutable());
-    assertEquals(mdAttribute.getId(), md.getId());
-    assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.SYSTEM)), md.isSystem());
-    assertEquals(mdAttribute.getValue(MdAttributeConcreteInfo.NAME), md.getName());
+    Assert.assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDisplayLabel());
+    Assert.assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDescription());
+    Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.REQUIRED)), md.isRequired());
+    Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.IMMUTABLE)), md.isImmutable());
+    Assert.assertEquals(mdAttribute.getId(), md.getId());
+    Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.SYSTEM)), md.isSystem());
+    Assert.assertEquals(mdAttribute.getValue(MdAttributeConcreteInfo.NAME), md.getName());
 
     if (md instanceof AttributeNumberMdDTO)
     {
       AttributeNumberMdDTO numberMdDTO = (AttributeNumberMdDTO) md;
 
-      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_ZERO)), numberMdDTO.rejectZero());
-      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_NEGATIVE)), numberMdDTO.rejectNegative());
-      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_POSITIVE)), numberMdDTO.rejectPositive());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_ZERO)), numberMdDTO.rejectZero());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_NEGATIVE)), numberMdDTO.rejectNegative());
+      Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_POSITIVE)), numberMdDTO.rejectPositive());
     }
 
     if (md instanceof AttributeDecMdDTO)
     {
       AttributeDecMdDTO decMdDTO = (AttributeDecMdDTO) md;
 
-      assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.LENGTH)), decMdDTO.getTotalLength());
-      assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.DECIMAL)), decMdDTO.getDecimalLength());
+      Assert.assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.LENGTH)), decMdDTO.getTotalLength());
+      Assert.assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.DECIMAL)), decMdDTO.getDecimalLength());
     }
 
   }
 
-  // public void testGrantOwnerReadPermission()
+  // @Request @Test public void testGrantOwnerReadPermission()
   // {
   // SessionDTO testObject = null;
   // String userSessionId = null;
@@ -1582,7 +1671,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
   //
   // clientRequest.get(userSessionId, testObject.getId());
   //
-  // fail("Read or Write permission on a type were not properly set in the DTO");
+  // Assert.fail("Read or Write permission on a type were not properly set in
+  // the DTO");
   // }
   // catch (TypePermissionException_READDTO e)
   // {
@@ -1590,7 +1680,7 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
   // }
   // catch (Throwable e)
   // {
-  // fail(e.getMessage());
+  // Assert.fail(e.getMessage());
   // }
   // finally
   // {
@@ -1603,6 +1693,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
   // }
   // }
 
+  @Request
+  @Test
   public void testAttributeMultiReference()
   {
     String attributeName = "aMultiReference";
@@ -1624,8 +1716,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
 
         List<String> results = test.getMultiItems(attributeName);
 
-        assertEquals(1, results.size());
-        assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(term.getId(), results.get(0));
       }
       finally
       {
@@ -1640,6 +1732,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceGeneration() throws Exception
   {
     BusinessDTO term = clientRequest.newBusiness(termType);
@@ -1659,8 +1753,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
 
         List<String> results = (List<String>) test.getClass().getMethod("getAMultiReference").invoke(test);
 
-        assertEquals(1, results.size());
-        assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(term.getId(), results.get(0));
       }
       finally
       {
@@ -1674,6 +1768,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTerm()
   {
     String attributeName = "aMultiTerm";
@@ -1695,8 +1791,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
 
         List<String> results = test.getMultiItems(attributeName);
 
-        assertEquals(1, results.size());
-        assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(term.getId(), results.get(0));
       }
       finally
       {
@@ -1711,6 +1807,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiTermGeneration() throws Exception
   {
     BusinessDTO term = clientRequest.newBusiness(termType);
@@ -1730,8 +1828,8 @@ public abstract class SessionDTOAdapterTest extends TestCase implements DoNotWea
 
         List<String> results = (List<String>) test.getClass().getMethod("getAMultiTerm").invoke(test);
 
-        assertEquals(1, results.size());
-        assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(term.getId(), results.get(0));
       }
       finally
       {

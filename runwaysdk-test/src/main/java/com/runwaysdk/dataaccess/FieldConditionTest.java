@@ -3,23 +3,28 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
 
 import java.util.List;
 import java.util.Set;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.CharacterConditionInfo;
@@ -49,29 +54,12 @@ import com.runwaysdk.dataaccess.metadata.MdWebDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebGroupDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebIntegerDAO;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.system.FieldOperation;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class FieldConditionTest extends TestCase
+public class FieldConditionTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static MdBusinessDAO           mdBusiness;
 
   private static MdAttributeCharacterDAO mdAttributeCharacter;
@@ -90,27 +78,8 @@ public class FieldConditionTest extends TestCase
 
   private static MdWebDateDAO            mdWebDate;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(FieldConditionTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -144,17 +113,21 @@ public class FieldConditionTest extends TestCase
     mdWebDate.apply();
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdForm);
     TestFixtureFactory.delete(mdBusiness);
   }
 
+  @Request
+  @Test
   public void testDateCondition()
   {
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdWebDate.getValue(MdWebDateInfo.SHOW_ON_VIEW_ALL));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdWebDate.getValue(MdWebDateInfo.SHOW_ON_SEARCH));
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdWebCharacter.getValue(MdWebDateInfo.SHOW_ON_SEARCH));
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdWebDate.getValue(MdWebDateInfo.SHOW_ON_VIEW_ALL));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdWebDate.getValue(MdWebDateInfo.SHOW_ON_SEARCH));
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdWebCharacter.getValue(MdWebDateInfo.SHOW_ON_SEARCH));
 
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
@@ -171,14 +144,14 @@ public class FieldConditionTest extends TestCase
       AttributeEnumerationIF attribute = (AttributeEnumerationIF) test.getAttributeIF(DoubleConditionInfo.OPERATION);
       Set<String> itemIds = attribute.getEnumItemIdList();
 
-      assertEquals(DateConditionInfo.CLASS, test.getType());
-      assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
-      assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
-      assertEquals(1, itemIds.size());
+      Assert.assertEquals(DateConditionInfo.CLASS, test.getType());
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
+      Assert.assertEquals(1, itemIds.size());
 
       for (String itemId : itemIds)
       {
-        assertEquals("GTE", EnumerationItemDAO.get(itemId).getName());
+        Assert.assertEquals("GTE", EnumerationItemDAO.get(itemId).getName());
       }
     }
     finally
@@ -187,6 +160,8 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
@@ -204,14 +179,14 @@ public class FieldConditionTest extends TestCase
       AttributeEnumerationIF attribute = (AttributeEnumerationIF) test.getAttributeIF(DoubleConditionInfo.OPERATION);
       Set<String> itemIds = attribute.getEnumItemIdList();
 
-      assertEquals(DoubleConditionInfo.CLASS, test.getType());
-      assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
-      assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
-      assertEquals(1, itemIds.size());
+      Assert.assertEquals(DoubleConditionInfo.CLASS, test.getType());
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
+      Assert.assertEquals(1, itemIds.size());
 
       for (String itemId : itemIds)
       {
-        assertEquals("LT", EnumerationItemDAO.get(itemId).getName());
+        Assert.assertEquals("LT", EnumerationItemDAO.get(itemId).getName());
       }
     }
     finally
@@ -220,6 +195,8 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
@@ -237,14 +214,14 @@ public class FieldConditionTest extends TestCase
       AttributeEnumerationIF attribute = (AttributeEnumerationIF) test.getAttributeIF(LongConditionInfo.OPERATION);
       Set<String> itemIds = attribute.getEnumItemIdList();
 
-      assertEquals(LongConditionInfo.CLASS, test.getType());
-      assertEquals(condition.getValue(LongConditionInfo.VALUE), test.getValue(LongConditionInfo.VALUE));
-      assertEquals(condition.getValue(LongConditionInfo.DEFINING_MD_FIELD), test.getValue(LongConditionInfo.DEFINING_MD_FIELD));
-      assertEquals(1, itemIds.size());
+      Assert.assertEquals(LongConditionInfo.CLASS, test.getType());
+      Assert.assertEquals(condition.getValue(LongConditionInfo.VALUE), test.getValue(LongConditionInfo.VALUE));
+      Assert.assertEquals(condition.getValue(LongConditionInfo.DEFINING_MD_FIELD), test.getValue(LongConditionInfo.DEFINING_MD_FIELD));
+      Assert.assertEquals(1, itemIds.size());
 
       for (String itemId : itemIds)
       {
-        assertEquals("LT", EnumerationItemDAO.get(itemId).getName());
+        Assert.assertEquals("LT", EnumerationItemDAO.get(itemId).getName());
       }
     }
     finally
@@ -253,6 +230,8 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
@@ -270,14 +249,14 @@ public class FieldConditionTest extends TestCase
       AttributeEnumerationIF attribute = (AttributeEnumerationIF) test.getAttributeIF(DoubleConditionInfo.OPERATION);
       Set<String> itemIds = attribute.getEnumItemIdList();
 
-      assertEquals(CharacterConditionInfo.CLASS, test.getType());
-      assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
-      assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
-      assertEquals(1, itemIds.size());
+      Assert.assertEquals(CharacterConditionInfo.CLASS, test.getType());
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
+      Assert.assertEquals(1, itemIds.size());
 
       for (String itemId : itemIds)
       {
-        assertEquals("EQ", EnumerationItemDAO.get(itemId).getName());
+        Assert.assertEquals("EQ", EnumerationItemDAO.get(itemId).getName());
       }
     }
     finally
@@ -286,6 +265,8 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAndCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
@@ -318,9 +299,9 @@ public class FieldConditionTest extends TestCase
         {
           AndFieldConditionDAOIF test = AndFieldConditionDAO.get(condition.getId());
 
-          assertEquals(AndFieldConditionInfo.CLASS, test.getType());
-          assertEquals(condition.getValue(AndFieldConditionInfo.FIRST_CONDITION), test.getValue(AndFieldConditionInfo.FIRST_CONDITION));
-          assertEquals(condition.getValue(AndFieldConditionInfo.SECOND_CONDITION), test.getValue(AndFieldConditionInfo.SECOND_CONDITION));
+          Assert.assertEquals(AndFieldConditionInfo.CLASS, test.getType());
+          Assert.assertEquals(condition.getValue(AndFieldConditionInfo.FIRST_CONDITION), test.getValue(AndFieldConditionInfo.FIRST_CONDITION));
+          Assert.assertEquals(condition.getValue(AndFieldConditionInfo.SECOND_CONDITION), test.getValue(AndFieldConditionInfo.SECOND_CONDITION));
         }
         finally
         {
@@ -338,6 +319,8 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFieldDeleteWithCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
@@ -360,7 +343,7 @@ public class FieldConditionTest extends TestCase
 
       TestFixtureFactory.delete(deletedCondition);
 
-      fail("The field condition was not deleted when the field was deleted");
+      Assert.fail("The field condition was not deleted when the field was deleted");
     }
     catch (DataNotFoundException e)
     {
@@ -368,6 +351,8 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
@@ -386,8 +371,8 @@ public class FieldConditionTest extends TestCase
     {
       List<FieldConditionDAOIF> conditions = field.getConditions();
 
-      assertEquals(1, conditions.size());
-      assertEquals(condition.getId(), conditions.get(0).getId());
+      Assert.assertEquals(1, conditions.size());
+      Assert.assertEquals(condition.getId(), conditions.get(0).getId());
     }
     finally
     {
@@ -395,6 +380,8 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testConditionGrouping()
   {
     MdWebIntegerDAO field = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
@@ -423,8 +410,8 @@ public class FieldConditionTest extends TestCase
         {
           List<FieldConditionDAOIF> conditions = field.getConditions();
 
-          assertEquals(1, conditions.size());
-          assertEquals(condition.getId(), conditions.get(0).getId());
+          Assert.assertEquals(1, conditions.size());
+          Assert.assertEquals(condition.getId(), conditions.get(0).getId());
         }
         finally
         {
@@ -442,6 +429,8 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMultipleConditionGrouping()
   {
     MdWebIntegerDAO field = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
@@ -488,9 +477,9 @@ public class FieldConditionTest extends TestCase
             {
               List<FieldConditionDAOIF> conditions = field.getConditions();
 
-              assertEquals(2, conditions.size());
-              assertTrue(conditions.contains(parentCondition));
-              assertTrue(conditions.contains(childCondition));
+              Assert.assertEquals(2, conditions.size());
+              Assert.assertTrue(conditions.contains(parentCondition));
+              Assert.assertTrue(conditions.contains(childCondition));
             }
             finally
             {

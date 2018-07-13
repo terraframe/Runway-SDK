@@ -3,66 +3,35 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.ViewQueryStubAPIGenerator;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-public class ViewQueryTest extends TestCase
+public class ViewQueryTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ViewQueryTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-      }
-
-      protected void tearDown()
-      {
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @Test
   public void testSomething()
   {
     BusinessDAO someChildRefQueryObject = BusinessDAO.newInstance(QueryMasterSetup.childRefQueryInfo.getType());
@@ -119,7 +88,7 @@ public class ViewQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
@@ -129,15 +98,15 @@ public class ViewQueryTest extends TestCase
         String queryText = (String) objectClass.getMethod("getRefQueryText").invoke(object);
         String queryClob = (String) objectClass.getMethod("getRefQueryClob").invoke(object);
 
-        assertEquals(queryCharacter, "other character value");
-        assertEquals(queryText, "other ref text value");
-        assertEquals(queryClob, "other ref clob value");
+        Assert.assertEquals(queryCharacter, "other character value");
+        Assert.assertEquals(queryText, "other ref text value");
+        Assert.assertEquals(queryClob, "other ref clob value");
       }
     }
     catch (Exception e)
     {
       e.printStackTrace();
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {

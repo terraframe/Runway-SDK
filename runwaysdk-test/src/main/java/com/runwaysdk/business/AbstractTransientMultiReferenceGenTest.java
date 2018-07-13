@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -34,8 +35,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
-
-import junit.framework.TestCase;
+import com.runwaysdk.session.Request;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -55,7 +55,7 @@ import junit.framework.TestCase;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
+public abstract class AbstractTransientMultiReferenceGenTest
 {
   public abstract MdAttributeMultiReferenceDAO getMdAttribute();
 
@@ -71,6 +71,8 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testApply() throws Exception
   {
     View view = (View) BusinessFacade.newMutable(this.getMdTransient().definesType());
@@ -84,6 +86,8 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAddMultiple() throws Exception
   {
     Business value1 = BusinessFacade.newBusiness(this.getMdTerm().definesType());
@@ -122,6 +126,8 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAddDuplicates() throws Exception
   {
     Business value = BusinessFacade.get(this.getDefaultValue());
@@ -138,6 +144,8 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testClear() throws Exception
   {
     View view = (View) BusinessFacade.newMutable(this.getMdTransient().definesType());
@@ -151,6 +159,8 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testRemove() throws Exception
   {
     Business value = BusinessFacade.get(this.getDefaultValue());
@@ -166,6 +176,8 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testRemoveUnsetItem() throws Exception
   {
     Business value = BusinessFacade.newBusiness(this.getMdTerm().definesType());

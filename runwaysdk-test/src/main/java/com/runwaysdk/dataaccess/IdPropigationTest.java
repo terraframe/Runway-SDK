@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -24,7 +24,10 @@ package com.runwaysdk.dataaccess;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -49,58 +52,16 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdPackage;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public class IdPropigationTest extends TestCase
+import com.runwaysdk.session.Request;
+public class IdPropigationTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(IdPropigationTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-    };
-
-    return wrapper;
-  }
-
   /*
    * (non-Javadoc)
    * 
    * @see junit.framework.TestCase#setUp()
    */
-  @Override
+  @Request
+  @Before
   protected void setUp() throws Exception
   {
     // new MdPackage("test.xmlclasses").delete();
@@ -111,11 +72,15 @@ public class IdPropigationTest extends TestCase
    * 
    * @see junit.framework.TestCase#tearDown()
    */
+  @Request
+  @After
   protected void tearDown() throws Exception
   {
     new MdPackage("test.xmlclasses").delete();
   }
 
+  @Request
+  @Test
   public void testSingleCachedEnumerationAttribute()
   {
     MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
@@ -159,7 +124,7 @@ public class IdPropigationTest extends TestCase
 
     // Ensure the id of the enumerated item is different
     BusinessDAOIF testItem = this.getItem(mdBusinessEnum, item);
-    assertFalse(testItem.getId().equals(item.getId()));
+    Assert.assertFalse(testItem.getId().equals(item.getId()));
 
     BusinessDAOIF test = BusinessDAO.get(business.getId());
     AttributeEnumerationIF attributeIF = (AttributeEnumerationIF) test.getAttributeIF(mdAttributeEnum.definesAttribute());
@@ -167,16 +132,18 @@ public class IdPropigationTest extends TestCase
     // Ensure the referenced item of the enumeration attribute has been updated
     Set<String> enumItemIdList = attributeIF.getEnumItemIdList();
 
-    assertEquals(1, enumItemIdList.size());
+    Assert.assertEquals(1, enumItemIdList.size());
 
-    assertTrue(enumItemIdList.contains(testItem.getId()));
+    Assert.assertTrue(enumItemIdList.contains(testItem.getId()));
 
     // Ensure the cached reference of the enumeration attribute has been updated
     String cachedItems = Database.getEnumCacheFieldInTable(mdBusiness.getTableName(), mdAttributeEnum.getDefinedCacheColumnName(), test.getId());
 
-    assertEquals(testItem.getId(), cachedItems);
+    Assert.assertEquals(testItem.getId(), cachedItems);
   }
 
+  @Request
+  @Test
   public void testMultipleCachedEnumerationAttribute()
   {
     MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
@@ -239,20 +206,22 @@ public class IdPropigationTest extends TestCase
       // updated
       Set<String> enumItemIdList = attributeIF.getEnumItemIdList();
 
-      assertEquals(2, enumItemIdList.size());
+      Assert.assertEquals(2, enumItemIdList.size());
 
       String id = testItem.getId();
 
-      assertTrue(enumItemIdList.contains(id));
+      Assert.assertTrue(enumItemIdList.contains(id));
 
       // Ensure the cached reference of the enumeration attribute has been
       // updated
       String cachedItems = Database.getEnumCacheFieldInTable(mdBusiness.getTableName(), mdAttributeEnum.getDefinedCacheColumnName(), test.getId());
 
-      assertTrue("[" + id + "] Not found in cached items [" + cachedItems + "]", cachedItems.contains(id));
+      Assert.assertTrue("[" + id + "] Not found in cached items [" + cachedItems + "]", cachedItems.contains(id));
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationDefaultValue()
   {
     MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
@@ -297,9 +266,11 @@ public class IdPropigationTest extends TestCase
     // Ensure the default value has been updated
     MdAttributeEnumerationDAOIF testMdAttributeEnumeration = MdAttributeEnumerationDAO.get(mdAttributeEnum.getId());
 
-    assertEquals(testItem.getId(), testMdAttributeEnumeration.getValue(MdAttributeEnumerationInfo.DEFAULT_VALUE));
+    Assert.assertEquals(testItem.getId(), testMdAttributeEnumeration.getValue(MdAttributeEnumerationInfo.DEFAULT_VALUE));
   }
 
+  @Request
+  @Test
   public void testEnumerationDimensionDefaultValue()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
@@ -354,7 +325,7 @@ public class IdPropigationTest extends TestCase
       MdAttributeEnumerationDAOIF testMdAttributeEnumeration = MdAttributeEnumerationDAO.get(mdAttributeEnum.getId());
       MdAttributeDimensionDAOIF testMdAttributeDimension = testMdAttributeEnumeration.getMdAttributeDimension(mdDimension);
 
-      assertEquals(testItem.getId(), testMdAttributeDimension.getValue(MdAttributeEnumerationInfo.DEFAULT_VALUE));
+      Assert.assertEquals(testItem.getId(), testMdAttributeDimension.getValue(MdAttributeEnumerationInfo.DEFAULT_VALUE));
     }
     finally
     {
@@ -362,6 +333,8 @@ public class IdPropigationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testReferenceAttribute()
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness2();
@@ -399,15 +372,17 @@ public class IdPropigationTest extends TestCase
 
     // Ensure the id of the enumerated item is different
     BusinessDAOIF testItem = this.getItem(referenceMdBusiness, item);
-    assertFalse(testItem.getId().equals(item.getId()));
+    Assert.assertFalse(testItem.getId().equals(item.getId()));
 
     BusinessDAOIF test = BusinessDAO.get(business.getId());
     AttributeReferenceIF attributeIF = (AttributeReferenceIF) test.getAttributeIF(mdAttributeEnum.definesAttribute());
 
     // Ensure the referenced item of the enumeration attribute has been updated
-    assertEquals(testItem.getId(), attributeIF.getValue());
+    Assert.assertEquals(testItem.getId(), attributeIF.getValue());
   }
 
+  @Request
+  @Test
   public void testReferenceDefaultValue()
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness2();
@@ -445,9 +420,11 @@ public class IdPropigationTest extends TestCase
     // Ensure the default value has been updated
     MdAttributeReferenceDAOIF testMdAttributeReference = MdAttributeReferenceDAO.get(mdAttributeEnum.getId());
 
-    assertEquals(testItem.getId(), testMdAttributeReference.getValue(MdAttributeReferenceInfo.DEFAULT_VALUE));
+    Assert.assertEquals(testItem.getId(), testMdAttributeReference.getValue(MdAttributeReferenceInfo.DEFAULT_VALUE));
   }
 
+  @Request
+  @Test
   public void testReferenceDimensionDefaultValue()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
@@ -495,7 +472,7 @@ public class IdPropigationTest extends TestCase
       MdAttributeReferenceDAOIF testMdAttributeReference = MdAttributeReferenceDAO.get(mdAttributeEnum.getId());
       MdAttributeDimensionDAOIF testMdAttributeDimension = testMdAttributeReference.getMdAttributeDimension(mdDimension);
 
-      assertEquals(testItem.getId(), testMdAttributeDimension.getValue(MdAttributeReferenceInfo.DEFAULT_VALUE));
+      Assert.assertEquals(testItem.getId(), testMdAttributeDimension.getValue(MdAttributeReferenceInfo.DEFAULT_VALUE));
     }
     finally
     {
@@ -503,6 +480,8 @@ public class IdPropigationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMerge()
   {
     mergeInTransaction();
@@ -555,9 +534,11 @@ public class IdPropigationTest extends TestCase
     // Ensure the business1 reference was updated to be item2
     BusinessDAOIF test = BusinessDAO.get(business1.getId());
 
-    assertEquals(item2.getId(), test.getValue(mdAttributeReference.definesAttribute()));
+    Assert.assertEquals(item2.getId(), test.getValue(mdAttributeReference.definesAttribute()));
   }
 
+  @Request
+  @Test
   public void testMergeIgnoreDatabaseExceptions()
   {
     mergeInTransactionIgnoreDatabaseExceptions();
