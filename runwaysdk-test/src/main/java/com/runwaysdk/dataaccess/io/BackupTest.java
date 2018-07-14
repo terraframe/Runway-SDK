@@ -37,7 +37,7 @@ public class BackupTest
 
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     try
     {

@@ -288,7 +288,7 @@ public class SessionTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     Set<RelationshipDAOIF> set = newUser.getAllPermissions();
 

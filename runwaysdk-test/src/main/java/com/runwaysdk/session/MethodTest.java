@@ -196,7 +196,7 @@ public class MethodTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     Set<RelationshipDAOIF> set = methodActor.getAllPermissions();
 

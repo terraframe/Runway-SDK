@@ -159,7 +159,7 @@ public class InstanceImportTest
 
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     if (MdTypeDAO.isDefined(ENUM_CLASS))
     {

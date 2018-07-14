@@ -51,7 +51,7 @@ public abstract class RelationshipExportBuilder extends ExportBuilder<Relationsh
   @Override
   @Request
   @Before
-  protected void setUp()
+  public void setUp()
   {
     new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
   }

@@ -255,7 +255,7 @@ public class RelationshipTest
    */
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
     testObject = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
     testObject.apply();
@@ -270,7 +270,7 @@ public class RelationshipTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     if (!testObject.isNew())
     {

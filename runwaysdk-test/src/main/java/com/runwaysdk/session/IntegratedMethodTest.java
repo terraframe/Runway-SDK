@@ -713,7 +713,7 @@ public class IntegratedMethodTest
    */
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
     if (!setup)
     {
@@ -735,7 +735,7 @@ public class IntegratedMethodTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     for (RelationshipDAOIF reference : newUser.getAllPermissions())
     {

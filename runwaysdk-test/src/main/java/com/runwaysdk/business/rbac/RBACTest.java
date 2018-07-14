@@ -324,7 +324,7 @@ public class RBACTest
    */
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
   }
 
@@ -335,7 +335,7 @@ public class RBACTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
 
   }

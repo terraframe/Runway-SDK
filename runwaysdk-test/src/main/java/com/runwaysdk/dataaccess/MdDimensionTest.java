@@ -129,7 +129,7 @@ public class MdDimensionTest
 
   @Request
   @Before
-  protected void setUp()
+  public void setUp()
   {
     dimensionAudit();
   }

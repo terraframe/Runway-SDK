@@ -280,7 +280,7 @@ public class EntityGenTest
 
   @Request
   @Before
-  protected void setUp()
+  public void setUp()
   {
     if (didSetup == false)
     {
@@ -299,7 +299,7 @@ public class EntityGenTest
 
   @Request
   @After
-  protected void tearDown()
+  public void tearDown()
   {
     if (didTeardown == false)
     {

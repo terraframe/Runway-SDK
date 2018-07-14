@@ -24,10 +24,52 @@ package com.runwaysdk.dataaccess;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import com.runwaysdk.dataaccess.cache.CacheTest;
+import com.runwaysdk.dataaccess.io.ExcelExporterTest;
+import com.runwaysdk.dataaccess.io.ExcelImporterTest;
+import com.runwaysdk.dataaccess.io.InstanceImportTest;
 import com.runwaysdk.dataaccess.io.SAXParseTest;
+import com.runwaysdk.dataaccess.io.VersionTest;
+import com.runwaysdk.dataaccess.resolver.TransactionImportTest;
+import com.runwaysdk.dataaccess.schemamanager.MergeTest;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ LocalizationTest.class, SAXParseTest.class })
+@Suite.SuiteClasses({ 
+  SAXParseTest.class,
+  LocalizationTest.class,  
+  MdTableTestSuite.class,
+  DeterministicIDTest.class,
+  StaleObjectTest.class,
+  MetaDataTest.class,
+  MdBusinessTest.class,
+  CacheTest.class,
+  VersionTest.class,
+  MergeTest.class,
+  InstanceImportTest.class,
+  SiteTest.class,
+  MdDomainTest.class,
+  MdTermTest.class,
+  MdAttributeTermTest.class,
+  MdAttributeMultiReferenceTest.class,
+  MdAttributeMultiTermTest.class,
+  MdControllerTest.class,
+  ReservedWordsTest.class,
+  KeyTest.class,
+  IdPropigationTest.class,
+  TransactionImportTest.class,
+  MdWebFormTest.class,
+  AttributeValidationTest.class,
+  ExcelExporterTest.class,
+  ExcelImporterTest.class,
+  ClassAndAttributeDimensionBuilderTest.class,
+  FieldConditionTest.class,
+  TransientAttributeMultiReferenceTest.class,
+  TransientAttributeMultiTermTest.class,
+//   ResolverTest.class,
+//   MdMobileFormTest.class,
+//  ExcelImporterNoSourceTest.class,
+  
+})
 public class DataAccessTestSuite
 {
   // nothing

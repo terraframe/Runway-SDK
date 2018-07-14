@@ -594,7 +594,7 @@ public class TransientAttributeTest
    */
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
     transientDAO = TransientDAO.newInstance(SessionMasterTestSetup.CHILD_SESSION_CLASS.getType());
   }
@@ -605,7 +605,7 @@ public class TransientAttributeTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     transientDAO = null;
   }

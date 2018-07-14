@@ -82,7 +82,7 @@ public class WebTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     if (file != null)
     {

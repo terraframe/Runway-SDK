@@ -563,7 +563,7 @@ public abstract class SessionComponentGenTest
 
   @Request
   @Before
-  protected void setUp()
+  public void setUp()
   {
     systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     _clientReaqest = systemSession.getRequest();
@@ -571,7 +571,7 @@ public abstract class SessionComponentGenTest
 
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     systemSession.logout();
   }

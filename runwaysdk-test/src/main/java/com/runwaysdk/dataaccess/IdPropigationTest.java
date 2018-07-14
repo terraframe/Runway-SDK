@@ -62,7 +62,7 @@ public class IdPropigationTest
    */
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
     // new MdPackage("test.xmlclasses").delete();
   }
@@ -74,7 +74,7 @@ public class IdPropigationTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     new MdPackage("test.xmlclasses").delete();
   }

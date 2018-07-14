@@ -47,7 +47,7 @@ public class CreateTestObjectExportBuilder extends ExportBuilder<Void>
   @Override
   @Request
   @Before
-  protected void setUp()
+  public void setUp()
   {
     new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
   }

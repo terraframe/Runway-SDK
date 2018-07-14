@@ -130,7 +130,7 @@ public abstract class AbstractOntologyStrategyTest
    */
   @Request
   @Before
-  protected void setUp()
+  public void setUp()
   {
     if (didDoSetUp == false)
     {
@@ -143,7 +143,7 @@ public abstract class AbstractOntologyStrategyTest
 
   @Request
   @After
-  protected void tearDown()
+  public void tearDown()
   {
 
   }

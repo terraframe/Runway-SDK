@@ -119,7 +119,7 @@ public class ResolverTest
     @Override
     @Request
     @Before
-    protected void setUp()
+    public void setUp()
     {
       new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
     }
@@ -227,7 +227,7 @@ public class ResolverTest
 
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     // Reset the stored sequence number for sites cowbell.runway.com and
     // doorway.runway.com
@@ -725,7 +725,7 @@ public class ResolverTest
       {
         @Request
         @Before
-        protected void setUp()
+        public void setUp()
         {
           new TransactionImportManager(first.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
         }

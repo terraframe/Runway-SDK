@@ -111,7 +111,7 @@ public class StateTest
    */
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
 
   }
@@ -123,7 +123,7 @@ public class StateTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     if (mdState != null && !mdState.isNew())
     {

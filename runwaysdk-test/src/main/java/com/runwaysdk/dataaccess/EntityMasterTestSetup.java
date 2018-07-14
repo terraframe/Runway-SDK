@@ -110,7 +110,7 @@ public class EntityMasterTestSetup
   @Transaction
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
 
     try
@@ -174,7 +174,7 @@ public class EntityMasterTestSetup
   @Transaction
   @Request
   @After
-  protected void tearDown()
+  public void tearDown()
   {
     try
     {

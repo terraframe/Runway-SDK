@@ -182,7 +182,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
    */
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
     term1 = this.createTerm();
     term2 = this.createTerm();
@@ -197,7 +197,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     mdBusiness.deleteAllRecords();
     mdTerm.deleteAllRecords();

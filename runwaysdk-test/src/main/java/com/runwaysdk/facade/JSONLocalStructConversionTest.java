@@ -88,14 +88,14 @@ public class JSONLocalStructConversionTest implements DoNotWeave
 
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
     this.sessionId = Facade.login("SYSTEM", "SYSTEM", new Locale[] { ( Locale.US ) });
   }
 
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     Facade.logout(this.sessionId);
   }

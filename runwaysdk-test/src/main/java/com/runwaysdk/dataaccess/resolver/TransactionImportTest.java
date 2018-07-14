@@ -166,7 +166,7 @@ public class TransactionImportTest
 
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     // Reset the stored sequence number for sites cowbell.runway.com and
     // doorway.runway.com
@@ -189,7 +189,7 @@ public class TransactionImportTest
     ObjectExportBuilder objectBuilder = new ObjectExportBuilder(first, builder)
     {
       @Request
-      protected void setUp()
+      public void setUp()
       {
       };
 
@@ -243,7 +243,7 @@ public class TransactionImportTest
     {
       @Request
       @Before
-      protected void setUp()
+      public void setUp()
       {
       };
 
@@ -293,7 +293,7 @@ public class TransactionImportTest
     {
       @Request
       @Before
-      protected void setUp()
+      public void setUp()
       {
       };
 
@@ -685,7 +685,7 @@ public class TransactionImportTest
     {
       @Request
       @Before
-      protected void setUp()
+      public void setUp()
       {
       };
 

@@ -543,7 +543,7 @@ public class EntityAttributeTest
    */
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
     testObject = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
   }
@@ -555,7 +555,7 @@ public class EntityAttributeTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     if (!testObject.isNew())
     {

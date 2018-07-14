@@ -169,7 +169,7 @@ public abstract class AbstractMultiReferenceQueryTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     mdBusiness.deleteAllRecords();
     mdTerm.deleteAllRecords();

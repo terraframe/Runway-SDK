@@ -111,7 +111,7 @@ public class VaultTest
    */
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     if (file != null && file.isAppliedToDB())
     {

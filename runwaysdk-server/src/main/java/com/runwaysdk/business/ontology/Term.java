@@ -647,6 +647,14 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
   {
     return "";
   }
+  
+  
+  @Override
+  public String getLabel()
+  {
+    return this.getDisplayLabel().getValue();
+  }
+
 
   public List<OntologyEntryIF> getSynonyms()
   {

@@ -242,7 +242,7 @@ public class QueryMasterSetup
 
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
     this.setUpTransaction();
   }
@@ -840,7 +840,7 @@ public class QueryMasterSetup
 
   @Request
   @After
-  protected void tearDown() throws Exception
+  public void tearDown() throws Exception
   {
     this.tearDownTransaction();
   }

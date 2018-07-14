@@ -98,7 +98,7 @@ public abstract class ExportBuilder<E>
 
   @Request
   @Before
-  protected void setUp()
+  public void setUp()
   {
 
   }

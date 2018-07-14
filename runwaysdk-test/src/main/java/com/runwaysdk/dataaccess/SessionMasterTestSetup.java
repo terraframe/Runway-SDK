@@ -101,7 +101,7 @@ public class SessionMasterTestSetup
   @Transaction
   @Request
   @Before
-  protected void setUp() throws Exception
+  public void setUp() throws Exception
   {
     try
     {
@@ -179,7 +179,7 @@ public class SessionMasterTestSetup
   @Transaction
   @Request
   @After
-  protected void tearDown()
+  public void tearDown()
   {
     try
     {
