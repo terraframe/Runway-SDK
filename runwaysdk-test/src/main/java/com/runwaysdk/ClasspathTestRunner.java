@@ -10,27 +10,28 @@ import com.runwaysdk.generation.loader.GeneratedLoader;
 
 public class ClasspathTestRunner extends BlockJUnit4ClassRunner
 {
-  static ClassLoader customClassLoader;
+  private ClassLoader loader;
 
-  public ClasspathTestRunner(Class<?> clazz) throws InitializationError
+  public ClasspathTestRunner(Class<?> clazz) throws InitializationError, MalformedURLException
   {
-    super(loadFromCustomClassloader(clazz));
+    this(GeneratedLoader.createClassLoader(), clazz);
+  }
+
+  public ClasspathTestRunner(GeneratedLoader loader, Class<?> clazz) throws InitializationError, MalformedURLException
+  {
+    super(loadFromCustomClassloader(loader, clazz));
+
+    this.loader = loader;
   }
 
   // Loads a class in the custom classloader
-  private static Class<?> loadFromCustomClassloader(Class<?> clazz) throws InitializationError
+  private static Class<?> loadFromCustomClassloader(ClassLoader loader, Class<?> clazz) throws InitializationError
   {
     try
     {
-      // Only load once to support parallel tests
-      if (customClassLoader == null)
-      {
-        customClassLoader = GeneratedLoader.createClassLoader();
-      }
-
-      return Class.forName(clazz.getName(), true, customClassLoader);
+      return Class.forName(clazz.getName(), true, loader);
     }
-    catch (ClassNotFoundException | MalformedURLException e)
+    catch (ClassNotFoundException e)
     {
       throw new InitializationError(e);
     }
@@ -44,7 +45,7 @@ public class ClasspathTestRunner extends BlockJUnit4ClassRunner
       super.run(notifier);
     };
     Thread thread = new Thread(runnable);
-    thread.setContextClassLoader(customClassLoader);
+    thread.setContextClassLoader(this.loader);
     thread.start();
     try
     {

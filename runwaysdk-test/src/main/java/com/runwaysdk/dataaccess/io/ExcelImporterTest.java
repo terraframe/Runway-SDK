@@ -32,7 +32,9 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.DateConditionInfo;
 import com.runwaysdk.constants.DoubleConditionInfo;
@@ -75,6 +77,7 @@ import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.system.FieldOperation;
 
+@RunWith(ClasspathTestRunner.class)
 public class ExcelImporterTest
 {
   private static MdBusinessDAO           mdBusiness;
@@ -95,7 +98,7 @@ public class ExcelImporterTest
   @Request
   @BeforeClass
   public static void classSetUp()
-  {
+  { 
     mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
 

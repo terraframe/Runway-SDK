@@ -208,12 +208,12 @@ public class TransactionImportManager implements IPropertyListener
         this.restoreApplicationFiles();
       }
 
-      // IMPORTANT: It is required that we update the databaes source and class
-      // after restoring the application files. This is due to the fact that the
-      // new application files might contain updated source and class files.
-      this.fireStartTaskEvent("Update_database_source_and_class", -1);
-
-      UpdateDatabaseSourceAndClasses.storeSourceAndClassesInDatabase();
+//      // IMPORTANT: It is required that we update the databaes source and class
+//      // after restoring the application files. This is due to the fact that the
+//      // new application files might contain updated source and class files.
+//      this.fireStartTaskEvent("Update_database_source_and_class", -1);
+//
+//      UpdateDatabaseSourceAndClasses.storeSourceAndClassesInDatabase();
 
       this.fireStartTaskEvent("Cleanup_temp_files", -1);
 

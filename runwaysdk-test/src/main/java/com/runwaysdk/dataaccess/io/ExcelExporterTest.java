@@ -38,7 +38,9 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.TestConstants;
@@ -59,6 +61,7 @@ import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 
+@RunWith(ClasspathTestRunner.class)
 public class ExcelExporterTest
 {
   private final class MockExcelExportListener implements ExcelExportListener
