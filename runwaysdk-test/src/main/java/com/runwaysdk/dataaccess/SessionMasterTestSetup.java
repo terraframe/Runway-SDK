@@ -18,9 +18,6 @@
  */
 package com.runwaysdk.dataaccess;
 
-import org.junit.After;
-import org.junit.Before;
-
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -31,7 +28,6 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.session.Request;
 
 /**
  * SessionMasterTestSetup is a wrapper for various Test classes. It contains
@@ -99,9 +95,7 @@ public class SessionMasterTestSetup
    * then be used to run tests on.
    */
   @Transaction
-  @Request
-  @Before
-  public void setUp() throws Exception
+  public void setUp()
   {
     try
     {
@@ -177,8 +171,6 @@ public class SessionMasterTestSetup
    * transitively deletes all of the attributes as well.
    */
   @Transaction
-  @Request
-  @After
   public void tearDown()
   {
     try

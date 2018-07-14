@@ -35,6 +35,10 @@ import com.runwaysdk.dataaccess.schemamanager.MergeTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
+  ParentSessionTestSuite.class,
+  ChildSessionTestSuite.class,
+  CacheEverythingTestSuite.class,
+  CacheNothingTestSuite.class,
   SAXParseTest.class,
   LocalizationTest.class,  
   MdTableTestSuite.class,
@@ -74,108 +78,3 @@ public class DataAccessTestSuite
 {
   // nothing
 }
-
-// public class DataAccessTestSuite
-// {
-// @Override
-// public void run(TestResult testResult)
-// {
-// super.run(testResult);
-// }
-//
-// public static Test suite()
-// {
-// TestSuite testSuite = new
-// TestSuite(DataAccessTestSuite.class.getSimpleName());
-// testSuite.setName(DataAccessTestSuite.class.getName());
-//
-//// // TransientAttributeTest, parent and child
-//// TestSuite sessionSuite = new TestSuite();
-////
-//// TestSuite suite = new
-// TestSuite(TransientAttributeTest.class.getSimpleName() + "_PARENT_SESSION");
-//// suite.addTest(TransientAttributeTest.suite());
-//// sessionSuite.addTest(new SessionMasterTestSetup(suite,
-// SessionMasterTestSetup.PARENT_SESSION_CLASS));
-////
-//// suite = new TestSuite(TransientAttributeTest.class.getSimpleName() +
-// "_CHILD_SESSION");
-//// suite.addTest(TransientAttributeTest.suite());
-//// sessionSuite.addTest(new SessionMasterTestSetup(suite,
-// SessionMasterTestSetup.CHILD_SESSION_CLASS));
-////
-//// // Test classes where the cache algorithm for the test and reference
-//// // classes are cached.
-//// suite = new TestSuite("Cached Tests");
-//// suite.addTest(EntityAttributeTest.suite());
-//// suite.addTest(EnumerationTest.suite());
-//// TestSuite caching = new TestSuite("Cached Tests");
-//// caching.addTest(new EntityMasterTestSetup(suite,
-// EntityCacheMaster.CACHE_EVERYTHING.getCacheCode()));
-////
-//// // Test classes where the cache algorithm for the test and reference
-// classes
-//// // are not cached.
-//// suite = new TestSuite("Not Cached Tests");
-//// suite.addTest(EntityAttributeTest.suite());
-//// suite.addTest(EntityAttributeMultiReferenceTest.suite());
-//// suite.addTest(EntityAttributeMultiTermTest.suite());
-//// suite.addTest(EnumerationTest.suite());
-//// suite.addTest(RelationshipTest.suite());
-//// suite.addTest(MdRelationshipTest.suite());
-//// suite.addTest(MdAttributeTest.suite());
-//// suite.addTest(RegexTest.suite());
-//// suite.addTest(EncryptionTest.suite());
-//// suite.addTest(MdDimensionTest.suite());
-////
-//// TestSuite noCaching = new TestSuite("Not Cached Tests");
-//// noCaching.addTest(new EntityMasterTestSetup(suite,
-// EntityCacheMaster.CACHE_NOTHING.getCacheCode()));
-//
-//// testSuite.addTest(sessionSuite);
-//// testSuite.addTest(caching);
-//// testSuite.addTest(noCaching);
-////
-//// // Test classes added here are only run once and are not wrapped by
-//// // MasterTestSetup
-//// testSuite.addTest(MdTableTestSuite.suite());
-////
-//// testSuite.addTest(DeterministicIDTest.suite());
-//// testSuite.addTest(StaleObjectTest.suite());
-//// testSuite.addTest(MetaDataTest.suite());
-//// testSuite.addTest(MdBusinessTest.suite());
-//// testSuite.addTest(CacheTest.suite());
-//// testSuite.addTest(SAXParseTest.suite());
-//// testSuite.addTest(VersionTest.suite());
-//// testSuite.addTest(MergeTest.suite());
-//// testSuite.addTest(InstanceImportTest.suite());
-//// testSuite.addTest(SiteTest.suite());
-//// testSuite.addTest(MdDomainTest.suite());
-//// testSuite.addTest(MdTermTest.suite());
-//// testSuite.addTest(MdAttributeTermTest.suite());
-//// testSuite.addTest(MdAttributeMultiReferenceTest.suite());
-//// testSuite.addTest(MdAttributeMultiTermTest.suite());
-//// testSuite.addTest(MdControllerTest.suite());
-// testSuite.addTest(LocalizationTest.suite());
-//// testSuite.addTest(ReservedWordsTest.suite());
-//// testSuite.addTest(KeyTest.suite());
-//// testSuite.addTest(IdPropigationTest.suite());
-////
-//// // Looks like Resolver test is broken due to Site Master field now being
-// immutable.
-//// // testSuite.addTest(ResolverTest.suite());
-//// testSuite.addTest(TransactionImportTest.suite());
-//// testSuite.addTest(MdWebFormTest.suite());
-//// // testSuite.addTest(MdMobileFormTest.suite());
-//// testSuite.addTest(AttributeValidationTest.suite());
-//// testSuite.addTest(ExcelExporterTest.suite());
-//// testSuite.addTest(ExcelImporterTest.suite());
-//// testSuite.addTest(ClassAndAttributeDimensionBuilderTest.suite());
-//// testSuite.addTest(FieldConditionTest.suite());
-//// testSuite.addTest(TransientAttributeMultiReferenceTest.suite());
-//// testSuite.addTest(TransientAttributeMultiTermTest.suite());
-////// testSuite.addTest(ExcelImporterNoSourceTest.suite());
-//
-// return testSuite;
-// }
-// }
