@@ -24,9 +24,11 @@ import java.io.IOException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.dataaccess.io.FileReadException;
 import com.runwaysdk.util.FileIO;
@@ -34,6 +36,7 @@ import com.runwaysdk.util.FileIO;
 import junit.extensions.TestSetup;
 import junit.framework.TestSuite;
 
+@RunWith(ClasspathTestRunner.class)
 public class IntegratedOverflowTest extends IntegratedSessionTest
 {
   private static String directory = LocalProperties.getSessionCacheDirectory();

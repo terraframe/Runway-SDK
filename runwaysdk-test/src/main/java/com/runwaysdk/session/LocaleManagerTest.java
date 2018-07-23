@@ -24,7 +24,11 @@ import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
+
+@RunWith(ClasspathTestRunner.class)
 public class LocaleManagerTest
 {
   private Locale[] getLocales()

@@ -41,6 +41,7 @@ import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.session.Request;
 
 
 public class UserDAO extends SingleActorDAO implements UserDAOIF
@@ -222,6 +223,7 @@ public class UserDAO extends SingleActorDAO implements UserDAOIF
    * @param username The username to search for
    * @return The BusinessDAO associated with the public user.
    */
+  @Request
   public static UserDAOIF getPublicUser()
   {
     return UserDAO.get(UserDAOIF.PUBLIC_USER_ID);

@@ -27,7 +27,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.DomainErrorException;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Relationship;
@@ -87,6 +89,7 @@ import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 
+@RunWith(ClasspathTestRunner.class)
 public class IntegratedMethodTest
 {
   /**
@@ -2018,11 +2021,11 @@ public class IntegratedMethodTest
    */
   private static String getMethodStub()
   {
-    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String id)", "  {", "    return (Class1) " + Business.class.getName() + ".get(id);", "  }", "  @" + Authenticate.class.getName(), "  public static void testCreate()", "  {", "    Class1 c = new Class1();", "    c.apply();", "  }", "  @" + Authenticate.class.getName(), "  public static void testDelete(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.delete();", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testWrite(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.setTestBoolean(true);",
+    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String id)", "  {", "    return (Class1) " + Business.class.getName() + ".get(id);", "  }", "  @" + Authenticate.class.getName(), "  public static void testCreate()", "  {", "    Class1 c = new Class1();", "    c.apply();", "  }", "  @" + Authenticate.class.getName(), "  public static void testDelete(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.delete();", "  }", "  @" + Authenticate.class.getName(), "   public void testWrite(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.setTestBoolean(true);",
         "    class1.apply();", "  }",
 
-        "  @" + Authenticate.class.getName(), "  public static void testPromote(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.transition1();", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testAddChild(test.session.Class1 class1)", "  {", "    this.addTestChild(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testAddParent(test.session.Class1 class1)", "  {", "    this.addTestParent(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testDeleteChild(test.session.Class1 class1)", "  {", "    this.removeTestChild(class1);", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testDeleteParent(test.session.Class1 class1)", "  {",
-        "    this.removeTestParent(class1);", "  }", "  @" + Authenticate.class.getName(), "  @Request @Test public void testWriteRelationship(test.session.Relationship1 relationship1)", "  {", "    relationship1.appLock();", "    relationship1.setValue(\"testBoolean\", " + MdAttributeBooleanInfo.class.getName() + ".TRUE);", "    relationship1.apply();", "  }", "}" };
+        "  @" + Authenticate.class.getName(), "  public static void testPromote(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.transition1();", "  }", "  @" + Authenticate.class.getName(), "   public void testAddChild(test.session.Class1 class1)", "  {", "    this.addTestChild(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "   public void testAddParent(test.session.Class1 class1)", "  {", "    this.addTestParent(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "   public void testDeleteChild(test.session.Class1 class1)", "  {", "    this.removeTestChild(class1);", "  }", "  @" + Authenticate.class.getName(), "   public void testDeleteParent(test.session.Class1 class1)", "  {",
+        "    this.removeTestParent(class1);", "  }", "  @" + Authenticate.class.getName(), "   public void testWriteRelationship(test.session.Relationship1 relationship1)", "  {", "    relationship1.appLock();", "    relationship1.setValue(\"testBoolean\", " + MdAttributeBooleanInfo.class.getName() + ".TRUE);", "    relationship1.apply();", "  }", "}" };
 
     String stubSourceString = new String();
 

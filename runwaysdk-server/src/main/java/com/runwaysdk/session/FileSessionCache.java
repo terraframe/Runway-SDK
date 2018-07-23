@@ -701,14 +701,14 @@ public class FileSessionCache extends ManagedUserSessionCache
       }
       catch (RuntimeException ex)
       {
-        if (ex instanceof LoaderDecoratorExceptionIF)
-        {
+//        if (ex instanceof LoaderDecoratorExceptionIF)
+//        {
           return super.resolveClass(desc);
-        }
-        else
-        {
-          throw ex;
-        }
+//        }
+//        else
+//        {
+//          throw ex;
+//        }
       }
     }
   }

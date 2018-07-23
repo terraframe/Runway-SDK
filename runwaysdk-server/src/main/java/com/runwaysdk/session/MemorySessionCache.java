@@ -128,7 +128,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
     this.sessions.put(this.publicSession.getId(), this.publicSession);
     this.expireHeap.offer(this.publicSession);
 
-    sessionChecker = new Thread(this);
+    sessionChecker = new Thread(this, "Session Cleanup");
     sessionChecker.setDaemon(true);
     sessionChecker.start();
   }

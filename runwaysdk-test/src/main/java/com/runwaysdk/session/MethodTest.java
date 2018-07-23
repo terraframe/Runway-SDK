@@ -25,7 +25,9 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.Operation;
@@ -43,6 +45,7 @@ import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 
+@RunWith(ClasspathTestRunner.class)
 public class MethodTest
 {
   /**

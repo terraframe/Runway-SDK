@@ -23,13 +23,16 @@ import java.io.IOException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.dataaccess.io.FileReadException;
 import com.runwaysdk.util.FileIO;
 
+@RunWith(ClasspathTestRunner.class)
 public class IntegratedBufferedSessionTest extends IntegratedSessionTest
 {
   private static String directory = LocalProperties.getSessionCacheDirectory();

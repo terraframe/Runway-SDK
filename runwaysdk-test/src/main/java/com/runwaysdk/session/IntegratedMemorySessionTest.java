@@ -20,10 +20,13 @@ package com.runwaysdk.session;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.runwaysdk.ClasspathTestRunner;
 
+@RunWith(ClasspathTestRunner.class)
 public class IntegratedMemorySessionTest extends IntegratedSessionTest
 {
   /**
