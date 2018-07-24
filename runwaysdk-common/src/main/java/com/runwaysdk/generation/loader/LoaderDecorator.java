@@ -7,7 +7,11 @@ public class LoaderDecorator
   {
     try
     {
-      return Thread.currentThread().getContextClassLoader().loadClass(name);
+      ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+
+//      System.out.println("Loading class [" + name + "] with loader [" + classloader.toString() + "]");
+
+      return classloader.loadClass(name);
     }
     catch (ClassNotFoundException e)
     {

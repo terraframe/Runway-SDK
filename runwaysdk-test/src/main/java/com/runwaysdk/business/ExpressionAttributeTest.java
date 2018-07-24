@@ -28,7 +28,9 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.constants.IndexTypes;
@@ -68,6 +70,7 @@ import com.runwaysdk.system.metadata.MdWebPrimitive;
 
 import ognl.OgnlClassResolver;
 
+@RunWith(ClasspathTestRunner.class)
 public class ExpressionAttributeTest
 {
 
@@ -1248,7 +1251,7 @@ public class ExpressionAttributeTest
     try
     {
       business = Business.get(business.getId());
-      Assert.assertEquals(4.0f, Float.parseFloat(business.getValue(ATTR_FLOAT_EXPR)));
+      Assert.assertEquals(4.0f, Float.parseFloat(business.getValue(ATTR_FLOAT_EXPR)), 0);
 
       mdAttributeFloatDAOexpr = (MdAttributeFloatDAO) MdAttributeFloatDAO.getByKey(ATTR_FLOAT_EXPR_KEY).getBusinessDAO();
       mdAttributeFloatDAOexpr.getAttribute(MdAttributePrimitiveInfo.IS_EXPRESSION).setValue(MdAttributeBooleanInfo.TRUE);
@@ -1256,7 +1259,7 @@ public class ExpressionAttributeTest
       mdAttributeFloatDAOexpr.apply();
 
       business = Business.get(business.getId());
-      Assert.assertEquals(0.0f, Float.parseFloat(business.getValue(ATTR_FLOAT_EXPR)));
+      Assert.assertEquals(0.0f, Float.parseFloat(business.getValue(ATTR_FLOAT_EXPR)), 0);
     }
     finally
     {

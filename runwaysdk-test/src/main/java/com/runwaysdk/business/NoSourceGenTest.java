@@ -36,6 +36,7 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.generation.loader.GeneratedLoader;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
 
@@ -59,7 +60,7 @@ public class NoSourceGenTest
         MdAttributeReferenceDAO mdAttributeReference = TestFixtureFactory.addReferenceAttribute(mdBusiness, referenceMdBusiness, "testReference");
         mdAttributeReference.apply();
 
-        Class<?> clazz = LoaderDecorator.load(mdBusiness.definesType());
+        Class<?> clazz = GeneratedLoader.createClassLoader().loadClass(mdBusiness.definesType());
         Method method = clazz.getMethod("getTestReference");
         Class<?> returnType = method.getReturnType();
 
@@ -125,7 +126,7 @@ public class NoSourceGenTest
         MdAttributeStructDAO mdAttributeStruct = TestFixtureFactory.addStructAttribute(mdBusiness, mdStruct, "testStruct");
         mdAttributeStruct.apply();
 
-        Class<?> clazz = LoaderDecorator.load(mdBusiness.definesType());
+        Class<?> clazz = GeneratedLoader.createClassLoader().loadClass(mdBusiness.definesType());
         Method method = clazz.getMethod("getTestStruct");
         Class<?> returnType = method.getReturnType();
 
@@ -161,7 +162,7 @@ public class NoSourceGenTest
         MdAttributeLocalCharacterDAO mdAttributeLocalCharacter = TestFixtureFactory.addLocalCharacterAttribute(mdBusiness, mdStruct, "testStruct");
         mdAttributeLocalCharacter.apply();
 
-        Class<?> clazz = LoaderDecorator.load(mdBusiness.definesType());
+        Class<?> clazz = GeneratedLoader.createClassLoader().loadClass(mdBusiness.definesType());
         Method method = clazz.getMethod("getTestStruct");
         Class<?> returnType = method.getReturnType();
 
@@ -194,7 +195,7 @@ public class NoSourceGenTest
 
       try
       {
-        Class<?> clazz = LoaderDecorator.load(mdRelationship.definesType());
+        Class<?> clazz = GeneratedLoader.createClassLoader().loadClass(mdRelationship.definesType());
         Class<?> returnParent = clazz.getMethod("getParent").getReturnType();
         Class<?> returnChild = clazz.getMethod("getChild").getReturnType();
 

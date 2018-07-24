@@ -18,11 +18,7 @@
  */
 package com.runwaysdk.business;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.ObjectInputStream;
 import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
@@ -32,7 +28,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.After;
@@ -40,13 +35,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.SystemException;
-import com.runwaysdk.business.generation.CompilerException;
-import com.runwaysdk.business.generation.GenerationManager;
 import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.StateMasterDAO;
@@ -58,7 +52,6 @@ import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
-import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -84,7 +77,6 @@ import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
@@ -109,10 +101,8 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.StructDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -141,10 +131,7 @@ import com.runwaysdk.dataaccess.metadata.MdPackage;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
-import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
-import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
-import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.generation.loader.GeneratedLoader;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
@@ -157,11 +144,11 @@ import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.util.Base64;
-import com.runwaysdk.util.FileIO;
 
 import sun.security.provider.Sun;
 
 @SuppressWarnings("unchecked")
+@RunWith(ClasspathTestRunner.class)
 public class EntityGenTest
 {
   final static Logger                         logger          = LoggerFactory.getLogger(EntityGenTest.class);
@@ -282,11 +269,11 @@ public class EntityGenTest
   @Before
   public void setUp()
   {
-    if (didSetup == false)
-    {
-      didSetup = true;
-      classSetUp();
-    }
+    // if (didSetup == false)
+    // {
+    // didSetup = true;
+    // classSetUp();
+    // }
 
     systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     clientRequestIF = systemSession.getRequest();
@@ -301,11 +288,11 @@ public class EntityGenTest
   @After
   public void tearDown()
   {
-    if (didTeardown == false)
-    {
-      didTeardown = true;
-      classTearDown();
-    }
+    // if (didTeardown == false)
+    // {
+    // didTeardown = true;
+    // classTearDown();
+    // }
 
     systemSession.logout();
   }
@@ -789,6 +776,8 @@ public class EntityGenTest
   @Test
   public void testLoad() throws Exception
   {
+    int original = EntityDAO.getEntityIdsDB(car.definesType()).size();
+
     MdAttributeIntegerDAO topSpeed = MdAttributeIntegerDAO.newInstance();
     topSpeed.setValue(MdAttributeIntegerInfo.NAME, "topSpeed");
     topSpeed.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "120");
@@ -796,15 +785,18 @@ public class EntityGenTest
     topSpeed.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "The Top Speed");
     topSpeed.apply();
 
+    GeneratedLoader loader = GeneratedLoader.isolatedClassLoader();
+
     String type = car.definesType();
-    Class<?> carClass = LoaderDecorator.load(type);
+    Class<?> carClass = loader.loadClass(type);
 
     Object newCar = carClass.getConstructor().newInstance();
     carClass.getMethod("setTopSpeed", Integer.class).invoke(newCar, 200);
     carClass.getMethod("apply").invoke(newCar);
 
     List<String> ids = EntityDAO.getEntityIdsDB(car.definesType());
-    if (ids.size() != 1)
+
+    if (ids.size() != ( original + 1 ))
       Assert.fail("Expected to find 1 Car, but found " + ids.size());
 
     BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
@@ -812,74 +804,6 @@ public class EntityGenTest
       Assert.fail("setTopSpeed was not invoked correctly");
 
     topSpeed.delete();
-  }
-
-  @Request
-  @Test
-  public void testReLoad() throws Exception
-  {
-    String type = car.definesType();
-    Class<?> carClass = LoaderDecorator.load(type);
-
-    try
-    {
-      Method setTopSpeedMethod = carClass.getMethod("setTopSpeed", Integer.TYPE);
-      Object newCar = carClass.getConstructor().newInstance();
-      setTopSpeedMethod.invoke(newCar, 200);
-      Assert.fail("The class invoked a method that doesn't exist yet");
-    }
-    catch (NoSuchMethodException e)
-    {
-      // This is expected
-    }
-
-    MdAttributeIntegerDAO topSpeed = MdAttributeIntegerDAO.newInstance();
-    topSpeed.setValue(MdAttributeIntegerInfo.NAME, "topSpeed");
-    topSpeed.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "120");
-    topSpeed.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, car.getId());
-    topSpeed.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "The Top Speed");
-    topSpeed.apply();
-
-    carClass = LoaderDecorator.load(type);
-
-    // After adding the topSpeed attribute, setTopSpeed should exist
-    Object newerCar = carClass.getConstructor().newInstance();
-    carClass.getMethod("setTopSpeed", Integer.class).invoke(newerCar, 200);
-    carClass.getMethod("apply").invoke(newerCar);
-  }
-
-  @Request
-  @Test
-  public void testReLoadBlob() throws Exception
-  {
-    String type = car.definesType();
-    Class<?> carClass = LoaderDecorator.load(type);
-    byte[] data = "Some blob data".getBytes();
-
-    try
-    {
-      Method setBlobDataMethod = carClass.getMethod("setBlobData", byte[].class);
-      Object newCar = carClass.getConstructor().newInstance();
-      setBlobDataMethod.invoke(newCar, data);
-      Assert.fail("The class invoked a method that doesn't exist yet");
-    }
-    catch (NoSuchMethodException e)
-    {
-      // This is expected
-    }
-
-    MdAttributeBlobDAO blobdata = MdAttributeBlobDAO.newInstance();
-    blobdata.setValue(MdAttributeConcreteInfo.NAME, "blobData");
-    blobdata.setValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS, car.getId());
-    blobdata.setStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A blob attribute");
-    blobdata.apply();
-
-    carClass = LoaderDecorator.load(type);
-
-    // After adding the blobData attribute, setBlobData should exist
-    Object newerCar = carClass.getConstructor().newInstance();
-    carClass.getMethod("setBlobData", byte[].class).invoke(newerCar, data);
-    carClass.getMethod("apply").invoke(newerCar);
   }
 
   @Request
@@ -898,7 +822,9 @@ public class EntityGenTest
   @Test
   public void testSetBlob() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
@@ -921,12 +847,14 @@ public class EntityGenTest
   @Test
   public void testGetBlob() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setBlob("aBlob", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     byte[] out = (byte[]) collectionClass.getMethod("getABlob").invoke(object);
@@ -943,7 +871,9 @@ public class EntityGenTest
   @Test
   public void testSetBoolean() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     boolean in = true;
@@ -962,12 +892,14 @@ public class EntityGenTest
   @Test
   public void testGetBoolean() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     boolean in = false;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aBoolean", Boolean.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
@@ -980,11 +912,13 @@ public class EntityGenTest
   @Test
   public void testGetBooleanNull() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aBoolean", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1002,7 +936,9 @@ public class EntityGenTest
   @Test
   public void testSetCharacter() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     String in = "Mr. Sparkle";
@@ -1021,12 +957,14 @@ public class EntityGenTest
   @Test
   public void testGetCharacter() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "RunwaySDK";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aCharacter", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     String out = (String) collectionClass.getMethod("getACharacter").invoke(object);
@@ -1039,7 +977,9 @@ public class EntityGenTest
   @Test
   public void testSetDecimal() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     BigDecimal in = new BigDecimal(123456.789);
@@ -1060,12 +1000,14 @@ public class EntityGenTest
   @Test
   public void testGetDecimal() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     double in = 987654.321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDecimal", Double.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     double out = ( (BigDecimal) collectionClass.getMethod("getADecimal").invoke(object) ).doubleValue();
@@ -1078,11 +1020,13 @@ public class EntityGenTest
   @Test
   public void testGetDecimalNull() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDecimal", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1100,7 +1044,9 @@ public class EntityGenTest
   @Test
   public void testSetDouble() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     double in = 123456.789;
@@ -1119,12 +1065,14 @@ public class EntityGenTest
   @Test
   public void testGetDouble() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     double in = 98765.4321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDouble", Double.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
@@ -1137,11 +1085,13 @@ public class EntityGenTest
   @Test
   public void testGetDoubleNull() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDouble", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1159,7 +1109,9 @@ public class EntityGenTest
   @Test
   public void testSetFloat() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     float in = 123456.789F;
@@ -1178,12 +1130,14 @@ public class EntityGenTest
   @Test
   public void testGetFloat() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     float in = 987.654321F;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aFloat", Float.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
@@ -1196,11 +1150,13 @@ public class EntityGenTest
   @Test
   public void testGetFloatNull() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aFloat", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1218,7 +1174,9 @@ public class EntityGenTest
   @Test
   public void testSetHash() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     String in = "When you win, say nothing. When you lose, say less.";
@@ -1241,12 +1199,14 @@ public class EntityGenTest
   @Test
   public void testHashEquals() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "For breakfast, I had some Pringles, and some fudge-striped cook-ays";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aHash", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     boolean out = (Boolean) collectionClass.getMethod("aHashEquals", String.class).invoke(object, "For breakfast, I had some Pringles, and some fudge-striped cook-ays");
@@ -1259,7 +1219,9 @@ public class EntityGenTest
   @Test
   public void testSetSymmetric() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     String in = "My rims never spin - to the contrary";
@@ -1278,12 +1240,14 @@ public class EntityGenTest
   @Test
   public void testGetSymmetric() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "You'll find that they're quite stationary";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aSym", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     String out = (String) collectionClass.getMethod("getASym").invoke(object);
@@ -1296,7 +1260,9 @@ public class EntityGenTest
   @Test
   public void testSetInteger() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     int in = 1234;
@@ -1315,12 +1281,14 @@ public class EntityGenTest
   @Test
   public void testGetInteger() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     int in = 9876;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("anInteger", Integer.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     int out = (Integer) collectionClass.getMethod("getAnInteger").invoke(object);
@@ -1333,11 +1301,13 @@ public class EntityGenTest
   @Test
   public void testGetIntegerNull() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("anInteger", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1355,7 +1325,9 @@ public class EntityGenTest
   @Test
   public void testSetLong() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     long in = 123456789;
@@ -1374,12 +1346,14 @@ public class EntityGenTest
   @Test
   public void testGetLong() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     long in = 987654321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aLong", Long.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     long out = (Long) collectionClass.getMethod("getALong").invoke(object);
@@ -1392,9 +1366,11 @@ public class EntityGenTest
   @Test
   public void testSetLocalCharacter() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(123456789L);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     Struct struct = (Struct) collectionClass.getMethod("getALocalCharacter").invoke(object);
@@ -1416,12 +1392,14 @@ public class EntityGenTest
   @Test
   public void testGetLocalCharacter() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(987654321);
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1438,9 +1416,11 @@ public class EntityGenTest
   @Test
   public void testSetLocalText() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(123456789L);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     Struct struct = (Struct) collectionClass.getMethod("getALocalText").invoke(object);
@@ -1462,12 +1442,14 @@ public class EntityGenTest
   @Test
   public void testGetLocalText() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(987654321);
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1484,11 +1466,13 @@ public class EntityGenTest
   @Test
   public void testGetLongNull() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aLong", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1506,8 +1490,10 @@ public class EntityGenTest
   @Test
   public void testSetDate() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     Date in = new Date(System.currentTimeMillis());
@@ -1526,6 +1512,8 @@ public class EntityGenTest
   @Test
   public void testGetDate() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     Date in = new Date(System.currentTimeMillis());
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
 
@@ -1533,7 +1521,7 @@ public class EntityGenTest
     businessDAO.setValue("aDate", sdf.format(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     Date out = (Date) collectionClass.getMethod("getADate").invoke(object);
@@ -1546,11 +1534,13 @@ public class EntityGenTest
   @Test
   public void testGetDateNull() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDate", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1568,8 +1558,10 @@ public class EntityGenTest
   @Test
   public void testSetDateTime() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_FORMAT);
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     Date in = new Date(System.currentTimeMillis());
@@ -1588,6 +1580,8 @@ public class EntityGenTest
   @Test
   public void testGetDateTime() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     Date in = new Date(System.currentTimeMillis());
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_FORMAT);
 
@@ -1595,7 +1589,7 @@ public class EntityGenTest
     businessDAO.setValue("aDateTime", sdf.format(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     Date out = (Date) collectionClass.getMethod("getADateTime").invoke(object);
@@ -1608,11 +1602,13 @@ public class EntityGenTest
   @Test
   public void testGetDateTimeNull() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDateTime", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1630,8 +1626,10 @@ public class EntityGenTest
   @Test
   public void testSetTime() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.TIME_FORMAT);
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     Date in = new Date(System.currentTimeMillis());
@@ -1650,6 +1648,8 @@ public class EntityGenTest
   @Test
   public void testGetTime() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     Date in = new Date(System.currentTimeMillis());
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.TIME_FORMAT);
 
@@ -1657,7 +1657,7 @@ public class EntityGenTest
     businessDAO.setValue("aTime", sdf.format(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
@@ -1670,11 +1670,13 @@ public class EntityGenTest
   @Test
   public void testGetTimeNull() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aTime", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
 
@@ -1692,7 +1694,9 @@ public class EntityGenTest
   @Test
   public void testSetText() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     String in = "But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.";
@@ -1711,7 +1715,9 @@ public class EntityGenTest
   @Test
   public void testSetClob() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     String in = "CLOB: But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.";
@@ -1730,12 +1736,14 @@ public class EntityGenTest
   @Test
   public void testGetText() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aText", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     String out = (String) collectionClass.getMethod("getAText").invoke(object);
@@ -1748,12 +1756,14 @@ public class EntityGenTest
   @Test
   public void testGetClob() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "CLOB: Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aClob", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
     String out = (String) collectionClass.getMethod("getAClob").invoke(object);
@@ -1766,8 +1776,10 @@ public class EntityGenTest
   @Test
   public void testSetStructCharacter() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> structClass = LoaderDecorator.load(struct.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> structClass = loader.loadClass(struct.definesType());
     Object object = collectionClass.getConstructor().newInstance();
 
     String in = "Dwight Schrute";
@@ -1787,13 +1799,15 @@ public class EntityGenTest
   @Test
   public void testGetStructCharacter() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "Smethie wuz Here!!!!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structCharacter", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> structClass = LoaderDecorator.load(struct.definesType());
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> structClass = loader.loadClass(struct.definesType());
 
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
@@ -1808,9 +1822,11 @@ public class EntityGenTest
   @Test
   public void testSetStructEnumeration() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> structClass = LoaderDecorator.load(struct.definesType());
-    Class<?> enumClass = LoaderDecorator.load(suitEnum.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> structClass = loader.loadClass(struct.definesType());
+    Class<?> enumClass = loader.loadClass(suitEnum.definesType());
 
     BusinessEnumeration in = (BusinessEnumeration) enumClass.getMethod("get", String.class).invoke(null, heartsId);
     Object object = collectionClass.getConstructor().newInstance();
@@ -1832,14 +1848,16 @@ public class EntityGenTest
   @Test
   public void testGetStructEnumeration() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String input = "This is myself.";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structCharacter", input);
     businessDAO.addStructItem("aStruct", "structEnumeration", heartsId);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> structClass = LoaderDecorator.load(struct.definesType());
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> structClass = loader.loadClass(struct.definesType());
 
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
@@ -1859,8 +1877,10 @@ public class EntityGenTest
   @Test
   public void testSetStructBoolean() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> structClass = LoaderDecorator.load(struct.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> structClass = loader.loadClass(struct.definesType());
     Object object = collectionClass.getConstructor().newInstance();
 
     boolean in = true;
@@ -1880,13 +1900,15 @@ public class EntityGenTest
   @Test
   public void testGetStructBoolean() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     boolean in = true;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structBoolean", Boolean.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> structClass = LoaderDecorator.load(struct.definesType());
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> structClass = loader.loadClass(struct.definesType());
 
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
@@ -1902,11 +1924,13 @@ public class EntityGenTest
   @Test
   public void testSetReference() throws Exception
   {
-    Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> referenceClass = loader.loadClass(reference.definesType());
     Business in = (Business) referenceClass.getConstructor().newInstance();
     referenceClass.getMethod("apply").invoke(in);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
     collectionClass.getMethod("setAReference", referenceClass).invoke(object, in);
@@ -1924,14 +1948,16 @@ public class EntityGenTest
   @Test
   public void testSetReferenceById() throws Exception
   {
-    Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> referenceClass = loader.loadClass(reference.definesType());
     Business in = (Business) referenceClass.getConstructor().newInstance();
     referenceClass.getMethod("apply").invoke(in);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
-    collectionClass.getMethod("setAReference", String.class).invoke(object, in.getId());
+    collectionClass.getMethod("setAReferenceId", String.class).invoke(object, in.getId());
     collectionClass.getMethod("apply").invoke(object);
 
     String id = (String) collectionClass.getMethod("getId").invoke(object);
@@ -1946,6 +1972,8 @@ public class EntityGenTest
   @Test
   public void testGetReference() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO in = BusinessDAO.newInstance(reference.definesType());
     in.apply();
 
@@ -1953,7 +1981,7 @@ public class EntityGenTest
     businessDAO.setValue("aReference", in.getId());
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getMethod("get", String.class).invoke(null, id);
     Business out = (Business) collectionClass.getMethod("getAReference").invoke(object);
 
@@ -1965,6 +1993,8 @@ public class EntityGenTest
   @Test
   public void testEnumDTO_getEnumNames() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = heartsId;
     String in2 = clubsId;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
@@ -1972,7 +2002,7 @@ public class EntityGenTest
     businessDAO.addItem("anEnum", in2);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     BusinessDTO businessDTO = (BusinessDTO) get.invoke(null, clientRequestIF, id);
 
@@ -1992,7 +2022,9 @@ public class EntityGenTest
   @Test
   public void testEnumDTO_getName() throws Exception
   {
-    Class<?> enumClass = LoaderDecorator.load(suitEnumDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> enumClass = loader.loadClass(suitEnumDTO);
 
     Method valueOf = enumClass.getMethod("valueOf", String.class);
     Enum<?> hearts = (Enum<?>) valueOf.invoke(null, heartName);
@@ -2007,7 +2039,9 @@ public class EntityGenTest
   @Test
   public void testEnumDTO_item() throws Exception
   {
-    Class<?> enumClass = LoaderDecorator.load(suitEnumDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> enumClass = loader.loadClass(suitEnumDTO);
 
     Method valueOf = enumClass.getMethod("valueOf", String.class);
     Enum<?> hearts = (Enum<?>) valueOf.invoke(null, heartName);
@@ -2022,7 +2056,9 @@ public class EntityGenTest
   @Test
   public void testEnumDTO_items() throws Exception
   {
-    Class<?> enumClass = LoaderDecorator.load(suitEnumDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> enumClass = loader.loadClass(suitEnumDTO);
 
     Method valueOf = enumClass.getMethod("valueOf", String.class);
     Enum<?> hearts = (Enum<?>) valueOf.invoke(null, heartName);
@@ -2055,7 +2091,9 @@ public class EntityGenTest
   @Test
   public void testEnumDTO_allItems() throws Exception
   {
-    Class<?> enumClass = LoaderDecorator.load(suitEnumDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> enumClass = loader.loadClass(suitEnumDTO);
 
     Method items = enumClass.getMethod("allItems", ClientRequestIF.class);
     List<? extends BusinessDTO> values = (List<? extends BusinessDTO>) items.invoke(null, clientRequestIF);
@@ -2086,8 +2124,10 @@ public class EntityGenTest
   @Test
   public void testAddEnum() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> enumClass = LoaderDecorator.load(suitEnum.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> enumClass = loader.loadClass(suitEnum.definesType());
 
     Object object = collectionClass.getConstructor().newInstance();
 
@@ -2112,12 +2152,14 @@ public class EntityGenTest
   @Test
   public void testGetEnum() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = heartsId;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getMethod("get", String.class).invoke(null, id);
     List<?> out = (List<?>) collectionClass.getMethod("getAnEnum").invoke(object);
     BusinessEnumeration head = (BusinessEnumeration) out.get(0);
@@ -2131,13 +2173,15 @@ public class EntityGenTest
   @Test
   public void testRemoveEnum() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = heartsId;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> enumClass = LoaderDecorator.load(suitEnum.definesType());
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> enumClass = loader.loadClass(suitEnum.definesType());
 
     Object hearts = enumClass.getDeclaredField(heartName).get(null);
 
@@ -2156,12 +2200,14 @@ public class EntityGenTest
   @Test
   public void testClearEnum() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = heartsId;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getMethod("get", String.class).invoke(null, id);
     collectionClass.getMethod("clearAnEnum").invoke(object);
     collectionClass.getMethod("apply").invoke(object);
@@ -2177,8 +2223,10 @@ public class EntityGenTest
   @Test
   public void testAddChild() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> referenceClass = loader.loadClass(reference.definesType());
 
     Business mom = (Business) collectionClass.newInstance();
     mom.apply();
@@ -2200,12 +2248,14 @@ public class EntityGenTest
   @Test
   public void testAddChildDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     String relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Class<?> referenceClass = LoaderDecorator.load(referenceDTO);
-    Class<?> relationshipClass = LoaderDecorator.load(relationshipDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    Class<?> referenceClass = loader.loadClass(referenceDTO);
+    Class<?> relationshipClass = loader.loadClass(relationshipDTO);
 
     // Create a new instance of a collection
     BusinessDTO mom = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
@@ -2239,8 +2289,10 @@ public class EntityGenTest
   @Test
   public void testAddParent() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> referenceClass = loader.loadClass(reference.definesType());
 
     Business mom = (Business) collectionClass.newInstance();
     mom.apply();
@@ -2262,7 +2314,9 @@ public class EntityGenTest
   @Test
   public void testGetChildren() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
 
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
     mom.apply();
@@ -2286,7 +2340,9 @@ public class EntityGenTest
   @Test
   public void testGetParents() throws Exception
   {
-    Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> referenceClass = loader.loadClass(reference.definesType());
 
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
     mom.apply();
@@ -2310,8 +2366,10 @@ public class EntityGenTest
   @Test
   public void testRemoveAllChildren() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> referenceClass = loader.loadClass(reference.definesType());
 
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
     mom.apply();
@@ -2343,8 +2401,10 @@ public class EntityGenTest
   @Test
   public void testRemoveAllParents() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> referenceClass = loader.loadClass(reference.definesType());
 
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
     mom.apply();
@@ -2378,11 +2438,6 @@ public class EntityGenTest
 
   /**
    * Test for apply on a StructDAO that lives outside of an AttributeStruct
-   * <<<<<<< HEAD
-   * 
-   * =======
-   * 
-   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
    * 
    * @throws Exception
    */
@@ -2390,9 +2445,11 @@ public class EntityGenTest
   @Test
   public void testApplyStruct() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "Haaaar Harr, BSG";
 
-    Class<?> structClass = LoaderDecorator.load(struct.definesType());
+    Class<?> structClass = loader.loadClass(struct.definesType());
     Object struct = structClass.getConstructor().newInstance();
 
     structClass.getMethod("setStructCharacter", String.class).invoke(struct, in);
@@ -2410,11 +2467,7 @@ public class EntityGenTest
 
   /**
    * Test to ensure apply on a StructDAO that lives inside of an AttributeStruct
-   * balks (does nothing). <<<<<<< HEAD
-   * 
-   * =======
-   * 
-   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * balks (does nothing).
    * 
    * @throws Exception
    */
@@ -2422,13 +2475,15 @@ public class EntityGenTest
   @Test
   public void testNoApplyStruct() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     boolean in = true;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structBoolean", Boolean.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Class<?> structClass = LoaderDecorator.load(struct.definesType());
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Class<?> structClass = loader.loadClass(struct.definesType());
 
     Method get = collectionClass.getMethod("get", String.class);
     Object object = get.invoke(null, id);
@@ -2449,12 +2504,14 @@ public class EntityGenTest
   @Test
   public void testAddParentDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     String relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Class<?> referenceClass = LoaderDecorator.load(referenceDTO);
-    Class<?> relationshipClass = LoaderDecorator.load(relationshipDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    Class<?> referenceClass = loader.loadClass(referenceDTO);
+    Class<?> relationshipClass = loader.loadClass(relationshipDTO);
 
     // Create a new instance of a collection
     BusinessDTO mom = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
@@ -2487,10 +2544,12 @@ public class EntityGenTest
   @Test
   public void testDeleteDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -2513,12 +2572,14 @@ public class EntityGenTest
   @Test
   public void testGetBlobDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setBlob("aBlob", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -2533,11 +2594,7 @@ public class EntityGenTest
   }
 
   /**
-   * Test that boolean attributes methods work for DTO generation <<<<<<< HEAD
-   * 
-   * =======
-   * 
-   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * Test that boolean attributes methods work for DTO generation
    * 
    * @throws Exception
    */
@@ -2545,12 +2602,14 @@ public class EntityGenTest
   @Test
   public void testGetBooleanDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     boolean in = false;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aBoolean", Boolean.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
     boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
@@ -2562,11 +2621,13 @@ public class EntityGenTest
   @Test
   public void testGetBooleanNullDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aBoolean", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -2579,12 +2640,14 @@ public class EntityGenTest
   @Test
   public void testGetCharacterDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "RunwaySDK";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aCharacter", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -2597,6 +2660,8 @@ public class EntityGenTest
   @Test
   public void testGetChildDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
     mom.apply();
     BusinessDAO kid = BusinessDAO.newInstance(reference.definesType());
@@ -2605,7 +2670,7 @@ public class EntityGenTest
     rel.apply();
 
     String relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> relationshipClass = LoaderDecorator.load(relationshipDTO);
+    Class<?> relationshipClass = loader.loadClass(relationshipDTO);
     Method get = relationshipClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, rel.getId());
 
@@ -2613,7 +2678,7 @@ public class EntityGenTest
     BusinessDTO child = (BusinessDTO) getChild.invoke(object);
 
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> referenceClass = LoaderDecorator.load(referenceDTO);
+    Class<?> referenceClass = loader.loadClass(referenceDTO);
     Assert.assertTrue(referenceClass.isInstance(child));
     Assert.assertEquals(kid.getId(), child.getId());
   }
@@ -2622,6 +2687,8 @@ public class EntityGenTest
   @Test
   public void testGetChildrenDTOCached() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     mdRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
 
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
@@ -2634,7 +2701,7 @@ public class EntityGenTest
     }
     try
     {
-      Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+      Class<?> collectionClass = loader.loadClass(collectionDTO);
 
       String momId = BusinessDAO.newInstance(collection.definesType()).apply();
       String kidId = BusinessDAO.newInstance(reference.definesType()).apply();
@@ -2668,6 +2735,8 @@ public class EntityGenTest
   @Test
   public void testGetChildrenDTONotCached() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     mdRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
 
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
@@ -2680,7 +2749,7 @@ public class EntityGenTest
     }
     try
     {
-      Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+      Class<?> collectionClass = loader.loadClass(collectionDTO);
 
       String momId = BusinessDAO.newInstance(collection.definesType()).apply();
       String kidId = BusinessDAO.newInstance(reference.definesType()).apply();
@@ -2714,10 +2783,12 @@ public class EntityGenTest
   @Test
   public void testGetChildRelationshipsDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Class<?> relationshipClass = LoaderDecorator.load(relationshipDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    Class<?> relationshipClass = loader.loadClass(relationshipDTO);
 
     String momId = BusinessDAO.newInstance(collection.definesType()).apply();
     String kidId = BusinessDAO.newInstance(reference.definesType()).apply();
@@ -2739,234 +2810,14 @@ public class EntityGenTest
 
   @Request
   @Test
-  public void testPublish() throws Exception
-  {
-    // Make sure we can instantiate the subclass
-    Class<?> collectionSubClass = LoaderDecorator.load(collectionSubDTO);
-    Constructor<?> get = collectionSubClass.getConstructor(ClientRequestIF.class);
-    get.newInstance(clientRequestIF);
-
-    collection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
-    collection.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
-    collection.setGenerateMdController(false);
-    collection.apply();
-
-    try
-    {
-      try
-      {
-        Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-        get = collectionClass.getConstructor(ClientRequestIF.class);
-        get.newInstance(clientRequestIF);
-
-        Assert.fail("Able to load a DTO class that was set to not be published");
-      }
-      catch (RuntimeException ex)
-      {
-        if (! ( ex instanceof LoaderDecoratorExceptionIF ))
-        {
-          throw ex;
-        }
-      }
-      try
-      {
-        // Make sure we cannot instantiate the subclass
-        collectionSubClass = LoaderDecorator.load(collectionSubDTO);
-        get = collectionSubClass.getConstructor(ClientRequestIF.class);
-        get.newInstance(clientRequestIF);
-
-        Assert.fail("Able to load a DTO class that was set to not be published");
-      }
-      catch (RuntimeException ex)
-      {
-        if (! ( ex instanceof LoaderDecoratorExceptionIF ))
-        {
-          throw ex;
-        }
-      }
-    }
-    finally
-    {
-      collection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
-      collection.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.TRUE);
-      collection.apply();
-
-      // Make sure we can instantiate the subclass
-      collectionSubClass = LoaderDecorator.load(collectionSubDTO);
-      get = collectionSubClass.getConstructor(ClientRequestIF.class);
-      get.newInstance(clientRequestIF);
-    }
-  }
-
-  @Request
-  @Test
-  public void testPublishReference() throws Exception
-  {
-    BusinessDAO in = BusinessDAO.newInstance(reference.definesType());
-    in.apply();
-
-    BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
-    businessDAO.setValue("aReference", in.getId());
-    String id = businessDAO.apply();
-
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Object object = collectionClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, id);
-    collectionClass.getMethod("getAReference").invoke(object);
-
-    collectionClass.getMethod("getAllRelChild").invoke(object);
-
-    reference = MdBusinessDAO.get(reference.getId()).getBusinessDAO();
-    reference.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
-    reference.apply();
-
-    try
-    {
-      collectionClass = LoaderDecorator.load(collectionDTO);
-      object = collectionClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, id);
-      collectionClass.getMethod("getAReference").invoke(object);
-    }
-    catch (NoSuchMethodException e)
-    {
-      // this is expected
-    }
-
-    try
-    {
-      collectionClass = LoaderDecorator.load(collectionDTO);
-      object = collectionClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, id);
-      collectionClass.getMethod("getAllRelChild").invoke(object);
-    }
-    catch (NoSuchMethodException e)
-    {
-      // this is expected
-    }
-
-    finally
-    {
-      reference = MdBusinessDAO.get(reference.getId()).getBusinessDAO();
-      reference.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.TRUE);
-      reference.apply();
-
-      businessDAO.delete();
-      in.delete();
-    }
-  }
-
-  @Request
-  @Test
-  public void testPublishRelationship() throws Exception
-  {
-    BusinessDAO in = BusinessDAO.newInstance(reference.definesType());
-    in.apply();
-
-    BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
-    businessDAO.setValue("aReference", in.getId());
-    String id = businessDAO.apply();
-
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Object collectionObject = collectionClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, id);
-    collectionClass.getMethod("getAllRelChild").invoke(collectionObject);
-
-    Class<?> referenceClass = LoaderDecorator.load(referenceDTO);
-    Object referenceObject = referenceClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, in.getId());
-    referenceClass.getMethod("getAllRelParent").invoke(referenceObject);
-
-    MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
-    updateRelationship.setValue(MdRelationshipInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
-    updateRelationship.apply();
-
-    try
-    {
-      collectionClass = LoaderDecorator.load(collectionDTO);
-      collectionObject = collectionClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, id);
-      collectionClass.getMethod("getAllRelChild").invoke(collectionObject);
-    }
-    catch (NoSuchMethodException e)
-    {
-      // this is expected
-    }
-
-    try
-    {
-      referenceClass = LoaderDecorator.load(referenceDTO);
-      referenceObject = referenceClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, in.getId());
-      referenceClass.getMethod("getAllRelParent").invoke(referenceObject);
-    }
-    catch (NoSuchMethodException e)
-    {
-      // this is expected
-    }
-    finally
-    {
-      updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
-      updateRelationship.setValue(MdRelationshipInfo.PUBLISH, MdAttributeBooleanInfo.TRUE);
-      updateRelationship.apply();
-
-      businessDAO.delete();
-      in.delete();
-    }
-  }
-
-  @Request
-  @Test
-  public void testChangeAttributeName() throws Exception
-  {
-    Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
-    Object dtoObject = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-
-    Class<?> colletionClass = LoaderDecorator.load(collection.definesType());
-    Object businessObject = colletionClass.getConstructor().newInstance();
-
-    // Make sure the accessor method is there
-    colletionClass.getMethod("getACharacter").invoke(businessObject);
-
-    collectionCharacter = MdAttributeCharacterDAO.get(collectionCharacter.getId()).getBusinessDAO();
-
-    collectionCharacter.setValue(MdAttributeConcreteInfo.NAME, "AChangedCharacter");
-    collectionCharacter.apply();
-    // LoaderDecorator.reload();
-    colletionClass = LoaderDecorator.load(collection.definesType());
-    businessObject = colletionClass.getConstructor().newInstance();
-
-    try
-    {
-      colletionClass.getMethod("getAChangedCharacter").invoke(businessObject);
-    }
-    catch (NoSuchMethodException e)
-    {
-      Assert.fail("The name of Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed on business class.");
-    }
-
-    try
-    {
-      collectionDTOclass = LoaderDecorator.load(collectionDTO);
-      dtoObject = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-      collectionDTOclass.getMethod("getAChangedCharacter").invoke(dtoObject);
-    }
-    catch (NoSuchMethodException e)
-    {
-      Assert.fail("The name of Attribute " + collectionCharacter.definesAttribute() + " on generated server base class was not properly changed on DTO class.");
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-    }
-    finally
-    {
-      collectionCharacter.setValue(MdAttributeConcreteInfo.NAME, "aCharacter");
-      collectionCharacter.apply();
-      // LoaderDecorator.reload();
-    }
-  }
-
-  @Request
-  @Test
   public void testAttributeGetterVisibility() throws Exception
   {
-    Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionDTOclass = loader.loadClass(collectionDTO);
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
-    Class<?> colletionClass = LoaderDecorator.load(collection.definesType());
+    Class<?> colletionClass = loader.loadClass(collection.definesType());
     Class<?> colletionBaseClass = colletionClass.getSuperclass();
 
     int modifiers = colletionBaseClass.getDeclaredMethod("getACharacter").getModifiers();
@@ -2980,8 +2831,9 @@ public class EntityGenTest
 
     collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     collectionCharacter.apply();
-    // LoaderDecorator.reload();
-    colletionClass = LoaderDecorator.load(collection.definesType());
+
+    loader = GeneratedLoader.isolatedClassLoader();
+    colletionClass = loader.loadClass(collection.definesType());
     colletionBaseClass = colletionClass.getSuperclass();
 
     try
@@ -2994,7 +2846,7 @@ public class EntityGenTest
 
       try
       {
-        collectionDTOclass = LoaderDecorator.load(collectionDTO);
+        collectionDTOclass = loader.loadClass(collectionDTO);
         object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
         collectionDTOclass.getMethod("getACharacter").invoke(object);
 
@@ -3014,8 +2866,9 @@ public class EntityGenTest
     {
       collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       collectionCharacter.apply();
-      // LoaderDecorator.reload();
-      colletionClass = LoaderDecorator.load(collection.definesType());
+
+      loader = GeneratedLoader.isolatedClassLoader();
+      colletionClass = loader.loadClass(collection.definesType());
       colletionBaseClass = colletionClass.getSuperclass();
 
       modifiers = colletionBaseClass.getDeclaredMethod("getACharacter").getModifiers();
@@ -3025,7 +2878,7 @@ public class EntityGenTest
       }
 
       // Make sure the accessor method is back
-      collectionDTOclass = LoaderDecorator.load(collectionDTO);
+      collectionDTOclass = loader.loadClass(collectionDTO);
       object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
       collectionDTOclass.getMethod("getACharacter").invoke(object);
     }
@@ -3035,10 +2888,12 @@ public class EntityGenTest
   @Test
   public void testAttributeSetterVisibility() throws Exception
   {
-    Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionDTOclass = loader.loadClass(collectionDTO);
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
-    Class<?> colletionClass = LoaderDecorator.load(collection.definesType());
+    Class<?> colletionClass = loader.loadClass(collection.definesType());
     Class<?> colletionBaseClass = colletionClass.getSuperclass();
 
     int modifiers = colletionBaseClass.getDeclaredMethod("setACharacter", String.class).getModifiers();
@@ -3052,8 +2907,10 @@ public class EntityGenTest
 
     collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     collectionCharacter.apply();
-    // LoaderDecorator.reload();
-    colletionClass = LoaderDecorator.load(collection.definesType());
+
+    loader = GeneratedLoader.isolatedClassLoader();
+
+    colletionClass = loader.loadClass(collection.definesType());
     colletionBaseClass = colletionClass.getSuperclass();
 
     try
@@ -3067,7 +2924,7 @@ public class EntityGenTest
 
       try
       {
-        collectionDTOclass = LoaderDecorator.load(collectionDTO);
+        collectionDTOclass = loader.loadClass(collectionDTO);
         object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
         collectionDTOclass.getMethod("setACharacter", String.class).invoke(object, "123");
 
@@ -3082,8 +2939,9 @@ public class EntityGenTest
     {
       collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       collectionCharacter.apply();
-      // LoaderDecorator.reload();
-      colletionClass = LoaderDecorator.load(collection.definesType());
+
+      loader = GeneratedLoader.isolatedClassLoader();
+      colletionClass = loader.loadClass(collection.definesType());
       colletionBaseClass = colletionClass.getSuperclass();
 
       modifiers = colletionBaseClass.getDeclaredMethod("setACharacter", String.class).getModifiers();
@@ -3093,7 +2951,7 @@ public class EntityGenTest
       }
 
       // Make sure the accessor method is back
-      collectionDTOclass = LoaderDecorator.load(collectionDTO);
+      collectionDTOclass = loader.loadClass(collectionDTO);
       object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
       collectionDTOclass.getMethod("setACharacter", String.class).invoke(object, "123");
     }
@@ -3103,12 +2961,14 @@ public class EntityGenTest
   @Test
   public void testParentMethodVisibility() throws Exception
   {
-    Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> referenceClass = loader.loadClass(reference.definesType());
     Class<?> referenceBaseClass = referenceClass.getSuperclass();
-    Class<?> referenceDTOclass = LoaderDecorator.load(referenceDTO);
-    Class<?> relationshipDTOclass = LoaderDecorator.load(relationshipDTO);
-    Class<?> colletionClass = LoaderDecorator.load(collection.definesType());
-    Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
+    Class<?> referenceDTOclass = loader.loadClass(referenceDTO);
+    Class<?> relationshipDTOclass = loader.loadClass(relationshipDTO);
+    Class<?> colletionClass = loader.loadClass(collection.definesType());
+    Class<?> collectionDTOclass = loader.loadClass(collectionDTO);
 
     // Check public visibility on the business class
     int modifiers = referenceBaseClass.getDeclaredMethod("addRelParent", colletionClass).getModifiers();
@@ -3154,18 +3014,20 @@ public class EntityGenTest
     updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);
     updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     updateRelationship.apply();
-    // LoaderDecorator.reload();
 
-    referenceClass = LoaderDecorator.load(reference.definesType());
+    loader = GeneratedLoader.isolatedClassLoader();
+
+    referenceClass = loader.loadClass(reference.definesType());
     referenceBaseClass = referenceClass.getSuperclass();
-    referenceDTOclass = LoaderDecorator.load(referenceDTO);
-    relationshipDTOclass = LoaderDecorator.load(relationshipDTO);
-    colletionClass = LoaderDecorator.load(collection.definesType());
-    collectionDTOclass = LoaderDecorator.load(collectionDTO);
+    referenceDTOclass = loader.loadClass(referenceDTO);
+    relationshipDTOclass = loader.loadClass(relationshipDTO);
+    colletionClass = loader.loadClass(collection.definesType());
+    collectionDTOclass = loader.loadClass(collectionDTO);
 
     try
     {
       modifiers = referenceBaseClass.getDeclaredMethod("addRelParent", colletionClass).getModifiers();
+      
       if (!Modifier.isProtected(modifiers))
         Assert.fail("Parent relationship [addRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
@@ -3185,124 +3047,6 @@ public class EntityGenTest
       if (!Modifier.isProtected(modifiers))
         Assert.fail("Parent relationship [getRelParentRel] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
-      try
-      {
-        // Create some objects
-        collectionDTOObject = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-        collectionDTOclass.getMethod("apply").invoke(collectionDTOObject);
-        referenceDTOObject = referenceDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-        referenceDTOclass.getMethod("apply").invoke(referenceDTOObject);
-
-        String parentProtectedFail = "Able to access a parent relationship method on a DTO for a relationship where the parent accessors are [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].";
-
-        try
-        {
-          aRelationshipDTO = referenceDTOclass.getMethod("addRelParent", collectionDTOclass).invoke(referenceDTOObject, collectionDTOObject);
-          relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
-          Assert.fail(parentProtectedFail);
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-        try
-        {
-          referenceDTOclass.getMethod("getAllRelParent").invoke(referenceDTOObject);
-          Assert.fail(parentProtectedFail);
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-        try
-        {
-          relationshipList = (List<?>) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
-          Assert.fail(parentProtectedFail);
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-        try
-        {
-          referenceDTOclass.getMethod("removeRelParent", relationshipDTOclass).invoke(referenceDTOObject, relationshipList.get(0));
-          Assert.fail(parentProtectedFail);
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-        try
-        {
-          referenceDTOclass.getMethod("removeAllRelParent").invoke(referenceDTOObject);
-          Assert.fail(parentProtectedFail);
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-      }
-      finally
-      {
-        // Delete them
-        collectionDTOclass.getMethod("delete").invoke(collectionDTOObject);
-        referenceDTOclass.getMethod("delete").invoke(referenceDTOObject);
-      }
-
-      try
-      {
-        // Create some objects
-        collectionDTOObject = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-        collectionDTOclass.getMethod("apply").invoke(collectionDTOObject);
-        referenceDTOObject = referenceDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-        referenceDTOclass.getMethod("apply").invoke(referenceDTOObject);
-
-        String parentProtectedFail = "Able to access a parent relationship method on a DTO for a relationship where the parent accessors are [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].";
-
-        try
-        {
-          aRelationshipDTO = referenceDTOclass.getMethod("addRelParent", collectionDTOclass).invoke(referenceDTOObject, collectionDTOObject);
-          relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
-          Assert.fail(parentProtectedFail);
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-        try
-        {
-          referenceDTOclass.getMethod("getAllRelParent").invoke(referenceDTOObject);
-          Assert.fail(parentProtectedFail);
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-        try
-        {
-          relationshipList = (List<?>) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
-          Assert.fail(parentProtectedFail);
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-        try
-        {
-          referenceDTOclass.getMethod("removeRelParent", relationshipDTOclass).invoke(referenceDTOObject, relationshipList.get(0));
-          Assert.fail(parentProtectedFail);
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-        try
-        {
-          referenceDTOclass.getMethod("removeAllRelParent").invoke(referenceDTOObject);
-          Assert.fail(parentProtectedFail);
-        }
-        catch (NoSuchMethodException e)
-        {
-        }
-      }
-      finally
-      {
-        // Delete them
-        collectionDTOclass.getMethod("delete").invoke(collectionDTOObject);
-        referenceDTOclass.getMethod("delete").invoke(referenceDTOObject);
-      }
-
     }
     finally
     {
@@ -3311,14 +3055,15 @@ public class EntityGenTest
       updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);
       updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       updateRelationship.apply();
-      // LoaderDecorator.reload();
 
-      referenceClass = LoaderDecorator.load(reference.definesType());
+      loader = GeneratedLoader.isolatedClassLoader();
+
+      referenceClass = loader.loadClass(reference.definesType());
       referenceBaseClass = referenceClass.getSuperclass();
-      referenceDTOclass = LoaderDecorator.load(referenceDTO);
-      relationshipDTOclass = LoaderDecorator.load(relationshipDTO);
-      colletionClass = LoaderDecorator.load(collection.definesType());
-      collectionDTOclass = LoaderDecorator.load(collectionDTO);
+      referenceDTOclass = loader.loadClass(referenceDTO);
+      relationshipDTOclass = loader.loadClass(relationshipDTO);
+      colletionClass = loader.loadClass(collection.definesType());
+      collectionDTOclass = loader.loadClass(collectionDTO);
 
       // Check public visibility on the business class
       modifiers = referenceBaseClass.getDeclaredMethod("addRelParent", colletionClass).getModifiers();
@@ -3336,26 +3081,6 @@ public class EntityGenTest
       modifiers = referenceBaseClass.getDeclaredMethod("getRelParentRel", colletionClass).getModifiers();
       if (!Modifier.isPublic(modifiers))
         Assert.fail("Parent relationship  [getRelParentRel] on generated server base class [" + reference.definesType() + "]was not properly changed to [" + VisibilityModifier.PUBLIC.getJavaModifier() + "] visibility.");
-
-      // Create some objects
-      collectionDTOObject = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-      collectionDTOclass.getMethod("apply").invoke(collectionDTOObject);
-      referenceDTOObject = referenceDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-      referenceDTOclass.getMethod("apply").invoke(referenceDTOObject);
-
-      // Make sure the accessor methods are there on the DTO
-      aRelationshipDTO = referenceDTOclass.getMethod("addRelParent", collectionDTOclass).invoke(referenceDTOObject, collectionDTOObject);
-      relationshipDTOclass.getMethod("apply").invoke(aRelationshipDTO);
-
-      referenceDTOclass.getMethod("getAllRelParent").invoke(referenceDTOObject);
-      relationshipList = (List<?>) referenceDTOclass.getMethod("getAllRelParentRelationships").invoke(referenceDTOObject);
-      referenceDTOclass.getMethod("removeRelParent", relationshipDTOclass).invoke(referenceDTOObject, relationshipList.get(0));
-      referenceDTOclass.getMethod("removeAllRelParent").invoke(referenceDTOObject);
-
-      // Delete them
-      collectionDTOclass.getMethod("delete").invoke(collectionDTOObject);
-      referenceDTOclass.getMethod("delete").invoke(referenceDTOObject);
-
     }
   }
 
@@ -3363,12 +3088,14 @@ public class EntityGenTest
   @Test
   public void testChildMethodVisibility() throws Exception
   {
-    Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
-    Class<?> referenceDTOclass = LoaderDecorator.load(referenceDTO);
-    Class<?> relationshipDTOclass = LoaderDecorator.load(relationshipDTO);
-    Class<?> colletionClass = LoaderDecorator.load(collection.definesType());
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> referenceClass = loader.loadClass(reference.definesType());
+    Class<?> referenceDTOclass = loader.loadClass(referenceDTO);
+    Class<?> relationshipDTOclass = loader.loadClass(relationshipDTO);
+    Class<?> colletionClass = loader.loadClass(collection.definesType());
     Class<?> collectionBaseClass = colletionClass.getSuperclass();
-    Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionDTOclass = loader.loadClass(collectionDTO);
 
     // Check public visibility on the business class
     int modifiers = collectionBaseClass.getDeclaredMethod("addRelChild", referenceClass).getModifiers();
@@ -3414,14 +3141,14 @@ public class EntityGenTest
     updateRelationship.clearItems(MdRelationshipInfo.CHILD_VISIBILITY);
     updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PROTECTED.getId());
     updateRelationship.apply();
-    // LoaderDecorator.reload();
+    loader = GeneratedLoader.isolatedClassLoader();
 
-    referenceClass = LoaderDecorator.load(reference.definesType());
-    referenceDTOclass = LoaderDecorator.load(referenceDTO);
-    relationshipDTOclass = LoaderDecorator.load(relationshipDTO);
-    colletionClass = LoaderDecorator.load(collection.definesType());
+    referenceClass = loader.loadClass(reference.definesType());
+    referenceDTOclass = loader.loadClass(referenceDTO);
+    relationshipDTOclass = loader.loadClass(relationshipDTO);
+    colletionClass = loader.loadClass(collection.definesType());
     collectionBaseClass = colletionClass.getSuperclass();
-    collectionDTOclass = LoaderDecorator.load(collectionDTO);
+    collectionDTOclass = loader.loadClass(collectionDTO);
 
     try
     {
@@ -3452,7 +3179,6 @@ public class EntityGenTest
         collectionDTOclass.getMethod("apply").invoke(collectionDTOObject);
         referenceDTOObject = referenceDTOclass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
         referenceDTOclass.getMethod("apply").invoke(referenceDTOObject);
-        ;
 
         String childProtectedFail = "Able to access a child relationship method on a DTO for a relationship where the parent accessors are [" + VisibilityModifier.PROTECTED.getJavaModifier() + "].";
 
@@ -3573,14 +3299,15 @@ public class EntityGenTest
       updateRelationship.clearItems(MdRelationshipInfo.CHILD_VISIBILITY);
       updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       updateRelationship.apply();
-      // LoaderDecorator.reload();
 
-      referenceClass = LoaderDecorator.load(reference.definesType());
-      referenceDTOclass = LoaderDecorator.load(referenceDTO);
-      relationshipDTOclass = LoaderDecorator.load(relationshipDTO);
-      colletionClass = LoaderDecorator.load(collection.definesType());
+      loader = GeneratedLoader.createClassLoader();
+
+      referenceClass = loader.loadClass(reference.definesType());
+      referenceDTOclass = loader.loadClass(referenceDTO);
+      relationshipDTOclass = loader.loadClass(relationshipDTO);
+      colletionClass = loader.loadClass(collection.definesType());
       collectionBaseClass = colletionClass.getSuperclass();
-      collectionDTOclass = LoaderDecorator.load(collectionDTO);
+      collectionDTOclass = loader.loadClass(collectionDTO);
 
       // Check public visibility on the business class
       modifiers = collectionBaseClass.getDeclaredMethod("addRelChild", referenceClass).getModifiers();
@@ -3628,6 +3355,8 @@ public class EntityGenTest
   @Test
   public void testGetDateDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     Date in = new Date(System.currentTimeMillis());
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
 
@@ -3635,7 +3364,7 @@ public class EntityGenTest
     businessDAO.setValue("aDate", sdf.format(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3650,11 +3379,13 @@ public class EntityGenTest
   @Test
   public void testGetDateNullDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDate", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3667,6 +3398,8 @@ public class EntityGenTest
   @Test
   public void testGetDateTimeDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     Date in = new Date(System.currentTimeMillis());
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_FORMAT);
 
@@ -3674,7 +3407,7 @@ public class EntityGenTest
     businessDAO.setValue("aDateTime", sdf.format(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3687,11 +3420,13 @@ public class EntityGenTest
   @Test
   public void testGetDateTimeNullDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDateTime", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3704,29 +3439,33 @@ public class EntityGenTest
   @Test
   public void testGetDecimalDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     double in = 987654.321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDecimal", Double.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
     double out = ( (BigDecimal) collectionClass.getMethod("getADecimal").invoke(object) ).doubleValue();
 
-    Assert.assertEquals(in, out);
+    Assert.assertEquals(in, out, 0);
   }
 
   @Request
   @Test
   public void testGetDecimalNullDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDecimal", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3739,29 +3478,33 @@ public class EntityGenTest
   @Test
   public void testGetDoubleDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     double in = 98765.4321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDouble", Double.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
     double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
 
-    Assert.assertEquals(in, out);
+    Assert.assertEquals(in, out, 0);
   }
 
   @Request
   @Test
   public void testGetDoubleNullDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDouble", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3774,12 +3517,14 @@ public class EntityGenTest
   @Test
   public void testGetEnumDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = heartsId;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3794,29 +3539,33 @@ public class EntityGenTest
   @Test
   public void testGetFloatDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     float in = 987.654321F;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aFloat", Float.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
     float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
-    Assert.assertEquals(in, out);
+    Assert.assertEquals(in, out, 0);
   }
 
   @Request
   @Test
   public void testGetFloatNullDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aFloat", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3829,12 +3578,14 @@ public class EntityGenTest
   @Test
   public void testGetIntegerDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     int in = 9876;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("anInteger", Integer.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3847,11 +3598,13 @@ public class EntityGenTest
   @Test
   public void testGetIntegerNullDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("anInteger", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3864,12 +3617,14 @@ public class EntityGenTest
   @Test
   public void testGetLongDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     long in = 987654321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aLong", Long.toString(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3882,11 +3637,13 @@ public class EntityGenTest
   @Test
   public void testGetLongNullDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aLong", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -3899,6 +3656,8 @@ public class EntityGenTest
   @Test
   public void testGetParentDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
     mom.apply();
     BusinessDAO kid = BusinessDAO.newInstance(reference.definesType());
@@ -3907,14 +3666,14 @@ public class EntityGenTest
     rel.apply();
 
     String relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> relationshipClass = LoaderDecorator.load(relationshipDTO);
+    Class<?> relationshipClass = loader.loadClass(relationshipDTO);
     Method get = relationshipClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, rel.getId());
 
     Method getParent = relationshipClass.getMethod("getParent");
     BusinessDTO parent = (BusinessDTO) getParent.invoke(object);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Assert.assertTrue(collectionClass.isInstance(parent));
     Assert.assertEquals(mom.getId(), parent.getId());
   }
@@ -3923,6 +3682,8 @@ public class EntityGenTest
   @Test
   public void testGetParentsDTONotCached() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     {
       MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
       updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
@@ -3934,7 +3695,7 @@ public class EntityGenTest
     {
       String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
 
-      Class<?> referenceClass = LoaderDecorator.load(referenceDTO);
+      Class<?> referenceClass = loader.loadClass(referenceDTO);
 
       String momId = BusinessDAO.newInstance(collection.definesType()).apply();
       String kidId = BusinessDAO.newInstance(reference.definesType()).apply();
@@ -3966,6 +3727,8 @@ public class EntityGenTest
   @Test
   public void testGetParentsDTOCached() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
     if (!oldCacheId.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
     {
@@ -3977,7 +3740,7 @@ public class EntityGenTest
     {
       String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
 
-      Class<?> referenceClass = LoaderDecorator.load(referenceDTO);
+      Class<?> referenceClass = loader.loadClass(referenceDTO);
 
       String momId = BusinessDAO.newInstance(collection.definesType()).apply();
       String kidId = BusinessDAO.newInstance(reference.definesType()).apply();
@@ -4011,11 +3774,13 @@ public class EntityGenTest
   @Test
   public void testGetParentRelationshipsDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     String relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
 
-    Class<?> referenceClass = LoaderDecorator.load(referenceDTO);
-    Class<?> relationshipClass = LoaderDecorator.load(relationshipDTO);
+    Class<?> referenceClass = loader.loadClass(referenceDTO);
+    Class<?> relationshipClass = loader.loadClass(relationshipDTO);
 
     String momId = BusinessDAO.newInstance(collection.definesType()).apply();
     String kidId = BusinessDAO.newInstance(reference.definesType()).apply();
@@ -4040,6 +3805,8 @@ public class EntityGenTest
   @Test
   public void testGetReferenceDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO in = BusinessDAO.newInstance(reference.definesType());
     in.apply();
 
@@ -4047,7 +3814,7 @@ public class EntityGenTest
     businessDAO.setValue("aReference", in.getId());
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
     BusinessDTO out = (BusinessDTO) collectionClass.getMethod("getAReference").invoke(object);
@@ -4059,14 +3826,16 @@ public class EntityGenTest
   @Test
   public void testGetStructBooleanDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     boolean in = true;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structBoolean", Boolean.toString(in));
     String id = businessDAO.apply();
 
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Class<?> structClass = LoaderDecorator.load(standaloneDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    Class<?> structClass = loader.loadClass(standaloneDTO);
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
@@ -4081,14 +3850,16 @@ public class EntityGenTest
   @Test
   public void testGetStructCharacterDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "Smethie wuz Here!!!!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structCharacter", in);
     String id = businessDAO.apply();
 
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Class<?> structClass = LoaderDecorator.load(standaloneDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    Class<?> structClass = loader.loadClass(standaloneDTO);
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
@@ -4102,6 +3873,8 @@ public class EntityGenTest
   @Test
   public void testGetStructEnumerationDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String input = "This is myself.";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structCharacter", input);
@@ -4109,8 +3882,8 @@ public class EntityGenTest
     String id = businessDAO.apply();
 
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Class<?> structClass = LoaderDecorator.load(standaloneDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    Class<?> structClass = loader.loadClass(standaloneDTO);
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
@@ -4130,12 +3903,14 @@ public class EntityGenTest
   @Test
   public void testGetSymmetricDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "You'll find that they're quite stationary";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aSym", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -4150,12 +3925,14 @@ public class EntityGenTest
   @Test
   public void testGetTextDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aText", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
     String out = (String) collectionClass.getMethod("getAText").invoke(object);
@@ -4167,12 +3944,14 @@ public class EntityGenTest
   @Test
   public void testGetClobDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "CLOB: Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aClob", in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
     String out = (String) collectionClass.getMethod("getAClob").invoke(object);
@@ -4184,6 +3963,8 @@ public class EntityGenTest
   @Test
   public void testGetTimeDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     Date in = new Date(System.currentTimeMillis());
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.TIME_FORMAT);
 
@@ -4191,7 +3972,7 @@ public class EntityGenTest
     businessDAO.setValue("aTime", sdf.format(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
@@ -4203,11 +3984,13 @@ public class EntityGenTest
   @Test
   public void testGetTimeNullDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aTime", "");
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -4227,7 +4010,7 @@ public class EntityGenTest
   // businessDAO.setValue("aHash", in);
   // String id = businessDAO.apply();
   //
-  // Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+  // Class<?> collectionClass = loader.loadClass(collectionDTO);
   // Method getInstance = collectionClass.getMethod("getInstance", String.class,
   // ClientRequestIF.class,
   // String.class);
@@ -4243,6 +4026,8 @@ public class EntityGenTest
   @Test
   public void testIsReadableDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     Date in = new Date(System.currentTimeMillis());
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.TIME_FORMAT);
 
@@ -4250,7 +4035,7 @@ public class EntityGenTest
     businessDAO.setValue("aTime", sdf.format(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
     boolean out = (Boolean) collectionClass.getMethod("isATimeReadable").invoke(object);
@@ -4262,6 +4047,8 @@ public class EntityGenTest
   @Test
   public void testIsWritableDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     Date in = new Date(System.currentTimeMillis());
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.TIME_FORMAT);
 
@@ -4269,7 +4056,7 @@ public class EntityGenTest
     businessDAO.setValue("aTime", sdf.format(in));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
     boolean out = (Boolean) collectionClass.getMethod("isATimeWritable").invoke(object);
@@ -4281,10 +4068,12 @@ public class EntityGenTest
   @Test
   public void testRemoveEnumDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = heartsId;
     String suitDTO = suitEnum.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Class<?> enumClass = LoaderDecorator.load(suitDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    Class<?> enumClass = loader.loadClass(suitDTO);
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
@@ -4312,7 +4101,9 @@ public class EntityGenTest
   @Test
   public void testRemoveAllChildrenDTO() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
 
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
     mom.apply();
@@ -4337,7 +4128,9 @@ public class EntityGenTest
   @Test
   public void testRemoveAllParentsDTO() throws Exception
   {
-    Class<?> referenceClass = LoaderDecorator.load(reference.definesType() + TypeGeneratorInfo.DTO_SUFFIX);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> referenceClass = loader.loadClass(reference.definesType() + TypeGeneratorInfo.DTO_SUFFIX);
 
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
     mom.apply();
@@ -4364,9 +4157,11 @@ public class EntityGenTest
   @Test
   public void testSetBlobDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4387,7 +4182,9 @@ public class EntityGenTest
   @Test
   public void testSetBooleanDTO() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4406,7 +4203,9 @@ public class EntityGenTest
   @Test
   public void testSetCharacterDTO() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4425,9 +4224,11 @@ public class EntityGenTest
   @Test
   public void testSetDateDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4446,9 +4247,11 @@ public class EntityGenTest
   @Test
   public void testSetDateTimeDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_FORMAT);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4467,9 +4270,11 @@ public class EntityGenTest
   @Test
   public void testSetDecimalDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     BigDecimal in = new BigDecimal(123456.789);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4489,9 +4294,11 @@ public class EntityGenTest
   @Test
   public void testSetDoubleDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     double in = 123456.789;
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4502,16 +4309,18 @@ public class EntityGenTest
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     double out = Double.parseDouble(businessDAO.getValue("aDouble"));
 
-    Assert.assertEquals(in, out);
+    Assert.assertEquals(in, out, 0);
   }
 
   @Request
   @Test
   public void testSetFloatDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     float in = 123456.789F;
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4522,16 +4331,18 @@ public class EntityGenTest
     BusinessDAOIF businessDAO = BusinessDAO.get(id);
     float out = Float.parseFloat(businessDAO.getValue("aFloat"));
 
-    Assert.assertEquals(in, out);
+    Assert.assertEquals(in, out, 0);
   }
 
   @Request
   @Test
   public void testSetHashDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "When you win, say nothing. When you lose, say less.";
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4553,9 +4364,11 @@ public class EntityGenTest
   @Test
   public void testSetIntegerDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     int in = 1234;
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4573,9 +4386,11 @@ public class EntityGenTest
   @Test
   public void testSetLongDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     long in = 123456789;
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4593,9 +4408,11 @@ public class EntityGenTest
   @Test
   public void testSetLocalCharacterDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(123456789L);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
 
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     LocalStructDTO struct = (LocalStructDTO) collectionClass.getMethod("getALocalCharacter").invoke(object);
@@ -4614,9 +4431,11 @@ public class EntityGenTest
   @Test
   public void testSetDefaultLocalCharacterDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(123456789L);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
 
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     LocalStructDTO struct = (LocalStructDTO) collectionClass.getMethod("getALocalCharacter").invoke(object);
@@ -4635,13 +4454,15 @@ public class EntityGenTest
   @Test
   public void testGetDefaultLocalCharacterDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(987654321L);
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -4655,13 +4476,15 @@ public class EntityGenTest
   @Test
   public void testGetLocalCharacterDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(987654321L);
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -4675,9 +4498,11 @@ public class EntityGenTest
   @Test
   public void testSetDefaultLocalTextDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(123456789L);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4696,9 +4521,11 @@ public class EntityGenTest
   @Test
   public void testSetLocalTextDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(123456789L);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4717,13 +4544,15 @@ public class EntityGenTest
   @Test
   public void testGetLocalTextDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(987654321L);
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -4737,13 +4566,15 @@ public class EntityGenTest
   @Test
   public void testGetDefaultLocalTextDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = Long.toString(987654321L);
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     Object object = get.invoke(null, clientRequestIF, id);
 
@@ -4757,14 +4588,16 @@ public class EntityGenTest
   @Test
   public void testSetReferenceDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> referenceClass = LoaderDecorator.load(referenceDTO);
+    Class<?> referenceClass = loader.loadClass(referenceDTO);
     BusinessDTO ref = (BusinessDTO) referenceClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createRef = referenceClass.getMethod("apply");
 
     createRef.invoke(ref);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -4823,18 +4656,20 @@ public class EntityGenTest
   @Test
   public void testSetStandaloneDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     boolean bIn = true;
     String cIn = "Im asl;dkgh39o";
 
     String suitDTO = suitEnum.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> enumClass = LoaderDecorator.load(suitDTO);
+    Class<?> enumClass = loader.loadClass(suitDTO);
 
     EnumerationDTOIF hearts = (EnumerationDTOIF) enumClass.getMethod("valueOf", String.class).invoke(null, heartName);
     EnumerationDTOIF clubs = (EnumerationDTOIF) enumClass.getMethod("valueOf", String.class).invoke(null, clubName);
 
     // Get the standalone object by itself
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> structClass = LoaderDecorator.load(standaloneDTO);
+    Class<?> structClass = loader.loadClass(standaloneDTO);
     Object struct = structClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     // Modify the boolean attribute of the struct
@@ -4867,11 +4702,7 @@ public class EntityGenTest
 
   /**
    * Test the generic getter and setters for a standalone StructDAO in the DTO
-   * layer <<<<<<< HEAD
-   * 
-   * =======
-   * 
-   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * layer
    * 
    * @throws Exception
    */
@@ -4879,12 +4710,14 @@ public class EntityGenTest
   @Test
   public void testGenericSetStandaloneDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     boolean bIn = true;
     String cIn = "Im asl;dkgh39o";
 
     // Get the standalone object by itself
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> structClass = LoaderDecorator.load(standaloneDTO);
+    Class<?> structClass = loader.loadClass(standaloneDTO);
     StructDTO struct = (StructDTO) structClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     // Modify the boolean attribute of the struct
@@ -4917,15 +4750,17 @@ public class EntityGenTest
   @Test
   public void testSetStructBooleanDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     boolean in = true;
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
     // Get the struct of the collection class
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> structClass = LoaderDecorator.load(standaloneDTO);
+    Class<?> structClass = loader.loadClass(standaloneDTO);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
 
     // Modify the boolean attribute of the struct
@@ -4943,15 +4778,17 @@ public class EntityGenTest
   @Test
   public void testSetStructCharacterDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "Dwight Schrute";
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
     // Get the struct of the collection class
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> structClass = LoaderDecorator.load(standaloneDTO);
+    Class<?> structClass = loader.loadClass(standaloneDTO);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
 
     // Modify the boolean attribute of the struct
@@ -4969,11 +4806,13 @@ public class EntityGenTest
   @Test
   public void testSetStructEnumerationDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String suitDTO = suitEnum.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Class<?> structClass = LoaderDecorator.load(standaloneDTO);
-    Class<?> enumClass = LoaderDecorator.load(suitDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    Class<?> structClass = loader.loadClass(standaloneDTO);
+    Class<?> enumClass = loader.loadClass(suitDTO);
 
     EnumerationDTOIF hearts = (EnumerationDTOIF) enumClass.getMethod("valueOf", String.class).invoke(null, heartName);
     EnumerationDTOIF clubs = (EnumerationDTOIF) enumClass.getMethod("valueOf", String.class).invoke(null, clubName);
@@ -5010,9 +4849,11 @@ public class EntityGenTest
   @Test
   public void testSetSymmetricDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "My rims never spin - to the contrary";
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -5030,9 +4871,11 @@ public class EntityGenTest
   @Test
   public void testSetTextDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.";
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -5050,9 +4893,11 @@ public class EntityGenTest
   @Test
   public void testSetClobDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     String in = "CLOB: But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.";
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -5070,10 +4915,12 @@ public class EntityGenTest
   @Test
   public void testSetTimeDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     Date in = new Date(System.currentTimeMillis());
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.TIME_FORMAT);
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     Method createDTO = collectionClass.getMethod("apply");
 
@@ -5085,123 +4932,6 @@ public class EntityGenTest
     Date out = sdf.parse(businessDAO.getValue("aTime"));
 
     Assert.assertEquals(sdf.format(in), sdf.format(out));
-  }
-
-  @Request
-  @Test
-  public void testGetState() throws Exception
-  {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Business object = (Business) collectionClass.getConstructor().newInstance();
-    object.apply();
-
-    Assert.assertEquals("Preparing", object.getState());
-  }
-
-  @Request
-  @Test
-  public void testGetStateDTO() throws Exception
-  {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-    Method createDTO = collectionClass.getMethod("apply");
-
-    createDTO.invoke(object);
-
-    Assert.assertEquals("Preparing", object.getState());
-  }
-
-  @Request
-  @Test
-  public void testTransition() throws Exception
-  {
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Business object = (Business) collectionClass.getConstructor().newInstance();
-    object.apply();
-
-    collectionClass.getMethod("setup").invoke(object);
-    collectionClass.getMethod("teardown").invoke(object);
-
-    Assert.assertEquals("Finished", object.getState());
-  }
-
-  @Request
-  @Test
-  public void testNewTransition() throws Exception
-  {
-    TransitionDAO newTransition = mdState.addTransition("BackAgain", state3.getId(), state1.getId());
-    newTransition.apply();
-
-    Class<?> collectionClass = LoaderDecorator.load(collectionType);
-    Business object = (Business) collectionClass.getConstructor().newInstance();
-    object.apply();
-
-    try
-    {
-      collectionClass.getMethod("setup").invoke(object);
-      collectionClass.getMethod("teardown").invoke(object);
-      collectionClass.getMethod("backAgain").invoke(object);
-
-      Assert.assertEquals("Preparing", object.getState());
-    }
-    finally
-    {
-      newTransition.delete();
-    }
-
-    try
-    {
-      collectionClass = LoaderDecorator.load(collectionType);
-      collectionClass.getMethod("backAgain").invoke(object);
-      Assert.fail("A transition was deleted yet the source code for the owning class was not properly regenerated.");
-    }
-    catch (NoSuchMethodException ex)
-    {
-      // this is expected
-    }
-  }
-
-  @Request
-  @Test
-  public void testTransitionDTO() throws Exception
-  {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-    Method createDTO = collectionClass.getMethod("apply");
-
-    createDTO.invoke(object);
-
-    // Lock the BusinessDTO
-    collectionClass.getMethod("lock").invoke(object);
-
-    collectionClass.getMethod("setup").invoke(object);
-
-    // Lock the BusinessDTO
-    collectionClass.getMethod("unlock").invoke(object);
-
-    Assert.assertEquals("Collecting", object.getState());
-  }
-
-  @Request
-  @Test
-  public void testStaticTransitionDTO() throws Exception
-  {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-    Method createDTO = collectionClass.getMethod("apply");
-    createDTO.invoke(object);
-
-    String id = object.getId();
-
-    // Lock the BusinessDTO
-    collectionClass.getMethod("lock", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, id);
-
-    BusinessDTO output = (BusinessDTO) collectionClass.getMethod("setup", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, id);
-
-    // unLock the BusinessDTO
-    collectionClass.getMethod("unlock", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, id);
-
-    Assert.assertEquals("Collecting", output.getState());
   }
 
   @Request
@@ -5236,6 +4966,8 @@ public class EntityGenTest
   @Test
   public void testUpdateDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     long longIn = 142;
     boolean booleanIn = true;
 
@@ -5248,9 +4980,9 @@ public class EntityGenTest
 
     String suitDTO = suitEnum.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Class<?> structClass = LoaderDecorator.load(standaloneDTO);
-    Class<?> enumClass = LoaderDecorator.load(suitDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    Class<?> structClass = loader.loadClass(standaloneDTO);
+    Class<?> enumClass = loader.loadClass(suitDTO);
 
     EnumerationDTOIF hearts = (EnumerationDTOIF) enumClass.getMethod("valueOf", String.class).invoke(null, heartName);
     EnumerationDTOIF clubs = (EnumerationDTOIF) enumClass.getMethod("valueOf", String.class).invoke(null, clubName);
@@ -5289,11 +5021,7 @@ public class EntityGenTest
 
   /**
    * Test updating an existing DTO using generic Getters and Setters to update
-   * the values. <<<<<<< HEAD
-   * 
-   * =======
-   * 
-   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * the values.
    * 
    * @throws Exception
    */
@@ -5301,6 +5029,8 @@ public class EntityGenTest
   @Test
   public void testGenericUpdateDTO() throws Exception
   {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
     long longIn = 142;
     boolean booleanIn = true;
 
@@ -5311,7 +5041,7 @@ public class EntityGenTest
     businessDAO.setStructValue("aStruct", "structBoolean", Boolean.toString(false));
     String id = businessDAO.apply();
 
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
     BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequestIF, id);
@@ -5344,166 +5074,13 @@ public class EntityGenTest
     Assert.assertEquals(Boolean.toString(booleanIn), outBoolean);
   }
 
-  /**
-   * Overwrites the source in Collection.java to add some references to
-   * test.generated.Car, and then atempts to delete Car. This tests the
-   * compiler, ensuring that it finds the dependency. <<<<<<< HEAD
-   * 
-   * =======
-   * 
-   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
-   * 
-   * @throws Exception
-   */
-  @Request
-  @Test
-  public void testDeletedClassStillReferenced() throws Exception
-  {
-    String originalCollectionStubSource = new String();
-    originalCollectionStubSource = collection.getValue(MdClassInfo.STUB_SOURCE);
-
-    // Build the new source for Collection.java
-    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
-
-    // Write the new stub, and compile tom ake sure it's valid
-    MdBusinessDAO updateCollection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
-    updateCollection.setValue(MdClassInfo.STUB_SOURCE, collectionStubSource);
-    updateCollection.apply();
-
-    try
-    {
-      // This should cause a compiler exception, since Collection.java now
-      // contains references to the Car type we're deleting
-      TestFixtureFactory.delete(car);
-
-      // If we get to here, the exception didn't get thrown.
-      GenerationManager.generate(collection);
-      Assert.fail("Class " + car.definesType() + " was deleted even though it is referenced in business code.");
-    }
-    catch (CompilerException e)
-    {
-      // This is expected
-    }
-
-    // This will recompile everything. This should work now.
-    this.cleanup_testDeletedClassStillReferenced(originalCollectionStubSource);
-  }
-
-  @Transaction
-  private void cleanup_testDeletedClassStillReferenced(String stubSource)
-  {
-    MdBusinessDAO updateCollection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
-    updateCollection.setValue(MdClassInfo.STUB_SOURCE, stubSource);
-    updateCollection.apply();
-
-    TestFixtureFactory.delete(car);
-  }
-
-  /**
-   * Overwrites the source in Collection.java to add some references to
-   * test.generated.Car, and then attempts to delete Car. This tests the
-   * compiler, ensuring that it finds the dependency.
-   * 
-   * @throws Exception
-   */
-  @Request
-  @Test
-  public void testDeletedAttributeStillReferenced() throws Exception
-  {
-    // Add a new 'Top Speed' attribute to car
-    MdAttributeIntegerDAO topSpeed = MdAttributeIntegerDAO.newInstance();
-    topSpeed.setValue(MdAttributeIntegerInfo.NAME, "topSpeed");
-    topSpeed.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "120");
-    topSpeed.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, car.getId());
-    topSpeed.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "The Top Speed");
-    topSpeed.apply();
-
-    // Get the bytes that represent the new .class file
-    File carClassFile = new File(LocalProperties.getServerGenBin(), "test/generated/Car.class");
-    byte[] fileBytes = FileIO.readBytes(carClassFile);
-
-    // The bytes in the database should match those on the filesystem
-    byte[] dbBytes = car.getBlob(MdClassInfo.STUB_CLASS);
-    ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(dbBytes));
-    Map<String, byte[]> map = (Map<String, byte[]>) input.readObject();
-    byte[] carBytes = map.get("Car.class");
-
-    for (int i = 0; i < fileBytes.length; i++)
-    {
-      if (fileBytes[i] != carBytes[i])
-      {
-        throw new SystemException("Database byte[] does not match filesystem byte[]!");
-      }
-    }
-
-    String originalCollectionStubSource = collection.getValue(MdClassInfo.STUB_SOURCE);
-
-    // Build the new source for Collection.java
-    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "    car.setTopSpeed(120);\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
-
-    // Write the new stub, and compile to make sure it's valid
-    MdBusinessDAO updateCollection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
-    updateCollection.setValue(MdClassInfo.STUB_SOURCE, collectionStubSource);
-    updateCollection.apply();
-
-    try
-    {
-      // This should cause a compiler exception, since Collection.java now
-      // contains references to the setter for the attribute we're deleting
-      topSpeed.delete();
-
-      // If we get to here, the exception didn't get thrown.
-      GenerationManager.generate(collection);
-      Assert.fail("Class " + car.definesType() + " was deleted even though it is referenced in business code.");
-    }
-    catch (CompilerException e)
-    {
-      // This is expected
-    }
-
-    // Now acquire the new Car.class bytes - they should not have changed
-    carClassFile = new File(LocalProperties.getServerGenBin(), "test/generated/Car.class");
-    byte[] newFileBytes = FileIO.readBytes(carClassFile);
-
-    // Check new file bytes against old file bytes
-    for (int i = 0; i < fileBytes.length; i++)
-    {
-      if (fileBytes[i] != newFileBytes[i])
-      {
-        throw new SystemException("New file byte[] does not match old file byte[]!");
-      }
-    }
-
-    // The critical test is to see if the source/class for Car got rolled back
-    // to a safe state - namely one that still has setTopSpeed(int)
-    // LoaderDecorator.reload();
-
-    car = (MdBusinessDAO) MdTypeDAO.getMdTypeDAO("test.generated.Car");
-    Class<?> carClass = LoaderDecorator.load(car.definesType());
-
-    // After adding the topSpeed attribute, setTopSpeed should exist
-    Object newerCar = carClass.getConstructor().newInstance();
-    carClass.getMethod("setTopSpeed", Integer.class).invoke(newerCar, 200);
-
-    // This will recompile everything. This should work now.
-    this.cleanup_testDeletedAttributeStillReferenced(topSpeed, originalCollectionStubSource);
-  }
-
-  @Transaction
-  private void cleanup_testDeletedAttributeStillReferenced(MdAttributeIntegerDAO topSpeed, String stubSource)
-  {
-    MdBusinessDAO updateCollection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
-    updateCollection.setValue(MdClassInfo.STUB_SOURCE, stubSource);
-    updateCollection.apply();
-
-    TestFixtureFactory.delete(topSpeed);
-  }
-
   @Request
   @Test
   public void testTypeMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     // test on a new instance
@@ -5522,7 +5099,9 @@ public class EntityGenTest
   @Test
   public void testBlobMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getABlobMd").invoke(object);
@@ -5534,7 +5113,9 @@ public class EntityGenTest
   @Test
   public void testDateTimeMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getADateTimeMd").invoke(object);
@@ -5546,7 +5127,9 @@ public class EntityGenTest
   @Test
   public void testDateMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getADateMd").invoke(object);
@@ -5558,7 +5141,9 @@ public class EntityGenTest
   @Test
   public void testTimeMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getATimeMd").invoke(object);
@@ -5570,7 +5155,9 @@ public class EntityGenTest
   @Test
   public void testBooleanMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getABooleanMd").invoke(object);
@@ -5582,7 +5169,9 @@ public class EntityGenTest
   @Test
   public void testReferenceMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getAReferenceMd").invoke(object);
@@ -5596,7 +5185,9 @@ public class EntityGenTest
   @Test
   public void testTermMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getATermMd").invoke(object);
@@ -5611,7 +5202,9 @@ public class EntityGenTest
   @Test
   public void testIntegerMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeNumberMdDTO mdDTO = (AttributeNumberMdDTO) collectionClass.getMethod("getAnIntegerMd").invoke(object);
@@ -5624,7 +5217,9 @@ public class EntityGenTest
   @Test
   public void testLongMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeNumberMdDTO mdDTO = (AttributeNumberMdDTO) collectionClass.getMethod("getALongMd").invoke(object);
@@ -5636,7 +5231,9 @@ public class EntityGenTest
   @Test
   public void testCharacterMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeCharacterMdDTO mdDTO = (AttributeCharacterMdDTO) collectionClass.getMethod("getACharacterMd").invoke(object);
@@ -5649,7 +5246,9 @@ public class EntityGenTest
   @Test
   public void testStructMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeStructMdDTO mdDTO = (AttributeStructMdDTO) collectionClass.getMethod("getAStructMd").invoke(object);
@@ -5662,7 +5261,9 @@ public class EntityGenTest
   @Test
   public void testDecimalMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeDecMdDTO mdDTO = (AttributeDecMdDTO) collectionClass.getMethod("getADecimalMd").invoke(object);
@@ -5674,7 +5275,9 @@ public class EntityGenTest
   @Test
   public void testDoubleMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeDecMdDTO mdDTO = (AttributeDecMdDTO) collectionClass.getMethod("getADoubleMd").invoke(object);
@@ -5686,7 +5289,9 @@ public class EntityGenTest
   @Test
   public void testFloatMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeDecMdDTO mdDTO = (AttributeDecMdDTO) collectionClass.getMethod("getAFloatMd").invoke(object);
@@ -5698,7 +5303,9 @@ public class EntityGenTest
   @Test
   public void testEnumerationMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeEnumerationMdDTO mdDTO = (AttributeEnumerationMdDTO) collectionClass.getMethod("getAnEnumMd").invoke(object);
@@ -5711,7 +5318,9 @@ public class EntityGenTest
   @Test
   public void testTextMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getATextMd").invoke(object);
@@ -5723,7 +5332,9 @@ public class EntityGenTest
   @Test
   public void testClobMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getAClobMd").invoke(object);
@@ -5735,7 +5346,9 @@ public class EntityGenTest
   @Test
   public void testHashMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeEncryptionMdDTO mdDTO = (AttributeEncryptionMdDTO) collectionClass.getMethod("getAHashMd").invoke(object);
@@ -5748,7 +5361,9 @@ public class EntityGenTest
   @Test
   public void testSymmetricMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeEncryptionMdDTO mdDTO = (AttributeEncryptionMdDTO) collectionClass.getMethod("getASymMd").invoke(object);
@@ -5761,8 +5376,10 @@ public class EntityGenTest
   @Test
   public void testStructCharacterMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
-    Class<?> structClass = LoaderDecorator.load(struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    Class<?> structClass = loader.loadClass(struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
     StructDTO structDTO = (StructDTO) collectionClass.getMethod("getAStruct").invoke(object);
 
@@ -5776,7 +5393,9 @@ public class EntityGenTest
   @Test
   public void testFileMetadata() throws Exception
   {
-    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
     BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
 
     AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getAFileMd").invoke(object);

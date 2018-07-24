@@ -24,7 +24,9 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.RunwayExceptionDTO;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -42,6 +44,7 @@ import com.runwaysdk.facade.Facade;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 
+@RunWith(ClasspathTestRunner.class)
 public class BusinessLocking
 {
   private static final TypeInfo lockTestInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "LockTest");

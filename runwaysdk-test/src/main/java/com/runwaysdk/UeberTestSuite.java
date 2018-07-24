@@ -21,10 +21,15 @@ package com.runwaysdk;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.runwaysdk.dataaccess.DataAccessTestSuite;
+import com.runwaysdk.business.BusinessTestSuite;
+import com.runwaysdk.session.SessionTestSuite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ DataAccessTestSuite.class })
+@Suite.SuiteClasses({ 
+//  DataAccessTestSuite.class, 
+//  SessionTestSuite.class,
+  BusinessTestSuite.class  
+})
 public class UeberTestSuite
 {
   // nothing

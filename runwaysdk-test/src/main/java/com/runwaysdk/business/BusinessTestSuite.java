@@ -29,7 +29,31 @@ import com.runwaysdk.format.DefaultFormatTest;
 import com.runwaysdk.format.LocalizedFormatTest;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ ExpressionAttributeTest.class, StateTest.class, RBACTest.class, EntityGenTest.class, EntityMultiReferenceGenTest.class, EntityMultiTermGenTest.class, EntityAttributeIndicatorGenTest.class, TransientMultiReferenceGenTest.class, TransientMultiTermGenTest.class, UtilGenTest.class, ViewGenTest.class, RelationshipGenTest.class, BusinessLocking.class, ControllerGenTest.class, JSPRollbackTest.class, VirtualAttributeGenTest.class, DefaultFormatTest.class, LocalizedFormatTest.class, CustomFormatTest.class, RunwayVersionTest.class, NoSourceGenTest.class, })
+@Suite.SuiteClasses({ 
+  ExpressionAttributeTest.class,
+  StateTest.class,
+  RBACTest.class,
+  EntityGenTest.class,
+  EntityMultiReferenceGenTest.class,
+  EntityMultiTermGenTest.class,
+  EntityAttributeIndicatorGenTest.class,
+  TransientMultiReferenceGenTest.class,
+  TransientMultiTermGenTest.class,
+  UtilGenTest.class,
+  ViewGenTest.class,
+  RelationshipGenTest.class,
+  BusinessLocking.class,
+  VirtualAttributeGenTest.class,
+  DefaultFormatTest.class,
+  LocalizedFormatTest.class,
+  CustomFormatTest.class,
+  RunwayVersionTest.class,
+  NoSourceGenTest.class
+  
+//ControllerGenTest.class,
+//JSPRollbackTest.class,
+  
+})
 public class BusinessTestSuite
 {
 }

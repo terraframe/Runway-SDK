@@ -23,7 +23,9 @@ package com.runwaysdk.business;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -34,6 +36,7 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class EntityMultiReferenceGenTest extends AbstractEntityMultiReferenceGenTest
 {
   private static MdTermDAO                    mdTerm;

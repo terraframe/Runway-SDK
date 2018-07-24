@@ -24,7 +24,9 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -61,6 +63,7 @@ import com.runwaysdk.session.Request;
  *
  * @author Eric G
  */
+@RunWith(ClasspathTestRunner.class)
 public class RelationshipGenTest
 {
   private static final String      pack = "test.company";

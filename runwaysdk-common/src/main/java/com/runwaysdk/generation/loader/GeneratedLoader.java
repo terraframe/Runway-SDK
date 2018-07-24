@@ -10,6 +10,7 @@ import com.runwaysdk.constants.LocalProperties;
 
 public class GeneratedLoader extends URLClassLoader
 {
+  private String name;
 
   /**
    * @param urls
@@ -52,6 +53,11 @@ public class GeneratedLoader extends URLClassLoader
   
   public static GeneratedLoader createClassLoader() throws MalformedURLException
   {
+    return createClassLoader(Thread.currentThread().getContextClassLoader());
+  }
+
+  public static GeneratedLoader createClassLoader(ClassLoader parent) throws MalformedURLException
+  {
     File common = new File(LocalProperties.getCommonGenBin() + "/");
     File client = new File(LocalProperties.getClientGenBin() + "/");
     File server = new File(LocalProperties.getServerGenBin() + "/");
@@ -61,12 +67,12 @@ public class GeneratedLoader extends URLClassLoader
     server.mkdirs();
     
     return new GeneratedLoader(new URL[] {
-      common.toURI().toURL(),
-      client.toURI().toURL(),
-      server.toURI().toURL()
-    }, Thread.currentThread().getContextClassLoader());
+        common.toURI().toURL(),
+        client.toURI().toURL(),
+        server.toURI().toURL()
+    }, parent);
   }
-
+  
   public static GeneratedLoader isolatedClassLoader() throws MalformedURLException
   {
     File common = new File(LocalProperties.getCommonGenBin() + "/");
@@ -84,5 +90,24 @@ public class GeneratedLoader extends URLClassLoader
     });
   }
   
-
+  public void setName(String name)
+  {
+    this.name = name;
+  }
+  
+  public String getName()
+  {
+    return name;
+  }
+  
+  @Override
+  public String toString()
+  {
+    if(name != null)
+    {
+      return super.toString() + " - " + name;
+    }
+    
+    return super.toString();
+  }
 }

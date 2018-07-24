@@ -19,12 +19,15 @@
 package com.runwaysdk.business;
 
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.dataaccess.metadata.MdSessionDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class ViewGenTest extends SessionComponentGenTest
 {
   @Request

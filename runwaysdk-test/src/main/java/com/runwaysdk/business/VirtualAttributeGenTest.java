@@ -21,7 +21,9 @@ package com.runwaysdk.business;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexTypes;
@@ -52,6 +54,7 @@ import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class VirtualAttributeGenTest
 {
   private static String                    pack = "test.viewquery";

@@ -20,6 +20,7 @@ package com.runwaysdk.business;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.IndicatorCompositeInfo;
 import com.runwaysdk.constants.IndicatorPrimitiveInfo;
@@ -324,5 +325,11 @@ public class EntityAttributeIndicatorGenTest
   {
     MdBusinessDAO testMdBusiness = MdBusinessDAO.getMdBusinessDAO(TestFixConst.TEST_CLASS1_TYPE).getBusinessDAO();
     testMdBusiness.delete();
+  }
+  
+  @Test
+  public void test()
+  {
+    
   }
 }
