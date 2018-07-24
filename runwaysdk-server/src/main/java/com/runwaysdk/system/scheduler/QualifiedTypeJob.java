@@ -73,9 +73,8 @@ public class QualifiedTypeJob extends QualifiedTypeJobBase
   {
     QualifiedTypeJob job = new QualifiedTypeJob();
     job.setClassName(ej.getName());
-    job.setJobId(ej.getName());
+    job.getDisplayLabel().setValue(ej.getName());
     job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, ej.getName());
-    job.setWorkTotal(1);
 
     return job;
   }

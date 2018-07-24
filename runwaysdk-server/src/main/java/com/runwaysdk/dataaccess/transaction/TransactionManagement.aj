@@ -399,7 +399,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     {
       // If this is a development environment, we do not abort on a compiler
       // exception.
-      if (LocalProperties.isDevelopEnvironment())
+      if (LocalProperties.isDevelopEnvironment() || LocalProperties.isRunwayEnvironment())
       {
         logger.error("An error occurred while compiling. Your source has not been reverted because the environment is set to develop.", e);
         System.err.println(e.getMessage());

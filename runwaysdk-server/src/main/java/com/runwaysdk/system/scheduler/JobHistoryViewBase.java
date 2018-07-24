@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1079493411)
+@com.runwaysdk.business.ClassSignature(hash = -1867947578)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -34,6 +16,9 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   public static java.lang.String DESCRIPTION = "description";
   private com.runwaysdk.business.Struct description = null;
   
+  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  private com.runwaysdk.business.Struct displayLabel = null;
+  
   public static java.lang.String ENDTIME = "endTime";
   public static java.lang.String HISTORYCOMMENT = "historyComment";
   private com.runwaysdk.business.Struct historyComment = null;
@@ -42,23 +27,20 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   private com.runwaysdk.business.Struct historyInformation = null;
   
   public static java.lang.String ID = "id";
-  public static java.lang.String JOBID = "jobId";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
-  public static java.lang.String MAXRETRIES = "maxRetries";
-  public static java.lang.String RETRIES = "retries";
   public static java.lang.String STARTTIME = "startTime";
   public static java.lang.String STATUS = "status";
   public static java.lang.String STATUSLABEL = "statusLabel";
-  public static java.lang.String TIMEOUT = "timeout";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
-  private static final long serialVersionUID = 1079493411;
+  private static final long serialVersionUID = -1867947578;
   
   public JobHistoryViewBase()
   {
     super();
     description = super.getStruct("description");
+    displayLabel = super.getStruct("displayLabel");
     historyComment = super.getStruct("historyComment");
     historyInformation = super.getStruct("historyInformation");
   }
@@ -73,10 +55,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(CREATEDATE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCreateDateMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getCreateDateMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(CREATEDATE);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(CREATEDATE);
   }
   
   public void setCreateDate(java.util.Date value)
@@ -101,10 +83,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(CRONEXPRESSION);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCronExpressionMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getCronExpressionMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(CRONEXPRESSION);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(CRONEXPRESSION);
   }
   
   public void setCronExpression(String value)
@@ -129,10 +111,26 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(DESCRIPTION);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDescriptionMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getDescriptionMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(DESCRIPTION);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(DESCRIPTION);
+  }
+  
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabel getDisplayLabel()
+  {
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabel) displayLabel;
+  }
+  
+  public void validateDisplayLabel()
+  {
+    this.validateAttribute(DISPLAYLABEL);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getDisplayLabelMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(DISPLAYLABEL);
   }
   
   public java.util.Date getEndTime()
@@ -145,10 +143,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(ENDTIME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getEndTimeMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getEndTimeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(ENDTIME);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(ENDTIME);
   }
   
   public void setEndTime(java.util.Date value)
@@ -173,10 +171,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(HISTORYCOMMENT);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getHistoryCommentMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getHistoryCommentMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(HISTORYCOMMENT);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(HISTORYCOMMENT);
   }
   
   public com.runwaysdk.system.scheduler.JobHistoryHistoryInformation getHistoryInformation()
@@ -189,10 +187,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(HISTORYINFORMATION);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getHistoryInformationMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getHistoryInformationMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(HISTORYINFORMATION);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(HISTORYINFORMATION);
   }
   
   public String getId()
@@ -205,38 +203,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(ID);
-  }
-  
-  public String getJobId()
-  {
-    return getValue(JOBID);
-  }
-  
-  public void validateJobId()
-  {
-    this.validateAttribute(JOBID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJobIdMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(JOBID);
-  }
-  
-  public void setJobId(String value)
-  {
-    if(value == null)
-    {
-      setValue(JOBID, "");
-    }
-    else
-    {
-      setValue(JOBID, value);
-    }
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
   }
   
   @SuppressWarnings("unchecked")
@@ -271,10 +241,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(JOBOPERATION);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJobOperationMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getJobOperationMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(JOBOPERATION);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(JOBOPERATION);
   }
   
   public java.util.Date getLastRun()
@@ -287,10 +257,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(LASTRUN);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getLastRunMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getLastRunMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(LASTRUN);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(LASTRUN);
   }
   
   public void setLastRun(java.util.Date value)
@@ -305,62 +275,6 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     }
   }
   
-  public Integer getMaxRetries()
-  {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(MAXRETRIES));
-  }
-  
-  public void validateMaxRetries()
-  {
-    this.validateAttribute(MAXRETRIES);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getMaxRetriesMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(MAXRETRIES);
-  }
-  
-  public void setMaxRetries(Integer value)
-  {
-    if(value == null)
-    {
-      setValue(MAXRETRIES, "");
-    }
-    else
-    {
-      setValue(MAXRETRIES, java.lang.Integer.toString(value));
-    }
-  }
-  
-  public Integer getRetries()
-  {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(RETRIES));
-  }
-  
-  public void validateRetries()
-  {
-    this.validateAttribute(RETRIES);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getRetriesMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(RETRIES);
-  }
-  
-  public void setRetries(Integer value)
-  {
-    if(value == null)
-    {
-      setValue(RETRIES, "");
-    }
-    else
-    {
-      setValue(RETRIES, java.lang.Integer.toString(value));
-    }
-  }
-  
   public java.util.Date getStartTime()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(STARTTIME));
@@ -371,10 +285,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(STARTTIME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStartTimeMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getStartTimeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(STARTTIME);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(STARTTIME);
   }
   
   public void setStartTime(java.util.Date value)
@@ -421,10 +335,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(STATUS);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStatusMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getStatusMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(STATUS);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(STATUS);
   }
   
   public String getStatusLabel()
@@ -437,10 +351,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(STATUSLABEL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStatusLabelMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getStatusLabelMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(STATUSLABEL);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(STATUSLABEL);
   }
   
   public void setStatusLabel(String value)
@@ -455,34 +369,6 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     }
   }
   
-  public Long getTimeout()
-  {
-    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(TIMEOUT));
-  }
-  
-  public void validateTimeout()
-  {
-    this.validateAttribute(TIMEOUT);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getTimeoutMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(TIMEOUT);
-  }
-  
-  public void setTimeout(Long value)
-  {
-    if(value == null)
-    {
-      setValue(TIMEOUT, "");
-    }
-    else
-    {
-      setValue(TIMEOUT, java.lang.Long.toString(value));
-    }
-  }
-  
   public Integer getWorkProgress()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKPROGRESS));
@@ -493,10 +379,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(WORKPROGRESS);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getWorkProgressMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getWorkProgressMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(WORKPROGRESS);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(WORKPROGRESS);
   }
   
   public void setWorkProgress(Integer value)
@@ -521,10 +407,10 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(WORKTOTAL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getWorkTotalMd()
+  public static com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF getWorkTotalMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(WORKTOTAL);
+    return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(WORKTOTAL);
   }
   
   public void setWorkTotal(Integer value)

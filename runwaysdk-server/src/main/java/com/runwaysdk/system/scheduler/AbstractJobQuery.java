@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 22222083)
+@com.runwaysdk.business.ClassSignature(hash = 29012506)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -111,6 +93,29 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getCronExpression(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.CRONEXPRESSION, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel()
+  {
+    return getDisplayLabel(null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL);
+
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL, mdAttributeIF, this, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias, String displayLabel)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL);
+
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL, mdAttributeIF, this, alias, displayLabel);
 
   }
   public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain()
@@ -273,23 +278,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.AbstractJob.LOCKEDBY, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableInteger getMaxRetries()
-  {
-    return getMaxRetries(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.MAXRETRIES, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.MAXRETRIES, alias, displayLabel);
-
-  }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
   {
     return getOwner(null);
@@ -347,23 +335,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.SITEMASTER, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableLong getTimeout()
-  {
-    return getTimeout(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableLong getTimeout(String alias)
-  {
-    return (com.runwaysdk.query.SelectableLong)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.TIMEOUT, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableLong getTimeout(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableLong)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.TIMEOUT, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableChar getType()
   {
     return getType(null);
@@ -379,23 +350,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.TYPE, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableInteger getWorkTotal()
-  {
-    return getWorkTotal(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.WORKTOTAL, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.WORKTOTAL, alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -421,6 +375,21 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     else if (name.equals(com.runwaysdk.system.scheduler.AbstractJob.OWNER)) 
     {
        return new com.runwaysdk.system.ActorQuery.ActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      String error = "Attribute type ["+mdAttributeIF.getType()+"] is invalid.";
+      throw new com.runwaysdk.query.QueryException(error);
+    }
+  }
+
+  protected com.runwaysdk.query.AttributeLocal localFactory( com.runwaysdk.dataaccess.MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL)) 
+    {
+       return new com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
@@ -485,6 +454,9 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.SelectableChar getCronExpression();
     public com.runwaysdk.query.SelectableChar getCronExpression(String alias);
     public com.runwaysdk.query.SelectableChar getCronExpression(String alias, String displayLabel);
+    public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel();
+    public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias);
+    public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias, String displayLabel);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
@@ -509,9 +481,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableInteger getMaxRetries();
-    public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias);
-    public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -521,15 +490,9 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.SelectableChar getSiteMaster();
     public com.runwaysdk.query.SelectableChar getSiteMaster(String alias);
     public com.runwaysdk.query.SelectableChar getSiteMaster(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableLong getTimeout();
-    public com.runwaysdk.query.SelectableLong getTimeout(String alias);
-    public com.runwaysdk.query.SelectableLong getTimeout(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getType();
     public com.runwaysdk.query.SelectableChar getType(String alias);
     public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableInteger getWorkTotal();
-    public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias);
-    public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.scheduler.AbstractJob abstractJob);
 
@@ -614,6 +577,23 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getCronExpression(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.CRONEXPRESSION, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel()
+  {
+    return getDisplayLabel(null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias)
+  {
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF)this.attributeFactory(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF)this.attributeFactory(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, displayLabel);
 
   }
   public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain()
@@ -752,23 +732,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.LOCKEDBY,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableInteger getMaxRetries()
-  {
-    return getMaxRetries(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.AbstractJob.MAXRETRIES, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.AbstractJob.MAXRETRIES, alias, displayLabel);
-
-  }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
   {
     return getOwner(null);
@@ -820,23 +783,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.SITEMASTER, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableLong getTimeout()
-  {
-    return getTimeout(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableLong getTimeout(String alias)
-  {
-    return (com.runwaysdk.query.SelectableLong)this.get(com.runwaysdk.system.scheduler.AbstractJob.TIMEOUT, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableLong getTimeout(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableLong)this.get(com.runwaysdk.system.scheduler.AbstractJob.TIMEOUT, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableChar getType()
   {
     return getType(null);
@@ -852,23 +798,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.TYPE, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableInteger getWorkTotal()
-  {
-    return getWorkTotal(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.AbstractJob.WORKTOTAL, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.AbstractJob.WORKTOTAL, alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -894,6 +823,21 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     else if (name.equals(com.runwaysdk.system.scheduler.AbstractJob.OWNER)) 
     {
        return new com.runwaysdk.system.ActorQuery.ActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      String error = "Attribute type ["+mdAttributeIF.getType()+"] is invalid.";
+      throw new com.runwaysdk.query.QueryException(error);
+    }
+  }
+
+  protected com.runwaysdk.query.AttributeLocal localFactory( com.runwaysdk.dataaccess.MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL)) 
+    {
+       return new com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
@@ -935,6 +879,9 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.SelectableChar getCronExpression();
     public com.runwaysdk.query.SelectableChar getCronExpression(String alias);
     public com.runwaysdk.query.SelectableChar getCronExpression(String alias, String displayLabel);
+    public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel();
+    public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias);
+    public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias, String displayLabel);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
@@ -959,9 +906,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableInteger getMaxRetries();
-    public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias);
-    public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -971,15 +915,9 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.SelectableChar getSiteMaster();
     public com.runwaysdk.query.SelectableChar getSiteMaster(String alias);
     public com.runwaysdk.query.SelectableChar getSiteMaster(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableLong getTimeout();
-    public com.runwaysdk.query.SelectableLong getTimeout(String alias);
-    public com.runwaysdk.query.SelectableLong getTimeout(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getType();
     public com.runwaysdk.query.SelectableChar getType(String alias);
     public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableInteger getWorkTotal();
-    public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias);
-    public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.scheduler.AbstractJob ... abstractJob);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.scheduler.AbstractJob ... abstractJob);
@@ -1115,6 +1053,23 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.CRONEXPRESSION, alias, displayLabel);
 
   }
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel()
+  {
+    return getDisplayLabel(null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias)
+  {
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF)this.attributeFactory(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF)this.attributeFactory(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, displayLabel);
+
+  }
   public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain()
   {
     return getEntityDomain(null);
@@ -1251,23 +1206,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.LOCKEDBY,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableInteger getMaxRetries()
-  {
-    return getMaxRetries(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.AbstractJob.MAXRETRIES, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.AbstractJob.MAXRETRIES, alias, displayLabel);
-
-  }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
   {
     return getOwner(null);
@@ -1319,23 +1257,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.SITEMASTER, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableLong getTimeout()
-  {
-    return getTimeout(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableLong getTimeout(String alias)
-  {
-    return (com.runwaysdk.query.SelectableLong)this.get(com.runwaysdk.system.scheduler.AbstractJob.TIMEOUT, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableLong getTimeout(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableLong)this.get(com.runwaysdk.system.scheduler.AbstractJob.TIMEOUT, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableChar getType()
   {
     return getType(null);
@@ -1351,23 +1272,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.TYPE, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableInteger getWorkTotal()
-  {
-    return getWorkTotal(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.AbstractJob.WORKTOTAL, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.AbstractJob.WORKTOTAL, alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -1393,6 +1297,21 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     else if (name.equals(com.runwaysdk.system.scheduler.AbstractJob.OWNER)) 
     {
        return new com.runwaysdk.system.ActorQuery.ActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      String error = "Attribute type ["+mdAttributeIF.getType()+"] is invalid.";
+      throw new com.runwaysdk.query.QueryException(error);
+    }
+  }
+
+  protected com.runwaysdk.query.AttributeLocal localFactory( com.runwaysdk.dataaccess.MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.scheduler.AbstractJob.DISPLAYLABEL)) 
+    {
+       return new com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {

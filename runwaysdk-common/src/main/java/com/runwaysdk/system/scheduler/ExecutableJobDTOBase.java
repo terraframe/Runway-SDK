@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1106431070)
+@com.runwaysdk.business.ClassSignature(hash = -1624180724)
 public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.scheduler.AbstractJobDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.ExecutableJob";
-  private static final long serialVersionUID = 1106431070;
+  private static final long serialVersionUID = -1624180724;
   
   protected ExecutableJobDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -46,9 +28,6 @@ public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.schedule
   }
   
   public static java.lang.String DESCRIPTION = "description";
-  public static java.lang.String ENTRYDATE = "entryDate";
-  public static java.lang.String JOBID = "jobId";
-  public static java.lang.String RECORDHISTORY = "recordHistory";
   public static java.lang.String RUNASDIMENSION = "runAsDimension";
   public static java.lang.String RUNASUSER = "runAsUser";
   public com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO getDescription()
@@ -74,117 +53,6 @@ public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.schedule
   public final com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO getDescriptionMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO) getAttributeDTO(DESCRIPTION).getAttributeMdDTO();
-  }
-  
-  public java.util.Date getEntryDate()
-  {
-    return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(ENTRYDATE));
-  }
-  
-  public void setEntryDate(java.util.Date value)
-  {
-    if(value == null)
-    {
-      setValue(ENTRYDATE, "");
-    }
-    else
-    {
-      setValue(ENTRYDATE, new java.text.SimpleDateFormat(com.runwaysdk.constants.Constants.DATETIME_FORMAT).format(value));
-    }
-  }
-  
-  public boolean isEntryDateWritable()
-  {
-    return isWritable(ENTRYDATE);
-  }
-  
-  public boolean isEntryDateReadable()
-  {
-    return isReadable(ENTRYDATE);
-  }
-  
-  public boolean isEntryDateModified()
-  {
-    return isModified(ENTRYDATE);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO getEntryDateMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO) getAttributeDTO(ENTRYDATE).getAttributeMdDTO();
-  }
-  
-  public String getJobId()
-  {
-    return getValue(JOBID);
-  }
-  
-  public void setJobId(String value)
-  {
-    if(value == null)
-    {
-      setValue(JOBID, "");
-    }
-    else
-    {
-      setValue(JOBID, value);
-    }
-  }
-  
-  public boolean isJobIdWritable()
-  {
-    return isWritable(JOBID);
-  }
-  
-  public boolean isJobIdReadable()
-  {
-    return isReadable(JOBID);
-  }
-  
-  public boolean isJobIdModified()
-  {
-    return isModified(JOBID);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getJobIdMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(JOBID).getAttributeMdDTO();
-  }
-  
-  public Boolean getRecordHistory()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(RECORDHISTORY));
-  }
-  
-  public void setRecordHistory(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(RECORDHISTORY, "");
-    }
-    else
-    {
-      setValue(RECORDHISTORY, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public boolean isRecordHistoryWritable()
-  {
-    return isWritable(RECORDHISTORY);
-  }
-  
-  public boolean isRecordHistoryReadable()
-  {
-    return isReadable(RECORDHISTORY);
-  }
-  
-  public boolean isRecordHistoryModified()
-  {
-    return isModified(RECORDHISTORY);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getRecordHistoryMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(RECORDHISTORY).getAttributeMdDTO();
   }
   
   public com.runwaysdk.system.metadata.MdDimensionDTO getRunAsDimension()

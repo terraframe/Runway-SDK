@@ -18,9 +18,9 @@
  */
 package com.runwaysdk;
 
-import java.io.IOException;
-
-import com.runwaysdk.patcher.RunwayPatcher;
+import com.runwaysdk.constants.LocalProperties;
+import com.runwaysdk.patcher.domain.SchedulerV2;
+import com.runwaysdk.session.Request;
 
 /**
  * !!HEADS UP!!
@@ -48,20 +48,18 @@ public class Sandbox
 {
   public static void main(String[] args)
   {
-    String attributeName = "test.value";
-    int index = attributeName.lastIndexOf(".");
-    String structName = attributeName.substring(0, index);
-    String structAttribute = attributeName.substring(index + 1);
-    
-    System.out.println(structName);    
-    System.out.println(structAttribute);
+    inRequest();
   }
-
-//  public static void main(String[] args) throws IOException
-//  {
-//    
-//    RunwayPatcher.main(new String[]{"postgres","postgres","postgres","true"});
-////    Sandbox.bootstrap();
-////    InstallerCP.main(new String[]{"postgres", "postgres", "postgres", "com/runwaysdk/resources/xsd/schema.xsd"});
-//  }  
+  
+  @Request
+  private static void inRequest()
+  {
+    if (!LocalProperties.isRunwayEnvironment())
+    {
+      throw new RuntimeException("Runway environment expected");
+    }
+    LocalProperties.setSkipCodeGenAndCompile(false);
+    
+    SchedulerV2.doIt();
+  }
 }

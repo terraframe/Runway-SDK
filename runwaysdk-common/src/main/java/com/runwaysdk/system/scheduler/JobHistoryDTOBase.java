@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1079621008)
+@com.runwaysdk.business.ClassSignature(hash = -1079826147)
 public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistory";
-  private static final long serialVersionUID = -1079621008;
+  private static final long serialVersionUID = -1079826147;
   
   protected JobHistoryDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -57,13 +39,13 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
   public static java.lang.String OWNER = "owner";
-  public static java.lang.String RETRIES = "retries";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String STARTTIME = "startTime";
   public static java.lang.String STATUS = "status";
   public static java.lang.String TYPE = "type";
   public static java.lang.String WORKPROGRESS = "workProgress";
+  public static java.lang.String WORKTOTAL = "workTotal";
   public java.util.Date getCreateDate()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(CREATEDATE));
@@ -447,43 +429,6 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(OWNER).getAttributeMdDTO();
   }
   
-  public Integer getRetries()
-  {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(RETRIES));
-  }
-  
-  public void setRetries(Integer value)
-  {
-    if(value == null)
-    {
-      setValue(RETRIES, "");
-    }
-    else
-    {
-      setValue(RETRIES, java.lang.Integer.toString(value));
-    }
-  }
-  
-  public boolean isRetriesWritable()
-  {
-    return isWritable(RETRIES);
-  }
-  
-  public boolean isRetriesReadable()
-  {
-    return isReadable(RETRIES);
-  }
-  
-  public boolean isRetriesModified()
-  {
-    return isModified(RETRIES);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeNumberMdDTO getRetriesMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(RETRIES).getAttributeMdDTO();
-  }
-  
   public Long getSeq()
   {
     return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(SEQ));
@@ -652,6 +597,43 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
   public final com.runwaysdk.transport.metadata.AttributeNumberMdDTO getWorkProgressMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(WORKPROGRESS).getAttributeMdDTO();
+  }
+  
+  public Integer getWorkTotal()
+  {
+    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKTOTAL));
+  }
+  
+  public void setWorkTotal(Integer value)
+  {
+    if(value == null)
+    {
+      setValue(WORKTOTAL, "");
+    }
+    else
+    {
+      setValue(WORKTOTAL, java.lang.Integer.toString(value));
+    }
+  }
+  
+  public boolean isWorkTotalWritable()
+  {
+    return isWritable(WORKTOTAL);
+  }
+  
+  public boolean isWorkTotalReadable()
+  {
+    return isReadable(WORKTOTAL);
+  }
+  
+  public boolean isWorkTotalModified()
+  {
+    return isModified(WORKTOTAL);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeNumberMdDTO getWorkTotalMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(WORKTOTAL).getAttributeMdDTO();
   }
   
   public static final void clearHistory(com.runwaysdk.constants.ClientRequestIF clientRequest)

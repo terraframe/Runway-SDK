@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -2026552157)
+@com.runwaysdk.business.ClassSignature(hash = 1558831942)
 public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryView";
-  private static final long serialVersionUID = -2026552157;
+  private static final long serialVersionUID = 1558831942;
   
   protected JobHistoryViewDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -37,19 +19,16 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CRONEXPRESSION = "cronExpression";
   public static java.lang.String DESCRIPTION = "description";
+  public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENDTIME = "endTime";
   public static java.lang.String HISTORYCOMMENT = "historyComment";
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
   public static java.lang.String ID = "id";
-  public static java.lang.String JOBID = "jobId";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
-  public static java.lang.String MAXRETRIES = "maxRetries";
-  public static java.lang.String RETRIES = "retries";
   public static java.lang.String STARTTIME = "startTime";
   public static java.lang.String STATUS = "status";
   public static java.lang.String STATUSLABEL = "statusLabel";
-  public static java.lang.String TIMEOUT = "timeout";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
   public java.util.Date getCreateDate()
@@ -151,6 +130,31 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     return (com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO) getAttributeDTO(DESCRIPTION).getAttributeMdDTO();
   }
   
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelDTO getDisplayLabel()
+  {
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();
+  }
+  
+  public boolean isDisplayLabelWritable()
+  {
+    return isWritable(DISPLAYLABEL);
+  }
+  
+  public boolean isDisplayLabelReadable()
+  {
+    return isReadable(DISPLAYLABEL);
+  }
+  
+  public boolean isDisplayLabelModified()
+  {
+    return isModified(DISPLAYLABEL);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO getDisplayLabelMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO) getAttributeDTO(DISPLAYLABEL).getAttributeMdDTO();
+  }
+  
   public java.util.Date getEndTime()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(ENDTIME));
@@ -238,43 +242,6 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     return (com.runwaysdk.transport.metadata.AttributeLocalTextMdDTO) getAttributeDTO(HISTORYINFORMATION).getAttributeMdDTO();
   }
   
-  public String getJobId()
-  {
-    return getValue(JOBID);
-  }
-  
-  public void setJobId(String value)
-  {
-    if(value == null)
-    {
-      setValue(JOBID, "");
-    }
-    else
-    {
-      setValue(JOBID, value);
-    }
-  }
-  
-  public boolean isJobIdWritable()
-  {
-    return isWritable(JOBID);
-  }
-  
-  public boolean isJobIdReadable()
-  {
-    return isReadable(JOBID);
-  }
-  
-  public boolean isJobIdModified()
-  {
-    return isModified(JOBID);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getJobIdMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(JOBID).getAttributeMdDTO();
-  }
-  
   @SuppressWarnings("unchecked")
   public java.util.List<com.runwaysdk.system.scheduler.AllJobOperationDTO> getJobOperation()
   {
@@ -356,80 +323,6 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   public final com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO getLastRunMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO) getAttributeDTO(LASTRUN).getAttributeMdDTO();
-  }
-  
-  public Integer getMaxRetries()
-  {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(MAXRETRIES));
-  }
-  
-  public void setMaxRetries(Integer value)
-  {
-    if(value == null)
-    {
-      setValue(MAXRETRIES, "");
-    }
-    else
-    {
-      setValue(MAXRETRIES, java.lang.Integer.toString(value));
-    }
-  }
-  
-  public boolean isMaxRetriesWritable()
-  {
-    return isWritable(MAXRETRIES);
-  }
-  
-  public boolean isMaxRetriesReadable()
-  {
-    return isReadable(MAXRETRIES);
-  }
-  
-  public boolean isMaxRetriesModified()
-  {
-    return isModified(MAXRETRIES);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeNumberMdDTO getMaxRetriesMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(MAXRETRIES).getAttributeMdDTO();
-  }
-  
-  public Integer getRetries()
-  {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(RETRIES));
-  }
-  
-  public void setRetries(Integer value)
-  {
-    if(value == null)
-    {
-      setValue(RETRIES, "");
-    }
-    else
-    {
-      setValue(RETRIES, java.lang.Integer.toString(value));
-    }
-  }
-  
-  public boolean isRetriesWritable()
-  {
-    return isWritable(RETRIES);
-  }
-  
-  public boolean isRetriesReadable()
-  {
-    return isReadable(RETRIES);
-  }
-  
-  public boolean isRetriesModified()
-  {
-    return isModified(RETRIES);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeNumberMdDTO getRetriesMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(RETRIES).getAttributeMdDTO();
   }
   
   public java.util.Date getStartTime()
@@ -550,43 +443,6 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getStatusLabelMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(STATUSLABEL).getAttributeMdDTO();
-  }
-  
-  public Long getTimeout()
-  {
-    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(TIMEOUT));
-  }
-  
-  public void setTimeout(Long value)
-  {
-    if(value == null)
-    {
-      setValue(TIMEOUT, "");
-    }
-    else
-    {
-      setValue(TIMEOUT, java.lang.Long.toString(value));
-    }
-  }
-  
-  public boolean isTimeoutWritable()
-  {
-    return isWritable(TIMEOUT);
-  }
-  
-  public boolean isTimeoutReadable()
-  {
-    return isReadable(TIMEOUT);
-  }
-  
-  public boolean isTimeoutModified()
-  {
-    return isModified(TIMEOUT);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeNumberMdDTO getTimeoutMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(TIMEOUT).getAttributeMdDTO();
   }
   
   public Integer getWorkProgress()

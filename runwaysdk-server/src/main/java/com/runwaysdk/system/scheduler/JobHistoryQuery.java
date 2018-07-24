@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -2134879577)
+@com.runwaysdk.business.ClassSignature(hash = -1571029100)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -302,23 +284,6 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.JobHistory.OWNER, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableInteger getRetries()
-  {
-    return getRetries(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getRetries(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.RETRIES, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getRetries(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.RETRIES, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableLong getSeq()
   {
     return getSeq(null);
@@ -425,6 +390,23 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.SelectableInteger getWorkProgress(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.WORKPROGRESS, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableInteger getWorkTotal()
+  {
+    return getWorkTotal(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.WORKTOTAL, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.WORKTOTAL, alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -676,9 +658,6 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableInteger getRetries();
-    public com.runwaysdk.query.SelectableInteger getRetries(String alias);
-    public com.runwaysdk.query.SelectableInteger getRetries(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableLong getSeq();
     public com.runwaysdk.query.SelectableLong getSeq(String alias);
     public com.runwaysdk.query.SelectableLong getSeq(String alias, String displayLabel);
@@ -697,6 +676,9 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableInteger getWorkProgress();
     public com.runwaysdk.query.SelectableInteger getWorkProgress(String alias);
     public com.runwaysdk.query.SelectableInteger getWorkProgress(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableInteger getWorkTotal();
+    public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias);
+    public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.scheduler.JobHistory jobHistory);
 
@@ -960,23 +942,6 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.OWNER,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableInteger getRetries()
-  {
-    return getRetries(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getRetries(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.JobHistory.RETRIES, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getRetries(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.JobHistory.RETRIES, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableLong getSeq()
   {
     return getSeq(null);
@@ -1077,6 +1042,23 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.SelectableInteger getWorkProgress(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.JobHistory.WORKPROGRESS, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableInteger getWorkTotal()
+  {
+    return getWorkTotal(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.JobHistory.WORKTOTAL, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.JobHistory.WORKTOTAL, alias, displayLabel);
 
   }
 
@@ -1305,9 +1287,6 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableInteger getRetries();
-    public com.runwaysdk.query.SelectableInteger getRetries(String alias);
-    public com.runwaysdk.query.SelectableInteger getRetries(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableLong getSeq();
     public com.runwaysdk.query.SelectableLong getSeq(String alias);
     public com.runwaysdk.query.SelectableLong getSeq(String alias, String displayLabel);
@@ -1326,6 +1305,9 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableInteger getWorkProgress();
     public com.runwaysdk.query.SelectableInteger getWorkProgress(String alias);
     public com.runwaysdk.query.SelectableInteger getWorkProgress(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableInteger getWorkTotal();
+    public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias);
+    public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.scheduler.JobHistory ... jobHistory);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.scheduler.JobHistory ... jobHistory);
@@ -1614,23 +1596,6 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.OWNER,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableInteger getRetries()
-  {
-    return getRetries(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getRetries(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.JobHistory.RETRIES, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getRetries(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.JobHistory.RETRIES, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableLong getSeq()
   {
     return getSeq(null);
@@ -1731,6 +1696,23 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.SelectableInteger getWorkProgress(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.JobHistory.WORKPROGRESS, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableInteger getWorkTotal()
+  {
+    return getWorkTotal(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.JobHistory.WORKTOTAL, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getWorkTotal(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.scheduler.JobHistory.WORKTOTAL, alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)

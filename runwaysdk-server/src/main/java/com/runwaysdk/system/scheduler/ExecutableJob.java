@@ -41,7 +41,7 @@ import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 import com.runwaysdk.util.IDGenerator;
 
-public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, com.runwaysdk.system.scheduler.Job, ExecutableJobIF
+public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, ExecutableJobIF
 {
   private static final long        serialVersionUID = 328266996;
 
@@ -56,17 +56,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     super();
 
     this.listeners = new LinkedHashMap<String, JobListener>();
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.business.Entity#buildKey()
-   */
-  @Override
-  protected String buildKey()
-  {
-    return this.getJobId();
   }
 
   /**
@@ -301,12 +290,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Override
   abstract public void execute(ExecutionContext executionContext);
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.system.scheduler.JobIF#getLocalizedDisplayLabel()
-   */
-  @Override
   public String getLocalizedDescription()
   {
     return this.getDescription().getValue();
@@ -364,23 +347,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Override
   public void apply()
   {
-
-    // If a job id is not set generate a unique id in its place.
-    String jobId = this.getJobId();
-    if (jobId == null || jobId.trim().length() == 0)
-    {
-      String id = IDGenerator.nextID();
-      this.setJobId(id);
-    }
-
-    // Set the display label to the job id if one is not set already
-    ExecutableJobDescription desc = this.getDescription();
-    String value = desc.getDefaultValue();
-    if (value == null || value.trim().length() == 0)
-    {
-      desc.setDefaultValue(this.getJobId());
-    }
-
     super.apply();
 
     if (this.isModified(CRONEXPRESSION))
@@ -419,7 +385,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   public String toString()
   {
     String clazz = this.getClassDisplayLabel();
-    String id = this.getJobId();
+    String id = this.getDisplayLabel().getValue();
     String desc = this.getDescription().getValue();
 
     if (id != null && desc != null && id == desc)

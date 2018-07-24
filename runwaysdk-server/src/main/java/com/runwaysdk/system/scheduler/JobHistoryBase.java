@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 132819184)
+@com.runwaysdk.business.ClassSignature(hash = 139061149)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -45,14 +27,14 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
   public static java.lang.String OWNER = "owner";
-  public static java.lang.String RETRIES = "retries";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String STARTTIME = "startTime";
   public static java.lang.String STATUS = "status";
   public static java.lang.String TYPE = "type";
   public static java.lang.String WORKPROGRESS = "workProgress";
-  private static final long serialVersionUID = 132819184;
+  public static java.lang.String WORKTOTAL = "workTotal";
+  private static final long serialVersionUID = 139061149;
   
   public JobHistoryBase()
   {
@@ -170,6 +152,18 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     else
     {
       setValue(ENTITYDOMAIN, value.getId());
+    }
+  }
+  
+  public void setEntityDomainId(java.lang.String id)
+  {
+    if(id == null)
+    {
+      setValue(ENTITYDOMAIN, "");
+    }
+    else
+    {
+      setValue(ENTITYDOMAIN, id);
     }
   }
   
@@ -361,31 +355,15 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     }
   }
   
-  public Integer getRetries()
+  public void setOwnerId(java.lang.String id)
   {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(RETRIES));
-  }
-  
-  public void validateRetries()
-  {
-    this.validateAttribute(RETRIES);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF getRetriesMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF)mdClassIF.definesAttribute(RETRIES);
-  }
-  
-  public void setRetries(Integer value)
-  {
-    if(value == null)
+    if(id == null)
     {
-      setValue(RETRIES, "");
+      setValue(OWNER, "");
     }
     else
     {
-      setValue(RETRIES, java.lang.Integer.toString(value));
+      setValue(OWNER, id);
     }
   }
   
@@ -528,6 +506,34 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     else
     {
       setValue(WORKPROGRESS, java.lang.Integer.toString(value));
+    }
+  }
+  
+  public Integer getWorkTotal()
+  {
+    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKTOTAL));
+  }
+  
+  public void validateWorkTotal()
+  {
+    this.validateAttribute(WORKTOTAL);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF getWorkTotalMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF)mdClassIF.definesAttribute(WORKTOTAL);
+  }
+  
+  public void setWorkTotal(Integer value)
+  {
+    if(value == null)
+    {
+      setValue(WORKTOTAL, "");
+    }
+    else
+    {
+      setValue(WORKTOTAL, java.lang.Integer.toString(value));
     }
   }
   

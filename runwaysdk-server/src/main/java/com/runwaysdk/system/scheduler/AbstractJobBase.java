@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -192244020)
+@com.runwaysdk.business.ClassSignature(hash = -1696178589)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -32,6 +14,9 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String CRONEXPRESSION = "cronExpression";
+  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  private com.runwaysdk.business.Struct displayLabel = null;
+  
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String ID = "id";
   public static java.lang.String JOBOPERATION = "jobOperation";
@@ -40,18 +25,16 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
-  public static java.lang.String MAXRETRIES = "maxRetries";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String TIMEOUT = "timeout";
   public static java.lang.String TYPE = "type";
-  public static java.lang.String WORKTOTAL = "workTotal";
-  private static final long serialVersionUID = -192244020;
+  private static final long serialVersionUID = -1696178589;
   
   public AbstractJobBase()
   {
     super();
+    displayLabel = super.getStruct("displayLabel");
   }
   
   public java.util.Date getCreateDate()
@@ -126,6 +109,22 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
     }
   }
   
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabel getDisplayLabel()
+  {
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabel) displayLabel;
+  }
+  
+  public void validateDisplayLabel()
+  {
+    this.validateAttribute(DISPLAYLABEL);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF getDisplayLabelMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJob.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF)mdClassIF.definesAttribute(DISPLAYLABEL);
+  }
+  
   public com.runwaysdk.system.metadata.MdDomain getEntityDomain()
   {
     if (getValue(ENTITYDOMAIN).trim().equals(""))
@@ -163,6 +162,18 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
     else
     {
       setValue(ENTITYDOMAIN, value.getId());
+    }
+  }
+  
+  public void setEntityDomainId(java.lang.String id)
+  {
+    if(id == null)
+    {
+      setValue(ENTITYDOMAIN, "");
+    }
+    else
+    {
+      setValue(ENTITYDOMAIN, id);
     }
   }
   
@@ -348,34 +359,6 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LOCKEDBY);
   }
   
-  public Integer getMaxRetries()
-  {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(MAXRETRIES));
-  }
-  
-  public void validateMaxRetries()
-  {
-    this.validateAttribute(MAXRETRIES);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF getMaxRetriesMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJob.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF)mdClassIF.definesAttribute(MAXRETRIES);
-  }
-  
-  public void setMaxRetries(Integer value)
-  {
-    if(value == null)
-    {
-      setValue(MAXRETRIES, "");
-    }
-    else
-    {
-      setValue(MAXRETRIES, java.lang.Integer.toString(value));
-    }
-  }
-  
   public com.runwaysdk.system.Actor getOwner()
   {
     if (getValue(OWNER).trim().equals(""))
@@ -416,6 +399,18 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
     }
   }
   
+  public void setOwnerId(java.lang.String id)
+  {
+    if(id == null)
+    {
+      setValue(OWNER, "");
+    }
+    else
+    {
+      setValue(OWNER, id);
+    }
+  }
+  
   public Long getSeq()
   {
     return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(SEQ));
@@ -448,34 +443,6 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SITEMASTER);
   }
   
-  public Long getTimeout()
-  {
-    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(TIMEOUT));
-  }
-  
-  public void validateTimeout()
-  {
-    this.validateAttribute(TIMEOUT);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeLongDAOIF getTimeoutMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJob.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeLongDAOIF)mdClassIF.definesAttribute(TIMEOUT);
-  }
-  
-  public void setTimeout(Long value)
-  {
-    if(value == null)
-    {
-      setValue(TIMEOUT, "");
-    }
-    else
-    {
-      setValue(TIMEOUT, java.lang.Long.toString(value));
-    }
-  }
-  
   public String getType()
   {
     return getValue(TYPE);
@@ -490,34 +457,6 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJob.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(TYPE);
-  }
-  
-  public Integer getWorkTotal()
-  {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKTOTAL));
-  }
-  
-  public void validateWorkTotal()
-  {
-    this.validateAttribute(WORKTOTAL);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF getWorkTotalMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJob.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF)mdClassIF.definesAttribute(WORKTOTAL);
-  }
-  
-  public void setWorkTotal(Integer value)
-  {
-    if(value == null)
-    {
-      setValue(WORKTOTAL, "");
-    }
-    else
-    {
-      setValue(WORKTOTAL, java.lang.Integer.toString(value));
-    }
   }
   
   protected String getDeclaredType()

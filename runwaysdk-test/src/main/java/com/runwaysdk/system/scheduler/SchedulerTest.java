@@ -181,7 +181,7 @@ public class SchedulerTest extends TestCase
 
     private static TestRecord newRecord(ExecutableJob job)
     {
-      String id = job.getJobId();
+      String id = job.getDisplayLabel().getValue();
       synchronized (records)
       {
         if (records.containsKey(id))
@@ -211,7 +211,7 @@ public class SchedulerTest extends TestCase
     public void execute(ExecutionContext executionContext)
     {
       ExecutableJob job = executionContext.getJob();
-      String id = job.getJobId();
+      String id = job.getDisplayLabel().getValue();
       
       JobHistory history = executionContext.getJobHistory();
       history.lock();
@@ -307,7 +307,7 @@ public class SchedulerTest extends TestCase
   public void testCRONSchedule() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
-    job.setJobId("testCRONSchedule");
+    job.getDisplayLabel().setValue("testCRONSchedule");
     job.setCronExpression("0/5 * * * * ?");
 
     try
@@ -342,7 +342,7 @@ public class SchedulerTest extends TestCase
   public void testManuallyStartJob() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
-    job.setJobId("testManuallyStartJob");
+    job.getDisplayLabel().setValue("testManuallyStartJob");
 
     try
     {
@@ -388,7 +388,7 @@ public class SchedulerTest extends TestCase
   public void testModifyCRONSchedule() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
-    job.setJobId("testModifyCRONSchedule");
+    job.getDisplayLabel().setValue("testModifyCRONSchedule");
     job.setCronExpression("0/5 * * * * ?");
 
     try
@@ -442,12 +442,12 @@ public class SchedulerTest extends TestCase
   public void testClearHistory()
   {
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestJob.class);
-    job1.setJobId("testClearHistory1");
+    job1.getDisplayLabel().setValue("testClearHistory1");
     job1.apply();
     TestRecord tr1 = TestRecord.newRecord(job1);
     
     ExecutableJob job2 = QualifiedTypeJob.newInstance(TestJob.class);
-    job2.setJobId("testClearHistory2");
+    job2.getDisplayLabel().setValue("testClearHistory2");
     job2.apply();
 //    TestRecord tr2 = TestRecord.newRecord(job2);
     TestRecord.newRecord(job2);
