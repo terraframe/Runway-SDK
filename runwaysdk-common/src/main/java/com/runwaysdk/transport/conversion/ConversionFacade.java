@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.transport.conversion;
 
@@ -604,57 +604,63 @@ public class ConversionFacade
 
   public static BusinessDTO createTypeSafeCopy(BusinessDTO businessDTO, ClientRequestIF clientRequest)
   {
-    String dtoType = businessDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
-    BusinessDTO retDTO = null;
-    Class<?> clazz;
-    try
+    if (businessDTO.getMd().isGenerateSource())
     {
-      clazz = LoaderDecorator.load(dtoType);
-      Constructor<?> constructor = clazz.getDeclaredConstructor(BusinessDTO.class, ClientRequestIF.class);
-      constructor.setAccessible(true);
 
-      retDTO = (BusinessDTO) constructor.newInstance(businessDTO, clientRequest);
-      ConversionFacade.typeSafeCopy(clientRequest, businessDTO, retDTO);
-    }
-    catch (SecurityException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalArgumentException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InstantiationException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalAccessException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (NoSuchMethodException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InvocationTargetException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (RuntimeException e)
-    {
-      if (e instanceof LoaderDecoratorExceptionIF)
+      String dtoType = businessDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
+      BusinessDTO retDTO = null;
+      Class<?> clazz;
+      try
       {
-        return businessDTO;
+        clazz = LoaderDecorator.load(dtoType);
+        Constructor<?> constructor = clazz.getDeclaredConstructor(BusinessDTO.class, ClientRequestIF.class);
+        constructor.setAccessible(true);
+
+        retDTO = (BusinessDTO) constructor.newInstance(businessDTO, clientRequest);
+        ConversionFacade.typeSafeCopy(clientRequest, businessDTO, retDTO);
       }
-      else
+      catch (SecurityException e)
       {
-        throw e;
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
       }
+      catch (IllegalArgumentException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InstantiationException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalAccessException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InvocationTargetException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (RuntimeException e)
+      {
+        if (e instanceof LoaderDecoratorExceptionIF)
+        {
+          return businessDTO;
+        }
+        else
+        {
+          throw e;
+        }
+      }
+
+      // reset the type since this method mucks with the type for the sake of
+      // avoiding infinite recursion.
+      return retDTO;
     }
 
-    // reset the type since this method mucks with the type for the sake of
-    // avoiding infinite recursion.
-    return retDTO;
+    return businessDTO;
   }
 
   /**
@@ -747,57 +753,62 @@ public class ConversionFacade
 
   public static RelationshipDTO createTypeSafeCopy(RelationshipDTO relationshipDTO, ClientRequestIF clientRequest)
   {
-    String dtoType = relationshipDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
-    RelationshipDTO retDTO = null;
-    Class<?> clazz;
-    try
+    if (relationshipDTO.getMd().isGenerateSource())
     {
-      clazz = LoaderDecorator.load(dtoType);
-      Constructor<?> constructor = clazz.getDeclaredConstructor(RelationshipDTO.class, ClientRequestIF.class);
-      constructor.setAccessible(true);
-
-      retDTO = (RelationshipDTO) constructor.newInstance(relationshipDTO, clientRequest);
-      ConversionFacade.typeSafeCopy(clientRequest, relationshipDTO, retDTO);
-    }
-    catch (SecurityException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalArgumentException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InstantiationException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalAccessException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (NoSuchMethodException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InvocationTargetException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (RuntimeException e)
-    {
-      if (e instanceof LoaderDecoratorExceptionIF)
+      String dtoType = relationshipDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
+      RelationshipDTO retDTO = null;
+      Class<?> clazz;
+      try
       {
-        return relationshipDTO;
+        clazz = LoaderDecorator.load(dtoType);
+        Constructor<?> constructor = clazz.getDeclaredConstructor(RelationshipDTO.class, ClientRequestIF.class);
+        constructor.setAccessible(true);
+
+        retDTO = (RelationshipDTO) constructor.newInstance(relationshipDTO, clientRequest);
+        ConversionFacade.typeSafeCopy(clientRequest, relationshipDTO, retDTO);
       }
-      else
+      catch (SecurityException e)
       {
-        throw e;
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
       }
+      catch (IllegalArgumentException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InstantiationException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalAccessException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InvocationTargetException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (RuntimeException e)
+      {
+        if (e instanceof LoaderDecoratorExceptionIF)
+        {
+          return relationshipDTO;
+        }
+        else
+        {
+          throw e;
+        }
+      }
+
+      // reset the type since this method mucks with the type for the sake of
+      // avoiding infinite recursion.
+      return retDTO;
     }
 
-    // reset the type since this method mucks with the type for the sake of
-    // avoiding infinite recursion.
-    return retDTO;
+    return relationshipDTO;
   }
 
   /**
@@ -883,57 +894,62 @@ public class ConversionFacade
 
   public static StructDTO createTypeSafeCopy(StructDTO structDTO, ClientRequestIF clientRequest)
   {
-    String dtoType = structDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
-    StructDTO retDTO = null;
-    Class<?> clazz;
-    try
+    if (structDTO.getMd().isGenerateSource())
     {
-      clazz = LoaderDecorator.load(dtoType);
-      Constructor<?> constructor = clazz.getDeclaredConstructor(StructDTO.class, ClientRequestIF.class);
-      constructor.setAccessible(true);
 
-      retDTO = (StructDTO) constructor.newInstance(structDTO, clientRequest);
-      ConversionFacade.typeSafeCopy(clientRequest, structDTO, retDTO);
-    }
-    catch (SecurityException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalArgumentException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InstantiationException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalAccessException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (NoSuchMethodException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InvocationTargetException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (RuntimeException e)
-    {
-      if (e instanceof LoaderDecoratorExceptionIF)
+      String dtoType = structDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
+      StructDTO retDTO = null;
+      Class<?> clazz;
+      try
       {
-        return structDTO;
-      }
-      else
-      {
-        throw e;
-      }
-    }
+        clazz = LoaderDecorator.load(dtoType);
+        Constructor<?> constructor = clazz.getDeclaredConstructor(StructDTO.class, ClientRequestIF.class);
+        constructor.setAccessible(true);
 
-    // reset the type since this method mucks with the type for the sake of
-    // avoiding infinite recursion.
-    return retDTO;
+        retDTO = (StructDTO) constructor.newInstance(structDTO, clientRequest);
+        ConversionFacade.typeSafeCopy(clientRequest, structDTO, retDTO);
+      }
+      catch (SecurityException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalArgumentException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InstantiationException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalAccessException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InvocationTargetException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (RuntimeException e)
+      {
+        if (e instanceof LoaderDecoratorExceptionIF)
+        {
+          return structDTO;
+        }
+        else
+        {
+          throw e;
+        }
+      }
+
+      // reset the type since this method mucks with the type for the sake of
+      // avoiding infinite recursion.
+      return retDTO;
+    }
+    return structDTO;
   }
 
   /**
@@ -1018,57 +1034,63 @@ public class ConversionFacade
 
   public static ViewDTO createTypeSafeCopy(ViewDTO viewDTO, ClientRequestIF clientRequest)
   {
-    String dtoType = viewDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
-    ViewDTO retDTO = null;
-    Class<?> clazz;
-    try
+    if (viewDTO.getMd().isGenerateSource())
     {
-      clazz = LoaderDecorator.load(dtoType);
-      Constructor<?> constructor = clazz.getDeclaredConstructor(ViewDTO.class, ClientRequestIF.class);
-      constructor.setAccessible(true);
 
-      retDTO = (ViewDTO) constructor.newInstance(viewDTO, clientRequest);
-      ConversionFacade.typeSafeCopy(clientRequest, viewDTO, retDTO);
-    }
-    catch (SecurityException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalArgumentException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InstantiationException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalAccessException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (NoSuchMethodException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InvocationTargetException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (RuntimeException e)
-    {
-      if (e instanceof LoaderDecoratorExceptionIF)
+      String dtoType = viewDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
+      ViewDTO retDTO = null;
+      Class<?> clazz;
+      try
       {
-        return viewDTO;
+        clazz = LoaderDecorator.load(dtoType);
+        Constructor<?> constructor = clazz.getDeclaredConstructor(ViewDTO.class, ClientRequestIF.class);
+        constructor.setAccessible(true);
+
+        retDTO = (ViewDTO) constructor.newInstance(viewDTO, clientRequest);
+        ConversionFacade.typeSafeCopy(clientRequest, viewDTO, retDTO);
       }
-      else
+      catch (SecurityException e)
       {
-        throw e;
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
       }
+      catch (IllegalArgumentException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InstantiationException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalAccessException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InvocationTargetException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (RuntimeException e)
+      {
+        if (e instanceof LoaderDecoratorExceptionIF)
+        {
+          return viewDTO;
+        }
+        else
+        {
+          throw e;
+        }
+      }
+
+      // reset the type since this method mucks with the type for the sake of
+      // avoiding infinite recursion.
+      return retDTO;
     }
 
-    // reset the type since this method mucks with the type for the sake of
-    // avoiding infinite recursion.
-    return retDTO;
+    return viewDTO;
   }
 
   /**
@@ -1153,57 +1175,63 @@ public class ConversionFacade
 
   public static UtilDTO createTypeSafeCopy(UtilDTO utilDTO, ClientRequestIF clientRequest)
   {
-    String dtoType = utilDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
-    UtilDTO retDTO = null;
-    Class<?> clazz;
-    try
+    if (utilDTO.getMd().isGenerateSource())
     {
-      clazz = LoaderDecorator.load(dtoType);
-      Constructor<?> constructor = clazz.getDeclaredConstructor(UtilDTO.class, ClientRequestIF.class);
-      constructor.setAccessible(true);
 
-      retDTO = (UtilDTO) constructor.newInstance(utilDTO, clientRequest);
-      ConversionFacade.typeSafeCopy(clientRequest, utilDTO, retDTO);
-    }
-    catch (SecurityException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalArgumentException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InstantiationException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalAccessException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (NoSuchMethodException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InvocationTargetException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (RuntimeException e)
-    {
-      if (e instanceof LoaderDecoratorExceptionIF)
+      String dtoType = utilDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
+      UtilDTO retDTO = null;
+      Class<?> clazz;
+      try
       {
-        return utilDTO;
+        clazz = LoaderDecorator.load(dtoType);
+        Constructor<?> constructor = clazz.getDeclaredConstructor(UtilDTO.class, ClientRequestIF.class);
+        constructor.setAccessible(true);
+
+        retDTO = (UtilDTO) constructor.newInstance(utilDTO, clientRequest);
+        ConversionFacade.typeSafeCopy(clientRequest, utilDTO, retDTO);
       }
-      else
+      catch (SecurityException e)
       {
-        throw e;
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
       }
+      catch (IllegalArgumentException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InstantiationException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalAccessException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InvocationTargetException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (RuntimeException e)
+      {
+        if (e instanceof LoaderDecoratorExceptionIF)
+        {
+          return utilDTO;
+        }
+        else
+        {
+          throw e;
+        }
+      }
+
+      // reset the type since this method mucks with the type for the sake of
+      // avoiding infinite recursion.
+      return retDTO;
     }
 
-    // reset the type since this method mucks with the type for the sake of
-    // avoiding infinite recursion.
-    return retDTO;
+    return utilDTO;
   }
 
   /**

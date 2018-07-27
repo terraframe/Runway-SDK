@@ -36,7 +36,7 @@ public class BusinessDTOCopier extends ElementDTOCopier
   {
     this(clientRequest, source, null, typeSafe, typeSafeAttributes);
     
-    if (typeSafe)
+    if (typeSafe && source.getMd().isGenerateSource())
     {
       this.dest = ConversionFacade.createDynamicBusinessDTO(null, source.getType());
       this.dest.setClientRequest(clientRequest);
