@@ -22,16 +22,22 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import com.runwaysdk.business.BusinessTestSuite;
+import com.runwaysdk.business.MultiThreadTestSuite;
 import com.runwaysdk.dataaccess.DataAccessTestSuite;
 import com.runwaysdk.facade.FacadeTestSuite;
+import com.runwaysdk.query.QueryTestSuite;
 import com.runwaysdk.session.SessionTestSuite;
+import com.runwaysdk.vault.VaultTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
   DataAccessTestSuite.class, 
   SessionTestSuite.class,
   BusinessTestSuite.class,
-  FacadeTestSuite.class  
+  FacadeTestSuite.class,
+  VaultTestSuite.class,
+  QueryTestSuite.class,
+  MultiThreadTestSuite.class  
 })
 public class UeberTestSuite
 {

@@ -26,7 +26,9 @@ import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.business.generation.BusinessQueryAPIGenerator;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.StructQueryAPIGenerator;
@@ -44,6 +46,7 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class ReferenceQueryTest
 {
   @Request

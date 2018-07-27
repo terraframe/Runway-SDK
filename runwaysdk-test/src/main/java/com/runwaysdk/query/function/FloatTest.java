@@ -20,7 +20,9 @@ package com.runwaysdk.query.function;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -35,6 +37,7 @@ import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableFloat;
 import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class FloatTest
 {
   @Request

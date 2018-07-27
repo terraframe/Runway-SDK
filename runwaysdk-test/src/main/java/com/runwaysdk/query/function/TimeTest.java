@@ -23,7 +23,9 @@ import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -38,6 +40,7 @@ import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableMoment;
 import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class TimeTest
 {
   @Request

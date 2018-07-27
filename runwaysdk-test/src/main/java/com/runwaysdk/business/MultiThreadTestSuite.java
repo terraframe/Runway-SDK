@@ -31,11 +31,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.DomainErrorException;
 import com.runwaysdk.RunwayExceptionDTO;
 import com.runwaysdk.business.rbac.Authenticate;
@@ -80,6 +84,7 @@ import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.session.WritePermissionException;
 
+@RunWith(ClasspathTestRunner.class)
 public class MultiThreadTestSuite
 {
   public static final TypeInfo         MULTITHREAD_TEST_CLASS_1                = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "MultiThreadTest1");
@@ -233,11 +238,15 @@ public class MultiThreadTestSuite
     TestFixtureFactory.delete(multiThreadMdBusiness2);
   }
 
+  @Request
+  @Before
   public void setUp()
   {
     createCommonObject();
   }
 
+  @Request
+  @After
   public void tearDown()
   {
     resultsVector.clear();
@@ -556,6 +565,8 @@ public class MultiThreadTestSuite
     }
     catch (Throwable e)
     {
+      e.printStackTrace();
+
       Assert.fail(e.getMessage());
     }
     finally

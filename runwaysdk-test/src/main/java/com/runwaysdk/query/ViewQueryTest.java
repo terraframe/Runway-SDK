@@ -20,7 +20,9 @@ package com.runwaysdk.query;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.ViewQueryStubAPIGenerator;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -28,6 +30,7 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class ViewQueryTest
 {
   @Request

@@ -18,25 +18,40 @@
  */
 package com.runwaysdk.query.function;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+import com.runwaysdk.session.Request;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ 
+  FloatTest.class,
+  DoubleTest.class,
+  DecimalTest.class,
+  IntegerTest.class,
+  LongTest.class,
+  DateTest.class,
+  DateTimeTest.class,
+  TimeTest.class,
+  BooleanTest.class
+})
 public class AggregateFunctionTestSuite
 {
+  private static AggregateFunctionMasterSetup setup = new AggregateFunctionMasterSetup();
 
-//  public static Test suite()
-//  {
-//    TestSuite suite = new TestSuite();
-//    suite.addTest(FloatTest.suite());
-//    suite.addTest(DoubleTest.suite());
-//    suite.addTest(DecimalTest.suite());
-//    suite.addTest(IntegerTest.suite());
-//    suite.addTest(LongTest.suite());
-//    suite.addTest(DateTest.suite());
-//    suite.addTest(DateTimeTest.suite());
-//    suite.addTest(TimeTest.suite());
-//    suite.addTest(BooleanTest.suite());
-//
-//    TestSuite parentSuite = new TestSuite();
-//    parentSuite.addTest(new AggregateFunctionMasterSetup(suite));
-//
-//    return parentSuite;
-//  }
+  @Request
+  @BeforeClass
+  public static void suiteClassSetup() throws Exception
+  {
+    setup.setUp();
+  }
+
+  @Request
+  @AfterClass
+  public static void suiteTearDown() throws Exception
+  {
+    setup.tearDown();
+  }
 }
