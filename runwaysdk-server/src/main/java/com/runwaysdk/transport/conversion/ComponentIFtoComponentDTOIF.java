@@ -868,7 +868,7 @@ public abstract class ComponentIFtoComponentDTOIF
       Locale locale = Session.getCurrentLocale();
 
       MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(struct.getType());
-      structDTO.setMd(new TypeMd(mdStructIF.getDisplayLabel(locale), mdStructIF.getDescription(locale), mdStructIF.getId()));
+      structDTO.setMd(new TypeMd(mdStructIF.getDisplayLabel(locale), mdStructIF.getDescription(locale), mdStructIF.getId(), mdStructIF.isGenerateSource()));
       attributeStructDTO.setStructDTO(structDTO);
     }
 

@@ -22,13 +22,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import com.runwaysdk.business.BusinessTestSuite;
+import com.runwaysdk.dataaccess.DataAccessTestSuite;
+import com.runwaysdk.facade.FacadeTestSuite;
 import com.runwaysdk.session.SessionTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
-//  DataAccessTestSuite.class, 
-//  SessionTestSuite.class,
-  BusinessTestSuite.class  
+  DataAccessTestSuite.class, 
+  SessionTestSuite.class,
+  BusinessTestSuite.class,
+  FacadeTestSuite.class  
 })
 public class UeberTestSuite
 {

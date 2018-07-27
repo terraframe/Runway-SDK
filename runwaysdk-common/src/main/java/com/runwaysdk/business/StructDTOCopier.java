@@ -36,7 +36,7 @@ public class StructDTOCopier extends EntityDTOCopier
   {
     this(clientRequest, source, null, typeSafe, typeSafeAttributes);
     
-    if (typeSafe)
+    if (typeSafe && source.getMd().isGenerateSource())
     {
       this.dest = ConversionFacade.createDynamicStructDTO(null, source.getType());
       this.dest.setClientRequest(clientRequest);

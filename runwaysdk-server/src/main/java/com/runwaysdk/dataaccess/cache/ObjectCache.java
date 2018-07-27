@@ -824,66 +824,66 @@ public class ObjectCache
         fireTaskProgress(100);
       }
 
-      if (LocalProperties.isDevelopEnvironment() || LocalProperties.isTestEnvironment() || !LocalProperties.getCopyArtifactsOnStart())
-      {
-        extractDatabaseSourceAndClasses = false;
-      }
-
-      // Write .class files for enums
-      for (String enumType : Database.getAllEnumTypes())
-      {
-        MdEnumerationDAOIF mdEnumIF = ObjectCache.getMdEnumerationDAO(enumType);
-
-        if (mdEnumIF == null)
-        {
-          String error = "MdEnumeration [" + enumType + "] was not found";
-          throw new DataNotFoundException(error, MdTypeDAO.getMdTypeDAO(MdEnumerationInfo.CLASS));
-        }
-
-        if (extractDatabaseSourceAndClasses)
-        {
-          // This cast is OK. The method does not modify the object.
-          ( (MdEnumerationDAO) mdEnumIF ).writeJavaToFile();
-        }
-      }
-
-      // add collection of transient types
-      for (String transientType : TransientDAOFactory.getAllTransientNames())
-      {
-        MdTransientDAOIF mdTransientIF = ObjectCache.getMdTransientDAO(transientType);
-
-        if (extractDatabaseSourceAndClasses)
-        {
-          // This cast is OK. The method does not modify the object.
-          ( (MdTransientDAO) mdTransientIF ).writeJavaToFile();
-        }
-      }
-
-      // add collection of transient types
-      for (String controllerType : ControllerDAOFactory.getAllControllerNames())
-      {
-        MdControllerDAOIF mdControllerIF = ObjectCache.getMdControllerDAO(controllerType);
-
-        if (extractDatabaseSourceAndClasses)
-        {
-          // This cast is OK. The method does not modify the object.
-          ( (MdControllerDAO) mdControllerIF ).writeJavaToFile();
-        }
-      }
-
-      // Build collections based off of metadata. Metadata has been cached
-      // from
-      // above
-      for (String entityType : EntityDAOFactory.getAllEntityNames())
-      {
-        MdEntityDAOIF mdEntityIF = ObjectCache.getMdEntityDAO(entityType);
-
-        if (extractDatabaseSourceAndClasses)
-        {
-          // This cast is OK. The method does not modify the object.
-          ( (MdEntityDAO) mdEntityIF ).writeJavaToFile();
-        }
-      }
+//      if (LocalProperties.isDevelopEnvironment() || LocalProperties.isTestEnvironment() || !LocalProperties.getCopyArtifactsOnStart())
+//      {
+//        extractDatabaseSourceAndClasses = false;
+//      }
+//
+//      // Write .class files for enums
+//      for (String enumType : Database.getAllEnumTypes())
+//      {
+//        MdEnumerationDAOIF mdEnumIF = ObjectCache.getMdEnumerationDAO(enumType);
+//
+//        if (mdEnumIF == null)
+//        {
+//          String error = "MdEnumeration [" + enumType + "] was not found";
+//          throw new DataNotFoundException(error, MdTypeDAO.getMdTypeDAO(MdEnumerationInfo.CLASS));
+//        }
+//
+//        if (extractDatabaseSourceAndClasses)
+//        {
+//          // This cast is OK. The method does not modify the object.
+//          ( (MdEnumerationDAO) mdEnumIF ).writeJavaToFile();
+//        }
+//      }
+//
+//      // add collection of transient types
+//      for (String transientType : TransientDAOFactory.getAllTransientNames())
+//      {
+//        MdTransientDAOIF mdTransientIF = ObjectCache.getMdTransientDAO(transientType);
+//
+//        if (extractDatabaseSourceAndClasses)
+//        {
+//          // This cast is OK. The method does not modify the object.
+//          ( (MdTransientDAO) mdTransientIF ).writeJavaToFile();
+//        }
+//      }
+//
+//      // add collection of transient types
+//      for (String controllerType : ControllerDAOFactory.getAllControllerNames())
+//      {
+//        MdControllerDAOIF mdControllerIF = ObjectCache.getMdControllerDAO(controllerType);
+//
+//        if (extractDatabaseSourceAndClasses)
+//        {
+//          // This cast is OK. The method does not modify the object.
+//          ( (MdControllerDAO) mdControllerIF ).writeJavaToFile();
+//        }
+//      }
+//
+//      // Build collections based off of metadata. Metadata has been cached
+//      // from
+//      // above
+//      for (String entityType : EntityDAOFactory.getAllEntityNames())
+//      {
+//        MdEntityDAOIF mdEntityIF = ObjectCache.getMdEntityDAO(entityType);
+//
+//        if (extractDatabaseSourceAndClasses)
+//        {
+//          // This cast is OK. The method does not modify the object.
+//          ( (MdEntityDAO) mdEntityIF ).writeJavaToFile();
+//        }
+//      }
 
 
       extractDatabaseSourceAndClasses = true;

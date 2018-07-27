@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.transport.metadata;
 
@@ -34,21 +34,22 @@ public class TypeMd implements Serializable, Cloneable
    */
   private static final long serialVersionUID = 1890119098038816299L;
 
-
   /**
    * The type display label.
    */
-  private String displayLabel;
+  private String            displayLabel;
 
   /**
    * The type description.
    */
-  private String description;
+  private String            description;
 
   /**
    * The id of the metadata defining the type.
    */
-  private String id;
+  private String            id;
+
+  private Boolean           generateSource;
 
   /**
    * Default constructor.
@@ -58,18 +59,22 @@ public class TypeMd implements Serializable, Cloneable
     displayLabel = "";
     description = "";
     id = "";
+    this.generateSource = true;
   }
 
   /**
    *
    * @param displayLabel
    * @param description
+   * @param generateSource
+   *          TODO
    */
-  public TypeMd(String displayLabel, String description, String id)
+  public TypeMd(String displayLabel, String description, String id, Boolean generateSource)
   {
     this.displayLabel = displayLabel;
-    this.description  = description;
-    this.id           = id;
+    this.description = description;
+    this.id = id;
+    this.generateSource = generateSource;
   }
 
   /**
@@ -132,6 +137,16 @@ public class TypeMd implements Serializable, Cloneable
     this.id = id;
   }
 
+  public boolean isGenerateSource()
+  {
+    return this.generateSource;
+  }
+
+  public void setGenerateSource(Boolean generateSource)
+  {
+    this.generateSource = generateSource;
+  }
+
   /**
    * Deep clones this TypeMd
    */
@@ -143,13 +158,13 @@ public class TypeMd implements Serializable, Cloneable
       typeMd.setDescription(description);
       typeMd.setDisplayLabel(displayLabel);
       typeMd.setId(id);
+      typeMd.setGenerateSource(this.generateSource);
 
       return typeMd;
     }
     catch (CloneNotSupportedException e)
     {
-      CommonExceptionProcessor.processException(
-          ExceptionConstants.ProgrammingErrorException.getExceptionClass(), e.getMessage(), e);
+      CommonExceptionProcessor.processException(ExceptionConstants.ProgrammingErrorException.getExceptionClass(), e.getMessage(), e);
     }
 
     return null;

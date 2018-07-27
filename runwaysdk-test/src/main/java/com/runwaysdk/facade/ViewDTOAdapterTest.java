@@ -21,18 +21,22 @@ package com.runwaysdk.facade;
 import java.util.Locale;
 
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.View;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;
+import com.runwaysdk.dataaccess.metadata.MdViewDAO;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
 
 
+@RunWith(ClasspathTestRunner.class)
 public class ViewDTOAdapterTest extends SessionDTOAdapterTest
 {
   @BeforeClass
@@ -49,13 +53,14 @@ public class ViewDTOAdapterTest extends SessionDTOAdapterTest
   }
 
 
+  @Request
   protected static void moreSetup()
   {
     source = "package com.test.controller;\n" + "public class " + parentMdSessionTypeName + " extends " + parentMdSessionTypeName + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "  public " + parentMdSessionTypeName + "() {" + "   super();" + "}\n" + "  public static " + parentMdSessionTypeName + " get(String id)\n" + "  {\n" + "    return (" + parentMdSessionTypeName + ") " + View.class.getName() + ".get(id);\n" + "  }\n" + "  public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}\n" + "\n" + "  public void apply()\n" + "  {\n" + "    " + SessionIF.class.getName() + " session = " + Session.class.getName() + ".getCurrentSession();" + "    " + SingleActorDAOIF.class.getName() + " userIF = session.getUser();" + "    this.setOwner(userIF);"
         + "    super.apply();" + "  }\n" + "}";
 
-    childMdSession = clientRequest.newBusiness(MdViewInfo.CLASS);
-    parentMdSession = clientRequest.newBusiness(MdViewInfo.CLASS);
+    childMdSession = MdViewDAO.newInstance();
+    parentMdSession = MdViewDAO.newInstance();
   }
 
 }

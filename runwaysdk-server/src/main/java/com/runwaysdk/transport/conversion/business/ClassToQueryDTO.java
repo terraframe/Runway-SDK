@@ -261,7 +261,7 @@ public abstract class ClassToQueryDTO
 
       String structType = mdAttributeStructIF.getMdStructDAOIF().definesType();
 
-      TypeMd typeMd = new TypeMd(mdAttributeStructIF.getDisplayLabel(Session.getCurrentLocale()), mdAttributeStructIF.getDescription(Session.getCurrentLocale()), mdAttributeStructIF.getId());
+      TypeMd typeMd = new TypeMd(mdAttributeStructIF.getDisplayLabel(Session.getCurrentLocale()), mdAttributeStructIF.getDescription(Session.getCurrentLocale()), mdAttributeStructIF.getId(), true);
 
       StructDTO structDTO = ComponentDTOFacade.buildStructDTO(null, structType, attributeDTOmap, typeMd);
 

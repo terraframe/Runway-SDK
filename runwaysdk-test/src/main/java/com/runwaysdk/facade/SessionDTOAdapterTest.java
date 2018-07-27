@@ -28,7 +28,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.ProblemExceptionDTO;
 import com.runwaysdk.business.AttributeProblemDTO;
 import com.runwaysdk.business.BusinessDTO;
@@ -39,6 +38,7 @@ import com.runwaysdk.business.ProblemDTOIF;
 import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAOIF;
+import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.EntityInfo;
@@ -73,14 +73,41 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdSessionInfo;
 import com.runwaysdk.constants.MdStructInfo;
-import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.constants.UserInfo;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
 import com.runwaysdk.dataaccess.cache.DataNotFoundExceptionDTO;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.MdSessionDAO;
+import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.session.AttributeReadPermissionExceptionDTO;
 import com.runwaysdk.session.DeletePermissionExceptionDTO;
 import com.runwaysdk.session.ReadPermissionExceptionDTO;
@@ -95,127 +122,127 @@ import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 
-public abstract class SessionDTOAdapterTest implements DoNotWeave
+public abstract class SessionDTOAdapterTest
 {
-  protected static String            label;
+  protected static String                       label;
 
-  protected static ClientSession     systemSession;
+  protected static ClientSession                systemSession;
 
-  protected static ClientRequestIF   clientRequest                = null;
+  protected static ClientRequestIF              clientRequest                = null;
 
-  protected static String            pack                         = "com.test.controller";
+  protected static String                       pack                         = "com.test.controller";
 
-  protected static BusinessDTO       newUser                      = null;
+  protected static BusinessDAO                  newUser                      = null;
 
-  protected static BusinessDTO       childMdSession               = null;
+  protected static MdSessionDAO                 childMdSession               = null;
 
-  protected static String            childMdSessionTypeName       = "ChildTest";
+  protected static String                       childMdSessionTypeName       = "ChildTest";
 
-  protected static String            childMdSessionType           = null;
+  protected static String                       childMdSessionType           = null;
 
-  protected static BusinessDTO       parentMdSession              = null;
+  protected static MdSessionDAO                 parentMdSession              = null;
 
-  protected static String            parentMdSessionTypeName      = "ParentTest";
+  protected static String                       parentMdSessionTypeName      = "ParentTest";
 
-  protected static String            parentMdSessionType          = null;
+  protected static String                       parentMdSessionType          = null;
 
-  protected static SessionDTO        childInstance                = null;
+  protected static SessionDTO                   childInstance                = null;
 
-  protected static SessionDTO        parentInstance               = null;
+  protected static SessionDTO                   parentInstance               = null;
 
-  protected static BusinessDTO       mdAttributeCharacterDTO_2    = null;
+  protected static MdAttributeCharacterDAO      mdAttributeCharacterDTO_2    = null;
 
-  protected static BusinessDTO       mdAttributeBlobDTO           = null;
+  protected static MdAttributeBlobDAO           mdAttributeBlobDTO           = null;
 
-  protected static BusinessDTO       mdAttributeBooleanDTO        = null;
+  protected static MdAttributeBooleanDAO        mdAttributeBooleanDTO        = null;
 
-  protected static BusinessDTO       mdAttributeIntegerDTO        = null;
+  protected static MdAttributeIntegerDAO        mdAttributeIntegerDTO        = null;
 
-  protected static BusinessDTO       mdAttributeLongDTO           = null;
+  protected static MdAttributeLongDAO           mdAttributeLongDTO           = null;
 
-  protected static BusinessDTO       mdAttributeDecimalDTO        = null;
+  protected static MdAttributeDecimalDAO        mdAttributeDecimalDTO        = null;
 
-  protected static BusinessDTO       mdAttributeDoubleDTO         = null;
+  protected static MdAttributeDoubleDAO         mdAttributeDoubleDTO         = null;
 
-  protected static BusinessDTO       mdAttributeFloatDTO          = null;
+  protected static MdAttributeFloatDAO          mdAttributeFloatDTO          = null;
 
-  protected static BusinessDTO       mdAttributeDateTimeDTO       = null;
+  protected static MdAttributeDateTimeDAO       mdAttributeDateTimeDTO       = null;
 
-  protected static BusinessDTO       mdAttributeFileDTO           = null;
+  protected static MdAttributeFileDAO           mdAttributeFileDTO           = null;
 
-  protected static BusinessDTO       mdAttributeDateDTO           = null;
+  protected static MdAttributeDateDAO           mdAttributeDateDTO           = null;
 
-  protected static BusinessDTO       mdAttributeTimeDTO           = null;
+  protected static MdAttributeTimeDAO           mdAttributeTimeDTO           = null;
 
-  protected static BusinessDTO       suitMaster                   = null;
+  protected static MdBusinessDAO                suitMaster                   = null;
 
-  protected static String            suitMasterTypeName           = "SuitMaster";
+  protected static String                       suitMasterTypeName           = "SuitMaster";
 
-  protected static BusinessDTO       structMdBusiness             = null;
+  protected static MdStructDAO                  structMdBusiness             = null;
 
-  protected static String            structMdBusinessTypeName     = "StructTest";
+  protected static String                       structMdBusinessTypeName     = "StructTest";
 
-  protected static String            structType                   = null;
+  protected static String                       structType                   = null;
 
-  protected static BusinessDTO       structMdAttributeCharDTO     = null;
+  protected static MdAttributeCharacterDAO      structMdAttributeCharDTO     = null;
 
-  protected static BusinessDTO       suitMdEnumeration            = null;
+  protected static MdEnumerationDAO             suitMdEnumeration            = null;
 
-  protected static String            suitMdEnumerationTypeName    = "SuitEnum";
+  protected static String                       suitMdEnumerationTypeName    = "SuitEnum";
 
-  protected static String            suitMdEnumerationType        = null;
+  protected static String                       suitMdEnumerationType        = null;
 
-  protected static BusinessDTO       enumMdAttribute              = null;
+  protected static MdAttributeCharacterDAO      enumMdAttribute              = null;
 
-  protected static BusinessDTO       mdAttributeEnumerationDTO    = null;
+  protected static MdAttributeEnumerationDAO    mdAttributeEnumerationDTO    = null;
 
-  protected static BusinessDTO       mdAttributeMultiReferenceDTO = null;
+  protected static MdAttributeMultiReferenceDAO mdAttributeMultiReferenceDTO = null;
 
-  protected static BusinessDTO       mdAttributeMultiTermDTO      = null;
+  protected static MdAttributeMultiTermDAO      mdAttributeMultiTermDTO      = null;
 
-  protected static BusinessDTO       mdAttributeStructDTO         = null;
+  protected static MdAttributeStructDAO         mdAttributeStructDTO         = null;
 
-  protected static BusinessDTO       refClass                     = null;
+  protected static MdBusinessDAO                refClass                     = null;
 
-  protected static String            refClassTypeName             = "RefClass";
+  protected static String                       refClassTypeName             = "RefClass";
 
-  protected static String            refType                      = null;
+  protected static String                       refType                      = null;
 
-  protected static BusinessDTO       termClass                    = null;
+  protected static MdTermDAO                    termClass                    = null;
 
-  protected static String            termClassTypeName            = "TermClass";
+  protected static String                       termClassTypeName            = "TermClass";
 
-  protected static String            termType                     = null;
+  protected static String                       termType                     = null;
 
-  protected static BusinessDTO       mdAttributeReferenceDTO      = null;
+  protected static MdAttributeReferenceDAO      mdAttributeReferenceDTO      = null;
 
-  protected static BusinessDTO       mdAttributeHashDTO           = null;
+  protected static MdAttributeHashDAO           mdAttributeHashDTO           = null;
 
-  protected static BusinessDTO       mdAttributeSymmetricDTO      = null;
+  protected static MdAttributeSymmetricDAO      mdAttributeSymmetricDTO      = null;
 
-  protected static BusinessDTO       mdAttributeCharacterDTO      = null;
+  protected static MdAttributeCharacterDAO      mdAttributeCharacterDTO      = null;
 
-  protected static BusinessDTO       mdAttributeTextDTO           = null;
+  protected static MdAttributeTextDAO           mdAttributeTextDTO           = null;
 
-  protected static BusinessDTO       mdAttributeClobDTO           = null;
+  protected static MdAttributeTextDAO           mdAttributeClobDTO           = null;
 
-  protected static BusinessDTO       hearts                       = null;
+  protected static BusinessDAO                  hearts                       = null;
 
-  protected static BusinessDTO       clubs                        = null;
+  protected static BusinessDAO                  clubs                        = null;
 
-  protected static BusinessDTO       spades                       = null;
+  protected static BusinessDAO                  spades                       = null;
 
-  protected static BusinessDTO       diamonds                     = null;
+  protected static BusinessDAO                  diamonds                     = null;
 
-  protected static List<BusinessDTO> suits                        = new LinkedList<BusinessDTO>();
+  protected static List<BusinessDAO>            suits                        = new LinkedList<BusinessDAO>();
 
-  protected static final String      toStringPrepend              = "Test toString: ";
+  protected static final String                 toStringPrepend              = "Test toString: ";
 
-  protected static final byte[]      bytes                        = { 1, 2, 3, 4 };
+  protected static final byte[]                 bytes                        = { 1, 2, 3, 4 };
 
-  protected static final byte[]      bytes2                       = { 2, 3, 4, 5, 6 };
+  protected static final byte[]                 bytes2                       = { 2, 3, 4, 5, 6 };
 
-  protected static String            source;
+  protected static String                       source;
 
   protected ClientSession createAnonymousSession()
   {
@@ -235,25 +262,25 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
   @Request
   public static void classSetUpRequest()
   {
-    suitMaster = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    suitMaster = MdBusinessDAO.newInstance();
     suitMaster.setValue(MdBusinessInfo.NAME, suitMasterTypeName);
     suitMaster.setValue(MdBusinessInfo.PACKAGE, pack);
     suitMaster.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration Master List");
     suitMaster.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     suitMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
-    clientRequest.createBusiness(suitMaster);
+    suitMaster.apply();
 
-    suitMdEnumeration = clientRequest.newBusiness(MdEnumerationInfo.CLASS);
+    suitMdEnumeration = MdEnumerationDAO.newInstance();
     suitMdEnumeration.setValue(MdEnumerationInfo.NAME, suitMdEnumerationTypeName);
     suitMdEnumeration.setValue(MdEnumerationInfo.PACKAGE, pack);
     suitMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration");
     suitMdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     suitMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getId());
-    clientRequest.createBusiness(suitMdEnumeration);
+    suitMdEnumeration.apply();
 
     suitMdEnumerationType = pack + "." + suitMdEnumerationTypeName;
 
-    enumMdAttribute = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    enumMdAttribute = MdAttributeCharacterDAO.newInstance();
     enumMdAttribute.setValue(MdAttributeCharacterInfo.NAME, "refChar");
     enumMdAttribute.setValue(MdAttributeCharacterInfo.SIZE, "32");
     enumMdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
@@ -261,16 +288,16 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     enumMdAttribute.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     enumMdAttribute.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     enumMdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, suitMaster.getId());
-    clientRequest.createBusiness(enumMdAttribute);
+    enumMdAttribute.apply();
 
-    structMdBusiness = clientRequest.newBusiness(MdStructInfo.CLASS);
+    structMdBusiness = MdStructDAO.newInstance();
     structMdBusiness.setValue(MdStructInfo.NAME, structMdBusinessTypeName);
     structMdBusiness.setValue(MdStructInfo.PACKAGE, pack);
     structMdBusiness.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A strct");
     structMdBusiness.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "junit struct");
-    clientRequest.createBusiness(structMdBusiness);
+    structMdBusiness.apply();
 
-    structMdAttributeCharDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    structMdAttributeCharDTO = MdAttributeCharacterDAO.newInstance();
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.NAME, "structChar");
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.SIZE, "32");
     structMdAttributeCharDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
@@ -278,7 +305,7 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, structMdBusiness.getId());
-    clientRequest.createBusiness(structMdAttributeCharDTO);
+    structMdAttributeCharDTO.apply();
 
     childMdSession.setValue(MdSessionInfo.NAME, childMdSessionTypeName);
     childMdSession.setValue(MdSessionInfo.PACKAGE, pack);
@@ -287,14 +314,14 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     childMdSession.setStructValue(MdSessionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit test object");
     childMdSession.setValue(MdSessionInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     childMdSession.setValue(MdSessionInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(childMdSession);
+    childMdSession.apply();
 
-    newUser = clientRequest.newBusiness(UserInfo.CLASS);
+    newUser = UserDAO.newInstance();
     newUser.setValue(UserInfo.USERNAME, "Tommy");
     newUser.setValue(UserInfo.PASSWORD, "music");
-    clientRequest.createBusiness(newUser);
+    newUser.apply();
 
-    mdAttributeCharacterDTO_2 = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    mdAttributeCharacterDTO_2 = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.NAME, "refChar");
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.SIZE, "32");
     mdAttributeCharacterDTO_2.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
@@ -302,7 +329,7 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, childMdSession.getId());
-    clientRequest.createBusiness(mdAttributeCharacterDTO_2);
+    mdAttributeCharacterDTO_2.apply();
 
     parentMdSession.setValue(MdSessionInfo.NAME, parentMdSessionTypeName);
     parentMdSession.setValue(MdSessionInfo.PACKAGE, pack);
@@ -312,19 +339,19 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     parentMdSession.setValue(MdSessionInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     parentMdSession.setValue(MdSessionInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     parentMdSession.setValue(MdSessionInfo.STUB_SOURCE, source);
-    clientRequest.createBusiness(parentMdSession);
+    parentMdSession.apply();
 
     // add an MdAttributeBlob to the new type
-    mdAttributeBlobDTO = clientRequest.newBusiness(MdAttributeBlobInfo.CLASS);
+    mdAttributeBlobDTO = MdAttributeBlobDAO.newInstance();
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.NAME, "aBlob");
     mdAttributeBlobDTO.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "some blob");
     mdAttributeBlobDTO.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Blob desc");
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeBlobDTO);
+    mdAttributeBlobDTO.apply();
 
-    mdAttributeBooleanDTO = clientRequest.newBusiness(MdAttributeBooleanInfo.CLASS);
+    mdAttributeBooleanDTO = MdAttributeBooleanDAO.newInstance();
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.NAME, "aBoolean");
     mdAttributeBooleanDTO.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");
     mdAttributeBooleanDTO.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
@@ -333,9 +360,9 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeBooleanDTO);
+    mdAttributeBooleanDTO.apply();
 
-    mdAttributeCharacterDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    mdAttributeCharacterDTO = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.NAME, "aCharacter");
     mdAttributeCharacterDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
     mdAttributeCharacterDTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character desc");
@@ -345,9 +372,9 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.SIZE, "32");
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeCharacterDTO);
+    mdAttributeCharacterDTO.apply();
 
-    mdAttributeDecimalDTO = clientRequest.newBusiness(MdAttributeDecimalInfo.CLASS);
+    mdAttributeDecimalDTO = MdAttributeDecimalDAO.newInstance();
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.NAME, "aDecimal");
     mdAttributeDecimalDTO.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal");
     mdAttributeDecimalDTO.setStructValue(MdAttributeDecimalInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal desc");
@@ -359,9 +386,9 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.LENGTH, "16");
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.DECIMAL, "4");
-    clientRequest.createBusiness(mdAttributeDecimalDTO);
+    mdAttributeDecimalDTO.apply();
 
-    mdAttributeDoubleDTO = clientRequest.newBusiness(MdAttributeDoubleInfo.CLASS);
+    mdAttributeDoubleDTO = MdAttributeDoubleDAO.newInstance();
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.NAME, "aDouble");
     mdAttributeDoubleDTO.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double");
     mdAttributeDoubleDTO.setStructValue(MdAttributeDoubleInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double desc");
@@ -373,9 +400,9 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.LENGTH, "16");
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
-    clientRequest.createBusiness(mdAttributeDoubleDTO);
+    mdAttributeDoubleDTO.apply();
 
-    mdAttributeEnumerationDTO = clientRequest.newBusiness(MdAttributeEnumerationInfo.CLASS);
+    mdAttributeEnumerationDTO = MdAttributeEnumerationDAO.newInstance();
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.NAME, "anEnum");
     mdAttributeEnumerationDTO.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Enumerated Attribute");
     mdAttributeEnumerationDTO.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Enumerated desc");
@@ -384,9 +411,9 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, parentMdSession.getId());
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitMdEnumeration.getId());
-    clientRequest.createBusiness(mdAttributeEnumerationDTO);
+    mdAttributeEnumerationDTO.apply();
 
-    mdAttributeFloatDTO = clientRequest.newBusiness(MdAttributeFloatInfo.CLASS);
+    mdAttributeFloatDTO = MdAttributeFloatDAO.newInstance();
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.NAME, "aFloat");
     mdAttributeFloatDTO.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float");
     mdAttributeFloatDTO.setStructValue(MdAttributeFloatInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float Desc");
@@ -398,19 +425,19 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.LENGTH, "16");
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.DECIMAL, "4");
-    clientRequest.createBusiness(mdAttributeFloatDTO);
+    mdAttributeFloatDTO.apply();
 
-    mdAttributeHashDTO = clientRequest.newBusiness(MdAttributeHashInfo.CLASS);
+    mdAttributeHashDTO = MdAttributeHashDAO.newInstance();
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.NAME, "aHash");
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeHashDTO.setStructValue(MdAttributeHashInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hashed Attributed");
     mdAttributeHashDTO.setStructValue(MdAttributeHashInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hash Desc");
-    mdAttributeHashDTO.addEnumItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.toString());
+    mdAttributeHashDTO.addItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getId());
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeHashDTO);
+    mdAttributeHashDTO.apply();
 
-    mdAttributeIntegerDTO = clientRequest.newBusiness(MdAttributeIntegerInfo.CLASS);
+    mdAttributeIntegerDTO = MdAttributeIntegerDAO.newInstance();
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.NAME, "anInteger");
     mdAttributeIntegerDTO.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Integer");
     mdAttributeIntegerDTO.setStructValue(MdAttributeIntegerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Integer Desc");
@@ -420,9 +447,9 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeIntegerDTO);
+    mdAttributeIntegerDTO.apply();
 
-    mdAttributeLongDTO = clientRequest.newBusiness(MdAttributeLongInfo.CLASS);
+    mdAttributeLongDTO = MdAttributeLongDAO.newInstance();
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.NAME, "aLong");
     mdAttributeLongDTO.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long");
     mdAttributeLongDTO.setStructValue(MdAttributeLongInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long Desc");
@@ -432,46 +459,46 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(mdAttributeLongDTO);
+    mdAttributeLongDTO.apply();
 
-    mdAttributeDateDTO = clientRequest.newBusiness(MdAttributeDateInfo.CLASS);
+    mdAttributeDateDTO = MdAttributeDateDAO.newInstance();
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.NAME, "aDate");
     mdAttributeDateDTO.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Date");
     mdAttributeDateDTO.setStructValue(MdAttributeDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Date Desc");
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeDateDTO);
+    mdAttributeDateDTO.apply();
 
-    mdAttributeDateTimeDTO = clientRequest.newBusiness(MdAttributeDateTimeInfo.CLASS);
+    mdAttributeDateTimeDTO = MdAttributeDateTimeDAO.newInstance();
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.NAME, "aDateTime");
     mdAttributeDateTimeDTO.setStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A DateTime");
     mdAttributeDateTimeDTO.setStructValue(MdAttributeDateTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A DateTime Desc");
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeDateTimeDTO);
+    mdAttributeDateTimeDTO.apply();
 
-    mdAttributeFileDTO = clientRequest.newBusiness(MdAttributeFileInfo.CLASS);
+    mdAttributeFileDTO = MdAttributeFileDAO.newInstance();
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.NAME, "aFile");
     mdAttributeFileDTO.setStructValue(MdAttributeFileInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A File");
     mdAttributeFileDTO.setStructValue(MdAttributeFileInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A File Desc");
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeFileDTO);
+    mdAttributeFileDTO.apply();
 
-    mdAttributeTimeDTO = clientRequest.newBusiness(MdAttributeTimeInfo.CLASS);
+    mdAttributeTimeDTO = MdAttributeTimeDAO.newInstance();
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.NAME, "aTime");
     mdAttributeTimeDTO.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Time");
     mdAttributeTimeDTO.setStructValue(MdAttributeTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Time Desc");
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeTimeDTO);
+    mdAttributeTimeDTO.apply();
 
     // class for ref object attribute
-    refClass = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    refClass = MdBusinessDAO.newInstance();
     refClass.setValue(MdBusinessInfo.NAME, refClassTypeName);
     refClass.setValue(MdBusinessInfo.PACKAGE, pack);
     refClass.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -479,9 +506,9 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     refClass.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit ref object");
     refClass.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     refClass.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(refClass);
+    refClass.apply();
 
-    mdAttributeReferenceDTO = clientRequest.newBusiness(MdAttributeReferenceInfo.CLASS);
+    mdAttributeReferenceDTO = MdAttributeReferenceDAO.newInstance();
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.NAME, "aReference");
     mdAttributeReferenceDTO.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference");
     mdAttributeReferenceDTO.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference Desc");
@@ -489,10 +516,10 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refClass.getId());
-    clientRequest.createBusiness(mdAttributeReferenceDTO);
+    mdAttributeReferenceDTO.apply();
 
     // class for term object attribute
-    termClass = clientRequest.newBusiness(MdTermInfo.CLASS);
+    termClass = MdTermDAO.newInstance();
     termClass.setValue(MdBusinessInfo.NAME, "TermClass");
     termClass.setValue(MdBusinessInfo.PACKAGE, pack);
     termClass.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -500,9 +527,9 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     termClass.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit term object");
     termClass.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     termClass.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(termClass);
+    termClass.apply();
 
-    mdAttributeMultiReferenceDTO = clientRequest.newBusiness(MdAttributeMultiReferenceInfo.CLASS);
+    mdAttributeMultiReferenceDTO = MdAttributeMultiReferenceDAO.newInstance();
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.NAME, "aMultiReference");
     mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
     mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
@@ -510,9 +537,9 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdSession.getId());
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getId());
-    clientRequest.createBusiness(mdAttributeMultiReferenceDTO);
+    mdAttributeMultiReferenceDTO.apply();
 
-    mdAttributeMultiTermDTO = clientRequest.newBusiness(MdAttributeMultiTermInfo.CLASS);
+    mdAttributeMultiTermDTO = MdAttributeMultiTermDAO.newInstance();
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.NAME, "aMultiTerm");
     mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
     mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
@@ -520,9 +547,9 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, parentMdSession.getId());
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, termClass.getId());
-    clientRequest.createBusiness(mdAttributeMultiTermDTO);
+    mdAttributeMultiTermDTO.apply();
 
-    mdAttributeStructDTO = clientRequest.newBusiness(MdAttributeStructInfo.CLASS);
+    mdAttributeStructDTO = MdAttributeStructDAO.newInstance();
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.NAME, "aStruct");
     mdAttributeStructDTO.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct");
     mdAttributeStructDTO.setStructValue(MdAttributeStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct Desc");
@@ -530,74 +557,70 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.MD_STRUCT, EntityTypes.PHONE_NUMBER.getId());
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeStructDTO);
+    mdAttributeStructDTO.apply();
 
-    mdAttributeSymmetricDTO = clientRequest.newBusiness(MdAttributeSymmetricInfo.CLASS);
+    mdAttributeSymmetricDTO = MdAttributeSymmetricDAO.newInstance();
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.NAME, "aSym");
     mdAttributeSymmetricDTO.setStructValue(MdAttributeSymmetricInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Symmetric Attribute");
     mdAttributeSymmetricDTO.setStructValue(MdAttributeSymmetricInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Symmetric Desc");
-    mdAttributeSymmetricDTO.addEnumItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.toString());
+    mdAttributeSymmetricDTO.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getId());
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "56");
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, parentMdSession.getId());
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(mdAttributeSymmetricDTO);
+    mdAttributeSymmetricDTO.apply();
 
-    mdAttributeTextDTO = clientRequest.newBusiness(MdAttributeTextInfo.CLASS);
+    mdAttributeTextDTO = MdAttributeTextDAO.newInstance();
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.NAME, "aText");
     mdAttributeTextDTO.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Text");
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeTextDTO.setStructValue(MdAttributeTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Text Desc");
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeTextDTO);
+    mdAttributeTextDTO.apply();
 
-    mdAttributeClobDTO = clientRequest.newBusiness(MdAttributeTextInfo.CLASS);
+    mdAttributeClobDTO = MdAttributeTextDAO.newInstance();
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.NAME, "aClob");
     mdAttributeClobDTO.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Clob");
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeClobDTO.setStructValue(MdAttributeTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Clob Desc");
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, parentMdSession.getId());
-    clientRequest.createBusiness(mdAttributeClobDTO);
+    mdAttributeClobDTO.apply();
 
-    childMdSessionType = definesType(childMdSession);
-    parentMdSessionType = definesType(parentMdSession);
-    refType = definesType(refClass);
-    termType = definesType(termClass);
-    structType = definesType(structMdBusiness);
+    childMdSessionType = childMdSession.definesType();
+    parentMdSessionType = parentMdSession.definesType();
+    refType = refClass.definesType();
+    termType = termClass.definesType();
+    structType = structMdBusiness.definesType();
   }
 
-  private static String definesType(BusinessDTO mdBusinessDTO)
-  {
-    return pack + "." + mdBusinessDTO.getValue(MdTypeInfo.NAME);
-  }
-
+  @Request
   public static void finalizeSetup()
   {
-    hearts = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
+    hearts = BusinessDAO.newInstance(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
     hearts.setValue("refChar", "Some other string");
     hearts.setValue(EnumerationMasterInfo.NAME, "HEARTS");
     hearts.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Hearts");
-    clientRequest.createBusiness(hearts);
+    hearts.apply();
 
-    clubs = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
+    clubs = BusinessDAO.newInstance(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
     clubs.setValue("refChar", "Some other string: Clubs");
     clubs.setValue(EnumerationMasterInfo.NAME, "CLUBS");
     clubs.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Clubs");
-    clientRequest.createBusiness(clubs);
+    clubs.apply();
 
-    spades = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
+    spades = BusinessDAO.newInstance(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
     spades.setValue("refChar", "Some other string: Spades");
     spades.setValue(EnumerationMasterInfo.NAME, "SPADES");
     spades.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Spades");
-    clientRequest.createBusiness(spades);
+    spades.apply();
 
-    diamonds = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
+    diamonds = BusinessDAO.newInstance(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
     diamonds.setValue("refChar", "Some other string: Diamonds");
     diamonds.setValue(EnumerationMasterInfo.NAME, "DIAMONDS");
     diamonds.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Diamonds");
-    clientRequest.createBusiness(diamonds);
+    diamonds.apply();
 
     suits.add(hearts);
     suits.add(clubs);
@@ -609,30 +632,23 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
   @AfterClass
   public static void classTearDown()
   {
-    clientRequest.lock(childMdSession);
-    clientRequest.delete(childMdSession.getId());
+    TestFixtureFactory.delete(childMdSession);
 
-    clientRequest.lock(parentMdSession);
-    clientRequest.delete(parentMdSession.getId());
+    TestFixtureFactory.delete(parentMdSession);
 
-    clientRequest.lock(structMdBusiness);
-    clientRequest.delete(structMdBusiness.getId());
+    TestFixtureFactory.delete(structMdBusiness);
 
-    clientRequest.lock(newUser);
-    clientRequest.delete(newUser.getId());
+    TestFixtureFactory.delete(newUser);
 
-    clientRequest.lock(termClass);
-    clientRequest.delete(termClass.getId());
+    TestFixtureFactory.delete(termClass);
 
-    clientRequest.lock(refClass);
-    clientRequest.delete(refClass.getId());
+    TestFixtureFactory.delete(refClass);
 
-    clientRequest.lock(suitMaster);
-    clientRequest.delete(suitMaster.getId());
-
-    systemSession.logout();
+    TestFixtureFactory.delete(suitMaster);
 
     suits.clear();
+
+    systemSession.logout();
   }
 
   /**
@@ -1582,7 +1598,7 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
 
     // check all enum values
     Map<String, String> enumNameMap = md.getEnumItems();
-    for (BusinessDTO suit : suits)
+    for (BusinessDAO suit : suits)
     {
       String expectedName = suit.getValue(EnumerationMasterInfo.NAME);
       if (!enumNameMap.containsKey(expectedName))
@@ -1622,7 +1638,7 @@ public abstract class SessionDTOAdapterTest implements DoNotWeave
    * @param mdAttribute
    * @param mdDTO
    */
-  private void checkAttributeMd(BusinessDTO mdAttribute, AttributeMdDTO md)
+  private void checkAttributeMd(MdAttributeDAO mdAttribute, AttributeMdDTO md)
   {
     Assert.assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDisplayLabel());
     Assert.assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDescription());

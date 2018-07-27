@@ -55,10 +55,11 @@ public class RelationshipTypeMd extends TypeMd
    * @param id
    * @param parentMdBusiness
    * @param childMdBusiness
+   * @param generateSource TODO
    */
-  public RelationshipTypeMd(String displayLabel, String description, String id, String parentMdBusiness, String childMdBusiness)
+  public RelationshipTypeMd(String displayLabel, String description, String id, String parentMdBusiness, String childMdBusiness, Boolean generateSource)
   {
-    super(displayLabel, description, id);
+    super(displayLabel, description, id, generateSource);
     
     this.parentMdBusiness = parentMdBusiness;
     this.childMdBusiness = childMdBusiness;

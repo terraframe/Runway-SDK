@@ -37,7 +37,9 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.ProblemExceptionDTO;
@@ -49,11 +51,9 @@ import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.BusinessQueryDTO.TypeInMdRelationshipAsChild;
 import com.runwaysdk.business.BusinessQueryDTO.TypeInMdRelationshipAsParent;
 import com.runwaysdk.business.ComponentDTOFacade;
-import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
 import com.runwaysdk.business.InvalidEnumerationNameDTO;
-import com.runwaysdk.business.MutableDTO;
 import com.runwaysdk.business.ProblemDTOIF;
 import com.runwaysdk.business.RelationshipDTO;
 import com.runwaysdk.business.RelationshipQueryDTO;
@@ -65,7 +65,6 @@ import com.runwaysdk.business.generation.TypeGenerator;
 import com.runwaysdk.business.generation.dto.EntityDTOBaseGenerator;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.AdminConstants;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
@@ -74,12 +73,10 @@ import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
-import com.runwaysdk.constants.IndexAttributeInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
-import com.runwaysdk.constants.MdAttributeClobInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeDateTimeInfo;
@@ -108,9 +105,7 @@ import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
-import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.PhoneNumberInfo;
@@ -122,6 +117,7 @@ import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.constants.XMLConstants;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.DuplicateDataExceptionDTO;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -130,7 +126,38 @@ import com.runwaysdk.dataaccess.UnexpectedTypeExceptionDTO;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblemDTO;
 import com.runwaysdk.dataaccess.attributes.ImmutableAttributeProblemDTO;
 import com.runwaysdk.dataaccess.cache.DataNotFoundExceptionDTO;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeClobDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
+import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
+import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdViewDAO;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.ConditionOperator;
 import com.runwaysdk.query.QueryFactory;
@@ -140,8 +167,6 @@ import com.runwaysdk.session.DeleteChildPermissionExceptionDTO;
 import com.runwaysdk.session.DeleteParentPermissionExceptionDTO;
 import com.runwaysdk.session.DeletePermissionExceptionDTO;
 import com.runwaysdk.session.GrantAttributePermissionExceptionDTO;
-import com.runwaysdk.session.GrantAttributeStatePermissionExceptionDTO;
-import com.runwaysdk.session.GrantStatePermissionExceptionDTO;
 import com.runwaysdk.session.GrantTypePermissionExceptionDTO;
 import com.runwaysdk.session.ImportDomainExecuteExceptionDTO;
 import com.runwaysdk.session.InvalidLoginExceptionDTO;
@@ -151,8 +176,6 @@ import com.runwaysdk.session.ReadPermissionExceptionDTO;
 import com.runwaysdk.session.ReadTypePermissionExceptionDTO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RevokeAttributePermissionExceptionDTO;
-import com.runwaysdk.session.RevokeAttributeStatePermissionExceptionDTO;
-import com.runwaysdk.session.RevokeStatePermissionExceptionDTO;
 import com.runwaysdk.session.RevokeTypePermissionExceptionDTO;
 import com.runwaysdk.transport.attributes.AttributeBlobDTO;
 import com.runwaysdk.transport.attributes.AttributeBooleanDTO;
@@ -186,156 +209,146 @@ import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.util.FileIO;
 import com.runwaysdk.util.IDGenerator;
+import com.runwaysdk.vault.VaultDAO;
 import com.runwaysdk.web.AdminScreenAccessExceptionDTO;
 
-public class AdapterTest implements DoNotWeave
+@RunWith(ClasspathTestRunner.class)
+public class AdapterTest
 {
-  protected static String            pack                           = "com.test.controller";
+  protected static String                       pack                           = "com.test.controller";
 
-  protected static BusinessDTO       tommyUser                      = null;
+  protected static BusinessDAO                  tommyUser                      = null;
 
-  protected static BusinessDTO       littleBillyTables              = null;
+  protected static BusinessDAO                  littleBillyTables              = null;
 
-  protected static ClientSession     systemSession                  = null;
+  protected static ClientSession                systemSession                  = null;
 
-  protected static ClientRequestIF   clientRequest                  = null;
+  protected static ClientRequestIF              clientRequest                  = null;
 
-  protected static BusinessDTO       childMdBusiness                = null;
+  protected static MdBusinessDAO                childMdBusiness                = null;
 
-  protected static String            childMdBusinessType            = null;
+  protected static String                       childMdBusinessType            = null;
 
-  protected static BusinessDTO       parentMdBusiness               = null;
+  protected static MdBusinessDAO                parentMdBusiness               = null;
 
-  protected static String            parentMdBusinessType           = null;
+  protected static String                       parentMdBusinessType           = null;
 
-  protected static BusinessDTO       mdView                         = null;
+  protected static MdViewDAO                    mdView                         = null;
 
-  protected static String            mdViewType                     = null;
+  protected static String                       mdViewType                     = null;
 
-  protected static BusinessDTO       childInstance                  = null;
+  protected static BusinessDTO                  childInstance                  = null;
 
-  protected static BusinessDTO       parentInstance                 = null;
+  protected static BusinessDTO                  parentInstance                 = null;
 
-  private static BusinessDTO         mdRelationship                 = null;
+  private static MdRelationshipDAO              mdRelationship                 = null;
 
-  protected static String            mdRelationshipType             = null;
+  protected static String                       mdRelationshipType             = null;
 
-  protected static RelationshipDTO   relInstance                    = null;
+  protected static RelationshipDTO              relInstance                    = null;
 
-  protected static BusinessDTO       mdAttributeCharacterDTO_2      = null;
-
-  private static BusinessDTO         stateMachine                   = null;
-
-  protected static String            stateMachineType               = null;
-
-  protected static BusinessDTO       state1                         = null;
-
-  protected static BusinessDTO       state2                         = null;
-
-  protected static RelationshipDTO   transition                     = null;
-
-  protected static RelationshipDTO   transition2                    = null;
+  protected static MdAttributeCharacterDAO      mdAttributeCharacterDTO_2      = null;
 
   /* Md references for attribute metadata tests */
-  protected static BusinessDTO       mdAttributeBlobDTO             = null;
+  protected static MdAttributeBlobDAO           mdAttributeBlobDTO             = null;
 
-  protected static BusinessDTO       testUserMd                     = null;
+  protected static MdBusinessDAO                testUserMd                     = null;
 
-  protected static String            testUserType                   = null;
+  protected static String                       testUserType                   = null;
 
-  protected static BusinessDTO       mdAttributeBooleanDTO          = null;
+  protected static MdAttributeBooleanDAO        mdAttributeBooleanDTO          = null;
 
-  protected static BusinessDTO       mdAttributeConversionDTO       = null;
+  protected static MdAttributeCharacterDAO      mdAttributeConversionDTO       = null;
 
-  protected static BusinessDTO       mdAttributeIntegerDTO          = null;
+  protected static MdAttributeIntegerDAO        mdAttributeIntegerDTO          = null;
 
-  protected static BusinessDTO       mdAttributeLongDTO             = null;
+  protected static MdAttributeLongDAO           mdAttributeLongDTO             = null;
 
-  protected static BusinessDTO       mdAttributeDecimalDTO          = null;
+  protected static MdAttributeDecimalDAO        mdAttributeDecimalDTO          = null;
 
-  protected static BusinessDTO       mdAttributeDoubleDTO           = null;
+  protected static MdAttributeDoubleDAO         mdAttributeDoubleDTO           = null;
 
-  protected static BusinessDTO       mdAttributeFloatDTO            = null;
+  protected static MdAttributeFloatDAO          mdAttributeFloatDTO            = null;
 
-  protected static BusinessDTO       mdAttributeDateTimeDTO         = null;
+  protected static MdAttributeDateTimeDAO       mdAttributeDateTimeDTO         = null;
 
-  protected static BusinessDTO       mdAttributeFileDTO             = null;
+  protected static MdAttributeFileDAO           mdAttributeFileDTO             = null;
 
-  protected static BusinessDTO       mdAttributeDateDTO             = null;
+  protected static MdAttributeDateDAO           mdAttributeDateDTO             = null;
 
-  protected static BusinessDTO       mdAttributeTimeDTO             = null;
+  protected static MdAttributeTimeDAO           mdAttributeTimeDTO             = null;
 
-  protected static BusinessDTO       suitMaster                     = null;
+  protected static MdBusinessDAO                suitMaster                     = null;
 
-  protected static String            suitMasterType                 = null;
+  protected static String                       suitMasterType                 = null;
 
-  protected static BusinessDTO       structMdBusiness               = null;
+  protected static MdStructDAO                  structMdBusiness               = null;
 
-  protected static String            structType                     = null;
+  protected static String                       structType                     = null;
 
-  protected static BusinessDTO       suitMdEnumeration              = null;
+  protected static MdEnumerationDAO             suitMdEnumeration              = null;
 
-  protected static String            suitMdEnumerationType          = null;
+  protected static String                       suitMdEnumerationType          = null;
 
-  protected static List<String>      suitEnumNames;
+  protected static List<String>                 suitEnumNames;
 
-  protected static List<String>      suitEnumDisplayLabels;
+  protected static List<String>                 suitEnumDisplayLabels;
 
-  protected static BusinessDTO       enumMdAttribute                = null;
+  protected static BusinessDAO                  enumMdAttribute                = null;
 
-  protected static BusinessDTO       mdAttributeEnumerationDTO      = null;
+  protected static MdAttributeEnumerationDAO    mdAttributeEnumerationDTO      = null;
 
-  protected static BusinessDTO       mdAttributeMultiReferenceDTO   = null;
+  protected static MdAttributeMultiReferenceDAO mdAttributeMultiReferenceDTO   = null;
 
-  protected static BusinessDTO       mdAttributeMultiTermDTO        = null;
+  protected static MdAttributeMultiTermDAO      mdAttributeMultiTermDTO        = null;
 
-  protected static BusinessDTO       mdAttributeStructDTO           = null;
+  protected static MdAttributeStructDAO         mdAttributeStructDTO           = null;
 
-  protected static BusinessDTO       refClass                       = null;
+  protected static MdBusinessDAO                refClass                       = null;
 
-  protected static BusinessDTO       termClass                      = null;
+  protected static MdBusinessDAO                termClass                      = null;
 
-  protected static String            refType                        = null;
+  protected static String                       refType                        = null;
 
-  protected static String            termType                       = null;
+  protected static String                       termType                       = null;
 
-  protected static BusinessDTO       mdAttributeReferenceDTO        = null;
+  protected static MdAttributeReferenceDAO      mdAttributeReferenceDTO        = null;
 
-  protected static BusinessDTO       mdAttributeTermDTO             = null;
+  protected static MdAttributeTermDAO           mdAttributeTermDTO             = null;
 
-  protected static BusinessDTO       mdAttributeHashDTO             = null;
+  protected static MdAttributeHashDAO           mdAttributeHashDTO             = null;
 
-  protected static BusinessDTO       mdAttributeSymmetricDTO        = null;
+  protected static MdAttributeSymmetricDAO      mdAttributeSymmetricDTO        = null;
 
-  protected static BusinessDTO       mdAttributeCharacterDTO        = null;
+  protected static MdAttributeCharacterDAO      mdAttributeCharacterDTO        = null;
 
-  protected static BusinessDTO       mdAttributeVirtualCharacterDTO = null;
+  protected static MdAttributeVirtualDAO        mdAttributeVirtualCharacterDTO = null;
 
-  protected static BusinessDTO       mdAttributeTextDTO             = null;
+  protected static MdAttributeTextDAO           mdAttributeTextDTO             = null;
 
-  protected static BusinessDTO       mdAttributeClobDTO             = null;
+  protected static MdAttributeClobDAO           mdAttributeClobDTO             = null;
 
-  protected static BusinessDTO       vault                          = null;
+  protected static VaultDAO                     vault                          = null;
 
-  protected static BusinessDTO       relMdAttributeLongDTO          = null;
+  protected static MdAttributeLongDAO           relMdAttributeLongDTO          = null;
 
-  protected static BusinessDTO       structMdAttributeCharDTO       = null;
+  protected static MdAttributeCharacterDAO      structMdAttributeCharDTO       = null;
 
-  protected static BusinessDTO       hearts                         = null;
+  protected static BusinessDAO                  hearts                         = null;
 
-  protected static BusinessDTO       clubs                          = null;
+  protected static BusinessDAO                  clubs                          = null;
 
-  protected static BusinessDTO       spades                         = null;
+  protected static BusinessDAO                  spades                         = null;
 
-  protected static BusinessDTO       diamonds                       = null;
+  protected static BusinessDAO                  diamonds                       = null;
 
-  protected static List<BusinessDTO> suits                          = new LinkedList<BusinessDTO>();
+  protected static List<BusinessDAO>            suits                          = new LinkedList<BusinessDAO>();
 
-  private static final String        toStringPrepend                = "Test toString: ";
+  private static final String                   toStringPrepend                = "Test toString: ";
 
-  protected static final byte[]      bytes                          = { 1, 2, 3, 4 };
+  protected static final byte[]                 bytes                          = { 1, 2, 3, 4 };
 
-  protected static final byte[]      bytes2                         = { 2, 3, 4, 5, 6 };
+  protected static final byte[]                 bytes2                         = { 2, 3, 4, 5, 6 };
 
   protected ClientSession createAnonymousSession()
   {
@@ -353,58 +366,59 @@ public class AdapterTest implements DoNotWeave
   }
 
   @BeforeClass
+  @Request
   public static void classSetUp()
   {
     systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     clientRequest = systemSession.getRequest();
+
     requestClassSetUp();
     finalizeSetup();
   }
 
-  @Request
+  @Transaction
   public static void requestClassSetUp()
   {
-
     // create a new TestUser type with a phone number struct
-    testUserMd = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    testUserMd = MdBusinessDAO.newInstance();
     testUserMd.setValue(MdBusinessInfo.NAME, "TestUser");
     testUserMd.setValue(MdBusinessInfo.PACKAGE, pack);
     testUserMd.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     testUserMd.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "User Subclass");
     testUserMd.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, UserInfo.ID_VALUE);
-    clientRequest.createBusiness(testUserMd);
+    testUserMd.apply();
 
-    testUserType = definesType(testUserMd);
+    testUserType = testUserMd.definesType();
 
-    tommyUser = clientRequest.newBusiness(testUserType);
+    tommyUser = BusinessDAO.newInstance(testUserType);
     tommyUser.setValue(UserInfo.USERNAME, "Tommy");
     tommyUser.setValue(UserInfo.PASSWORD, "music");
-    clientRequest.createBusiness(tommyUser);
+    tommyUser.apply();
 
-    littleBillyTables = clientRequest.newBusiness(testUserType);
+    littleBillyTables = BusinessDAO.newInstance(testUserType);
     littleBillyTables.setValue(UserInfo.USERNAME, "Billy");
     littleBillyTables.setValue(UserInfo.PASSWORD, "Tables");
-    clientRequest.createBusiness(littleBillyTables);
+    littleBillyTables.apply();
 
-    suitMaster = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    suitMaster = MdBusinessDAO.newInstance();
     suitMaster.setValue(MdBusinessInfo.NAME, "SuitMaster");
     suitMaster.setValue(MdBusinessInfo.PACKAGE, pack);
     suitMaster.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration Master List");
     suitMaster.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     suitMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
-    clientRequest.createBusiness(suitMaster);
+    suitMaster.apply();
 
-    suitMdEnumeration = clientRequest.newBusiness(MdEnumerationInfo.CLASS);
+    suitMdEnumeration = MdEnumerationDAO.newInstance();
     suitMdEnumeration.setValue(MdEnumerationInfo.NAME, "SuitEnum");
     suitMdEnumeration.setValue(MdEnumerationInfo.PACKAGE, pack);
     suitMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration");
     suitMdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     suitMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getId());
-    clientRequest.createBusiness(suitMdEnumeration);
+    suitMdEnumeration.apply();
 
     suitMdEnumerationType = pack + ".SuitEnum";
 
-    enumMdAttribute = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    enumMdAttribute = MdAttributeCharacterDAO.newInstance();
     enumMdAttribute.setValue(MdAttributeCharacterInfo.NAME, "refChar");
     enumMdAttribute.setValue(MdAttributeCharacterInfo.SIZE, "32");
     enumMdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
@@ -412,16 +426,16 @@ public class AdapterTest implements DoNotWeave
     enumMdAttribute.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     enumMdAttribute.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     enumMdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, suitMaster.getId());
-    clientRequest.createBusiness(enumMdAttribute);
+    enumMdAttribute.apply();
 
-    structMdBusiness = clientRequest.newBusiness(MdStructInfo.CLASS);
+    structMdBusiness = MdStructDAO.newInstance();
     structMdBusiness.setValue(MdStructInfo.NAME, "StructTest");
     structMdBusiness.setValue(MdStructInfo.PACKAGE, pack);
     structMdBusiness.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A strct");
     structMdBusiness.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "junit struct");
-    clientRequest.createBusiness(structMdBusiness);
+    structMdBusiness.apply();
 
-    structMdAttributeCharDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    structMdAttributeCharDTO = MdAttributeCharacterDAO.newInstance();
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.NAME, "structChar");
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.SIZE, "32");
     structMdAttributeCharDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
@@ -429,9 +443,9 @@ public class AdapterTest implements DoNotWeave
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, structMdBusiness.getId());
-    clientRequest.createBusiness(structMdAttributeCharDTO);
+    structMdAttributeCharDTO.apply();
 
-    childMdBusiness = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    childMdBusiness = MdBusinessDAO.newInstance();
     childMdBusiness.setValue(MdBusinessInfo.NAME, "ChildTest");
     childMdBusiness.setValue(MdBusinessInfo.PACKAGE, pack);
     childMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -439,18 +453,18 @@ public class AdapterTest implements DoNotWeave
     childMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit test object");
     childMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     childMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(childMdBusiness);
+    childMdBusiness.apply();
 
-    BusinessDTO phoneNumber = clientRequest.newBusiness(MdAttributeStructInfo.CLASS);
+    MdAttributeStructDAO phoneNumber = MdAttributeStructDAO.newInstance();
     phoneNumber.setValue(MdAttributeStructInfo.NAME, "phoneNumber");
     phoneNumber.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Phone Number");
     phoneNumber.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testUserMd.getId());
     phoneNumber.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     phoneNumber.setValue(MdAttributeStructInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     phoneNumber.setValue(MdAttributeStructInfo.MD_STRUCT, EntityTypes.PHONE_NUMBER.getId());
-    clientRequest.createBusiness(phoneNumber);
+    phoneNumber.apply();
 
-    mdAttributeCharacterDTO_2 = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    mdAttributeCharacterDTO_2 = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.NAME, "refChar");
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.SIZE, "32");
     mdAttributeCharacterDTO_2.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
@@ -458,17 +472,11 @@ public class AdapterTest implements DoNotWeave
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, childMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeCharacterDTO_2);
+    mdAttributeCharacterDTO_2.apply();
 
-    stateMachine = clientRequest.newBusiness(MdStateMachineInfo.CLASS);
-    stateMachine.setValue(MdStateMachineInfo.NAME, "ChildStateMachine");
-    stateMachine.setValue(MdStateMachineInfo.PACKAGE, pack);
-    stateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child State Machine");
-    stateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, childMdBusiness.getId());
-    stateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    clientRequest.createBusiness(stateMachine);
-
-    parentMdBusiness = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    String source = "package com.test.controller;\n" + "public class ParentTest extends ParentTestBase\n" + "{" + "public ParentTest()" + "{" + "   super();" + "}" + "public static ParentTest get(String id)" + "{" + "  return (ParentTest) " + Business.class.getName() + ".get(id);" + "}" + "public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}" + "}";
+    
+    parentMdBusiness = MdBusinessDAO.newInstance();
     parentMdBusiness.setValue(MdBusinessInfo.NAME, "ParentTest");
     parentMdBusiness.setValue(MdBusinessInfo.PACKAGE, pack);
     parentMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -476,14 +484,11 @@ public class AdapterTest implements DoNotWeave
     parentMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit test object");
     parentMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     parentMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    parentMdBusiness.addEnumItem(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.toString());
-
-    String source = "package com.test.controller;\n" + "public class ParentTest extends ParentTestBase\n" + "{" + "public ParentTest()" + "{" + "   super();" + "}" + "public static ParentTest get(String id)" + "{" + "  return (ParentTest) " + Business.class.getName() + ".get(id);" + "}" + "public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}" + "}";
-
+    parentMdBusiness.addItem(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     parentMdBusiness.setValue(MdElementInfo.STUB_SOURCE, source);
-    clientRequest.createBusiness(parentMdBusiness);
+    parentMdBusiness.apply();
 
-    mdAttributeBooleanDTO = clientRequest.newBusiness(MdAttributeBooleanInfo.CLASS);
+    mdAttributeBooleanDTO = MdAttributeBooleanDAO.newInstance();
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.NAME, "aBoolean");
     mdAttributeBooleanDTO.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");
     mdAttributeBooleanDTO.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
@@ -492,9 +497,9 @@ public class AdapterTest implements DoNotWeave
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeBooleanDTO);
+    mdAttributeBooleanDTO.apply();
 
-    BusinessDTO mdAttributeBooleanImmutableDTO = clientRequest.newBusiness(MdAttributeBooleanInfo.CLASS);
+    MdAttributeBooleanDAO mdAttributeBooleanImmutableDTO = MdAttributeBooleanDAO.newInstance();
     mdAttributeBooleanImmutableDTO.setValue(MdAttributeBooleanInfo.NAME, "anImmutableBoolean");
     mdAttributeBooleanImmutableDTO.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Immutable Boolean");
     mdAttributeBooleanImmutableDTO.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
@@ -504,32 +509,32 @@ public class AdapterTest implements DoNotWeave
     mdAttributeBooleanImmutableDTO.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeBooleanImmutableDTO.setValue(MdAttributeBooleanInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
     mdAttributeBooleanImmutableDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeBooleanImmutableDTO);
+    mdAttributeBooleanImmutableDTO.apply();
 
-    mdAttributeCharacterDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    mdAttributeCharacterDTO = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.NAME, "aCharacter");
     mdAttributeCharacterDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
     mdAttributeCharacterDTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character desc");
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.toString());
+    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeCharacterDTO);
+    mdAttributeCharacterDTO.apply();
 
-    mdAttributeConversionDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    mdAttributeConversionDTO = MdAttributeCharacterDAO.newInstance();
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.NAME, "aHiddenCharacter");
     mdAttributeConversionDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hidden Character");
     mdAttributeConversionDTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hidden Character desc");
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.toString());
+    mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.FALSE);
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeConversionDTO);
+    mdAttributeConversionDTO.apply();
 
-    BusinessDTO mdAttributeCharGroupIndex1_DTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    MdAttributeCharacterDAO mdAttributeCharGroupIndex1_DTO = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharGroupIndex1_DTO.setValue(MdAttributeCharacterInfo.NAME, "aCharacterGroupIndex1");
     mdAttributeCharGroupIndex1_DTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character Group Index 1");
     mdAttributeCharGroupIndex1_DTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character for a group index");
@@ -537,9 +542,9 @@ public class AdapterTest implements DoNotWeave
     mdAttributeCharGroupIndex1_DTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharGroupIndex1_DTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
     mdAttributeCharGroupIndex1_DTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeCharGroupIndex1_DTO);
+    mdAttributeCharGroupIndex1_DTO.apply();
 
-    BusinessDTO mdAttributeCharGroupIndex2_DTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    MdAttributeCharacterDAO mdAttributeCharGroupIndex2_DTO = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharGroupIndex2_DTO.setValue(MdAttributeCharacterInfo.NAME, "aCharacterGroupIndex2");
     mdAttributeCharGroupIndex2_DTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character Group Index 2");
     mdAttributeCharGroupIndex2_DTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character for a group index");
@@ -547,26 +552,20 @@ public class AdapterTest implements DoNotWeave
     mdAttributeCharGroupIndex2_DTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharGroupIndex2_DTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
     mdAttributeCharGroupIndex2_DTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeCharGroupIndex2_DTO);
+    mdAttributeCharGroupIndex2_DTO.apply();
 
-    BusinessDTO mdIndexDTO = clientRequest.newBusiness(MdIndexInfo.CLASS);
+    MdIndexDAO mdIndexDTO = MdIndexDAO.newInstance();
     mdIndexDTO.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     mdIndexDTO.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Group Index");
     mdIndexDTO.setValue(MdIndexInfo.MD_ENTITY, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdIndexDTO);
-
-    RelationshipDTO childDTO = clientRequest.addChild(mdIndexDTO.getId(), mdAttributeCharGroupIndex1_DTO.getId(), IndexAttributeInfo.CLASS);
-    childDTO.setValue(IndexAttributeInfo.INDEX_ORDER, "0");
-    clientRequest.createRelationship(childDTO);
-    childDTO = clientRequest.addChild(mdIndexDTO.getId(), mdAttributeCharGroupIndex2_DTO.getId(), IndexAttributeInfo.CLASS);
-    childDTO.setValue(IndexAttributeInfo.INDEX_ORDER, "1");
-    clientRequest.createRelationship(childDTO);
-
-    clientRequest.lock(mdIndexDTO);
+    mdIndexDTO.apply();
+    
+    mdIndexDTO.addAttribute(mdAttributeCharGroupIndex1_DTO, 0);
+    mdIndexDTO.addAttribute(mdAttributeCharGroupIndex2_DTO, 1);
     mdIndexDTO.setValue(MdIndexInfo.ACTIVE, MdAttributeBooleanInfo.TRUE);
-    clientRequest.update(mdIndexDTO);
+    mdIndexDTO.apply();
 
-    mdAttributeDecimalDTO = clientRequest.newBusiness(MdAttributeDecimalInfo.CLASS);
+    mdAttributeDecimalDTO = MdAttributeDecimalDAO.newInstance();
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.NAME, "aDecimal");
     mdAttributeDecimalDTO.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal");
     mdAttributeDecimalDTO.setStructValue(MdAttributeDecimalInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal desc");
@@ -578,9 +577,9 @@ public class AdapterTest implements DoNotWeave
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.LENGTH, "16");
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.DECIMAL, "4");
-    clientRequest.createBusiness(mdAttributeDecimalDTO);
+    mdAttributeDecimalDTO.apply();
 
-    mdAttributeDoubleDTO = clientRequest.newBusiness(MdAttributeDoubleInfo.CLASS);
+    mdAttributeDoubleDTO = MdAttributeDoubleDAO.newInstance();
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.NAME, "aDouble");
     mdAttributeDoubleDTO.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double");
     mdAttributeDoubleDTO.setStructValue(MdAttributeDoubleInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double desc");
@@ -592,9 +591,9 @@ public class AdapterTest implements DoNotWeave
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.LENGTH, "16");
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
-    clientRequest.createBusiness(mdAttributeDoubleDTO);
+    mdAttributeDoubleDTO.apply();
 
-    mdAttributeFloatDTO = clientRequest.newBusiness(MdAttributeFloatInfo.CLASS);
+    mdAttributeFloatDTO = MdAttributeFloatDAO.newInstance();
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.NAME, "aFloat");
     mdAttributeFloatDTO.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float");
     mdAttributeFloatDTO.setStructValue(MdAttributeFloatInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float Desc");
@@ -606,9 +605,9 @@ public class AdapterTest implements DoNotWeave
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.LENGTH, "16");
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.DECIMAL, "4");
-    clientRequest.createBusiness(mdAttributeFloatDTO);
+    mdAttributeFloatDTO.apply();
 
-    mdAttributeIntegerDTO = clientRequest.newBusiness(MdAttributeIntegerInfo.CLASS);
+    mdAttributeIntegerDTO = MdAttributeIntegerDAO.newInstance();
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.NAME, "anInteger");
     mdAttributeIntegerDTO.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Integer");
     mdAttributeIntegerDTO.setStructValue(MdAttributeIntegerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Integer Desc");
@@ -618,9 +617,9 @@ public class AdapterTest implements DoNotWeave
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeIntegerDTO);
+    mdAttributeIntegerDTO.apply();
 
-    mdAttributeLongDTO = clientRequest.newBusiness(MdAttributeLongInfo.CLASS);
+    mdAttributeLongDTO = MdAttributeLongDAO.newInstance();
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.NAME, "aLong");
     mdAttributeLongDTO.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long");
     mdAttributeLongDTO.setStructValue(MdAttributeLongInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long Desc");
@@ -630,46 +629,46 @@ public class AdapterTest implements DoNotWeave
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(mdAttributeLongDTO);
+    mdAttributeLongDTO.apply();
 
-    mdAttributeDateDTO = clientRequest.newBusiness(MdAttributeDateInfo.CLASS);
+    mdAttributeDateDTO = MdAttributeDateDAO.newInstance();
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.NAME, "aDate");
     mdAttributeDateDTO.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Date");
     mdAttributeDateDTO.setStructValue(MdAttributeDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Date Desc");
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeDateDTO);
+    mdAttributeDateDTO.apply();
 
-    mdAttributeDateTimeDTO = clientRequest.newBusiness(MdAttributeDateTimeInfo.CLASS);
+    mdAttributeDateTimeDTO = MdAttributeDateTimeDAO.newInstance();
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.NAME, "aDateTime");
     mdAttributeDateTimeDTO.setStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A DateTime");
     mdAttributeDateTimeDTO.setStructValue(MdAttributeDateTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A DateTime Desc");
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeDateTimeDTO);
+    mdAttributeDateTimeDTO.apply();
 
-    mdAttributeTimeDTO = clientRequest.newBusiness(MdAttributeTimeInfo.CLASS);
+    mdAttributeTimeDTO = MdAttributeTimeDAO.newInstance();
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.NAME, "aTime");
     mdAttributeTimeDTO.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Time");
     mdAttributeTimeDTO.setStructValue(MdAttributeTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Time Desc");
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeTimeDTO);
+    mdAttributeTimeDTO.apply();
 
     // add an MdAttributeBlob to the new type
-    mdAttributeBlobDTO = clientRequest.newBusiness(MdAttributeBlobInfo.CLASS);
+    mdAttributeBlobDTO = MdAttributeBlobDAO.newInstance();
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.NAME, "aBlob");
     mdAttributeBlobDTO.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "some blob");
     mdAttributeBlobDTO.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Blob desc");
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeBlobDTO);
+    mdAttributeBlobDTO.apply();
 
-    mdAttributeEnumerationDTO = clientRequest.newBusiness(MdAttributeEnumerationInfo.CLASS);
+    mdAttributeEnumerationDTO = MdAttributeEnumerationDAO.newInstance();
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.NAME, "anEnum");
     mdAttributeEnumerationDTO.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Enumerated Attribute");
     mdAttributeEnumerationDTO.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Enumerated desc");
@@ -678,29 +677,29 @@ public class AdapterTest implements DoNotWeave
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitMdEnumeration.getId());
-    clientRequest.createBusiness(mdAttributeEnumerationDTO);
+    mdAttributeEnumerationDTO.apply();
 
-    mdAttributeHashDTO = clientRequest.newBusiness(MdAttributeHashInfo.CLASS);
+    mdAttributeHashDTO = MdAttributeHashDAO.newInstance();
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.NAME, "aHash");
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeHashDTO.setStructValue(MdAttributeHashInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hashed Attributed");
     mdAttributeHashDTO.setStructValue(MdAttributeHashInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hash Desc");
-    mdAttributeHashDTO.addEnumItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.toString());
+    mdAttributeHashDTO.addItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getId());
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeHashDTO);
+    mdAttributeHashDTO.apply();
 
-    mdAttributeFileDTO = clientRequest.newBusiness(MdAttributeFileInfo.CLASS);
+    mdAttributeFileDTO = MdAttributeFileDAO.newInstance();
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.NAME, "aFile");
     mdAttributeFileDTO.setStructValue(MdAttributeFileInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A File");
     mdAttributeFileDTO.setStructValue(MdAttributeFileInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A File Desc");
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeFileDTO);
+    mdAttributeFileDTO.apply();
 
     // class for ref object attribute
-    refClass = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    refClass = MdBusinessDAO.newInstance();
     refClass.setValue(MdBusinessInfo.NAME, "RefClass");
     refClass.setValue(MdBusinessInfo.PACKAGE, pack);
     refClass.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -708,9 +707,9 @@ public class AdapterTest implements DoNotWeave
     refClass.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit ref object");
     refClass.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     refClass.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(refClass);
+    refClass.apply();
 
-    mdAttributeReferenceDTO = clientRequest.newBusiness(MdAttributeReferenceInfo.CLASS);
+    mdAttributeReferenceDTO = MdAttributeReferenceDAO.newInstance();
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.NAME, "aReference");
     mdAttributeReferenceDTO.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference");
     mdAttributeReferenceDTO.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference Desc");
@@ -718,10 +717,10 @@ public class AdapterTest implements DoNotWeave
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refClass.getId());
-    clientRequest.createBusiness(mdAttributeReferenceDTO);
+    mdAttributeReferenceDTO.apply();
 
     // class for term object attribute
-    termClass = clientRequest.newBusiness(MdTermInfo.CLASS);
+    termClass = MdTermDAO.newInstance();
     termClass.setValue(MdBusinessInfo.NAME, "TermClass");
     termClass.setValue(MdBusinessInfo.PACKAGE, pack);
     termClass.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -729,9 +728,9 @@ public class AdapterTest implements DoNotWeave
     termClass.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit term object");
     termClass.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     termClass.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(termClass);
+    termClass.apply();
 
-    mdAttributeTermDTO = clientRequest.newBusiness(MdAttributeTermInfo.CLASS);
+    mdAttributeTermDTO = MdAttributeTermDAO.newInstance();
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.NAME, "aTerm");
     mdAttributeTermDTO.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Term");
     mdAttributeTermDTO.setStructValue(MdAttributeTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Term Desc");
@@ -739,9 +738,9 @@ public class AdapterTest implements DoNotWeave
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termClass.getId());
-    clientRequest.createBusiness(mdAttributeTermDTO);
+    mdAttributeTermDTO.apply();
 
-    mdAttributeMultiReferenceDTO = clientRequest.newBusiness(MdAttributeMultiReferenceInfo.CLASS);
+    mdAttributeMultiReferenceDTO = MdAttributeMultiReferenceDAO.newInstance();
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.NAME, "aMultiReference");
     mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
     mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
@@ -749,9 +748,9 @@ public class AdapterTest implements DoNotWeave
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getId());
-    clientRequest.createBusiness(mdAttributeMultiReferenceDTO);
+    mdAttributeMultiReferenceDTO.apply();
 
-    mdAttributeMultiTermDTO = clientRequest.newBusiness(MdAttributeMultiTermInfo.CLASS);
+    mdAttributeMultiTermDTO = MdAttributeMultiTermDAO.newInstance();
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.NAME, "aMultiTerm");
     mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
     mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
@@ -759,9 +758,9 @@ public class AdapterTest implements DoNotWeave
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, termClass.getId());
-    clientRequest.createBusiness(mdAttributeMultiTermDTO);
+    mdAttributeMultiTermDTO.apply();
 
-    mdAttributeStructDTO = clientRequest.newBusiness(MdAttributeStructInfo.CLASS);
+    mdAttributeStructDTO = MdAttributeStructDAO.newInstance();
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.NAME, "aStruct");
     mdAttributeStructDTO.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct");
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
@@ -769,38 +768,38 @@ public class AdapterTest implements DoNotWeave
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.MD_STRUCT, EntityTypes.PHONE_NUMBER.getId());
-    clientRequest.createBusiness(mdAttributeStructDTO);
+    mdAttributeStructDTO.apply();
 
-    mdAttributeSymmetricDTO = clientRequest.newBusiness(MdAttributeSymmetricInfo.CLASS);
+    mdAttributeSymmetricDTO = MdAttributeSymmetricDAO.newInstance();
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.NAME, "aSym");
     mdAttributeSymmetricDTO.setStructValue(MdAttributeSymmetricInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Symmetric Attribute");
     mdAttributeSymmetricDTO.setStructValue(MdAttributeSymmetricInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Symmetric Desc");
-    mdAttributeSymmetricDTO.addEnumItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.toString());
+    mdAttributeSymmetricDTO.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getId());
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "56");
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(mdAttributeSymmetricDTO);
+    mdAttributeSymmetricDTO.apply();
 
-    mdAttributeTextDTO = clientRequest.newBusiness(MdAttributeTextInfo.CLASS);
+    mdAttributeTextDTO = MdAttributeTextDAO.newInstance();
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.NAME, "aText");
     mdAttributeTextDTO.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Text");
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeTextDTO.setStructValue(MdAttributeTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Text Desc");
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeTextDTO);
+    mdAttributeTextDTO.apply();
 
-    mdAttributeClobDTO = clientRequest.newBusiness(MdAttributeClobInfo.CLASS);
+    mdAttributeClobDTO = MdAttributeClobDAO.newInstance();
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.NAME, "aClob");
     mdAttributeClobDTO.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Clob");
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeClobDTO.setStructValue(MdAttributeTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Clob Desc");
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeClobDTO);
+    mdAttributeClobDTO.apply();
 
-    mdRelationship = clientRequest.newBusiness(MdRelationshipInfo.CLASS);
+    mdRelationship = MdRelationshipDAO.newInstance();
     mdRelationship.setValue(MdRelationshipInfo.NAME, "DtoRel");
     mdRelationship.setValue(MdRelationshipInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
     mdRelationship.setValue(MdRelationshipInfo.PACKAGE, pack);
@@ -816,12 +815,12 @@ public class AdapterTest implements DoNotWeave
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child dto");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "testParent");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "testChild");
-    clientRequest.createBusiness(mdRelationship);
+    mdRelationship.apply();
 
     addAttributesToQuery(parentMdBusiness.getId());
 
     // Add attributes to the relationship to query
-    BusinessDTO businessDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    BusinessDAO businessDTO = MdAttributeCharacterDAO.newInstance();
     businessDTO.setValue(MdAttributeCharacterInfo.NAME, "relChar");
     businessDTO.setValue(MdAttributeCharacterInfo.SIZE, "32");
     businessDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
@@ -829,27 +828,27 @@ public class AdapterTest implements DoNotWeave
     businessDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdRelationship.getId());
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
 
-    relMdAttributeLongDTO = clientRequest.newBusiness(MdAttributeLongInfo.CLASS);
+    relMdAttributeLongDTO = MdAttributeLongDAO.newInstance();
     relMdAttributeLongDTO.setValue(MdAttributeLongInfo.NAME, "relLong");
     relMdAttributeLongDTO.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A long to query.");
     relMdAttributeLongDTO.setValue(MdAttributeLongInfo.DEFAULT_VALUE, "123321");
     relMdAttributeLongDTO.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     relMdAttributeLongDTO.setValue(MdAttributeLongInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     relMdAttributeLongDTO.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdRelationship.getId());
-    clientRequest.createBusiness(relMdAttributeLongDTO);
+    relMdAttributeLongDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeTimeInfo.CLASS);
+    businessDTO = MdAttributeTimeDAO.newInstance();
     businessDTO.setValue(MdAttributeTimeInfo.NAME, "relTime");
     businessDTO.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A time to query.");
     businessDTO.setValue(MdAttributeTimeInfo.DEFAULT_VALUE, "");
     businessDTO.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdRelationship.getId());
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeBooleanInfo.CLASS);
+    businessDTO = MdAttributeBooleanDAO.newInstance();
     businessDTO.setValue(MdAttributeBooleanInfo.NAME, "relBoolean");
     businessDTO.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A boolean to query.");
     businessDTO.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
@@ -857,9 +856,9 @@ public class AdapterTest implements DoNotWeave
     businessDTO.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdRelationship.getId());
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
 
-    mdView = clientRequest.newBusiness(MdViewInfo.CLASS);
+    mdView = MdViewDAO.newInstance();
     mdView.setValue(MdViewInfo.NAME, "TestView");
     mdView.setValue(MdViewInfo.PACKAGE, pack);
     mdView.setValue(MdViewInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -867,15 +866,14 @@ public class AdapterTest implements DoNotWeave
     mdView.setStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit test object");
     mdView.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdView.setValue(MdViewInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdView.apply();
 
-    clientRequest.createBusiness(mdView);
+    mdViewType = mdView.definesType();
 
-    mdViewType = definesType(mdView);
-
-    mdAttributeVirtualCharacterDTO = clientRequest.newBusiness(MdAttributeVirtualInfo.CLASS);
+    mdAttributeVirtualCharacterDTO = MdAttributeVirtualDAO.newInstance();
     mdAttributeVirtualCharacterDTO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeCharacterDTO.getId());
     mdAttributeVirtualCharacterDTO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, mdView.getId());
-    clientRequest.createBusiness(mdAttributeVirtualCharacterDTO);
+    mdAttributeVirtualCharacterDTO.apply();
 
     String objectIdConst = TypeGenerator.buildAttributeConstant(mdViewType, "objectId");
     String queryBooleanConst = TypeGenerator.buildAttributeConstant(mdViewType, "queryBoolean");
@@ -884,7 +882,7 @@ public class AdapterTest implements DoNotWeave
     String queryLongConst = TypeGenerator.buildAttributeConstant(mdViewType, "queryLong");
     String queryTimeConst = TypeGenerator.buildAttributeConstant(mdViewType, "queryTime");
 
-    businessDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    businessDTO = MdAttributeCharacterDAO.newInstance();
     businessDTO.setValue(MdAttributeCharacterInfo.NAME, "objectId");
     businessDTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
     businessDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Original Object Id");
@@ -892,28 +890,26 @@ public class AdapterTest implements DoNotWeave
     businessDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdView.getId());
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
 
     addAttributesToQuery(mdView.getId());
 
     String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase \n" + "{\n" + "\n" + "  private ParentTestQuery parentTest;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     parentTest = new ParentTestQuery(componentQueryFactory);\n" + "\n" + "     this.map(" + objectIdConst + ", parentTest.getId());\n" + "     this.map(" + queryBooleanConst + ", parentTest.getQueryBoolean());\n" + "     this.map(" + queryCharConst + ", parentTest.getQueryChar());\n" + "     this.map(" + aCharConst + ", parentTest.getACharacter());\n" + "     this.map(" + queryLongConst + ", parentTest.getQueryLong());\n"
         + "     this.map(" + queryTimeConst + ", parentTest.getQueryTime());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
 
-    clientRequest.lock(mdView);
     mdView.setValue(MdViewInfo.QUERY_STUB_SOURCE, queryStubSource);
-    clientRequest.update(mdView);
+    mdView.apply();
 
-    vault = clientRequest.newBusiness(VaultInfo.CLASS);
+    vault = VaultDAO.newInstance();
     vault.setValue(VaultInfo.VAULT_NAME, "vault1");
-    clientRequest.createBusiness(vault);
+    vault.apply();
 
-    childMdBusinessType = definesType(childMdBusiness);
-    parentMdBusinessType = definesType(parentMdBusiness);
-    stateMachineType = definesType(stateMachine);
-    mdRelationshipType = definesType(mdRelationship);
-    refType = definesType(refClass);
-    termType = definesType(termClass);
-    structType = definesType(structMdBusiness);
+    childMdBusinessType = childMdBusiness.definesType();
+    parentMdBusinessType = parentMdBusiness.definesType();
+    mdRelationshipType = mdRelationship.definesType();
+    refType = refClass.definesType();
+    termType = termClass.definesType();
+    structType = structMdBusiness.definesType();
 
     suitMasterType = suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME);
 
@@ -927,7 +923,7 @@ public class AdapterTest implements DoNotWeave
   private static void addAttributesToQuery(String mdClassId)
   {
     // START attributes to the parent mdentity to query
-    BusinessDTO businessDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    BusinessDAO businessDTO = MdAttributeCharacterDAO.newInstance();
     businessDTO.setValue(MdAttributeCharacterInfo.NAME, "queryChar");
     businessDTO.setValue(MdAttributeCharacterInfo.SIZE, "32");
     businessDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
@@ -935,96 +931,71 @@ public class AdapterTest implements DoNotWeave
     businessDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdClassId);
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeLongInfo.CLASS);
+    businessDTO = MdAttributeLongDAO.newInstance();
     businessDTO.setValue(MdAttributeLongInfo.NAME, "queryLong");
     businessDTO.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A long to query.");
-    businessDTO.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
-    businessDTO.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
-    businessDTO.setValue(MdAttributeLongInfo.DEFAULT_VALUE, "");
     businessDTO.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeLongInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdClassId);
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeTimeInfo.CLASS);
+    businessDTO = MdAttributeTimeDAO.newInstance();
     businessDTO.setValue(MdAttributeTimeInfo.NAME, "queryTime");
     businessDTO.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A time to query.");
     businessDTO.setValue(MdAttributeTimeInfo.DEFAULT_VALUE, "");
     businessDTO.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdClassId);
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeBooleanInfo.CLASS);
+    businessDTO = MdAttributeBooleanDAO.newInstance();
     businessDTO.setValue(MdAttributeBooleanInfo.NAME, "queryBoolean");
     businessDTO.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A boolean to query.");
     businessDTO.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdClassId);
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
     // END add attributes to query
   }
 
+  @Transaction
   public static void finalizeSetup()
   {
-    String mdStateType = stateMachineType;
-
-    state1 = clientRequest.newBusiness(mdStateType);
-    state1.setValue(StateMasterDAOIF.STATE_NAME, "FirstState");
-    state1.clearEnum(StateMasterDAOIF.ENTRY_STATE);
-    state1.addEnumItem(StateMasterDAOIF.ENTRY_STATE, StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.toString());
-    clientRequest.createBusiness(state1);
-
-    // state2 = clientRequest.newBusiness(mdStateType);
-    // state2.setValue(StateMasterIF.STATE_NAME, "SecondState");
-    // clientRequest.createBusiness(state2);
-
-    // String transitionRelationship =
-    // "state."+mdStateType+".ChildStateMachine_T";
-    // transition = clientRequest.addChild(state1.getId(), state2.getId(),
-    // transitionRelationship);
-    // transition.setValue(StateMasterIF.TRANSITION_NAME, "Jump1");
-    // clientRequest.createRelationship(transition);
-    //
-    // transition2 = clientRequest.addChild(state1.getId(), state2.getId(),
-    // transitionRelationship);
-    // transition2.setValue(StateMasterIF.TRANSITION_NAME, "Jump2");
-    // clientRequest.createRelationship(transition2);
-
     suitEnumNames = new LinkedList<String>();
     suitEnumDisplayLabels = new LinkedList<String>();
 
-    hearts = clientRequest.newBusiness(suitMasterType);
+    hearts = BusinessDAO.newInstance(suitMasterType);
     hearts.setValue("refChar", "Some other string");
     hearts.setValue(EnumerationMasterInfo.NAME, "HEARTS");
     hearts.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Hearts");
-    clientRequest.createBusiness(hearts);
+    hearts.apply();
     suitEnumNames.add(hearts.getValue(EnumerationMasterInfo.NAME));
     suitEnumDisplayLabels.add(hearts.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
-    clubs = clientRequest.newBusiness(suitMasterType);
+    clubs = BusinessDAO.newInstance(suitMasterType);
     clubs.setValue("refChar", "Some other string: Clubs");
     clubs.setValue(EnumerationMasterInfo.NAME, "CLUBS");
     clubs.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Clubs");
-    clientRequest.createBusiness(clubs);
+    clubs.apply();
     suitEnumNames.add(clubs.getValue(EnumerationMasterInfo.NAME));
     suitEnumDisplayLabels.add(clubs.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
-    spades = clientRequest.newBusiness(suitMasterType);
+    spades = BusinessDAO.newInstance(suitMasterType);
     spades.setValue("refChar", "Some other string: Spades");
     spades.setValue(EnumerationMasterInfo.NAME, "SPADES");
     spades.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Spades");
-    clientRequest.createBusiness(spades);
+    spades.apply();
+    
     suitEnumNames.add(spades.getValue(EnumerationMasterInfo.NAME));
     suitEnumDisplayLabels.add(spades.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
-    diamonds = clientRequest.newBusiness(suitMasterType);
+    diamonds = BusinessDAO.newInstance(suitMasterType);
     diamonds.setValue("refChar", "Some other string: Diamonds");
     diamonds.setValue(EnumerationMasterInfo.NAME, "DIAMONDS");
     diamonds.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Diamonds");
-    clientRequest.createBusiness(diamonds);
+    diamonds.apply();
     suitEnumNames.add(diamonds.getValue(EnumerationMasterInfo.NAME));
     suitEnumDisplayLabels.add(diamonds.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
@@ -1033,43 +1004,39 @@ public class AdapterTest implements DoNotWeave
     suits.add(spades);
     suits.add(diamonds);
 
-    MutableDTO _mdAttributeEnumerationDTO = clientRequest.get(mdAttributeEnumerationDTO.getId());
-    clientRequest.lock((ElementDTO) _mdAttributeEnumerationDTO);
-    _mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, diamonds.getId());
-    clientRequest.update(_mdAttributeEnumerationDTO);
+    mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, diamonds.getId());
+    mdAttributeEnumerationDTO.apply();
   }
 
   @Request
   @AfterClass
   public static void classTearDown()
   {
-    clientRequest.delete(mdView.getId());
+    TestFixtureFactory.delete(mdView);
 
-    clientRequest.delete(mdRelationship.getId());
+    TestFixtureFactory.delete(mdRelationship);
 
-    clientRequest.delete(childMdBusiness.getId());
+    TestFixtureFactory.delete(childMdBusiness);
 
-    clientRequest.delete(parentMdBusiness.getId());
+    TestFixtureFactory.delete(parentMdBusiness);
 
-    clientRequest.delete(structMdBusiness.getId());
+    TestFixtureFactory.delete(structMdBusiness);
 
-    clientRequest.delete(refClass.getId());
+    TestFixtureFactory.delete(refClass);
 
-    clientRequest.delete(termClass.getId());
+    TestFixtureFactory.delete(termClass);
 
-    clientRequest.delete(suitMaster.getId());
+    TestFixtureFactory.delete(suitMaster);
 
-    clientRequest.delete(vault.getId());
-
-    state1 = null;
+    TestFixtureFactory.delete(vault);
 
     suits.clear();
 
-    clientRequest.delete(littleBillyTables.getId());
+    TestFixtureFactory.delete(littleBillyTables);
 
-    clientRequest.delete(tommyUser.getId());
+    TestFixtureFactory.delete(tommyUser);
 
-    clientRequest.delete(testUserMd.getId());
+    TestFixtureFactory.delete(testUserMd);
 
     systemSession.logout();
   }
@@ -3958,128 +3925,6 @@ public class AdapterTest implements DoNotWeave
 
   @Request
   @Test
-  public void testGrantGrantStateAttributePermission()
-  {
-    BusinessDTO testObject = null;
-
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    ClientSession billySession = null;
-    ClientRequestIF billyRequest = null;
-
-    try
-    {
-      clientRequest.grantTypePermission(littleBillyTables.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      clientRequest.grantAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.GRANT.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.grantAttributeStatePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-
-      billySession = this.createSession("Billy", "Tables");
-      billyRequest = getRequest(billySession);
-
-      billyRequest.lock(testObject);
-      testObject.setValue("refChar", "I am all that is man!");
-      billyRequest.update(testObject);
-
-      billyRequest.lock(testObject);
-      billyRequest.delete(testObject.getId());
-
-      tommyRequest.revokeAttributeStatePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.WRITE.name(), Operation.DELETE.name());
-      clientRequest.revokeAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.GRANT.name());
-
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-
-      if (billySession != null)
-      {
-        billySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
-  public void testInvalidGrantGrantStateAttributePermission()
-  {
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    try
-    {
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.grantAttributeStatePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-    }
-    catch (GrantAttributeStatePermissionExceptionDTO e)
-    {
-      // we want to land here
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
-  public void testInvalidGrantRevokeStateAttributePermission()
-  {
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    try
-    {
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.revokeAttributeStatePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-    }
-    catch (RevokeAttributeStatePermissionExceptionDTO e)
-    {
-      // we want to land here
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
   public void testGrantGrantAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -4184,120 +4029,6 @@ public class AdapterTest implements DoNotWeave
       tommyRequest.revokeAttributePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), Operation.WRITE.name());
     }
     catch (RevokeAttributePermissionExceptionDTO e)
-    {
-      // we want to land here
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
-  public void testGrantGrantStatePermission()
-  {
-    BusinessDTO testObject = null;
-
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    ClientSession billySession = null;
-    ClientRequestIF billyRequest = null;
-
-    try
-    {
-      clientRequest.grantStatePermission(tommyUser.getId(), state1.getId(), Operation.GRANT.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.grantStatePermission(littleBillyTables.getId(), state1.getId(), Operation.WRITE.name(), Operation.DELETE.name());
-
-      billySession = this.createSession("Billy", "Tables");
-      billyRequest = getRequest(billySession);
-
-      billyRequest.lock(testObject);
-      billyRequest.delete(testObject.getId());
-
-      tommyRequest.revokeStatePermission(littleBillyTables.getId(), state1.getId(), Operation.WRITE.name(), Operation.DELETE.name());
-
-      clientRequest.revokeStatePermission(tommyUser.getId(), state1.getId(), Operation.GRANT.name());
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-
-      if (billySession != null)
-      {
-        billySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
-  public void testInvalidGrantGrantStatePermission()
-  {
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    try
-    {
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.grantStatePermission(littleBillyTables.getId(), state1.getId(), Operation.WRITE.name(), Operation.DELETE.name());
-    }
-    catch (GrantStatePermissionExceptionDTO e)
-    {
-      // we want to land here
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
-  public void testInvalidGrantRevokeStatePermission()
-  {
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    try
-    {
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.revokeStatePermission(littleBillyTables.getId(), state1.getId(), Operation.WRITE.name(), Operation.DELETE.name());
-    }
-    catch (RevokeStatePermissionExceptionDTO e)
     {
       // we want to land here
     }
@@ -4523,123 +4254,6 @@ public class AdapterTest implements DoNotWeave
     }
   }
 
-  @Request
-  @Test
-  public void testGrantTypeReadEnumWritePermission()
-  {
-    BusinessDTO enumItem = null;
-    ClientSession tommySession = null;
-    ClientRequestIF tommyProxy = null;
-    try
-    {
-      clientRequest.grantTypePermission(tommyUser.getId(), suitMaster.getId(), Operation.READ.name());
-
-      enumItem = clientRequest.newBusiness(suitMasterType);
-      enumItem.setValue("refChar", "some string");
-      enumItem.setValue(EnumerationMasterInfo.NAME, "ENUM1");
-      enumItem.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Enum1");
-      clientRequest.createBusiness(enumItem);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyProxy = getRequest(tommySession);
-
-      tommyProxy.getEnumeration(suitMdEnumerationType, "ENUM1");
-    }
-    catch (ReadPermissionExceptionDTO e)
-    {
-      Assert.fail("Unable to read an enumeration with adequate read permissions.");
-    }
-    catch (Throwable e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      clientRequest.lock(enumItem);
-      clientRequest.delete(enumItem.getId());
-      clientRequest.revokeTypePermission(tommyUser.getId(), suitMaster.getId(), Operation.READ.name());
-
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
-  public void testGrantTypeNoReadEnumWritePermission()
-  {
-    BusinessDTO enumItem = null;
-    ClientSession tommySession = null;
-    ClientRequestIF tommyProxy = null;
-    try
-    {
-      enumItem = clientRequest.newBusiness(suitMasterType);
-      enumItem.setValue("refChar", "some string");
-      enumItem.setValue(EnumerationMasterInfo.NAME, "ENUM1");
-      enumItem.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Enum1");
-      clientRequest.createBusiness(enumItem);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyProxy = getRequest(tommySession);
-
-      tommyProxy.getEnumeration(suitMdEnumerationType, "ENUM1");
-      Assert.fail("Able to read an enumeration with inadequate read permissions.");
-    }
-    catch (ReadPermissionExceptionDTO e)
-    {
-      // This is expected
-    }
-    catch (Throwable e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      clientRequest.lock(enumItem);
-      clientRequest.delete(enumItem.getId());
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
-  public void testGrantStatePermission()
-  {
-    BusinessDTO testObject = null;
-    ClientSession tommySession = null;
-    ClientRequestIF tommyProxy = null;
-    try
-    {
-      clientRequest.grantStatePermission(tommyUser.getId(), state1.getId(), Operation.WRITE.name(), Operation.DELETE.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyProxy = getRequest(tommySession);
-
-      tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
-
-      clientRequest.revokeStatePermission(tommyUser.getId(), state1.getId(), Operation.DELETE.name());
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
 
   @Request
   @Test
@@ -4670,48 +4284,6 @@ public class AdapterTest implements DoNotWeave
       clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
       clientRequest.revokeAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), Operation.WRITE.name());
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
-  public void testGrantStateAttributePermission()
-  {
-    BusinessDTO testObject = null;
-    ClientSession tommySession = null;
-    ClientRequestIF tommyProxy = null;
-    try
-    {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      clientRequest.grantAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyProxy = getRequest(tommySession);
-      tommyProxy.lock(testObject);
-
-      testObject.setValue("refChar", "I am all that is man!");
-      tommyProxy.update(testObject);
-
-      tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
-
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.WRITE.name(), Operation.DELETE.name());
-      clientRequest.revokeAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
     }
     catch (Exception e)
     {
@@ -4773,41 +4345,6 @@ public class AdapterTest implements DoNotWeave
     }
     finally
     {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
-  public void testGrantStatePermissions()
-  {
-    BusinessDTO testObject = null;
-    ClientSession tommySession = null;
-    ClientRequestIF tommyProxy = null;
-    try
-    {
-      clientRequest.grantStatePermission(tommyUser.getId(), state1.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyProxy = getRequest(tommySession);
-      tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
-
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      clientRequest.revokeStatePermission(tommyUser.getId(), state1.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
       if (tommySession != null)
       {
         tommySession.logout();
@@ -4897,49 +4434,6 @@ public class AdapterTest implements DoNotWeave
       clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
       clientRequest.revokeAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  @Request
-  @Test
-  public void testGrantStateAttributePermissions()
-  {
-    BusinessDTO testObject = null;
-    ClientSession tommySession = null;
-    ClientRequestIF tommyProxy = null;
-    try
-    {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      clientRequest.grantAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.READ.name(), Operation.WRITE.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyProxy = getRequest(tommySession);
-      tommyProxy.lock(testObject);
-
-      testObject.setValue("refChar", "I am all that is man!");
-      tommyProxy.update(testObject);
-
-      tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      clientRequest.revokeAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.READ.name(), Operation.WRITE.name());
 
       if (tommySession != null)
       {
@@ -6301,7 +5795,7 @@ public class AdapterTest implements DoNotWeave
 
     // check all enum values
     Map<String, String> enumNameMap = md.getEnumItems();
-    for (BusinessDTO suit : suits)
+    for (BusinessDAO suit : suits)
     {
       String expectedName = suit.getValue(EnumerationMasterInfo.NAME);
       if (!enumNameMap.containsKey(expectedName))
@@ -6576,7 +6070,7 @@ public class AdapterTest implements DoNotWeave
    * @param mdAttribute
    * @param mdDTO
    */
-  protected static void checkAttributeMd(BusinessDTO mdAttribute, AttributeMdDTO md)
+  protected static void checkAttributeMd(MdAttributeDAOIF mdAttribute, AttributeMdDTO md)
   {
     Assert.assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDisplayLabel());
     Assert.assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDescription());
