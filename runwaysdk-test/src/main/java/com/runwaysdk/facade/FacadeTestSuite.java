@@ -31,7 +31,6 @@ import com.runwaysdk.mvc.ViewResponseTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
   IndicatorAdapterTest.class, 
-  RestResponseTest.class, 
   AdapterTest.class, 
   NoSourceAdapterTest.class, 
   ViewDTOAdapterTest.class, 
