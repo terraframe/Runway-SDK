@@ -31,7 +31,7 @@ When code is executed within an authenticate annotation, the permissions are onl
 
 ## MdMethods
 
-The primary way to integrate an MdMethod into your permissions is to grant a role permissions to perform an action on an MdMethod. The following example gives the Geoprism "Administrator" role permissions to execute the "executeAuthenticated" method on the "DataUploaderImportJob" MdBusiness.
+Due to the pessimistic nature of Runway's permissions model, by default no users have permissions to execute your MdMethod. The following example gives the Geoprism "Administrator" role permissions to execute the "executeAuthenticated" method on the "DataUploaderImportJob" MdBusiness.
 
     <permissions
       <role roleName="geoprism.admin.Administrator">
