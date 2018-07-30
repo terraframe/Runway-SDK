@@ -206,20 +206,6 @@ public class JSONControllerGeneric
     return JSONController.grantMethodPermission(sessionId, actorId, mdMethodId, opNames);
   }
 
-  /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
-   */
-  public static String grantStatePermission(String sessionId, Map<?, ?> parameters)
-  {
-    String actorId = ( (String[]) parameters.get(JSONClientRequestConstants.ACTOR_ID.getName()) )[0];
-    String operationNames = ( (String[]) parameters.get(JSONClientRequestConstants.OPERATION_NAMES.getName()) )[0];
-    String stateId = ( (String[]) parameters.get(JSONClientRequestConstants.STATE_ID.getName()) )[0];
-
-    String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
-    return JSONController.grantStatePermission(sessionId, actorId, stateId, opNames);
-  }
-
   public static String importTypes(String sessionId, Map<?, ?> parameters)
   {
     String types = ( (String[]) parameters.get(JSONClientRequestConstants.TYPES.getName()) )[0];
@@ -241,34 +227,6 @@ public class JSONControllerGeneric
 
     String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
     return JSONController.grantAttributePermission(sessionId, actorId, mdAttributeId, opNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
-   */
-  public static String grantAttributeStatePermission(String sessionId, Map<?, ?> parameters)
-  {
-    String actorId = ( (String[]) parameters.get(JSONClientRequestConstants.ACTOR_ID.getName()) )[0];
-    String operationNames = ( (String[]) parameters.get(JSONClientRequestConstants.OPERATION_NAMES.getName()) )[0];
-    String mdAttributeId = ( (String[]) parameters.get(JSONClientRequestConstants.MDATTRIBUTE_ID.getName()) )[0];
-    String stateId = ( (String[]) parameters.get(JSONClientRequestConstants.STATE_ID.getName()) )[0];
-
-    String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
-    return JSONController.grantAttributeStatePermission(sessionId, actorId, mdAttributeId,
-        stateId, opNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public static String promoteObject(String sessionId, Map<?, ?> parameters)
-  {
-    String businessJSON = ( (String[]) parameters.get(JSONClientRequestConstants.BUSINESS_DTO.getName()) )[0];
-    String transitionName = ( (String[]) parameters.get(JSONClientRequestConstants.TRANSITION_NAME.getName()) )[0];
-
-    return JSONController.promoteObject(sessionId, businessJSON, transitionName);
   }
 
   /**
@@ -300,20 +258,6 @@ public class JSONControllerGeneric
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String)
-   */
-  public static String revokeStatePermission(String sessionId, Map<?, ?> parameters)
-  {
-    String actorId = ( (String[]) parameters.get(JSONClientRequestConstants.ACTOR_ID.getName()) )[0];
-    String operationNames = ( (String[]) parameters.get(JSONClientRequestConstants.OPERATION_NAMES.getName()) )[0];
-    String stateId = ( (String[]) parameters.get(JSONClientRequestConstants.STATE_ID.getName()) )[0];
-
-    String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
-    return JSONController.revokeStatePermission(sessionId, actorId, stateId, opNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    */
@@ -325,22 +269,6 @@ public class JSONControllerGeneric
 
     String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
     return JSONController.revokeAttributePermission(sessionId, actorId, mdAttributeId, opNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String)
-   */
-  public static String revokeAttributeStatePermission(String sessionId, Map<?, ?> parameters)
-  {
-    String actorId = ( (String[]) parameters.get(JSONClientRequestConstants.ACTOR_ID.getName()) )[0];
-    String operationNames = ( (String[]) parameters.get(JSONClientRequestConstants.OPERATION_NAMES.getName()) )[0];
-    String mdAttributeId = ( (String[]) parameters.get(JSONClientRequestConstants.MDATTRIBUTE_ID.getName()) )[0];
-    String stateId = ( (String[]) parameters.get(JSONClientRequestConstants.STATE_ID.getName()) )[0];
-
-    String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
-    return JSONController.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, opNames);
   }
 
   /**
