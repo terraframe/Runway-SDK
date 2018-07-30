@@ -29,6 +29,8 @@ Authenticate is an annotation that can be placed above a server MdMethod to modi
 
 When code is executed within an authenticate annotation, the permissions are only checked for the execution of the method, and not for each individual piece of metadata contained within the method. This can be used to simplify permissions, especially when dealing with very large metadata hierarchies.
 
+## MdMethods
+
 The primary way to integrate an MdMethod into your permissions is to grant a role permissions to perform an action on an MdMethod. The following example gives the Geoprism "Administrator" role permissions to execute the "executeAuthenticated" method on the "DataUploaderImportJob" MdBusiness.
 
     <permissions
@@ -50,6 +52,11 @@ Because MdMethods are also Actors in the system, you can directly assign permiss
         <assignedRole roleName="geoprism.admin.Administrator"/>
       </method>
     </permissions>
+
+Putting it all together, we arrive at the most common permissions usecase for MdMethods:
+1. Add an @Authenticate annotation to the top of your method
+2. Grant the relevant roles the ability to execute your MdMethod
+3. Assign your MdMethod to the relevant role.
 
 ## Role inheritance
 
