@@ -53,7 +53,7 @@ Because MdMethods are also Actors in the system, you can directly assign permiss
       </method>
     </permissions>
 
-If you do not assign your MdMethod to a role, it will by default not have permissions to do anything.
+By default, MdMethods do not have permissions to do anything, which is why its important you either give them a role or directly assign them permissions.
 
 Putting it all together, we arrive at the most common permissions usecase for MdMethods:
 1. Add an @Authenticate annotation to the top of your method
