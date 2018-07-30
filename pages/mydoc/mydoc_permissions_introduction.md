@@ -29,30 +29,27 @@ Authenticate is an annotation that can be placed above a server MdMethod to modi
 
 When code is executed within an authenticate annotation, the permissions are only checked for the execution of the method, and not for each individual piece of metadata contained within the method. This can be used to simplify permissions, especially when dealing with very large metadata hierarchies.
 
-Simply add your annotation to the MdMethod, and then in your metadata you can assign a role to your MdMethod.
+The primary way to integrate an MdMethod into your permissions is to grant a role permissions to perform an action on an MdMethod. The following example gives the Geoprism "Administrator" role permissions to execute the "executeAuthenticated" method on the "DataUploaderImportJob" MdBusiness.
 
-    <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <doIt>
-        <create></create>
-        <update>
-          <mdBusiness name="dss.vector.solutions.DataUploaderImportJob">
-            <create>
-              <mdMethod name="executeAuthenticated" static="false" label="executeAuthenticated" returnType="void"></mdMethod>
-            </create>
-          </mdBusiness>
-        </update>
-        <permissions>    
-          <method methodName="executeAuthenticated" type="dss.vector.solutions.DataUploaderImportJob">
-            <assignedRole roleName="Administrator"/>
-          </method>    
-        </permissions>
-      </doIt>
-      <undoIt>
-        <delete>
-          <object key="dss.vector.solutions.DataUploaderImportJob.executeAuthenticated" type="com.runwaysdk.system.metadata.MdMethod"/>
-        </delete>
-      </undoIt>
-    </version>
+    <permissions
+      <role roleName="geoprism.admin.Administrator">
+        <grant>
+          <mdBusinessPermission type="net.geoprism.data.etl.excel.DataUploaderImportJob">
+            <mdMethodPermission methodName="executeAuthenticated">
+              <operation name="EXECUTE"/>
+            </mdMethodPermission>
+          </mdBusinessPermission>
+        </grant>
+      </role>
+    </permissions>
+
+Because MdMethods are also Actors in the system, you can directly assign permissions to an MdMethod, just like it were a role or user. You can also assign roles to an MdMethod. When the method is executng, it will execute with the permissions of the specified role. The following example assigns the "executeAuthenticated" method to the Administrator role.
+
+    <permissions>    
+      <method methodName="executeAuthenticated" type="net.geoprism.data.etl.excel.DataUploaderImportJob">
+        <assignedRole roleName="geoprism.admin.Administrator"/>
+      </method>
+    </permissions>
 
 ## Role inheritance
 
