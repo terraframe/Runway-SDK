@@ -647,28 +647,6 @@ public class RegexTest
       // This is expected
     }
 
-    // state
-    try
-    {
-      testMdBusiness = MdBusinessDAO.newInstance();
-      testMdBusiness.setValue(MdBusinessInfo.NAME, "MyClass");
-      testMdBusiness.setValue(MdBusinessInfo.PACKAGE, "state");
-      testMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      testMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MyClass Test Type");
-      testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
-      testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-      testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
-      testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.apply();
-      testMdBusiness.delete();
-      Assert.fail("Created a package with an invalid name state");
-    }
-    catch (NameConventionException e)
-    {
-      // this is expected
-    }
-
     // state.test
     try
     {
