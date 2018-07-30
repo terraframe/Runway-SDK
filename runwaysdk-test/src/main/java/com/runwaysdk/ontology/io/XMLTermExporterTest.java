@@ -161,7 +161,7 @@ public class XMLTermExporterTest
 
   protected static void afterTransactionFinishes()
   {
-    AbstractOntologyStrategyTest.initStrat(mdTerm.definesType(), mdTermRelationship.definesType());
+    AbstractOntologyStrategyTest.initStrat(mdTerm, mdTermRelationship.definesType());
   }
 
   protected static void deleteTermInstances()

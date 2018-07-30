@@ -626,26 +626,6 @@ public class JSONAdapterDelegate
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String)
-   */
-  public static String grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    JSONReturnObject returnJSON = new JSONReturnObject();
-
-    try
-    {
-      Facade.grantStatePermission(sessionId, actorId, stateId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      returnJSON.extractMessages(me);
-    }
-
-    return returnJSON.toString();
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
@@ -662,53 +642,6 @@ public class JSONAdapterDelegate
       returnJSON.extractMessages(me);
     }
 
-    return returnJSON.toString();
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String...)
-   */
-  public static String grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    JSONReturnObject returnJSON = new JSONReturnObject();
-
-    try
-    {
-      Facade.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      returnJSON.extractMessages(me);
-    }
-
-    return returnJSON.toString();
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public static String promoteObject(String sessionId, String businessJSON, String transitionName)
-  {
-    JSONReturnObject returnJSON = new JSONReturnObject();
-    BusinessDTO businessDTO;
-
-    try
-    {
-      Locale locale = Facade.getSessionLocale(sessionId);
-      businessDTO = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(sessionId, locale, businessJSON);
-      businessDTO = Facade.promoteObject(sessionId, businessDTO, transitionName);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      returnJSON.extractMessages(me);
-      businessDTO = (BusinessDTO) me.getReturnObject();
-    }
-
-    JSONObject value = JSONFacade.getJSONFromComponentDTO(businessDTO);
-    returnJSON.setReturnValue(value);
     return returnJSON.toString();
   }
 
@@ -753,26 +686,6 @@ public class JSONAdapterDelegate
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public static String revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    JSONReturnObject returnJSON = new JSONReturnObject();
-
-    try
-    {
-      Facade.revokeStatePermission(sessionId, actorId, stateId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      returnJSON.extractMessages(me);
-    }
-
-    return returnJSON.toString();
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
@@ -783,27 +696,6 @@ public class JSONAdapterDelegate
     try
     {
       Facade.revokeAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      returnJSON.extractMessages(me);
-    }
-
-    return returnJSON.toString();
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String)
-   */
-  public static String revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    JSONReturnObject returnJSON = new JSONReturnObject();
-
-    try
-    {
-      Facade.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
     }
     catch (MessageExceptionDTO me)
     {

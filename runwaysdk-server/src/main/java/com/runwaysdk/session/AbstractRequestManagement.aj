@@ -1252,47 +1252,6 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
   }
 
-  pointcut promote(Business business, String transitionName)
-  : ( execution (* com.runwaysdk.business.Business.promote(String)) &&
-      args(transitionName)) && target(business);
-  before(Business business, String transitionName)
-  : promote(business, transitionName)
-  {
-    if (this.isSessionInitialized())
-    {
-      // Check if userIF has a lock on the object.
-      checkLock(business);
-
-      if (this.mdMethodIFStack.size() > 0)
-      {
-        MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-        boolean access = MethodFacade.checkPromoteAccess(mdMethodIF, business, transitionName);
-
-        if (!access)
-        {
-          MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(business.getType());
-
-          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to promote type [" + mdBusinessIF.definesType() + "] using transition [" + transitionName + "]";
-          throw new DomainErrorException(errorMsg);
-        }
-      }
-      else
-      {
-        boolean access = SessionFacade.checkPromoteAccess(this.getRequestState().getSession().getId(), business, transitionName);
-
-        if (!access)
-        {
-          MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(business.getType());
-          SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-          String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to promote type [" + mdBusinessIF.definesType() + "] using transition [" + transitionName + "]";
-          throw new PromotePermissionException(errorMsg, business, transitionName, userIF);
-        }
-      }
-    }
-  }
-
-
 
   /**
    * Throws a business exception if the userIF bound to the given session does

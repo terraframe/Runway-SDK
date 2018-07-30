@@ -112,11 +112,6 @@ public enum RelationshipTypes {
   ENTITY_INDEX(Constants.METADATA_PACKAGE + "." + "EntityIndex", "NM20070418000000000000000000006720060824000000000000000000000011", "entity_index"),
 
   /**
-   * Root transition relationship Metadata class
-   */
-  TRANSITION_RELATIONSHIP(Constants.SYSTEM_PACKAGE + "." + "Transition", "0000000000000000000000000000093920060824000000000000000000000001", "transition"),
-
-  /**
    * Relationship that defines MdMethods for a MdEntity
    */
   MD_TYPE_MD_METHOD(Constants.METADATA_PACKAGE + "." + "TypeMethod", "20070427JS000000000000000000152020060824000000000000000000000011", "type_method"),

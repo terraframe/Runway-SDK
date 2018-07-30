@@ -26,10 +26,6 @@ import java.util.Map;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -40,12 +36,9 @@ import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAO;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
-import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
@@ -126,21 +119,6 @@ public class ExportMetadata
     private List<MdWebFieldDAO>      fields;
 
     /**
-     * A new MdStateMachine to add to an existing MdBusiness
-     */
-    private MdStateMachineDAO        mdStateMachine;
-
-    /**
-     * List of new StateMasters to add to a new or existing MdStateMachine
-     */
-    private List<StateMasterDAOIF>   states;
-
-    /**
-     * List of new TransitionDAO to add to a new or existing MdStateMachine
-     */
-    private List<TransitionDAOIF>    transitions;
-
-    /**
      * List of new ParameterMarkers, and corresponding MdParamerters, to add to an existing MdEntity, MdFacade, MdController
      */
     private List<NewParameterMarker> markers;
@@ -161,9 +139,6 @@ public class ExportMetadata
     NewComponent()
     {
       attributes = new LinkedList<MdAttributeDAO>();
-      mdStateMachine = null;
-      states = new LinkedList<StateMasterDAOIF>();
-      transitions = new LinkedList<TransitionDAOIF>();
       markers = new LinkedList<NewParameterMarker>();
       mdParameters = new LinkedList<MdParameterDAOIF>();
       removeEnumItems = new LinkedList<BusinessDAOIF>();
@@ -206,23 +181,6 @@ public class ExportMetadata
     }
 
     /**
-     * Add a new MdStateMachine component.
-     * 
-     * @param mdStateMachine
-     *          The new MdStateMachine
-     * @param states
-     *          The new StateMasters corresponding to the new MdStateMachine
-     * @param transitions
-     *          The new TransitionDAOs corresponding to the new MdStateMachine
-     */
-    void addMdStateMachine(MdStateMachineDAO mdStateMachine, List<StateMasterDAO> states, List<TransitionDAO> transitions)
-    {
-      this.mdStateMachine = mdStateMachine;
-      this.states.addAll(states);
-      this.transitions.addAll(transitions);
-    }
-
-    /**
      * Add a new MdParameter component
      * 
      * @param mdParameter
@@ -231,34 +189,6 @@ public class ExportMetadata
     void addMdParameter(MdParameterDAO mdParameter)
     {
       this.mdParameters.add(mdParameter);
-    }
-
-    /**
-     * Adds new TransitionDAO components
-     * 
-     * @param transitions
-     *          The new TransitionDAOs
-     */
-    public void addTransitions(TransitionDAO... transitions)
-    {
-      for (TransitionDAO transition : transitions)
-      {
-        this.transitions.add(transition);
-      }
-    }
-
-    /**
-     * Adds new StateMasterDAO components
-     * 
-     * @param states
-     *          The new StateMasters
-     */
-    public void addStates(StateMasterDAO... states)
-    {
-      for (StateMasterDAO state : states)
-      {
-        this.states.add(state);
-      }
     }
 
     /**
@@ -542,64 +472,6 @@ public class ExportMetadata
   }
 
   /**
-   * Adds a new {@link MdStateMachineDAO} to an existing {@link MdBusinessDAO}
-   * 
-   * @param mdBusiness
-   *          Existing {@link MdBusinessDAO}
-   * @param mdStateMachine
-   *          The new {@link MdStateMachineDAO}
-   * @param states
-   *          The new {@link StateMasterDAO}s of the new {@link MdStateMachineDAO}
-   * @param transitions
-   *          The new {@link TransitionDAO}s of the new {@link MdStateMachineDAO}
-   */
-  public void addNewMdStateMachine(MdBusinessDAOIF mdBusiness, MdStateMachineDAO mdStateMachine, List<StateMasterDAO> states, List<TransitionDAO> transitions)
-  {
-    if (!newComponentList.containsKey(mdBusiness.getId()))
-    {
-      newComponentList.put(mdBusiness.getId(), new NewComponent());
-    }
-
-    newComponentList.get(mdBusiness.getId()).addMdStateMachine(mdStateMachine, states, transitions);
-  }
-
-  /**
-   * Adds a new {@link StateMasterDAO} to an existing {@link MdStateMachineDAO}
-   * 
-   * @param mdStateMachine
-   *          Existing {@link MdStateMachineDAO}
-   * @param states
-   *          The new {@link StateMasterDAO}s of the new {@link MdStateMachineDAO}
-   */
-  public void addNewStates(MdStateMachineDAOIF mdStateMachine, StateMasterDAO... states)
-  {
-    if (!newComponentList.containsKey(mdStateMachine.getId()))
-    {
-      newComponentList.put(mdStateMachine.getId(), new NewComponent());
-    }
-
-    newComponentList.get(mdStateMachine.getId()).addStates(states);
-  }
-
-  /**
-   * Adds a new {@link TransitionDAO} to an existing {@link MdStateMachineDAO}
-   * 
-   * @param mdStateMachine
-   *          Existing {@link MdStateMachineDAO}
-   * @param transitions
-   *          The new {@link TransitionDAO}s of the new {@link MdStateMachineDAO}
-   */
-  public void addNewTransitions(MdStateMachineDAOIF mdStateMachine, TransitionDAO... transitions)
-  {
-    if (!newComponentList.containsKey(mdStateMachine.getId()))
-    {
-      newComponentList.put(mdStateMachine.getId(), new NewComponent());
-    }
-
-    newComponentList.get(mdStateMachine.getId()).addTransitions(transitions);
-  }
-
-  /**
    * Adds a new {@link MdMethodDAO} and {@link MdParameters} to an existing {@link MdEntityDAO} or {@link MdFacadeDAO}
    * 
    * @param mdType
@@ -672,51 +544,6 @@ public class ExportMetadata
   public boolean hasNewComponents(ComponentIF component)
   {
     return newComponentList.containsKey(component.getId());
-  }
-
-  /**
-   * @param mdBusiness
-   *          An existing {@link MdBusinessDAOIF}
-   * @return The new MdStateMachine defined for an existing {@link MdBusinessDAO}
-   */
-  public MdStateMachineDAO getNewMdStateMachine(MdBusinessDAOIF mdBusiness)
-  {
-    if (!newComponentList.containsKey(mdBusiness.getId()))
-    {
-      return null;
-    }
-
-    return newComponentList.get(mdBusiness.getId()).mdStateMachine;
-  }
-
-  /**
-   * @param mdBusiness
-   *          An existing {@link MdBusinessDAOIF}
-   * @return List of the new {@link StateMasterDAO}s defined for an existing {@link MdBusinessDAO} or {@link MdStateMachineDAO}
-   */
-  public List<StateMasterDAOIF> getNewStates(MdBusinessDAOIF mdBusiness)
-  {
-    if (!newComponentList.containsKey(mdBusiness.getId()))
-    {
-      return new LinkedList<StateMasterDAOIF>();
-    }
-
-    return newComponentList.get(mdBusiness.getId()).states;
-  }
-
-  /**
-   * @param mdBusiness
-   *          An existing {@link MdBusinessDAOIF}
-   * @return List of the new {@link TransitionDAO}s defined for an existing {@link MdBusinessDAO} or {@link MdStateMachineDAO}
-   */
-  public List<TransitionDAOIF> getNewTransitions(MdBusinessDAOIF mdBusiness)
-  {
-    if (!newComponentList.containsKey(mdBusiness.getId()))
-    {
-      return new LinkedList<TransitionDAOIF>();
-    }
-
-    return newComponentList.get(mdBusiness.getId()).transitions;
   }
 
   /**

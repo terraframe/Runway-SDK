@@ -274,16 +274,6 @@ public class JSONController
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String)
-   */
-  public static String grantStatePermission(String sessionId, String actorId,
-      String stateId, String ... operationNames)
-  {
-    return jsonClientRequestIF.grantStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    */
@@ -291,26 +281,6 @@ public class JSONController
       String mdAttributeId, String ... operationNames)
   {
     return jsonClientRequestIF.grantAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String...)
-   */
-  public static String grantAttributeStatePermission(String sessionId, String actorId,
-      String mdAttributeId, String stateId, String ... operationNames)
-  {
-    return jsonClientRequestIF.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public static String promoteObject(String sessionId, String businessJSON, String transitionName)
-  {
-    return jsonClientRequestIF.promoteObject(sessionId, businessJSON, transitionName);
   }
 
   /**
@@ -332,31 +302,12 @@ public class JSONController
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public static String revokeStatePermission(String sessionId, String actorId, String stateId, String ... operationNames)
-  {
-    return jsonClientRequestIF.revokeStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
   public static String revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String ... operationNames)
   {
     return jsonClientRequestIF.revokeAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String...)
-   */
-  public static String revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String ... operationNames)
-  {
-    return jsonClientRequestIF.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
 
   /**

@@ -255,35 +255,11 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-   */
-  public String grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    return JSONAdapterDelegate.grantStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public String grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     return JSONAdapterDelegate.grantAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public String grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    return JSONAdapterDelegate.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String, java.lang.String, java.lang.String)
-   */
-  public String promoteObject(String sessionId, String businessJSON, String transitionName)
-  {
-    return JSONAdapterDelegate.promoteObject(sessionId, businessJSON, transitionName);
   }
 
   /**
@@ -303,27 +279,11 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public String revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    return JSONAdapterDelegate.revokeStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public String revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     return JSONAdapterDelegate.revokeAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-   */
-  public String revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    return JSONAdapterDelegate.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
 
   /**

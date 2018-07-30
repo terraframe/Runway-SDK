@@ -20,7 +20,6 @@ package com.runwaysdk.dataaccess.transaction;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,8 +27,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.EnumerationAttributeItem;
@@ -43,8 +40,6 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransientDAO;
-import com.runwaysdk.dataaccess.TransitionDAO;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.MdActionDAO;
@@ -448,31 +443,6 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
 
   @Override
-  public List<StateMasterDAOIF> getUpdatedStateMasters(String type)
-  {
-    Set<StateMasterDAOIF> stateMasterSet = new HashSet<StateMasterDAOIF>();
-    stateMasterSet.addAll(super.getUpdatedStateMasters(type));
-    stateMasterSet.addAll(this.getTransactionCache().getUpdatedStateMasters(type));
-
-    List<StateMasterDAOIF> stateMasterList = new LinkedList<StateMasterDAOIF>();
-
-    stateMasterList.addAll(stateMasterSet);
-
-    return stateMasterList;
-  }
-
-  @Override
-  public Set<TransitionDAOIF> getUpdatedTransitions(String type)
-  {
-    Set<TransitionDAOIF> updatedTransitionSet = new HashSet<TransitionDAOIF>();
-
-    updatedTransitionSet.addAll(super.getUpdatedTransitions(type));
-    updatedTransitionSet.addAll(this.getTransactionCache().getUpdatedTransitions(type));
-
-    return updatedTransitionSet;
-  }
-
-  @Override
   public boolean hasExecutedEntityDeleteMethod(EntityDAO entityDAO, String signature)
   {
     return (super.hasExecutedEntityDeleteMethod(entityDAO,signature) ||
@@ -601,18 +571,6 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     super.updatedMdType(mdType);
   }
 
-  @Override
-  public void updatedStateMaster(StateMasterDAO stateMasterDAO)
-  {
-    super.updatedStateMaster(stateMasterDAO);
-  }
-
-  @Override
-  public void updatedTransition(TransitionDAO transitionDAO)
-  {
-    super.updatedTransition(transitionDAO);
-  }
-  
   @Override
   public void put(EntityDAOIF entityDAO)
   {

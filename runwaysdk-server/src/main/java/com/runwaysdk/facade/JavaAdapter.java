@@ -253,15 +253,6 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
-   */
-  public static void grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    Facade.grantStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    */
@@ -269,16 +260,7 @@ public class JavaAdapter
   {
     Facade.grantAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
   }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
-   */
-  public static void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    Facade.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
-  }
-
+  
   /**
    * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
@@ -295,15 +277,6 @@ public class JavaAdapter
   public static void grantMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationNames)
   {
     Facade.grantMethodPermission(sessionId, actorId, mdMethodId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public static BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName)
-  {
-    return Facade.promoteObject(sessionId, businessDTO, transitionName);
   }
 
   /**
@@ -325,31 +298,12 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public static void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    Facade.revokeStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
   public static void revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     Facade.revokeAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String...)
-   */
-  public static void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    Facade.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
 
   /**

@@ -18,6 +18,10 @@
  */
 package com.runwaysdk;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * !!HEADS UP!!
  * 
@@ -46,15 +50,23 @@ package com.runwaysdk;
  */
 public class Sandbox
 {
-  public static void main(String[] args)
+  public static void main(String[] args) throws ClassNotFoundException
   {
-    String attributeName = "test.value";
-    int index = attributeName.lastIndexOf(".");
-    String structName = attributeName.substring(0, index);
-    String structAttribute = attributeName.substring(index + 1);
-
-    System.out.println(structName);
-    System.out.println(structAttribute);
+//    ConcurrentHashMap<String, String> test = new ConcurrentHashMap<String, String>();
+//    test.put("test", "test");
+//    
+//    ObjectInputStream stream = new ResolvedObjectInputStream(new FileInputStream(file));
+//
+//    
+//    Sandbox.class.getClassLoader().loadClass("[Ljava.util.concurrent.ConcurrentHashMap$Segment;");
+    
+//    String attributeName = "test.value";
+//    int index = attributeName.lastIndexOf(".");
+//    String structName = attributeName.substring(0, index);
+//    String structAttribute = attributeName.substring(index + 1);
+//
+//    System.out.println(structName);
+//    System.out.println(structAttribute);
   }
 
   // public static void main(String[] args) throws IOException

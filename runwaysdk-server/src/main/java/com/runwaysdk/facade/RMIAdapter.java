@@ -275,27 +275,11 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantStatePermission(java.lang.String, java.lang.String, java.lang.String, String...)
-   */
-  public void grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    Facade.grantStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.request.RemoteAdapter#grantAttributePermission(java.lang.String, java.lang.String, java.lang.String, String...)
    */
   public void grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     Facade.grantAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, String...)
-   */
-  public void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    Facade.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
 
   /**
@@ -315,14 +299,6 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#promoteObject(java.lang.String, java.lang.String, java.lang.String)
-   */
-  public BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName)
-  {
-    return Facade.promoteObject(sessionId, businessDTO, transitionName);
-  }
-
-  /**
    * @see com.runwaysdk.request.RemoteAdapter#revokeTypePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeTypePermission(String sessionId, String actorId, String mdTypeId, String... operationNames)
@@ -339,27 +315,11 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    Facade.revokeStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.request.RemoteAdapter#revokeAttributePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     Facade.revokeAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    Facade.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
 
   /**

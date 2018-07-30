@@ -20,13 +20,11 @@ package com.runwaysdk.dataaccess.io;
 
 import java.io.File;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.runwaysdk.ComponentIF;
@@ -37,10 +35,6 @@ import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.BasicConditionInfo;
 import com.runwaysdk.constants.BusinessInfo;
@@ -49,7 +43,6 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DateConditionInfo;
 import com.runwaysdk.constants.DoubleConditionInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
-import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
 import com.runwaysdk.constants.IndexTypes;
@@ -92,7 +85,6 @@ import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
@@ -163,8 +155,6 @@ import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TermAttributeDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAO;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalText;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
@@ -241,8 +231,6 @@ import com.runwaysdk.dataaccess.metadata.MdWebPrimitiveDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.RelationshipDAOQuery;
@@ -1587,32 +1575,6 @@ public class SAXParseTest
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
-    // Create test MdStateMachine
-    MdStateMachineDAO mdStateMachine = MdStateMachineDAO.newInstance();
-    mdStateMachine.setValue(MdStateMachineInfo.NAME, "StateMachine1");
-    mdStateMachine.setValue(MdStateMachineInfo.PACKAGE, "test.xmlclasses");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "StateMachine1");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
-    mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
-    mdStateMachine.setGenerateMdController(false);
-    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine.apply();
-
-    // Add states
-    StateMasterDAO state1 = mdStateMachine.addState("Available", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state1.apply();
-
-    StateMasterDAO state2 = mdStateMachine.addState("CheckedOut", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state2.apply();
-
-    StateMasterDAO state3 = mdStateMachine.addState("CheckedIn", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state3.apply();
-
-    mdStateMachine.addTransition("CheckOut", state1.getId(), state2.getId()).apply();
-    mdStateMachine.addTransition("CheckIn", state2.getId(), state3.getId()).apply();
-    mdStateMachine.addTransition("Stock", state3.getId(), state1.getId()).apply();
-
     mdBusiness1.setValue(MdBusinessInfo.STUB_SOURCE, TestFixtureFactory.getMdBusinessStub());
 
     MdBusinessDAO updateBusiness = MdBusinessDAO.get(mdBusiness1.getId()).getBusinessDAO();
@@ -1654,40 +1616,6 @@ public class SAXParseTest
 
     // Ensure the attributes are linked to the correct MdBusiness object
     Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdBusiness1IF.getId());
-
-    // Test that the MdStateMachine on the MdBusiness was correctly set
-    MdStateMachineDAOIF mdStateMachineIF = mdBusiness1IF.definesMdStateMachine();
-
-    Assert.assertNotNull(mdStateMachineIF);
-    Assert.assertEquals(3, mdStateMachineIF.definesStateMasters().size());
-
-    // Ensure that the states were imported correctly
-    StateMasterDAOIF available = mdStateMachineIF.definesStateMaster("Available");
-    Assert.assertEquals(true, available.isDefaultState());
-    Assert.assertEquals(true, available.isEntryState());
-
-    StateMasterDAOIF checkedOut = mdStateMachineIF.definesStateMaster("CheckedOut");
-    Assert.assertEquals(false, checkedOut.isDefaultState());
-    Assert.assertEquals(false, checkedOut.isEntryState());
-
-    StateMasterDAOIF checkedIn = mdStateMachineIF.definesStateMaster("CheckedIn");
-    Assert.assertEquals(false, checkedIn.isDefaultState());
-    Assert.assertEquals(true, checkedIn.isEntryState());
-
-    // Ensure that the transitions were imported correctly
-    Assert.assertEquals(3, mdStateMachineIF.definesTransitions().size());
-
-    TransitionDAOIF checkOut = mdStateMachineIF.definesTransition("CheckOut");
-    Assert.assertEquals(available.getId(), checkOut.getParentId());
-    Assert.assertEquals(checkedOut.getId(), checkOut.getChildId());
-
-    RelationshipDAOIF checkIn = mdStateMachineIF.definesTransition("CheckIn");
-    Assert.assertEquals(checkedOut.getId(), checkIn.getParentId());
-    Assert.assertEquals(checkedIn.getId(), checkIn.getChildId());
-
-    RelationshipDAOIF stock = mdStateMachineIF.definesTransition("Stock");
-    Assert.assertEquals(checkedIn.getId(), stock.getParentId());
-    Assert.assertEquals(available.getId(), stock.getChildId());
 
     mdBusiness2 = mdBusiness2IF.getBusinessDAO();
     mdBusiness2.setValue(MetadataInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -4119,97 +4047,6 @@ public class SAXParseTest
     new File(tempXMLFile).delete();
   }
 
-  @Request
-  @Test
-  public void testMdStateMachineExport()
-  {
-    String stateMachineName = "Blog";
-    String stateMachinePackage = "test.state";
-    String stateMachineLabel = "Star State";
-    String stateMachineDescription = "Star State desc";
-
-    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
-    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.apply();
-
-    // Create a new MdState
-    MdStateMachineDAO mdStateMachine = MdStateMachineDAO.newInstance();
-    mdStateMachine.setValue(MdStateMachineInfo.NAME, stateMachineName);
-    mdStateMachine.setValue(MdStateMachineInfo.PACKAGE, stateMachinePackage);
-    mdStateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, stateMachineLabel);
-    mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, stateMachineDescription);
-    mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness.getId());
-    mdStateMachine.setGenerateMdController(false);
-    mdStateMachine.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine.apply();
-
-    // Add states
-    String stateName = "Writing";
-    StateMasterDAO state = mdStateMachine.addState(stateName, StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state.apply();
-
-    String state1Name = "Editing";
-    StateMasterDAO state1 = mdStateMachine.addState(state1Name, StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state1.apply();
-
-    String state2Name = "Reading";
-    StateMasterDAO state2 = mdStateMachine.addState(state2Name, StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state2.apply();
-
-    String transitionName = "Written";
-    String transition1Name = "Edited";
-
-    mdStateMachine.addTransition(transitionName, state.getId(), state1.getId()).apply();
-    mdStateMachine.addTransition(transition1Name, state1.getId(), state2.getId()).apply();
-
-    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness }));
-
-    TestFixtureFactory.delete(mdBusiness);
-
-    SAXImporter.runImport(new File(tempXMLFile));
-
-    Assert.assertTrue(MdBusinessDAO.isDefined("test.xmlclasses.Class1"));
-
-    MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
-
-    MdStateMachineDAOIF mdStateMachineIF = mdBusinessIF.definesMdStateMachine();
-
-    Assert.assertNotNull(mdStateMachine);
-    Assert.assertEquals(stateMachinePackage + "." + stateMachineName, mdStateMachineIF.definesType());
-    Assert.assertEquals(stateMachineLabel, mdStateMachineIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals(stateMachineDescription, mdStateMachineIF.getDescription(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals(3, mdStateMachine.definesStateMasters().size());
-
-    // Ensure that the states were imported correctly
-    StateMasterDAOIF stateIF = mdStateMachine.definesStateMaster(stateName);
-    Assert.assertEquals(true, stateIF.isDefaultState());
-    Assert.assertEquals(true, stateIF.isEntryState());
-
-    StateMasterDAOIF state1IF = mdStateMachine.definesStateMaster(state1Name);
-    Assert.assertEquals(false, state1IF.isDefaultState());
-    Assert.assertEquals(false, state1IF.isEntryState());
-
-    StateMasterDAOIF state2IF = mdStateMachine.definesStateMaster(state2Name);
-    Assert.assertEquals(false, state2IF.isDefaultState());
-    Assert.assertEquals(true, state2IF.isEntryState());
-
-    // Ensure that the transitions were imported correctly
-    Assert.assertEquals(2, mdStateMachine.definesTransitions().size());
-
-    TransitionDAOIF checkOut = mdStateMachine.definesTransition(transitionName);
-    Assert.assertEquals(stateIF.getId(), checkOut.getParentId());
-    Assert.assertEquals(state1IF.getId(), checkOut.getChildId());
-
-    RelationshipDAOIF checkIn = mdStateMachine.definesTransition(transition1Name);
-    Assert.assertEquals(state1IF.getId(), checkIn.getParentId());
-    Assert.assertEquals(state2IF.getId(), checkIn.getChildId());
-
-    new File(tempXMLFile).delete();
-  }
-
   /**
    * Test for a thrown error on circular dependencies in the xml document
    */
@@ -4360,56 +4197,6 @@ public class SAXParseTest
       MdAttributeConcreteDAO mdAttributeChar = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
       mdAttributeChar.apply();
 
-      // Create a new MdState
-      MdStateMachineDAO mdStateMachine = MdStateMachineDAO.newInstance();
-      mdStateMachine.setValue(MdStateMachineInfo.NAME, "Blog");
-      mdStateMachine.setValue(MdStateMachineInfo.PACKAGE, "test.state");
-      mdStateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State");
-      mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State desc");
-      mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-      mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
-      mdStateMachine.setGenerateMdController(false);
-      mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-      mdStateMachine.apply();
-
-      StateMasterDAO state11 = mdStateMachine.addState("Writing", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-      state11.apply();
-
-      StateMasterDAO state12 = mdStateMachine.addState("Editing", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-      state12.apply();
-
-      StateMasterDAO state13 = mdStateMachine.addState("Reading", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-      state13.apply();
-
-      mdStateMachine.addTransition("Written", state11.getId(), state12.getId()).apply();
-      mdStateMachine.addTransition("Edited", state12.getId(), state13.getId()).apply();
-
-      // Add a StateMachine to mdBusiness2
-      MdStateMachineDAO mdStateMachine2 = MdStateMachineDAO.newInstance();
-      mdStateMachine2.setValue(MdStateMachineInfo.NAME, "StateMachine1");
-      mdStateMachine2.setValue(MdStateMachineInfo.PACKAGE, "test.xmlclasses");
-      mdStateMachine2.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "StateMachine1");
-      mdStateMachine2.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
-      mdStateMachine2.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-      mdStateMachine2.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness2.getId());
-      mdStateMachine2.setGenerateMdController(false);
-      mdStateMachine2.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-      mdStateMachine2.apply();
-
-      // Add states
-      StateMasterDAO state21 = mdStateMachine2.addState("Available", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-      state21.apply();
-
-      StateMasterDAO state22 = mdStateMachine2.addState("CheckedOut", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-      state22.apply();
-
-      StateMasterDAO state23 = mdStateMachine2.addState("CheckedIn", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-      state23.apply();
-
-      mdStateMachine2.addTransition("CheckOut", state21.getId(), state22.getId()).apply();
-      mdStateMachine2.addTransition("CheckIn", state22.getId(), state23.getId()).apply();
-      mdStateMachine2.addTransition("Stock", state23.getId(), state21.getId()).apply();
-
       MdRelationshipDAO mdRelationship = TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
       mdRelationship.setGenerateMdController(false);
       mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -4426,10 +4213,6 @@ public class SAXParseTest
       user.grantPermission(Operation.WRITE, mdAttributeChar.getId());
       user.grantPermission(Operation.READ, mdAttributeChar.getId());
 
-      // Add permissions a State
-      user.grantPermission(Operation.DELETE, state11.getId());
-      user.grantPermission(Operation.READ, state11.getId());
-
       // Add struct permissions
       MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
       mdStruct.setGenerateMdController(false);
@@ -4438,47 +4221,12 @@ public class SAXParseTest
 
       user.grantPermission(Operation.DELETE, mdStruct.getId());
 
-      // Add permissions to a State-Attribute pairing
-      TypeTupleDAO tuple = TypeTupleDAO.newInstance();
-      tuple.setStateMaster(state12.getId());
-      tuple.setMetaData(mdAttributeChar.getId());
-      tuple.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-      tuple.apply();
-
-      user.grantPermission(Operation.WRITE, tuple.getId());
-
       // Add permissions to a MdRelationship
       user.grantPermission(Operation.CREATE, mdRelationship.getId());
       user.grantPermission(Operation.DELETE, mdRelationship.getId());
 
       // Add permissions to an attribute defined by the MdRelationship
       user.grantPermission(Operation.READ, mdAttributeBool.getId());
-
-      // Add directional permissions to the parent state of the MdRelationship
-      TypeTupleDAO tuple2 = TypeTupleDAO.newInstance();
-      tuple2.setStateMaster(state11.getId());
-      tuple2.setMetaData(mdRelationship.getId());
-      tuple2.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-      tuple2.apply();
-
-      user.grantPermission(Operation.ADD_CHILD, tuple2.getId());
-      user.grantPermission(Operation.READ_CHILD, tuple2.getId());
-
-      TypeTupleDAO tuple3 = TypeTupleDAO.newInstance();
-      tuple3.setStateMaster(state12.getId());
-      tuple3.setMetaData(mdRelationship.getId());
-      tuple3.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-      tuple3.apply();
-
-      user.grantPermission(Operation.WRITE_CHILD, tuple3.getId());
-
-      TypeTupleDAO tuple4 = TypeTupleDAO.newInstance();
-      tuple4.setStateMaster(state21.getId());
-      tuple4.setMetaData(mdRelationship.getId());
-      tuple4.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-      tuple4.apply();
-
-      user.grantPermission(Operation.ADD_PARENT, tuple4.getId());
 
       // Export the permissions
       ExportMetadata metadata = new ExportMetadata();
@@ -4487,20 +4235,12 @@ public class SAXParseTest
 
       SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
-      TestFixtureFactory.delete(tuple);
-      TestFixtureFactory.delete(tuple2);
-      TestFixtureFactory.delete(tuple3);
-      TestFixtureFactory.delete(tuple4);
       TestFixtureFactory.delete(user);
 
       SAXImporter.runImport(new File(tempXMLFile));
 
       UserDAOIF userIF = UserDAO.findUser("testUser");
-      TypeTupleDAOIF tupleIF = TypeTupleDAO.findTuple(mdAttributeChar.getId(), state12.getId());
-      TypeTupleDAOIF tuple2IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state11.getId());
-      TypeTupleDAOIF tuple3IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state12.getId());
-      TypeTupleDAOIF tuple4IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state21.getId());
-
+      
       Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
       Assert.assertEquals(1, assignedRoles.size());
       Assert.assertTrue(assignedRoles.contains(role));
@@ -4515,15 +4255,6 @@ public class SAXParseTest
       Assert.assertTrue(operations.contains(Operation.WRITE));
       Assert.assertTrue(operations.contains(Operation.READ));
 
-      operations = userIF.getAllPermissions(state11);
-      Assert.assertEquals(2, operations.size());
-      Assert.assertTrue(operations.contains(Operation.DELETE));
-      Assert.assertTrue(operations.contains(Operation.READ));
-
-      operations = userIF.getAllPermissions(tupleIF);
-      Assert.assertEquals(1, operations.size());
-      Assert.assertTrue(operations.contains(Operation.WRITE));
-
       operations = userIF.getAllPermissions(mdRelationship);
       Assert.assertEquals(2, operations.size());
       Assert.assertTrue(operations.contains(Operation.DELETE));
@@ -4532,19 +4263,6 @@ public class SAXParseTest
       operations = userIF.getAllPermissions(mdAttributeBool);
       Assert.assertEquals(1, operations.size());
       Assert.assertTrue(operations.contains(Operation.READ));
-
-      operations = userIF.getAllPermissions(tuple2IF);
-      Assert.assertEquals(2, operations.size());
-      Assert.assertTrue(operations.contains(Operation.ADD_CHILD));
-      Assert.assertTrue(operations.contains(Operation.READ_CHILD));
-
-      operations = userIF.getAllPermissions(tuple3IF);
-      Assert.assertEquals(1, operations.size());
-      Assert.assertTrue(operations.contains(Operation.WRITE_CHILD));
-
-      operations = userIF.getAllPermissions(tuple4IF);
-      Assert.assertEquals(1, operations.size());
-      Assert.assertTrue(operations.contains(Operation.ADD_PARENT));
 
       operations = userIF.getAllPermissions(mdStruct);
       Assert.assertEquals(1, operations.size());
@@ -4583,56 +4301,6 @@ public class SAXParseTest
     MdAttributeConcreteDAO mdAttributeChar = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
     mdAttributeChar.apply();
 
-    // Create a new MdState
-    MdStateMachineDAO mdStateMachine = MdStateMachineDAO.newInstance();
-    mdStateMachine.setValue(MdStateMachineInfo.NAME, "Blog");
-    mdStateMachine.setValue(MdStateMachineInfo.PACKAGE, "test.state");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State desc");
-    mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
-    mdStateMachine.setGenerateMdController(false);
-    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine.apply();
-
-    StateMasterDAO state11 = mdStateMachine.addState("Writing", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state11.apply();
-
-    StateMasterDAO state12 = mdStateMachine.addState("Editing", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state12.apply();
-
-    StateMasterDAO state13 = mdStateMachine.addState("Reading", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state13.apply();
-
-    mdStateMachine.addTransition("Written", state11.getId(), state12.getId()).apply();
-    mdStateMachine.addTransition("Edited", state12.getId(), state13.getId()).apply();
-
-    // Add a StateMachine to mdBusiness2
-    MdStateMachineDAO mdStateMachine2 = MdStateMachineDAO.newInstance();
-    mdStateMachine2.setValue(MdStateMachineInfo.NAME, "StateMachine1");
-    mdStateMachine2.setValue(MdStateMachineInfo.PACKAGE, "test.xmlclasses");
-    mdStateMachine2.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "StateMachine1");
-    mdStateMachine2.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
-    mdStateMachine2.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdStateMachine2.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness2.getId());
-    mdStateMachine2.setGenerateMdController(false);
-    mdStateMachine2.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine2.apply();
-
-    // Add states
-    StateMasterDAO state21 = mdStateMachine2.addState("Available", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state21.apply();
-
-    StateMasterDAO state22 = mdStateMachine2.addState("CheckedOut", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state22.apply();
-
-    StateMasterDAO state23 = mdStateMachine2.addState("CheckedIn", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state23.apply();
-
-    mdStateMachine2.addTransition("CheckOut", state21.getId(), state22.getId()).apply();
-    mdStateMachine2.addTransition("CheckIn", state22.getId(), state23.getId()).apply();
-    mdStateMachine2.addTransition("Stock", state23.getId(), state21.getId()).apply();
-
     MdRelationshipDAO mdRelationship = TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
     mdRelationship.apply();
 
@@ -4647,24 +4315,11 @@ public class SAXParseTest
     user.grantPermission(Operation.WRITE, mdAttributeChar.getId());
     user.grantPermission(Operation.READ, mdAttributeChar.getId());
 
-    // Add permissions a State
-    user.grantPermission(Operation.DELETE, state11.getId());
-    user.grantPermission(Operation.READ, state11.getId());
-
     // Add struct permissions
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
     mdStruct.apply();
 
     user.grantPermission(Operation.DELETE, mdStruct.getId());
-
-    // Add permissions to a State-Attribute pairing
-    TypeTupleDAO tuple = TypeTupleDAO.newInstance();
-    tuple.setStateMaster(state12.getId());
-    tuple.setMetaData(mdAttributeChar.getId());
-    tuple.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple.apply();
-
-    user.grantPermission(Operation.WRITE, tuple.getId());
 
     // Add permissions to a MdRelationship
     user.grantPermission(Operation.CREATE, mdRelationship.getId());
@@ -4672,32 +4327,6 @@ public class SAXParseTest
 
     // Add permissions to an attribute defined by the MdRelationship
     user.grantPermission(Operation.READ, mdAttributeBool.getId());
-
-    // Add directional permissions to the parent state of the MdRelationship
-    TypeTupleDAO tuple2 = TypeTupleDAO.newInstance();
-    tuple2.setStateMaster(state11.getId());
-    tuple2.setMetaData(mdRelationship.getId());
-    tuple2.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple2.apply();
-
-    user.grantPermission(Operation.ADD_CHILD, tuple2.getId());
-    user.grantPermission(Operation.READ_CHILD, tuple2.getId());
-
-    TypeTupleDAO tuple3 = TypeTupleDAO.newInstance();
-    tuple3.setStateMaster(state12.getId());
-    tuple3.setMetaData(mdRelationship.getId());
-    tuple3.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple3.apply();
-
-    user.grantPermission(Operation.WRITE_CHILD, tuple3.getId());
-
-    TypeTupleDAO tuple4 = TypeTupleDAO.newInstance();
-    tuple4.setStateMaster(state21.getId());
-    tuple4.setMetaData(mdRelationship.getId());
-    tuple4.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple4.apply();
-
-    user.grantPermission(Operation.ADD_PARENT, tuple4.getId());
 
     // Export the permissions
     ExportMetadata metadata = new ExportMetadata();
@@ -4708,11 +4337,7 @@ public class SAXParseTest
     SAXImporter.runImport(new File(tempXMLFile));
 
     UserDAOIF userIF = UserDAO.findUser("testUser");
-    TypeTupleDAOIF tupleIF = TypeTupleDAO.findTuple(mdAttributeChar.getId(), state12.getId());
-    TypeTupleDAOIF tuple2IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state11.getId());
-    TypeTupleDAOIF tuple3IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state12.getId());
-    TypeTupleDAOIF tuple4IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state21.getId());
-
+    
     Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
     Assert.assertEquals(1, assignedRoles.size());
     Assert.assertTrue(assignedRoles.contains(role));
@@ -4723,25 +4348,10 @@ public class SAXParseTest
     operations = userIF.getAllPermissions(mdAttributeChar);
     Assert.assertEquals(0, operations.size());
 
-    operations = userIF.getAllPermissions(state11);
-    Assert.assertEquals(0, operations.size());
-
-    operations = userIF.getAllPermissions(tupleIF);
-    Assert.assertEquals(0, operations.size());
-
     operations = userIF.getAllPermissions(mdRelationship);
     Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(mdAttributeBool);
-    Assert.assertEquals(0, operations.size());
-
-    operations = userIF.getAllPermissions(tuple2IF);
-    Assert.assertEquals(0, operations.size());
-
-    operations = userIF.getAllPermissions(tuple3IF);
-    Assert.assertEquals(0, operations.size());
-
-    operations = userIF.getAllPermissions(tuple4IF);
     Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(mdStruct);
@@ -5210,126 +4820,6 @@ public class SAXParseTest
 
   @Request
   @Test
-  public void testUpdateMdStateMachine()
-  {
-    // Create test MdBusiness
-    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
-    mdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
-    mdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdBusiness1.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdBusiness1.setValue(MdBusinessInfo.CACHE_SIZE, "50");
-    mdBusiness1.setGenerateMdController(false);
-    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdBusiness1.apply();
-
-    MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
-    mdAttribute.apply();
-
-    // Create test MdStateMachine
-    MdStateMachineDAO mdStateMachine = MdStateMachineDAO.newInstance();
-    mdStateMachine.setValue(MdStateMachineInfo.NAME, "StateMachine1");
-    mdStateMachine.setValue(MdStateMachineInfo.PACKAGE, "test.xmlclasses");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "StateMachine1");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
-    mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
-    mdStateMachine.setGenerateMdController(false);
-    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine.apply();
-
-    // Add states
-    StateMasterDAO state1 = mdStateMachine.addState("Available", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state1.apply();
-
-    StateMasterDAO state2 = mdStateMachine.addState("CheckedOut", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state2.apply();
-
-    mdStateMachine.addTransition("CheckOut", state1.getId(), state2.getId()).apply();
-
-    // Create new states and transitions for the existing MdStateMachine
-    StateMasterDAO state3 = mdStateMachine.addState("CheckedIn", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    TransitionDAO transition2 = mdStateMachine.addTransition("CheckIn", state2.getId(), state3.getId());
-    TransitionDAO transition3 = mdStateMachine.addTransition("Stock", state3.getId(), state1.getId());
-
-    // Export the test entities
-    ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 });
-    metadata.addNewStates(mdStateMachine, state3);
-    metadata.addNewTransitions(mdStateMachine, transition2, transition3);
-
-    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
-
-    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getId()).getBusinessDAO();
-
-    // Change the values of mdBusiness, booleanAttribute, and the stateMachine
-    mdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    mdBusiness1.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    mdBusiness1.setValue(MdBusinessInfo.CACHE_SIZE, "500");
-    mdBusiness1.apply();
-
-    mdAttribute.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Boolean Update Test");
-    mdAttribute.apply();
-
-    mdStateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "StateMachine1 Update");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of MdBusiness1");
-    mdStateMachine.apply();
-
-    // Import the test entites
-    SAXImporter.runImport(new File(tempXMLFile));
-
-    MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(CLASS);
-
-    MdAttributeDAOIF attribute = mdBusiness1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
-
-    Assert.assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdBusiness Set Test");
-    Assert.assertEquals(mdBusiness1IF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdBusiness Attributes Test");
-    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
-    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
-    Assert.assertEquals(mdBusiness1IF.getValue(MdBusinessInfo.CACHE_SIZE), "50");
-
-    // Change to false when casscading delete is implemented
-    Assert.assertEquals(mdBusiness1IF.getValue(MetadataInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
-
-    // Ensure the attributes are linked to the correct MdBusiness object
-    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdBusiness1IF.getId());
-
-    // Test that the MdStateMachine on the MdBusiness was correctly set
-    MdStateMachineDAOIF mdStateMachineIF = mdBusiness1IF.definesMdStateMachine();
-
-    Assert.assertNotNull(mdStateMachineIF);
-    Assert.assertEquals(3, mdStateMachineIF.definesStateMasters().size());
-
-    // Ensure that the states were imported correctly
-    StateMasterDAOIF available = mdStateMachineIF.definesStateMaster("Available");
-    Assert.assertEquals(true, available.isDefaultState());
-    Assert.assertEquals(true, available.isEntryState());
-
-    StateMasterDAOIF checkedOut = mdStateMachineIF.definesStateMaster("CheckedOut");
-    Assert.assertEquals(false, checkedOut.isDefaultState());
-    Assert.assertEquals(false, checkedOut.isEntryState());
-
-    StateMasterDAOIF checkedIn = mdStateMachineIF.definesStateMaster("CheckedIn");
-    Assert.assertEquals(false, checkedIn.isDefaultState());
-    Assert.assertEquals(true, checkedIn.isEntryState());
-
-    // Ensure that the transitions were imported correctly
-    Assert.assertEquals(3, mdStateMachineIF.definesTransitions().size());
-
-    TransitionDAOIF checkOut = mdStateMachineIF.definesTransition("CheckOut");
-    Assert.assertEquals(available.getId(), checkOut.getParentId());
-    Assert.assertEquals(checkedOut.getId(), checkOut.getChildId());
-
-    RelationshipDAOIF checkIn = mdStateMachineIF.definesTransition("CheckIn");
-    Assert.assertEquals(checkedOut.getId(), checkIn.getParentId());
-    Assert.assertEquals(checkedIn.getId(), checkIn.getChildId());
-
-    RelationshipDAOIF stock = mdStateMachineIF.definesTransition("Stock");
-    Assert.assertEquals(checkedIn.getId(), stock.getParentId());
-    Assert.assertEquals(available.getId(), stock.getChildId());
-  }
-
-  @Request
-  @Test
   public void testUpdateMdBusiness()
   {
     // Create test MdBusiness
@@ -5345,39 +4835,7 @@ public class SAXParseTest
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    // Create new states and transitions for a new MdStateMachine
-    MdStateMachineDAO mdStateMachine = MdStateMachineDAO.newInstance();
-    mdStateMachine.setValue(MdStateMachineInfo.NAME, "StateMachine1");
-    mdStateMachine.setValue(MdStateMachineInfo.PACKAGE, "test.xmlclasses");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "StateMachine1");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
-    mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
-    mdStateMachine.setGenerateMdController(false);
-    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine.apply();
-
-    StateMasterDAO state1 = mdStateMachine.addState("Available", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    StateMasterDAO state2 = mdStateMachine.addState("CheckedOut", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    StateMasterDAO state3 = mdStateMachine.addState("CheckedIn", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    TransitionDAO transition1 = mdStateMachine.addTransition("CheckOut", state1.getId(), state2.getId());
-    TransitionDAO transition2 = mdStateMachine.addTransition("CheckIn", state2.getId(), state3.getId());
-    TransitionDAO transition3 = mdStateMachine.addTransition("Stock", state3.getId(), state1.getId());
-    TestFixtureFactory.delete(mdStateMachine);
-
-    // Export the test entities
-    List<StateMasterDAO> newStates = new LinkedList<StateMasterDAO>();
-    newStates.add(state1);
-    newStates.add(state2);
-    newStates.add(state3);
-
-    List<TransitionDAO> newTransitions = new LinkedList<TransitionDAO>();
-    newTransitions.add(transition1);
-    newTransitions.add(transition2);
-    newTransitions.add(transition3);
-
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 });
-    metadata.addNewMdStateMachine(mdBusiness1, mdStateMachine, newStates, newTransitions);
 
     SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
@@ -5411,40 +4869,6 @@ public class SAXParseTest
 
     // Ensure the attributes are linked to the correct MdBusiness object
     Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdBusiness1IF.getId());
-
-    // Test that the MdStateMachine on the MdBusiness was correctly set
-    MdStateMachineDAOIF mdStateMachineIF = mdBusiness1IF.definesMdStateMachine();
-
-    Assert.assertNotNull(mdStateMachineIF);
-    Assert.assertEquals(3, mdStateMachineIF.definesStateMasters().size());
-
-    // Ensure that the states were imported correctly
-    StateMasterDAOIF available = mdStateMachineIF.definesStateMaster("Available");
-    Assert.assertEquals(true, available.isDefaultState());
-    Assert.assertEquals(true, available.isEntryState());
-
-    StateMasterDAOIF checkedOut = mdStateMachineIF.definesStateMaster("CheckedOut");
-    Assert.assertEquals(false, checkedOut.isDefaultState());
-    Assert.assertEquals(false, checkedOut.isEntryState());
-
-    StateMasterDAOIF checkedIn = mdStateMachineIF.definesStateMaster("CheckedIn");
-    Assert.assertEquals(false, checkedIn.isDefaultState());
-    Assert.assertEquals(true, checkedIn.isEntryState());
-
-    // Ensure that the transitions were imported correctly
-    Assert.assertEquals(3, mdStateMachineIF.definesTransitions().size());
-
-    TransitionDAOIF checkOut = mdStateMachineIF.definesTransition("CheckOut");
-    Assert.assertEquals(available.getId(), checkOut.getParentId());
-    Assert.assertEquals(checkedOut.getId(), checkOut.getChildId());
-
-    RelationshipDAOIF checkIn = mdStateMachineIF.definesTransition("CheckIn");
-    Assert.assertEquals(checkedOut.getId(), checkIn.getParentId());
-    Assert.assertEquals(checkedIn.getId(), checkIn.getChildId());
-
-    RelationshipDAOIF stock = mdStateMachineIF.definesTransition("Stock");
-    Assert.assertEquals(checkedIn.getId(), stock.getParentId());
-    Assert.assertEquals(available.getId(), stock.getChildId());
   }
 
   /**

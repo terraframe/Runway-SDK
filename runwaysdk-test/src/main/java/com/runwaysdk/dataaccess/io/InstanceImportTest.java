@@ -33,7 +33,6 @@ import org.junit.Test;
 
 import com.runwaysdk.SystemException;
 import com.runwaysdk.business.rbac.UserDAO;
-import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
@@ -55,7 +54,6 @@ import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.constants.TestConstants;
@@ -672,22 +670,6 @@ public class InstanceImportTest
   // businessDAOA));
   // Assert.assertTrue(checkAttributes(state.getAttributeArrayIF(), state1A));
   // }
-
-  @Transaction
-  private void ddlCreateTestState(MdBusinessDAO mdBusiness, MdStateMachineDAO mdState)
-  {
-    mdBusiness.setValue(MdBusinessInfo.PACKAGE, "test.xmlclasses");
-    mdBusiness.setValue(MdBusinessInfo.NAME, "Class1");
-    mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Importer Class 1");
-    mdBusiness.apply();
-
-    mdState.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness.getId());
-    mdState.setValue(MdStateMachineInfo.PACKAGE, "test.xmlclasses");
-    mdState.setValue(MdStateMachineInfo.NAME, "State1");
-    mdState.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine 1");
-    mdState.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, MdStateMachineInfo.STATE_MASTER);
-    mdState.apply();
-  }
 
   // @Request @Test public void testStructEnumeration()
   // {

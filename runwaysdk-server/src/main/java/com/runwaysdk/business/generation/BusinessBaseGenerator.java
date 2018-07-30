@@ -18,24 +18,16 @@
  */
 package com.runwaysdk.business.generation;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Relationship;
-import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdGraphDAOIF;
-import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.query.OIterator;
 
@@ -101,8 +93,6 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
 
     addAddParentMethods();
 
-    addTransitions();
-
     getInstance();
 
     addGetEnumerationMethod();
@@ -158,11 +148,6 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
 
     for (MdRelationshipDAOIF mdRelationship : mdBusinessDAOIF.getParentMdRelationshipsOrdered())
     {
-      if (isStatus(mdBusinessDAOIF, mdRelationship) || isStateMachine(mdRelationship))
-      {
-        continue;
-      }
-
       VisibilityModifier visibility = mdRelationship.getChildVisibility();
 
       MdBusinessDAOIF childMdBusiness = mdRelationship.getChildMdBusiness();
@@ -278,11 +263,6 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
 
     for (MdRelationshipDAOIF mdRelationship : mdBusinessIF.getChildMdRelationshipsOrdered())
     {
-      if (isStatus(mdBusinessIF, mdRelationship) || isStateMachine(mdRelationship))
-      {
-        continue;
-      }
-
       VisibilityModifier visibility = mdRelationship.getParentVisibility();
 
       MdBusinessDAOIF parentMdBusinessIF = mdRelationship.getParentMdBusiness();
@@ -364,59 +344,6 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
         getWriter().closeBracket();
         getWriter().writeLine("");
       }
-    }
-  }
-
-  public static boolean isStatus(MdBusinessDAOIF mdBusinessIF, MdRelationshipDAOIF relationship)
-  {
-    if (!mdBusinessIF.hasStateMachine())
-      return false;
-
-    String master_status = mdBusinessIF.definesMdStateMachine().getMdStatus().definesType();
-
-    for (MdElementDAOIF dad : relationship.getSuperClasses())
-    {
-      if (dad.definesType().equalsIgnoreCase(master_status))
-      {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public static boolean isStateMachine(MdRelationshipDAOIF relationship)
-  {
-    if (relationship.definesType().startsWith(MdStateMachineDAO.STATE_PACKAGE + '.'))
-      return true;
-
-    return false;
-  }
-
-  private void addTransitions()
-  {
-    MdBusinessDAOIF mdBusinessIF = (MdBusinessDAOIF) this.getMdTypeDAOIF();
-
-    if (!mdBusinessIF.hasStateMachine())
-    {
-      return;
-    }
-
-    String throwsStatement = " throws com.runwaysdk.business.InvalidTransistionException";
-
-    for (TransitionDAOIF transistion : mdBusinessIF.definesMdStateMachine().definesTransitions())
-    {
-      String methodName = CommonGenerationUtil.lowerFirstCharacter(transistion.getName());
-
-      getWriter().writeLine("public void " + methodName + "()" + throwsStatement);
-      getWriter().openBracket();
-      getWriter().writeLine("promote(\"" + transistion.getName() + "\");");
-      getWriter().closeBracket();
-      getWriter().writeLine("");
-
-      List<MdParameterDAOIF> list = new LinkedList<MdParameterDAOIF>();
-      list.add(GenerationUtil.getMdParameterId());
-
-      addStaticMethod(methodName, new Type(this.getMdTypeDAOIF().definesType()), list, throwsStatement);
     }
   }
 }

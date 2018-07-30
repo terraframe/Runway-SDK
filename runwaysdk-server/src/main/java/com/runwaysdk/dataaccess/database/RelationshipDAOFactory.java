@@ -57,7 +57,6 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.RelationshipRecursionException;
 import com.runwaysdk.dataaccess.TermRelationshipDAO;
-import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.TreeDAO;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -106,7 +105,6 @@ public class RelationshipDAOFactory
     metaDataRelationshipSet.add(RelationshipTypes.METADATA_RELATIONSHIP.getType());
     metaDataRelationshipSet.add(RelationshipTypes.PROBLEM_INHERITANCE.getType());
     metaDataRelationshipSet.add(RelationshipTypes.RELATIONSHIP_INHERITANCE.getType());
-    metaDataRelationshipSet.add(RelationshipTypes.TRANSITION_RELATIONSHIP.getType());
     metaDataRelationshipSet.add(RelationshipTypes.TYPE_PERMISSION.getType());
     metaDataRelationshipSet.add(RelationshipTypes.UTIL_INHERITANCE.getType());
     metaDataRelationshipSet.add(RelationshipTypes.VIEW_INHERITANCE.getType());
@@ -615,11 +613,6 @@ public class RelationshipDAOFactory
       else if (mdRelationshipIF instanceof MdGraphDAOIF)
       {
         MdRelationshipDAOIF superMdRelationshipIF = mdRelationshipIF.getSuperClass();
-
-        if (superMdRelationshipIF != null && superMdRelationshipIF.definesType().equals(RelationshipTypes.TRANSITION_RELATIONSHIP.getType()))
-        {
-          return new TransitionDAO(parentId, childId, attributeMap, relationshipType);
-        }
 
         return new GraphDAO(parentId, childId, attributeMap, relationshipType);
       }

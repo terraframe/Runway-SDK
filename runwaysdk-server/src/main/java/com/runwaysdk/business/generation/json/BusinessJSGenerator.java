@@ -31,7 +31,6 @@ import com.runwaysdk.constants.BusinessDTOInfo;
 import com.runwaysdk.constants.JSON;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.facade.FacadeUtil;
 import com.runwaysdk.generation.CommonGenerationUtil;
 
@@ -58,38 +57,10 @@ public class BusinessJSGenerator extends ElementJSGenerator
   {
     List<Declaration> instances = super.getInstanceMethods();
 
-    instances.addAll(writeTransitions());
     instances.addAll(writeParentMethods());
     instances.addAll(writeChildMethods());
 
     return instances;
-  }
-
-  /**
-   * Adds a getState() method for each transition.
-   */
-  private List<Declaration> writeTransitions()
-  {
-    List<Declaration> transitions = new LinkedList<Declaration>();
-
-    MdBusinessDAOIF mdBusinessIF = getMdTypeIF();
-
-    if(mdBusinessIF.hasStateMachine())
-    {
-      for(TransitionDAOIF transistion : mdBusinessIF.definesMdStateMachine().definesTransitions())
-      {
-        Declaration trans = this.newDeclaration();
-
-        String name = transistion.getName();
-
-        trans.writeln(CommonGenerationUtil.lowerFirstCharacter(name) + " : function(clientRequest)");
-        trans.openBracketLn();
-        trans.writeln(JSON.RUNWAY_FACADE.getLabel()+".promoteObject(clientRequest, this, '" + name + "');");
-        trans.closeBracket();
-      }
-    }
-
-    return transitions;
   }
 
   /**
@@ -140,8 +111,6 @@ public class BusinessJSGenerator extends ElementJSGenerator
 
     for (MdRelationshipDAOIF mdRel : mdBusinessIF.getParentMdRelationshipsOrdered())
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRel) || BusinessBaseGenerator.isStateMachine(mdRel)) continue;
-
       method.add(writeGetAllChildren(mdRel));
       method.add(writeGetAllChildrenRelationships(mdRel));
       method.add(writeAddChild(mdRel));
@@ -258,8 +227,6 @@ public class BusinessJSGenerator extends ElementJSGenerator
 
     for(MdRelationshipDAOIF mdRel : mdBusinessIF.getChildMdRelationshipsOrdered())
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRel) || BusinessBaseGenerator.isStateMachine(mdRel)) continue;
-
       methods.add(writeGetAllParents(mdRel));
       methods.add(writeGetAllParentRelationships(mdRel));
       methods.add(writeAddParent(mdRel));

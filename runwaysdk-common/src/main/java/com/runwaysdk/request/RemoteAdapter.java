@@ -190,25 +190,11 @@ public interface RemoteAdapter extends Remote
   public void removeMember(String sessionId, String userId, String... roles) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
-   * @throws RemoteExceptio
-   */
-  public void grantStatePermission(String sessionId, String actorId, String stateId, String... operationIds) throws RemoteException;
-
-  /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    * @throws RemoteExceptio
    */
   public void grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationIds) throws RemoteException;
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
-   * @throws RemoteExceptio
-   */
-  public void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationIds) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String,
@@ -225,13 +211,6 @@ public interface RemoteAdapter extends Remote
   public void grantMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationIds) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   * @throws RemoteExceptio
-   */
-  public BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName) throws RemoteException;
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    * @throws RemoteExceptio
@@ -246,26 +225,11 @@ public interface RemoteAdapter extends Remote
   public void revokeMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationIds) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String)
-   * @throws RemoteExceptio
-   */
-  public void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationId) throws RemoteException;
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
   public void revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationId) throws RemoteException;
-
-  /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String)
-   * @throws RemoteExceptio
-   */
-  public void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationId) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)

@@ -18,11 +18,7 @@
  */
 package com.runwaysdk.business.generation.dto;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.runwaysdk.business.BusinessDTO;
-import com.runwaysdk.business.generation.ClassStubGenerator;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.EntityDTOInfo;
@@ -31,10 +27,7 @@ import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
-import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.generation.CommonGenerationUtil;
 
 /**
@@ -87,7 +80,6 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   {
     writeChildMethods();
     writeParentMethods();
-    writeTransitions();
     writeGet();
   }
 
@@ -157,11 +149,6 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
       }
 
       if (GenerationUtil.isHardcodedType(rel.getChildMdBusiness()))
-      {
-        continue;
-      }
-
-      if (GenerationUtil.isStatus(this.getMdTypeDAOIF(), rel) || GenerationUtil.isStateMachine(rel))
       {
         continue;
       }
@@ -327,9 +314,6 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
         continue;
       }
 
-      if (GenerationUtil.isStatus(this.getMdTypeDAOIF(), rel) || GenerationUtil.isStateMachine(rel))
-        continue;
-
       writeGetAllParent(rel);
       writeGetAllParentRelationships(rel);
       writeAddParent(rel);
@@ -455,30 +439,6 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().writeLine("clientRequestIF.deleteParents(id, " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
-  }
-
-  /**
-   * Write all of the Transition method for this type
-   */
-  private void writeTransitions()
-  {
-    if (!this.getMdTypeDAOIF().hasStateMachine())
-      return;
-
-    for (TransitionDAOIF transistion : this.getMdTypeDAOIF().definesMdStateMachine().definesTransitions())
-    {
-      String methodName = CommonGenerationUtil.lowerFirstCharacter(transistion.getName());
-      getWriter().writeLine("public void " + methodName + "()");
-      getWriter().openBracket();
-      getWriter().writeLine("getRequest().promoteObject(this, \"" + transistion.getName() + "\");");
-      getWriter().closeBracket();
-      getWriter().writeLine("");
-
-      List<MdParameterDAOIF> list = new LinkedList<MdParameterDAOIF>();
-      list.add(GenerationUtil.getMdParameterId());
-
-      writeMdMethod(this.getDTOStubClassType() + ".CLASS", list, methodName, new Type(ClassStubGenerator.getGeneratedType(this.getMdTypeDAOIF())), true, true);
-    }
   }
 
   /*

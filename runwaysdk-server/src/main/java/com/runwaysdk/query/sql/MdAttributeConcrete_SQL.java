@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -356,11 +355,6 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
   }
 
   public Map<String, String> getDescriptions()
-  {
-    throw new UnsupportedOperationException(this.unsupportedOperationMessage);
-  }
-
-  public StateMasterDAOIF currentState()
   {
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);
   }

@@ -36,13 +36,8 @@ import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
@@ -65,7 +60,6 @@ import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.TestConstants;
@@ -92,7 +86,6 @@ import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.SAXParseTest;
@@ -133,8 +126,6 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 import com.runwaysdk.session.Request;
 
 public class MergeTest
@@ -954,51 +945,6 @@ public class MergeTest
 
   @Request
   @Test
-  public void testAddStateToStateMachineMerge()
-  {
-    MdBusinessDAO mdBusiness = createMdBusiness();
-    mdBusiness.setGenerateMdController(false);
-    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.apply();
-
-    MdStateMachineDAO mdStateMachine = createMdStateMachine(mdBusiness);
-    mdStateMachine.setGenerateMdController(false);
-    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine.apply();
-
-    StateMasterDAO activeState = mdStateMachine.addState(ACTIVE_STATE, StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    activeState.apply();
-    StateMasterDAO passiveState = mdStateMachine.addState(PASSIVE_STATE, StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    passiveState.apply();
-    TransitionDAO activeToPassive = mdStateMachine.addTransition("activeToPassive", activeState.getId(), passiveState.getId());
-    activeToPassive.apply();
-    VersionExporter.export(CREATE_SCHEMA, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness }));
-
-    ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness });
-    StateMasterDAO suspendedState = mdStateMachine.addState(SUSPENDED_STATE, StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    TransitionDAO suspendedToPassive = mdStateMachine.addTransition("suspendedToPassive", suspendedState.getId(), passiveState.getId());
-    metadata.addNewTransitions(mdStateMachine, suspendedToPassive);
-    metadata.addNewStates(mdStateMachine, suspendedState);
-    VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, metadata);
-
-    TestFixtureFactory.delete(mdBusiness);
-
-    mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
-
-    // Import merge file
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
-
-    MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
-    MdBusinessDAOIF mdBusinessDAOIF = (MdBusinessDAOIF) mdEntityIF;
-    MdStateMachineDAOIF mdStateMachineDAOIF = mdBusinessDAOIF.definesMdStateMachine();
-    StateMasterDAOIF active = mdStateMachineDAOIF.definesStateMaster(ACTIVE_STATE);
-    StateMasterDAOIF suspended = mdStateMachineDAOIF.definesStateMaster(SUSPENDED_STATE);
-    Assert.assertTrue(active != null && suspended != null);
-
-  }
-
-  @Request
-  @Test
   public void testDeleteMerge()
   {
     final MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -1126,56 +1072,6 @@ public class MergeTest
     MdAttributeConcreteDAO mdAttributeChar = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
     mdAttributeChar.apply();
 
-    // Create a new MdState
-    MdStateMachineDAO mdStateMachine = MdStateMachineDAO.newInstance();
-    mdStateMachine.setValue(MdStateMachineInfo.NAME, "Blog");
-    mdStateMachine.setValue(MdStateMachineInfo.PACKAGE, "test.state");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State desc");
-    mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
-    mdStateMachine.setGenerateMdController(false);
-    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine.apply();
-
-    StateMasterDAO state11 = mdStateMachine.addState("Writing", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state11.apply();
-
-    StateMasterDAO state12 = mdStateMachine.addState("Editing", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state12.apply();
-
-    StateMasterDAO state13 = mdStateMachine.addState("Reading", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state13.apply();
-
-    mdStateMachine.addTransition("Written", state11.getId(), state12.getId()).apply();
-    mdStateMachine.addTransition("Edited", state12.getId(), state13.getId()).apply();
-
-    // Add a StateMachine to mdBusiness2
-    MdStateMachineDAO mdStateMachine2 = MdStateMachineDAO.newInstance();
-    mdStateMachine2.setValue(MdStateMachineInfo.NAME, "StateMachine1");
-    mdStateMachine2.setValue(MdStateMachineInfo.PACKAGE, "test.xmlclasses");
-    mdStateMachine2.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "StateMachine1");
-    mdStateMachine2.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
-    mdStateMachine2.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdStateMachine2.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness2.getId());
-    mdStateMachine2.setGenerateMdController(false);
-    mdStateMachine2.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine2.apply();
-
-    // Add states
-    StateMasterDAO state21 = mdStateMachine2.addState("Available", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state21.apply();
-
-    StateMasterDAO state22 = mdStateMachine2.addState("CheckedOut", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state22.apply();
-
-    StateMasterDAO state23 = mdStateMachine2.addState("CheckedIn", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state23.apply();
-
-    mdStateMachine2.addTransition("CheckOut", state21.getId(), state22.getId()).apply();
-    mdStateMachine2.addTransition("CheckIn", state22.getId(), state23.getId()).apply();
-    mdStateMachine2.addTransition("Stock", state23.getId(), state21.getId()).apply();
-
     MdRelationshipDAO mdRelationship = TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
     mdRelationship.apply();
 
@@ -1189,10 +1085,6 @@ public class MergeTest
     // Add attribute permissions
     user.grantPermission(Operation.WRITE, mdAttributeChar.getId());
 
-    // Add permissions a State
-    user.grantPermission(Operation.DELETE, state11.getId());
-    user.grantPermission(Operation.READ, state11.getId());
-
     // Add struct permissions
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
     mdStruct.setGenerateMdController(false);
@@ -1201,47 +1093,12 @@ public class MergeTest
 
     user.grantPermission(Operation.DELETE, mdStruct.getId());
 
-    // Add permissions to a State-Attribute pairing
-    TypeTupleDAO tuple = TypeTupleDAO.newInstance();
-    tuple.setStateMaster(state12.getId());
-    tuple.setMetaData(mdAttributeChar.getId());
-    tuple.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple.apply();
-
-    user.grantPermission(Operation.WRITE, tuple.getId());
-
     // Add permissions to a MdRelationship
     user.grantPermission(Operation.CREATE, mdRelationship.getId());
     user.grantPermission(Operation.DELETE, mdRelationship.getId());
 
     // Add permissions to an attribute defined by the MdRelationship
     user.grantPermission(Operation.READ, mdAttributeBool.getId());
-
-    // Add directional permissions to the parent state of the MdRelationship
-    TypeTupleDAO tuple2 = TypeTupleDAO.newInstance();
-    tuple2.setStateMaster(state11.getId());
-    tuple2.setMetaData(mdRelationship.getId());
-    tuple2.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple2.apply();
-
-    user.grantPermission(Operation.ADD_CHILD, tuple2.getId());
-    user.grantPermission(Operation.READ_CHILD, tuple2.getId());
-
-    TypeTupleDAO tuple3 = TypeTupleDAO.newInstance();
-    tuple3.setStateMaster(state12.getId());
-    tuple3.setMetaData(mdRelationship.getId());
-    tuple3.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple3.apply();
-
-    user.grantPermission(Operation.WRITE_CHILD, tuple3.getId());
-
-    TypeTupleDAO tuple4 = TypeTupleDAO.newInstance();
-    tuple4.setStateMaster(state21.getId());
-    tuple4.setMetaData(mdRelationship.getId());
-    tuple4.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple4.apply();
-
-    user.grantPermission(Operation.ADD_PARENT, tuple4.getId());
 
     // Export the permissions
     ExportMetadata metadata = new ExportMetadata();
@@ -1259,14 +1116,9 @@ public class MergeTest
     metadataAfterUpdate.addRevokePermissions(user);
 
     user.grantPermission(Operation.READ, mdAttributeChar.getId());
-    user.revokeAllPermissions(tuple4.getId());
 
     VersionExporter.export(UPDATE_SCHEMA_2, SCHEMA, metadataAfterUpdate);
 
-    TestFixtureFactory.delete(tuple);
-    TestFixtureFactory.delete(tuple2);
-    TestFixtureFactory.delete(tuple3);
-    TestFixtureFactory.delete(tuple4);
 
     // Add permissions to the MdBusiness
     user.revokePermission(Operation.CREATE, mdBusiness1.getId());
@@ -1275,13 +1127,7 @@ public class MergeTest
     // Add attribute permissions
     user.revokePermission(Operation.WRITE, mdAttributeChar.getId());
 
-    // Add permissions a State
-    user.revokePermission(Operation.DELETE, state11.getId());
-    user.revokePermission(Operation.READ, state11.getId());
-
     user.revokePermission(Operation.DELETE, mdStruct.getId());
-
-    user.revokePermission(Operation.WRITE, tuple.getId());
 
     // Add permissions to a MdRelationship
     user.revokePermission(Operation.CREATE, mdRelationship.getId());
@@ -1295,10 +1141,6 @@ public class MergeTest
     VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     UserDAOIF userIF = UserDAO.findUser("testUser");
-    TypeTupleDAOIF tupleIF = TypeTupleDAO.findTuple(mdAttributeChar.getId(), state12.getId());
-    TypeTupleDAOIF tuple2IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state11.getId());
-    TypeTupleDAOIF tuple3IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state12.getId());
-    TypeTupleDAOIF tuple4IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state21.getId());
 
     Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
     Assert.assertEquals(1, assignedRoles.size());
@@ -1310,22 +1152,11 @@ public class MergeTest
     operations = userIF.getAllPermissions(mdAttributeChar);
     Assert.assertEquals(0, operations.size());
 
-    operations = userIF.getAllPermissions(state11);
-    Assert.assertEquals(0, operations.size());
-
     operations = userIF.getAllPermissions(mdRelationship);
     Assert.assertEquals(0, operations.size());
 
     operations = userIF.getAllPermissions(mdAttributeBool);
     Assert.assertEquals(0, operations.size());
-
-    Assert.assertNull(tupleIF);
-    Assert.assertNull(tuple2IF);
-    Assert.assertNull(tuple3IF);
-
-    operations = userIF.getAllPermissions(tuple4IF);
-    Assert.assertEquals(1, operations.size());
-    Assert.assertTrue(operations.contains(Operation.ADD_PARENT));
 
     operations = userIF.getAllPermissions(mdStruct);
     Assert.assertEquals(0, operations.size());
@@ -1358,56 +1189,6 @@ public class MergeTest
     MdAttributeConcreteDAO mdAttributeChar = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
     mdAttributeChar.apply();
 
-    // Create a new MdState
-    MdStateMachineDAO mdStateMachine = MdStateMachineDAO.newInstance();
-    mdStateMachine.setValue(MdStateMachineInfo.NAME, "Blog");
-    mdStateMachine.setValue(MdStateMachineInfo.PACKAGE, "test.state");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State");
-    mdStateMachine.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Star State desc");
-    mdStateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness1.getId());
-    mdStateMachine.setGenerateMdController(false);
-    mdStateMachine.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine.apply();
-
-    StateMasterDAO state11 = mdStateMachine.addState("Writing", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state11.apply();
-
-    StateMasterDAO state12 = mdStateMachine.addState("Editing", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state12.apply();
-
-    StateMasterDAO state13 = mdStateMachine.addState("Reading", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state13.apply();
-
-    mdStateMachine.addTransition("Written", state11.getId(), state12.getId()).apply();
-    mdStateMachine.addTransition("Edited", state12.getId(), state13.getId()).apply();
-
-    // Add a StateMachine to mdBusiness2
-    MdStateMachineDAO mdStateMachine2 = MdStateMachineDAO.newInstance();
-    mdStateMachine2.setValue(MdStateMachineInfo.NAME, "StateMachine1");
-    mdStateMachine2.setValue(MdStateMachineInfo.PACKAGE, "test.xmlclasses");
-    mdStateMachine2.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "StateMachine1");
-    mdStateMachine2.setStructValue(MdStateMachineInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Machine of Class1");
-    mdStateMachine2.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdStateMachine2.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness2.getId());
-    mdStateMachine2.setGenerateMdController(false);
-    mdStateMachine2.setValue(MdStateMachineInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdStateMachine2.apply();
-
-    // Add states
-    StateMasterDAO state21 = mdStateMachine2.addState("Available", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state21.apply();
-
-    StateMasterDAO state22 = mdStateMachine2.addState("CheckedOut", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state22.apply();
-
-    StateMasterDAO state23 = mdStateMachine2.addState("CheckedIn", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state23.apply();
-
-    mdStateMachine2.addTransition("CheckOut", state21.getId(), state22.getId()).apply();
-    mdStateMachine2.addTransition("CheckIn", state22.getId(), state23.getId()).apply();
-    mdStateMachine2.addTransition("Stock", state23.getId(), state21.getId()).apply();
-
     MdRelationshipDAO mdRelationship = TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
     mdRelationship.setGenerateMdController(false);
     mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -1424,10 +1205,6 @@ public class MergeTest
     user.grantPermission(Operation.WRITE, mdAttributeChar.getId());
     user.grantPermission(Operation.READ, mdAttributeChar.getId());
 
-    // Add permissions a State
-    user.grantPermission(Operation.DELETE, state11.getId());
-    user.grantPermission(Operation.READ, state11.getId());
-
     // Add struct permissions
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
     mdStruct.setGenerateMdController(false);
@@ -1436,47 +1213,12 @@ public class MergeTest
 
     user.grantPermission(Operation.DELETE, mdStruct.getId());
 
-    // Add permissions to a State-Attribute pairing
-    TypeTupleDAO tuple = TypeTupleDAO.newInstance();
-    tuple.setStateMaster(state12.getId());
-    tuple.setMetaData(mdAttributeChar.getId());
-    tuple.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple.apply();
-
-    user.grantPermission(Operation.WRITE, tuple.getId());
-
     // Add permissions to a MdRelationship
     user.grantPermission(Operation.CREATE, mdRelationship.getId());
     user.grantPermission(Operation.DELETE, mdRelationship.getId());
 
     // Add permissions to an attribute defined by the MdRelationship
     user.grantPermission(Operation.READ, mdAttributeBool.getId());
-
-    // Add directional permissions to the parent state of the MdRelationship
-    TypeTupleDAO tuple2 = TypeTupleDAO.newInstance();
-    tuple2.setStateMaster(state11.getId());
-    tuple2.setMetaData(mdRelationship.getId());
-    tuple2.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple2.apply();
-
-    user.grantPermission(Operation.ADD_CHILD, tuple2.getId());
-    user.grantPermission(Operation.READ_CHILD, tuple2.getId());
-
-    TypeTupleDAO tuple3 = TypeTupleDAO.newInstance();
-    tuple3.setStateMaster(state12.getId());
-    tuple3.setMetaData(mdRelationship.getId());
-    tuple3.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple3.apply();
-
-    user.grantPermission(Operation.WRITE_CHILD, tuple3.getId());
-
-    TypeTupleDAO tuple4 = TypeTupleDAO.newInstance();
-    tuple4.setStateMaster(state21.getId());
-    tuple4.setMetaData(mdRelationship.getId());
-    tuple4.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "tuple");
-    tuple4.apply();
-
-    user.grantPermission(Operation.ADD_PARENT, tuple4.getId());
 
     // Export the permissions
     ExportMetadata metadata = new ExportMetadata();
@@ -1490,14 +1232,8 @@ public class MergeTest
     // metadata.addCreate(user);
     metadataAfterUpdate.addGrantPermissions(user);
 
-    user.grantPermission(Operation.DELETE_PARENT, tuple4.getId());
-
     VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, metadataAfterUpdate);
 
-    TestFixtureFactory.delete(tuple);
-    TestFixtureFactory.delete(tuple2);
-    TestFixtureFactory.delete(tuple3);
-    TestFixtureFactory.delete(tuple4);
     TestFixtureFactory.delete(user);
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
@@ -1505,11 +1241,7 @@ public class MergeTest
     VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     UserDAOIF userIF = UserDAO.findUser("testUser");
-    TypeTupleDAOIF tupleIF = TypeTupleDAO.findTuple(mdAttributeChar.getId(), state12.getId());
-    TypeTupleDAOIF tuple2IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state11.getId());
-    TypeTupleDAOIF tuple3IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state12.getId());
-    TypeTupleDAOIF tuple4IF = TypeTupleDAO.findTuple(mdRelationship.getId(), state21.getId());
-
+    
     Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
     Assert.assertEquals(1, assignedRoles.size());
     Assert.assertTrue(assignedRoles.contains(role));
@@ -1524,15 +1256,6 @@ public class MergeTest
     Assert.assertTrue(operations.contains(Operation.WRITE));
     Assert.assertTrue(operations.contains(Operation.READ));
 
-    operations = userIF.getAllPermissions(state11);
-    Assert.assertEquals(2, operations.size());
-    Assert.assertTrue(operations.contains(Operation.DELETE));
-    Assert.assertTrue(operations.contains(Operation.READ));
-
-    operations = userIF.getAllPermissions(tupleIF);
-    Assert.assertEquals(1, operations.size());
-    Assert.assertTrue(operations.contains(Operation.WRITE));
-
     operations = userIF.getAllPermissions(mdRelationship);
     Assert.assertEquals(2, operations.size());
     Assert.assertTrue(operations.contains(Operation.DELETE));
@@ -1541,20 +1264,6 @@ public class MergeTest
     operations = userIF.getAllPermissions(mdAttributeBool);
     Assert.assertEquals(1, operations.size());
     Assert.assertTrue(operations.contains(Operation.READ));
-
-    operations = userIF.getAllPermissions(tuple2IF);
-    Assert.assertEquals(2, operations.size());
-    Assert.assertTrue(operations.contains(Operation.ADD_CHILD));
-    Assert.assertTrue(operations.contains(Operation.READ_CHILD));
-
-    operations = userIF.getAllPermissions(tuple3IF);
-    Assert.assertEquals(1, operations.size());
-    Assert.assertTrue(operations.contains(Operation.WRITE_CHILD));
-
-    operations = userIF.getAllPermissions(tuple4IF);
-    Assert.assertEquals(2, operations.size());
-    Assert.assertTrue(operations.contains(Operation.ADD_PARENT));
-    Assert.assertTrue(operations.contains(Operation.DELETE_PARENT));
 
     operations = userIF.getAllPermissions(mdStruct);
     Assert.assertEquals(1, operations.size());
@@ -3512,19 +3221,6 @@ public class MergeTest
     mdParameter.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "validName");
     mdParameter.setValue(MdParameterInfo.ORDER, "100");
     return mdParameter;
-  }
-
-  private MdStateMachineDAO createMdStateMachine(MdBusinessDAO mdBusiness)
-  {
-    MdStateMachineDAO mdState = MdStateMachineDAO.newInstance();
-    mdState.setValue(MdStateMachineInfo.PACKAGE, STATE_MACHINE_PACKAGE);
-    mdState.setValue(MdStateMachineInfo.NAME, STATE_MACHINE_NAME);
-    mdState.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, STATE_MACHINE_NAME);
-    mdState.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdState.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness.getId());
-    mdState.setGenerateMdController(false);
-    mdState.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    return mdState;
   }
 
   private void generateCreateSchema(ComponentIF[] componentArray)

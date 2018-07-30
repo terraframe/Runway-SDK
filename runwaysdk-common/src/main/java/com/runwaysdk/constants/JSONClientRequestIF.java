@@ -374,38 +374,9 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @param sessionId
    * @param actorId
    * @param operationId
-   * @param stateId
-   */
-  public String grantStatePermission(String sessionId, String actorId, String stateId, String ... operationIds);
-
-  /**
-   *
-   * @param sessionId
-   * @param actorId
-   * @param operationId
    * @param mdAttributeId
    */
   public String grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String ... operationIds);
-
-  /**
-   *
-   * @param sessionId
-   * @param actorId
-   * @param operationId
-   * @param mdAttributeId
-   * @param stateId
-   */
-  public String grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String ... operationId);
-
-  /**
-   * Promotes the object with the given id to the state with the given
-   * name.
-   *
-   * @param sessionid
-   * @param objectId
-   * @param transitionName
-   */
-  public String promoteObject(String sessionId, String objectId, String transitionName);
 
   /**
    * Removes an operation permission from a user or role on a type. Does nothing
@@ -446,28 +417,9 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @param sessionId
    * @param actorId
    * @param operationId
-   * @param stateId
-   */
-  public String revokeStatePermission(String sessionId, String actorId, String stateId, String ... operationIds);
-
-  /**
-   *
-   * @param sessionId
-   * @param actorId
-   * @param operationId
    * @param mdAttributeId
    */
   public String revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String ... operationIds);
-
-  /**
-   *
-   * @param sessionId
-   * @param actorId
-   * @param operationId
-   * @param mdAttributeId
-   * @param stateId
-   */
-  public String revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String ... operationIds);
 
   /**
    *

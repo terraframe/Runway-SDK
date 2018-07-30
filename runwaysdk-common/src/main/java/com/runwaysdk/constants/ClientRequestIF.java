@@ -422,27 +422,10 @@ public interface ClientRequestIF extends ClientRequestMarker
   /**
    * 
    * @param actorId
-   * @param stateId
-   * @param operationNames
-   */
-  public void grantStatePermission(String actorId, String stateId, String... operationNames);
-
-  /**
-   * 
-   * @param actorId
    * @param mdAttributeId
    * @param operationNames
    */
   public void grantAttributePermission(String actorId, String mdAttributeId, String... operationNames);
-
-  /**
-   * 
-   * @param actorId
-   * @param mdAttributeId
-   * @param stateId
-   * @param operationNames
-   */
-  public void grantAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames);
 
   /**
    * Grants permission to a role or user to execute an operation on a type.
@@ -469,14 +452,6 @@ public interface ClientRequestIF extends ClientRequestMarker
    *          names of operation to grant.
    */
   public void grantMethodPermission(String actorId, String mdMethodId, String... operationNames);
-
-  /**
-   * Promotes the object with the given id to the state with the given name.
-   * 
-   * @param businessDTO
-   * @param transitionName
-   */
-  public void promoteObject(BusinessDTO businessDTO, String transitionName);
 
   /**
    * Removes an operation permission from a user or role on a type. Does nothing
@@ -509,27 +484,10 @@ public interface ClientRequestIF extends ClientRequestMarker
   /**
    * 
    * @param actorId
-   * @param stateId
-   * @param operationNames
-   */
-  public void revokeStatePermission(String actorId, String stateId, String... operationNames);
-
-  /**
-   * 
-   * @param actorId
    * @param mdAttributeId
    * @param operationNames
    */
   public void revokeAttributePermission(String actorId, String mdAttributeId, String... operationNames);
-
-  /**
-   * 
-   * @param actorId
-   * @param mdAttributeId
-   * @param stateId
-   * @param operationNames
-   */
-  public void revokeAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames);
 
   /**
    * 

@@ -27,8 +27,6 @@ import java.util.Set;
 import com.runwaysdk.business.BusinessIterator;
 import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.RelationshipQuery;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.RelationshipTypes;
@@ -133,7 +131,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     this.addParentRelationshipMethods();
     this.addChildRelationshipMethods();
     this.addEnumerationItemRelationships();
-    this.addStateQueryMethods();
 
     this.refInnerInterfaceDef();
     this.refInnerClassDef();
@@ -654,10 +651,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipIFList)
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRelationshipIF) || BusinessBaseGenerator.isStateMachine(mdRelationshipIF))
-      {
-        continue;
-      }
       this.addChildMethod(mdRelationshipIF);
       this.addNotChildMethod(mdRelationshipIF);
     }
@@ -963,10 +956,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipIFList)
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRelationshipIF) || BusinessBaseGenerator.isStateMachine(mdRelationshipIF))
-      {
-        continue;
-      }
       this.addParentMethod(mdRelationshipIF);
       this.addNotParentMethod(mdRelationshipIF);
     }
@@ -1187,107 +1176,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
         writeLine(this.srcBuffer, "  }");
         writeLine(this.srcBuffer, "");
       }
-    }
-  }
-
-  /**
-   * Add methods that query by object state.
-   * 
-   */
-  private void addStateQueryMethods()
-  {
-    MdBusinessDAOIF mdBusinessIF = this.getMdClassIF();
-    if (!mdBusinessIF.hasStateMachine())
-    {
-      return;
-    }
-
-    MdStateMachineDAOIF stateMachine = mdBusinessIF.definesMdStateMachine();
-
-    for (StateMasterDAOIF stateMaster : stateMachine.definesStateMasters())
-    {
-      // Get the status mdRelationship defined for the entry state
-      MdRelationshipDAOIF mdRelationship = stateMachine.getMdStatus(stateMaster);
-
-      String stateName = stateMaster.getName();
-      String methodName = "state_" + stateName;
-      writeLine(this.srcBuffer, "  /**");
-      writeLine(this.srcBuffer, "   * Restricts query to [" + mdBusinessIF.definesType() + "] objects in the [" + stateName + "] state.");
-      writeLine(this.srcBuffer, "   */");
-      writeLine(this.srcBuffer, "  public " + Condition.class.getName() + " " + methodName + "()");
-      writeLine(this.srcBuffer, "  {");
-      writeLine(this.srcBuffer, "    " + QueryFactory.class.getName() + " queryFactory = this.getQueryFactory();");
-      write(this.srcBuffer, "    " + RelationshipQuery.class.getName() + " relationshipQuery = ");
-      // Using the string value instead of the constant, as we do not generate
-      // classes for state transitions
-      writeLine(this.srcBuffer, "queryFactory.relationshipQuery(\"" + mdRelationship.definesType() + "\");");
-      writeLine(this.srcBuffer, "");
-      writeLine(this.srcBuffer, "    return this.getBusinessQuery().isParentIn(relationshipQuery);");
-      writeLine(this.srcBuffer, "  }");
-      writeLine(this.srcBuffer, "");
-    }
-  }
-
-  /**
-   * Add methods that query by object state.
-   * 
-   */
-  private void addRefInterfaceStateQueryMethods()
-  {
-    MdBusinessDAOIF mdBusinessIF = this.getMdClassIF();
-    if (!mdBusinessIF.hasStateMachine())
-    {
-      return;
-    }
-
-    MdStateMachineDAOIF stateMachine = mdBusinessIF.definesMdStateMachine();
-
-    for (StateMasterDAOIF stateMaster : stateMachine.definesStateMasters())
-    {
-      String stateName = stateMaster.getName();
-      String methodName = "state_" + stateName;
-      writeLine(this.srcBuffer, "  /**");
-      writeLine(this.srcBuffer, "   * Restricts query to [" + mdBusinessIF.definesType() + "] objects in the [" + stateName + "] state.");
-      writeLine(this.srcBuffer, "   */");
-      writeLine(this.srcBuffer, "  public " + Condition.class.getName() + " " + methodName + "();");
-    }
-  }
-
-  /**
-   * Add methods that query by object state.
-   * 
-   */
-  private void addRefStateQueryMethods()
-  {
-    MdBusinessDAOIF mdBusinessIF = this.getMdClassIF();
-    if (!mdBusinessIF.hasStateMachine())
-    {
-      return;
-    }
-
-    MdStateMachineDAOIF stateMachine = mdBusinessIF.definesMdStateMachine();
-
-    for (StateMasterDAOIF stateMaster : stateMachine.definesStateMasters())
-    {
-      // Get the status mdRelationship defined for the entry state
-      MdRelationshipDAOIF mdRelationship = stateMachine.getMdStatus(stateMaster);
-
-      String stateName = stateMaster.getName();
-      String methodName = "state_" + stateName;
-      writeLine(this.srcBuffer, "  /**");
-      writeLine(this.srcBuffer, "   * Restricts query to [" + mdBusinessIF.definesType() + "] objects in the [" + stateName + "] state.");
-      writeLine(this.srcBuffer, "   */");
-      writeLine(this.srcBuffer, "  public " + Condition.class.getName() + " " + methodName + "()");
-      writeLine(this.srcBuffer, "  {");
-      writeLine(this.srcBuffer, "    " + QueryFactory.class.getName() + " queryFactory = this.getQueryFactory();");
-      write(this.srcBuffer, "    " + RelationshipQuery.class.getName() + " relationshipQuery = ");
-      // Using the string value instead of the constant, as we do not generate
-      // classes for state transitions
-      writeLine(this.srcBuffer, "queryFactory.relationshipQuery(\"" + mdRelationship.definesType() + "\");");
-      writeLine(this.srcBuffer, "");
-      writeLine(this.srcBuffer, "    return this.isParentIn(relationshipQuery);");
-      writeLine(this.srcBuffer, "  }");
-      writeLine(this.srcBuffer, "");
     }
   }
 
@@ -1575,7 +1463,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     this.addRefIFNotInChildRelationshipMethods();
     this.addRefIFParentRelationshipMethods();
     this.addRefIFNotInParentRelationshipMethods();
-    this.addRefInterfaceStateQueryMethods();
 
     writeLine(this.srcBuffer, "  }");
   }
@@ -1644,8 +1531,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     this.addRefParentRelationshipMethods();
     this.addRefNotInParentRelationshipMethods();
 
-    this.addRefStateQueryMethods();
-
     this.createAttributeRefFactory(this.srcBuffer);
     this.createAttributeStructFactory(this.srcBuffer);
     this.createAttributeLocalFactory(this.srcBuffer);
@@ -1667,11 +1552,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipIFList)
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRelationshipIF) || BusinessBaseGenerator.isStateMachine(mdRelationshipIF))
-      {
-        continue;
-      }
-
       this.addRefIFChildMethod(mdRelationshipIF, "", "");
       this.addRefIFChildMethod(mdRelationshipIF, "", SUBSELECT_RELATIONSHIP_PREFIX);
     }
@@ -1689,11 +1569,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipIFList)
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRelationshipIF) || BusinessBaseGenerator.isStateMachine(mdRelationshipIF))
-      {
-        continue;
-      }
-
       this.addRefIFChildMethod(mdRelationshipIF, NOT_IN_RELATIONSHIP_PREFIX, "");
       this.addRefIFChildMethod(mdRelationshipIF, NOT_IN_RELATIONSHIP_PREFIX, SUBSELECT_RELATIONSHIP_PREFIX);
     }
@@ -1746,11 +1621,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipIFList)
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRelationshipIF) || BusinessBaseGenerator.isStateMachine(mdRelationshipIF))
-      {
-        continue;
-      }
-
       this.addRefIFParentMethod(mdRelationshipIF, "", "");
       this.addRefIFParentMethod(mdRelationshipIF, "", SUBSELECT_RELATIONSHIP_PREFIX);
     }
@@ -1768,11 +1638,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipIFList)
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRelationshipIF) || BusinessBaseGenerator.isStateMachine(mdRelationshipIF))
-      {
-        continue;
-      }
-
       this.addRefIFParentMethod(mdRelationshipIF, NOT_IN_RELATIONSHIP_PREFIX, "");
       this.addRefIFParentMethod(mdRelationshipIF, NOT_IN_RELATIONSHIP_PREFIX, SUBSELECT_RELATIONSHIP_PREFIX);
     }
@@ -1823,10 +1688,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipIFList)
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRelationshipIF) || BusinessBaseGenerator.isStateMachine(mdRelationshipIF))
-      {
-        continue;
-      }
       this.addRefChildMethod(mdRelationshipIF);
     }
   }
@@ -1952,10 +1813,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipIFList)
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRelationshipIF) || BusinessBaseGenerator.isStateMachine(mdRelationshipIF))
-      {
-        continue;
-      }
       this.addRefNotInChildMethod(mdRelationshipIF);
     }
   }
@@ -2081,10 +1938,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipIFList)
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRelationshipIF) || BusinessBaseGenerator.isStateMachine(mdRelationshipIF))
-      {
-        continue;
-      }
       this.addRefParentMethod(mdRelationshipIF);
     }
   }
@@ -2210,10 +2063,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipIFList)
     {
-      if (BusinessBaseGenerator.isStatus(mdBusinessIF, mdRelationshipIF) || BusinessBaseGenerator.isStateMachine(mdRelationshipIF))
-      {
-        continue;
-      }
       this.addRefNotInParentMethod(mdRelationshipIF);
     }
   }

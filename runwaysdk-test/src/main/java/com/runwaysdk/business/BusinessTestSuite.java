@@ -23,7 +23,6 @@ import org.junit.runners.Suite;
 
 import com.runwaysdk.RunwayVersionTest;
 import com.runwaysdk.business.rbac.RBACTest;
-import com.runwaysdk.business.state.StateTest;
 import com.runwaysdk.format.CustomFormatTest;
 import com.runwaysdk.format.DefaultFormatTest;
 import com.runwaysdk.format.LocalizedFormatTest;
@@ -31,7 +30,6 @@ import com.runwaysdk.format.LocalizedFormatTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
   ExpressionAttributeTest.class,
-  StateTest.class,
   RBACTest.class,
   EntityGenTest.class,
   EntityMultiReferenceGenTest.class,

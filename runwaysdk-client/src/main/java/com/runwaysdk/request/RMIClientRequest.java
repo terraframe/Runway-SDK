@@ -831,31 +831,6 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, String...)
-   */
-  public void grantStatePermission(String actorId, String stateId, String... operationNames)
-  {
-    this.clearNotifications();
-    try
-    {
-      rmiAdapter.grantStatePermission(this.getSessionId(), actorId, stateId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      this.setMessagesConvertToTypeSafe(me);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildThrowable(e, this, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, String...)
    */
@@ -865,31 +840,6 @@ public class RMIClientRequest extends ClientRequest
     try
     {
       rmiAdapter.grantAttributePermission(this.getSessionId(), actorId, mdAttributeId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      this.setMessagesConvertToTypeSafe(me);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildThrowable(e, this, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
-   */
-  public void grantAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    this.clearNotifications();
-    try
-    {
-      rmiAdapter.grantAttributeStatePermission(this.getSessionId(), actorId, mdAttributeId, stateId, operationNames);
     }
     catch (MessageExceptionDTO me)
     {
@@ -956,34 +906,6 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String)
-   */
-  public void promoteObject(BusinessDTO businessDTO, String transitionName)
-  {
-    this.clearNotifications();
-    BusinessDTO generic;
-    try
-    {
-      generic = rmiAdapter.promoteObject(this.getSessionId(), businessDTO, transitionName);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      generic = (BusinessDTO) me.getReturnObject();
-      this.setMessagesConvertToTypeSafe(me);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildThrowable(e, this, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-    ConversionFacade.typeSafeCopy(this, generic, businessDTO);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String...)
    */
@@ -1034,31 +956,6 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String...)
-   */
-  public void revokeStatePermission(String actorId, String stateId, String... operationNames)
-  {
-    this.clearNotifications();
-    try
-    {
-      rmiAdapter.revokeStatePermission(this.getSessionId(), actorId, stateId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      this.setMessagesConvertToTypeSafe(me);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildThrowable(e, this, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String...)
    */
@@ -1068,31 +965,6 @@ public class RMIClientRequest extends ClientRequest
     try
     {
       rmiAdapter.revokeAttributePermission(this.getSessionId(), actorId, mdAttributeId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      this.setMessagesConvertToTypeSafe(me);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildThrowable(e, this, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public void revokeAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    this.clearNotifications();
-    try
-    {
-      rmiAdapter.revokeAttributeStatePermission(this.getSessionId(), actorId, mdAttributeId, stateId, operationNames);
     }
     catch (MessageExceptionDTO me)
     {

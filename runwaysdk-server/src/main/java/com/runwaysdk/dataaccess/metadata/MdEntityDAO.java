@@ -32,7 +32,6 @@ import com.runwaysdk.business.generation.JavaArtifactMdEntityCommand;
 import com.runwaysdk.business.generation.JavaArtifactMdTypeCommand;
 import com.runwaysdk.business.generation.TypeGenerator;
 import com.runwaysdk.business.generation.view.AbstractViewGenerator;
-import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.configuration.LegacyPropertiesSupport;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.GeneratedActions;
@@ -1338,9 +1337,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   protected boolean isMdControllerQualified()
   {
     // Flag denoting if this MdEntityDAO was defined as part of a state machine
-    boolean isState = this.getPackage().startsWith(MdStateMachineDAO.STATE_PACKAGE);
-
-    return ! ( isState ) && this.isPublished();
+    return this.isPublished();
   }
 
   /**

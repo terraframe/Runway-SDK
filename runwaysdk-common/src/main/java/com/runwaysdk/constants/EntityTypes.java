@@ -31,11 +31,6 @@ public enum EntityTypes
   PHONE_NUMBER(Constants.SYSTEM_PACKAGE + ".PhoneNumber", "phone_number", "0000000000000000000000000000031800000000000000000000000000000979"),
 
   /**
-   * Root state attribute class
-   */
-  STATE_MASTER(Constants.SYSTEM_PACKAGE + ".StateMaster", "state_master", "0000000000000000000000000000094200000000000000000000000000000001"),
-
-  /**
    * Class that defines the symmetric encryption methods
    */
   SYMMETRIC_METHOD (Constants.METADATA_PACKAGE + ".SymmetricMethods",  "symmetric_methods", "0000000000000000000000000000062600000000000000000000000000000001"),

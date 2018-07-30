@@ -41,7 +41,6 @@ import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
-import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -62,7 +61,6 @@ import com.runwaysdk.constants.MdMessageInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.MdTermInfo;
@@ -114,22 +112,17 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.StructDAOIF;
-import com.runwaysdk.dataaccess.TransientDAOFactory;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.Diskstore;
-import com.runwaysdk.dataaccess.database.ControllerDAOFactory;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DefaultEnumerationInfo;
 import com.runwaysdk.dataaccess.database.DefaultMdEntityInfo;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.database.StructDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
-import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
-import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
-import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataException;
 import com.runwaysdk.dataaccess.transaction.ITaskListener;
@@ -1490,7 +1483,7 @@ public class ObjectCache
 
     // This is necessary or else infinite recursion is caused, as calling
     // getSuperClasses will call this method again.
-    if (entityType.equals(MdStateMachineInfo.CLASS) || entityType.equals(MdTermInfo.CLASS) || entityType.equals(MdBusinessInfo.CLASS) || entityType.equals(MdStructInfo.CLASS) || entityType.equals(MdGraphInfo.CLASS) || entityType.equals(MdTermRelationshipInfo.CLASS) || entityType.equals(MdTreeInfo.CLASS) || entityType.equals(MdRelationshipInfo.CLASS) || entityType.equals(MdViewInfo.CLASS) || entityType.equals(MdUtilInfo.CLASS) || entityType.equals(MdExceptionInfo.CLASS) || entityType.equals(MdProblemInfo.CLASS) || entityType.equals(MdInformationInfo.CLASS) || entityType.equals(MdWarningInfo.CLASS))
+    if (entityType.equals(MdTermInfo.CLASS) || entityType.equals(MdBusinessInfo.CLASS) || entityType.equals(MdStructInfo.CLASS) || entityType.equals(MdGraphInfo.CLASS) || entityType.equals(MdTermRelationshipInfo.CLASS) || entityType.equals(MdTreeInfo.CLASS) || entityType.equals(MdRelationshipInfo.CLASS) || entityType.equals(MdViewInfo.CLASS) || entityType.equals(MdUtilInfo.CLASS) || entityType.equals(MdExceptionInfo.CLASS) || entityType.equals(MdProblemInfo.CLASS) || entityType.equals(MdInformationInfo.CLASS) || entityType.equals(MdWarningInfo.CLASS))
     {
       return strategyMap.get(MdClassInfo.CLASS);
     }

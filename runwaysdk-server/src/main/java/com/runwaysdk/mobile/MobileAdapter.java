@@ -347,18 +347,6 @@ public class MobileAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
-   */
-  public static void grantStatePermission(String mobileId, String actorId, String stateId, String... operationNames)
-  {
-
-    String sessionId = convertMobileIdToSessionId(mobileId);
-    actorId = idConverter.getGlobalIdFromLocalId(mobileId, actorId);
-    Facade.grantStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.request.RemoteAdapter#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    */
@@ -369,19 +357,6 @@ public class MobileAdapter
     mdAttributeId = idConverter.getGlobalIdFromLocalId(mobileId, mdAttributeId);
     actorId = idConverter.getGlobalIdFromLocalId(mobileId, actorId);
     Facade.grantAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
-   */
-  public static void grantAttributeStatePermission(String mobileId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-
-    String sessionId = convertMobileIdToSessionId(mobileId);
-    mdAttributeId = idConverter.getGlobalIdFromLocalId(mobileId, mdAttributeId);
-    actorId = idConverter.getGlobalIdFromLocalId(mobileId, actorId);
-    Facade.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
 
   /**
@@ -411,19 +386,6 @@ public class MobileAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public static BusinessDTO promoteObject(String mobileId, BusinessDTO dto, String transitionName)
-  {
-
-    String sessionId = convertMobileIdToSessionId(mobileId);
-    convertToGlobalId(mobileId, dto);
-    dto = Facade.promoteObject(sessionId, dto, transitionName);
-    return (BusinessDTO) convertToLocalId(mobileId, dto);
-  }
-
-  /**
    * @see com.runwaysdk.request.RemoteAdapter#revokeTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
@@ -450,18 +412,6 @@ public class MobileAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public static void revokeStatePermission(String mobileId, String actorId, String stateId, String... operationNames)
-  {
-
-    String sessionId = convertMobileIdToSessionId(mobileId);
-    actorId = idConverter.getGlobalIdFromLocalId(mobileId, actorId);
-    Facade.revokeStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.request.RemoteAdapter#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
@@ -472,20 +422,6 @@ public class MobileAdapter
     mdAttributeId = idConverter.getGlobalIdFromLocalId(mobileId, mdAttributeId);
     actorId = idConverter.getGlobalIdFromLocalId(mobileId, actorId);
     Facade.revokeAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String...)
-   */
-  public static void revokeAttributeStatePermission(String mobileId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-
-    String sessionId = convertMobileIdToSessionId(mobileId);
-    mdAttributeId = idConverter.getGlobalIdFromLocalId(mobileId, mdAttributeId);
-    actorId = idConverter.getGlobalIdFromLocalId(mobileId, actorId);
-    Facade.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
 
   /**

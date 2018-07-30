@@ -24,8 +24,6 @@ import java.util.Set;
 
 import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
@@ -39,8 +37,6 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransientDAO;
-import com.runwaysdk.dataaccess.TransitionDAO;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
 import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -151,44 +147,6 @@ public interface TransactionCacheIF
    *          TransientDAO to add to the cache.
    */
   public abstract void updateTransientDAO(TransientDAO transientDAO);
-
-  /**
-   * Adds the given stateMaster to the cache.
-   * 
-   * @param stateMasterDAO
-   */
-  public abstract void updatedStateMaster(StateMasterDAO stateMasterDAO);
-
-  /**
-   * Returns all States that were defined for the given State Machine type that
-   * were updated during this transaction.
-   * 
-   * @param type
-   *          State Machine type.
-   * 
-   * @return all States that were defined for the given State Machine type that
-   *         were updated during this transaction.
-   */
-  public abstract List<StateMasterDAOIF> getUpdatedStateMasters(String type);
-
-  /**
-   * Adds the given transitions to the cache.
-   * 
-   * @param transitionDAO
-   */
-  public abstract void updatedTransition(TransitionDAO transitionDAO);
-
-  /**
-   * Returns all Transitions that were defined for the given State Machine type
-   * that were updated during this transaction.
-   * 
-   * @param type
-   *          State Machine type.
-   * 
-   * @return all Transitions that were defined for the given State Machine type
-   *         that were updated during this transaction.
-   */
-  public abstract Set<TransitionDAOIF> getUpdatedTransitions(String type);
 
   /**
    * Adds a reference to a newly created MdAttribute to the cache. If the

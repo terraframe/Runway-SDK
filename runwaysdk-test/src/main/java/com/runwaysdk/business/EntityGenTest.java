@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -42,14 +43,10 @@ import org.slf4j.LoggerFactory;
 import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EntityCacheMaster;
-import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
@@ -80,7 +77,6 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.ServerConstants;
@@ -247,17 +243,9 @@ public class EntityGenTest
 
   private static String                       collectionSubDTO;
 
-  private static volatile MdStateMachineDAO   mdState         = null;
-
   private static ClientSession                systemSession   = null;
 
   private static ClientRequestIF              clientRequestIF = null;
-
-  private static StateMasterDAO               state1;
-
-  private static StateMasterDAO               state2;
-
-  private static StateMasterDAO               state3;
 
   private static String                       suitEnumDTO;
 
@@ -683,27 +671,6 @@ public class EntityGenTest
     mdRelationship.setGenerateMdController(false);
     mdRelationship.apply();
 
-    mdState = MdStateMachineDAO.newInstance();
-    mdState.setValue(MdStateMachineInfo.NAME, "CollectionState");
-    mdState.setValue(MdStateMachineInfo.PACKAGE, pack);
-    mdState.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Collection State");
-    mdState.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdState.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, collection.getId());
-    mdState.apply();
-
-    state1 = mdState.addState("Preparing", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state1.apply();
-
-    state2 = mdState.addState("Collecting", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state2.apply();
-
-    state3 = mdState.addState("Finished", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state3.apply();
-
-    mdState.addTransition("Setup", state1.getId(), state2.getId()).apply();
-
-    mdState.addTransition("Teardown", state2.getId(), state3.getId()).apply();
-
     collectionDTO = collection.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     collectionSubDTO = collectionSub.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -711,7 +678,9 @@ public class EntityGenTest
     suitEnumDTO = suitEnum.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
   }
 
-  private static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
     new MdPackage(pack).delete();
   }

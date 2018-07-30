@@ -25,8 +25,6 @@ import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.UserDAO;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.CharacterConditionInfo;
@@ -36,7 +34,6 @@ import com.runwaysdk.constants.CompositeFieldConditionInfo;
 import com.runwaysdk.constants.DateConditionInfo;
 import com.runwaysdk.constants.DoubleConditionInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
-import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
 import com.runwaysdk.constants.IndexTypes;
@@ -78,7 +75,6 @@ import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.MdTermInfo;
@@ -203,9 +199,6 @@ import com.runwaysdk.dataaccess.metadata.MdWebSingleTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
-import com.runwaysdk.dataaccess.metadata.MetadataDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.system.FieldOperation;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
@@ -1146,28 +1139,6 @@ public class TestFixtureFactory
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
 
     return mdTree;
-  }
-
-  public static MdStateMachineDAO createMdStateMachine(MdBusinessDAO mdBusiness)
-  {
-    MdStateMachineDAO mdState = MdStateMachineDAO.newInstance();
-    mdState.setValue(MdStateMachineInfo.NAME, "TVMachine");
-    mdState.setValue(MdStateMachineInfo.PACKAGE, "test.state");
-    mdState.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "TV StateMachine");
-    mdState.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdState.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness.getId());
-
-    return mdState;
-  }
-
-  public static TypeTupleDAO createTypeTuple(StateMasterDAO state, MetadataDAO metadata)
-  {
-    TypeTupleDAO typeTuple = TypeTupleDAO.newInstance();
-    typeTuple.setStateMaster(state.getId());
-    typeTuple.setMetaData(metadata.getId());
-    typeTuple.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Tuple");
-
-    return typeTuple;
   }
 
   public static MdDomainDAO createMdDomain()

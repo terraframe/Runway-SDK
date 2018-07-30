@@ -40,9 +40,6 @@ import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -53,7 +50,6 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
-import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
@@ -66,7 +62,6 @@ import com.runwaysdk.dataaccess.metadata.MdDomainDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 
 @RunWith(ClasspathTestRunner.class)
 public class SessionTest
@@ -115,26 +110,6 @@ public class SessionTest
    * The test businessDAO2 of the MdBusiness
    */
   private static BusinessDAO             businessDAO2;
-
-  /**
-   * The test state1-mdAttribute type tuple
-   */
-  private static TypeTupleDAO            typeTuple1;
-
-  /**
-   * The test state1 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO          state1;
-
-  /**
-   * The test state2 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO          state2;
-
-  /**
-   * The test state3 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO          state3;
 
   private static Business                business1;
 
@@ -202,30 +177,6 @@ public class SessionTest
     mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness);
     mdAttribute.apply();
 
-    // Create a StateMachine for the MdBusiness
-    MdStateMachineDAO mdState = TestFixtureFactory.createMdStateMachine(mdBusiness);
-    mdState.apply();
-
-    // Add states to the state machine
-    state1 = mdState.addState("State1", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state1.apply();
-
-    state2 = mdState.addState("State2", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state2.apply();
-
-    state3 = mdState.addState("State3", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state3.apply();
-
-    // Add transitions between states
-    RelationshipDAO transition1 = mdState.addTransition("transition1", state1.getId(), state2.getId());
-    transition1.apply();
-
-    RelationshipDAO transition2 = mdState.addTransition("transition2", state2.getId(), state3.getId());
-    transition2.apply();
-
-    RelationshipDAO transition3 = mdState.addTransition("transition3", state3.getId(), state1.getId());
-    transition3.apply();
-
     // Create a new MdBusiness
     mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.apply();
@@ -257,9 +208,6 @@ public class SessionTest
     business1 = Business.getBusiness(businessDAO.getId());
     business2 = Business.getBusiness(businessDAO2.getId());
 
-    typeTuple1 = TestFixtureFactory.createTypeTuple(state1, mdAttribute);
-    typeTuple1.apply();
-
     mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
     mdMethod.apply();
   }
@@ -271,7 +219,6 @@ public class SessionTest
   @AfterClass
   public static void classTearDown()
   {
-    TestFixtureFactory.delete(typeTuple1);
     TestFixtureFactory.delete(mdRelationship);
     TestFixtureFactory.delete(mdBusiness);
     TestFixtureFactory.delete(mdBusiness2);
@@ -695,7 +642,6 @@ public class SessionTest
     Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.PROMOTE, business1));
     Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business2));
     Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
-    Assert.assertTrue(SessionFacade.checkPromoteAccess(sessionId, business1, "transition1"));
     Assert.assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.DELETE_PARENT, business1, mdRelationship.getId()));
     adminRole.deassignMember(newUser);
     SessionFacade.closeSession(sessionId);
@@ -748,57 +694,6 @@ public class SessionTest
     }
   }
 
-  /**
-   * Test the permissions based upon the current state of an object
-   */
-  @Request
-  @Test
-  public void testStatePermissions()
-  {
-    // Add permissions to the owner role for the entry state
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-
-    role.grantPermission(Operation.READ, state1.getId());
-    newUser.grantPermission(Operation.PROMOTE, state1.getId());
-
-    try
-    {
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      // Ensure that user state permissions where executed
-      Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
-      // Ensure that owner state permissions work
-      Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.PROMOTE, business1));
-      // Ensure extra permissions are not given
-      Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
-    }
-    finally
-    {
-      newUser.revokeAllPermissions(state1.getId());
-      role.revokeAllPermissions(state1.getId());
-    }
-  }
-
-  @Request
-  @Test
-  public void testStateAttributePermissions()
-  {
-    newUser.grantPermission(Operation.READ, typeTuple1.getId());
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute));
-      Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
-    }
-    finally
-    {
-      newUser.revokeAllPermissions(typeTuple1.getId());
-    }
-  }
-
   @Request
   @Test
   public void testAttributePermissions()
@@ -837,28 +732,6 @@ public class SessionTest
     finally
     {
       role.revokeAllPermissions(mdAttribute.getId());
-    }
-
-  }
-
-  @Request
-  @Test
-  public void testOwnerStateAttributePermissions()
-  {
-    RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-
-    role.grantPermission(Operation.READ, typeTuple1.getId());
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute));
-      Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
-    }
-    finally
-    {
-      role.revokeAllPermissions(typeTuple1.getId());
     }
 
   }
@@ -919,25 +792,6 @@ public class SessionTest
       role.revokeAllPermissions(mdRelationship.getId());
     }
 
-  }
-
-  @Request
-  @Test
-  public void testPromotePermissions()
-  {
-    newUser.grantPermission(Operation.PROMOTE, state2.getId());
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      Assert.assertTrue(SessionFacade.checkPromoteAccess(sessionId, business1, "transition1"));
-      Assert.assertFalse(SessionFacade.checkPromoteAccess(sessionId, business1, "transition2"));
-    }
-    finally
-    {
-      newUser.revokeAllPermissions(state2.getId());
-    }
   }
 
   @Request
@@ -1296,37 +1150,6 @@ public class SessionTest
 
   @Request
   @Test
-  public void testDomainStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean checkAccess = false;
-    boolean checkAccess2 = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.DELETE, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      checkAccess = SessionFacade.checkAccess(sessionId, Operation.DELETE, business1);
-      checkAccess2 = SessionFacade.checkAccess(sessionId, Operation.CREATE, business1);
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    Assert.assertTrue(checkAccess);
-    Assert.assertFalse(checkAccess2);
-  }
-
-  @Request
-  @Test
   public void testDomainAttributePermission()
   {
     DomainTupleDAO tuple = DomainTupleDAO.newInstance();
@@ -1346,69 +1169,6 @@ public class SessionTest
 
       granted = SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute);
       denied = SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute);
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    Assert.assertTrue(granted);
-    Assert.assertFalse(denied);
-  }
-
-  @Request
-  @Test
-  public void testDomainAttributeStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdAttribute.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.READ, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute);
-      denied = SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute);
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    Assert.assertTrue(granted);
-    Assert.assertFalse(denied);
-  }
-
-  @Request
-  @Test
-  public void testDomainPromotePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state2.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.PROMOTE, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkPromoteAccess(sessionId, business1, "transition1");
-      denied = SessionFacade.checkPromoteAccess(sessionId, business1, "transition2");
     }
     finally
     {
@@ -1452,76 +1212,11 @@ public class SessionTest
 
   @Request
   @Test
-  public void testDomainRelationshipStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdRelationship.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.ADD_PARENT, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getId());
-      denied = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getId());
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    Assert.assertTrue(granted);
-    Assert.assertFalse(denied);
-  }
-
-  @Request
-  @Test
   public void testOwnerDomainPermission()
   {
     DomainTupleDAO tuple = DomainTupleDAO.newInstance();
     tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
     tuple.setValue(DomainTupleDAO.METADATA, mdBusiness.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.DELETE, tuple.getId());
-
-    boolean checkAccess = false;
-    boolean checkAccess2 = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      checkAccess = SessionFacade.checkAccess(sessionId, Operation.DELETE, business1);
-      checkAccess2 = SessionFacade.checkAccess(sessionId, Operation.CREATE, business1);
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    Assert.assertTrue(checkAccess);
-    Assert.assertFalse(checkAccess2);
-  }
-
-  @Request
-  @Test
-  public void testOwnerDomainStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
     tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
     tuple.apply();
 
@@ -1583,112 +1278,11 @@ public class SessionTest
 
   @Request
   @Test
-  public void testOwnerDomainAttributeStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdAttribute.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.READ, tuple.getId());
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute);
-      denied = SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute);
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    Assert.assertTrue(granted);
-    Assert.assertFalse(denied);
-  }
-
-  @Request
-  @Test
-  public void testOwnerDomainPromotePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state2.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.PROMOTE, tuple.getId());
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkPromoteAccess(sessionId, business1, "transition1");
-      denied = SessionFacade.checkPromoteAccess(sessionId, business1, "transition2");
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    Assert.assertTrue(granted);
-    Assert.assertFalse(denied);
-  }
-
-  @Request
-  @Test
   public void testOwnerDomainRelationshipPermission()
   {
     DomainTupleDAO tuple = DomainTupleDAO.newInstance();
     tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
     tuple.setValue(DomainTupleDAO.METADATA, mdRelationship.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.ADD_PARENT, tuple.getId());
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getId());
-      denied = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getId());
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    Assert.assertTrue(granted);
-    Assert.assertFalse(denied);
-  }
-
-  @Request
-  @Test
-  public void testOwnerDomainRelationshipStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdRelationship.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
     tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
     tuple.apply();
 

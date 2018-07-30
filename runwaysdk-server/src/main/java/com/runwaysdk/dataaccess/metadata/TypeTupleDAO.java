@@ -25,7 +25,6 @@ import java.util.Map;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
@@ -71,8 +70,7 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
    */
   public String getSignature()
   {
-    String signature = "Metadata["+this.getMetaData().getSignature()+"]"+
-    " StateMaster["+this.getStateMaster().getSignature()+"]";
+    String signature = "Metadata["+this.getMetaData().getSignature()+"]";
     return signature;
   }
 
@@ -133,21 +131,6 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
     }
 
     return (MetadataDAOIF) metadata.dereference();
-  }
-
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.rbac.CommonStateIF#getCommon()
-   */
-  public StateMasterDAOIF getStateMaster()
-  {
-    AttributeReference statemaster = (AttributeReference) this.getAttribute(TypeTupleDAOIF.STATE_MASTER);
-
-    if(statemaster.getValue().equals(""))
-    {
-      return null;
-    }
-
-    return (StateMasterDAOIF) statemaster.dereference();
   }
 
   /* (non-Javadoc)
@@ -243,16 +226,6 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
    */
   protected void validateUniqueness()
   {
-    MetadataDAOIF metadata = this.getMetaData();
-    StateMasterDAOIF statemaster = this.getStateMaster();
-
-    TypeTupleDAOIF tuple = TypeTupleDAO.findTuple(metadata.getId(), statemaster.getId());
-
-    if(tuple != null)
-    {
-      String msg = "A [" + this.getType() + "] already exists with the combination of [" + metadata.getId() + "] and [" + statemaster.getId() + "]";
-      throw new RuntimeException(msg);
-    }
   }
 
   protected void validateMetadata()

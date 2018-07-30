@@ -32,18 +32,13 @@ import com.runwaysdk.business.Business;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 
 @RunWith(ClasspathTestRunner.class)
 public class MethodTest
@@ -88,26 +83,6 @@ public class MethodTest
    */
   private static BusinessDAO            businessDAO;
 
-  /**
-   * The test state1-mdAttribute type tuple
-   */
-  private static TypeTupleDAO           typeTuple1;
-
-  /**
-   * The test state1 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO         state1;
-
-  /**
-   * The test state2 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO         state2;
-
-  /**
-   * The test state3 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO         state3;
-
   private static Business               business1;
 
   /**
@@ -132,30 +107,6 @@ public class MethodTest
     mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness);
     mdAttribute.apply();
 
-    // Create a StateMachine for the MdBusiness
-    MdStateMachineDAO mdState = TestFixtureFactory.createMdStateMachine(mdBusiness);
-    mdState.apply();
-
-    // Add states to the state machine
-    state1 = mdState.addState("State1", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state1.apply();
-
-    state2 = mdState.addState("State2", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state2.apply();
-
-    state3 = mdState.addState("State3", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state3.apply();
-
-    // Add transitions between states
-    RelationshipDAO transition1 = mdState.addTransition("transition1", state1.getId(), state2.getId());
-    transition1.apply();
-
-    RelationshipDAO transition2 = mdState.addTransition("transition2", state2.getId(), state3.getId());
-    transition2.apply();
-
-    RelationshipDAO transition3 = mdState.addTransition("transition3", state3.getId(), state1.getId());
-    transition3.apply();
-
     // Create a new MdBusiness
     mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.apply();
@@ -170,9 +121,6 @@ public class MethodTest
 
     business1 = Business.getBusiness(businessDAO.getId());
 
-    typeTuple1 = TestFixtureFactory.createTypeTuple(state1, mdAttribute);
-    typeTuple1.apply();
-
     mdMethod2 = TestFixtureFactory.createMdMethod(mdBusiness, "checkout2");
     mdMethod2.apply();
   }
@@ -184,7 +132,6 @@ public class MethodTest
   @AfterClass
   public static void classTearDown()
   {
-    TestFixtureFactory.delete(typeTuple1);
     TestFixtureFactory.delete(mdTree);
     TestFixtureFactory.delete(mdMethod);
     TestFixtureFactory.delete(mdMethod2);
@@ -261,34 +208,6 @@ public class MethodTest
     Assert.assertEquals(0, PermissionObserver.size());
   }
 
-  /**
-   * Test the permissions based upon the current state of an object
-   */
-  @Request
-  @Test
-  public void testStatePermissions()
-  {
-    methodActor.grantPermission(Operation.READ, state1.getId());
-    methodActor.grantPermission(Operation.PROMOTE, state1.getId());
-
-    // Ensure that user state permissions where executed
-    Assert.assertTrue(MethodFacade.checkAccess(mdMethod, Operation.READ, business1));
-    Assert.assertTrue(MethodFacade.checkAccess(mdMethod, Operation.PROMOTE, business1));
-
-    // Ensure extra permissions are not given
-    Assert.assertFalse(MethodFacade.checkAccess(mdMethod, Operation.WRITE, business1));
-  }
-
-  @Request
-  @Test
-  public void testStateAttributePermissions()
-  {
-    methodActor.grantPermission(Operation.READ, typeTuple1.getId());
-
-    Assert.assertTrue(MethodFacade.checkAttributeAccess(mdMethod, Operation.READ, business1, mdAttribute));
-    Assert.assertFalse(MethodFacade.checkAttributeAccess(mdMethod, Operation.WRITE, business1, mdAttribute));
-  }
-
   @Request
   @Test
   public void testRelationshipPermission()
@@ -297,16 +216,6 @@ public class MethodTest
 
     Assert.assertFalse(MethodFacade.checkRelationshipAccess(mdMethod, Operation.ADD_PARENT, business1, mdTree.getId()));
     Assert.assertTrue(MethodFacade.checkRelationshipAccess(mdMethod, Operation.ADD_CHILD, business1, mdTree.getId()));
-  }
-
-  @Request
-  @Test
-  public void testPromotePermissions()
-  {
-    methodActor.grantPermission(Operation.PROMOTE, state2.getId());
-
-    Assert.assertTrue(MethodFacade.checkPromoteAccess(mdMethod, business1, "transition1"));
-    Assert.assertFalse(MethodFacade.checkPromoteAccess(mdMethod, business1, "transition2"));
   }
 
   /**
@@ -373,7 +282,6 @@ public class MethodTest
   {
     Assert.assertFalse(MethodFacade.checkAccess(mdMethod, Operation.WRITE, business1));
     Assert.assertFalse(MethodFacade.checkAttributeAccess(mdMethod, Operation.WRITE, business1, mdAttribute));
-    Assert.assertFalse(MethodFacade.checkPromoteAccess(mdMethod, business1, "transition2"));
     Assert.assertFalse(MethodFacade.checkRelationshipAccess(mdMethod, Operation.ADD_PARENT, business1, mdTree.getId()));
   }
 

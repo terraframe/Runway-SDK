@@ -23,15 +23,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
@@ -158,8 +154,6 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
   @Transaction
   public void grantPermission(List<Operation> operations, String metadataId)
   {
-    validateId(metadataId);
-
     RelationshipDAO permission = getPermissions(this.getId(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
     AttributeEnumerationIF attribute = (AttributeEnumerationIF) permission.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
@@ -198,8 +192,6 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
   @Transaction
   public void grantPermission(Operation operation, String metadataId)
   {
-    validateId(metadataId);
-
     validateOperation(operation, metadataId);
 
     RelationshipDAO permission = getPermissions(this.getId(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
@@ -371,29 +363,6 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
   public ActorDAO getBusinessDAO()
   {
     return (ActorDAO) super.getBusinessDAO();
-  }
-
-  /**
-   * Validate the given mdTypeId, throws an exception if the id is not valid
-   * 
-   * @param metadataId
-   *          The id to a MetaDataType
-   */
-  private void validateId(String metadataId)
-  {
-    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(metadataId));
-
-    // Not allowed to set permissions on an MdState, set the permissions on the
-    // MdRelationship that defines the MdState
-    if (mdClassIF.definesType().equals(MdStateMachineInfo.CLASS))
-    {
-      MdStateMachineDAOIF machine = MdStateMachineDAO.get(metadataId);
-
-      MdBusinessDAOIF stateMachineOwner = machine.getStateMachineOwner();
-
-      String error = "State Machine [" + machine.definesType() + "] cannot have permissions. Add them to [" + stateMachineOwner.definesType() + "] instead.";
-      throw new RBACExceptionInvalidStateMachine(error, machine, machine.getStateMachineOwner());
-    }
   }
 
   /**

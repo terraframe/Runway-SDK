@@ -26,17 +26,14 @@ import java.util.List;
 import org.w3c.dom.Document;
 
 import com.runwaysdk.SystemException;
-import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityInfo;
-import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.RelationshipInfo;
-import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -46,7 +43,6 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdParameterDAOIF;
-import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
@@ -320,7 +316,7 @@ public class GenerationUtil
   {
     try
     {
-      GenerationUtil.write(writer, s);
+      GenerationUtil.write(writer, s); 
       writer.newLine();
     }
     catch (IOException e)
@@ -340,28 +336,6 @@ public class GenerationUtil
   public static String getPackageForFileSystem(MdTypeDAOIF mdTypeIF)
   {
     return CommonGenerationUtil.replacePackageDotsWithSlashes(mdTypeIF.getPackage());
-  }
-
-  public static boolean isStatus(MdBusinessDAOIF mdBusinessIF, MdRelationshipDAOIF relationship)
-  {
-    if (!mdBusinessIF.hasStateMachine())
-      return false;
-
-    String master_status = mdBusinessIF.definesMdStateMachine().getMdStatus().definesType();
-
-    for (MdElementDAOIF dad : relationship.getSuperClasses())
-      if (dad.definesType().equalsIgnoreCase(master_status))
-        return true;
-
-    return false;
-  }
-
-  public static boolean isStateMachine(MdRelationshipDAOIF relationship)
-  {
-    if (relationship.definesType().startsWith(MdStateMachineDAO.STATE_PACKAGE + '.'))
-      return true;
-
-    return false;
   }
 
   /**
@@ -403,31 +377,9 @@ public class GenerationUtil
    */
   public static boolean isSkipCompileAndCodeGeneration(MdTypeDAOIF mdTypeIF)
   {
-    boolean isReservedType = false;
-
-    if (mdTypeIF instanceof MdElementDAOIF)
-    {
-      MdElementDAOIF mdEntityIF = ( (MdElementDAOIF) mdTypeIF );
-      MdElementDAOIF superEntity = mdEntityIF.getSuperClass();
-      if (superEntity != null)
-      {
-        if (superEntity.definesType().equalsIgnoreCase(EntityTypes.STATE_MASTER.getType()) || superEntity.definesType().equalsIgnoreCase(RelationshipTypes.TRANSITION_RELATIONSHIP.getType()) || superEntity.definesType().toLowerCase().startsWith(MdStateMachineDAO.STATE_PACKAGE + '.'))
-        {
-          isReservedType = true;
-        }
-      }
-    }
-    if (mdTypeIF instanceof MdRelationshipDAOIF)
-    {
-      if (mdTypeIF.definesType().startsWith(MdStateMachineDAO.STATE_PACKAGE + "."))
-      {
-        isReservedType = true;
-      }
-    }
-
     Boolean hasSource = mdTypeIF.isGenerateSource();
 
-    return isReservedType || ( !hasSource );
+    return ( !hasSource );
   }
 
   /**
@@ -492,7 +444,7 @@ public class GenerationUtil
         for (MdElementDAOIF superEntity : refMdBusiness.getSuperClasses())
         {
           String definesType = superEntity.definesType();
-          if (definesType.equalsIgnoreCase(EnumerationMasterInfo.CLASS) || definesType.equalsIgnoreCase(EntityTypes.STATE_MASTER.getType()) || definesType.equalsIgnoreCase(RelationshipTypes.TRANSITION_RELATIONSHIP.getType()) || definesType.toLowerCase().startsWith(MdStateMachineDAO.STATE_PACKAGE + '.'))
+          if (definesType.equalsIgnoreCase(EnumerationMasterInfo.CLASS))
             return true;
         }
       }

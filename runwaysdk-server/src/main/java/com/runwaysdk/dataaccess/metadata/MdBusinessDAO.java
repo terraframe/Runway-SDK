@@ -37,7 +37,6 @@ import com.runwaysdk.business.generation.GeneratorIF;
 import com.runwaysdk.business.generation.dto.BusinessDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
@@ -48,7 +47,6 @@ import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -61,7 +59,6 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
-import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.transaction.LockObject;
@@ -163,11 +160,6 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     }
 
     signature += "]";
-
-    if (this.hasStateMachine())
-    {
-      signature += this.definesMdStateMachine().getSignature();
-    }
 
     return signature;
   }
@@ -528,12 +520,6 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   @Override
   public void delete(boolean businessContext)
   {
-    // Delete the MdState this owns
-    if (this.hasStateMachine())
-    {
-      definesMdStateMachine().getBusinessDAO().delete(businessContext);
-    }
-
     // We're deleting a type. Find all reference attributes that point to this
     // type,
     // and delete them, too
@@ -993,38 +979,6 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     String tableName = this.getTableName();
     Database.createClassTable(tableName);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.dataaccess.MdBusinessIF#getMdState()
-   */
-  public MdStateMachineDAOIF definesMdStateMachine()
-  {
-    List<RelationshipDAOIF> list = this.getChildren(MdStateMachineInfo.DEFINES_STATE_MACHINE_RELATIONSHIP);
-
-    if (list.size() != 0)
-    {
-      return (MdStateMachineDAOIF) list.get(0).getChild();
-    }
-
-    String msg = "There is no state machine defined for type [" + definesType() + "]";
-    throw new DataNotFoundException(msg, this.getMdBusinessDAO());
-  }
-
-  public boolean hasStateMachine()
-  {
-    List<RelationshipDAOIF> list = this.getChildren(MdStateMachineInfo.DEFINES_STATE_MACHINE_RELATIONSHIP);
-
-    if (list.size() > 0)
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
   }
 
   /**

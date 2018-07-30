@@ -23,8 +23,10 @@ import org.junit.runners.Suite;
 
 import com.runwaysdk.business.BusinessTestSuite;
 import com.runwaysdk.business.MultiThreadTestSuite;
+import com.runwaysdk.business.ontology.OntologyTestSuite;
 import com.runwaysdk.dataaccess.DataAccessTestSuite;
 import com.runwaysdk.facade.FacadeTestSuite;
+import com.runwaysdk.logging.LoggingTest;
 import com.runwaysdk.query.QueryTestSuite;
 import com.runwaysdk.session.SessionTestSuite;
 import com.runwaysdk.vault.VaultTestSuite;
@@ -37,7 +39,9 @@ import com.runwaysdk.vault.VaultTestSuite;
   FacadeTestSuite.class,
   VaultTestSuite.class,
   QueryTestSuite.class,
-  MultiThreadTestSuite.class  
+  MultiThreadTestSuite.class,
+  LoggingTest.class,
+  OntologyTestSuite.class
 })
 public class UeberTestSuite
 {

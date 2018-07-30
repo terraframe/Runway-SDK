@@ -39,12 +39,8 @@ import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.EntityCacheMaster;
-import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -57,14 +53,12 @@ import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
-import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
@@ -81,8 +75,6 @@ import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 import com.runwaysdk.facade.Facade;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.BusinessDAOQuery;
@@ -251,31 +243,6 @@ public class IntegratedMethodTest
    * The test mdAttributeBlob of mdStruct
    */
   private static MdAttributeBlobDAO        mdAttributeBlob;
-
-  /**
-   * The test state-mdAttribute tuple
-   */
-  private static TypeTupleDAO              typeTuple1;
-
-  /**
-   * The test state-mdRelationship tuple
-   */
-  private static TypeTupleDAO              typeTuple2;
-
-  /**
-   * The test state1 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO            state1;
-
-  /**
-   * The test state2 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO            state2;
-
-  /**
-   * The test state3 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO            state3;
 
   private static MdDimensionDAO            mdDimension;
 
@@ -531,35 +498,6 @@ public class IntegratedMethodTest
     mdParameter.setValue(MdParameterInfo.ORDER, "0");
     mdParameter.apply();
 
-    // Create a StateMachine for the MdBusiness
-    MdStateMachineDAO mdState = MdStateMachineDAO.newInstance();
-    mdState.setValue(MdStateMachineInfo.NAME, "StateMachine1");
-    mdState.setValue(MdStateMachineInfo.PACKAGE, "test.session");
-    mdState.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "StateMachine1");
-    mdState.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    mdState.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness.getId());
-    mdState.apply();
-
-    // Add states to the state machine
-    state1 = mdState.addState("State1", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state1.apply();
-
-    state2 = mdState.addState("State2", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state2.apply();
-
-    state3 = mdState.addState("State3", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state3.apply();
-
-    // Add transitions between states
-    RelationshipDAO transition1 = mdState.addTransition("transition1", state1.getId(), state2.getId());
-    transition1.apply();
-
-    RelationshipDAO transition2 = mdState.addTransition("transition2", state2.getId(), state3.getId());
-    transition2.apply();
-
-    RelationshipDAO transition3 = mdState.addTransition("transition3", state3.getId(), state1.getId());
-    transition3.apply();
-
     // Create a new relationship
     mdRelationship = MdRelationshipDAO.newInstance();
     mdRelationship.setValue(MdRelationshipInfo.NAME, "Relationship1");
@@ -607,18 +545,6 @@ public class IntegratedMethodTest
     mdAttribute2.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttribute2.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdRelationship.getId());
     mdAttribute2.apply();
-
-    typeTuple1 = TypeTupleDAO.newInstance();
-    typeTuple1.setStateMaster(state1.getId());
-    typeTuple1.setMetaData(mdAttribute1.getId());
-    typeTuple1.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, state1.getName() + mdAttribute1.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    typeTuple1.apply();
-
-    typeTuple2 = TypeTupleDAO.newInstance();
-    typeTuple2.setStateMaster(state1.getId());
-    typeTuple2.setMetaData(mdRelationship.getId());
-    typeTuple2.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, state1.getName() + mdRelationship.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    typeTuple2.apply();
 
     createMethod = MethodActorDAO.newInstance();
     createMethod.setValue(MethodActorInfo.MD_METHOD, createMdMethod.getId());
@@ -699,8 +625,6 @@ public class IntegratedMethodTest
     TestFixtureFactory.delete(deleteParentMdMethod);
     TestFixtureFactory.delete(modifyRelationshipMdMethod);
 
-    TestFixtureFactory.delete(typeTuple1);
-    TestFixtureFactory.delete(typeTuple2);
     TestFixtureFactory.delete(enumMasterMdBusiness);
     TestFixtureFactory.delete(mdRelationship);
     TestFixtureFactory.delete(mdBusiness);
@@ -990,44 +914,6 @@ public class IntegratedMethodTest
   }
 
   /**
-   * Test delete a new object in a MdMethod where the MdMethod has DELETE
-   * permissions on the MdBusiness of the object.
-   * 
-   * @throws Exception
-   */
-  @Request
-  @Test
-  public void testStateDeletePermissions() throws Exception
-  {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, deleteMdMethod.getId());
-    deleteMethod.grantPermission(Operation.DELETE, state1.getId());
-
-    String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    stateDeletePermissions(sessionId);
-
-    Facade.logout(sessionId);
-  }
-
-  @Request(RequestType.SESSION)
-  public static void stateDeletePermissions(String sessionId) throws Exception
-  {
-    Class<?> c = LoaderDecorator.load(mdBusiness.definesType());
-    Business input = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(input);
-
-    try
-    {
-      c.getMethod("testDelete", c).invoke(null, input);
-    }
-    catch (InvocationTargetException e)
-    {
-      Assert.fail("Unable to delete an object with DELETE permissions on StateIF");
-    }
-  }
-
-  /**
    * Ensure that an DomainErrorException is thrown when a MdMethod attempts to
    * write an object without any WRITE permissions.
    * 
@@ -1040,7 +926,6 @@ public class IntegratedMethodTest
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
     newUser.grantPermission(Operation.EXECUTE, writeMdMethod.getId());
 
-    writeMethod.revokeAllPermissions(state1.getId());
     writeMethod.revokeAllPermissions(mdBusiness.getId());
 
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -1117,128 +1002,6 @@ public class IntegratedMethodTest
     {
       e.printStackTrace();
       Assert.fail("Unable to write an object with WRITE permissions on the MdBusiness");
-    }
-  }
-
-  /**
-   * Test writing an object in a MdMethod where the MdMethod only has write
-   * permissions on the StateIF of the object.
-   * 
-   * @throws Exception
-   */
-  @Request
-  @Test
-  public void testStateWritePermissions() throws Exception
-  {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, writeMdMethod.getId());
-    writeMethod.grantPermission(Operation.WRITE, state1.getId());
-    writeMethod.grantPermission(Operation.WRITE, typeTuple1.getId());
-
-    String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    stateWritePermissions(sessionId);
-
-    Facade.logout(sessionId);
-  }
-
-  @Request(RequestType.SESSION)
-  public static void stateWritePermissions(String sessionId) throws Exception
-  {
-    Class<?> c = LoaderDecorator.load(mdBusiness.definesType());
-    Business business = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(business);
-
-    Business input = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(input);
-
-    try
-    {
-      c.getMethod("testWrite", c).invoke(business, input);
-    }
-    catch (InvocationTargetException e)
-    {
-      e.printStackTrace();
-      Assert.fail("Unable to write an object with WRITE permissions on StateIF");
-    }
-  }
-
-  /**
-   * Ensure that an DomainErrorException is thrown when a MdMethod attempts to
-   * promote an object without any WRITE permissions.
-   * 
-   * @throws Exception
-   */
-  @Request
-  @Test
-  public void testNoPromotePermissions() throws Exception
-  {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, promoteMdMethod.getId());
-    String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    noPromotePermissions(sessionId);
-
-    Facade.logout(sessionId);
-  }
-
-  @Request(RequestType.SESSION)
-  public static void noPromotePermissions(String sessionId) throws Exception
-  {
-    Class<?> c = LoaderDecorator.load(mdBusiness.definesType());
-    Business input = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(input);
-
-    try
-    {
-      c.getMethod("testPromote", c).invoke(null, input);
-
-      Assert.fail("Failed to throw an exception when promoting an object in a method without permission");
-    }
-    catch (InvocationTargetException e)
-    {
-      Throwable root = getRootCause(e);
-
-      // Ensure that a DomainErrorException is being thrown
-      Assert.assertEquals(DomainErrorException.class.getName(), root.getClass().getName());
-    }
-  }
-
-  /**
-   * Test promoting an object in a MdMethod where the MdMethod only has promote
-   * permissions on the StateIF of the object.
-   * 
-   * @throws Exception
-   */
-  @Request
-  @Test
-  public void testPromotePermissions() throws Exception
-  {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, promoteMdMethod.getId());
-    promoteMethod.grantPermission(Operation.PROMOTE, state2.getId());
-
-    String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    promotePermissions(sessionId);
-
-    Facade.logout(sessionId);
-  }
-
-  @Request(RequestType.SESSION)
-  public static void promotePermissions(String sessionId) throws Exception
-  {
-    Class<?> c = LoaderDecorator.load(mdBusiness.definesType());
-    Business input = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(input);
-
-    try
-    {
-      c.getMethod("testPromote", c).invoke(null, input);
-    }
-    catch (InvocationTargetException e)
-    {
-      Assert.fail("Unable to promote an object with PROMOTE permissions on StateIF");
     }
   }
 
@@ -1514,48 +1277,6 @@ public class IntegratedMethodTest
   }
 
   /**
-   * Test adding a child to an object in a MdMethod where the MdMethod only has
-   * ADD_CHILD permissions on StateIF.
-   * 
-   * @throws Exception
-   */
-  @Request
-  @Test
-  public void testStateAddChildPermissions() throws Exception
-  {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, addChildMdMethod.getId());
-    addChildMethod.grantPermission(Operation.ADD_CHILD, typeTuple2.getId());
-
-    String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    stateAddChildPermissions(sessionId);
-
-    Facade.logout(sessionId);
-  }
-
-  @Request(RequestType.SESSION)
-  public static void stateAddChildPermissions(String sessionId) throws Exception
-  {
-    Class<?> c = LoaderDecorator.load(mdBusiness.definesType());
-    Business object = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(object);
-
-    Business input = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(input);
-
-    try
-    {
-      c.getMethod("testAddChild", c).invoke(object, input);
-    }
-    catch (InvocationTargetException e)
-    {
-      e.printStackTrace();
-      Assert.fail("Unable to add a child with ADD_CHILD permissions on StateIF and MdRelationship");
-    }
-  }
-
-  /**
    * Ensure that an DomainErrorException is thrown when a MdMethod attempts to
    * add a child to an object without any ADD_CHILD permissions.
    * 
@@ -1638,48 +1359,6 @@ public class IntegratedMethodTest
     {
       e.printStackTrace();
       Assert.fail("Unable to add a child with ADD_PARENT permissions on MdBusiness and MdRelationship");
-    }
-  }
-
-  /**
-   * Test adding a child to an object in a MdMethod where the MdMethod only has
-   * ADD_PARENT permissions on StateIF.
-   * 
-   * @throws Exception
-   */
-  @Request
-  @Test
-  public void testStateAddParentPermissions() throws Exception
-  {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, addParentMdMethod.getId());
-    addParentMethod.grantPermission(Operation.ADD_PARENT, typeTuple2.getId());
-
-    String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    stateAddParentPermissions(sessionId);
-
-    Facade.logout(sessionId);
-  }
-
-  @Request(RequestType.SESSION)
-  public static void stateAddParentPermissions(String sessionId) throws Exception
-  {
-    Class<?> c = LoaderDecorator.load(mdBusiness.definesType());
-    Business object = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(object);
-
-    Business input = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(input);
-
-    try
-    {
-      c.getMethod("testAddParent", c).invoke(object, input);
-    }
-    catch (InvocationTargetException e)
-    {
-      e.printStackTrace();
-      Assert.fail("Unable to add a child with ADD_PARENT permissions on StateIF and MdRelationship");
     }
   }
 
@@ -1914,52 +1593,6 @@ public class IntegratedMethodTest
     {
       e.printStackTrace();
       Assert.fail("Unable to delete a parent with DELETE_PARENT permissions on MdBusiness and MdRelationship");
-    }
-  }
-
-  /**
-   * Test deleting a child to an object in a MdMethod where the MdMethod only
-   * has DELETE_CHILD permissions on StateIF.
-   * 
-   * @throws Exception
-   */
-  @Request
-  @Test
-  public void testStateDeleteParentPermissions() throws Exception
-  {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.ADD_PARENT, mdRelationship.getId());
-    newUser.grantPermission(Operation.EXECUTE, deleteParentMdMethod.getId());
-    deleteParentMethod.grantPermission(Operation.DELETE_PARENT, typeTuple2.getId());
-
-    String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    stateDeleteParentPermissions(sessionId);
-
-    Facade.logout(sessionId);
-  }
-
-  @Request(RequestType.SESSION)
-  public static void stateDeleteParentPermissions(String sessionId) throws Exception
-  {
-    Class<?> c = LoaderDecorator.load(mdBusiness.definesType());
-    Business object = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(object);
-
-    Business input = (Business) c.getConstructor().newInstance();
-    c.getMethod("apply").invoke(input);
-
-    Relationship re = (Relationship) c.getMethod("addTestParent", c).invoke(object, input);
-    re.apply();
-
-    try
-    {
-      c.getMethod("testDeleteParent", c).invoke(object, input);
-    }
-    catch (InvocationTargetException e)
-    {
-      e.printStackTrace();
-      Assert.fail("Unable to delete a parent with DELETE_PARENT permissions on StateIF and MdRelationship");
     }
   }
 

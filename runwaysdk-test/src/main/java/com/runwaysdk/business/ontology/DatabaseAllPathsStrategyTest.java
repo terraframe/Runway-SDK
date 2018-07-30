@@ -19,10 +19,13 @@
 package com.runwaysdk.business.ontology;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 
+@RunWith(ClasspathTestRunner.class)
 public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
 {
   public DatabaseAllPathsStrategyTest() throws Exception

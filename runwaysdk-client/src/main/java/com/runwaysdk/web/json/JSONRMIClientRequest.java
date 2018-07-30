@@ -618,22 +618,6 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String grantStatePermission(String sessionId, String actorId, String stateId, String ... operationNames)
-  {
-    try
-    {
-      return rmiAdapter.grantStatePermission(sessionId, actorId, stateId, operationNames);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
   public String grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String ... operationNames)
   {
     try
@@ -649,39 +633,6 @@ public class JSONRMIClientRequest extends JSONClientRequest
       throw new RMIClientException(e);
     }
   }
-
-  public String grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String ... operationNames)
-  {
-    try
-    {
-      return rmiAdapter.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  public String promoteObject(String sessionId, String businessJSON, String transitionName)
-  {
-    try
-    {
-      return rmiAdapter.promoteObject(sessionId, businessJSON, transitionName);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
   public String revokeTypePermission(String sessionId, String actorId, String mdTypeId, String ... operationNames)
   {
     try
@@ -714,43 +665,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String revokeStatePermission(String sessionId, String actorId, String stateId, String ... operationNames)
-  {
-    try
-    {
-      return rmiAdapter.revokeStatePermission(sessionId, actorId, stateId, operationNames);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
   public String revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String ... operationNames)
   {
     try
     {
       return rmiAdapter.revokeAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  public String revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String ... operationNames)
-  {
-    try
-    {
-      return rmiAdapter.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
     }
     catch (RuntimeException e)
     {

@@ -44,9 +44,6 @@ import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.SmartException;
 import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.ServerProperties;
@@ -61,15 +58,12 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
-import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MissingKeyNameValue;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StaleEntityException;
 import com.runwaysdk.dataaccess.TransientDAO;
-import com.runwaysdk.dataaccess.TransitionDAO;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.CacheAllRelationshipDAOStrategy;
 import com.runwaysdk.dataaccess.cache.CacheNoneBusinessDAOStrategy;
@@ -578,90 +572,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     if (!mdParameter.isImport())
     {
       this.getTransactionCache().updatedMdParameter_CodeGen(mdParameter);
-    }
-  }
-
-  protected pointcut createStateMaster(StateMasterDAO stateMaster)
-  :(execution (* com.runwaysdk.business.state.StateMasterDAO.save(..)) && this(stateMaster));
-
-  before(StateMasterDAO stateMaster)
-  : createStateMaster(stateMaster)
-  {
-    this.getTransactionCache().updatedStateMaster(stateMaster);
-  }
-
-  protected pointcut getDefinesStateMasters(MdStateMachineDAO mdStateMachine)
-  :(call (* com.runwaysdk.business.state.MdStateMachineDAOIF.definesStateMasters()) && target(mdStateMachine));
-
-  List<StateMasterDAOIF> around(MdStateMachineDAO mdStateMachine)
-  : getDefinesStateMasters(mdStateMachine)
-  {
-    List<StateMasterDAOIF> cachedStateMasterList = this.getTransactionCache().getUpdatedStateMasters(mdStateMachine.definesType());
-
-    if (cachedStateMasterList.size() > 0)
-    {
-      List<StateMasterDAOIF> states = new LinkedList<StateMasterDAOIF>();
-      List<String> list = EntityDAO.getEntityIdsDB(mdStateMachine.definesType());
-
-      for (String id : list)
-      {
-        states.add(StateMasterDAO.get(id));
-      }
-
-      return states;
-    }
-    else
-    {
-      return proceed(mdStateMachine);
-    }
-
-  }
-
-  protected pointcut createTransition(TransitionDAO transitionDAO)
-  :(execution (* com.runwaysdk.dataaccess.TransitionDAO.save(..)) && this(transitionDAO));
-
-  before(TransitionDAO transitionDAO)
-  : createTransition(transitionDAO)
-  {
-    this.getTransactionCache().updatedTransition(transitionDAO);
-  }
-
-  protected pointcut deleteTransition(TransitionDAO transitionDAO)
-  :(execution (* com.runwaysdk.dataaccess.TransitionDAO.delete(..)) && this(transitionDAO));
-
-  before(TransitionDAO transitionDAO)
-  : deleteTransition(transitionDAO)
-  {
-    this.getTransactionCache().updatedTransition(transitionDAO);
-  }
-
-  protected pointcut getDefinesTransitions(MdStateMachineDAO mdStateMachine)
-  :(call (* com.runwaysdk.business.state.MdStateMachineDAOIF.definesTransitions()) && target(mdStateMachine));
-
-  List<TransitionDAOIF> around(MdStateMachineDAO mdStateMachine)
-  : getDefinesTransitions(mdStateMachine)
-  {
-    MdRelationshipDAOIF mdTransition = mdStateMachine.getMdTransition();
-
-    Set<TransitionDAOIF> cachedTransitionList = this.getTransactionCache().getUpdatedTransitions(mdTransition.definesType());
-
-    if (cachedTransitionList.size() > 0)
-    {
-
-      List<TransitionDAOIF> transitions = new LinkedList<TransitionDAOIF>();
-
-      List<String> list = EntityDAO.getEntityIdsDB(mdTransition.definesType());
-
-      for (String id : list)
-      {
-        transitions.add((TransitionDAOIF) RelationshipDAO.get(id));
-      }
-
-      return transitions;
-    }
-    else
-    {
-      return proceed(mdStateMachine);
     }
   }
 

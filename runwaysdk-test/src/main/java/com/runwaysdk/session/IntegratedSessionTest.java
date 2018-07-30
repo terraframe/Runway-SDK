@@ -45,9 +45,6 @@ import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAO;
 import com.runwaysdk.business.rbac.UserDAO;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -76,7 +73,6 @@ import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.facade.Facade;
 
 @RunWith(ClasspathTestRunner.class)
@@ -220,31 +216,6 @@ public class IntegratedSessionTest
   private static StructDAO                 structDAO;
 
   /**
-   * The test state-mdAttribute tuple.
-   */
-  private static TypeTupleDAO              typeTuple1;
-
-  /**
-   * The test state-mdRelationship tuple
-   */
-  private static TypeTupleDAO              typeTuple2;
-
-  /**
-   * The test state1 of the MdBusiness StateMachine.
-   */
-  private static StateMasterDAO            state1;
-
-  /**
-   * The test state2 of the MdBusiness StateMachine.
-   */
-  private static StateMasterDAO            state2;
-
-  /**
-   * The test state3 of the MdBusiness StateMachine.
-   */
-  private static StateMasterDAO            state3;
-
-  /**
    * The username for the user .
    */
   private final static String              username1    = "smethie";
@@ -355,30 +326,6 @@ public class IntegratedSessionTest
     mdAttributeEnumeration = TestFixtureFactory.addEnumerationAttribute(mdStruct, structMdEnumeration);
     mdAttributeEnumeration.apply();
 
-    // Create a StateMachine for the MdBusiness
-    MdStateMachineDAO mdState = TestFixtureFactory.createMdStateMachine(mdBusiness);
-    mdState.apply();
-
-    // Add states to the state machine
-    state1 = mdState.addState("State1", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state1.apply();
-
-    state2 = mdState.addState("State2", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state2.apply();
-
-    state3 = mdState.addState("State3", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state3.apply();
-
-    // Add transitions between states
-    RelationshipDAO transition1 = mdState.addTransition("transition1", state1.getId(), state2.getId());
-    transition1.apply();
-
-    RelationshipDAO transition2 = mdState.addTransition("transition2", state2.getId(), state3.getId());
-    transition2.apply();
-
-    RelationshipDAO transition3 = mdState.addTransition("transition3", state3.getId(), state1.getId());
-    transition3.apply();
-
     // Create a new relationship
     mdRelationship = TestFixtureFactory.createMdRelationship1(mdBusiness, mdBusiness);
     mdRelationship.apply();
@@ -456,12 +403,6 @@ public class IntegratedSessionTest
 
     relationshipDAO = RelationshipDAO.newInstance(businessDAO.getId(), businessDAO2.getId(), mdRelationship.definesType());
     relationshipDAO.apply();
-
-    typeTuple1 = TestFixtureFactory.createTypeTuple(state1, mdAttribute);
-    typeTuple1.apply();
-
-    typeTuple2 = TestFixtureFactory.createTypeTuple(state1, mdRelationship);
-    typeTuple2.apply();
   }
 
   /**
@@ -471,8 +412,6 @@ public class IntegratedSessionTest
   @AfterClass
   public static void classTearDown()
   {
-    TestFixtureFactory.delete(typeTuple1);
-    TestFixtureFactory.delete(typeTuple2);
     TestFixtureFactory.delete(enumMasterMdBusiness);
     TestFixtureFactory.delete(mdRelationship);
     TestFixtureFactory.delete(mdBusinessChild);
@@ -1149,42 +1088,6 @@ public class IntegratedSessionTest
     catch (AttributeWritePermissionException e)
     {
       Assert.fail("Unable to write a businessDAO with Type permissions");
-    }
-  }
-
-  @Request
-  @Test
-  public void testWriteStateTypePermissions()
-  {
-    newUser1.grantPermission(Operation.WRITE, state1.getId());
-    newUser1.grantPermission(Operation.WRITE, typeTuple1.getId());
-
-    String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    try
-    {
-      writeStateTypePermissions(sessionId);
-    }
-    finally
-    {
-      Facade.logout(sessionId);
-    }
-  }
-
-  @Request(RequestType.SESSION)
-  public static void writeStateTypePermissions(String sessionId)
-  {
-    Business test = Business.get(businessDAO3.getId());
-
-    try
-    {
-      test.lock();
-      test.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
-      test.apply();
-    }
-    catch (AttributeWritePermissionException e)
-    {
-      Assert.fail("Unable to write a with a state type permissions");
     }
   }
 
@@ -2846,48 +2749,6 @@ public class IntegratedSessionTest
 
   @Request
   @Test
-  public void testStateAddChildPermissions()
-  {
-    newUser1.grantPermission(Operation.ADD_CHILD, typeTuple2.getId());
-    newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
-
-    Business parent = Business.get(businessDAO3.getId());
-
-    String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    try
-    {
-      stateAddChildPermissions(sessionId, parent);
-    }
-    finally
-    {
-      Facade.logout(sessionId);
-    }
-  }
-
-  @Request(RequestType.SESSION)
-  public static void stateAddChildPermissions(String sessionId, Business parent)
-  {
-
-    Business child = Business.get(businessDAO.getId());
-
-    Relationship rel = null;
-
-    try
-    {
-      rel = parent.addChild(child, mdRelationship.definesType());
-      rel.apply();
-    }
-    catch (PermissionException e)
-    {
-      Assert.fail("Unable to add a child with type ADD_CHILD permissions");
-    }
-
-    rel.delete();
-  }
-
-  @Request
-  @Test
   public void testOwnerAddChildPermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -3239,46 +3100,6 @@ public class IntegratedSessionTest
     {
       Assert.fail("Unable to add a child with CREATE permissions on the MdRelationship, but no ADD_CHILD permissions on the MdBusiness");
     }
-  }
-
-  @Request
-  @Test
-  public void testStateAddParentPermissions()
-  {
-    newUser1.grantPermission(Operation.ADD_PARENT, typeTuple2.getId());
-    newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
-
-    Business child = Business.get(businessDAO3.getId());
-    String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    try
-    {
-      stateAddParentPermissions(sessionId, child);
-    }
-    finally
-    {
-      Facade.logout(sessionId);
-    }
-  }
-
-  @Request(RequestType.SESSION)
-  public static void stateAddParentPermissions(String sessionId, Business child)
-  {
-    Business parent = Business.get(businessDAO.getId());
-
-    Relationship rel = null;
-
-    try
-    {
-      rel = child.addParent(parent, mdRelationship.definesType());
-      rel.apply();
-    }
-    catch (PermissionException e)
-    {
-      Assert.fail("Unable to add a parent with type ADD_PARENT permissions");
-    }
-
-    rel.delete();
   }
 
   @Request
@@ -3761,193 +3582,6 @@ public class IntegratedSessionTest
     catch (PermissionException e)
     {
       Assert.fail("Unable to delete with owner Permissions");
-    }
-  }
-
-  public static void testStateDeletePermissions()
-  {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.DELETE, state1.getId());
-
-    String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    try
-    {
-      stateDeletePermissions(sessionId);
-    }
-    finally
-    {
-      Facade.logout(sessionId);
-    }
-  }
-
-  @Request(RequestType.SESSION)
-  public static void stateDeletePermissions(String sessionId)
-  {
-    Business test = Business.get(deleteObject4.getId());
-
-    try
-    {
-      test.lock();
-      test.delete();
-    }
-    catch (PermissionException e)
-    {
-      Assert.fail("Unable to delete with state Permissions");
-    }
-  }
-
-  public static void testPromotePermissions()
-  {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.PROMOTE, state2.getId());
-
-    String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    try
-    {
-      promotePermissions(sessionId);
-    }
-    finally
-    {
-      Facade.logout(sessionId);
-    }
-  }
-
-  @Request(RequestType.SESSION)
-  public static void promotePermissions(String sessionId)
-  {
-    Business test = Business.get(businessDAO5.getId());
-
-    try
-    {
-      test.lock();
-      test.promote("transition1");
-      Assert.assertEquals(state2, businessDAO5.currentState());
-    }
-    catch (PermissionException e)
-    {
-      Assert.fail("Unable to promote with state type PROMOTE permissions");
-    }
-    finally
-    {
-      test.unlock();
-    }
-  }
-
-  public static void testOwnerPromotePermissions()
-  {
-    RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-
-    owner.grantPermission(Operation.WRITE, mdBusiness.getId());
-    owner.grantPermission(Operation.PROMOTE, state2.getId());
-
-    String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    try
-    {
-      ownerPromotePermissions(sessionId);
-    }
-    finally
-    {
-      Facade.logout(sessionId);
-    }
-  }
-
-  @Request(RequestType.SESSION)
-  public static void ownerPromotePermissions(String sessionId)
-  {
-    Business test = Business.get(businessDAO.getId());
-
-    try
-    {
-      test.lock();
-      test.promote("transition1");
-    }
-    catch (PermissionException e)
-    {
-      Assert.fail("Unable to promote with state-businessDAO PROMOTE permissions");
-    }
-    finally
-    {
-      test.unlock();
-    }
-  }
-
-  public static void testInvalidPromotePermissions()
-  {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-
-    String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    try
-    {
-      invalidPromotePermissions(sessionId);
-    }
-    finally
-    {
-      Facade.logout(sessionId);
-    }
-  }
-
-  @Request(RequestType.SESSION)
-  public static void invalidPromotePermissions(String sessionId)
-  {
-    Business test = Business.get(businessDAO.getId());
-
-    try
-    {
-      test.lock();
-      test.promote("transition3");
-
-      Assert.fail("Able to PROMOTE with no permissions");
-    }
-    catch (PromotePermissionException e)
-    {
-      // This is expected
-    }
-    finally
-    {
-      test.unlock();
-    }
-  }
-
-  public static void testInvalidPromotePermissions2()
-  {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.PROMOTE, state1.getId());
-
-    String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
-
-    try
-    {
-      invalidPromotePermissions2(sessionId);
-    }
-    finally
-    {
-      Facade.logout(sessionId);
-    }
-  }
-
-  @Request(RequestType.SESSION)
-  public static void invalidPromotePermissions2(String sessionId)
-  {
-    Business test = Business.get(businessDAO.getId());
-    try
-    {
-      test.lock();
-
-      test.promote("transition1");
-
-      Assert.fail("Able to PROMOTE with permissions on the current state, but not on the destination state");
-    }
-    catch (PromotePermissionException e)
-    {
-      // This is expected
-    }
-    finally
-    {
-      test.unlock();
     }
   }
 

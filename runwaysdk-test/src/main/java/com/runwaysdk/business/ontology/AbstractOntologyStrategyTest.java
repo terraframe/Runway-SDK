@@ -50,6 +50,7 @@ import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
 import com.runwaysdk.system.metadata.MdTerm;
+import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -135,7 +136,7 @@ public abstract class AbstractOntologyStrategyTest
     if (didDoSetUp == false)
     {
       doSetUp();
-      initStrat(mdTerm.definesType(), mdTermRelationship.definesType());
+      initStrat(mdTerm, mdTermRelationship.definesType());
     }
 
     didDoSetUp = true;
@@ -148,20 +149,23 @@ public abstract class AbstractOntologyStrategyTest
 
   }
 
-  public static void initStrat(String mdTermDefinesType, String mdTermRelationshipDefinesType)
+  public static void initStrat(MdTermDAO mdTerm, String mdTermRelationshipDefinesType)
   {
-    Term.assignStrategy(mdTermDefinesType);
-    Term.getStrategy(mdTermDefinesType).initialize(mdTermRelationshipDefinesType);
+    OntologyStrategyIF strategy = DatabaseAllPathsStrategy.factory(mdTerm.definesType());
+    strategy.configure(mdTerm.definesType());
+    strategy.initialize(mdTermRelationshipDefinesType);
   }
 
   public static OntologyStrategyIF getStrategy(String mdTermDefinesType)
   {
-    return Term.getStrategy(mdTermDefinesType);
+    return DatabaseAllPathsStrategy.factory(mdTermDefinesType);    
+
+//    return Term.getStrategy(mdTermDefinesType);
   }
 
   public static void shutDownStrat(String mdTermDefinesType)
   {
-    Term.getStrategy(mdTermDefinesType).shutdown();
+    DatabaseAllPathsStrategy.factory(mdTermDefinesType).shutdown();
   }
 
   @Transaction
@@ -175,7 +179,7 @@ public abstract class AbstractOntologyStrategyTest
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    String source = "package " + PACKAGE + ";\n" + "public class Alphabet extends AlphabetBase implements com.runwaysdk.generation.loader.\n" + "{\n" + "public Alphabet()\n" + "{\n" + "super();\n" + "}\n" + "public static " + OntologyStrategyIF.class.getName() + " createStrategy()\n" + "{\n return new " + this.getOntologyStrategy().getName() + "();\n" + "}\n" + "public static void configureStrategy(" + OntologyStrategyIF.class.getName() + " strategy)\n" + "{\n " + this.getInitializeStrategySource() + "\n" + "}\n" + "}\n";
+    String source = "package " + PACKAGE + ";\n" + "public class Alphabet extends AlphabetBase \n" + "{\n" + "public Alphabet()\n" + "{\n" + "super();\n" + "}\n" + "public static " + OntologyStrategyIF.class.getName() + " createStrategy()\n" + "{\n return new " + this.getOntologyStrategy().getName() + "();\n" + "}\n" + "public static void configureStrategy(" + OntologyStrategyIF.class.getName() + " strategy)\n" + "{\n " + this.getInitializeStrategySource() + "\n" + "}\n" + "}\n";
     mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
     mdTerm.apply();
 

@@ -31,8 +31,6 @@ import com.runwaysdk.business.rbac.OperationManager;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -51,8 +49,6 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.MarkupWriter;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 
 public abstract class PermissionVisitor extends MarkupVisitor
 {
@@ -319,81 +315,8 @@ public abstract class PermissionVisitor extends MarkupVisitor
       visitMdAttribute(mdAttribute, actorIF);
     }
 
-    // If the MdEntity is a MdRelationship and its parent or child have a
-    // MdStateMachine then
-    // export the directional state permissions
-    visitParentState(actorIF, mdRelationship);
-
-    visitChildState(actorIF, mdRelationship);
-
     // Close MdBusiness Permission tag
     writer.closeTag();
-  }
-
-  private void visitParentState(ActorDAOIF actorIF, MdRelationshipDAOIF mdRelationship)
-  {
-    MdBusinessDAOIF parentMdBusiness = mdRelationship.getParentMdBusiness();
-
-    MdStateMachineDAOIF mdStateMachine = null;
-
-    if (parentMdBusiness.hasStateMachine())
-    {
-      mdStateMachine = parentMdBusiness.definesMdStateMachine();
-    }
-
-    if (mdStateMachine != null)
-    {
-      for (StateMasterDAOIF stateMaster : mdStateMachine.definesStateMasters())
-      {
-        TypeTupleDAOIF tuple = TypeTupleDAO.findTuple(mdRelationship.getId(), stateMaster.getId());
-
-        if (tuple != null)
-        {
-          HashMap<String, String> attributes = new HashMap<String, String>();
-          attributes.put(XMLTags.STATE_NAME_ATTRIBUTE, stateMaster.getName());
-
-          // Open MdBusiness Permission tag
-          writer.openEscapedTag(XMLTags.PARENT_STATE_PERMISSION_TAG, attributes);
-
-          visitOperations(actorIF.getAllPermissions(tuple));
-
-          writer.closeTag();
-        }
-      }
-    }
-  }
-
-  private void visitChildState(ActorDAOIF actorIF, MdRelationshipDAOIF mdRelationship)
-  {
-    MdBusinessDAOIF childMdBusiness = mdRelationship.getChildMdBusiness();
-
-    MdStateMachineDAOIF mdStateMachine = null;
-
-    if (childMdBusiness.hasStateMachine())
-    {
-      mdStateMachine = childMdBusiness.definesMdStateMachine();
-    }
-
-    if (mdStateMachine != null)
-    {
-      for (StateMasterDAOIF stateMaster : mdStateMachine.definesStateMasters())
-      {
-        TypeTupleDAOIF tuple = TypeTupleDAO.findTuple(mdRelationship.getId(), stateMaster.getId());
-
-        if (tuple != null)
-        {
-          HashMap<String, String> attributes = new HashMap<String, String>();
-          attributes.put(XMLTags.STATE_NAME_ATTRIBUTE, stateMaster.getName());
-
-          // Open MdBusiness Permission tag
-          writer.openEscapedTag(XMLTags.CHILD_STATE_PERMISSION_TAG, attributes);
-
-          visitOperations(actorIF.getAllPermissions(tuple));
-
-          writer.closeTag();
-        }
-      }
-    }
   }
 
   private void visitMdClass(RelationshipDAOIF permission, ActorDAOIF actorIF, MdClassDAOIF mdClass, Boolean all)
@@ -472,63 +395,8 @@ public abstract class PermissionVisitor extends MarkupVisitor
 
     visitMdClass(permission, actorIF, mdBusiness, all);
 
-    // If the MdEntity is a MdBusiness and it has a MdStateMachine then
-    // export the state permissions and the attribute permissions of that state
-
-    // Get the MdStateStateMachine if it exists
-    MdStateMachineDAOIF mdStateMachine = null;
-
-    if (mdBusiness.hasStateMachine())
-    {
-      mdStateMachine = mdBusiness.definesMdStateMachine();
-    }
-
-    // Export the permissions for all of the states of the MdStateMachine
-    if (mdStateMachine != null)
-    {
-      visitMdStateMachine(actorIF, mdStateMachine, mdBusiness);
-    }
-
     // Close MdBusiness Permission tag
     writer.closeTag();
-  }
-
-  private void visitMdStateMachine(ActorDAOIF actorIF, MdStateMachineDAOIF mdStateMachine, MdBusinessDAOIF mdBusiness)
-  {
-    for (StateMasterDAOIF state : mdStateMachine.definesStateMasters())
-    {
-      HashMap<String, String> attributes = new HashMap<String, String>();
-      attributes.put(XMLTags.STATE_NAME_ATTRIBUTE, state.getName());
-
-      // Open StatePermission tag
-      writer.openEscapedTag(XMLTags.STATE_PERMISSION_TAG, attributes);
-
-      // Export all of the permissions defined for the StateMasterIF
-      visitOperations(actorIF.getAllPermissions(state));
-
-      // Export all of the attribute permissions for a given state
-      for (MdAttributeConcreteDAOIF mdAttribute : mdBusiness.definesAttributes())
-      {
-        TypeTupleDAOIF tuple = TypeTupleDAO.findTuple(mdAttribute.getId(), state.getId());
-
-        if (tuple != null)
-        {
-          HashMap<String, String> attributeAttributes = new HashMap<String, String>();
-          attributeAttributes.put(XMLTags.PERMISSION_ATTRIBUTE_NAME, mdAttribute.definesAttribute());
-
-          // Open AttributePermission tag
-          writer.openEscapedTag(XMLTags.ATTRIBUTE_PERMISSION_TAG, attributeAttributes);
-
-          visitOperations(actorIF.getAllPermissions(tuple));
-
-          // Close the AttributePermission tag
-          writer.closeTag();
-        }
-      }
-
-      // Close the StatePermission tag
-      writer.closeTag();
-    }
   }
 
   private void visitMdAttribute(MdAttributeDAOIF mdAttribute, ActorDAOIF actorIF)

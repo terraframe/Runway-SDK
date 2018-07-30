@@ -164,18 +164,6 @@ public class MethodCache
     return methodSession.checkAccess(operation, component);
   }
   
-  protected boolean checkAttributeAccess(MdMethodDAOIF mdMethod, Operation o, String stateId)
-  {
-    MethodSession methodSession = getMethod(mdMethod);
-    
-    if(methodSession == null)
-    {
-      return false;
-    }
-    
-    return methodSession.checkAccess(o, stateId);
-  }
-  
   /**
    * Checks if the {@link UserDAO} of the {@link Session} has
    * permissions to execute an {@link Operation} on a type.
@@ -298,18 +286,6 @@ public class MethodCache
   }
 
   
-  protected boolean checkAttributeAccess(MdMethodDAOIF mdMethod, Operation operation, String stateId, MdAttributeDAOIF mdAttribute)
-  {
-    MethodSession methodSession = getMethod(mdMethod);
-    
-    if(methodSession == null)
-    {
-      return false;
-    }
-    
-    return methodSession.checkAttributeAccess(operation, stateId, mdAttribute);
-  }
-  
   protected boolean checkAttributeTypeAccess(MdMethodDAOIF mdMethod, Operation operation, MdAttributeDAOIF mdAttribute)
   {
     MethodSession methodSession = getMethod(mdMethod);
@@ -366,32 +342,6 @@ public class MethodCache
     }
     
     return methodSession.checkMethodAccess(Operation.EXECUTE, methodToExecute);
-  }
-
-  /**
-   * Check if a MdMethod of a given session has promote access on a transition
-   * 
-   * @pre o == Operation.PROMOTE
-   * 
-   * @param mdMethod
-   *            The MdMethodIF to check
-   * @param entity
-   *            The entity object ot check acces on
-   * @param transitionName
-   *            The name of the transition to check promotion on
-   * @return If a MdMethod has the permission to execute the given
-   *         operation on the given transition
-   */
-  protected boolean checkPromoteAccess(MdMethodDAOIF mdMethod, Business business, String transitionName)
-  {
-    MethodSession methodSession = getMethod(mdMethod);
-    
-    if(methodSession == null)
-    {
-      return false;
-    }
-    
-    return methodSession.checkPromoteAccess(business, transitionName);
   }
 
   /**

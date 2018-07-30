@@ -43,8 +43,6 @@ import com.runwaysdk.business.rbac.SDutyDAO;
 import com.runwaysdk.business.rbac.SDutyDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAO;
 import com.runwaysdk.business.rbac.UserDAO;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.ComponentInfo;
@@ -52,7 +50,6 @@ import com.runwaysdk.constants.DatabaseAllPathsStrategyInfo;
 import com.runwaysdk.constants.DateConditionInfo;
 import com.runwaysdk.constants.DoubleConditionInfo;
 import com.runwaysdk.constants.EntityInfo;
-import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.ImportLogInfo;
 import com.runwaysdk.constants.IndicatorCompositeInfo;
@@ -102,7 +99,6 @@ import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.MdTermInfo;
@@ -306,7 +302,6 @@ public class BusinessDAOFactory
     map.put(MdTermInfo.CLASS, new MdTermDAO());
     map.put(MdStructInfo.CLASS, new MdStructDAO());
     map.put(MdLocalStructInfo.CLASS, new MdLocalStructDAO());
-    map.put(MdStateMachineInfo.CLASS, new MdStateMachineDAO());
     map.put(MdEnumerationInfo.CLASS, new MdEnumerationDAO());
     map.put(MdRelationshipInfo.CLASS, new MdRelationshipDAO());
     map.put(MdGraphInfo.CLASS, new MdGraphDAO());
@@ -463,13 +458,6 @@ public class BusinessDAOFactory
       }
 
       return new EnumerationItemDAO(attributeMap, type);
-    }
-
-    boolean isStateItem = MdElementDAO.isSubEntity(type, EntityTypes.STATE_MASTER.getType());
-
-    if (isStateItem)
-    {
-      return new StateMasterDAO(attributeMap, type);
     }
 
     return new BusinessDAO(attributeMap, type);

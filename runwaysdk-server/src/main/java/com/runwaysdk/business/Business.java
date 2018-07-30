@@ -23,8 +23,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.runwaysdk.business.state.StateException;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.TypeGeneratorInfo;
@@ -38,7 +36,6 @@ import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
@@ -262,73 +259,6 @@ public class Business extends Element
   BusinessDAO businessDAO()
   {
     return (BusinessDAO) entityDAO;
-  }
-
-  /**
-   * 
-   * @param transitionName
-   */
-  public void promote(String transitionName)
-  {
-    try
-    {
-      businessDAO().promote(transitionName);
-    }
-    catch (StateException e)
-    {
-      String source = "Unknown";
-      for (TransitionDAOIF r : businessDAO().getMdBusinessDAO().definesMdStateMachine().definesTransitions())
-        if (r.getName().equals(transitionName))
-          source = r.getParent().getValue(StateMasterDAOIF.STATE_NAME);
-
-      String error = "You cannot '" + transitionName + "' from the [" + businessDAO().currentState().getName() + "] State: you must be in the [" + source + "] State.";
-      throw new InvalidTransistionException(error);
-    }
-  }
-
-  /**
-   * Default visibility is on purpose:
-   * {@link BusinessFacade#currentState(Business)} can access this method, but
-   * inherited children cannot. This allows internal access through the Facade
-   * without exposing implementation to generated classes.
-   * 
-   * @return The current state of this Business
-   */
-  StateMasterDAOIF currentState()
-  {
-    return businessDAO().currentState();
-  }
-
-  /**
-   * Returns the state label for this object. If this object does not partake in
-   * a state machine then an empty string is returned.
-   * 
-   * @return The state label or an empty string if the state label doesn't
-   *         exist.
-   */
-  public String getState()
-  {
-    if (this.hasState())
-    {
-      return this.currentState().getValue(StateMasterDAOIF.STATE_NAME);
-    }
-    else
-    {
-      return "";
-    }
-  }
-
-  /**
-   * Default visibility is on purpose:
-   * {@link BusinessFacade#currentState(Business)} can access this method, but
-   * inherited children cannot. This allows internal access through the Facade
-   * without exposing implementation to generated classes.
-   * 
-   * @return The current state of this Business
-   */
-  boolean hasState()
-  {
-    return businessDAO().hasState();
   }
 
   protected String getDeclaredType()

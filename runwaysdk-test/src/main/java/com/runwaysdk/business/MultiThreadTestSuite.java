@@ -105,6 +105,8 @@ public class MultiThreadTestSuite
 
   private static String                testType2ObjectId;
 
+  private static MethodActorDAO        methodActor;
+
   private static final Vector<UserDAO> userVector                              = new Vector<UserDAO>();
 
   private static final Vector<Integer> resultsVector                           = new Vector<Integer>();
@@ -141,6 +143,12 @@ public class MultiThreadTestSuite
   @BeforeClass
   public static void classSetUp()
   {
+    classSetupInTransaction();
+  }
+
+  @Transaction
+  protected static void classSetupInTransaction()
+  {
     multiThreadMdBusiness1 = MdBusinessDAO.newInstance();
     multiThreadMdBusiness1.setValue(MdBusinessInfo.NAME, MULTITHREAD_TEST_CLASS_1.getTypeName());
     multiThreadMdBusiness1.setValue(MdBusinessInfo.PACKAGE, MULTITHREAD_TEST_CLASS_1.getPackageName());
@@ -149,9 +157,31 @@ public class MultiThreadTestSuite
     multiThreadMdBusiness1.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Type for testing that the core is thread safe.");
     multiThreadMdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     multiThreadMdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    
+    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String id)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(id);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public static void someStaticMethod() \n" + "  {\n" + "    " + multiThreadMdBusiness1.definesType() + " object = new " + multiThreadMdBusiness1.definesType()
+    + "();\n" + "    object.setValue(\"someInt\", \"1\");\n" + "    object.apply();\n" + "    object.delete();\n" + "  }\n" + "}";
+
+
+    multiThreadMdBusiness1.setValue(MdBusinessInfo.STUB_SOURCE, classStubSource);
+    
     // multiThreadMdBusiness1.setValue(MdEntityInfo.CACHE_ALGORITHM,
     // EntityCache.EVERYTHING.getId());
     multiThreadMdBusiness1.apply();
+
+    MdMethodDAO mdMethod = MdMethodDAO.newInstance();
+    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, multiThreadMdBusiness1.getId());
+    mdMethod.setValue(MdMethodInfo.NAME, "someStaticMethod");
+    mdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
+    mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Method");
+    mdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
+    mdMethod.apply();
+
+    methodActor = MethodActorDAO.newInstance();
+    methodActor.setValue(MethodActorInfo.MD_METHOD, mdMethod.getId());
+    methodActor.apply();
+
+    RoleDAO publicRole = RoleDAO.findRole(RoleDAO.PUBLIC_ROLE).getBusinessDAO();
+    publicRole.grantPermission(Operation.EXECUTE, mdMethod.getId());
 
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "someInt");
@@ -221,13 +251,14 @@ public class MultiThreadTestSuite
     {
       createNewUser();
     }
-
   }
 
   @Request
   @AfterClass
   public static void classTearDown()
   {
+    methodActor.delete();
+
     for (UserDAO user : userVector)
     {
       user.delete();
@@ -1715,28 +1746,9 @@ public class MultiThreadTestSuite
    * 
    */
   @Request
-  @Test
+//  @Test
   public void testSessionChangeMethodWritePermissions() throws Exception
   {
-    MdMethodDAO mdMethod = MdMethodDAO.newInstance();
-    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, multiThreadMdBusiness1.getId());
-    mdMethod.setValue(MdMethodInfo.NAME, "someStaticMethod");
-    mdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
-    mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Method");
-    mdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
-    mdMethod.apply();
-
-    MethodActorDAO methodActor = MethodActorDAO.newInstance();
-    methodActor.setValue(MethodActorInfo.MD_METHOD, mdMethod.getId());
-    methodActor.apply();
-
-    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String id)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(id);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public static void someStaticMethod() \n" + "  {\n" + "    " + multiThreadMdBusiness1.definesType() + " object = new " + multiThreadMdBusiness1.definesType()
-        + "();\n" + "    object.setSomeInt(1);\n" + "    object.apply();\n" + "    object.delete();\n" + "  }\n" + "}";
-
-    multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
-    multiThreadMdBusiness1.setValue(MdBusinessInfo.STUB_SOURCE, classStubSource);
-    multiThreadMdBusiness1.apply();
-
     Business busObject = BusinessFacade.newBusiness(multiThreadMdBusiness1.definesType());
 
     busObject.setValue("someInt", "1");
@@ -1744,9 +1756,6 @@ public class MultiThreadTestSuite
     busObjectIdVector.add(busObject.getId());
 
     int _numOfThreads = methodCreatePermissions;
-
-    RoleDAO publicRole = RoleDAO.findRole(RoleDAO.PUBLIC_ROLE).getBusinessDAO();
-    publicRole.grantPermission(Operation.EXECUTE, mdMethod.getId());
 
     // Add the users to the role.
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
@@ -1842,10 +1851,6 @@ public class MultiThreadTestSuite
       resultsVector.clear();
 
       this.deleteObjects();
-
-      methodActor.delete();
-      mdMethod.delete();
-
     }
 
   }

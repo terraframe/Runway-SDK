@@ -233,19 +233,6 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <!--A state in a mdStateMachine -->
-  <xs:complexType name="state">
-    <xs:complexContent>
-      <xs:extension base="metadata">
-        <!--name: The name of the state master -->
-        <xs:attribute name="name" type="xs:string" use="required" />
-        <!--entry: The state entry parameter -->
-        <xs:attribute name="entry" type="entryOptions"></xs:attribute>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-
   <!--Common Attributes of classes that extend MdType -->
   <xs:complexType name="mdType">
     <xs:complexContent>
@@ -711,9 +698,6 @@
   <xs:complexType name="mdBusinessOptions">
     <xs:complexContent>
       <xs:extension base="mdEntityOptions">
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="mdStateMachine" type="mdStateMachine" minOccurs="0" maxOccurs="1" />
-        </xs:choice>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -735,7 +719,6 @@
     <xs:complexContent>
       <xs:extension base="mdBusinessBase">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="mdStateMachine" type="mdStateMachine" minOccurs="0" maxOccurs="1" />
           <xs:element name="create" type="mdBusinessOptions" minOccurs="0" maxOccurs="1" />
         </xs:choice>
       </xs:extension>
@@ -833,50 +816,6 @@
     <xs:attribute name="cardinality" use="required" type="xs:string" />
     <!--method: The name of the call method -->
     <xs:attribute name="method" use="required" type="xs:string" />
-    <xs:anyAttribute processContents="skip" />
-  </xs:complexType>
-
-  <xs:complexType name="states">
-    <xs:sequence minOccurs="1" maxOccurs="unbounded">
-      <xs:element name="state" type="state" />
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="transitions">
-    <xs:sequence minOccurs="1" maxOccurs="unbounded">
-      <xs:element name="transition" type="transition" />
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="mdStateMachineOptions">
-    <xs:sequence>
-      <xs:element name="states" type="states" minOccurs="0" maxOccurs="1" />
-      <xs:element name="transitions" type="transitions" minOccurs="0" maxOccurs="1" />
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="mdStateMachine">
-    <xs:complexContent>
-      <xs:extension base="mdType">
-        <xs:sequence>
-          <xs:element name="states" type="states" />
-          <xs:element name="transitions" type="transitions" />
-          <xs:element name="create" type="mdStateMachineOptions" minOccurs="0" maxOccurs="1" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <!--A transition in an mdStateMachine -->
-  <xs:complexType name="transition">
-    <!--name: The name of the transitionDAO -->
-    <xs:attribute name="name" type="xs:string" use="required" />
-    <!--label: The display label of the transitionDAO -->
-    <xs:attribute name="label" type="xs:string" use="optional" />
-    <!--source: The name of the source state -->
-    <xs:attribute name="source" type="xs:string" />
-    <!--sink: The name of the sink state -->
-    <xs:attribute name="sink" type="xs:string" />
     <xs:anyAttribute processContents="skip" />
   </xs:complexType>
 

@@ -35,9 +35,6 @@ import org.slf4j.LoggerFactory;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
@@ -57,7 +54,6 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -67,8 +63,6 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransientDAO;
-import com.runwaysdk.dataaccess.TransitionDAO;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.RelationshipDAOCollection;
@@ -1842,62 +1836,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getUpdatedStateMasters(java.lang.String)
-   */
-  public List<StateMasterDAOIF> getUpdatedStateMasters(String type)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      List<StateMasterDAOIF> stateMasterList = new LinkedList<StateMasterDAOIF>();
-
-      if (this.updatedStateMasterMap.containsKey(type))
-      {
-        Set<String> stateMasterDAOidSet = this.updatedStateMasterMap.get(type);
-
-        for (String stateMasterDAOid : stateMasterDAOidSet)
-        {
-          stateMasterList.add((StateMasterDAOIF) this.internalGetEntityDAO(stateMasterDAOid));
-        }
-      }
-
-      return stateMasterList;
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getUpdatedTransitions(java.lang.String)
-   */
-  public Set<TransitionDAOIF> getUpdatedTransitions(String type)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      Set<TransitionDAOIF> transitionSet = new HashSet<TransitionDAOIF>();
-
-      if (this.updatedTransitionMap.containsKey(type))
-      {
-        Set<String> transactionIdSet = this.updatedTransitionMap.get(type);
-
-        for (String transactionId : transactionIdSet)
-        {
-          transitionSet.add((TransitionDAOIF) this.internalGetEntityDAO(transactionId));
-        }
-      }
-
-      return transitionSet;
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#hasExecutedEntityDeleteMethod(com.runwaysdk.dataaccess.EntityDAO,
    *      java.lang.String)
    */
@@ -2601,70 +2539,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
           }
         }
       }
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#updatedStateMaster(com.runwaysdk.business.state.StateMasterDAO)
-   */
-  public void updatedStateMaster(StateMasterDAO stateMasterDAO)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      Set<String> stateMasterSet;
-
-      if (!this.updatedStateMasterMap.containsKey(stateMasterDAO.getType()))
-      {
-        stateMasterSet = new HashSet<String>();
-        this.updatedStateMasterMap.put(stateMasterDAO.getType(), stateMasterSet);
-      }
-      else
-      {
-        stateMasterSet = this.updatedStateMasterMap.get(stateMasterDAO.getType());
-      }
-      stateMasterSet.add(stateMasterDAO.getId());
-      this.storeTransactionEntityDAO(stateMasterDAO);
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#updatedTransition(com.runwaysdk.dataaccess.TransitionDAO)
-   */
-  public void updatedTransition(TransitionDAO transitionDAO)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      BusinessDAOIF childObject = transitionDAO.getChild();
-
-      MdStateMachineDAOIF mdStateMachine = (MdStateMachineDAOIF) childObject.getMdClassDAO();
-
-      MdBusinessDAOIF mdBusinessIF = mdStateMachine.getStateMachineOwner();
-      this.updatedMdTypeSet_CodeGeneration.add(mdBusinessIF.getId());
-      this.storeTransactionEntityDAO((MdBusinessDAO) mdBusinessIF);
-
-      Set<String> transitionSet;
-
-      if (!this.updatedTransitionMap.containsKey(transitionDAO.getType()))
-      {
-        transitionSet = new HashSet<String>();
-        this.updatedTransitionMap.put(transitionDAO.getType(), transitionSet);
-      }
-      else
-      {
-        transitionSet = this.updatedTransitionMap.get(transitionDAO.getType());
-      }
-      transitionSet.add(transitionDAO.getId());
-      this.storeTransactionEntityDAO(transitionDAO);
     }
     finally
     {

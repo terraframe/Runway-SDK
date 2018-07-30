@@ -274,23 +274,7 @@ public class SessionFacade
 
     return session.checkAccess(o, mutable);
   }
-
-  /**
-   * Checks if the session has permissions on the given state
-   *
-   * @param o The operation to execute
-   * @param stateId id of the state
-   *
-   * @return If access has been granted
-   */
-  public static boolean checkAccess(String sessionId, Operation o, String stateId)
-  {
-    SessionCache cache = SessionFacade.getSessionCache();
-    Session session = cache.getSession(sessionId);
-
-    return session.checkAccess(o, stateId);
-  }
-
+  
   /**
    * Checks all types involved in building a {@link ValueObject} to see if
    * the given permission exists for that type.
@@ -360,33 +344,6 @@ public class SessionFacade
       return session.checkAttributeAccess(operation, mutabale, mdAttribute.getMdAttributeConcrete());
     }
   }
-
-  /**
-   * Returns true if permission exists for the given operation on the attribute and the given defining type state.
-   *
-   * @param sessionId The id of the {@link Session} to check
-   * @param operation
-   * @param stateId
-   * @param mdAttribute
-   * @return operations for the given attribute and the state of the type that defines it.
-   */
-  public static boolean checkAttributeAccess(String sessionId, Operation operation, String stateId, MdAttributeDAOIF mdAttribute)
-  {
-    SessionCache cache = SessionFacade.getSessionCache();
-    Session session = cache.getSession(sessionId);
-
-    boolean userPermission = session.checkAttributeAccess(operation, stateId, mdAttribute);
-
-    if (userPermission)
-    {
-      return true;
-    }
-    else
-    {
-      return session.checkAttributeAccess(operation, stateId, mdAttribute.getMdAttributeConcrete());
-    }
-  }
-
 
   /**
    * Performs a check if the {@link UserDAO} of the {@link Session} has attribute
@@ -510,26 +467,6 @@ public class SessionFacade
     Session session = cache.getSession(sessionId);
 
     return session.checkRelationshipAccess(o, business, mdRelationshipId);
-  }
-
-
-  /**
-   * Check if the {@link UserDAO} of the {@link Session} has
-   * {@link Operation#PROMOTE} access on a transition.
-   *
-   * @parm sessionId The id of the {@link Session} to check
-   * @param entity The {@link Business} object to check acces on
-   * @param transitionName The name of the transition to check promotion on
-   *
-   * @return If the {@link UserDAO} of the {@link Session} has the permission
-   *         to execute {@link Operation#PROMOTE} on the given transition
-   */
-  public static boolean checkPromoteAccess(String sessionId, Business business, String transitionName)
-  {
-    SessionCache cache = SessionFacade.getSessionCache();
-    Session session = cache.getSession(sessionId);
-
-    return session.checkPromoteAccess(business, transitionName);
   }
 
   /**

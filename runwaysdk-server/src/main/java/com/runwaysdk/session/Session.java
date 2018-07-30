@@ -28,7 +28,6 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.runwaysdk.business.Business;
-import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.Element;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.Struct;
@@ -37,7 +36,6 @@ import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdDimensionInfo;
@@ -52,7 +50,6 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.dataaccess.metadata.DomainTupleDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 
 /**
@@ -551,39 +548,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     }
   }
 
-  /**
-   * Checks if the session has permissions on the given state
-   * 
-   * @param o
-   *          The operation to execute
-   * @param stateId
-   *          id of the state
-   * 
-   * @return If access has been granted
-   */
-  protected boolean checkAccess(Operation o, String stateId)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      if (super.checkAccess(o, stateId))
-      {
-        return true;
-      }
-
-      return false;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
   /*
    * (non-Javadoc)
    * 
@@ -647,31 +611,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
               operations.addAll(ownerPermissions.get(key));
             }
           }
-
-          if (component instanceof Business)
-          {
-            StateMasterDAOIF state = BusinessFacade.getState(component);
-
-            // Load owner state permissions
-            if (state != null)
-            {
-              if (ownerPermissions.containsKey(state.getId()))
-              {
-                operations.addAll(ownerPermissions.get(state.getId()));
-              }
-            }
-
-            // Load owner domain-state permissions
-            if (state != null && !domainId.equals(""))
-            {
-              String key = DomainTupleDAO.buildKey(domainId, null, state.getId());
-
-              if (ownerPermissions.containsKey(key))
-              {
-                operations.addAll(ownerPermissions.get(key));
-              }
-            }
-          }
         }
       }
 
@@ -706,35 +645,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       }
 
       return false;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * Returns true if permission exists for the given operation on the attribute
-   * and the given defining type state.
-   * 
-   * @param operation
-   * @param stateId
-   * @param mdAttribute
-   * @return operations for the given attribute and the state of the type that
-   *         defines it.
-   */
-  protected boolean checkAttributeAccess(Operation operation, String stateId, MdAttributeDAOIF mdAttribute)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      return super.checkAttributeAccess(operation, stateId, mdAttribute);
-
     }
     finally
     {
@@ -833,33 +743,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
               operations.addAll(ownerPermissions.get(key));
             }
           }
-
-          if (component instanceof Business)
-          {
-            StateMasterDAOIF state = BusinessFacade.getState((Business) component);
-
-            // Load owner state-attribute permissions
-            if (state != null)
-            {
-              String key = TypeTupleDAO.buildKey(mdAttribute.getId(), state.getId());
-
-              if (ownerPermissions.containsKey(key))
-              {
-                operations.addAll(ownerPermissions.get(key));
-              }
-            }
-
-            // Load owner domain-state-attribute permissions
-            if (!domainId.equals(""))
-            {
-              String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getId(), state.getId());
-
-              if (ownerPermissions.containsKey(key))
-              {
-                operations.addAll(ownerPermissions.get(key));
-              }
-            }
-          }
         }
       }
 
@@ -933,84 +816,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.session.PermissionEntity#checkPromoteAccess(com.runwaysdk
-   * .business.Business, java.lang.String)
-   */
-  @Override
-  public boolean checkPromoteAccess(Business business, String transitionName)
-  {
-
-    if (this.isAdmin)
-    {
-      return true;
-    }
-
-    if (super.checkPromoteAccess(business, transitionName))
-    {
-      return true;
-    }
-
-    // // Check for owner permissions on the sink state
-    // if (checkOwner(business))
-    // {
-    // // Check for permissions on the sink state
-    // Set<Operation> ownerOperations =
-    // getOwnerTypePermissions().get(sink.getId());
-    //
-    // if (ownerOperations != null &&
-    // ownerOperations.contains(Operation.PROMOTE))
-    // {
-    // return true;
-    // }
-    // }
-
-    return false;
-  }
-
-  @Override
-  protected Set<Operation> getPromoteOperations(Business business, StateMasterDAOIF sink)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      Set<Operation> operations = super.getPromoteOperations(business, sink);
-
-      if (sink != null && checkOwner(business))
-      {
-        ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
-
-        // load owner state permissions
-        if (ownerPermissions.containsKey(sink.getId()))
-        {
-          operations.addAll(ownerPermissions.get(sink.getId()));
-        }
-
-        String domainId = business.getValue(ElementInfo.DOMAIN);
-
-        // load owner domain-state
-        if (!domainId.equals(""))
-        {
-          String key = DomainTupleDAO.buildKey(domainId, null, sink.getId());
-
-          if (ownerPermissions.containsKey(key))
-          {
-            operations.addAll(ownerPermissions.get(key));
-          }
-        }
-      }
-
-      return operations;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
    * @see com.runwaysdk.session.PermissionEntity#checkRelationshipAccess(com
    * .runwaysdk.business.rbac.Operation, com.runwaysdk.business.Business,
    * java.lang.String)
@@ -1032,13 +837,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       }
 
       if (this.getOwnerRelationshipOperations(business, mdRelationshipId).contains(o))
-      {
-        return true;
-      }
-
-      Set<Operation> operations = this.getOwnerStateRelationshipOperations(business, mdRelationshipId);
-
-      if (operations.contains(o) || this.checkRelationshipAccess(o, operations))
       {
         return true;
       }
@@ -1087,59 +885,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
         }
       }
 
-      return operations;
-    }
-    finally
-    {
-      permissionLock.unlock();
-    }
-  }
-
-  private Set<Operation> getOwnerStateRelationshipOperations(Business business, String mdRelationshipId)
-  {
-    permissionLock.lock();
-
-    Set<Operation> operations = new TreeSet<Operation>();
-
-    try
-    {
-      // Perform the owner check on the business object and not the
-      // relationship.
-      // If the current user owns the business object load directional
-      // permissions:
-      if (checkOwner(business))
-      {
-        ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
-
-        // If this businessDAO has a state then check its permissions
-        StateMasterDAOIF state = BusinessFacade.getState(business);
-
-        if (state != null)
-        {
-          String key = TypeTupleDAO.buildKey(mdRelationshipId, state.getId());
-          // String key = state.getId();
-
-          // Load owner state
-          if (ownerPermissions.containsKey(key))
-          {
-            operations.addAll(ownerPermissions.get(key));
-          }
-        }
-
-        // Load owner domain-state permissions
-        String domainId = business.getValue(ElementInfo.DOMAIN);
-
-        if (state != null && !domainId.equals(""))
-        {
-          String key = DomainTupleDAO.buildKey(domainId, mdRelationshipId, state.getId());
-          // String key = DomainTuple.buildKey(domainId, null, state.getId());
-
-          if (ownerPermissions.containsKey(key))
-          {
-            operations.addAll(ownerPermissions.get(key));
-          }
-        }
-      }
       return operations;
     }
     finally

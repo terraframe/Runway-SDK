@@ -29,11 +29,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -44,8 +40,6 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.metadata.DomainTupleDAO;
-import com.runwaysdk.dataaccess.metadata.DomainTupleDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
@@ -54,8 +48,6 @@ import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
-import com.runwaysdk.dataaccess.metadata.TupleDefinitionException;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.session.Request;
 
 public class RBACTest
@@ -116,39 +108,9 @@ public class RBACTest
   private static MdMethodDAO               mdMethod;
 
   /**
-   * The test state machince of MdBusiness
-   */
-  private static MdStateMachineDAO         mdState;
-
-  /**
-   * A test state of mdState
-   */
-  private static StateMasterDAO            state;
-
-  /**
-   * A test state of mdState
-   */
-  private static StateMasterDAO            state1;
-
-  /**
-   * A test state of mdState
-   */
-  private static StateMasterDAO            state2;
-
-  /**
    * The id of the test attribute
    */
   private static MdAttributeCharacterDAO   mdAttributeCharacter;
-
-  /**
-   * Test tuple of mdState and mdAttributeCharacter
-   */
-  private static TypeTupleDAO              typeTuple;
-
-  /**
-   * Test tuple of mdState and mdRelationship
-   */
-  private static TypeTupleDAO              typeTuple2;
 
   /**
    * The test MethodActor
@@ -233,28 +195,6 @@ public class RBACTest
     mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
     mdMethod.apply();
 
-    mdState = TestFixtureFactory.createMdStateMachine(mdBusiness);
-    mdState.apply();
-
-    // Add states
-    state = mdState.addState("OffState", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state.apply();
-
-    state1 = mdState.addState("StandbyState", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state1.apply();
-
-    state2 = mdState.addState("OnState", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state2.apply();
-
-    mdState.addTransition("Plug_in", state.getId(), state1.getId()).apply();
-    mdState.addTransition("TurnOn", state1.getId(), state2.getId()).apply();
-
-    typeTuple = TestFixtureFactory.createTypeTuple(state, mdAttributeCharacter);
-    typeTuple.apply();
-
-    typeTuple2 = TestFixtureFactory.createTypeTuple(state, mdTree);
-    typeTuple2.apply();
-
     methodActor = TestFixtureFactory.createMethodActor(mdMethod);
     methodActor.apply();
 
@@ -299,9 +239,6 @@ public class RBACTest
   {
     TestFixtureFactory.delete(methodActor);
     TestFixtureFactory.delete(mdMethod);
-    TestFixtureFactory.delete(typeTuple);
-    TestFixtureFactory.delete(typeTuple2);
-    TestFixtureFactory.delete(mdState);
     TestFixtureFactory.delete(mdBusiness);
     TestFixtureFactory.delete(mdBusiness2);
     TestFixtureFactory.delete(mdTree);
@@ -1361,74 +1298,6 @@ public class RBACTest
 
   @Request
   @Test
-  public void testStatePermissions()
-  {
-    // Setup role hierarchy
-    RoleDAO role = RoleDAO.createRole("runway.StatePerm", "StatePerm");
-
-    // Give permissions to the StateMachine
-    try
-    {
-      role.grantPermission(Operation.CREATE, mdState.getId());
-
-      Assert.fail("Did not fail on granting permissions to an MdState");
-    }
-    catch (RBACExceptionInvalidStateMachine e)
-    {
-      // This is expected
-    }
-
-    role.grantPermission(Operation.CREATE, mdBusiness.getId());
-
-    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdBusiness.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
-
-    AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
-
-    // Ensure that the list of operations is correct
-    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.CREATE));
-
-    // Give permissions to an individual state of the state machine
-    role.grantPermission(Operation.WRITE, state.getId());
-
-    relationshipDAO = RelationshipDAO.get(role.getId(), state.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
-
-    enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
-
-    // Ensure that the list of operations is correct
-    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
-
-    role.revokePermission(Operation.WRITE, state.getId());
-
-    role.delete();
-  }
-
-  @Request
-  @Test
-  public void testTypeTuple()
-  {
-
-    Assert.assertEquals(state.getId(), typeTuple.getStateMaster().getId());
-    Assert.assertEquals(mdAttributeCharacter.getId(), typeTuple.getMetaData().getId());
-
-    RoleDAO role = RoleDAO.createRole("runway.Mama", "Mama");
-
-    role.grantPermission(Operation.READ, typeTuple.getId());
-
-    // Get the list of operations for a permission
-    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), typeTuple.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
-
-    AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
-
-    // Ensure that the list of operations is correct
-    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
-
-    role.revokePermission(Operation.READ, typeTuple.getId());
-
-    role.delete();
-  }
-
-  @Request
-  @Test
   public void testInvalidAttriubteOperation()
   {
     try
@@ -1461,22 +1330,6 @@ public class RBACTest
 
   @Request
   @Test
-  public void testInvalidStateOperation()
-  {
-    try
-    {
-      newUser.grantPermission(Operation.CREATE, mdState.getId());
-
-      Assert.fail("able to grant an invalid operation to an MdState");
-    }
-    catch (RBACExceptionInvalidStateMachine e)
-    {
-      // This is expected
-    }
-  }
-
-  @Request
-  @Test
   public void testInvalidMdBusinessOperation()
   {
     try
@@ -1488,24 +1341,6 @@ public class RBACTest
     catch (RBACExceptionInvalidOperation e)
     {
       // This is expected
-    }
-  }
-
-  @Request
-  @Test
-  public void testInvalidTypeTuple()
-  {
-    try
-    {
-      TypeTupleDAO newTuple = TypeTupleDAO.newInstance();
-      newTuple.setMetaData(mdBusiness.getId());
-      newTuple.setStateMaster(state.getId());
-      newTuple.apply();
-      Assert.fail("Able to create a TypeTuple with an invalid value on the MetaData attribute");
-    }
-    catch (TupleDefinitionException e)
-    {
-      // Expected to land here
     }
   }
 
@@ -1563,23 +1398,6 @@ public class RBACTest
   // }
   // }
 
-  @Request
-  @Test
-  public void testDomainTuple()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAOIF.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAOIF.STATE_MASTER, state.getId());
-    tuple.setStructValue(DomainTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "test tuple");
-    tuple.apply();
-
-    DomainTupleDAOIF tupleIF = DomainTupleDAO.findTuple(mdDomain.getId(), null, state.getId());
-
-    Assert.assertNotNull(tupleIF);
-    Assert.assertEquals(tuple.getDomain().getId(), tupleIF.getDomain().getId());
-    Assert.assertEquals(tuple.getStateMaster().getId(), tupleIF.getStateMaster().getId());
-  }
-
   // @Request @Test public void testEmptyDomainTuple()
   // {
   // try
@@ -1625,32 +1443,6 @@ public class RBACTest
   // }
   // }
   // }
-
-  @Request
-  @Test
-  public void testNonUniqueDomainTuple()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAOIF.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAOIF.STATE_MASTER, state2.getId());
-    tuple.setStructValue(DomainTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "test tuple");
-    tuple.apply();
-
-    try
-    {
-      DomainTupleDAO tuple2 = DomainTupleDAO.newInstance();
-      tuple2.setValue(DomainTupleDAOIF.DOMAIN, mdDomain.getId());
-      tuple2.setValue(DomainTupleDAOIF.STATE_MASTER, state2.getId());
-      tuple2.setStructValue(DomainTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "test tuple");
-      tuple2.apply();
-
-      Assert.fail("Able to create a non unique domain tuple");
-    }
-    catch (Exception e)
-    {
-      // Excepted to land here.
-    }
-  }
 
   @Request
   @Test
@@ -1747,68 +1539,6 @@ public class RBACTest
     catch (DataNotFoundException e)
     {
       // This is expected
-    }
-  }
-
-  @Request
-  @Test
-  public void testTupleMdAttributeOperations()
-  {
-    // Gant a permissions which is only valid in the MdRelationship context
-    try
-    {
-      newUser.grantPermission(Operation.ADD_CHILD, typeTuple.getId());
-
-      Assert.fail("able to grant an invalid operation to an MdRelationship");
-    }
-    catch (RBACExceptionInvalidOperation e)
-    {
-      // This is expected
-    }
-
-    // Grant a valid MdAttribute permissions
-    try
-    {
-      newUser.grantPermission(Operation.READ, typeTuple.getId());
-    }
-    catch (RBACException e)
-    {
-      Assert.fail("Unable to grant a valid StateMasterIF-MdAttribute permissions to a TypeTuple");
-    }
-    finally
-    {
-      newUser.revokePermission(Operation.READ, typeTuple.getId());
-    }
-  }
-
-  @Request
-  @Test
-  public void testTupleMdRelationshipOperations()
-  {
-    // Gant a permissions which is only valid in the MdAttribute context
-    try
-    {
-      newUser.grantPermission(Operation.READ, typeTuple2.getId());
-
-      Assert.fail("able to grant an invalid operation to an MdRelationship");
-    }
-    catch (RBACExceptionInvalidOperation e)
-    {
-      // This is expected
-    }
-
-    // Grant a valid MdRelationship permissions
-    try
-    {
-      newUser.grantPermission(Operation.READ_PARENT, typeTuple2.getId());
-    }
-    catch (RBACException e)
-    {
-      Assert.fail("Unable to grant a valid StateMasterIF-MdAttribute permissions to a TypeTuple");
-    }
-    finally
-    {
-      newUser.revokePermission(Operation.READ_PARENT, typeTuple2.getId());
     }
   }
 

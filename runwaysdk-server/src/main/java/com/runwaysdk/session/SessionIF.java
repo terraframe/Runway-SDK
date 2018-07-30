@@ -98,15 +98,6 @@ public interface SessionIF
    * (non-Javadoc)
    * 
    * @see
-   * com.runwaysdk.session.PermissionEntity#checkPromoteAccess(com.runwaysdk
-   * .business.Business, java.lang.String)
-   */
-  public boolean checkPromoteAccess(Business business, String transitionName);
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
    * com.runwaysdk.session.PermissionEntity#checkRelationshipAccess(com.runwaysdk
    * .business.rbac.Operation, com.runwaysdk.business.Business,
    * java.lang.String)

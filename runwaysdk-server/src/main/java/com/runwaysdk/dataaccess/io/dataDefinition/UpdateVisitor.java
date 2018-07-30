@@ -23,8 +23,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.runwaysdk.ComponentIF;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
@@ -46,7 +44,6 @@ import com.runwaysdk.dataaccess.MdUtilDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.io.MarkupWriter;
 import com.runwaysdk.dataaccess.io.dataDefinition.ExportMetadata.NewParameterMarker;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
@@ -74,7 +71,7 @@ public class UpdateVisitor extends ExportVisitor
 
   public void visit(ComponentIF component)
   {
-    if (component instanceof MdParameterDAOIF || component instanceof MdStateMachineDAOIF || component instanceof StateMasterDAOIF)
+    if (component instanceof MdParameterDAOIF)
     {
       // Do nothing, filter out. These are exported as part of MdBusiness,
       // MdRelationship, etc.
@@ -206,39 +203,6 @@ public class UpdateVisitor extends ExportVisitor
     }
 
     super.exitMdController(mdController);
-  }
-
-  @Override
-  protected void exitMdStateMachine(MdStateMachineDAOIF mdStateMachine)
-  {
-    if (metadata.hasNewComponents(mdStateMachine))
-    {
-      // Write the attributes of the entity
-      writer.openTag(XMLTags.CREATE_TAG);
-
-      writer.openTag(XMLTags.STATES_TAG);
-      List<StateMasterDAOIF> newStates = metadata.getNewStates(mdStateMachine);
-      for (StateMasterDAOIF stateMaster : newStates)
-      {
-        visitStateMaster(stateMaster);
-      }
-      writer.closeTag();
-
-      // Write the Transitions defined by the mdStateMachine
-      writer.openTag(XMLTags.TRANSITIONS_TAG);
-      for (TransitionDAOIF transition : metadata.getNewTransitions(mdStateMachine))
-      {
-        StateMasterDAOIF source = this.getStateMaster(transition.getParentId(), newStates);
-        StateMasterDAOIF sink = this.getStateMaster(transition.getChildId(), newStates);
-
-        visitTransition(transition, source, sink);
-      }
-      writer.closeTag();
-
-      writer.closeTag();
-    }
-
-    super.exitMdStateMachine(mdStateMachine);
   }
 
   @Override
@@ -512,14 +476,6 @@ public class UpdateVisitor extends ExportVisitor
   private void exportNewBusinessComponents(MdBusinessDAOIF mdBusinessIF)
   {
     exportNewEntityComponents(mdBusinessIF);
-
-    if (metadata.getNewMdStateMachine(mdBusinessIF) != null)
-    {
-      MdStateMachineDAOIF mdStateMachine = metadata.getNewMdStateMachine(mdBusinessIF);
-      List<StateMasterDAOIF> states = metadata.getNewStates(mdBusinessIF);
-      List<TransitionDAOIF> transitions = metadata.getNewTransitions(mdBusinessIF);
-      visitMdStateMachine(mdStateMachine, states, transitions);
-    }
   }
 
   @Override

@@ -35,7 +35,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.RunwayException;
 import com.runwaysdk.RunwayExceptionIF;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
@@ -59,12 +58,10 @@ import com.runwaysdk.business.RelationshipDTO;
 import com.runwaysdk.business.RelationshipQueryDTO;
 import com.runwaysdk.business.SessionComponent;
 import com.runwaysdk.business.SessionDTO;
-import com.runwaysdk.business.SmartException;
 import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
-import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
@@ -75,8 +72,6 @@ import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdEnumerationTypes;
 import com.runwaysdk.constants.MdTermInfo;
@@ -111,15 +106,12 @@ import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.resolver.DefaultConflictResolver;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryException;
 import com.runwaysdk.session.CreatePermissionException;
 import com.runwaysdk.session.GrantAttributePermissionException;
-import com.runwaysdk.session.GrantAttributeStatePermissionException;
 import com.runwaysdk.session.GrantMethodPermissionException;
-import com.runwaysdk.session.GrantStatePermissionException;
 import com.runwaysdk.session.GrantTypePermissionException;
 import com.runwaysdk.session.ImportDomainExecuteException;
 import com.runwaysdk.session.InvalidLoginException;
@@ -130,9 +122,7 @@ import com.runwaysdk.session.ReadTypePermissionException;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.session.RevokeAttributePermissionException;
-import com.runwaysdk.session.RevokeAttributeStatePermissionException;
 import com.runwaysdk.session.RevokeMethodPermissionException;
-import com.runwaysdk.session.RevokeStatePermissionException;
 import com.runwaysdk.session.RevokeTypePermissionException;
 import com.runwaysdk.session.RoleManagementException_ADD;
 import com.runwaysdk.session.Session;
@@ -1153,34 +1143,6 @@ public class Facade
   }
 
   /**
-   * Grants state permission.
-   * 
-   * @param sessionId
-   * @param actorId
-   * @param stateId
-   * @param operationNames
-   */
-  @Request(RequestType.SESSION)
-  public static void grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    boolean access = SessionFacade.checkAccess(sessionId, Operation.GRANT, stateId);
-
-    if (!access)
-    {
-      SessionIF session = Session.getCurrentSession();
-
-      SingleActorDAOIF userIF = session.getUser();
-
-      StateMasterDAOIF stateMasterIF = StateMasterDAO.get(stateId);
-
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on state [" + stateMasterIF.getName() + "].";
-      throw new GrantStatePermissionException(errorMsg, stateMasterIF, userIF);
-    }
-
-    Grant.grantStatePermission(sessionId, actorId, stateId, convertOperationEnumNamesToIds(operationNames));
-  }
-
-  /**
    * Grants attribute permission.
    * 
    * @param sessionId
@@ -1208,40 +1170,6 @@ public class Facade
     }
 
     Grant.grantAttributePermission(sessionId, actorId, mdAttributeId, convertOperationEnumNamesToIds(operationNames));
-  }
-
-  /**
-   * Grants attribute permission on a state.
-   * 
-   * @param sessionId
-   * @param actorId
-   * @param mdAttributeId
-   * @param stateId
-   * @param operationNames
-   */
-  @Request(RequestType.SESSION)
-  // Heads up: ask Smethie about granting permissions based on domain
-  public static void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    MdAttributeConcreteDAOIF mdAttributeIF = MdAttributeConcreteDAO.get(mdAttributeId);
-
-    boolean access = SessionFacade.checkAttributeAccess(sessionId, Operation.GRANT, stateId, mdAttributeIF);
-
-    if (!access)
-    {
-      SessionIF session = Session.getCurrentSession();
-
-      SingleActorDAOIF userIF = session.getUser();
-
-      MdClassDAOIF mdClassIF = mdAttributeIF.definedByClass();
-
-      StateMasterDAOIF stateMasterIF = StateMasterDAO.get(stateId);
-
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on attribute [" + mdAttributeIF.definesAttribute() + "] " + " on class [" + mdClassIF.definesType() + "] in state [" + stateMasterIF.getName() + "]";
-      throw new GrantAttributeStatePermissionException(errorMsg, mdClassIF, mdAttributeIF, stateMasterIF, userIF);
-    }
-
-    Grant.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, convertOperationEnumNamesToIds(operationNames));
   }
 
   /**
@@ -1379,34 +1307,6 @@ public class Facade
   }
 
   /**
-   * Revokes state permission.
-   * 
-   * @param sessionId
-   * @param actorId
-   * @param stateId
-   * @param operationNames
-   */
-  @Request(RequestType.SESSION)
-  public static void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    boolean access = SessionFacade.checkAccess(sessionId, Operation.GRANT, stateId);
-
-    if (!access)
-    {
-      SessionIF session = Session.getCurrentSession();
-
-      SingleActorDAOIF userIF = session.getUser();
-
-      StateMasterDAOIF stateMasterIF = StateMasterDAO.get(stateId);
-
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on state [" + stateMasterIF.getName() + "].";
-      throw new RevokeStatePermissionException(errorMsg, stateMasterIF, userIF);
-    }
-
-    Grant.revokeStatePermission(sessionId, actorId, stateId, convertOperationEnumNamesToIds(operationNames));
-  }
-
-  /**
    * Revokes attribute permission.
    * 
    * @param sessionId
@@ -1434,111 +1334,6 @@ public class Facade
     }
 
     Grant.revokeAttributePermission(sessionId, actorId, mdAttributeId, convertOperationEnumNamesToIds(operationNames));
-  }
-
-  /**
-   * Revokes attribute permission on a state.
-   * 
-   * @param sessionId
-   * @param actorId
-   * @param mdAttributeId
-   * @param stateId
-   * @param operationNames
-   */
-  @Request(RequestType.SESSION)
-  public static void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    MdAttributeConcreteDAOIF mdAttributeIF = MdAttributeConcreteDAO.get(mdAttributeId);
-
-    boolean access = SessionFacade.checkAttributeAccess(sessionId, Operation.GRANT, stateId, mdAttributeIF);
-
-    if (!access)
-    {
-      SessionIF session = Session.getCurrentSession();
-
-      SingleActorDAOIF userIF = session.getUser();
-
-      MdClassDAOIF mdClassIF = mdAttributeIF.definedByClass();
-
-      StateMasterDAOIF stateMasterIF = StateMasterDAO.get(stateId);
-
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on attribute [" + mdAttributeIF.definesAttribute() + "] " + " on class [" + mdClassIF.definesType() + "] in state [" + stateMasterIF.getName() + "]";
-      throw new RevokeAttributeStatePermissionException(errorMsg, mdClassIF, mdAttributeIF, stateMasterIF, userIF);
-    }
-
-    Grant.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, convertOperationEnumNamesToIds(operationNames));
-  }
-
-  /**
-   * Promotes the business object to the state with the given name.
-   * 
-   * @param sessionid
-   * @param objectId
-   * @param transitionName
-   */
-  @Request(RequestType.SESSION)
-  public static BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName)
-  {
-    // update the Business object with the most recent values on the BusinessDTO
-    Business business = (Business) FacadeUtil.populateComponent(sessionId, businessDTO);
-
-    // check permission for promoting
-    SessionFacade.checkPromoteAccess(sessionId, business, transitionName);
-
-    try
-    {
-      if (business.getMdClass().isGenerateSource())
-      {
-        Class<?> clazz = LoaderDecorator.load(business.getType());
-        String methodName = CommonGenerationUtil.lowerFirstCharacter(transitionName);
-        clazz.getMethod(methodName).invoke(business);
-      }
-      else
-      {
-        business.promote(transitionName);
-      }
-    }
-    catch (IllegalArgumentException e)
-    {
-      throw new ProgrammingErrorException(e);
-    }
-    catch (SecurityException e)
-    {
-      throw new ProgrammingErrorException(e);
-    }
-    catch (IllegalAccessException e)
-    {
-      throw new ProgrammingErrorException(e);
-    }
-    catch (InvocationTargetException e)
-    {
-      if (e.getTargetException() instanceof RunwayException)
-      {
-        RunwayException fwEx = (RunwayException) e.getTargetException();
-        throw fwEx;
-      }
-      else if (e.getTargetException() instanceof SmartException)
-      {
-        throw (SmartException) e.getTargetException();
-      }
-      else
-      {
-        throw new ProgrammingErrorException(e);
-      }
-    }
-    catch (NoSuchMethodException e)
-    {
-      if (GenerationUtil.isSkipCompileAndCodeGeneration(MdTypeDAO.getMdTypeDAO(business.getType())))
-      {
-        business.promote(transitionName);
-      }
-      else
-      {
-        throw new ProgrammingErrorException(e);
-      }
-    }
-
-    return (BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, business, true);
   }
 
   /**

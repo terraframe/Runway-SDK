@@ -29,9 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Relationship;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.BasicConditionInfo;
@@ -196,7 +193,6 @@ import com.runwaysdk.dataaccess.MdWebSingleTermGridDAOIF;
 import com.runwaysdk.dataaccess.MdWebTextDAOIF;
 import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeClob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeText;
@@ -272,7 +268,7 @@ public class ExportVisitor extends MarkupVisitor
    */
   public void visit(ComponentIF component)
   {
-    if (component instanceof MdParameterDAOIF || component instanceof MdStateMachineDAOIF || component instanceof StateMasterDAOIF)
+    if (component instanceof MdParameterDAOIF)
     {
       // Do nothing, filter out. These are exported as part of MdBusiness,
       // MdRelationship, etc.
@@ -739,154 +735,6 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdStateMachine on visit: Exports the
-   * MdStateMachine tag with its attributes.
-   * 
-   * @param mdStateMachine
-   *          The MdStateMachine being visited
-   */
-  protected void enterMdStateMachine(MdStateMachineDAOIF mdStateMachine)
-  {
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, mdStateMachine.definesType());
-
-    Map<String, String> localValues = mdStateMachine.getDisplayLabels();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
-
-    Map<String, String> localDescriptions = mdStateMachine.getDescriptions();
-    writeLocaleValues(attributes, XMLTags.DESCRIPTION_ATTRIBUTE, localDescriptions);
-
-    // Write the INDEX_TAG with is parameters
-    writer.openEscapedTag(XMLTags.MD_STATE_MACHINE_TAG, attributes);
-  }
-
-  /**
-   * Visits a MdStateMachine: Export a MdStateMachine
-   * 
-   * @param mdStateMachine
-   *          The MdStateMachine to visit
-   * @param states
-   *          List of states to export with the MdStateMachine
-   * @param transitions
-   *          List of transitions to export with the MdStateMachine
-   */
-  public void visitMdStateMachine(MdStateMachineDAOIF mdStateMachine, List<StateMasterDAOIF> states, List<TransitionDAOIF> transitions)
-  {
-    enterMdStateMachine(mdStateMachine);
-
-    // Write the StateMasterIF defined by the mdStateMachine
-    writer.openTag(XMLTags.STATES_TAG);
-    for (StateMasterDAOIF stateMaster : states)
-    {
-      visitStateMaster(stateMaster);
-    }
-    writer.closeTag();
-
-    // Write the Transitions defined by the mdStateMachine
-    writer.openTag(XMLTags.TRANSITIONS_TAG);
-    for (TransitionDAOIF transition : transitions)
-    {
-      StateMasterDAOIF source = this.getStateMaster(transition.getParentId(), states);
-      StateMasterDAOIF sink = this.getStateMaster(transition.getChildId(), states);
-
-      visitTransition(transition, source, sink);
-    }
-    writer.closeTag();
-
-    exitMdStateMachine(mdStateMachine);
-  }
-
-  /**
-   * Specifies visit behavior after the MdStateMachine has been visited. This
-   * method is likely to be overwritten in child classes.
-   * 
-   * @param mdStateMachine
-   *          MdStateMachine being visited
-   */
-  protected void exitMdStateMachine(MdStateMachineDAOIF mdStateMachine)
-  {
-    writer.closeTag();
-  }
-
-  /**
-   * Returns the StateMasterDAO with the corresponding Id. First checks if the
-   * StateMasterDAO exists in the given list of StateMasters. If it does not
-   * find the correct StateMasterDAO in the list then it queries the database
-   * for the StateMasterDAO
-   * 
-   * @param id
-   *          Id of the desired StateMasterDAO
-   * @param states
-   *          List of StateMasters to check
-   * @return
-   */
-  protected StateMasterDAOIF getStateMaster(String id, List<StateMasterDAOIF> states)
-  {
-    for (StateMasterDAOIF state : states)
-    {
-      if (id.equals(state.getId()))
-      {
-        return state;
-      }
-    }
-
-    return StateMasterDAO.get(id);
-  }
-
-  /**
-   * Visits a StateMasterDAO: Exports a MdStateMaster
-   * 
-   * @param stateMaster
-   *          The StateMasterDAO to visit
-   */
-  public void visitStateMaster(StateMasterDAOIF stateMaster)
-  {
-    String entry = XMLTags.NOT_ENTRY_ENUM;
-
-    if (stateMaster.isDefaultState())
-    {
-      entry = XMLTags.DEFAULT_ENTRY_ENUM;
-    }
-    else if (stateMaster.isEntryState())
-    {
-      entry = XMLTags.ENTRY_ENUM;
-    }
-
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, stateMaster.getName());
-    attributes.put(XMLTags.ENTRY_ATTRIBUTE, entry);
-
-    // Write the empty state tag
-    writer.writeEmptyEscapedTag(XMLTags.STATE_TAG, attributes);
-  }
-
-  /**
-   * Visits a TransitionDAO: Export a TransitionsDAO
-   * 
-   * @param transition
-   *          The TransitionDAO to visit
-   * @param source
-   *          The source StateMasterDAO of the transition
-   * @param sink
-   *          The sink StateMasterDAO of the transition
-   */
-  public void visitTransition(TransitionDAOIF transition, StateMasterDAOIF source, StateMasterDAOIF sink)
-  {
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, transition.getName());
-    attributes.put(XMLTags.SOURCE_ATTRIBUTE, source.getName());
-    attributes.put(XMLTags.SINK_ATTRIBUTE, sink.getName());
-
-    Map<String, String> localValues = transition.getDisplayLabes();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
-
-    attributes.put(XMLTags.DISPLAY_LABEL_ATTRIBUTE, transition.getValue(TransitionDAOIF.DISPLAY_LABEL));
-
-    // Write the empty state tag
-    writer.writeEmptyEscapedTag(XMLTags.TRANSITION_TAG, attributes);
-  }
-
-  /**
    * Specifies behavior upon entering a MdBusiness on visit: Exports the
    * MdBusiness tag with its attributes.
    * 
@@ -1065,12 +913,6 @@ public class ExportVisitor extends MarkupVisitor
       writer.openTag(XMLTags.DTO_STUB_SOURCE_TAG);
       writer.writeCData(mdBusinessIF.getValue(MdBusinessInfo.DTO_STUB_SOURCE));
       writer.closeTag();
-    }
-
-    if (mdBusinessIF.hasStateMachine())
-    {
-      MdStateMachineDAOIF mdStateMachine = mdBusinessIF.definesMdStateMachine();
-      visitMdStateMachine(mdStateMachine, mdStateMachine.definesStateMasters(), mdStateMachine.definesTransitions());
     }
   }
 

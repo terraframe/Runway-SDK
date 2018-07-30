@@ -38,32 +38,6 @@ import com.runwaysdk.session.Request;
 public class OntologyStrategyTest
 {
   /**
-  *
-  *
-  */
-  @Request
-  @Test
-  public void testCRUD()
-  {
-    BusinessDAO strategyState = BusinessDAO.newInstance(DatabaseAllPathsStrategy.CLASS);
-    strategyState.addItem(DatabaseAllPathsStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
-    strategyState.apply();
-
-    try
-    {
-      BusinessDAOIF test = BusinessDAO.get(strategyState.getId());
-
-      Assert.assertNotNull(test);
-      Assert.assertEquals(strategyState.getId(), test.getId());
-      Assert.assertEquals(strategyState.getValue(DatabaseAllPathsStrategy.STRATEGYSTATE), test.getValue(DatabaseAllPathsStrategy.STRATEGYSTATE));
-    }
-    finally
-    {
-      TestFixtureFactory.delete(strategyState);
-    }
-  }
-
-  /**
    *
    *
    */
@@ -72,22 +46,23 @@ public class OntologyStrategyTest
   public void testCreateAndGetMdTerm()
   {
 
-    BusinessDAO state = BusinessDAO.newInstance(DatabaseAllPathsStrategy.CLASS);
-    state.addItem(DatabaseAllPathsStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
-    state.apply();
+    MdTermDAO mdTerm = MdTermDAO.newInstance();
+    mdTerm.setValue(MdTermInfo.NAME, "Term");
+    mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
+    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    // mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
+    mdTerm.apply();
 
     try
     {
-      MdTermDAO mdTerm = MdTermDAO.newInstance();
-      mdTerm.setValue(MdTermInfo.NAME, "Term");
-      mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-      mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-      mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-      mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-      mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-      // mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
-      mdTerm.apply();
+      BusinessDAO state = BusinessDAO.newInstance(DatabaseAllPathsStrategy.CLASS);
+      state.addItem(DatabaseAllPathsStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
+      state.setValue(DatabaseAllPathsStrategy.TERMCLASS, mdTerm.getId());
+      state.apply();
 
       try
       {
@@ -96,15 +71,21 @@ public class OntologyStrategyTest
         Assert.assertNotNull(result);
         // Assert.assertEquals(result.getValue(MdTermInfo.STRATEGY),
         // mdTerm.getValue(MdTermInfo.STRATEGY));
+        
+        BusinessDAOIF test = BusinessDAO.get(state.getId());
+
+        Assert.assertNotNull(test);
+        Assert.assertEquals(state.getId(), test.getId());
+        Assert.assertEquals(state.getValue(DatabaseAllPathsStrategy.STRATEGYSTATE), test.getValue(DatabaseAllPathsStrategy.STRATEGYSTATE));
       }
       finally
       {
-        TestFixtureFactory.delete(mdTerm);
+        TestFixtureFactory.delete(state);
       }
     }
     finally
     {
-      TestFixtureFactory.delete(state);
+      TestFixtureFactory.delete(mdTerm);
     }
   }
 }

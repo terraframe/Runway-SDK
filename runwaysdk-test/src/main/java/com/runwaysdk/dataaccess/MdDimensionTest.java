@@ -31,7 +31,6 @@ import org.junit.Test;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
-import com.runwaysdk.business.generation.StateGenerator;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
@@ -72,6 +71,7 @@ import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.session.Session;
+import com.runwaysdk.system.AllPostalCodes;
 
 public class MdDimensionTest
 {
@@ -416,7 +416,7 @@ public class MdDimensionTest
   @Test
   public void testInvalidDefaultEnumerationAttribute()
   {
-    MdEnumerationDAOIF mdEnumerationIF = MdEnumerationDAO.getMdEnumerationDAO(StateGenerator.ENTRY_ENUM);
+    MdEnumerationDAOIF mdEnumerationIF = MdEnumerationDAO.getMdEnumerationDAO(AllPostalCodes.CLASS);
 
     MdAttributeEnumerationDAO mdAttrEnum = MdAttributeEnumerationDAO.newInstance();
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.NAME, "secondEnumeration");
@@ -454,7 +454,7 @@ public class MdDimensionTest
   @Test
   public void testValidDefaultEnumerationAttribute()
   {
-    MdEnumerationDAOIF mdEnumerationIF = MdEnumerationDAO.getMdEnumerationDAO(StateGenerator.ENTRY_ENUM);
+    MdEnumerationDAOIF mdEnumerationIF = MdEnumerationDAO.getMdEnumerationDAO(AllPostalCodes.CLASS);
 
     MdAttributeEnumerationDAO mdAttrEnum = MdAttributeEnumerationDAO.newInstance();
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.NAME, "attrEnumeration");

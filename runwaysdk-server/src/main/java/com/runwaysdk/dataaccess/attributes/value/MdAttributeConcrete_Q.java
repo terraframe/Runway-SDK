@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -471,16 +470,7 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
   {
     return this.mdAttributeConcreteIF.isRemovable();
   }
-
-  /**
-   * 
-   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#currentState()
-   */
-  public StateMasterDAOIF currentState()
-  {
-    return this.mdAttributeConcreteIF.currentState();
-  }
-
+  
   /**
    * 
    * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getAllChildren()
@@ -552,15 +542,6 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
   public String getStructValue(String structAttributeName, String attributeName)
   {
     return this.mdAttributeConcreteIF.getStructValue(structAttributeName, attributeName);
-  }
-
-  /**
-   * 
-   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#hasState()
-   */
-  public boolean hasState()
-  {
-    return this.mdAttributeConcreteIF.hasState();
   }
 
   /**
