@@ -206,11 +206,6 @@ public interface MdEntityDAOIF extends MdTableClassIF
   public MdEntityDAO getBusinessDAO();
 
   /**
-   * @return A flag denoting if a MdController representing this Entity is defined.
-   */
-  public boolean hasMdController();
-
-  /**
    * @return A flag denoting if entities of the MdEntity should enforce the site master
    */
   public boolean getEnforceSiteMaster();

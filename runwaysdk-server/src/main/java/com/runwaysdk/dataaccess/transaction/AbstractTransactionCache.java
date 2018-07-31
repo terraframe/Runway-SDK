@@ -67,12 +67,10 @@ import com.runwaysdk.dataaccess.cache.CacheStrategy;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.RelationshipDAOCollection;
 import com.runwaysdk.dataaccess.database.DatabaseException;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
-import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
@@ -302,17 +300,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected Set<String>                                      updatedMdMethod_CodeGeneration;
 
   /**
-   * Contains a reference to all {@link MdActionDAO} objects that were created,
-   * updated, or deleted during this transaction. The key is the id of the
-   * object. Used to determine {@link MdControllerDAO} objects that need to have
-   * Java classes generated or regenerated.
-   * 
-   * <br/>
-   * <b>invariant</b> updatedMdAction_CodeGeneration != null
-   */
-  protected Set<String>                                      updatedMdAction_CodeGeneration;
-
-  /**
    * Contains a reference to all {@link MdParameterDAO} objects that were
    * created, updated, or deleted during this transaction. The key is the id of
    * the object. Used to determine {@link MdEntityDAO} or {@link MdFacadeDAO}
@@ -514,7 +501,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.deletedEnumerationAttributeItemSet_CodeGeneration = new HashSet<String>();
 
     this.updatedMdMethod_CodeGeneration = new HashSet<String>();
-    this.updatedMdAction_CodeGeneration = new HashSet<String>();
     this.updatedMdParameter_CodeGeneration = new HashSet<String>();
 
     this.updatedMdTypeSet_CodeGeneration = new HashSet<String>();
@@ -2246,12 +2232,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         this.updatedMdMethod_CodeGeneration.add(entityDAO.getId());
       }
 
-      if (this.updatedMdAction_CodeGeneration.contains(oldId))
-      {
-        this.updatedMdAction_CodeGeneration.remove(oldId);
-        this.updatedMdAction_CodeGeneration.add(entityDAO.getId());
-      }
-
       if (this.updatedMdParameter_CodeGeneration.contains(oldId))
       {
         this.updatedMdParameter_CodeGeneration.remove(oldId);
@@ -2419,23 +2399,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       }
 
       this.updatedTransientTransactionItemList.add(transactionCacheItem);
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#updatedMdAction_CodeGen(com.runwaysdk.dataaccess.metadata.MdActionDAO)
-   */
-  public void updatedMdAction_CodeGen(MdActionDAO mdActionDAO)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      this.updatedMdAction_CodeGeneration.add(mdActionDAO.getId());
-      this.storeTransactionEntityDAO(mdActionDAO);
     }
     finally
     {

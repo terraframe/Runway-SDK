@@ -38,7 +38,6 @@ import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.LongConditionInfo;
-import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -64,7 +63,6 @@ import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.constants.MdDimensionInfo;
 import com.runwaysdk.constants.MdDomainInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
@@ -126,7 +124,6 @@ import com.runwaysdk.dataaccess.metadata.CharacterConditionDAO;
 import com.runwaysdk.dataaccess.metadata.DateConditionDAO;
 import com.runwaysdk.dataaccess.metadata.DoubleConditionDAO;
 import com.runwaysdk.dataaccess.metadata.LongConditionDAO;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -156,7 +153,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
-import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdDomainDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
@@ -1148,41 +1144,6 @@ public class TestFixtureFactory
     mdDomain.setStructValue(MdDomainInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Domain");
 
     return mdDomain;
-  }
-
-  public static MdControllerDAO createMdController()
-  {
-    MdControllerDAO mdController = MdControllerDAO.newInstance();
-    mdController.setValue(MdControllerInfo.NAME, "TestController");
-    mdController.setValue(MdControllerInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
-    mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Controller");
-    mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Controller");
-
-    return mdController;
-  }
-
-  public static MdActionDAO createMdAction(MdControllerDAO mdController)
-  {
-    MdActionDAO mdAction = MdActionDAO.newInstance();
-    mdAction.setValue(MdActionInfo.NAME, "testAction");
-    mdAction.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
-    mdAction.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Action");
-    mdAction.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Action");
-    mdAction.setValue(MdActionInfo.IS_POST, MdAttributeBooleanInfo.TRUE);
-
-    return mdAction;
-  }
-
-  public static MdActionDAO createMdParameter(MdActionDAO mdAction, MdBusinessDAO mdBusiness)
-  {
-    MdParameterDAO mdParameter = MdParameterDAO.newInstance();
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction.getId());
-    mdParameter.setValue(MdParameterInfo.TYPE, mdBusiness.definesType());
-    mdParameter.setValue(MdParameterInfo.NAME, "test");
-    mdParameter.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
-
-    return mdAction;
   }
 
   public static MdWarningDAO createMdWarning()

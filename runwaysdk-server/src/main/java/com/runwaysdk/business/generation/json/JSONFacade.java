@@ -46,7 +46,6 @@ import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
@@ -251,11 +250,6 @@ public class JSONFacade
       else if (mdTypeIF instanceof MdInformationDAOIF)
       {
         InformationJSGenerator generator = new InformationJSGenerator(sessionId, (MdInformationDAOIF) mdTypeIF);
-        definitions += generator.getDefinition();
-      }
-      else if (mdTypeIF instanceof MdControllerDAOIF)
-      {
-        ControllerJSGenerator generator = new ControllerJSGenerator(sessionId, (MdControllerDAOIF) mdTypeIF);
         definitions += generator.getDefinition();
       }
       else

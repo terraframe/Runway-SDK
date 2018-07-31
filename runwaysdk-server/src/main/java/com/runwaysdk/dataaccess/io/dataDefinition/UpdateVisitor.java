@@ -19,16 +19,13 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
-import com.runwaysdk.dataaccess.MdActionDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
@@ -115,10 +112,6 @@ public class UpdateVisitor extends ExportVisitor
       MdEnumerationDAOIF enumeration = (MdEnumerationDAOIF) component;
       visitMdEnumeration(enumeration);
     }
-    else if (component instanceof MdControllerDAOIF)
-    {
-      visitMdController((MdControllerDAOIF) component);
-    }
     else if (component instanceof MdExceptionDAOIF)
     {
       visitMdException((MdExceptionDAOIF) component);
@@ -142,10 +135,6 @@ public class UpdateVisitor extends ExportVisitor
     else if (component instanceof MdWebFormDAOIF)
     {
       visitMdWebForm((MdWebFormDAOIF) component);
-    }
-    else if (component instanceof MdActionDAOIF)
-    {
-      visitMdAction((MdActionDAOIF) component, new LinkedList<MdParameterDAOIF>());
     }
     else if (component instanceof RelationshipDAOIF)
     {
@@ -172,37 +161,6 @@ public class UpdateVisitor extends ExportVisitor
     }
 
     super.exitMdMethod(methodIF);
-  }
-
-  @Override
-  protected void exitMdAction(MdActionDAOIF mdAction)
-  {
-    if (metadata.hasNewComponents(mdAction))
-    {
-      // Write the attributes of the entity
-      writer.openTag(XMLTags.CREATE_TAG);
-      for (MdParameterDAOIF mdParameter : metadata.getNewMdParameters(mdAction))
-      {
-        visitMdParameter(mdParameter);
-      }
-      writer.closeTag();
-    }
-
-    super.exitMdAction(mdAction);
-  }
-
-  @Override
-  protected void exitMdController(MdControllerDAOIF mdController)
-  {
-    if (metadata.hasNewComponents(mdController))
-    {
-      // Write the attributes of the entity
-      writer.openTag(XMLTags.CREATE_TAG);
-      exportNewTypeComponents(mdController);
-      writer.closeTag();
-    }
-
-    super.exitMdController(mdController);
   }
 
   @Override
@@ -453,10 +411,6 @@ public class UpdateVisitor extends ExportVisitor
       if (marker instanceof MdMethodDAOIF)
       {
         visitMdMethod((MdMethodDAOIF) marker, newMarker.getMdParameters());
-      }
-      else
-      {
-        visitMdAction((MdActionDAOIF) marker, newMarker.getMdParameters());
       }
     }
   }

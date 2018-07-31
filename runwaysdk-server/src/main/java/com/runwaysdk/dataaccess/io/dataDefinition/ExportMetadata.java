@@ -31,12 +31,10 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
@@ -203,11 +201,6 @@ public class ExportMetadata
       {
         this.removeEnumItems.add(businessDAO);
       }
-    }
-
-    public void addAction(MdActionDAO mdAction, MdParameterDAO... mdParameters)
-    {
-      markers.add(new NewParameterMarker(mdAction, mdParameters));
     }
   }
 
@@ -489,16 +482,6 @@ public class ExportMetadata
     }
 
     newComponentList.get(mdType.getId()).addMethod(mdMethod, mdParameters);
-  }
-
-  public void addNewMdAction(MdControllerDAOIF mdController, MdActionDAO mdAction, MdParameterDAO... mdParameters)
-  {
-    if (!newComponentList.containsKey(mdController.getId()))
-    {
-      newComponentList.put(mdController.getId(), new NewComponent());
-    }
-
-    newComponentList.get(mdController.getId()).addAction(mdAction, mdParameters);
   }
 
   /**

@@ -50,7 +50,6 @@ import com.runwaysdk.dataaccess.cache.RelationshipDAOCollection;
 import com.runwaysdk.dataaccess.cache.TransactionMemorystore;
 import com.runwaysdk.dataaccess.cache.TransactionStore;
 import com.runwaysdk.dataaccess.cache.TransactionStoreIF;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
@@ -163,7 +162,6 @@ public class TransactionCache extends AbstractTransactionCache
     this.deletedEnumerationAttributeItemSet_CodeGeneration.addAll(threadTransactionCache.deletedEnumerationAttributeItemSet_CodeGeneration);
 
     this.updatedMdMethod_CodeGeneration.addAll(threadTransactionCache.updatedMdMethod_CodeGeneration);
-    this.updatedMdAction_CodeGeneration.addAll(threadTransactionCache.updatedMdAction_CodeGeneration);
     this.updatedMdParameter_CodeGeneration.addAll(threadTransactionCache.updatedMdParameter_CodeGeneration);
 
     this.updatedMdTypeSet_CodeGeneration.addAll(threadTransactionCache.updatedMdTypeSet_CodeGeneration);
@@ -429,15 +427,6 @@ public class TransactionCache extends AbstractTransactionCache
         String updatedMdMethodId = updatedMdMethodIterator.next();
         MdMethodDAO mdMethod = (MdMethodDAO) this.internalGetEntityDAO(updatedMdMethodId);
         MdTypeDAOIF mdTypeDAOIF = mdMethod.getEnclosingMdTypeDAO();
-        this.addMdTypeToMapForGen(mdTypeDAOIF, mdTypeMap);
-      }
-
-      Iterator<String> updatedMdActionIterator = this.updatedMdAction_CodeGeneration.iterator();
-      while (updatedMdActionIterator.hasNext())
-      {
-        String updatedMdActionId = updatedMdActionIterator.next();
-        MdActionDAO mdAction = (MdActionDAO) this.internalGetEntityDAO(updatedMdActionId);
-        MdTypeDAOIF mdTypeDAOIF = mdAction.getEnclosingMdTypeDAO();
         this.addMdTypeToMapForGen(mdTypeDAOIF, mdTypeMap);
       }
 

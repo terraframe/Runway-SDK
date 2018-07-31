@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdTypeInfo;
@@ -227,10 +226,10 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
     String reference = this.getAttribute(MdParameterInfo.ENCLOSING_METADATA).getValue();
     BusinessDAOIF metadata = MetadataDAO.get(reference);
 
-    if (! ( metadata instanceof MdMethodDAO || metadata instanceof MdActionDAO ))
+    if (! ( metadata instanceof MdMethodDAO ))
     {
       // TODO Fix exception type
-      String msg = "The attribute [" + MdParameterInfo.ENCLOSING_METADATA + "] on [" + this.getType() + "] must be reference a [" + MdMethodInfo.CLASS + "] or [" + MdActionInfo.CLASS + "]";
+      String msg = "The attribute [" + MdParameterInfo.ENCLOSING_METADATA + "] on [" + this.getType() + "] must be reference a [" + MdMethodInfo.CLASS + "] or []";
 
       throw new RuntimeException(msg);
     }

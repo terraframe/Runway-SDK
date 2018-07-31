@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdFormInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
@@ -31,7 +30,6 @@ import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdFormDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
@@ -124,20 +122,6 @@ public class MdPackage
     return list;
   }
   
-  public List<MdControllerDAOIF> getMdControllers()
-  {
-    List<MdControllerDAOIF> list = new LinkedList<MdControllerDAOIF>();
-    
-    BusinessDAOQuery query = createPackageQuery(MdControllerInfo.CLASS); 
-    OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
-    while (iterator.hasNext())
-    {
-      list.add((MdControllerDAOIF)iterator.next());
-    }
-    return list;
-  }
-  
   public List<MdFormDAOIF> getMdForms()
   {
     List<MdFormDAOIF> list = new LinkedList<MdFormDAOIF>();
@@ -188,15 +172,6 @@ public class MdPackage
       }      
     }    
     
-    // Then delete MdControllers
-    for(MdControllerDAOIF mdController : getMdControllers())
-    {
-      if(MdTypeDAO.isDefined(mdController.definesType()))
-      {
-        EntityDAO.get(mdController.getId()).getEntityDAO().delete();
-      }      
-    }    
-
     // Then delete MdRelationships
     for (MdRelationshipDAOIF mdRelationship : getMdRelationships())
     {

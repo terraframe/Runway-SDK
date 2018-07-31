@@ -39,7 +39,6 @@ import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.IndexTypes;
-import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -49,7 +48,6 @@ import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdExceptionInfo;
@@ -69,12 +67,10 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
-import com.runwaysdk.dataaccess.MdActionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
@@ -95,7 +91,6 @@ import com.runwaysdk.dataaccess.io.dataDefinition.ExportMetadata;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionExporter;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler.Action;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -108,7 +103,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
@@ -130,16 +124,6 @@ import com.runwaysdk.session.Request;
 
 public class MergeTest
 {
-  private static final String SUSPENDED_STATE       = "SUSPENDED";
-
-  private static final String STATE_MACHINE_PACKAGE = "test.state";
-
-  private static final String PASSIVE_STATE         = "PASSIVE";
-
-  private static final String ACTIVE_STATE          = "ACTIVE";
-
-  private static final String STATE_MACHINE_NAME    = "StatusStateMachine";
-
   private static final String MERGED_SCHEMA         = CommonProperties.getProjectBasedir() + "/target/testxml/MergeTest/(0001238646707003)merged.xml";
 
   private static final String UPDATE_SCHEMA_1       = CommonProperties.getProjectBasedir() + "/target/testxml/MergeTest/(0001238646707000)update1.xml";
@@ -354,61 +338,6 @@ public class MergeTest
     Assert.assertNotNull(mdAttributeIF);
     Assert.assertTrue(permissions.contains(Operation.READ));
     Assert.assertTrue(permissions.contains(Operation.WRITE));
-  }
-
-  /**
-   * Test updating a created action on a auto defined controller
-   */
-  @Request
-  @Test
-  public void testControllerActionUpdateMerge()
-  {
-    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
-    mdBusiness1.setGenerateMdController(true);
-    mdBusiness1.apply();
-
-    try
-    {
-      MdControllerDAOIF mdController = MdControllerDAO.getMdControllerDAO(mdBusiness1.definesType() + "Controller");
-
-      MdActionDAO mdAction = MdActionDAO.newInstance();
-      mdAction.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
-      mdAction.setValue(MdActionInfo.DISPLAY_LABEL, "testAction");
-      mdAction.setValue(MdActionInfo.NAME, "testAction");
-
-      ExportMetadata create = ExportMetadata.buildUpdate(mdController);
-      create.addNewMdAction(mdController, mdAction, new MdParameterDAO[] {});
-
-      VersionExporter.export(CREATE_SCHEMA, SCHEMA, create);
-
-      mdAction.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
-      mdAction.setValue(MdActionInfo.DISPLAY_LABEL, "testAction");
-      mdAction.setValue(MdActionInfo.NAME, "testAction");
-      mdAction.setValue(MdActionInfo.IS_POST, "true");
-      mdAction.setValue(MdActionInfo.IS_QUERY, "true");
-      mdAction.apply();
-
-      VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, ExportMetadata.buildUpdate(mdController));
-
-      mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
-
-      mdAction.delete();
-
-      // Import merge file
-      VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
-
-      MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO(mdController.definesType());
-
-      MdActionDAOIF mdActionIF = mdControllerIF.definesMdAction(mdAction.getName());
-
-      Assert.assertNotNull(mdActionIF);
-      Assert.assertTrue(new Boolean(mdActionIF.getValue(MdActionInfo.IS_QUERY)).booleanValue());
-      Assert.assertTrue(new Boolean(mdActionIF.getValue(MdActionInfo.IS_POST)).booleanValue());
-    }
-    finally
-    {
-      mdBusiness1.delete();
-    }
   }
 
   /**
@@ -734,130 +663,6 @@ public class MergeTest
    * Assert.assertEquals(1,
    * MdRelationshipDAO.getEntityIdsDB(mdRelationship1.definesType()).size()); }
    */
-
-  @Request
-  @Test
-  public void testUpdateMdControllerMerge()
-  {
-    final MdControllerDAO mdController = MdControllerDAO.newInstance();
-    mdController.setValue(MdControllerInfo.NAME, "Controller1");
-    mdController.setValue(MdControllerInfo.PACKAGE, "test.xmlclasses");
-    mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setValue(MdControllerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdController.apply();
-
-    final MdActionDAO mdAction = MdActionDAO.newInstance();
-    mdAction.setValue(MdActionInfo.NAME, "checkin");
-    mdAction.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdAction.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdAction.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
-    mdAction.apply();
-
-    MdParameterDAO mdParameter = MdParameterDAO.newInstance();
-    mdParameter.setValue(MdParameterInfo.NAME, "param1");
-    mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction.getId());
-    mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.apply();
-
-    MdParameterDAO mdParameter2 = MdParameterDAO.newInstance();
-    mdParameter2.setValue(MdParameterInfo.NAME, "param2");
-    mdParameter2.setValue(MdParameterInfo.TYPE, "java.lang.Integer");
-    mdParameter2.setValue(MdParameterInfo.ORDER, "1");
-    mdParameter2.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param2");
-    mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction.getId());
-    mdParameter2.apply();
-
-    // Define new MdActions and MdParameters to be added to the existing
-    // MdController
-    final MdParameterDAO mdParameter3 = MdParameterDAO.newInstance();
-    mdParameter3.setValue(MdParameterInfo.NAME, "param3");
-    mdParameter3.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter3.setValue(MdParameterInfo.ORDER, "4");
-    mdParameter3.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param3");
-
-    final MdActionDAO mdAction2 = MdActionDAO.newInstance();
-    mdAction2.setValue(MdActionInfo.NAME, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-
-    final MdParameterDAO mdParameter4 = MdParameterDAO.newInstance();
-    mdParameter4.setValue(MdParameterInfo.NAME, "param4");
-    mdParameter4.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter4.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter4.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param4");
-
-    generateCreateSchema(new ComponentIF[] { mdController });
-
-    // Export mdController with all of its MdActions defined in the database,
-    // and
-    // export a new MdAction for the mdController, as well as a new MdParameter
-    // for an existing MdAction of mdController
-    final ExportMetadata updateMetadata = new ExportMetadata();
-    generateMerge(updateMetadata, new ComponentIF[] { mdController }, new UpdateActions()
-    {
-      public void perform()
-      {
-        updateMetadata.addNewMdAction(mdController, mdAction2, mdParameter4);
-        updateMetadata.addNewMdParameter(mdAction, mdParameter3);
-      }
-    });
-
-    Assert.assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
-
-    MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO("test.xmlclasses.Controller1");
-    Assert.assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    List<MdActionDAOIF> mdActions = mdControllerIF.getMdActionDAOs();
-
-    Assert.assertEquals(2, mdActions.size());
-
-    int i = 0;
-    int j = 1;
-
-    if (!"checkin".equals(mdActions.get(0).getName()))
-    {
-      i = 1;
-      j = 0;
-    }
-
-    Assert.assertEquals("checkin", mdActions.get(i).getName());
-    Assert.assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
-
-    List<MdParameterDAOIF> mdParameters = mdActions.get(i).getMdParameterDAOs();
-    Assert.assertEquals(3, mdParameters.size());
-    Assert.assertEquals("param1", mdParameters.get(0).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
-    Assert.assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("param2", mdParameters.get(1).getParameterName());
-    Assert.assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
-    Assert.assertEquals("1", mdParameters.get(1).getParameterOrder());
-    Assert.assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("param3", mdParameters.get(2).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(2).getParameterType().getType());
-    Assert.assertEquals("4", mdParameters.get(2).getParameterOrder());
-    Assert.assertEquals("param3", mdParameters.get(2).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("checkout", mdActions.get(j).getName());
-    Assert.assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
-
-    mdParameters = mdActions.get(j).getMdParameterDAOs();
-    Assert.assertEquals(1, mdParameters.size());
-    Assert.assertEquals("param4", mdParameters.get(0).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
-    Assert.assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-  }
 
   /**
    * Test setting of attributes on the character datatype minus any overlapping
@@ -1336,129 +1141,6 @@ public class MergeTest
     Assert.assertEquals(2, operations.size());
     Assert.assertTrue(operations.contains(Operation.WRITE));
     Assert.assertTrue(operations.contains(Operation.CREATE));
-  }
-
-  @Request
-  @Test
-  public void testControllerDeleteOrdering()
-  {
-    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
-    mdBusiness1.setGenerateMdController(true);
-    mdBusiness1.apply();
-
-    try
-    {
-      MdControllerDAOIF mdController = MdControllerDAO.getMdControllerDAO(mdBusiness1.definesType() + "Controller");
-
-      VersionExporter.export(CREATE_SCHEMA, SCHEMA, ExportMetadata.buildCreate(mdBusiness1));
-
-      try
-      {
-        VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, ExportMetadata.buildDelete(mdController, mdBusiness1));
-
-        mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
-
-        TestFixtureFactory.delete(mdController);
-        TestFixtureFactory.delete(mdBusiness1);
-
-        // Import merge file
-        VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
-      }
-      finally
-      {
-        // mdAction.delete();
-      }
-    }
-    finally
-    {
-      // mdBusiness1.delete();
-    }
-  }
-
-  @Request
-  @Test
-  public void testControllerDeleteReverseOrdering()
-  {
-    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
-    mdBusiness1.setGenerateMdController(true);
-    mdBusiness1.apply();
-
-    try
-    {
-      MdControllerDAOIF mdController = MdControllerDAO.getMdControllerDAO(mdBusiness1.definesType() + "Controller");
-
-      VersionExporter.export(CREATE_SCHEMA, SCHEMA, ExportMetadata.buildCreate(mdBusiness1));
-
-      try
-      {
-        VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, ExportMetadata.buildDelete(mdBusiness1, mdController));
-
-        mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
-
-        TestFixtureFactory.delete(mdController);
-        TestFixtureFactory.delete(mdBusiness1);
-
-        // Import merge file
-        VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
-      }
-      finally
-      {
-        // mdAction.delete();
-      }
-    }
-    finally
-    {
-      // mdBusiness1.delete();
-    }
-  }
-
-  @Request
-  @Test
-  public void testDeleteRelationshipAndController()
-  {
-    MdBusinessDAO parentMdBusiness = TestFixtureFactory.createMdBusiness1();
-    parentMdBusiness.setGenerateMdController(true);
-    parentMdBusiness.apply();
-
-    MdBusinessDAO childMdBusiness = TestFixtureFactory.createMdBusiness2();
-    childMdBusiness.setGenerateMdController(true);
-    childMdBusiness.apply();
-
-    try
-    {
-      MdRelationshipDAO mdRelationship = TestFixtureFactory.createMdRelationship1(parentMdBusiness, childMdBusiness);
-      mdRelationship.setGenerateMdController(true);
-      mdRelationship.apply();
-
-      MdControllerDAOIF mdController = MdControllerDAO.getMdControllerDAO(mdRelationship.definesType() + "Controller");
-
-      VersionExporter.export(CREATE_SCHEMA, SCHEMA, ExportMetadata.buildCreate(mdRelationship));
-
-      VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, ExportMetadata.buildDelete(mdRelationship, mdController));
-
-      TestFixtureFactory.delete(mdController);
-      TestFixtureFactory.delete(mdRelationship);
-
-      mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
-
-      VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
-
-      try
-      {
-        MdRelationshipDAO.getMdRelationshipDAO(mdRelationship.definesType());
-
-        Assert.fail("Able to get a deleted MdRelationship");
-      }
-      catch (DataNotFoundException e)
-      {
-        // This is expected
-      }
-    }
-    finally
-    {
-      TestFixtureFactory.delete(parentMdBusiness);
-      TestFixtureFactory.delete(childMdBusiness);
-    }
   }
 
   @Request
@@ -2238,231 +1920,6 @@ public class MergeTest
     Assert.assertEquals(2, indexs.size());
   }
 
-  @Request
-  @Test
-  public void testAddMdActionParameterToPartialMdControllerMerge()
-  {
-    final MdControllerDAO mdController = MdControllerDAO.newInstance();
-    mdController.setValue(MdControllerInfo.NAME, "Controller1");
-    mdController.setValue(MdControllerInfo.PACKAGE, "test.xmlclasses");
-    mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setValue(MdControllerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdController.apply();
-
-    final MdActionDAO mdAction = MdActionDAO.newInstance();
-    mdAction.setValue(MdActionInfo.NAME, "checkin");
-    mdAction.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdAction.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdAction.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
-    mdAction.apply();
-
-    MdParameterDAO mdParameter = MdParameterDAO.newInstance();
-    mdParameter.setValue(MdParameterInfo.NAME, "param1");
-    mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction.getId());
-    mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.apply();
-
-    MdParameterDAO mdParameter2 = MdParameterDAO.newInstance();
-    mdParameter2.setValue(MdParameterInfo.NAME, "param2");
-    mdParameter2.setValue(MdParameterInfo.TYPE, "java.lang.Integer");
-    mdParameter2.setValue(MdParameterInfo.ORDER, "1");
-    mdParameter2.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param2");
-    mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction.getId());
-    mdParameter2.apply();
-
-    // Define new MdActions and MdParameters to be added to the existing
-    // MdController
-    final MdParameterDAO mdParameter3 = MdParameterDAO.newInstance();
-    mdParameter3.setValue(MdParameterInfo.NAME, "param3");
-    mdParameter3.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter3.setValue(MdParameterInfo.ORDER, "4");
-    mdParameter3.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param3");
-
-    final MdActionDAO mdAction2 = MdActionDAO.newInstance();
-    mdAction2.setValue(MdActionInfo.NAME, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-
-    final MdParameterDAO mdParameter4 = MdParameterDAO.newInstance();
-    mdParameter4.setValue(MdParameterInfo.NAME, "param4");
-    mdParameter4.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter4.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter4.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param4");
-
-    // generateCreateSchema(new ComponentIF[] { mdController });
-    ExportMetadata firstUpdate = new ExportMetadata();
-    firstUpdate.addUpdate(mdController);
-    firstUpdate.addNewMdAction(mdController, mdAction2, mdParameter4);
-    VersionExporter.export(CREATE_SCHEMA, SCHEMA, firstUpdate);
-
-    // Export mdController with all of its MdActions defined in the database,
-    // and
-    // export a new MdAction for the mdController, as well as a new MdParameter
-    // for an existing MdAction of mdController
-    final ExportMetadata secondUpdate = new ExportMetadata();
-    generateMerge(secondUpdate, new ComponentIF[] { mdController }, new ComponentIF[] {}, new UpdateActions()
-    {
-      public void perform()
-      {
-        secondUpdate.addNewMdParameter(mdAction, mdParameter3);
-      }
-    });
-
-    Assert.assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
-
-    MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO("test.xmlclasses.Controller1");
-    Assert.assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    List<MdActionDAOIF> mdActions = mdControllerIF.getMdActionDAOs();
-
-    Assert.assertEquals(2, mdActions.size());
-
-    int i = 0;
-    int j = 1;
-
-    if (!"checkin".equals(mdActions.get(0).getName()))
-    {
-      i = 1;
-      j = 0;
-    }
-
-    Assert.assertEquals("checkin", mdActions.get(i).getName());
-    Assert.assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
-
-    List<MdParameterDAOIF> mdParameters = mdActions.get(i).getMdParameterDAOs();
-    Assert.assertEquals(3, mdParameters.size());
-    Assert.assertEquals("param1", mdParameters.get(0).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
-    Assert.assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("param2", mdParameters.get(1).getParameterName());
-    Assert.assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
-    Assert.assertEquals("1", mdParameters.get(1).getParameterOrder());
-    Assert.assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("param3", mdParameters.get(2).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(2).getParameterType().getType());
-    Assert.assertEquals("4", mdParameters.get(2).getParameterOrder());
-    Assert.assertEquals("param3", mdParameters.get(2).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("checkout", mdActions.get(j).getName());
-    Assert.assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
-
-    mdParameters = mdActions.get(j).getMdParameterDAOs();
-    Assert.assertEquals(1, mdParameters.size());
-    Assert.assertEquals("param4", mdParameters.get(0).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
-    Assert.assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-  }
-
-  @Request
-  @Test
-  public void testAddMdActionToPartialMdControllerMerge()
-  {
-    final MdControllerDAO mdController = MdControllerDAO.newInstance();
-    mdController.setValue(MdControllerInfo.NAME, "Controller1");
-    mdController.setValue(MdControllerInfo.PACKAGE, "test.xmlclasses");
-    mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setValue(MdControllerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdController.apply();
-
-    final MdActionDAO mdAction = MdActionDAO.newInstance();
-    mdAction.setValue(MdActionInfo.NAME, "checkin");
-    mdAction.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdAction.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-
-    // Define new MdActions and MdParameters to be added to the existing
-    // MdController
-    final MdParameterDAO mdParameter3 = MdParameterDAO.newInstance();
-    mdParameter3.setValue(MdParameterInfo.NAME, "param3");
-    mdParameter3.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter3.setValue(MdParameterInfo.ORDER, "4");
-    mdParameter3.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param3");
-
-    final MdActionDAO mdAction2 = MdActionDAO.newInstance();
-    mdAction2.setValue(MdActionInfo.NAME, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-
-    final MdParameterDAO mdParameter4 = MdParameterDAO.newInstance();
-    mdParameter4.setValue(MdParameterInfo.NAME, "param4");
-    mdParameter4.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter4.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter4.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param4");
-
-    // generateCreateSchema(new ComponentIF[] { mdController });
-    ExportMetadata firstUpdate = new ExportMetadata();
-    firstUpdate.addUpdate(mdController);
-    firstUpdate.addNewMdAction(mdController, mdAction, mdParameter4);
-    VersionExporter.export(CREATE_SCHEMA, SCHEMA, firstUpdate);
-
-    // Export mdController with all of its MdActions defined in the database,
-    // and
-    // export a new MdAction for the mdController, as well as a new MdParameter
-    // for an existing MdAction of mdController
-    final ExportMetadata secondUpdate = new ExportMetadata();
-    generateMerge(secondUpdate, new ComponentIF[] { mdController }, new ComponentIF[] {}, new UpdateActions()
-    {
-      public void perform()
-      {
-        secondUpdate.addNewMdAction(mdController, mdAction2, mdParameter3);
-      }
-    });
-
-    Assert.assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
-
-    MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO("test.xmlclasses.Controller1");
-    Assert.assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    List<MdActionDAOIF> mdActions = mdControllerIF.getMdActionDAOs();
-
-    Assert.assertEquals(2, mdActions.size());
-
-    int i = 0;
-    int j = 1;
-
-    if (!"checkin".equals(mdActions.get(0).getName()))
-    {
-      i = 1;
-      j = 0;
-    }
-
-    Assert.assertEquals("checkin", mdActions.get(i).getName());
-    Assert.assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
-
-    List<MdParameterDAOIF> mdParameters = mdActions.get(i).getMdParameterDAOs();
-    Assert.assertEquals(1, mdParameters.size());
-    Assert.assertEquals("param4", mdParameters.get(0).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
-    Assert.assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("checkout", mdActions.get(j).getName());
-    Assert.assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
-
-    mdParameters = mdActions.get(j).getMdParameterDAOs();
-    Assert.assertEquals(1, mdParameters.size());
-    Assert.assertEquals("param3", mdParameters.get(0).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    Assert.assertEquals("4", mdParameters.get(0).getParameterOrder());
-    Assert.assertEquals("param3", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-  }
-
   /*
    * @Request @Test public void testUpdateObjectMerge() { final MdBusinessDAO
    * mdBusiness1 = TestFixtureFactory.createMdBusiness1(); final MdBusinessDAO
@@ -2696,153 +2153,6 @@ public class MergeTest
     MdMethodDAOIF mdMethodIF = mdEntityIF.getMdMethod(METHOD_NAME);
     Assert.assertEquals(mdMethodIF.getMdParameterDAOs().size(), 0);
 
-  }
-
-  @Request
-  @Test
-  public void testAddMdActionParameterToPartialMdControllerMergePreserveCreate()
-  {
-    final MdControllerDAO mdController = MdControllerDAO.newInstance();
-    mdController.setValue(MdControllerInfo.NAME, "Controller1");
-    mdController.setValue(MdControllerInfo.PACKAGE, "test.xmlclasses");
-    mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setValue(MdControllerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdController.apply();
-
-    final MdActionDAO mdAction2 = MdActionDAO.newInstance();
-    mdAction2.setValue(MdActionInfo.NAME, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdAction2.setValue(MdActionInfo.IS_QUERY, "true");
-
-    // generateCreateSchema(new ComponentIF[] { mdController });
-    ExportMetadata firstUpdate = new ExportMetadata();
-    firstUpdate.addUpdate(mdController);
-    firstUpdate.addNewMdAction(mdController, mdAction2);
-    VersionExporter.export(CREATE_SCHEMA, SCHEMA, firstUpdate);
-
-    // Export mdController with all of its MdActions defined in the database,
-    // and
-    // export a new MdAction for the mdController, as well as a new MdParameter
-    // for an existing MdAction of mdController
-    final ExportMetadata secondUpdate = new ExportMetadata();
-
-    generateMerge(secondUpdate, new ComponentIF[] { mdController }, new ComponentIF[] {}, new UpdateActions()
-    {
-      public void perform()
-      {
-        mdAction2.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
-        mdAction2.setValue(MdActionInfo.IS_QUERY, "false");
-        mdAction2.apply();
-      }
-
-      @Override
-      public void postPerform()
-      {
-        TestFixtureFactory.delete(mdAction2);
-      }
-    });
-
-  }
-
-  @Request
-  @Test
-  public void testPartialMergePreserveCreateWithChildren()
-  {
-    final MdControllerDAO mdController = MdControllerDAO.newInstance();
-    mdController.setValue(MdControllerInfo.NAME, "Controller1");
-    mdController.setValue(MdControllerInfo.PACKAGE, "test.xmlclasses");
-    mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setValue(MdControllerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdController.apply();
-
-    final MdActionDAO mdAction2 = MdActionDAO.newInstance();
-    mdAction2.setValue(MdActionInfo.NAME, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdAction2.setValue(MdActionInfo.IS_QUERY, "true");
-
-    // generateCreateSchema(new ComponentIF[] { mdController });
-    ExportMetadata firstUpdate = new ExportMetadata();
-    firstUpdate.addUpdate(mdController);
-    firstUpdate.addNewMdAction(mdController, mdAction2);
-    VersionExporter.export(CREATE_SCHEMA, SCHEMA, firstUpdate);
-
-    // Export mdController with all of its MdActions defined in the database,
-    // and export a new MdAction for the mdController, as well as a new
-    // MdParameter for an existing MdAction of mdController
-    MdParameterDAO mdParameter = MdParameterDAO.newInstance();
-    mdParameter.setValue(MdParameterInfo.NAME, "param1");
-    mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-
-    final ExportMetadata secondUpdate = new ExportMetadata();
-    secondUpdate.addNewMdParameter(mdAction2, mdParameter);
-
-    generateMerge(secondUpdate, new ComponentIF[] { mdController }, new ComponentIF[] {}, new UpdateActions()
-    {
-      public void perform()
-      {
-        mdAction2.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
-        mdAction2.setValue(MdActionInfo.IS_QUERY, "false");
-        mdAction2.apply();
-
-      }
-
-      @Override
-      public void postPerform()
-      {
-        TestFixtureFactory.delete(mdAction2);
-      }
-    });
-
-  }
-
-  @Request
-  @Test
-  public void testPartialMergeDeleteChildren()
-  {
-    final MdControllerDAO mdController = MdControllerDAO.newInstance();
-    mdController.setValue(MdControllerInfo.NAME, "Controller1");
-    mdController.setValue(MdControllerInfo.PACKAGE, "test.xmlclasses");
-    mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setValue(MdControllerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdController.apply();
-
-    final MdActionDAO mdAction2 = MdActionDAO.newInstance();
-    mdAction2.setValue(MdActionInfo.NAME, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdAction2.setValue(MdActionInfo.IS_QUERY, "true");
-
-    // generateCreateSchema(new ComponentIF[] { mdController });
-    ExportMetadata firstUpdate = new ExportMetadata();
-    firstUpdate.addUpdate(mdController);
-    firstUpdate.addNewMdAction(mdController, mdAction2);
-    VersionExporter.export(CREATE_SCHEMA, SCHEMA, firstUpdate);
-
-    final ExportMetadata secondUpdate = new ExportMetadata();
-    secondUpdate.addDelete(mdAction2);
-
-    generateMerge(secondUpdate, new ComponentIF[] {}, new ComponentIF[] {}, new UpdateActions()
-    {
-      public void perform()
-      {
-        mdAction2.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
-        mdAction2.apply();
-      }
-
-      @Override
-      public void postPerform()
-      {
-        TestFixtureFactory.delete(mdAction2);
-      }
-    });
   }
 
   @Request

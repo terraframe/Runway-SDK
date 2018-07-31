@@ -25,7 +25,6 @@ import com.runwaysdk.constants.Constants;
 import com.runwaysdk.dataaccess.io.dataDefinition.XMLTags;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdExceptionDAO;
 import com.runwaysdk.dataaccess.metadata.MdInformationDAO;
@@ -35,6 +34,7 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.dataaccess.metadata.MdWarningDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
 import com.runwaysdk.dataaccess.schemamanager.xml.UnKeyedElement;
 
 public class KeyResolver implements SchemaVisitor<String>
@@ -47,13 +47,9 @@ public class KeyResolver implements SchemaVisitor<String>
     {
       key = MdBusinessDAO.buildKey(mdClass.getAttributes().get(XMLTags.NAME_ATTRIBUTE));
     }
-    else if (mdClass.getTag().equals(XMLTags.MD_CONTROLLER_TAG))
-    {
-      key = MdControllerDAO.buildKey(mdClass.getAttributes().get(XMLTags.NAME_ATTRIBUTE));
-    }
     else if (mdClass.getTag().equals(XMLTags.MD_WEB_FORM_TAG))
     {
-      key = MdControllerDAO.buildKey(mdClass.getAttributes().get(XMLTags.NAME_ATTRIBUTE));
+      key = MdWebFormDAO.buildKey(mdClass.getAttributes().get(XMLTags.NAME_ATTRIBUTE));
     }
     else if (mdClass.getTag().equals(XMLTags.MD_VIEW_TAG))
     {

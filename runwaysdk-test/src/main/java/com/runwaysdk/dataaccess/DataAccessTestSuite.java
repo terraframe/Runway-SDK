@@ -56,7 +56,6 @@ import com.runwaysdk.dataaccess.schemamanager.MergeTest;
   MdAttributeTermTest.class,
   MdAttributeMultiReferenceTest.class,
   MdAttributeMultiTermTest.class,
-  MdControllerTest.class,
   ReservedWordsTest.class,
   KeyTest.class,
   IdPropigationTest.class,

@@ -31,15 +31,9 @@ import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.JavaArtifactMdEntityCommand;
 import com.runwaysdk.business.generation.JavaArtifactMdTypeCommand;
 import com.runwaysdk.business.generation.TypeGenerator;
-import com.runwaysdk.business.generation.view.AbstractViewGenerator;
 import com.runwaysdk.configuration.LegacyPropertiesSupport;
 import com.runwaysdk.constants.EntityInfo;
-import com.runwaysdk.constants.GeneratedActions;
-import com.runwaysdk.constants.MdActionInfo;
-import com.runwaysdk.constants.MdAttributeBooleanInfo;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdMethodInfo;
@@ -53,9 +47,7 @@ import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
@@ -64,11 +56,8 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StaleEntityException;
-import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalCharacter;
 import com.runwaysdk.dataaccess.cache.CacheNoneStrategy;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
@@ -586,15 +575,6 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
       {
         this.copyDefaultAttributes();
       }
-
-      // Create a MdControllerDAO for this MdEntityDAO
-      if (!this.isImport() && this.generateMdController && this.isGenerateSource())
-      {
-        if (this.isMdControllerQualified())
-        {
-          this.defineMdController();
-        }
-      }
     }
     // (!this.isNew() || applied)
     else
@@ -675,9 +655,6 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   public void delete(boolean businessContext)
   {
     this.existenceCheck();
-
-    // Delete the generated MdControllerDAO for this type
-    this.deleteMdController();
 
     this.deleteAllChildClasses(businessContext);
 
@@ -1090,281 +1067,6 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   public MdEntityDAO getBusinessDAO()
   {
     return (MdEntityDAO) super.getBusinessDAO();
-  }
-
-  private void defineMdController()
-  {
-    MdControllerDAO mdController = MdControllerDAO.newInstance();
-
-    AttributeLocalCharacter mdEntityDisplayLabelAttribute = ( (AttributeLocalCharacter) this.getAttribute(MdControllerInfo.DISPLAY_LABEL) );
-    StructDAO entityStructDAO = mdEntityDisplayLabelAttribute.getStructDAO();
-    List<? extends MdAttributeConcreteDAOIF> mdEntityAttributes = entityStructDAO.getMdAttributeDAOs();
-
-    AttributeLocalCharacter mdControllerDisplayLabelAttribute = ( (AttributeLocalCharacter) mdController.getAttribute(MdControllerInfo.DISPLAY_LABEL) );
-    StructDAO controllerStructDAO = mdControllerDisplayLabelAttribute.getStructDAO();
-
-    // Iterate over the localized values and copy them over.
-    for (MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF : mdEntityAttributes)
-    {
-      String attributeName = mdAttributeConcreteDAOIF.definesAttribute();
-
-      if (!mdAttributeConcreteDAOIF.isSystem() && ( mdAttributeConcreteDAOIF instanceof MdAttributeLocalCharacterDAOIF ) && controllerStructDAO.hasAttribute(attributeName))
-      {
-        controllerStructDAO.getAttribute(attributeName).setValue(entityStructDAO.getAttribute(attributeName).getValue() + " " + AbstractViewGenerator.CONTROLLER_SUFFIX);
-      }
-    }
-
-    mdController.getAttribute(MdControllerInfo.DESCRIPTION).setValue("Auto-generated Controller for " + this.definesType());
-    mdController.getAttribute(MdControllerInfo.NAME).setValue(this.getTypeName() + "Controller");
-    mdController.getAttribute(MdControllerInfo.PACKAGE).setValue(this.getPackage());
-    mdController.getAttribute(MdControllerInfo.REMOVE).setValue(MdAttributeBooleanInfo.TRUE);
-    mdController.setMdEntity(this);
-    mdController.apply();
-
-    defineControllerActions(mdController);
-
-    this.hasController = true;
-  }
-
-  protected void defineControllerActions(MdControllerDAO mdController)
-  {
-    // Define viewPage
-    defineViewPageAction(mdController);
-
-    // Define viewAll
-    defineViewAllAction(mdController);
-
-    defineViewAction(mdController);
-
-    // Define newInstance
-    if (!this.isAbstract())
-    {
-      defineNewInstanceAction(mdController);
-    }
-
-    // Define create
-    defineCreateAction(mdController);
-
-    // Define edit
-    defineEditAction(mdController);
-
-    // Define update
-    defineUpdateAction(mdController);
-
-    // Define cancel
-    defineCancelAction(mdController);
-
-    // Define delete
-    defineDeleteAction(mdController);
-  }
-
-  private void defineCancelAction(MdControllerDAO mdController)
-  {
-    MdActionDAO cancel = MdActionDAO.newInstance();
-    cancel.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    cancel.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.CANCEL_ACTION.getName());
-    cancel.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    cancel.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.TRUE);
-    ( (AttributeLocal) cancel.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Unlocks an instance " + this.definesType());
-    ( (AttributeLocal) cancel.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "cancel");
-    cancel.apply();
-
-    MdParameterDAO cancelParam = MdParameterDAO.newInstance();
-    cancelParam.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(cancel.getId());
-    cancelParam.getAttribute(MdParameterInfo.NAME).setValue("dto");
-    cancelParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
-    cancelParam.getAttribute(MdParameterInfo.TYPE).setValue(this.definesType());
-    ( (AttributeLocal) cancelParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to unlock");
-    ( (AttributeLocal) cancelParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - dto");
-    cancelParam.apply();
-  }
-
-  private void defineCreateAction(MdControllerDAO mdController)
-  {
-    MdActionDAO create = MdActionDAO.newInstance();
-    create.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    create.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.CREATE_ACTION.getName());
-    create.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    create.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.TRUE);
-    ( (AttributeLocal) create.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Applys a new instance of " + this.definesType());
-    ( (AttributeLocal) create.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Create");
-    create.apply();
-
-    MdParameterDAO createParam = MdParameterDAO.newInstance();
-    createParam.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(create.getId());
-    createParam.getAttribute(MdParameterInfo.NAME).setValue("dto");
-    createParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
-    createParam.getAttribute(MdParameterInfo.TYPE).setValue(this.definesType());
-    ( (AttributeLocal) createParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to apply to the database");
-    ( (AttributeLocal) createParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType());
-    createParam.apply();
-  }
-
-  private void defineDeleteAction(MdControllerDAO mdController)
-  {
-    MdActionDAO delete = MdActionDAO.newInstance();
-    delete.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    delete.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.DELETE_ACTION.getName());
-    delete.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    delete.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.TRUE);
-    ( (AttributeLocal) delete.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Delete an instance of " + this.definesType());
-    ( (AttributeLocal) delete.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "delete");
-    delete.apply();
-
-    MdParameterDAO deleteParam = MdParameterDAO.newInstance();
-    deleteParam.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(delete.getId());
-    deleteParam.getAttribute(MdParameterInfo.NAME).setValue("dto");
-    deleteParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
-    deleteParam.getAttribute(MdParameterInfo.TYPE).setValue(this.definesType());
-    ( (AttributeLocal) deleteParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to delete");
-    ( (AttributeLocal) deleteParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - dto");
-    deleteParam.apply();
-  }
-
-  private void defineEditAction(MdControllerDAO mdController)
-  {
-    MdActionDAO edit = MdActionDAO.newInstance();
-    edit.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    edit.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.EDIT_ACTION.getName());
-    edit.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    edit.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ( (AttributeLocal) edit.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Applys an existing instance of " + this.definesType());
-    ( (AttributeLocal) edit.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "edit");
-    edit.apply();
-
-    MdParameterDAO editParam = MdParameterDAO.newInstance();
-    editParam.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(edit.getId());
-    editParam.getAttribute(MdParameterInfo.NAME).setValue("id");
-    editParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
-    editParam.getAttribute(MdParameterInfo.TYPE).setValue(String.class.getName());
-    ( (AttributeLocal) editParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to apply to the database");
-    ( (AttributeLocal) editParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType());
-    editParam.apply();
-  }
-
-  protected void defineNewInstanceAction(MdControllerDAO mdController)
-  {
-    MdActionDAO newInstance = MdActionDAO.newInstance();
-    newInstance.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    newInstance.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.NEW_INSTANCE_ACTION.getName());
-    newInstance.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    newInstance.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ( (AttributeLocal) newInstance.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Loads a new instance of " + this.definesType() + " into the request object");
-    ( (AttributeLocal) newInstance.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "New Instance");
-    newInstance.apply();
-  }
-
-  protected void defineUpdateAction(MdControllerDAO mdController)
-  {
-    MdActionDAO update = MdActionDAO.newInstance();
-    update.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    update.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.UPDATE_ACTION.getName());
-    update.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    update.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.TRUE);
-    ( (AttributeLocal) update.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Applys an existing instance of " + this.definesType());
-    ( (AttributeLocal) update.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "update");
-    update.apply();
-
-    MdParameterDAO updateParam = MdParameterDAO.newInstance();
-    updateParam.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(update.getId());
-    updateParam.getAttribute(MdParameterInfo.NAME).setValue("dto");
-    updateParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
-    updateParam.getAttribute(MdParameterInfo.TYPE).setValue(this.definesType());
-    ( (AttributeLocal) updateParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to apply to the database");
-    ( (AttributeLocal) updateParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - dto");
-    updateParam.apply();
-  }
-
-  protected void defineViewAllAction(MdControllerDAO mdController)
-  {
-    MdActionDAO viewAll = MdActionDAO.newInstance();
-    viewAll.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    viewAll.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.VIEW_ALL_ACTION.getName());
-    viewAll.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    viewAll.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ( (AttributeLocal) viewAll.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Loads a ViewAll query with the default settings");
-    ( (AttributeLocal) viewAll.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View All");
-    viewAll.apply();
-  }
-
-  protected void defineViewAction(MdControllerDAO mdController)
-  {
-    MdActionDAO view = MdActionDAO.newInstance();
-    view.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    view.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.VIEW_ACTION.getName());
-    view.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    view.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ( (AttributeLocal) view.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View an existing instance of " + this.definesType());
-    ( (AttributeLocal) view.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View");
-    view.apply();
-
-    MdParameterDAO viewParam = MdParameterDAO.newInstance();
-    viewParam.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(view.getId());
-    viewParam.getAttribute(MdParameterInfo.NAME).setValue("id");
-    viewParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
-    viewParam.getAttribute(MdParameterInfo.TYPE).setValue(String.class.getName());
-    ( (AttributeLocal) viewParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Id of " + this.definesType() + " to view.");
-    ( (AttributeLocal) viewParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - id");
-    viewParam.apply();
-  }
-
-  protected void defineViewPageAction(MdControllerDAO mdController)
-  {
-    MdActionDAO viewPage = MdActionDAO.newInstance();
-    viewPage.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    viewPage.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.VIEW_PAGE_ACTION.getName());
-    viewPage.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.TRUE);
-    viewPage.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ( (AttributeLocal) viewPage.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Loads a ViewAll query for a specific page into the request object");
-    ( (AttributeLocal) viewPage.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View Page");
-    viewPage.apply();
-  }
-
-  private void deleteMdController()
-  {
-    MdControllerDAOIF mdControllerDAOIF = this.getMdController();
-
-    if(mdControllerDAOIF != null)
-    {
-      // Delete only if it has not already been deleted this transaction
-      if (!((MdControllerDAO)mdControllerDAOIF).isDeleted())
-      {
-        mdControllerDAOIF.getBusinessDAO().delete();
-      }
-    }
-  }
-
-  protected boolean isMdControllerQualified()
-  {
-    // Flag denoting if this MdEntityDAO was defined as part of a state machine
-    return this.isPublished();
-  }
-
-  /**
-   * @return The CRUD controller defined for this MdEntity, null if this
-   *         MdEntity does not have CRUD controller
-   */
-  private MdControllerDAOIF getMdController()
-  {
-    MdControllerDAO mdControllerDAO = null;   
-
-    String controllerType = this.definesType() + AbstractViewGenerator.CONTROLLER_SUFFIX;
-
-    try
-    {
-      mdControllerDAO = (MdControllerDAO)MdControllerDAO.getMdControllerDAO(controllerType);
-    }
-    catch(DataNotFoundException e) 
-    {
-      return null;
-    }
- 
-    return mdControllerDAO;
-  }
-
-  public boolean hasMdController()
-  {
-    return this.hasController || ( this.getMdController() != null );
   }
 
   public boolean getEnforceSiteMaster()

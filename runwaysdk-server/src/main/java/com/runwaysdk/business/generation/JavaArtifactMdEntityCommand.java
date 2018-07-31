@@ -52,13 +52,6 @@ public class JavaArtifactMdEntityCommand extends JavaArtifactMdClassCommand
 
     this.queryDTOsourceFile = TypeGenerator.getQueryDTOsourceFilePath(this.getMdTypeIF());
     this.queryDTOclassDirectory = TypeGenerator.getQueryDTOclassDirectory(this.getMdTypeIF());
-
-    if (this.getMdTypeIF().hasMdController())
-    {
-      provider = new ProviderFactory().getProvider(this.getMdTypeIF());
-      
-      provider.backupContent();
-    }
   }
 
   protected MdEntityDAOIF getMdTypeIF()
@@ -85,11 +78,6 @@ public class JavaArtifactMdEntityCommand extends JavaArtifactMdClassCommand
     else
     {
       MdEntityDAOIF mdEntity = (MdEntityDAOIF) this.getMdTypeIF();
-
-      if (mdEntity.hasMdController())
-      {
-        new ProviderFactory().getProvider(this.getMdTypeIF()).generateContent();
-      }
 
       // Make sure the DTO base and stub files are gone if this class is not
       // published.
@@ -274,22 +262,10 @@ public class JavaArtifactMdEntityCommand extends JavaArtifactMdClassCommand
       ClassManager.deleteClasses(this.queryAPIclassDirectory, queryAPIclassName);
 
       this.deleteQueryDTOclasses();
-
-      this.deleteViewFiles();
     }
     catch (IOException e)
     {
       throw new SystemException(e.getMessage());
-    }
-  }
-
-  private void deleteViewFiles() throws IOException
-  {
-    MdEntityDAOIF mdEntity = (MdEntityDAOIF) this.getMdTypeIF();
-
-    if (operation.equals(Operation.DELETE) && mdEntity.hasMdController())
-    {
-      new ProviderFactory().getProvider(this.getMdTypeIF()).deleteContent();
     }
   }
 

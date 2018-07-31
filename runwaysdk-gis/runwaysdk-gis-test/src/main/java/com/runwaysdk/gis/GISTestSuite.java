@@ -26,7 +26,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import com.runwaysdk.gis.business.GISBusinessTest;
-import com.runwaysdk.gis.business.GISControllerGenTest;
 import com.runwaysdk.gis.dataaccess.GISDataAccessTest;
 import com.runwaysdk.gis.dataaccess.GISWebFormDAOTest;
 import com.runwaysdk.gis.dataaccess.io.GISSaxParseTest;
@@ -43,7 +42,7 @@ import com.runwaysdk.session.Request;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ GISDataAccessTest.class, GISBusinessTest.class, GISAdapterTest.class,
     // GISRMIAdapterTest.class,
-    GISViewAdapterTest.class, GISRMIViewAdapterTest.class, GISVirtualAdapterTest.class, GISRMIVirtualAdapterTest.class, GISControllerGenTest.class, GISWebFormDAOTest.class, GeoEntityTest.class, UniversalTest.class, GISSaxParseTest.class })
+    GISViewAdapterTest.class, GISRMIViewAdapterTest.class, GISVirtualAdapterTest.class, GISRMIVirtualAdapterTest.class, GISWebFormDAOTest.class, GeoEntityTest.class, UniversalTest.class, GISSaxParseTest.class })
 public class GISTestSuite
 {
   @BeforeClass

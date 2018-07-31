@@ -38,7 +38,6 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransientDAO;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
@@ -239,18 +238,6 @@ public interface TransactionCacheIF
    *          MdMethod to add to the cache.
    */
   public abstract void updatedMdMethod_CodeGen(MdMethodDAO mdMethod);
-
-  /**
-   * Adds a reference to a newly created or updated MdAction to the cache.
-   * 
-   * <br/>
-   * <b>Precondition:</b> mdAction != null <br/>
-   * <b>Postcondition:</b> mdAction is added to the transaction cache
-   * 
-   * @param mdAction
-   *          MdAction to add to the cache.
-   */
-  public abstract void updatedMdAction_CodeGen(MdActionDAO mdAction);
 
   /**
    * Adds a reference to a newly created or updated MdParameter to the cache.

@@ -42,7 +42,6 @@ import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransientDAO;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
@@ -545,12 +544,6 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   public void updateTransientDAO(TransientDAO transientDAO)
   {
     super.updateTransientDAO(transientDAO);
-  }
-
-  @Override
-  public void updatedMdAction_CodeGen(MdActionDAO mdAction)
-  {
-    super.updatedMdAction_CodeGen(mdAction);
   }
 
   @Override

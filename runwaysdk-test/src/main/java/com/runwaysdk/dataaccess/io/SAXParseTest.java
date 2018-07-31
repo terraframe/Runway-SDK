@@ -47,7 +47,6 @@ import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.LongConditionInfo;
-import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -75,14 +74,12 @@ import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdExceptionInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdInformationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
-import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStructInfo;
@@ -118,7 +115,6 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.FieldConditionDAOIF;
 import com.runwaysdk.dataaccess.LongConditionDAOIF;
-import com.runwaysdk.dataaccess.MdActionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
@@ -128,7 +124,6 @@ import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
@@ -169,7 +164,6 @@ import com.runwaysdk.dataaccess.metadata.DateConditionDAO;
 import com.runwaysdk.dataaccess.metadata.DoubleConditionDAO;
 import com.runwaysdk.dataaccess.metadata.DuplicateAttributeDefinitionException;
 import com.runwaysdk.dataaccess.metadata.LongConditionDAO;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -190,7 +184,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
@@ -200,7 +193,6 @@ import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
 import com.runwaysdk.dataaccess.metadata.MdInformationDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdPackage;
-import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
@@ -3976,77 +3968,6 @@ public class SAXParseTest
     }
   }
 
-  @Request
-  @Test
-  public void testCreateMdController()
-  {
-    MdControllerDAO mdController = MdControllerDAO.newInstance();
-    mdController.setValue(MdControllerInfo.NAME, "Controller1");
-    mdController.setValue(MdControllerInfo.PACKAGE, "test.xmlclasses");
-    mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setValue(MdControllerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdController.apply();
-
-    MdActionDAO mdAction = MdActionDAO.newInstance();
-    mdAction.setValue(MdActionInfo.NAME, "testAction");
-    mdAction.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testAction");
-    mdAction.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "testAction");
-    mdAction.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
-    mdAction.apply();
-
-    MdParameterDAO mdParameter = MdParameterDAO.newInstance();
-    mdParameter.setValue(MdParameterInfo.NAME, "param1");
-    mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction.getId());
-    mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.apply();
-
-    MdParameterDAO mdParameter2 = MdParameterDAO.newInstance();
-    mdParameter2.setValue(MdParameterInfo.NAME, "param2");
-    mdParameter2.setValue(MdParameterInfo.TYPE, "java.lang.Integer");
-    mdParameter2.setValue(MdParameterInfo.ORDER, "1");
-    mdParameter2.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param2");
-    mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction.getId());
-    mdParameter2.apply();
-
-    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdController }));
-
-    TestFixtureFactory.delete(mdController);
-
-    SAXImporter.runImport(new File(tempXMLFile));
-
-    Assert.assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
-
-    MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO("test.xmlclasses.Controller1");
-    Assert.assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    List<MdActionDAOIF> mdActions = mdControllerIF.getMdActionDAOs();
-
-    Assert.assertEquals(1, mdActions.size());
-    Assert.assertEquals("testAction", mdActions.get(0).getName());
-    Assert.assertEquals("testAction", mdActions.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("testAction", mdActions.get(0).getDescription(CommonProperties.getDefaultLocale()));
-
-    List<MdParameterDAOIF> mdParameters = mdActions.get(0).getMdParameterDAOs();
-    Assert.assertEquals(2, mdParameters.size());
-    Assert.assertEquals("param1", mdParameters.get(0).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
-    Assert.assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("param2", mdParameters.get(1).getParameterName());
-    Assert.assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
-    Assert.assertEquals("1", mdParameters.get(1).getParameterOrder());
-    Assert.assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    new File(tempXMLFile).delete();
-  }
-
   /**
    * Test for a thrown error on circular dependencies in the xml document
    */
@@ -5837,144 +5758,6 @@ public class SAXParseTest
     MdRelationshipDAO mdRelationship2 = MdRelationshipDAO.getMdRelationshipDAO(RELATIONSHIP2).getBusinessDAO();
     Assert.assertEquals(mdRelationship.getId(), mdRelationship2.getValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP));
     Assert.assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
-  }
-
-  @Request
-  @Test
-  public void testUpdateMdController()
-  {
-    MdControllerDAO mdController = MdControllerDAO.newInstance();
-    mdController.setValue(MdControllerInfo.NAME, "Controller1");
-    mdController.setValue(MdControllerInfo.PACKAGE, "test.xmlclasses");
-    mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1");
-    mdController.setValue(MdControllerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdController.apply();
-
-    MdActionDAO mdAction = MdActionDAO.newInstance();
-    mdAction.setValue(MdActionInfo.NAME, "checkin");
-    mdAction.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdAction.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkin");
-    mdAction.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
-    mdAction.apply();
-
-    MdParameterDAO mdParameter = MdParameterDAO.newInstance();
-    mdParameter.setValue(MdParameterInfo.NAME, "param1");
-    mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction.getId());
-    mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "param1");
-    mdParameter.apply();
-
-    MdParameterDAO mdParameter2 = MdParameterDAO.newInstance();
-    mdParameter2.setValue(MdParameterInfo.NAME, "param2");
-    mdParameter2.setValue(MdParameterInfo.TYPE, "java.lang.Integer");
-    mdParameter2.setValue(MdParameterInfo.ORDER, "1");
-    mdParameter2.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param2");
-    mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction.getId());
-    mdParameter2.apply();
-
-    // Define new MdActions and MdParameters to be added to the existing
-    // MdController
-    MdParameterDAO mdParameter3 = MdParameterDAO.newInstance();
-    mdParameter3.setValue(MdParameterInfo.NAME, "param3");
-    mdParameter3.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter3.setValue(MdParameterInfo.ORDER, "4");
-    mdParameter3.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param3");
-
-    MdActionDAO mdAction2 = MdActionDAO.newInstance();
-    mdAction2.setValue(MdActionInfo.NAME, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-    mdAction2.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "checkout");
-
-    MdParameterDAO mdParameter4 = MdParameterDAO.newInstance();
-    mdParameter4.setValue(MdParameterInfo.NAME, "param4");
-    mdParameter4.setValue(MdParameterInfo.TYPE, "java.lang.String");
-    mdParameter4.setValue(MdParameterInfo.ORDER, "0");
-    mdParameter4.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "param4");
-
-    // Export mdController with all of its MdActions defined in the database,
-    // and
-    // export a new MdAction for the mdController, as well as a new MdParameter
-    // for an existing MdAction of mdController
-    ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdController });
-    metadata.addNewMdAction(mdController, mdAction2, mdParameter4);
-    metadata.addNewMdParameter(mdAction, mdParameter3);
-
-    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
-
-    mdController = MdControllerDAO.get(mdController.getId()).getBusinessDAO();
-
-    mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1 Update");
-    mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Controller1 Update");
-    mdController.setValue(MdControllerInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
-    mdController.apply();
-
-    mdAction.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "CheckIn Update");
-    mdAction.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "CheckIn Update");
-    mdAction.apply();
-
-    mdParameter = MdParameterDAO.get(mdParameter.getId()).getBusinessDAO();
-    mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.Integer");
-    mdParameter.setValue(MdParameterInfo.ORDER, "99");
-    mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "First Integer");
-    mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter Update Test");
-    mdParameter.apply();
-
-    SAXImporter.runImport(new File(tempXMLFile));
-
-    Assert.assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
-
-    MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO("test.xmlclasses.Controller1");
-    Assert.assertEquals("Controller1", mdControllerIF.getDescription(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("Controller1", mdControllerIF.getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    List<MdActionDAOIF> mdActions = mdControllerIF.getMdActionDAOs();
-
-    Assert.assertEquals(2, mdActions.size());
-
-    int i = 0;
-    int j = 1;
-
-    if (!"checkin".equals(mdActions.get(0).getName()))
-    {
-      i = 1;
-      j = 0;
-    }
-
-    Assert.assertEquals("checkin", mdActions.get(i).getName());
-    Assert.assertEquals("checkin", mdActions.get(i).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("checkin", mdActions.get(i).getDescription(CommonProperties.getDefaultLocale()));
-
-    List<MdParameterDAOIF> mdParameters = mdActions.get(i).getMdParameterDAOs();
-    Assert.assertEquals(3, mdParameters.size());
-    Assert.assertEquals("param1", mdParameters.get(0).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
-    Assert.assertEquals("param1", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("param1", mdParameters.get(0).getDescription(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("param2", mdParameters.get(1).getParameterName());
-    Assert.assertEquals("java.lang.Integer", mdParameters.get(1).getParameterType().getType());
-    Assert.assertEquals("1", mdParameters.get(1).getParameterOrder());
-    Assert.assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("param3", mdParameters.get(2).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(2).getParameterType().getType());
-    Assert.assertEquals("4", mdParameters.get(2).getParameterOrder());
-    Assert.assertEquals("param3", mdParameters.get(2).getDisplayLabel(CommonProperties.getDefaultLocale()));
-
-    Assert.assertEquals("checkout", mdActions.get(j).getName());
-    Assert.assertEquals("checkout", mdActions.get(j).getDisplayLabel(CommonProperties.getDefaultLocale()));
-    Assert.assertEquals("checkout", mdActions.get(j).getDescription(CommonProperties.getDefaultLocale()));
-
-    mdParameters = mdActions.get(j).getMdParameterDAOs();
-    Assert.assertEquals(1, mdParameters.size());
-    Assert.assertEquals("param4", mdParameters.get(0).getParameterName());
-    Assert.assertEquals("java.lang.String", mdParameters.get(0).getParameterType().getType());
-    Assert.assertEquals("0", mdParameters.get(0).getParameterOrder());
-    Assert.assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
   /**

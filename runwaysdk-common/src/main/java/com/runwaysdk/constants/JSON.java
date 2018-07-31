@@ -555,15 +555,4 @@ public enum JSON {
   {
     return label;
   }
-
-  public static String createControllerNotifyListenerCall(String qualifiedAction)
-  {
-    String baseAction = qualifiedAction.replaceFirst("\\" + MdActionInfo.ACTION_SUFFIX + "$", "");
-    int ind = baseAction.lastIndexOf(".");
-    String base = baseAction.substring(0, ind);
-    String action = baseAction.substring(ind + 1);
-    String upperActionName = action.substring(0, 1).toUpperCase() + action.substring(1);
-
-    return RUNWAY_PACKAGE_NS.getLabel() + "." + base + "._notify" + upperActionName + "Listener";
-  }
 }

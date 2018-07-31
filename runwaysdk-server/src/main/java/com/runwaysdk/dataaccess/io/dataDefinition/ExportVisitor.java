@@ -43,7 +43,6 @@ import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.LongConditionInfo;
-import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -76,7 +75,6 @@ import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
@@ -85,7 +83,6 @@ import com.runwaysdk.constants.MdFieldInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdInformationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
-import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStructInfo;
@@ -133,7 +130,6 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
 import com.runwaysdk.dataaccess.FieldConditionDAOIF;
-import com.runwaysdk.dataaccess.MdActionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -156,7 +152,6 @@ import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -318,10 +313,6 @@ public class ExportVisitor extends MarkupVisitor
     else if (component instanceof MdIndexDAOIF)
     {
       visitMdIndex((MdIndexDAOIF) component);
-    }
-    else if (component instanceof MdControllerDAOIF)
-    {
-      visitMdController((MdControllerDAOIF) component);
     }
     else if (component instanceof MdWebFormDAOIF)
     {
@@ -617,123 +608,7 @@ public class ExportVisitor extends MarkupVisitor
   {
     writer.closeTag();
   }
-
-  protected void enterMdController(MdControllerDAOIF mdController)
-  {
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, mdController.definesType());
-
-    Map<String, String> localValues = mdController.getDisplayLabels();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
-
-    attributes.put(XMLTags.REMOVE_ATTRIBUTE, mdController.getValue(MdControllerInfo.REMOVE));
-
-    Map<String, String> localDescValues = mdController.getDescriptions();
-    writeLocaleValues(attributes, XMLTags.DESCRIPTION_ATTRIBUTE, localDescValues);
-
-    // Write the INDEX_TAG with is parameters
-    writer.openEscapedTag(XMLTags.MD_CONTROLLER_TAG, attributes);
-  }
-
-  /**
-   * Visits a MdController: Export a MdController
-   * 
-   * @param mdController
-   *          The MdController to visit
-   */
-  public void visitMdController(MdControllerDAOIF mdController)
-  {
-    enterMdController(mdController);
-
-    // Write the mdMethod defined by the entity
-    for (MdActionDAOIF mdAction : mdController.getMdActionDAOsOrdered())
-    {
-      visitMdAction(mdAction, mdAction.getMdParameterDAOs());
-    }
-
-    exitMdController(mdController);
-  }
-
-  protected void exitMdController(MdControllerDAOIF mdController)
-  {
-    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
-    {
-      writer.openTag(XMLTags.STUB_SOURCE_TAG);
-      writer.writeCData(mdController.getValue(MdControllerInfo.STUB_SOURCE));
-      writer.closeTag();
-    }
-
-    writer.closeTag();
-  }
-
-  /**
-   * Specifies behavior upon entering a MdAction on visit: Exports the MdAction
-   * tag only.
-   * 
-   * @param mdAction
-   *          MdAction being visited
-   */
-  protected void enterMdAction(MdActionDAOIF mdAction)
-  {
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, mdAction.getValue(MdActionInfo.NAME));
-
-    Map<String, String> localValues = mdAction.getDisplayLabels();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
-
-    Map<String, String> localDescriptions = mdAction.getDescriptions();
-    writeLocaleValues(attributes, XMLTags.DESCRIPTION_ATTRIBUTE, localDescriptions);
-
-    attributes.put(XMLTags.IS_POST_ATTRIBUTES, mdAction.getValue(MdActionInfo.IS_POST));
-    attributes.put(XMLTags.IS_QUERY_ATTRIBUTES, mdAction.getValue(MdActionInfo.IS_QUERY));
-
-    writer.openEscapedTag(XMLTags.MD_ACTION_TAG, attributes);
-  }
-
-  /**
-   * Visits a MdAction: Export a MdAction and its MdParameters
-   * 
-   * @param mdAction
-   *          MdMethod to visit
-   * @param mdParameters
-   *          List of MdParameters defined for the MdAction
-   */
-  public void visitMdAction(MdActionDAOIF mdAction, List<MdParameterDAOIF> mdParameters)
-  {
-    enterMdAction(mdAction);
-
-    boolean isQuery = mdAction.getValue(MdActionInfo.IS_QUERY).equals(MdAttributeBooleanInfo.TRUE);
-
-    for (MdParameterDAOIF mdParameter : mdParameters)
-    {
-      String name = mdParameter.getValue(MdParameterInfo.NAME);
-
-      if (!isQuery || ( isQuery && !isQueryAttribute(name) ))
-      {
-        visitMdParameter(mdParameter);
-      }
-    }
-
-    exitMdAction(mdAction);
-  }
-
-  private boolean isQueryAttribute(String name)
-  {
-    return ( name.equals(MdActionInfo.SORT_ATTRIBUTE) || name.equals(MdActionInfo.IS_ASCENDING) || name.equals(MdActionInfo.PAGE_NUMBER) || name.equals(MdActionInfo.PAGE_SIZE) );
-  }
-
-  /**
-   * Specifies visit behavior after the MdAction has been visited. This method
-   * is likely to be overwritten in child classes.
-   * 
-   * @param mdAction
-   *          MdAction being visited
-   */
-  protected void exitMdAction(MdActionDAOIF mdAction)
-  {
-    writer.closeTag();
-  }
-
+  
   /**
    * Specifies behavior upon entering a MdBusiness on visit: Exports the
    * MdBusiness tag with its attributes.
@@ -1931,8 +1806,6 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> parameters = getMdClassParameters(mdEntity);
 
     parameters.put(XMLTags.ENTITY_TABLE, mdEntity.getTableName());
-
-    parameters.put(XMLTags.GENERATE_CONTROLLER, new Boolean(mdEntity.hasMdController()).toString());
 
     return parameters;
   }

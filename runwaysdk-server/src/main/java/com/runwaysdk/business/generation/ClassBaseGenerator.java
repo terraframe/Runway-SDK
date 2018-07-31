@@ -22,7 +22,6 @@ import java.util.List;
 
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.LocalProperties;
-import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdClassInfo;
@@ -672,7 +671,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
     MdClassDAOIF mdClass = this.getMdTypeDAOIF();
 
-    if (mdClass.definesType().equals(MdTypeInfo.CLASS) || mdClass.definesType().equals(TypeTupleDAOIF.CLASS) || mdClass.definesType().equals(MdParameterInfo.CLASS) || mdClass.definesType().equals(MdMethodInfo.CLASS) || mdClass.definesType().equals(MdIndexInfo.CLASS) || mdClass.definesType().equals(MdActionInfo.CLASS) || mdClass.definesType().equals(MdDomainInfo.CLASS) || mdClass.definesType().equals(MdAttributeVirtualInfo.CLASS) || mdClass.definesType().equals(MdAttributeConcreteInfo.CLASS) || mdClass.definesType().equals(MdTypeInfo.CLASS))
+    if (mdClass.definesType().equals(MdTypeInfo.CLASS) || mdClass.definesType().equals(TypeTupleDAOIF.CLASS) || mdClass.definesType().equals(MdParameterInfo.CLASS) || mdClass.definesType().equals(MdMethodInfo.CLASS) || mdClass.definesType().equals(MdIndexInfo.CLASS) || mdClass.definesType().equals(MdDomainInfo.CLASS) || mdClass.definesType().equals(MdAttributeVirtualInfo.CLASS) || mdClass.definesType().equals(MdAttributeConcreteInfo.CLASS) || mdClass.definesType().equals(MdTypeInfo.CLASS))
     {
       getWriter().writeLine("    return this.getClassDisplayLabel();");
     }

@@ -51,7 +51,6 @@ import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
-import com.runwaysdk.system.metadata.MdAction;
 
 public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
 {

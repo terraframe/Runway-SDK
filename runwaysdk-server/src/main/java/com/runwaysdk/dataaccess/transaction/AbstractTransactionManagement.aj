@@ -76,7 +76,6 @@ import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.database.MetadataDisplayLabelDDLCommand;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
@@ -520,32 +519,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     if (!mdMethod.isImport())
     {
       this.getTransactionCache().updatedMdMethod_CodeGen(mdMethod);
-    }
-  }
-
-  // MdAction objects that have been updated or created.
-  protected pointcut updateMdAction(MdActionDAO mdAction)
-  :(execution (* com.runwaysdk.dataaccess.metadata.MdActionDAO.save(..)) && target(mdAction));
-
-  before(MdActionDAO mdAction)
-    : updateMdAction(mdAction)
-  {
-    if (!mdAction.isImport())
-    {
-      this.getTransactionCache().updatedMdAction_CodeGen(mdAction);
-    }
-  }
-
-  // MdAction objects that have been deleted.
-  protected pointcut deletedMdAction(MdActionDAO mdAction)
-  :(execution (* com.runwaysdk.dataaccess.metadata.MdActionDAO.delete(..)) && target(mdAction));
-
-  before(MdActionDAO mdAction)
-    : deletedMdAction(mdAction)
-  {
-    if (!mdAction.isImport())
-    {
-      this.getTransactionCache().updatedMdAction_CodeGen(mdAction);
     }
   }
 
