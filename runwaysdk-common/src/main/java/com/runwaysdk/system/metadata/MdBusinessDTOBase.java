@@ -143,60 +143,6 @@ public abstract class MdBusinessDTOBase extends com.runwaysdk.system.metadata.Md
   }
   
   @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.metadata.MdStateMachineDTO> getAllDefiningMdBusiness()
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdStateMachineDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.DefinesStateMachineDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdStateMachineDTO> getAllDefiningMdBusiness(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdStateMachineDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.DefinesStateMachineDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.DefinesStateMachineDTO> getAllDefiningMdBusinessRelationships()
-  {
-    return (java.util.List<? extends com.runwaysdk.system.DefinesStateMachineDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.DefinesStateMachineDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.DefinesStateMachineDTO> getAllDefiningMdBusinessRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.DefinesStateMachineDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.DefinesStateMachineDTO.CLASS);
-  }
-  
-  public com.runwaysdk.system.DefinesStateMachineDTO addDefiningMdBusiness(com.runwaysdk.system.metadata.MdStateMachineDTO child)
-  {
-    return (com.runwaysdk.system.DefinesStateMachineDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.DefinesStateMachineDTO.CLASS);
-  }
-  
-  public static com.runwaysdk.system.DefinesStateMachineDTO addDefiningMdBusiness(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdStateMachineDTO child)
-  {
-    return (com.runwaysdk.system.DefinesStateMachineDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.DefinesStateMachineDTO.CLASS);
-  }
-  
-  public void removeDefiningMdBusiness(com.runwaysdk.system.DefinesStateMachineDTO relationship)
-  {
-    getRequest().deleteChild(relationship.getId());
-  }
-  
-  public static void removeDefiningMdBusiness(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.DefinesStateMachineDTO relationship)
-  {
-    clientRequestIF.deleteChild(relationship.getId());
-  }
-  
-  public void removeAllDefiningMdBusiness()
-  {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.DefinesStateMachineDTO.CLASS);
-  }
-  
-  public static void removeAllDefiningMdBusiness(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.DefinesStateMachineDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdEnumerationDTO> getAllMdEnumeration()
   {
     return (java.util.List<? extends com.runwaysdk.system.metadata.MdEnumerationDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.EnumerationAttributeDTO.CLASS);

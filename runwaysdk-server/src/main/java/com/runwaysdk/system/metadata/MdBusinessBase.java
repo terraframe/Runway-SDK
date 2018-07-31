@@ -121,49 +121,6 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     return CLASS;
   }
   
-  public com.runwaysdk.system.DefinesStateMachine addDefiningMdBusiness(com.runwaysdk.system.metadata.MdStateMachine mdStateMachine)
-  {
-    return (com.runwaysdk.system.DefinesStateMachine) addChild(mdStateMachine, com.runwaysdk.system.DefinesStateMachine.CLASS);
-  }
-  
-  public void removeDefiningMdBusiness(com.runwaysdk.system.metadata.MdStateMachine mdStateMachine)
-  {
-    removeAllChildren(mdStateMachine, com.runwaysdk.system.DefinesStateMachine.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdStateMachine> getAllDefiningMdBusiness()
-  {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdStateMachine>) getChildren(com.runwaysdk.system.DefinesStateMachine.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.DefinesStateMachine> getAllDefiningMdBusinessRel()
-  {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.DefinesStateMachine>) getChildRelationships(com.runwaysdk.system.DefinesStateMachine.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.system.DefinesStateMachine getDefiningMdBusinessRel(com.runwaysdk.system.metadata.MdStateMachine mdStateMachine)
-  {
-    com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.DefinesStateMachine> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.DefinesStateMachine>) getRelationshipsWithChild(mdStateMachine, com.runwaysdk.system.DefinesStateMachine.CLASS);
-    try
-    {
-      if (iterator.hasNext())
-      {
-        return iterator.next();
-      }
-      else
-      {
-        return null;
-      }
-    }
-    finally
-    {
-      iterator.close();
-    }
-  }
-  
   public com.runwaysdk.system.metadata.EnumerationAttribute addMdEnumeration(com.runwaysdk.system.metadata.MdEnumeration mdEnumeration)
   {
     return (com.runwaysdk.system.metadata.EnumerationAttribute) addChild(mdEnumeration, com.runwaysdk.system.metadata.EnumerationAttribute.CLASS);

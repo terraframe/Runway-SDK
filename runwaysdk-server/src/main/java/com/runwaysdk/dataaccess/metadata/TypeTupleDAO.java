@@ -118,9 +118,6 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
     return ((AttributeLocalIF)this.getAttributeIF(TypeTupleDAOIF.DISPLAY_LABEL)).getLocalValues();
   }
   
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.rbac.CommonStateIF#getState()
-   */
   public MetadataDAOIF getMetaData()
   {
     AttributeReference metadata = (AttributeReference) this.getAttribute(TypeTupleDAOIF.METADATA);

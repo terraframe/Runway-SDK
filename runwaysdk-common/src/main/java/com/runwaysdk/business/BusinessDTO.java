@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.business;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.CommonExceptionProcessor;
@@ -44,16 +42,6 @@ public class BusinessDTO extends ElementDTO
   private static final long serialVersionUID = -4669065823599432023L;
 
   /**
-   * State.
-   */
-  private String            state;
-
-  /**
-   * A list of all transitions from the current state (if applicable).
-   */
-  private List<String> transitions;
-
-  /**
    * Generic business object.
    *
    * @param sessionId
@@ -62,9 +50,6 @@ public class BusinessDTO extends ElementDTO
   protected BusinessDTO(ClientRequestIF clientRequest, String type)
   {
     super(clientRequest, type);
-
-    state = "";
-    transitions = new LinkedList<String>();
   }
 
   /**
@@ -79,8 +64,6 @@ public class BusinessDTO extends ElementDTO
     super(clientRequest);
 
     String _type = this.getDeclaredType();
-
-    transitions = new LinkedList<String>();
 
     // only get default values if a subclass of BusinessDTO is requested.
     if(!_type.equals(BusinessDTO.class.getName()) && clientRequest != null)
@@ -97,8 +80,6 @@ public class BusinessDTO extends ElementDTO
   protected BusinessDTO(BusinessDTO businessDTO, ClientRequestIF clientRequest)
   {
     super(clientRequest);
-
-    transitions = new LinkedList<String>();
 
     if(!this.getDeclaredType().equals(businessDTO.getType()))
     {
@@ -119,61 +100,6 @@ public class BusinessDTO extends ElementDTO
   protected BusinessDTO(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap)
   {
     super(clientRequest, type, attributeMap);
-
-    state = "";
-    transitions = new LinkedList<String>();
-  }
-
-  /**
-   * Returns the state of this DTO.
-   *
-   * @return
-   */
-  public String getState()
-  {
-    return state;
-  }
-
-  /**
-   * Sets the state of this DTO
-   */
-  public void setState(String state)
-  {
-    this.state = state;
-  }
-
-  /**
-   * Returns a list of available transitions.
-   *
-   * @return
-   */
-  public List<String> getTransitions()
-  {
-    return transitions;
-  }
-
-  public void setTransitions(List<String> transitions)
-  {
-    this.transitions = transitions;
-  }
-
-  /**
-   * Copies over properties from the given componentDTO.
-   * @param componentDTOIF
-   */
-  public void copyProperties(ComponentDTOIF componentDTOIF)
-  {
-    super.copyProperties(componentDTOIF);
-
-    if (componentDTOIF instanceof BusinessDTO)
-    {
-      // state
-      BusinessDTO businessDTO = (BusinessDTO)componentDTOIF;
-      this.setState(businessDTO.getState());
-
-      // enum values
-      this.setTransitions(businessDTO.getTransitions());
-    }
   }
 
   @Override

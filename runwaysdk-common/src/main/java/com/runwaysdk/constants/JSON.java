@@ -229,18 +229,6 @@ public enum JSON {
 
   /*------------------- BusinessDTO ------------------*/
 
-  /**
-   * 
-   BUSINESS_DTO(RUNWAY_DTO.getLabel()+".BusinessDTO"),
-   */
-
-  /**
-     * 
-     */
-  BUSINESS_DTO_STATE("state"),
-
-  BUSINESS_DTO_TRANSITIONS("transitions"),
-
   /*------------------- RelationshipDTO --------------*/
 
   /**

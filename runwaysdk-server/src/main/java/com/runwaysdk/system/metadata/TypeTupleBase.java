@@ -98,34 +98,6 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     }
   }
   
-  public com.runwaysdk.system.StateMaster getStateMaster()
-  {
-    if (getValue(STATEMASTER).trim().equals(""))
-    {
-      return null;
-    }
-    else
-    {
-      return com.runwaysdk.system.StateMaster.get(getValue(STATEMASTER));
-    }
-  }
-  
-  public String getStateMasterId()
-  {
-    return getValue(STATEMASTER);
-  }
-  
-  public void validateStateMaster()
-  {
-    this.validateAttribute(STATEMASTER);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStateMasterMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.TypeTuple.CLASS);
-    return mdClassIF.definesAttribute(STATEMASTER);
-  }
-  
   protected String getDeclaredType()
   {
     return CLASS;

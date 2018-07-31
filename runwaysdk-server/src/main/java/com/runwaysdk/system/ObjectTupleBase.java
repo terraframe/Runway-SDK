@@ -402,35 +402,7 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ObjectTuple.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SITEMASTER);
   }
-  
-  public com.runwaysdk.system.StateMaster getStateMaster()
-  {
-    if (getValue(STATEMASTER).trim().equals(""))
-    {
-      return null;
-    }
-    else
-    {
-      return com.runwaysdk.system.StateMaster.get(getValue(STATEMASTER));
-    }
-  }
-  
-  public String getStateMasterId()
-  {
-    return getValue(STATEMASTER);
-  }
-  
-  public void validateStateMaster()
-  {
-    this.validateAttribute(STATEMASTER);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getStateMasterMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ObjectTuple.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(STATEMASTER);
-  }
-  
+    
   public String getType()
   {
     return getValue(TYPE);
