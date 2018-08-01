@@ -22,12 +22,15 @@ import java.util.Locale;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.request.RMIClientRequest;
 
+@RunWith(ClasspathTestRunner.class)
 public class RMIMessageTest extends MessageTest
 {
   @BeforeClass
@@ -53,6 +56,8 @@ public class RMIMessageTest extends MessageTest
   @AfterClass
   public static void stopServer()
   {
+    systemSession.logout();
+
     ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
     RemoteAdapterServer.stopServer();
   }
