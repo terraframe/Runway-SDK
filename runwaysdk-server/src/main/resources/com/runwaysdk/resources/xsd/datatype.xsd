@@ -66,7 +66,6 @@
       <xs:element name="mdWarning" type="mdException" />
       <xs:element name="mdView" type="mdView" />
       <xs:element name="mdUtil" type="mdSession" />
-      <xs:element name="mdController" type="mdController" />
       <xs:element name="mdWebForm" type="mdWebForm" />
       <xs:element name="object" type="entity" minOccurs="0" maxOccurs="unbounded" />
       <xs:element name="relationship" type="entity" minOccurs="0" maxOccurs="unbounded" />
@@ -97,7 +96,6 @@
       <xs:element name="mdWarning" type="mdException" />
       <xs:element name="mdView" type="mdView" />
       <xs:element name="mdUtil" type="mdSession" />
-      <xs:element name="mdController" type="mdController" />
       <xs:element name="mdWebForm" type="mdWebForm" />
       <xs:element name="timestamp" type="timestamp" />
     </xs:choice>
@@ -258,25 +256,6 @@
           <!--The methods defined for the mdFacade -->
           <xs:element name="mdMethod" type="mdMethod" minOccurs="0" maxOccurs="unbounded" />
           <xs:element name="create" type="mdFacadeOptions" minOccurs="0" maxOccurs="1" />
-          <xs:element name="stubSource" minOccurs="0" maxOccurs="1" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="mdControllerOptions">
-    <xs:sequence>
-      <xs:element name="mdAction" type="mdAction" minOccurs="0" maxOccurs="unbounded" />
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="mdController">
-    <xs:complexContent>
-      <xs:extension base="mdType">
-        <xs:sequence>
-          <!--The methods defined for the MdControllers -->
-          <xs:element name="mdAction" type="mdAction" minOccurs="0" maxOccurs="unbounded" />
-          <xs:element name="create" type="mdControllerOptions" minOccurs="0" maxOccurs="1" />
           <xs:element name="stubSource" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
       </xs:extension>
@@ -652,7 +631,6 @@
           <xs:element name="dtoStubSource" minOccurs="0" maxOccurs="1" />
         </xs:choice>
         <xs:attribute name="table" type="xs:string" use="optional" />
-        <xs:attribute name="generateController" type="xs:boolean" use="optional" />
         <xs:attribute name="enforceSiteMaster" type="xs:boolean" use="optional" />
         <xs:attribute name="hasDeterministicId" type="xs:boolean" use="optional" />
       </xs:extension>
@@ -789,7 +767,6 @@
     <!--abstract: If the mdBusiness is abstract -->
     <xs:attribute name="isAbstract" type="xs:boolean" />
     <xs:attribute name="table" type="xs:string" use="optional" />
-    <xs:attribute name="generateController" type="xs:boolean" use="optional" />
     <xs:attribute name="enforceSiteMaster" type="xs:boolean" use="optional" />
     <xs:attribute name="hasDeterministicId" type="xs:boolean" use="optional" />
     <xs:attribute name="removable" type="xs:string" use="optional" />
