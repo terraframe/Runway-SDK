@@ -179,7 +179,7 @@ public class ClientConversionFacade
 
       try
       {
-        Class<?> exceptionDTOclass = LoaderDecorator.load(dtoExceptionName);
+        Class<?> exceptionDTOclass = LoaderDecorator.loadClass(dtoExceptionName);
         return (RuntimeException) exceptionDTOclass.getConstructor(String.class, String.class,
             String.class).newInstance(wrappedExceptionName, serverBusinessMessage,
             wrappedDeveloperMessage);
@@ -218,6 +218,10 @@ public class ClientConversionFacade
         {
           throw ex;
         }
+      }
+      catch (ClassNotFoundException e1)
+      {
+        return new ServerSideException(e, wrappedExceptionName, serverBusinessMessage);
       }
     }
 

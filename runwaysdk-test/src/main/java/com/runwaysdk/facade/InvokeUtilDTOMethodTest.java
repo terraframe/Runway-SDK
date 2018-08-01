@@ -20,33 +20,43 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.Util;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.ServerConstants;
+import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
+import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class InvokeUtilDTOMethodTest extends InvokeSessionComponentMethodTest
 {
   @BeforeClass
+  @Request
   public static void classSetUp()
   {
     systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     clientRequest = systemSession.getRequest();
-    moreSetup();
-
-    classSetUpRequest();
-    finalizeSetup();
-  }
-
-  protected static void moreSetup()
-  {
-    mdSessionDTO = clientRequest.newBusiness(MdUtilInfo.CLASS);
-    bag = clientRequest.newBusiness(MdUtilInfo.CLASS);
+    
+    mdSessionDTO = MdUtilDAO.newInstance();
+    bag = MdUtilDAO.newInstance();
 
     superClassField = MdUtilInfo.SUPER_MD_UTIL;
-    getterMethodImplementation = "    return (" + sessionTypeName + ") " + Util.class.getName() + ".get(id);";
+    getterMethodImplementation = "    return (" + sessionTypeName + ") " + Util.class.getName() + ".get(id);";    
+    
+    modelSetup();
+  }
+  
+  @AfterClass
+  @Request
+  public static void classTearDown()
+  {
+    modelTearDown();
+    systemSession.logout();
   }
 }

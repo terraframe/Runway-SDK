@@ -22,30 +22,46 @@ import java.util.Locale;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.business.Util;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.ServerConstants;
+import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.request.RMIClientRequest;
+import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class RMIInvokeUtilDTOMethodTest extends InvokeUtilDTOMethodTest
 {
   @BeforeClass
+  @Request
   public static void classSetUp()
   {
     TestRMIUtil.startServer();
     systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     clientRequest = systemSession.getRequest();
 
-    moreSetup();
+    mdSessionDTO = MdUtilDAO.newInstance();
+    bag = MdUtilDAO.newInstance();
 
-    classSetUpRequest();
-    finalizeSetup();
+    superClassField = MdUtilInfo.SUPER_MD_UTIL;
+    getterMethodImplementation = "    return (" + sessionTypeName + ") " + Util.class.getName() + ".get(id);";
+    
+    modelSetup();
   }
 
   @AfterClass
-  public static void stopServer()
+  @Request  
+  public static void classTearDown()
   {
+    modelTearDown();
+
+    systemSession.logout();
+
     ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
     RemoteAdapterServer.stopServer();
   }

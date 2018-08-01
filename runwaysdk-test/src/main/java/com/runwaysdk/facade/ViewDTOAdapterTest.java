@@ -20,6 +20,7 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
@@ -40,27 +41,26 @@ import com.runwaysdk.session.SessionIF;
 public class ViewDTOAdapterTest extends SessionDTOAdapterTest
 {
   @BeforeClass
+  @Request
   public static void classSetUp()
   {
     label = "default";
     systemSession = ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     clientRequest = systemSession.getRequest();
 
-    moreSetup();
-
-    classSetUpRequest();
-    finalizeSetup();    
-  }
-
-
-  @Request
-  protected static void moreSetup()
-  {
     source = "package com.test.controller;\n" + "public class " + parentMdSessionTypeName + " extends " + parentMdSessionTypeName + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "  public " + parentMdSessionTypeName + "() {" + "   super();" + "}\n" + "  public static " + parentMdSessionTypeName + " get(String id)\n" + "  {\n" + "    return (" + parentMdSessionTypeName + ") " + View.class.getName() + ".get(id);\n" + "  }\n" + "  public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}\n" + "\n" + "  public void apply()\n" + "  {\n" + "    " + SessionIF.class.getName() + " session = " + Session.class.getName() + ".getCurrentSession();" + "    " + SingleActorDAOIF.class.getName() + " userIF = session.getUser();" + "    this.setOwner(userIF);"
         + "    super.apply();" + "  }\n" + "}";
 
     childMdSession = MdViewDAO.newInstance();
     parentMdSession = MdViewDAO.newInstance();
+    
+    modelSetUp();
+    finalizeSetup();    
   }
-
+  
+  @AfterClass
+  public static void classTearDown()
+  {
+    systemSession.logout();
+  }
 }

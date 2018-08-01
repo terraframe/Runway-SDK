@@ -22,27 +22,31 @@ import java.util.Locale;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.request.RMIClientRequest;
 
-public class RMIAdapterTest extends AdapterTest
+@RunWith(ClasspathTestRunner.class)
+public class RMIAdapterTest extends AbstractAdapterTest
 {
   @BeforeClass
   public static void classSetUp()
   {
     TestRMIUtil.startServer();
+    
     systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     clientRequest = systemSession.getRequest();
-    requestClassSetUp();
-    finalizeSetup();
   }
 
   @AfterClass
-  public static void stopServer()
+  public static void classTearDown()
   {
+    systemSession.logout();
+
     ( (RMIClientRequest) systemSession.getRequest() ).unbindRMIClientRequest();
     RemoteAdapterServer.stopServer();
   }

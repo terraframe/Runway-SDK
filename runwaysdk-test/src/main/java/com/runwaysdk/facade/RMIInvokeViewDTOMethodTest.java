@@ -22,15 +22,23 @@ import java.util.Locale;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.business.View;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.ServerConstants;
+import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.request.RMIClientRequest;
+import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class RMIInvokeViewDTOMethodTest extends InvokeViewDTOMethodTest
 {
   @BeforeClass
+  @Request
   public static void classSetUp()
   {
     TestRMIUtil.startServer();
@@ -38,16 +46,24 @@ public class RMIInvokeViewDTOMethodTest extends InvokeViewDTOMethodTest
     systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     clientRequest = systemSession.getRequest();
 
-    moreSetup();
-
-    classSetUpRequest();
-    finalizeSetup();
+    mdSessionDTO = MdViewDAO.newInstance();
+    bag = MdViewDAO.newInstance();
+    
+    superClassField = MdViewInfo.SUPER_MD_VIEW;
+    getterMethodImplementation = "    return (" + sessionTypeName + ") " + View.class.getName() + ".get(id);";  
+    
+    modelSetup();
   }
-
+  
   @AfterClass
-  public static void stopServer()
+  @Request  
+  public static void classTearDown()
   {
+    modelTearDown();
+
+    systemSession.logout();
+    
     ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
-    RemoteAdapterServer.stopServer();
+    RemoteAdapterServer.stopServer();    
   }
 }

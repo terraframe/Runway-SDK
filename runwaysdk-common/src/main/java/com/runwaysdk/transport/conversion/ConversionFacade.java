@@ -540,7 +540,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (BusinessDTO) constructor.newInstance(clientRequest);
@@ -580,6 +580,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildBusinessDTO(clientRequest, type);
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -612,7 +616,7 @@ public class ConversionFacade
       Class<?> clazz;
       try
       {
-        clazz = LoaderDecorator.load(dtoType);
+        clazz = LoaderDecorator.loadClass(dtoType);
         Constructor<?> constructor = clazz.getDeclaredConstructor(BusinessDTO.class, ClientRequestIF.class);
         constructor.setAccessible(true);
 
@@ -654,6 +658,11 @@ public class ConversionFacade
           throw e;
         }
       }
+      catch (ClassNotFoundException e)
+      {
+        return businessDTO;
+      }
+
 
       // reset the type since this method mucks with the type for the sake of
       // avoiding infinite recursion.
@@ -681,7 +690,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class, String.class, String.class);
 
       retDTO = (RelationshipDTO) constructor.newInstance(clientRequest, parentId, childId);
@@ -728,6 +737,11 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildRelationshipDTO(clientRequest, type, parentId, childId);
+    }
+    
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -1720,7 +1734,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getDeclaredConstructor(String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class);
       constructor.setAccessible(true);
 
@@ -1762,6 +1776,10 @@ public class ConversionFacade
       {
         throw e;
       }
+    }
+    catch (ClassNotFoundException e)
+    {
+      return attributeProblemDTO;
     }
 
     // reset the type since this method mucks with the type for the sake of

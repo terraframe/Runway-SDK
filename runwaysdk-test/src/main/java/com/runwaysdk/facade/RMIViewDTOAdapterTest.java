@@ -22,15 +22,26 @@ import java.util.Locale;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.business.View;
+import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
+import com.runwaysdk.constants.TypeGeneratorInfo;
+import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.request.RMIClientRequest;
+import com.runwaysdk.session.Request;
+import com.runwaysdk.session.Session;
+import com.runwaysdk.session.SessionIF;
 
-public class RMIViewDTOAdapterTest extends ViewDTOAdapterTest
+@RunWith(ClasspathTestRunner.class)
+public class RMIViewDTOAdapterTest extends SessionDTOAdapterTest
 {
   @BeforeClass
+  @Request
   public static void classSetUp()
   {
     TestRMIUtil.startServer();
@@ -38,16 +49,22 @@ public class RMIViewDTOAdapterTest extends ViewDTOAdapterTest
     label = "rmiDefault";
     systemSession = ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     clientRequest = systemSession.getRequest();
+    
+    source = "package com.test.controller;\n" + "public class " + parentMdSessionTypeName + " extends " + parentMdSessionTypeName + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "  public " + parentMdSessionTypeName + "() {" + "   super();" + "}\n" + "  public static " + parentMdSessionTypeName + " get(String id)\n" + "  {\n" + "    return (" + parentMdSessionTypeName + ") " + View.class.getName() + ".get(id);\n" + "  }\n" + "  public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}\n" + "\n" + "  public void apply()\n" + "  {\n" + "    " + SessionIF.class.getName() + " session = " + Session.class.getName() + ".getCurrentSession();" + "    " + SingleActorDAOIF.class.getName() + " userIF = session.getUser();" + "    this.setOwner(userIF);"
+        + "    super.apply();" + "  }\n" + "}";
 
-    moreSetup();
+    childMdSession = MdViewDAO.newInstance();
+    parentMdSession = MdViewDAO.newInstance();
 
-    classSetUpRequest();
+    modelSetUp();
     finalizeSetup();
   }
 
   @AfterClass
-  public static void stopServer()
+  public static void classTearDown()
   {
+    systemSession.logout();
+    
     ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
     RemoteAdapterServer.stopServer();
   }

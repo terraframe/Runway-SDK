@@ -22,20 +22,22 @@ import java.util.Locale;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.request.RMIClientRequest;
 import com.runwaysdk.web.json.JSONRMIClientRequest;
 
-public class JSONRMIInvokeMethodTest extends JSONInvokeMethodTest implements DoNotWeave
+@RunWith(ClasspathTestRunner.class)
+public class JSONRMIInvokeMethodTest extends JSONInvokeMethodTest
 {
   @BeforeClass
   public static void classSetUp()
   {
-    RemoteAdapterServer.startServer();
+    TestRMIUtil.startServer();
 
     jsonProxy = new JSONRMIClientRequest("default", "//localhost:" + CommonProperties.getRegistryPort() + "/");
 
@@ -59,6 +61,9 @@ public class JSONRMIInvokeMethodTest extends JSONInvokeMethodTest implements DoN
   @AfterClass
   public static void stopServer()
   {
+    noPermissionSession.logout();
+    systemSession.logout();
+
     ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
     RemoteAdapterServer.stopServer();
   }

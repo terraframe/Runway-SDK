@@ -33,6 +33,7 @@ import com.runwaysdk.business.ViewDTO;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.TypeGeneratorInfo;
+import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
 
 public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComponentMethodTestBase
@@ -45,7 +46,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     String booleanInput = Boolean.toString(true);
     String longInput = "374364";
 
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO.setValue("aLong", longInput);
@@ -71,7 +72,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   {
     String input = "164";
 
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", input + "3");
@@ -100,7 +101,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     String input = "Har har bar bar";
     String longInput = "1";
 
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput);
@@ -138,7 +139,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     String longInput = "152";
 
     // Create the existing BusinessDAO
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput);
@@ -171,7 +172,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   {
     // Create the existing BusinessDAO
     String longInput = "163";
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput);
@@ -216,8 +217,8 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   {
     String longInput = "278";
 
-    Class<?> bagClass = this.getClass().getClassLoader().loadClass(bagDTO);
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> bagClass = LoaderDecorator.load(bagDTO);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput + "0");
@@ -246,8 +247,8 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     String longInput = "142";
     String input = "H to this izzo, E to the izza";
 
-    Class<?> bagClass = this.getClass().getClassLoader().loadClass(bagDTO);
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> bagClass = LoaderDecorator.load(bagDTO);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput + "0");
@@ -284,7 +285,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   {
     String input = "164";
 
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", input + "3");
@@ -302,7 +303,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   @Test
   public void testInvokeEnumeration() throws Exception
   {
-    Class<?> stateClass = this.getClass().getClassLoader().loadClass(stateType + TypeGeneratorInfo.DTO_SUFFIX);
+    Class<?> stateClass = LoaderDecorator.load(stateType + TypeGeneratorInfo.DTO_SUFFIX);
 
     EnumerationDTOIF enumerationDTOIF = (EnumerationDTOIF) stateClass.getMethod("valueOf", String.class).invoke(null, colorado.getValue(EnumerationMasterInfo.NAME));
 
@@ -310,9 +311,9 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     Assert.assertEquals("item method on the enum returned the wrong object.", colorado.getId(), colBusDTO.getId());
 
-    Assert.assertEquals("item method on the enum returned an object of the wrong class.", colorado.getClass().getName(), colBusDTO.getClass().getName());
+    Assert.assertEquals("item method on the enum returned an object of the wrong class.", states.definesType() + "DTO", colBusDTO.getClass().getName());
 
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     String longInput = "152";
     SessionDTO sessionDTO = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
@@ -338,7 +339,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   @Test
   public void testIsModified() throws Exception
   {
-    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> collectionClass = LoaderDecorator.load(sessionDTOtype);
     String input = "164";
 
     SessionDTO sessionDTO1 = (SessionDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
@@ -386,7 +387,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     String booleanInput = Boolean.toString(true);
     String longInput = "374364";
 
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput);
@@ -422,7 +423,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   @Test
   public void testNotModified() throws Exception
   {
-    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> collectionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", "142");
@@ -446,7 +447,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   @Test
   public void testStaticMethod() throws Exception
   {
-    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> collectionClass = LoaderDecorator.load(sessionDTOtype);
     Integer[] integers = { 12, 34, 6, 4, 33, 2 };
 
     Integer[] output = (Integer[]) collectionClass.getMethod("sortIntegers", ClientRequestIF.class, integers.getClass()).invoke(null, clientRequest, (Object) integers);
@@ -463,7 +464,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   @Test
   public void testDateMethod() throws Exception
   {
-    Class<?> collectionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> collectionClass = LoaderDecorator.load(sessionDTOtype);
     Date date = new Date(System.currentTimeMillis());
 
     Date[] output = (Date[]) collectionClass.getMethod("getDates", ClientRequestIF.class, date.getClass()).invoke(null, clientRequest, date);
@@ -485,7 +486,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     Boolean bool = Boolean.TRUE;
     Long[] array = new Long[] { 3L, 4L, 8L, 9L, 10923012910L };
 
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
@@ -503,7 +504,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   public void testInvokeMethodWithUtilParam() throws Exception
   {
     // Create the existing SessionDTO
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
@@ -514,7 +515,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     String someCharValue = "Some Char Value";
 
-    Class<?> utilClass = this.getClass().getClassLoader().loadClass(utilParamDTO);
+    Class<?> utilClass = LoaderDecorator.load(utilParamDTO);
 
     Object input = utilClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     utilClass.getMethod("setACharacter", String.class).invoke(input, someCharValue);
@@ -540,7 +541,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   public void testInvokeMethodWithViewParam() throws Exception
   {
     // Create the existing SessionDTO
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
@@ -551,7 +552,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     String someCharValue = "Some Char Value";
 
-    Class<?> viewClass = this.getClass().getClassLoader().loadClass(viewParamDTO);
+    Class<?> viewClass = LoaderDecorator.load(viewParamDTO);
 
     Object input = viewClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     viewClass.getMethod("setACharacter", String.class).invoke(input, someCharValue);
@@ -577,7 +578,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   public void testInvokeMethodWithUtilArrayParam() throws Exception
   {
     // Create the existing SessionDTO
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
@@ -586,7 +587,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
     sessionDTO1 = (SessionDTO) get.invoke(null, clientRequest, id);
 
-    Class<?> utilClass = this.getClass().getClassLoader().loadClass(utilParamDTO);
+    Class<?> utilClass = LoaderDecorator.load(utilParamDTO);
     UtilDTO[] array = (UtilDTO[]) Array.newInstance(utilClass, 5);
 
     Object input = utilClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
@@ -626,7 +627,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
   public void testInvokeMethodWithViewArrayParam() throws Exception
   {
     // Create the existing SessionDTO
-    Class<?> sessionClass = this.getClass().getClassLoader().loadClass(sessionDTOtype);
+    Class<?> sessionClass = LoaderDecorator.load(sessionDTOtype);
 
     SessionDTO businessDTO = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionClass.getMethod("apply").invoke(businessDTO);
@@ -635,7 +636,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
     businessDTO = (SessionDTO) get.invoke(null, clientRequest, id);
 
-    Class<?> viewClass = this.getClass().getClassLoader().loadClass(viewParamDTO);
+    Class<?> viewClass = LoaderDecorator.load(viewParamDTO);
     ViewDTO[] array = (ViewDTO[]) Array.newInstance(viewClass, 5);
 
     Object input = viewClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);

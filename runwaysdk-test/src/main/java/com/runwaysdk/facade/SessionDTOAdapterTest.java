@@ -260,7 +260,7 @@ public abstract class SessionDTOAdapterTest
   }
 
   @Request
-  public static void classSetUpRequest()
+  public static void modelSetUp()
   {
     suitMaster = MdBusinessDAO.newInstance();
     suitMaster.setValue(MdBusinessInfo.NAME, suitMasterTypeName);
@@ -630,7 +630,7 @@ public abstract class SessionDTOAdapterTest
 
   @Request
   @AfterClass
-  public static void classTearDown()
+  public static void modelTearDown()
   {
     TestFixtureFactory.delete(childMdSession);
 
@@ -647,8 +647,6 @@ public abstract class SessionDTOAdapterTest
     TestFixtureFactory.delete(suitMaster);
 
     suits.clear();
-
-    systemSession.logout();
   }
 
   /**
