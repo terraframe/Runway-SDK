@@ -118,12 +118,6 @@ public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, Ha
       mdStructDAO.setTableName(tableName);
     }
 
-    String generateController = attributes.getValue(XMLTags.GENERATE_CONTROLLER);
-    if (generateController != null)
-    {
-      mdStructDAO.setGenerateMdController(new Boolean(generateController));
-    }
-
     // Make sure the name has not already been defined
     if (!this.getManager().isCreated(mdStructDAO.definesType()))
     {

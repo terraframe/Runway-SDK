@@ -168,7 +168,6 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       allPaths.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "AllPaths Table");
       allPaths.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Used for storing AllPaths data.");
       allPaths.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
-      allPaths.setGenerateMdController(false);
       allPaths.apply();
   
       MdAttributeReferenceDAO mdParentTermAttr = MdAttributeReferenceDAO.newInstance();

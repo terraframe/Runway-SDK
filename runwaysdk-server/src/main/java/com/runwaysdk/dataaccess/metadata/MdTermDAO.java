@@ -216,7 +216,6 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
     attributeTermRoots.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, parent.getId());
     attributeTermRoots.setValue(MdRelationshipInfo.PARENT_METHOD, typeName + "s");
     attributeTermRoots.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel);
-    attributeTermRoots.setGenerateMdController(false);
     attributeTermRoots.apply();
 
     MdAttributeBooleanDAO selectable = MdAttributeBooleanDAO.newInstance();
@@ -257,5 +256,4 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
   {
     return this.getAttribute(MdBusinessInfo.PACKAGE).getValue() + "." + this.getMultiTermAttributeRootsRelationshipName();
   }
-
 }

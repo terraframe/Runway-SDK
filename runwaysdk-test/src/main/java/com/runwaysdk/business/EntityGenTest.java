@@ -295,7 +295,6 @@ public class EntityGenTest
     suitMaster.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration Master List");
     suitMaster.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     suitMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
-    suitMaster.setGenerateMdController(false);
     suitMaster.apply();
 
     suitEnum = MdEnumerationDAO.newInstance();
@@ -310,7 +309,6 @@ public class EntityGenTest
     struct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Standalone Class");
     struct.setValue(MdStructInfo.PACKAGE, pack);
     struct.setValue(MdStructInfo.NAME, "Standalone");
-    struct.setGenerateMdController(false);
     struct.apply();
 
     MdAttributeEnumerationDAO structEnumeration = MdAttributeEnumerationDAO.newInstance();
@@ -385,7 +383,6 @@ public class EntityGenTest
     reference.setValue(MdBusinessInfo.PACKAGE, pack);
     reference.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     reference.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Class");
-    reference.setGenerateMdController(false);
     reference.apply();
 
     term = MdTermDAO.newInstance();
@@ -393,7 +390,6 @@ public class EntityGenTest
     term.setValue(MdBusinessInfo.PACKAGE, pack);
     term.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     term.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Class");
-    term.setGenerateMdController(false);
     term.apply();
 
     MdAttributeIntegerDAO referenceInt = MdAttributeIntegerDAO.newInstance();
@@ -408,7 +404,6 @@ public class EntityGenTest
     collection.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     collection.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Collection Class");
     collection.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "All Attributes Description");
-    collection.setGenerateMdController(false);
     collection.apply();
     collectionType = collection.definesType();
 
@@ -419,7 +414,6 @@ public class EntityGenTest
     collectionSub.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "All Attributes");
     collectionSub.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "All Attributes Description");
     collectionSub.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, collection.getId());
-    collectionSub.setGenerateMdController(false);
     collectionSub.apply();
 
     collectionBlob = MdAttributeBlobDAO.newInstance();
@@ -668,7 +662,6 @@ public class EntityGenTest
     mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, reference.getId());
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "RelChild");
-    mdRelationship.setGenerateMdController(false);
     mdRelationship.apply();
 
     collectionDTO = collection.definesType() + ComponentDTOGenerator.DTO_SUFFIX;

@@ -51,7 +51,6 @@ public class SiteTest
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, "test.xmlclasses");
     mdBusiness.setValue(MdBusinessInfo.NAME, "Class1");
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Importer Class 1");
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 

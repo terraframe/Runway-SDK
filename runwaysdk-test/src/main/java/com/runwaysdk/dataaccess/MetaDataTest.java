@@ -107,7 +107,6 @@ public class MetaDataTest
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdElementInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -118,7 +117,6 @@ public class MetaDataTest
     mdStruct.setValue(MdStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Struct");
     mdStruct.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Struct");
-    mdStruct.setGenerateMdController(false);
     mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
@@ -161,7 +159,6 @@ public class MetaDataTest
     subMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     subMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getId());
     subMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    subMdBusiness.setGenerateMdController(false);
     subMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     subMdBusiness.apply();
 
@@ -217,7 +214,6 @@ public class MetaDataTest
     subMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     subMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getId());
     subMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    subMdBusiness.setGenerateMdController(false);
     subMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     subMdBusiness.apply();
 
@@ -292,7 +288,6 @@ public class MetaDataTest
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -334,7 +329,6 @@ public class MetaDataTest
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -348,7 +342,6 @@ public class MetaDataTest
       stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
-      stateEnumMdBusiness.setGenerateMdController(false);
       stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       stateEnumMdBusiness.apply();
 
@@ -406,7 +399,6 @@ public class MetaDataTest
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Reference");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     String referenceMdBusinessId = mdBusiness.apply();
 
@@ -490,7 +482,6 @@ public class MetaDataTest
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdStructIF.getId());
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -960,7 +951,6 @@ public class MetaDataTest
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdPrimitive.getId());
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 

@@ -71,14 +71,12 @@ public class MdAttributeMultiTermTest
   {
     String tableName = "class1_test_multi_term";
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
     {
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -130,7 +128,6 @@ public class MdAttributeMultiTermTest
   {
     String tableName = "view1_test_multi_term";
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -187,7 +184,6 @@ public class MdAttributeMultiTermTest
   public void testDefaultValue()
   {
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -198,7 +194,6 @@ public class MdAttributeMultiTermTest
       defaultValue.apply();
 
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -240,14 +235,12 @@ public class MdAttributeMultiTermTest
   public void testInvalidType()
   {
     MdBusinessDAO mdReference = TestFixtureFactory.createMdBusiness1();
-    mdReference.setGenerateMdController(false);
     mdReference.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdReference.apply();
 
     try
     {
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness2();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 

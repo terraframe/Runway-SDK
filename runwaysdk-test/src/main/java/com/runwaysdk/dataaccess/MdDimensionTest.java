@@ -92,7 +92,6 @@ public class MdDimensionTest
   public static void classSetUp()
   {
     testMdBusiness = TestFixtureFactory.createMdBusiness1();
-    testMdBusiness.setGenerateMdController(false);
     testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     testMdBusiness.apply();
 
@@ -561,7 +560,6 @@ public class MdDimensionTest
   public void testInvalidReferenceValue()
   {
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
-    mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
@@ -598,7 +596,6 @@ public class MdDimensionTest
   public void testValidReferenceValue()
   {
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
-    mdBusiness2.setGenerateMdController(false);
     mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness2.apply();
 
@@ -927,7 +924,6 @@ public class MdDimensionTest
   public void testDeleteMdBusinessWithAttributeDimesnions()
   {
     MdBusinessDAO _mdBusiness = TestFixtureFactory.createMdBusiness2();
-    _mdBusiness.setGenerateMdController(false);
     _mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     _mdBusiness.apply();
 

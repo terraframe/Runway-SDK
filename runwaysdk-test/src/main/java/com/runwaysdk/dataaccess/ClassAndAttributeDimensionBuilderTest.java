@@ -57,7 +57,6 @@ public class ClassAndAttributeDimensionBuilderTest
     mdDimension.apply();
 
     mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 

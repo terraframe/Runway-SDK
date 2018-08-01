@@ -94,7 +94,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, BusinessInfo.CLASS);
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent1");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild1");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
     abstractParentMdTree1 = mdTree;
@@ -113,7 +112,6 @@ public class MdRelationshipTest
     mdBusinessClass1.setValue(MdBusinessInfo.PACKAGE, "junit.test");
     mdBusinessClass1.setValue(MdBusinessInfo.NAME, "Class1");
     mdBusinessClass1.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "junit.test.Class1");
-    mdBusinessClass1.setGenerateMdController(false);
     mdBusinessClass1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessClass1.apply();
 
@@ -121,7 +119,6 @@ public class MdRelationshipTest
     mdBusinessParentClass1.setValue(MdBusinessInfo.PACKAGE, "junit.test");
     mdBusinessParentClass1.setValue(MdBusinessInfo.NAME, "ParentClass1");
     mdBusinessParentClass1.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "junit.test.ParentClass1");
-    mdBusinessParentClass1.setGenerateMdController(false);
     mdBusinessParentClass1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessParentClass1.apply();
 
@@ -130,7 +127,6 @@ public class MdRelationshipTest
     mdBusinessChildClass1.setValue(MdBusinessInfo.NAME, "ChildClass1");
     mdBusinessChildClass1.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "junit.test.ChildClass1");
     mdBusinessChildClass1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessParentClass1.getId());
-    mdBusinessChildClass1.setGenerateMdController(false);
     mdBusinessChildClass1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessChildClass1.apply();
 
@@ -153,7 +149,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdBusinessParentClass1.definesType());
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent2");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild2");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
     abstractParentMdTree2 = mdTree;
@@ -176,7 +171,6 @@ public class MdRelationshipTest
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "AbstractParent3");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "AbstractChild3");
-    mdRelationship.setGenerateMdController(false);
     mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.apply();
     abstractMdRelationship1 = mdRelationship;
@@ -199,7 +193,6 @@ public class MdRelationshipTest
     mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
     mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent4");
     mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild4");
-    mdGraph.setGenerateMdController(false);
     mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdGraph.apply();
     abstractMdGraph1 = mdGraph;
@@ -224,7 +217,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, BusinessInfo.CLASS);
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent1");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild1");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
@@ -307,7 +299,6 @@ public class MdRelationshipTest
       mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getId());
       mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
-      mdTree.setGenerateMdController(false);
       mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTree.apply();
       Assert.fail("A Relationship type was defined incorrectly.  Relationship was defined to extend a Class.  Relationships can only extend other Relationships.");
@@ -354,7 +345,6 @@ public class MdRelationshipTest
     concreteParentMdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     concreteParentMdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent5");
     concreteParentMdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild5");
-    concreteParentMdTree.setGenerateMdController(false);
     concreteParentMdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     concreteParentMdTree.apply();
 
@@ -378,7 +368,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "ConcreteParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "ConcreteChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -433,7 +422,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -476,7 +464,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -521,7 +508,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -567,7 +553,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -614,7 +599,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
@@ -676,7 +660,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
@@ -736,7 +719,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
@@ -797,8 +779,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -844,7 +824,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -893,7 +872,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -943,7 +921,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Users");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -993,7 +970,6 @@ public class MdRelationshipTest
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -1038,7 +1014,6 @@ public class MdRelationshipTest
       mdGraph.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdGraph.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent6");
       mdGraph.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild6");
-      mdGraph.setGenerateMdController(false);
       mdGraph.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
@@ -1087,7 +1062,6 @@ public class MdRelationshipTest
       mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent7");
       mdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild7");
-      mdTree.setGenerateMdController(false);
       mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTree.apply();
 
@@ -1136,7 +1110,6 @@ public class MdRelationshipTest
       mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "AbstractParent8");
       mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "AbstractChild8");
-      mdRelationship.setGenerateMdController(false);
       mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdRelationship.apply();
 
@@ -1185,7 +1158,6 @@ public class MdRelationshipTest
       mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdTree.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent9");
       mdTree.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild9");
-      mdTree.setGenerateMdController(false);
       mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTree.apply();
 
@@ -1234,7 +1206,6 @@ public class MdRelationshipTest
       mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "AbstractParent10");
       mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "AbstractChild10");
-      mdRelationship.setGenerateMdController(false);
       mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdRelationship.apply();
 
@@ -1283,7 +1254,6 @@ public class MdRelationshipTest
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent11");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild11");
-      mdGraph.setGenerateMdController(false);
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
@@ -1335,7 +1305,6 @@ public class MdRelationshipTest
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, testClassMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent1");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild379");
-      mdGraph.setGenerateMdController(false);
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
       mdGraph.apply();
 
@@ -1387,7 +1356,6 @@ public class MdRelationshipTest
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, testClassMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent1");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild379");
-      mdGraph.setGenerateMdController(false);
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
     }
@@ -1437,7 +1405,6 @@ public class MdRelationshipTest
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, testClassMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent3240");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild1");
-      mdGraph.setGenerateMdController(false);
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.TRUE);
       mdGraph.apply();
 
@@ -1489,7 +1456,6 @@ public class MdRelationshipTest
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, testClassMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "AbstractParent3240");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "AbstractChild1");
-      mdGraph.setGenerateMdController(false);
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
     }
@@ -1537,7 +1503,6 @@ public class MdRelationshipTest
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "SortParent1");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "SortChild1");
       mdGraph.setValue(MdGraphInfo.SORT_MD_ATTRIBUTE, mdAttribute.getId());
-      mdGraph.setGenerateMdController(false);
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
@@ -1587,7 +1552,6 @@ public class MdRelationshipTest
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, busObjectMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "CompParent1");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "CompChild1");
-      mdGraph.setGenerateMdController(false);
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 
@@ -1637,7 +1601,6 @@ public class MdRelationshipTest
       mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, componentMdBusiness.definesType());
       mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "CompParent1");
       mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "CompChild1");
-      mdGraph.setGenerateMdController(false);
       mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdGraph.apply();
 

@@ -77,7 +77,6 @@ public class MdTermRelationshipTest
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -95,9 +94,7 @@ public class MdTermRelationshipTest
       mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-      mdTermRelationship.setGenerateMdController(false);
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
-      mdTermRelationship.setGenerateMdController(false);
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -127,7 +124,6 @@ public class MdTermRelationshipTest
   public void testInvalidParentType()
   {
     MdBusinessDAO parentMdBusiness = TestFixtureFactory.createMdBusiness1();
-    parentMdBusiness.setGenerateMdController(false);
     parentMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     parentMdBusiness.apply();
 
@@ -141,7 +137,6 @@ public class MdTermRelationshipTest
       mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-      mdTerm.setGenerateMdController(false);
       mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTerm.apply();
 
@@ -160,7 +155,6 @@ public class MdTermRelationshipTest
         mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
         mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
         mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
-        mdTermRelationship.setGenerateMdController(false);
         mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
         mdTermRelationship.apply();
 
@@ -188,7 +182,6 @@ public class MdTermRelationshipTest
   public void testInvalidChildType()
   {
     MdBusinessDAO childMdBusiness = TestFixtureFactory.createMdBusiness1();
-    childMdBusiness.setGenerateMdController(false);
     childMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     childMdBusiness.apply();
 
@@ -202,7 +195,6 @@ public class MdTermRelationshipTest
       mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-      mdTerm.setGenerateMdController(false);
       mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTerm.apply();
 
@@ -221,7 +213,6 @@ public class MdTermRelationshipTest
         mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
         mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
         mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
-        mdTermRelationship.setGenerateMdController(false);
         mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
         mdTermRelationship.apply();
 
@@ -256,7 +247,6 @@ public class MdTermRelationshipTest
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -275,7 +265,6 @@ public class MdTermRelationshipTest
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
-      mdTermRelationship.setGenerateMdController(false);
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -321,7 +310,6 @@ public class MdTermRelationshipTest
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -340,7 +328,6 @@ public class MdTermRelationshipTest
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
-      mdTermRelationship.setGenerateMdController(false);
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -386,7 +373,6 @@ public class MdTermRelationshipTest
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -405,7 +391,6 @@ public class MdTermRelationshipTest
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getId());
-      mdTermRelationship.setGenerateMdController(false);
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -451,7 +436,6 @@ public class MdTermRelationshipTest
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -470,7 +454,6 @@ public class MdTermRelationshipTest
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getId());
-      mdTermRelationship.setGenerateMdController(false);
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -521,7 +504,6 @@ public class MdTermRelationshipTest
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -540,8 +522,6 @@ public class MdTermRelationshipTest
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
       mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
-      mdTermRelationship.setGenerateMdController(false);
-      mdTermRelationship.setGenerateMdController(false);
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 

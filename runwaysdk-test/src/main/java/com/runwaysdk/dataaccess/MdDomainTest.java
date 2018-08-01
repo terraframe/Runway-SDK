@@ -52,7 +52,6 @@ public class MdDomainTest
     mdBusiness.setValue(MdBusinessInfo.NAME, "TestBusiness");
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, "com.test");
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Business");
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
   }

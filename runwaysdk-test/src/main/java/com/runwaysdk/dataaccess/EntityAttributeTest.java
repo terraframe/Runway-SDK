@@ -184,7 +184,6 @@ public class EntityAttributeTest
     referenceMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.REFERENCE_CLASS.getType());
 
     testTerm = TestFixtureFactory.createMdTerm();
-    testTerm.setGenerateMdController(false);
     testTerm.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     testTerm.apply();
 

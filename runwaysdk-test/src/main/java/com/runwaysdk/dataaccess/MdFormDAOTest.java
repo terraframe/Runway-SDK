@@ -86,13 +86,11 @@ public abstract class MdFormDAOTest
   {
     // Define a test class
     testTypeMd = TestFixtureFactory.createMdBusiness1();
-    testTypeMd.setGenerateMdController(false);
     testTypeMd.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     testTypeMd.apply();
 
     // reference class
     refTypeMd = TestFixtureFactory.createMdBusiness2();
-    refTypeMd.setGenerateMdController(false);
     refTypeMd.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     refTypeMd.apply();
 

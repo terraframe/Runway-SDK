@@ -18,10 +18,6 @@
  */
 package com.runwaysdk.business;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.ObjectInputStream;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
@@ -30,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.After;
@@ -40,9 +35,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.SystemException;
-import com.runwaysdk.business.generation.CompilerException;
-import com.runwaysdk.business.generation.GenerationManager;
 import com.runwaysdk.business.generation.dto.ClassDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
 import com.runwaysdk.constants.ClientRequestIF;
@@ -50,7 +42,6 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
-import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -73,14 +64,12 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdSessionInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.TestConstants;
-import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.AttributeStructIF;
@@ -92,7 +81,6 @@ import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.TransientDAO;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -117,9 +105,6 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdPackage;
 import com.runwaysdk.dataaccess.metadata.MdSessionDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
-import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
-import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.GeneratedLoader;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
@@ -132,7 +117,6 @@ import com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
 import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
-import com.runwaysdk.util.FileIO;
 
 import sun.security.provider.Sun;
 
@@ -217,8 +201,6 @@ public abstract class SessionComponentGenTest
 
   private static String                    collectionDTO;
 
-  private static String                    collectionSubDTO;
-
   private static ClientSession             systemSession  = null;
 
   private static ClientRequestIF           _clientReaqest = null;
@@ -233,7 +215,6 @@ public abstract class SessionComponentGenTest
     suitMaster.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration Master List");
     suitMaster.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     suitMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
-    suitMaster.setGenerateMdController(false);
     suitMaster.apply();
 
     suitEnum = MdEnumerationDAO.newInstance();
@@ -248,7 +229,6 @@ public abstract class SessionComponentGenTest
     struct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Standalone Class");
     struct.setValue(MdStructInfo.PACKAGE, pack);
     struct.setValue(MdStructInfo.NAME, "Standalone");
-    struct.setGenerateMdController(false);
     struct.apply();
 
     MdAttributeEnumerationDAO structEnumeration = MdAttributeEnumerationDAO.newInstance();
@@ -322,7 +302,6 @@ public abstract class SessionComponentGenTest
     reference.setValue(MdBusinessInfo.PACKAGE, pack);
     reference.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     reference.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Class");
-    reference.setGenerateMdController(false);
     reference.apply();
 
     MdAttributeIntegerDAO referenceInt = MdAttributeIntegerDAO.newInstance();
@@ -552,7 +531,6 @@ public abstract class SessionComponentGenTest
     collectionClob.apply();
 
     collectionDTO = collection.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    collectionSubDTO = collectionSub.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
   }
 
   @Request

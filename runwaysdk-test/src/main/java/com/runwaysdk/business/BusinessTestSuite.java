@@ -47,10 +47,6 @@ import com.runwaysdk.format.LocalizedFormatTest;
   CustomFormatTest.class,
   RunwayVersionTest.class,
   NoSourceGenTest.class
-  
-//ControllerGenTest.class,
-//JSPRollbackTest.class,
-  
 })
 public class BusinessTestSuite
 {

@@ -31,7 +31,6 @@ import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.JavaArtifactMdEntityCommand;
 import com.runwaysdk.business.generation.JavaArtifactMdTypeCommand;
 import com.runwaysdk.business.generation.TypeGenerator;
-import com.runwaysdk.configuration.LegacyPropertiesSupport;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
@@ -81,32 +80,11 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   private static final int  FULL_LIMIT       = 200;
 
   /**
-   * Flag denoting if this MdEntity should generate a controller
-   */
-  private boolean           generateMdController;
-
-  /**
-   * Flag denoting if this MdEntity has generated a controller
-   */
-  private boolean           hasController;
-
-  /**
    * The default constructor, does not set any attributes
    */
   public MdEntityDAO()
   {
     super();
-
-    if (LegacyPropertiesSupport.isLegacy()) // If DDMS...
-    {
-      this.generateMdController = true;
-    }
-    else
-    {
-      this.generateMdController = false;
-    }
-    
-    this.hasController = false;
   }
 
   /**
@@ -115,24 +93,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   public MdEntityDAO(Map<String, Attribute> attributeMap, String classType)
   {
     super(attributeMap, classType);
-
-    if (LegacyPropertiesSupport.isLegacy()) // If DDMS...
-    {
-      this.generateMdController = true;
-    }
-    else
-    {
-      this.generateMdController = false;
-    }
-    
-    this.hasController = false;
   }
-
-  public void setGenerateMdController(boolean generateMdController)
-  {
-    this.generateMdController = generateMdController;
-  }
-
+  
   /**
    * Returns the name of the table used to store instances of the class that
    * this object defines.

@@ -265,7 +265,6 @@ public class QueryMasterSetup
     relMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A child in a relationship.");
     relMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     relMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    relMdBusiness.setGenerateMdController(false);
     relMdBusiness.apply();
 
     loadAttributePrimitives(relMdBusiness, REL_PREFIX);
@@ -277,7 +276,6 @@ public class QueryMasterSetup
     mdStruct.setValue(MdStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Basic Query Class");
     mdStruct.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A struct to query.");
-    mdStruct.setGenerateMdController(false);
     mdStruct.apply();
 
     loadAttributePrimitives(mdStruct, BASIC_PREFIX);
@@ -294,7 +292,6 @@ public class QueryMasterSetup
     stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
-    stateEnumMdBusiness.setGenerateMdController(false);
     stateEnumMdBusiness.apply();
 
     loadAttributePrimitives(stateEnumMdBusiness, ENUM_PREFIX);
@@ -447,7 +444,6 @@ public class QueryMasterSetup
     parentRefMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary ref type to perform queries on.");
     parentRefMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     parentRefMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    parentRefMdBusiness.setGenerateMdController(false);
     parentRefMdBusiness.apply();
 
     // child ref query object
@@ -460,7 +456,6 @@ public class QueryMasterSetup
     childRefMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     childRefMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     childRefMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, parentRefMdBusiness.getId());
-    childRefMdBusiness.setGenerateMdController(false);
     childRefMdBusiness.apply();
 
     MdBusinessDAOIF selectedRefMdBusiness = MdBusinessDAO.getMdBusinessDAO(testRefQueryType);
@@ -487,7 +482,6 @@ public class QueryMasterSetup
     parentMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary type to perform queries on.");
     parentMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     parentMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    parentMdBusiness.setGenerateMdController(false);
     parentMdBusiness.apply();
 
     // child query object
@@ -500,11 +494,9 @@ public class QueryMasterSetup
     childMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     childMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     childMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, parentMdBusiness.getId());
-    childMdBusiness.setGenerateMdController(false);
     childMdBusiness.apply();
 
     mdTerm = TestFixtureFactory.createMdTerm(termQueryInfo.getPackageName(), termQueryInfo.getTypeName());
-    mdTerm.setGenerateMdController(false);
     mdTerm.apply();
 
     TestFixtureFactory.addCharacterAttribute(mdTerm, "termName").apply();
@@ -581,7 +573,6 @@ public class QueryMasterSetup
     compareMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A compare entity.");
     compareMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     compareMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    compareMdBusiness.setGenerateMdController(false);
     compareMdBusiness.apply();
 
     loadAttributePrimitives(compareMdBusiness, COMPARE_PREFIX);
@@ -604,7 +595,6 @@ public class QueryMasterSetup
     connectionMdRel.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, relMdBusiness.definesType());
     connectionMdRel.setValue(MdRelationshipInfo.PARENT_METHOD, "QueryParent3");
     connectionMdRel.setValue(MdRelationshipInfo.CHILD_METHOD, "QueryChild3");
-    connectionMdRel.setGenerateMdController(false);
     connectionMdRel.apply();
 
     mdAttrEnum = MdAttributeEnumerationDAO.newInstance();
@@ -639,7 +629,6 @@ public class QueryMasterSetup
     badConnectionMdRel.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, relMdBusiness.definesType());
     badConnectionMdRel.setValue(MdRelationshipInfo.PARENT_METHOD, "BadQueryParent3");
     badConnectionMdRel.setValue(MdRelationshipInfo.CHILD_METHOD, "BadQueryChild3");
-    badConnectionMdRel.setGenerateMdController(false);
     badConnectionMdRel.apply();
 
     // /////////////////////////////

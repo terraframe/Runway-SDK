@@ -716,7 +716,6 @@ public class AggregateFunctionMasterSetup
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class used to test query functions");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.apply();
 
     QueryMasterSetup.loadAttributePrimitives(mdBusiness, FUNC_PREFIX);
@@ -729,7 +728,6 @@ public class AggregateFunctionMasterSetup
     comMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class used to test query functions");
     comMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     comMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    comMdBusiness.setGenerateMdController(false);
     comMdBusiness.apply();
 
     QueryMasterSetup.loadAttributePrimitives(comMdBusiness, COM_FUNC_PREFIX);
@@ -742,7 +740,6 @@ public class AggregateFunctionMasterSetup
     countMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class used to test query functions");
     countMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     countMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    countMdBusiness.setGenerateMdController(false);
     countMdBusiness.apply();
 
     QueryMasterSetup.loadAttributePrimitives(countMdBusiness, COUNT_FUNC_PREFIX);
@@ -755,7 +752,6 @@ public class AggregateFunctionMasterSetup
     sumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class used to test query functions");
     sumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     sumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    sumMdBusiness.setGenerateMdController(false);
     sumMdBusiness.apply();
 
     QueryMasterSetup.loadAttributePrimitives(sumMdBusiness, SUM_FUNC_PREFIX);

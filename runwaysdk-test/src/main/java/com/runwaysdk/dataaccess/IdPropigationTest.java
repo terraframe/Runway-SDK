@@ -85,7 +85,6 @@ public class IdPropigationTest
   {
     MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
     mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    mdBusinessEnum.setGenerateMdController(false);
     mdBusinessEnum.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessEnum.apply();
 
@@ -104,7 +103,6 @@ public class IdPropigationTest
     mdEnumeration.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -148,7 +146,6 @@ public class IdPropigationTest
   {
     MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
     mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    mdBusinessEnum.setGenerateMdController(false);
     mdBusinessEnum.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessEnum.apply();
 
@@ -173,7 +170,6 @@ public class IdPropigationTest
     mdEnumeration.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -226,7 +222,6 @@ public class IdPropigationTest
   {
     MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
     mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    mdBusinessEnum.setGenerateMdController(false);
     mdBusinessEnum.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessEnum.apply();
 
@@ -245,7 +240,6 @@ public class IdPropigationTest
     mdEnumeration.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -281,7 +275,6 @@ public class IdPropigationTest
 
       MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
       mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-      mdBusinessEnum.setGenerateMdController(false);
       mdBusinessEnum.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusinessEnum.apply();
 
@@ -300,7 +293,6 @@ public class IdPropigationTest
       mdEnumeration.apply();
 
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -339,7 +331,6 @@ public class IdPropigationTest
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness2();
     referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    referenceMdBusiness.setGenerateMdController(false);
     referenceMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     referenceMdBusiness.apply();
 
@@ -352,7 +343,6 @@ public class IdPropigationTest
     item.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -387,7 +377,6 @@ public class IdPropigationTest
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness2();
     referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    referenceMdBusiness.setGenerateMdController(false);
     referenceMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     referenceMdBusiness.apply();
 
@@ -400,7 +389,6 @@ public class IdPropigationTest
     colorado.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -435,7 +423,6 @@ public class IdPropigationTest
 
       MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness2();
       referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-      referenceMdBusiness.setGenerateMdController(false);
       referenceMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       referenceMdBusiness.apply();
 
@@ -448,7 +435,6 @@ public class IdPropigationTest
       colorado.apply();
 
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -492,7 +478,6 @@ public class IdPropigationTest
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness2();
     referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    referenceMdBusiness.setGenerateMdController(false);
     referenceMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     referenceMdBusiness.apply();
 
@@ -510,7 +495,6 @@ public class IdPropigationTest
     item2.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -548,14 +532,12 @@ public class IdPropigationTest
   private void mergeInTransactionIgnoreDatabaseExceptions()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdTreeDAO mdTree = TestFixtureFactory.createMdTree(mdBusiness, mdBusiness);
     mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
     mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 

@@ -793,8 +793,6 @@ public interface XMLTags
    */
   public static final String[] TYPE_TAGS                        = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG, XMLTags.MD_GRAPH_TAG, XMLTags.MD_RELATIONSHIP_TAG, XMLTags.MD_TREE_TAG, XMLTags.MD_TERM_RELATIONSHIP_TAG, XMLTags.MD_VIEW_TAG, XMLTags.MD_UTIL_TAG, XMLTags.MD_ENUMERATION_TAG };
 
-  public static final String   GENERATE_CONTROLLER              = "generateController";
-
   public static final String   ENTITY_TABLE                     = "table";
 
   public static final String   ENUMERATION_TABLE                = "table";

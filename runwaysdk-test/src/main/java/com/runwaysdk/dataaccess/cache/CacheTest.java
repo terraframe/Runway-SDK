@@ -117,7 +117,6 @@ public class CacheTest
     parentMD.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     parentMD.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     parentMD.setValue(MdBusinessInfo.CACHE_SIZE, "50");
-    parentMD.setGenerateMdController(false);
     parentMD.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     parentMD.apply();
 
@@ -134,7 +133,6 @@ public class CacheTest
     childMD.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     childMD.setValue(MdBusinessInfo.CACHE_SIZE, "50");
     childMD.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, parentMD.getId());
-    childMD.setGenerateMdController(false);
     childMD.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     childMD.apply();
 
@@ -366,7 +364,6 @@ public class CacheTest
     hardMD.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     hardMD.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     hardMD.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getId());
-    hardMD.setGenerateMdController(false);
     hardMD.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     // Test Everything extends Hardcoded
@@ -910,7 +907,6 @@ public class CacheTest
       accurDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       accurDO.setValue(MdBusinessInfo.CACHE_SIZE, size);
       accurDO.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
-      accurDO.setGenerateMdController(false);
       accurDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       accurDO.apply();
 
@@ -971,7 +967,6 @@ public class CacheTest
     statusMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Auction Status");
     statusMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     statusMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationAttributeMdBusinessIF.getId());
-    statusMdBusiness.setGenerateMdController(false);
     statusMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     status.setId(statusMdBusiness.apply());
 
@@ -1105,7 +1100,6 @@ public class CacheTest
       accurDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       accurDO.setValue(MdBusinessInfo.CACHE_SIZE, size);
       accurDO.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
-      accurDO.setGenerateMdController(false);
       accurDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       accurDO.apply();
 

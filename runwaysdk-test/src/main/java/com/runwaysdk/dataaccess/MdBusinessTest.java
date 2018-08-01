@@ -91,7 +91,6 @@ public class MdBusinessTest
     newParentMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     newParentMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     newParentMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    newParentMdBusiness.setGenerateMdController(false);
     newParentMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     newParentMdBusiness.apply();
 
@@ -117,7 +116,6 @@ public class MdBusinessTest
     newMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     newMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
     newMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, newParentMdBusiness.getId());
-    newMdBusiness.setGenerateMdController(false);
     newMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     newMdBusiness.apply();
   }
@@ -325,7 +323,6 @@ public class MdBusinessTest
     template.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Description");
     template.setValue(MdBusinessInfo.CACHE_SIZE, "0");
     template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    template.setGenerateMdController(false);
     template.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     template.apply();
     template.delete();
@@ -342,7 +339,6 @@ public class MdBusinessTest
     template.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Description");
     template.setValue(MdBusinessInfo.CACHE_SIZE, "0");
     template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    template.setGenerateMdController(false);
     template.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     template.apply();
     template.delete();
@@ -359,7 +355,6 @@ public class MdBusinessTest
     template.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Description");
     template.setValue(MdBusinessInfo.CACHE_SIZE, "0");
     template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    template.setGenerateMdController(false);
     template.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -612,7 +607,6 @@ public class MdBusinessTest
     mdBusinessTarget.setValue(MdBusinessInfo.PACKAGE, deleteMeClass.getPackageName());
     mdBusinessTarget.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary Testing Class");
     mdBusinessTarget.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdBusinessTarget.setGenerateMdController(false);
     mdBusinessTarget.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessTarget.apply();
 
@@ -690,7 +684,6 @@ public class MdBusinessTest
       newClassWithSameName.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       newClassWithSameName.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-      newClassWithSameName.setGenerateMdController(false);
       newClassWithSameName.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.apply();
 
@@ -731,7 +724,6 @@ public class MdBusinessTest
       newClassWithSameName.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       newClassWithSameName.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-      newClassWithSameName.setGenerateMdController(false);
       newClassWithSameName.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.apply();
 
@@ -775,7 +767,6 @@ public class MdBusinessTest
       newClassWithSameName.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdRelationshipIFmetadata.getId());
       newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-      newClassWithSameName.setGenerateMdController(false);
       newClassWithSameName.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.apply();
 
@@ -818,7 +809,6 @@ public class MdBusinessTest
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.CACHE_SIZE, "0");
       mdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 

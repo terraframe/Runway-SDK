@@ -65,7 +65,6 @@ public class TransientAttributeMultiReferenceTest extends AbstractTransientAttri
   public static void classSetUp()
   {
     mdTerm = TestFixtureFactory.createMdTerm();
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 

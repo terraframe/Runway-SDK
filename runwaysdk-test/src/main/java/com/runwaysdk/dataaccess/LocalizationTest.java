@@ -96,14 +96,12 @@ public class LocalizationTest
     phrases.setValue(MdElementInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     phrases.setStructValue(MdTypeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Localizable Phrases");
     phrases.setStructValue(MdTypeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A collection of localized phrases");
-    phrases.setGenerateMdController(false);
     phrases.apply();
 
     struct = MdLocalStructDAO.newInstance();
     struct.setValue(MdTypeInfo.NAME, "PhrasesStruct");
     struct.setValue(MdTypeInfo.PACKAGE, pack);
     struct.setStructValue(MdTypeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Struct to hold Localized Phrases");
-    struct.setGenerateMdController(false);
     struct.apply();
 
     lang = MdAttributeLocalCharacterDAO.newInstance();

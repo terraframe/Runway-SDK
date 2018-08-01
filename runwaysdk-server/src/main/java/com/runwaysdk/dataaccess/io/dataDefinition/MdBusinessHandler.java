@@ -188,12 +188,6 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
     {
       mdBusinessDAO.setTableName(tableName);
     }
-
-    String generateController = attributes.getValue(XMLTags.GENERATE_CONTROLLER);
-    if (generateController != null)
-    {
-      mdBusinessDAO.setGenerateMdController(new Boolean(generateController));
-    }
   }
 
   /*

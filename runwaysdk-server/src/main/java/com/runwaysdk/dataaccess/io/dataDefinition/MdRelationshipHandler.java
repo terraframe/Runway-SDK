@@ -302,13 +302,6 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
       mdRelationshipDAO.setTableName(tableName);
     }
 
-    String generateController = attributes.getValue(XMLTags.GENERATE_CONTROLLER);
-
-    if (generateController != null)
-    {
-      mdRelationshipDAO.setGenerateMdController(new Boolean(generateController));
-    }
-
     // If this is a MdTermRelationship then import the assocation type attribute
     if (mdRelationshipDAO instanceof MdTermRelationshipDAO)
     {
