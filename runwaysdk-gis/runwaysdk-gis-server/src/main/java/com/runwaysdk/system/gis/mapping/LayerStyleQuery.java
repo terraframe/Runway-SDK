@@ -127,13 +127,13 @@ public  class LayerStyleQuery extends com.runwaysdk.query.GeneratedBusinessQuery
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.mapping.LayerStyle.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.mapping.LayerStyle.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.mapping.LayerStyle.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.mapping.LayerStyle.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -543,13 +543,13 @@ public  class LayerStyleQuery extends com.runwaysdk.query.GeneratedBusinessQuery
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.mapping.LayerStyle.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.mapping.LayerStyle.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.mapping.LayerStyle.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.mapping.LayerStyle.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

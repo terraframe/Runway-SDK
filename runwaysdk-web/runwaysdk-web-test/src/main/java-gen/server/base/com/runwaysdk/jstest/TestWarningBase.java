@@ -29,7 +29,7 @@ package com.runwaysdk.jstest;
 public abstract class TestWarningBase extends com.runwaysdk.business.Warning implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestWarning";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String WARNINGCHAR = "warningChar";
   public static java.lang.String WARNINGINT = "warningInt";
   private static final long serialVersionUID = 220977573;
@@ -41,18 +41,18 @@ public abstract class TestWarningBase extends com.runwaysdk.business.Warning imp
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestWarning.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getWarningChar()

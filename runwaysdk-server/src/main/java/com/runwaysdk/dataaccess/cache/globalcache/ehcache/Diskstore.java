@@ -819,7 +819,7 @@ public class Diskstore implements ObjectStore
       if (entry != null)
       {
         // Create a blank placeholder object and mark it for delete. This way we know the object
-        // at the index of the old ID is not supposed to be there and is only there now because
+        // at the index of the old OID is not supposed to be there and is only there now because
         // the cache has not yet been flushed.
         CachedEntityDAOinfo placeholderCachedEntityDAOinfo = infoType.createInfo();
         placeholderCachedEntityDAOinfo.setMarkedForDelete();

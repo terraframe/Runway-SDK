@@ -362,14 +362,14 @@ public class XMLImporter
     for (int i = 0; i < objects.getLength(); i++)
     {
       Element object = (Element) objects.item(i);
-      insert(getValueFromChildTag(object, EntityInfo.ID), getValueFromChildTag(object, EntityInfo.TYPE), (Element) object.getElementsByTagName("attributes").item(0), null, null);
+      insert(getValueFromChildTag(object, EntityInfo.OID), getValueFromChildTag(object, EntityInfo.TYPE), (Element) object.getElementsByTagName("attributes").item(0), null, null);
     }
 
     NodeList structs = root.getElementsByTagName("struct");
     for (int i = 0; i < structs.getLength(); i++)
     {
       Element object = (Element) structs.item(i);
-      insert(getValueFromChildTag(object, EntityInfo.ID), getValueFromChildTag(object, EntityInfo.TYPE), (Element) object.getElementsByTagName("attributes").item(0), null, null);
+      insert(getValueFromChildTag(object, EntityInfo.OID), getValueFromChildTag(object, EntityInfo.TYPE), (Element) object.getElementsByTagName("attributes").item(0), null, null);
     }
   }
 
@@ -549,7 +549,7 @@ public class XMLImporter
     for (int i = 0; i < attributes.getLength(); i++)
     {
       Element attribute = (Element) attributes.item(i);
-      if (getValueFromChildTag(attribute, "name").equalsIgnoreCase(MdTypeInfo.ID))
+      if (getValueFromChildTag(attribute, "name").equalsIgnoreCase(MdTypeInfo.OID))
       {
         oid = getValueFromChildTag(attribute, "value");
       }
@@ -641,8 +641,8 @@ public class XMLImporter
     String type = getValueFromChildTag(mdAttribute, EntityInfo.TYPE);
     String name = getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.NAME);
     String columnName = getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.COLUMN_NAME);
-    // ID is automatically added to all tables. Don't add it here.
-    if (name.equalsIgnoreCase(EntityInfo.ID))
+    // OID is automatically added to all tables. Don't add it here.
+    if (name.equalsIgnoreCase(EntityInfo.OID))
     {
       return;
     }
@@ -744,7 +744,7 @@ public class XMLImporter
     List<List<Object>> valueList = new ArrayList<List<Object>>(inheritanceList.size());
     List<List<String>> attributeTypeList = new ArrayList<List<String>>(inheritanceList.size());
 
-    // Add the ID attribute to all tables in the inherited hierarchy
+    // Add the OID attribute to all tables in the inherited hierarchy
     for (int i = 0; i < inheritanceList.size(); i++)
     {
       List<String> fields = new LinkedList<String>();
@@ -781,8 +781,8 @@ public class XMLImporter
           value = CommonProperties.getDomain();
         }
 
-        // ID is automatically added to all lists in the inheritance hierarchy
-        if (name.equalsIgnoreCase(EntityInfo.ID))
+        // OID is automatically added to all lists in the inheritance hierarchy
+        if (name.equalsIgnoreCase(EntityInfo.OID))
         {
           continue;
         }
@@ -907,7 +907,7 @@ public class XMLImporter
       List<String> attributeTypes = new LinkedList<String>();
 
       fields.add(EntityDAOIF.ID_COLUMN);
-      oid = getValueFromChildTag(mdAttribute, EntityInfo.ID);
+      oid = getValueFromChildTag(mdAttribute, EntityInfo.OID);
       validateId(oid);
       prepSmtVars.add("?");
       values.add(oid);
@@ -923,7 +923,7 @@ public class XMLImporter
     for (int i = 0; i < attributes.getLength(); i++)
     {
       Node next = attributes.item(i);
-      if (! ( next instanceof Element ) || next.getNodeName().equalsIgnoreCase(EntityInfo.ID))
+      if (! ( next instanceof Element ) || next.getNodeName().equalsIgnoreCase(EntityInfo.OID))
       {
         continue;
       }

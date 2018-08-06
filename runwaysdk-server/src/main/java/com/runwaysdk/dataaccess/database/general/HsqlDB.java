@@ -200,7 +200,7 @@ public class HsqlDB extends AbstractDatabase
   }
   
   /**
-   * Creates a new table in the database. Automatically adds the Component.ID field as the primary
+   * Creates a new table in the database. Automatically adds the Component.OID field as the primary
    * key.
    *
    * @param tableName The name of the new table.
@@ -216,7 +216,7 @@ public class HsqlDB extends AbstractDatabase
 
   /**
    * Returns the SQL string for a new table in the database for a class, minus the closing parenthesis.
-   * Automatically adds the Component.ID field as the primary key.
+   * Automatically adds the Component.OID field as the primary key.
    *
    * @param tableName The name of the new table.
    */
@@ -293,7 +293,7 @@ public class HsqlDB extends AbstractDatabase
   }
 
   /**
-   * Creates a new table in the database for a relationships. Automatically adds the Component.ID field as the primary
+   * Creates a new table in the database for a relationships. Automatically adds the Component.OID field as the primary
    * key.
    *
    * @param tableName The name of the new table.
@@ -336,7 +336,7 @@ public class HsqlDB extends AbstractDatabase
 
   /**
    * Returns the SQL string for a new table in the database for a relationship, minus the closing parenthesis.
-   * Automatically adds the Component.ID field as the primary key.
+   * Automatically adds the Component.OID field as the primary key.
    *
    * @param tableName  The name of the new table.
    */
@@ -399,7 +399,7 @@ public class HsqlDB extends AbstractDatabase
   /**
    * Drops an entire table from the database for a class. An undo command is created that will
    * recreate the table if transaction management requires a rollback. However, the undo
-   * will <b>not </b> recreate all of the fields in the table, only the ID.
+   * will <b>not </b> recreate all of the fields in the table, only the OID.
    *
    * @param table The name of the table to drop.
    */
@@ -415,7 +415,7 @@ public class HsqlDB extends AbstractDatabase
   /**
    * Drops an entire table from the database for a relationship. An undo command is created that will
    * recreate the table if transaction managaement requires a rollback. However, the undo
-   * will <b>not </b> recreate all of the fields in the table, only the ID.
+   * will <b>not </b> recreate all of the fields in the table, only the OID.
    *
    * @param table The name of the table to drop.
    * @param index1Name The name of the 1st index used by the given table.

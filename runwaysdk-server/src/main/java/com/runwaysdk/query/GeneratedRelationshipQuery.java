@@ -142,8 +142,8 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
     MdBusinessDAOIF parentMdBusinessDAOIF = mdRelationshipDAOIF.getParentMdBusiness();
     
     // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_ID has no medadata that defines it.
-    // So, I just gave it the one for the ID field, and then hardcoded the name of the attribute to PARENT_ID.
-    MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF)this.getComponentQuery().getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.ID);
+    // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to PARENT_ID.
+    MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF)this.getComponentQuery().getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
     MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = mdAttributeCharacterDAOIF.convertToReference(parentMdBusinessDAOIF);
     
     AttributeReference attributeReference = (AttributeReference) 
@@ -225,8 +225,8 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
     MdBusinessDAOIF parentMdBusinessDAOIF = mdRelationshipDAOIF.getParentMdBusiness();
     
     // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_ID has no metadata that defines it.
-    // So, I just gave it the one for the ID field, and then hardcoded the name of the attribute to PARENT_ID.
-    MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF)this.getComponentQuery().getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.ID);
+    // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to PARENT_ID.
+    MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF)this.getComponentQuery().getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
     MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = mdAttributeCharacterDAOIF.convertToReference(parentMdBusinessDAOIF);
     
     AttributeReference attributeReference = (AttributeReference) 

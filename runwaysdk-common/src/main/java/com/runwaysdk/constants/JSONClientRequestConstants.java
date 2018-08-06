@@ -41,7 +41,7 @@ public enum JSONClientRequestConstants {
   /**
    * Generic oid parameter.
    */
-  ID("oid"),
+  OID("oid"),
   
   /**
    * Type parameter.

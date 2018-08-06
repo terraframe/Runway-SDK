@@ -58,12 +58,12 @@ public class CacheNoneRelationshipDAOStrategy extends CacheNoneStrategy implemen
    * <br/><b>Precondition:</b>  relationshipType != null
    * <br/><b>Precondition:</b>  !relationshipType.trim().equals("")
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
-   *         that are children of the BusinessDAO with given BusinessDAO ID
+   *         that are children of the BusinessDAO with given BusinessDAO OID
    *
-   * @param relationshipId  ID of the BusinessDAO from which you want to retrieve the
+   * @param relationshipId  OID of the BusinessDAO from which you want to retrieve the
    *                     children relationships
    * @return Array of Relationship objects of the given
-   *         that are children of the BusinessDAO with given BusinessDAO ID
+   *         that are children of the BusinessDAO with given BusinessDAO OID
    */
   public List<RelationshipDAOIF> getChildrenFromCache(String relationshipId, String relationshipType)
   {
@@ -81,7 +81,7 @@ public class CacheNoneRelationshipDAOStrategy extends CacheNoneStrategy implemen
    * <br/><b>Precondition:</b>  relationshipType != null
    * <br/><b>Precondition:</b>  !relationshipType.trim().equals("")
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
-   *         that are children of the BusinessDAO with given BusinessDAO ID
+   *         that are children of the BusinessDAO with given BusinessDAO OID
    *
    * @param businessDAOid  oid of the BusinessDAO from which you want to retrieve the
    *                     children relationships
@@ -95,7 +95,7 @@ public class CacheNoneRelationshipDAOStrategy extends CacheNoneStrategy implemen
 
   /**
    *Returns an array of Relationship objects of the given type
-   * that are parents of the BusinessDAO with given BusinessDAO ID. Relationships
+   * that are parents of the BusinessDAO with given BusinessDAO OID. Relationships
    * are retrieved from the database.
    *
    * <br/><b>Precondition:</b>  businessDAOid != null
@@ -103,12 +103,12 @@ public class CacheNoneRelationshipDAOStrategy extends CacheNoneStrategy implemen
    * <br/><b>Precondition:</b>  relationshipType != null
    * <br/><b>Precondition:</b>  !relationshipType.trim().equals("")
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
-   *         that are parents of the BusinessDAO with given BusinessDAO ID
+   *         that are parents of the BusinessDAO with given BusinessDAO OID
    *
-   * @param businessDAOid  ID of the BusinessDAO from which you want to retrieve the
+   * @param businessDAOid  OID of the BusinessDAO from which you want to retrieve the
    *                     parents relationships
    * @return Array of Relationship objects of the given type
-   *         that are parents of the BusinessDAO with given BusinessDAO ID
+   *         that are parents of the BusinessDAO with given BusinessDAO OID
    */
   public List<RelationshipDAOIF> getParents(String businessDAOid, String relationshipType)
   {
@@ -118,7 +118,7 @@ public class CacheNoneRelationshipDAOStrategy extends CacheNoneStrategy implemen
 
   /**
    *Returns an array of Relationship objects of the given type
-   * that are parents of the BusinessDAO with given BusinessDAO ID. Relationships
+   * that are parents of the BusinessDAO with given BusinessDAO OID. Relationships
    * are retrieved from the database.
    *
    * <br/><b>Precondition:</b>  businessDAOid != null
@@ -126,13 +126,13 @@ public class CacheNoneRelationshipDAOStrategy extends CacheNoneStrategy implemen
    * <br/><b>Precondition:</b>  relationshipType != null
    * <br/><b>Precondition:</b>  !relationshipType.trim().equals("")
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
-   *         that are parents of the BusinessDAO with given BusinessDAO ID
+   *         that are parents of the BusinessDAO with given BusinessDAO OID
    *
-   * @param businessDAOid  ID of the BusinessDAO from which you want to retrieve the
+   * @param businessDAOid  OID of the BusinessDAO from which you want to retrieve the
    *                     parents relationships
    * @param relationshipType type of the relationship
    * @return Array of Relationship objects of the given type
-   *         that are parents of the BusinessDAO with given BusinessDAO ID
+   *         that are parents of the BusinessDAO with given BusinessDAO OID
    */
   public List<RelationshipDAOIF> getParentsFromCache(String businessDAOid, String relationshipType)
   {

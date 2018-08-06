@@ -31,7 +31,7 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
   public final static String CLASS = "com.runwaysdk.system.Transaction";
   public static java.lang.String ACTION = "action";
   public static java.lang.String DATAOBJECTID = "dataObjectID";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TRANSACTIONID = "transactionID";
@@ -115,18 +115,18 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Transaction.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()

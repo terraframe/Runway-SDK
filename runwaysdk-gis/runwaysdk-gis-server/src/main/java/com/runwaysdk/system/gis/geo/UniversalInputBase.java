@@ -31,7 +31,7 @@ public abstract class UniversalInputBase extends com.runwaysdk.business.View
   public final static String CLASS = "com.runwaysdk.system.gis.geo.UniversalInput";
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String MOVEOPERATION = "moveOperation";
   public static java.lang.String PARENTUNIVERSAL = "parentUniversal";
   public static java.lang.String UNIVERSAL = "universal";
@@ -100,18 +100,18 @@ public abstract class UniversalInputBase extends com.runwaysdk.business.View
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.UniversalInput.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public Boolean getMoveOperation()

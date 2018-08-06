@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1876137366)
+@com.runwaysdk.business.ClassSignature(hash = -493186115)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -10,7 +10,7 @@ package com.runwaysdk.system.metadata;
  */
 public class MdFieldDisplayLabelQueryDTO extends com.runwaysdk.business.StructQueryDTO
 {
-private static final long serialVersionUID = -1876137366;
+private static final long serialVersionUID = -493186115;
 
   protected MdFieldDisplayLabelQueryDTO(String type)
   {

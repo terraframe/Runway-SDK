@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis.geo;
 public abstract class DuplicateEarthExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.DuplicateEarthException";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String ROOTNAME = "rootName";
   private static final long serialVersionUID = 657736612;
   
@@ -55,18 +55,18 @@ public abstract class DuplicateEarthExceptionBase extends com.runwaysdk.business
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.DuplicateEarthException.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getRootName()

@@ -46,7 +46,7 @@ public abstract class EntityDTOToBasicJSON extends MutableDTOToBasicJSON
 
     if (this.getComponentDTO().isNewInstance())
     {
-      this.getJSON().remove(ComponentInfo.ID);
+      this.getJSON().remove(ComponentInfo.OID);
     }
   }
 

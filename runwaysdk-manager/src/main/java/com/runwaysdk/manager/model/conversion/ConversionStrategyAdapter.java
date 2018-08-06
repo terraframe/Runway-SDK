@@ -82,7 +82,7 @@ public class ConversionStrategyAdapter implements IConversionStrategy
 
     for (Attribute attribute : attributes)
     {
-      if (!attribute.getName().equals(EntityInfo.ID))
+      if (!attribute.getName().equals(EntityInfo.OID))
       {
         if (attribute instanceof AttributeStruct)
         {

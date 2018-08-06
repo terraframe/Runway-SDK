@@ -69,7 +69,7 @@ public abstract class ConfigurationExceptionDTOBase extends com.runwaysdk.busine
     return CLASS;
   }
   
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   /**
    * Overrides java.lang.Throwable#getMessage() to retrieve the localized
    * message from the exceptionDTO, instead of from a class variable.

@@ -204,7 +204,7 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
 
   private void buildPrimaryKeyErrorMessage()
   {
-    MdAttributeDAOIF mdAttributeDAOIF = this.mdEntityIF.getMdAttributeDAO(ComponentInfo.ID);
+    MdAttributeDAOIF mdAttributeDAOIF = this.mdEntityIF.getMdAttributeDAO(ComponentInfo.OID);
     
     this.attributeNames += "["+mdAttributeDAOIF.definesAttribute()+"]";
     this.attributeDisplayLabels += "["+mdAttributeDAOIF.getDisplayLabel(this.getLocale())+"]";

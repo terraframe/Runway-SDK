@@ -87,7 +87,7 @@ public class MdAttributeDimensionDAOStrategy extends CacheAllBusinessDAOstrategy
     {
       while (resultSet.next())
       {
-        String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.ID);
+        String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.OID);
         String stringBooleanValue = resultSet.getString(MdAttributeDimensionInfo.REQUIRED);
         String defaultValue = resultSet.getString(MdAttributeDimensionDAOIF.DEFAULT_VALUE);
         boolean isRequired = MdAttributeBooleanUtil.getBooleanValue(stringBooleanValue);

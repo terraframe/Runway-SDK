@@ -123,7 +123,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
   {
     if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG))
     {
-      // Find the database ID of the default EnumerationMaster
+      // Find the database OID of the default EnumerationMaster
       mdBusinessDAO.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
       mdBusinessDAO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     }

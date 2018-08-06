@@ -628,7 +628,7 @@ public class RelationshipGenTest
     {
       String oid = relationship.getOid();
       if (!oid.equals(oracle) && !oid.equals(oracle2) && !oid.equals(oracle3))
-        Assert.fail("ID in list of Relationships is not one of the expected ids");
+        Assert.fail("OID in list of Relationships is not one of the expected ids");
     }
   }
 
@@ -685,7 +685,7 @@ public class RelationshipGenTest
     {
       String oid = relationship.getOid();
       if (!oid.equals(oracle) && !oid.equals(oracle2) && !oid.equals(oracle3))
-        Assert.fail("ID in list of Relationships is not one of the expected ids");
+        Assert.fail("OID in list of Relationships is not one of the expected ids");
     }
   }
 
@@ -923,7 +923,7 @@ public class RelationshipGenTest
     {
       String oid = relationship.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of Relationships is not one of the expected ids");
+        Assert.fail("OID in list of Relationships is not one of the expected ids");
     }
   }
 
@@ -976,7 +976,7 @@ public class RelationshipGenTest
     {
       String oid = relationship.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of Relationships is not one of the expected ids");
+        Assert.fail("OID in list of Relationships is not one of the expected ids");
     }
   }
 
@@ -1034,7 +1034,7 @@ public class RelationshipGenTest
     {
       String oid = relationship.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of Relationships is not one of the expected ids");
+        Assert.fail("OID in list of Relationships is not one of the expected ids");
     }
   }
 
@@ -1084,7 +1084,7 @@ public class RelationshipGenTest
     {
       String oid = relationship.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of Relationships is not one of the expected ids");
+        Assert.fail("OID in list of Relationships is not one of the expected ids");
     }
   }
 
@@ -1140,7 +1140,7 @@ public class RelationshipGenTest
     {
       String oid = relationship.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of Relationships is not one of the expected ids");
+        Assert.fail("OID in list of Relationships is not one of the expected ids");
     }
   }
 
@@ -1192,7 +1192,7 @@ public class RelationshipGenTest
     {
       String oid = relationship.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of Relationships is not one of the expected ids");
+        Assert.fail("OID in list of Relationships is not one of the expected ids");
     }
   }
 
@@ -1248,7 +1248,7 @@ public class RelationshipGenTest
     {
       String oid = object.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of children is not one of the expected ids");
+        Assert.fail("OID in list of children is not one of the expected ids");
     }
   }
 
@@ -1300,7 +1300,7 @@ public class RelationshipGenTest
     {
       String oid = object.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of children is not one of the expected ids");
+        Assert.fail("OID in list of children is not one of the expected ids");
     }
   }
 
@@ -1354,7 +1354,7 @@ public class RelationshipGenTest
     {
       String oid = object.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of children is not one of the expected ids");
+        Assert.fail("OID in list of children is not one of the expected ids");
     }
   }
 
@@ -1407,7 +1407,7 @@ public class RelationshipGenTest
     {
       String oid = object.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of parents is not one of the expected ids");
+        Assert.fail("OID in list of parents is not one of the expected ids");
     }
   }
 
@@ -1458,7 +1458,7 @@ public class RelationshipGenTest
     {
       String oid = object.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of parents is not one of the expected ids");
+        Assert.fail("OID in list of parents is not one of the expected ids");
     }
   }
 
@@ -1511,7 +1511,7 @@ public class RelationshipGenTest
     {
       String oid = object.getOid();
       if (!oracle.remove(oid))
-        Assert.fail("ID in list of parents is not one of the expected ids");
+        Assert.fail("OID in list of parents is not one of the expected ids");
     }
   }
 

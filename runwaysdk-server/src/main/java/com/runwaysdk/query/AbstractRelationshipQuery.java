@@ -144,13 +144,13 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
     String definingTableName = this.getMdEntityIF().getTableName();
     String definingTableAlias = this.getTableAlias("", definingTableName);
 
-    // The parent ID field is defined by the
+    // The parent OID field is defined by the
     Set<Join> characterTableJoinSet = new HashSet<Join>();
 
     // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_ID has no medadata that defines it.
-    // So, I just gave it the one for the ID field, and then hardcoded the name of the attribute to PARENT_ID.
+    // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to PARENT_ID.
 
-    MdAttributeCharacterDAOIF mdAttributeIF = (MdAttributeCharacterDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.ID);
+    MdAttributeCharacterDAOIF mdAttributeIF = (MdAttributeCharacterDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
 
     AttributeCharacter attributeCharacter =
       new AttributeCharacter(mdAttributeIF, this.getMdEntityIF().definesType(), definingTableName, definingTableAlias, this, characterTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
@@ -184,13 +184,13 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
     String definingTableName = this.getMdEntityIF().getTableName();
     String definingTableAlias = this.getTableAlias("", definingTableName);
 
-    // The parent ID field is defined by the
+    // The parent OID field is defined by the
     Set<Join> characterTableJoinSet = new HashSet<Join>();
 
     // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  CHILD_ID has no metadata that defines it.
-    // So, I just gave it the one for the ID field, and then hardcoded the name of the attribute to CHILD_ID.
+    // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to CHILD_ID.
 
-    MdAttributeCharacterDAOIF mdAttributeIF = (MdAttributeCharacterDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.ID);
+    MdAttributeCharacterDAOIF mdAttributeIF = (MdAttributeCharacterDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
 
     AttributeCharacter attributeCharacter =
       new AttributeCharacter(mdAttributeIF, this.getMdEntityIF().definesType(), definingTableName, definingTableAlias, this, characterTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);

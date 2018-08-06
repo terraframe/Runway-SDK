@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -651370598)
+@com.runwaysdk.business.ClassSignature(hash = -1180121971)
 public abstract class MdLocalizableMessageDTOBase extends com.runwaysdk.business.LocalStructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdLocalizableMessage";
-  private static final long serialVersionUID = -651370598;
+  private static final long serialVersionUID = -1180121971;
   
   protected MdLocalizableMessageDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -28,8 +28,8 @@ public abstract class MdLocalizableMessageDTOBase extends com.runwaysdk.business
   }
   
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
   public String getKeyName()
   {

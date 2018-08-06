@@ -167,7 +167,7 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
   
   /**
    *Returns an array of Relationship objects of the given type
-   * that are parents of the BusinessDAO with given BusinessDAO ID. Relationships
+   * that are parents of the BusinessDAO with given BusinessDAO OID. Relationships
    * are retrieved from the cache.
    *
    * <br/><b>Precondition:</b>  businessDAOid != null
@@ -175,12 +175,12 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
    * <br/><b>Precondition:</b>  relationshipType != null
    * <br/><b>Precondition:</b>  !relationshipType.trim().equals("")
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
-   *         that are parents of the BusinessDAO with given BusinessDAO ID
+   *         that are parents of the BusinessDAO with given BusinessDAO OID
    *
-   * @param businessDAOid  ID of the BusinessDAO from which you want to retrieve the
+   * @param businessDAOid  OID of the BusinessDAO from which you want to retrieve the
    *                     parents relationships
    * @return array of Relationship objects of the given type
-   *         that are parents of the BusinessDAO with given BusinessDAO ID
+   *         that are parents of the BusinessDAO with given BusinessDAO OID
    */
   public List<RelationshipDAOIF> getParents(String businessDAOid, String relationshipType)
   {   
@@ -256,7 +256,7 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
     // Get a list of the ids for all EntityDAOs of this class or are child classes
     MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(this.entityType);
 
-    // Instantiate EntityDAOs for each ID in the list
+    // Instantiate EntityDAOs for each OID in the list
     RelationshipDAOFactory.getRelationshipTypeInstances(mdRelationshipIF, this);
 
     reload = false;

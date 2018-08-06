@@ -134,7 +134,7 @@ public class Relationship extends Element implements Serializable
    * type parameter.
    *
    * @param oid
-   *          ID of the instance to get
+   *          OID of the instance to get
    * @return Typesafe Relationship representing the oid in the database
    */
   public static Relationship get(String oid)
@@ -174,7 +174,7 @@ public class Relationship extends Element implements Serializable
    * Relationship.
    *
    * @param oid
-   *          ID of the instance to get.
+   *          OID of the instance to get.
    * @param type
    *          type of the instance to get.
    * @return Typesafe Relationship representing the oid in the database.

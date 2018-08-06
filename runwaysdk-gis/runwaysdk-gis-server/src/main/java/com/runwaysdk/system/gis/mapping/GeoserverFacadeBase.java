@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis.mapping;
 public abstract class GeoserverFacadeBase extends com.runwaysdk.business.Util
 {
   public final static String CLASS = "com.runwaysdk.system.gis.mapping.GeoserverFacade";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   private static final long serialVersionUID = -1489645697;
   
   public GeoserverFacadeBase()
@@ -39,18 +39,18 @@ public abstract class GeoserverFacadeBase extends com.runwaysdk.business.Util
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.mapping.GeoserverFacade.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   protected String getDeclaredType()

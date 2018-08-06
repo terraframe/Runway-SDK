@@ -27,7 +27,7 @@ public interface MdTypeInfo extends MetadataInfo
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdType";
 
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE  = "0000000000000000000000000000018000000000000000000000000000000001";  
   

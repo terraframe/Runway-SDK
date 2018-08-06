@@ -103,9 +103,9 @@ public abstract class MdAttributeGeometryDAO extends MdAttributeConcreteDAO impl
   
 
   /**
-   * Returns the projection ID used for this geometry attribute;
+   * Returns the projection OID used for this geometry attribute;
    * 
-   * @return projection ID used for this geometry attribute;
+   * @return projection OID used for this geometry attribute;
    */
   public int getSRID()
   {

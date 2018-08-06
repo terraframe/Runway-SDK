@@ -26,7 +26,7 @@ public interface MdTransientInfo extends MdClassInfo
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdTransient";
   
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE  = "20071129NM000000000000000000000100000000000000000000000000000001"; 
   

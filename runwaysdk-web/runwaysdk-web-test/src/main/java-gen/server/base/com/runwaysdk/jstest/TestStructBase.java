@@ -29,7 +29,7 @@ package com.runwaysdk.jstest;
 public abstract class TestStructBase extends com.runwaysdk.business.Struct implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestStruct";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String STRUCTCHAR = "structChar";
@@ -57,18 +57,18 @@ public abstract class TestStructBase extends com.runwaysdk.business.Struct imple
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestStruct.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()

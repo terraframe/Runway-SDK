@@ -46,7 +46,7 @@ public abstract class GeoEntityProblemTypeMasterDescriptionDTOBase extends com.r
   }
   
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public String getKeyName()

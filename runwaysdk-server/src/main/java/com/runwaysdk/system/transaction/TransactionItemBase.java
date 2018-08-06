@@ -35,7 +35,7 @@ public abstract class TransactionItemBase extends com.runwaysdk.business.Busines
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String IGNORESEQUENCENUMBER = "ignoreSequenceNumber";
   public static java.lang.String ITEMACTION = "itemAction";
   public static java.lang.String KEYNAME = "keyName";
@@ -189,18 +189,18 @@ public abstract class TransactionItemBase extends com.runwaysdk.business.Busines
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.transaction.TransactionItem.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public Boolean getIgnoreSequenceNumber()

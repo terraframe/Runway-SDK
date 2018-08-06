@@ -37,7 +37,7 @@ public abstract class GeoEntityViewDTOBase extends com.runwaysdk.business.ViewDT
   public static java.lang.String CANCREATECHILDREN = "canCreateChildren";
   public static java.lang.String GEOENTITYDISPLAYLABEL = "geoEntityDisplayLabel";
   public static java.lang.String GEOENTITYID = "geoEntityId";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String RELATIONSHIPID = "relationshipId";
   public static java.lang.String RELATIONSHIPTYPE = "relationshipType";
   public static java.lang.String UNIVERSALDISPLAYLABEL = "universalDisplayLabel";

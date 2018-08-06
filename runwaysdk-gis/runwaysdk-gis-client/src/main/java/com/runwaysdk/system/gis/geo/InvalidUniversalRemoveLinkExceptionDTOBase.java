@@ -71,7 +71,7 @@ public abstract class InvalidUniversalRemoveLinkExceptionDTOBase extends com.run
   
   public static java.lang.String CHILDUNI = "childUni";
   public static java.lang.String GEOENTITIES = "geoEntities";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String PARENTUNI = "parentUni";
   public String getChildUni()
   {

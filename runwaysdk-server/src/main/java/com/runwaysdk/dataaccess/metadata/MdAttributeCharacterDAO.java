@@ -215,7 +215,7 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   }
   
   /**
-   * Precondition: assumes this character attribute is an ID. The collection of
+   * Precondition: assumes this character attribute is an OID. The collection of
    * <code>AttributeDAO</code> objects do not have their containing reference updated to
    * the returned <code>MdAttributeReferenceDAO</code> 
    */
@@ -234,7 +234,7 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
    * This is used by the query API to allow for parent ids and child ids of relationships to
    * be used in queries.
    * 
-   * Precondition: assumes this character attribute is an ID. The collection of
+   * Precondition: assumes this character attribute is an OID. The collection of
    * <code>AttributeDAO</code> objects do not have their containing reference updated to
    * the returned <code>MdAttributeReferenceDAO</code> 
    * 

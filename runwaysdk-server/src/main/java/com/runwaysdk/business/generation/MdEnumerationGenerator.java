@@ -210,7 +210,7 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
       }
     }
 
-    addGetter(String.class.getName(), ComponentInfo.ID);
+    addGetter(String.class.getName(), ComponentInfo.OID);
     addGetter(String.class.getName(), EnumerationMasterInfo.NAME);
     addDisplayLabelGetter();
   }

@@ -49,7 +49,7 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String CRONEXPRESSION = "cronExpression";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTRUN = "lastRun";

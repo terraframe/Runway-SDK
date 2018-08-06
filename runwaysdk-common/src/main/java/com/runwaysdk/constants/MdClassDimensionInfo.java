@@ -21,7 +21,7 @@ package com.runwaysdk.constants;
 public interface MdClassDimensionInfo extends MetadataInfo
 {
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE              = "JS06222010000000000000000000000500000000000000000000000000000001";
 

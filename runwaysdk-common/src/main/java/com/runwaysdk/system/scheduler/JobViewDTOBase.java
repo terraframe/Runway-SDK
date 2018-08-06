@@ -36,7 +36,7 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
   
   public static java.lang.String DOWNSTREAMJOB = "downstreamJob";
   public static java.lang.String DOWNSTREAMJOBDISPLAYLABEL = "downstreamJobDisplayLabel";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String JOB = "job";
   public static java.lang.String TRIGGERONFAILURE = "triggerOnFailure";
   public com.runwaysdk.system.scheduler.ExecutableJobDTO getDownstreamJob()

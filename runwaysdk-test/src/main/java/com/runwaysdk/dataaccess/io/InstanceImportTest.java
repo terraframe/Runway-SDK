@@ -901,7 +901,7 @@ public class InstanceImportTest
   }
 
   /**
-   * Removes the {@link ComponentInfo.ID} and {@link ComponentInfo.KEY}
+   * Removes the {@link ComponentInfo.OID} and {@link ComponentInfo.KEY}
    * attributes from an array of attributes.
    * 
    * @param array
@@ -914,7 +914,7 @@ public class InstanceImportTest
 
     for (AttributeIF attribute : array)
     {
-      if (!attribute.getName().equals(EntityInfo.ID) && !attribute.getName().equals(EntityInfo.KEY))
+      if (!attribute.getName().equals(EntityInfo.OID) && !attribute.getName().equals(EntityInfo.KEY))
       {
         list.add(attribute);
       }

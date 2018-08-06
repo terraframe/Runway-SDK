@@ -322,13 +322,13 @@ public interface TransactionCacheIF
   public Map<String, TransactionItemEntityDAOAction> getEntityDAOIDsMap();
 
   /**
-   * Returns the ID that should be passed on to the ObjectCache for fetching parents objects with the given oid.
+   * Returns the OID that should be passed on to the ObjectCache for fetching parents objects with the given oid.
    * The oid could have been changed during the transaction, and the oid in the global cache may be different 
    * than the oid for the object in the current transaction.
    * 
    * @param businessDAOid
    * @param relationshipType
-   * @return ID that should be passed on to the ObjectCache for fetching parents objects with the given oid.
+   * @return OID that should be passed on to the ObjectCache for fetching parents objects with the given oid.
    */
   public abstract String getBusIdForGetParentsMethod(String businessDAOid, String relationshipType);
   
@@ -604,7 +604,7 @@ public interface TransactionCacheIF
    * <b>Precondition:</b> !relationshipType.trim().equals("") <br/>
    * <b>Postcondition:</b> Returns a Map of Relationship objects of the given
    * relationship type that are parents of the BusinessDAO with given
-   * BusinessDAO ID that have been added during this transaction.
+   * BusinessDAO OID that have been added during this transaction.
    * 
    * @param businessDAOid
    * 
@@ -624,7 +624,7 @@ public interface TransactionCacheIF
    * <b>Precondition:</b> !relationshipTypetrim().equals("") <br/>
    * <b>Postcondition:</b> Returns a Map of Relationship objects of the given
    * relationship type that are parents of the BusinessDAO with given
-   * BusinessDAO ID that have been removed during this transaction.
+   * BusinessDAO OID that have been removed during this transaction.
    * 
    * @param businessDAOid
    * 
@@ -644,7 +644,7 @@ public interface TransactionCacheIF
    * <b>Precondition:</b> !relationshipType.trim().equals("") <br/>
    * <b>Postcondition:</b> Returns a Map of Relationship objects of the given
    * relationship type that are children of the BusinessDAO with given
-   * BusinessDAO ID that have been added during this transaction.
+   * BusinessDAO OID that have been added during this transaction.
    * 
    * @param businessDAOid
    * @return True if children have been added to the given object of the given
@@ -663,7 +663,7 @@ public interface TransactionCacheIF
    * <b>Precondition:</b> !relationshipType.trim().equals("") <br/>
    * <b>Postcondition:</b> Returns a Map of Relationship objects of the given
    * relationship type that are children of the BusinessDAO with given
-   * BusinessDAO ID that have been added during this transaction.
+   * BusinessDAO OID that have been added during this transaction.
    * 
    * @param businessDAOid
    * @return True if children have been removed to the given object of the given

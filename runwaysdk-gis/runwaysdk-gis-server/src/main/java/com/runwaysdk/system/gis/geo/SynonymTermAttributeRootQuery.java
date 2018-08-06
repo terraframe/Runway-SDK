@@ -193,13 +193,13 @@ public  class SynonymTermAttributeRootQuery extends com.runwaysdk.query.Generate
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

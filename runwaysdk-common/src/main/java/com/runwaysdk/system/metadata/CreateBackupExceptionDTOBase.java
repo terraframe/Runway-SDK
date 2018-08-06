@@ -69,7 +69,7 @@ public abstract class CreateBackupExceptionDTOBase extends com.runwaysdk.busines
     return CLASS;
   }
   
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String LOCATION = "location";
   public String getLocation()
   {

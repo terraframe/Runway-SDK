@@ -1404,7 +1404,7 @@ public class ValueQuery extends ComponentQuery
    */
   protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap)
   {
-    // Key: ID of an MdAttribute Value: MdTableClass that defines the attribute;
+    // Key: OID of an MdAttribute Value: MdTableClass that defines the attribute;
     Map<String, MdTableClassIF> mdTableClassMap = new HashMap<String, MdTableClassIF>();
 
     StringBuffer selectString = new StringBuffer("SELECT \n");
@@ -1455,10 +1455,10 @@ public class ValueQuery extends ComponentQuery
 
           String baseTableName = mdTableClassIF.getTableName();
           if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName())
-          // For functions, sometimes they are applying either to the ID or to
+          // For functions, sometimes they are applying either to the OID or to
           // the
           // type itself, and therefore do not need to be joined with the table
-          // that defines the ID in metadata
+          // that defines the OID in metadata
               && ! ( selectable instanceof Function && fSelectable.getDbColumnName().equals(EntityDAOIF.ID_COLUMN) && selectable.getDefiningTableName().equals(columnInfo.getTableName()) ))
           {
             String baseTableAlias = componentQuery.getTableAlias("", baseTableName);

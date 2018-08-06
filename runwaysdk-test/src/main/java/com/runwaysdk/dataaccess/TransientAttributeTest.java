@@ -174,17 +174,17 @@ public class TransientAttributeTest
   private static final String                         SINGLE     = "enumStateSingle";
 
   /**
-   * The ID of the California option of the STATE enumeration.
+   * The OID of the California option of the STATE enumeration.
    */
   private static String                               californiaItemId;
 
   /**
-   * The ID of the Colorado option of the STATE enumeration.
+   * The OID of the Colorado option of the STATE enumeration.
    */
   private static String                               coloradoItemId;
 
   /**
-   * The ID of the Connecticut option of the STATE enumeration.
+   * The OID of the Connecticut option of the STATE enumeration.
    */
   private static String                               connecticutItemId;
 
@@ -2571,7 +2571,7 @@ public class TransientAttributeTest
     try
     {
       transientDAO.apply();
-      transientDAO.removeItem(MULTIPLE, "Not an ID");
+      transientDAO.removeItem(MULTIPLE, "Not an OID");
       transientDAO.apply();
 
       checkEnumState(transientDAO, MULTIPLE, mdAttrEnumMultiple, coloradoItemId);
@@ -2592,7 +2592,7 @@ public class TransientAttributeTest
     try
     {
       transientDAO.apply();
-      transientDAO.addItem(MULTIPLE, "Not an ID");
+      transientDAO.addItem(MULTIPLE, "Not an OID");
       transientDAO.apply();
 
       checkEnumState(transientDAO, MULTIPLE, mdAttrEnumMultiple, coloradoItemId);

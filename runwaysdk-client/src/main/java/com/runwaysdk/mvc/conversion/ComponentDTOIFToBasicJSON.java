@@ -91,7 +91,7 @@ public abstract class ComponentDTOIFToBasicJSON extends DTOToBasicJSON
   protected void setProperties() throws JSONException
   {
     // oid
-    json.put(ComponentInfo.ID, componentDTOIF.getOid());
+    json.put(ComponentInfo.OID, componentDTOIF.getOid());
 
     // type
     json.put(ComponentInfo.TYPE, componentDTOIF.getType());

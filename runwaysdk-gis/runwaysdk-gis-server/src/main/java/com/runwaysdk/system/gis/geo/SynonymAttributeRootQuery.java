@@ -193,13 +193,13 @@ public  class SynonymAttributeRootQuery extends com.runwaysdk.query.GeneratedRel
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.SynonymAttributeRoot.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.SynonymAttributeRoot.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.SynonymAttributeRoot.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.SynonymAttributeRoot.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

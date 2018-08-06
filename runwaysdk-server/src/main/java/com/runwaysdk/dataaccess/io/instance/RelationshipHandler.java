@@ -113,7 +113,7 @@ public class RelationshipHandler extends ElementHandler
       this.isNew = true;
 
       // Set the imported oid
-      Attribute attribute = elementDAO.getAttribute(EntityInfo.ID);
+      Attribute attribute = elementDAO.getAttribute(EntityInfo.OID);
       attribute.setValue(databaseId);
 
       this.skipProcessing = false;

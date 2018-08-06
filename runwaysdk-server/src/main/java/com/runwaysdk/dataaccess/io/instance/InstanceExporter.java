@@ -237,7 +237,7 @@ public abstract class InstanceExporter
    * Exports an entity who's oid is in the result set.
    * 
    * @param resultSet
-   *          contains three columns: EntityInfo.ID - A string and primary key.
+   *          contains three columns: EntityInfo.OID - A string and primary key.
    * 
    */
   public void export(ResultSet resultSet)
@@ -246,7 +246,7 @@ public abstract class InstanceExporter
     {
       while (resultSet.next())
       {
-        String oid = resultSet.getString(EntityInfo.ID);
+        String oid = resultSet.getString(EntityInfo.OID);
 
         export(oid);
       }
@@ -418,7 +418,7 @@ public abstract class InstanceExporter
   {
     TreeSet<String> tree = new TreeSet<String>();
 
-    tree.add(EntityInfo.ID);
+    tree.add(EntityInfo.OID);
     tree.add(EntityInfo.TYPE);
 
     return tree;

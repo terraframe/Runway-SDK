@@ -254,7 +254,7 @@ public class SelectableSpoof implements SelectableAggregate, Selectable
     // not result in extra joins, as the join set is empty. No join set means no from clause.
     MdEntityDAOIF metadataMdEntity = MdEntityDAO.getMdEntityDAO(MetadataInfo.CLASS);
     
-    return metadataMdEntity.definesAttribute(ComponentInfo.ID);
+    return metadataMdEntity.definesAttribute(ComponentInfo.OID);
   }
 
   /* (non-Javadoc)

@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis;
 public abstract class InvalidFormatExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.gis.InvalidFormatException";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   private static final long serialVersionUID = 912804527;
   
   public InvalidFormatExceptionBase()
@@ -54,18 +54,18 @@ public abstract class InvalidFormatExceptionBase extends com.runwaysdk.business.
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.InvalidFormatException.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   protected String getDeclaredType()

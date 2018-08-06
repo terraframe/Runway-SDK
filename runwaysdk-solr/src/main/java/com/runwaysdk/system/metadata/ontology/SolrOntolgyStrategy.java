@@ -63,7 +63,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
   
   public static String LABEL         = "label";
 
-  public static String ID            = "oid";
+  public static String OID            = "oid";
 
   public static String ENTITY        = "entity";
 
@@ -96,7 +96,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
       SolrQuery query = new SolrQuery();
       query.setQuery("*:*");
-      query.setFields(ID);
+      query.setFields(OID);
 
       QueryResponse response = client.query(query);
       SolrDocumentList list = response.getResults();
@@ -211,7 +211,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     {
       SolrCommand command = this.getCommand();
       SolrClient client = command.getClient();
-      client.deleteByQuery(ID + ":*");
+      client.deleteByQuery(OID + ":*");
 
       this.initialize(relationshipType);
     }
@@ -268,7 +268,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
               base.put(relationship);
             }
 
-            if (relationship.getString(ID).equals(child.getOid()))
+            if (relationship.getString(OID).equals(child.getOid()))
             {
               found = true;
             }
@@ -477,7 +477,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
       SolrQuery query = new SolrQuery();
       query.setQuery(ENTITY + ":" + term.getOid() + " AND " + RELATIONSHIPS + ":*" + qText + "*");
-      query.setFields(ID, RELATIONSHIPS, QUALIFIER);
+      query.setFields(OID, RELATIONSHIPS, QUALIFIER);
       query.setRows(5000);
       query.addSort("oid", ORDER.asc); // Pay attention to this line
       String cursorMark = CursorMarkParams.CURSOR_MARK_START;
@@ -506,7 +506,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
           {
             JSONObject relationship = relationships.getJSONObject(i);
 
-            if (relationship.getString(ID).equals(parent.getOid()))
+            if (relationship.getString(OID).equals(parent.getOid()))
             {
               found = true;
             }
@@ -519,7 +519,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
           // Create a new editable SolrInputDocument
           SolrInputDocument updateDoc = new SolrInputDocument();
-          updateDoc.addField(ID, (String) document.get(ID));
+          updateDoc.addField(OID, (String) document.get(OID));
           updateDoc.addField(RELATIONSHIPS, this.serialize(update));
           updateDoc.addField(QUALIFIER, (String) document.get(QUALIFIER));
 
@@ -590,9 +590,9 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
           {
             JSONObject relationship = relationships.getJSONObject(i);
 
-            if (relationship.getString(ID).equals(term.getOid()))
+            if (relationship.getString(OID).equals(term.getOid()))
             {
-              relationship.put(ID, synonym.getOid());
+              relationship.put(OID, synonym.getOid());
               relationship.put(LABEL, synonym.getLabel());
             }
           }
@@ -630,7 +630,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
       SolrQuery query = new SolrQuery();
       query.setQuery(RELATIONSHIPS + ":*" + ClientUtils.escapeQueryChars(synonym.getOid()) + "*");
-      query.setFields(ID, RELATIONSHIPS, QUALIFIER);
+      query.setFields(OID, RELATIONSHIPS, QUALIFIER);
       query.setRows(5000);
       query.addSort("oid", ORDER.asc); // Pay attention to this line
       String cursorMark = CursorMarkParams.CURSOR_MARK_START;
@@ -656,7 +656,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
           {
             JSONObject relationship = relationships.getJSONObject(i);
 
-            if (relationship.getString(ID).equals(synonym.getOid()))
+            if (relationship.getString(OID).equals(synonym.getOid()))
             {
               relationship.put(LABEL, synonym.getLabel());
             }
@@ -664,7 +664,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
           // Create a new editable SolrInputDocument
           SolrInputDocument updateDoc = new SolrInputDocument();
-          updateDoc.addField(ID, (String) document.get(ID));
+          updateDoc.addField(OID, (String) document.get(OID));
           updateDoc.addField(RELATIONSHIPS, this.serialize(relationships));
           updateDoc.addField(QUALIFIER, (String) document.get(QUALIFIER));
 
@@ -734,7 +734,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
     JSONObject relationship = new JSONObject();
     relationship.put(LABEL, t.getLabel());
-    relationship.put(ID, t.getOid());
+    relationship.put(OID, t.getOid());
 
     if (qualifier != null)
     {
@@ -748,7 +748,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
   {
     JSONObject relationship = new JSONObject();
     relationship.put(LABEL, label);
-    relationship.put(ID, oid);
+    relationship.put(OID, oid);
 
     if (qualifier != null)
     {
@@ -776,7 +776,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
       }
 
       builder.append( ( (String) object.get(LABEL) ));
-      builder.append("###" + ( (String) object.get(ID) ));
+      builder.append("###" + ( (String) object.get(OID) ));
     }
 
     return builder.toString();

@@ -48,7 +48,7 @@ public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDT
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTEXPORTSEQ = "lastExportSeq";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";

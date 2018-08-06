@@ -2441,7 +2441,7 @@ public class ExportVisitor extends MarkupVisitor
 
     tree.add(ElementInfo.CREATED_BY);
     tree.add(ElementInfo.LAST_UPDATED_BY);
-    tree.add(EntityInfo.ID);
+    tree.add(EntityInfo.OID);
     tree.add(ElementInfo.LAST_UPDATE_DATE);
     tree.add(EntityInfo.TYPE);
     tree.add(MdAttributeConcreteInfo.DEFAULT_VALUE);

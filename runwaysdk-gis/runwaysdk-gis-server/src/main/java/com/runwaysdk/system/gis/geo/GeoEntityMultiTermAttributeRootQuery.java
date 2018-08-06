@@ -193,13 +193,13 @@ public  class GeoEntityMultiTermAttributeRootQuery extends com.runwaysdk.query.G
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

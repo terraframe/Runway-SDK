@@ -26,7 +26,7 @@ public interface MdExceptionInfo extends MdLocalizableInfo
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdException";
 
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE                  = "20071129NM000000000000000000000300000000000000000000000000000001"; 
 

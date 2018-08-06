@@ -64,17 +64,17 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
 
 
   /**
-   * Returns the ID of this Component.
+   * Returns the OID of this Component.
    *
    * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> The state of
    * the InfoObject does not change <br/><b>Postcondition:</b> return value !=
    * null
    *
-   * @return The ID of this Component.
+   * @return The OID of this Component.
    */
   public String getOid()
   {
-    return this.getAttributeIF(ComponentInfo.ID).getValue();
+    return this.getAttributeIF(ComponentInfo.OID).getValue();
   }
 
   /**
@@ -414,7 +414,7 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
   }
 
   /**
-   * Compares the ID field.  Returns true if they are the same value, false otherwise.
+   * Compares the OID field.  Returns true if they are the same value, false otherwise.
    */
   public boolean equals(Object obj)
   {

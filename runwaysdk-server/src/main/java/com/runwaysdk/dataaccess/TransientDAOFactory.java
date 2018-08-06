@@ -95,7 +95,7 @@ public class TransientDAOFactory
     // Create the transientDAO
     TransientDAO newTransientDAO = factoryMethod(attributeMap, mdTransientIF.definesType());
 
-    newTransientDAO.getAttribute(ComponentInfo.ID).setValue(newId);
+    newTransientDAO.getAttribute(ComponentInfo.OID).setValue(newId);
 
     newTransientDAO.setTypeName(mdTransientIF.definesType());
     // This used to be in EntityDAO.save(), but has been moved here to help with

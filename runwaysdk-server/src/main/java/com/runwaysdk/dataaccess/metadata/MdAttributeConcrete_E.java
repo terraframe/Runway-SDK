@@ -193,7 +193,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
    */
   private String autoGenCreateColumnName(String attributeName)
   {
-    if (attributeName.equals(ComponentInfo.ID))
+    if (attributeName.equals(ComponentInfo.OID))
     {
       return EntityDAOIF.ID_COLUMN;
     }
@@ -543,7 +543,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     AttributeEnumerationIF index = (AttributeEnumerationIF) this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
     String derefId = index.dereference()[0].getOid();
 
-    if (derefId.equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getOid()) && !this.getMdAttribute().definesAttribute().equals(EntityInfo.ID))
+    if (derefId.equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getOid()) && !this.getMdAttribute().definesAttribute().equals(EntityInfo.OID))
     {
       // add a unique index
       String indexName = this.getMdAttribute().getIndexName();
@@ -685,11 +685,11 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     MdEntityDAO mdEntity = mdEntityIF.getBusinessDAO();
 
     // Some dbs require that all tables have at least one column. Therefore, I
-    // am making the assumption that if you are deleting the ID field, then you
+    // am making the assumption that if you are deleting the OID field, then you
     // are also
     // dropping the defining type within the same transaction, which will drop
     // the table.
-    if (!this.getMdAttribute().definesAttribute().equalsIgnoreCase(EntityInfo.ID))
+    if (!this.getMdAttribute().definesAttribute().equalsIgnoreCase(EntityInfo.OID))
     {
       // drop the attribute from the table
       this.dropAttribute(mdEntityIF.getTableName(), this.getMdAttribute().getColumnName(), this.dbColumnType);

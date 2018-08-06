@@ -114,27 +114,27 @@ public class EnumerationTest
   private static MdAttributeStructDAOIF    mdAttributeStructIF;
 
   /**
-   * ID of the MD_ATTRIBUTE that describes the multi-select attribute
+   * OID of the MD_ATTRIBUTE that describes the multi-select attribute
    */
   private static String                    multiAttrMdID;
 
   /**
-   * ID of the MD_ATTRIBUTE that describes the single-select attribute
+   * OID of the MD_ATTRIBUTE that describes the single-select attribute
    */
   private static String                    singleAttrMdID;
 
   /**
-   * The ID of the California option of the STATE enumeration.
+   * The OID of the California option of the STATE enumeration.
    */
   private static String                    californiaItemId;
 
   /**
-   * The ID of the Colorado option of the STATE enumeration.
+   * The OID of the Colorado option of the STATE enumeration.
    */
   private static String                    coloradoItemId;
 
   /**
-   * The ID of the Connecticut option of the STATE enumeration.
+   * The OID of the Connecticut option of the STATE enumeration.
    */
   private static String                    connecticutItemId;
 
@@ -949,7 +949,7 @@ public class EnumerationTest
     try
     {
       testObject.apply();
-      testObject.removeItem(MULTIPLE, "Not an ID");
+      testObject.removeItem(MULTIPLE, "Not an OID");
       testObject.apply();
 
       checkEnumState(coloradoItemId);
@@ -970,7 +970,7 @@ public class EnumerationTest
     try
     {
       testObject.apply();
-      testObject.addItem(MULTIPLE, "Not an ID");
+      testObject.addItem(MULTIPLE, "Not an OID");
       testObject.apply();
 
       checkEnumState(coloradoItemId);

@@ -61,7 +61,7 @@ import com.runwaysdk.transport.conversion.ConversionFacade;
 public class Session extends PermissionEntity implements Comparable<Session>, Serializable, SessionIF
 {
   /**
-   * Auto generated eclipse ID
+   * Auto generated eclipse OID
    */
   private static final long      serialVersionUID  = -510449784842549964L;
 

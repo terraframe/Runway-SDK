@@ -30,7 +30,7 @@ public abstract class GeoEntityProblemTypeMasterDescriptionBase extends com.runw
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDescription";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -1690782062;
@@ -57,18 +57,18 @@ public abstract class GeoEntityProblemTypeMasterDescriptionBase extends com.runw
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDescription.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()

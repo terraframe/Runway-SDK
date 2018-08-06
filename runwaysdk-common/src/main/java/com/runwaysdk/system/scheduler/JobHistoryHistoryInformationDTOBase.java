@@ -1,10 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1096599883)
+@com.runwaysdk.business.ClassSignature(hash = 1467355388)
 public abstract class JobHistoryHistoryInformationDTOBase extends com.runwaysdk.business.LocalStructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryHistoryInformation";
-  private static final long serialVersionUID = 1096599883;
+  private static final long serialVersionUID = 1467355388;
   
   protected JobHistoryHistoryInformationDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -28,8 +28,8 @@ public abstract class JobHistoryHistoryInformationDTOBase extends com.runwaysdk.
   }
   
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
   public String getKeyName()
   {

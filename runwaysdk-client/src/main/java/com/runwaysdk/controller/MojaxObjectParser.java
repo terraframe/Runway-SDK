@@ -181,7 +181,7 @@ public class MojaxObjectParser
       // ignore oid and type attributes because including them
       // will cause an exception as the RequestScraper will try
       // and set their values on the DTO
-      if (name.equals(ComponentInfo.ID) || name.equals(ComponentInfo.TYPE))
+      if (name.equals(ComponentInfo.OID) || name.equals(ComponentInfo.TYPE))
       {
         continue;
       }

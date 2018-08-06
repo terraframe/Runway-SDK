@@ -421,7 +421,7 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
     {
       while (resultSet.next())
       {
-        String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.ID);
+        String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.OID);
         returnList.add(MdAttributeDimensionDAO.get(mdAttrDimensionId));
       }
     }

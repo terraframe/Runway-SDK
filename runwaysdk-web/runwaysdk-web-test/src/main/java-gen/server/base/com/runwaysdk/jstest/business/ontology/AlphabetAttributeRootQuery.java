@@ -193,13 +193,13 @@ public  class AlphabetAttributeRootQuery extends com.runwaysdk.query.GeneratedRe
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

@@ -50,7 +50,7 @@ public abstract class AlphabetDTOBase extends com.runwaysdk.business.ontology.Te
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";

@@ -80,13 +80,13 @@ public  class GeneratedMapMapNameQuery extends com.runwaysdk.query.GeneratedStru
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.mapping.GeneratedMapMapName.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.mapping.GeneratedMapMapName.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.mapping.GeneratedMapMapName.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.mapping.GeneratedMapMapName.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -206,13 +206,13 @@ public  class GeneratedMapMapNameQuery extends com.runwaysdk.query.GeneratedStru
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.mapping.GeneratedMapMapName.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.mapping.GeneratedMapMapName.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.mapping.GeneratedMapMapName.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.mapping.GeneratedMapMapName.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

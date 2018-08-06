@@ -237,18 +237,18 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * Returns the ID of the Relationship.
+   * Returns the OID of the Relationship.
    * 
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> The state of the Relationship does not change <br/>
    * <b>Postcondition: </b> return value != null
    * 
-   * @return The ID of the Relationship
+   * @return The OID of the Relationship
    */
   public String getOid()
   {
-    return this.getAttributeIF(EntityInfo.ID).getValue();
+    return this.getAttributeIF(EntityInfo.OID).getValue();
   }
   
   /**
@@ -429,7 +429,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * Applies the state of this Relationship to the database. If this is a new
-   * Relationship, then records are created in the database and an ID is
+   * Relationship, then records are created in the database and an OID is
    * created. If this is not a new Relationship, then records are modified in
    * the database.
    * 
@@ -440,7 +440,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * database. <br/>
    * <b>Postcondition: </b> return value is not null
    * 
-   * @return ID of the Relationship.
+   * @return OID of the Relationship.
    * @throws DataAccessException
    *           if an attribute contains a value that is not correct with respect
    *           to the metadata.

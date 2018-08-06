@@ -59,8 +59,8 @@ public abstract class BasicJSONToMutableDTO extends BasicJSONToComponentDTO
   {
     JSONObject json = getJSON();
 
-    boolean newInstance = !json.has(ComponentInfo.ID);
-    String oid = newInstance ? "" : json.getString(ComponentInfo.ID);
+    boolean newInstance = !json.has(ComponentInfo.OID);
+    String oid = newInstance ? "" : json.getString(ComponentInfo.OID);
 
     return factoryMethod(type, newInstance, oid);
   }

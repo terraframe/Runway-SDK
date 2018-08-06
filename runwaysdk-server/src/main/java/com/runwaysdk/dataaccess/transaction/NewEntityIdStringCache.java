@@ -123,7 +123,7 @@ public class NewEntityIdStringCache
    * <b>Pre: {@link EntityDAOIF.isNew()} equals true<b/>
    * 
    * @param entityId
-   *          ID of the {@link EntityDAOIF} that goes into the the global cache.
+   *          OID of the {@link EntityDAOIF} that goes into the the global cache.
    */
   synchronized protected void recordNewlyCreatedNonCachedEntity(String entityId)
   {

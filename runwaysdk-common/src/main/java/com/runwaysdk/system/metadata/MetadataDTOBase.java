@@ -49,7 +49,7 @@ public abstract class MetadataDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";

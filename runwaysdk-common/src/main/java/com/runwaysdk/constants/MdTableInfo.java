@@ -26,7 +26,7 @@ public interface MdTableInfo extends MdClassInfo
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdTable";
   
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE                   = "imleaq8bumv0cvrtwtct36s4vcl5qqpa00000000000000000000000000000001";  
   

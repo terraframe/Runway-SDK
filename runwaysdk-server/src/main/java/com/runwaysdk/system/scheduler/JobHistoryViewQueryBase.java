@@ -159,13 +159,13 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.OID, alias, displayLabel);
 
   }
  

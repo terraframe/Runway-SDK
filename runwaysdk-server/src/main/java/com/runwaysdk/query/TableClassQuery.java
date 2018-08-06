@@ -284,7 +284,7 @@ public abstract class TableClassQuery extends ComponentQuery
       throw new AttributeDoesNotExistException(error, attributeName, this.getMdTableClassIF());
     }
 
-    if (mdAttributeIF.definesAttribute().equals(EntityInfo.ID))
+    if (mdAttributeIF.definesAttribute().equals(EntityInfo.OID))
     {
       Set<Join> attributeTableJoinSet = new HashSet<Join>();
 
@@ -483,7 +483,7 @@ public abstract class TableClassQuery extends ComponentQuery
 
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
 
-    if (name.equals(EntityInfo.ID))
+    if (name.equals(EntityInfo.OID))
     {
       String definingTableName = this.getMdTableClassIF().getTableName();
       String definingTableAlias = this.getTableAlias("", definingTableName);
@@ -1495,7 +1495,7 @@ public abstract class TableClassQuery extends ComponentQuery
    */
   protected StringBuffer buildSelectClause(MdTableClassIF _mdTableClassIF, Set<Join> tableJoinSet, Map<String, String> fromTableMap, Map<String, ColumnInfo> _columnInfoMap, List<MdAttributeConcreteDAOIF> totalMdAttributeIFList, Map<String, ? extends MdAttributeConcreteDAOIF> mdAttributeIDMap)
   {
-    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
+    // Key: OID of an MdAttribute Value: MdEntity that defines the attribute;
     Map<String, MdTableClassIF> mdTableClassMap = new HashMap<String, MdTableClassIF>();
 
     StringBuffer selectString = new StringBuffer("SELECT \n");
@@ -1668,7 +1668,7 @@ public abstract class TableClassQuery extends ComponentQuery
         firstIteration = false;
       }
 
-      typeRestrictionClause += rootTableAlias + "." + EntityInfo.ID + " NOT IN " + "(SELECT " + definingTableName + "." + EntityInfo.ID + " FROM " + definingTableName + ")";
+      typeRestrictionClause += rootTableAlias + "." + EntityInfo.OID + " NOT IN " + "(SELECT " + definingTableName + "." + EntityInfo.OID + " FROM " + definingTableName + ")";
     }
     return typeRestrictionClause;
   }
@@ -1695,7 +1695,7 @@ public abstract class TableClassQuery extends ComponentQuery
       String attributeQualifiedName = definingTableClassIF.definesType() + "." + mdAttributeIF.definesAttribute();
 
       String columnNameAlias = null;
-      if (mdAttributeIF.definesAttribute().equals(EntityInfo.ID))
+      if (mdAttributeIF.definesAttribute().equals(EntityInfo.OID))
       {
         columnNameAlias = EntityDAOIF.ID_COLUMN;
       }
@@ -1834,7 +1834,7 @@ public abstract class TableClassQuery extends ComponentQuery
    */
   protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap, Map<String, ColumnInfo> _columnInfoMap)
   {
-    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
+    // Key: OID of an MdAttribute Value: MdEntity that defines the attribute;
     Map<String, MdEntityDAOIF> mdEntityMap = new HashMap<String, MdEntityDAOIF>();
 
     StringBuffer selectString = new StringBuffer("SELECT \n");
@@ -1878,7 +1878,7 @@ public abstract class TableClassQuery extends ComponentQuery
 
         String baseTableName = mdEntityIF.getTableName();
         if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName())
-            // For functions, sometimes they are applying either to the ID or to the type itself, and therefore do not need to be joined with the table that defines the ID in metadata
+            // For functions, sometimes they are applying either to the OID or to the type itself, and therefore do not need to be joined with the table that defines the OID in metadata
             && !(selectable instanceof Function && ((Function)selectable).getSelectable().getDbColumnName().equals(EntityDAOIF.ID_COLUMN) && selectable.getDefiningTableName().equals(columnInfo.getTableName()) ))
         {
           String baseTableAlias = componentQuery.getTableAlias("", baseTableName);
@@ -1962,7 +1962,7 @@ public abstract class TableClassQuery extends ComponentQuery
 
     for (Selectable selectable : leftAttributeSubSelectSet)
     {
-      // Do not exclude the join if the selectable is for the ID attribute, as
+      // Do not exclude the join if the selectable is for the OID attribute, as
       // of right now there is no guarantee that a join has been defined between
       // the selectable's table and the base table for this query.
       if (!baseTableName.equals(selectable.getDefiningTableName()))
@@ -2232,7 +2232,7 @@ public abstract class TableClassQuery extends ComponentQuery
     // that table does not
     // need to join with itself.
     String thisTypeTable = this.getMdTableClassIF().getTableName();
-    if (!mdAttributeIF.definesAttribute().equals(EntityInfo.ID) && !definingTableName.equals(thisTypeTable))
+    if (!mdAttributeIF.definesAttribute().equals(EntityInfo.OID) && !definingTableName.equals(thisTypeTable))
     {
       Join tableJoin = new InnerJoinEq(EntityDAOIF.ID_COLUMN, thisTypeTable, this.getTableAlias(), EntityDAOIF.ID_COLUMN, definingTableName, definingTableAlias);
       attrTableJoinSet.add(tableJoin);
@@ -2368,9 +2368,9 @@ public abstract class TableClassQuery extends ComponentQuery
       String referenceTableName = referenceMdBusinessIF.getTableName();
       String referenceTableAlias = this.getTableAlias(name, referenceTableName);
 
-      // This is a special case where the ID field is treated like a reference. We want the generic attribute reference to be instantiated
+      // This is a special case where the OID field is treated like a reference. We want the generic attribute reference to be instantiated
       // as we do not have a concrete attribute reference class defined for treating IDs as references.
-      if (genTableClassQuery != null && !mdAttributeIF.definesAttribute().equals(ComponentInfo.ID))
+      if (genTableClassQuery != null && !mdAttributeIF.definesAttribute().equals(ComponentInfo.OID))
       {
         attribute = genTableClassQuery.referenceFactory(mdAttributeRefIF, mdTableClass.definesType(), definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }

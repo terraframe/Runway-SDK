@@ -29,7 +29,7 @@ package com.runwaysdk.system.ontology;
 public abstract class TermUtilBase extends com.runwaysdk.business.Util
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.TermUtil";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   private static final long serialVersionUID = -946656427;
   
   public TermUtilBase()
@@ -39,18 +39,18 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ontology.TermUtil.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   protected String getDeclaredType()

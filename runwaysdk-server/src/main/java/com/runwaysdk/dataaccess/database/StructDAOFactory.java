@@ -73,7 +73,7 @@ public class StructDAOFactory
     StructDAOQuery structDAOQuery = StructDAOQuery.getObjectInstance(oid);
     List<StructDAO> structDAOList = queryStructDAOs(structDAOQuery);
 
-    // If the BusinessDAO list is null, then a BusinessDAO with the given ID does not exist.
+    // If the BusinessDAO list is null, then a BusinessDAO with the given OID does not exist.
     if (structDAOList.size() == 0)
     {
       return null;
@@ -153,7 +153,7 @@ public class StructDAOFactory
     ResultSet results = Database.query(sqlStmt);
 
     // ThreadRefactor: get rid of this map.
-    // Key: ID of an MdAttribute  Value: MdEntity that defines the attribute;
+    // Key: OID of an MdAttribute  Value: MdEntity that defines the attribute;
     Map<String, MdTableClassIF> definedByMdTableClassMap = new HashMap<String, MdTableClassIF>();
     // This is map improves performance.
     // Key: type Values: List of MdAttributeIF objects that an instance of the type has.
@@ -279,7 +279,7 @@ public class StructDAOFactory
 
     // This used to be in EntityDAO.save(), but has been moved here to help with distributed issues
     String newId = IdParser.buildId(ServerIDGenerator.nextID(),mdEntityIF.getOid());
-    newStructDAO.getAttribute(EntityInfo.ID).setValue(newId);
+    newStructDAO.getAttribute(EntityInfo.OID).setValue(newId);
 
     return newStructDAO;
   }

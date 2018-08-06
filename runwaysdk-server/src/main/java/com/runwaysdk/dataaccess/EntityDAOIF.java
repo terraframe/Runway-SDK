@@ -25,7 +25,7 @@ import com.runwaysdk.ComponentIF;
 public interface EntityDAOIF extends ComponentIF
 {
   /**
-   * Column name of the attribute that specifies the ID.
+   * Column name of the attribute that specifies the OID.
    */
   public static final String ID_COLUMN               = "oid";
   

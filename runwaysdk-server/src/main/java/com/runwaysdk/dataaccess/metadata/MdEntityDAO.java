@@ -477,7 +477,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /**
    * Applies the state of this BusinessDAO to the database. If this is a new
-   * BusinessDAO, then records are created in the database and an ID is created.
+   * BusinessDAO, then records are created in the database and an OID is created.
    * If this is not a new BusinessDAO, then records are modified in the
    * database.
    * 
@@ -492,7 +492,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    *          true if attributes should be checked for required values, false
    *          otherwise. StructDAOs used by struct attributes may or may not
    *          need required attributes validated.
-   * @return ID of the BusinessDAO.
+   * @return OID of the BusinessDAO.
    * @throws DataAccessException
    *           if an attribute contains a value that is not correct with respect
    *           to the metadata.
@@ -826,7 +826,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   * Structs only get the ID attribute copied from the Entity class.
+   * Structs only get the OID attribute copied from the Entity class.
    */
   protected void copyDefaultAttributes()
   {

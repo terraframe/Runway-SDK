@@ -47,7 +47,7 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
   }
   
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public com.runwaysdk.system.metadata.MdDomainDTO getEntityDomain()
   {

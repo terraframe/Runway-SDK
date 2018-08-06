@@ -22,7 +22,7 @@ public interface MdIndexInfo extends MetadataInfo
 {
   
   /**
-   * MdIndex ID.
+   * MdIndex OID.
    */
   public static final String ID_VALUE                    = "NM20070418000000000000000000007200000000000000000000000000000001";
   /**

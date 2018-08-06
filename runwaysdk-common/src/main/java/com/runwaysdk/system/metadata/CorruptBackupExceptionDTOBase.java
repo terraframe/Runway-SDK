@@ -70,7 +70,7 @@ public abstract class CorruptBackupExceptionDTOBase extends com.runwaysdk.busine
   }
   
   public static java.lang.String BACKUPNAME = "backupName";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public String getBackupName()
   {
     return getValue(BACKUPNAME);

@@ -150,13 +150,13 @@ public  class GeoNodeQuery extends com.runwaysdk.query.GeneratedBusinessQuery
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoNode.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoNode.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoNode.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoNode.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -530,13 +530,13 @@ public  class GeoNodeQuery extends com.runwaysdk.query.GeneratedBusinessQuery
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoNode.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoNode.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoNode.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoNode.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -918,13 +918,13 @@ public  class GeoNodeQuery extends com.runwaysdk.query.GeneratedBusinessQuery
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoNode.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoNode.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoNode.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoNode.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

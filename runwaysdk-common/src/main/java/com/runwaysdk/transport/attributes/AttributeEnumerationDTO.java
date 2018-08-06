@@ -39,7 +39,7 @@ import com.runwaysdk.transport.metadata.CommonAttributeFacade;
 public class AttributeEnumerationDTO extends AttributeDTO implements Serializable
 {
   /**
-   * Auto-generated ID
+   * Auto-generated OID
    */
   private static final long serialVersionUID = 7205728038373659039L;
   

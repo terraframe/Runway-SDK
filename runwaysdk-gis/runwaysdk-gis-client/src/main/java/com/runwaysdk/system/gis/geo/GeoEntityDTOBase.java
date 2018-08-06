@@ -52,7 +52,7 @@ public abstract class GeoEntityDTOBase extends com.runwaysdk.business.ontology.T
   public static java.lang.String GEOID = "geoId";
   public static java.lang.String GEOMULTIPOLYGON = "geoMultiPolygon";
   public static java.lang.String GEOPOINT = "geoPoint";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";

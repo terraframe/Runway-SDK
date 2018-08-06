@@ -524,7 +524,7 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Returns the oid to the MdEntity that defines the given type. given ID.
+   * Returns the oid to the MdEntity that defines the given type. given OID.
    * 
    * @param type
    * @return oid to the MdEntity that defines the given type.
@@ -826,7 +826,7 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Returns a Map of Attribute objects for the EnityObject with the given ID
+   * Returns a Map of Attribute objects for the EnityObject with the given OID
    * and class name. It only returns attributes that are explicitly defined by
    * the given class name.
    * 
@@ -842,7 +842,7 @@ public abstract class AbstractDatabase
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
    *          return the parent_id and child_id values in this map.
-   * @return Map of Attribute objects for the EnityObject with the given ID and
+   * @return Map of Attribute objects for the EnityObject with the given OID and
    *         class.
    */
   public Map<String, Attribute> getAttributesForHardcodedMetadataObject(String oid, String type, String tableName, Map<String, String> relationshipAttributesHackMap, boolean rootClass)
@@ -964,7 +964,7 @@ public abstract class AbstractDatabase
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
    *          return the parent_id and child_id values in this map.
-   * @return Map of Attribute objects for the EnityObject with the given ID and
+   * @return Map of Attribute objects for the EnityObject with the given OID and
    *         class.
    */
   public HardCodedMetadataIterator getAttributesForHardcodedMetadataType(String _cacheTypeTable, String _type, String _tableName, Map<String, Map<String, String>> _relationshipAttributesHackMap, boolean _rootClass)
@@ -1509,7 +1509,7 @@ public abstract class AbstractDatabase
 
   /**
    * Creates a new table in the database for a class. Automatically adds the
-   * Component.ID field as the primary key.
+   * Component.OID field as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -1518,7 +1518,7 @@ public abstract class AbstractDatabase
 
   /**
    * Returns the SQL string for a new table in the database for a class, minus
-   * the closing parenthesis. Automatically adds the Component.ID field as the
+   * the closing parenthesis. Automatically adds the Component.OID field as the
    * primary key.
    * 
    * @param tableName
@@ -1564,7 +1564,7 @@ public abstract class AbstractDatabase
 
   /**
    * Creates a new table in the database for a relationships. Automatically adds
-   * the Component.ID field as the primary key.
+   * the Component.OID field as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -1591,7 +1591,7 @@ public abstract class AbstractDatabase
 
   /**
    * Returns the SQL string for a new table in the database for a relationship,
-   * minus the closing parenthesis. Automatically adds the Component.ID field as
+   * minus the closing parenthesis. Automatically adds the Component.OID field as
    * the primary key.
    * 
    * @param tableName
@@ -1734,7 +1734,7 @@ public abstract class AbstractDatabase
    * Drops an entire table from the database for a class. An undo command is
    * created that will recreate the table if transaction management requires a
    * rollback. However, the undo will <b>not </b> recreate all of the fields in
-   * the table, only the Component.ID.
+   * the table, only the Component.OID.
    * 
    * @param table
    *          The name of the table to drop.
@@ -1758,7 +1758,7 @@ public abstract class AbstractDatabase
    * Drops an entire table from the database for a relationship. An undo command
    * is created that will recreate the table if transaction management requires
    * a rollback. However, the undo will <b>not </b> recreate all of the fields
-   * in the table, only the Component.ID.
+   * in the table, only the Component.OID.
    * 
    * @param table
    *          The name of the table to drop.
@@ -2238,7 +2238,7 @@ public abstract class AbstractDatabase
    * @param columnName
    *          The name of the field being updated.
    * @param entityId
-   *          entity ID
+   *          entity OID
    * @param prepStmtVar
    *          usually just a "?", but some types require special functions.
    * @param oldValue
@@ -2305,7 +2305,7 @@ public abstract class AbstractDatabase
    * @param columnName
    *          The name of the field being updated.
    * @param entityId
-   *          entity ID
+   *          entity OID
    * @param prepStmtVar
    *          usually just a "?", but some types require special functions.
    * @param oldValue
@@ -2351,7 +2351,7 @@ public abstract class AbstractDatabase
    * @param columnName
    *          The name of the field being updated.
    * @param entityId
-   *          entity ID
+   *          entity OID
    * @param prepStmtVar
    *          usually just a "?", but some types require special functions.
    * @param oldValue
@@ -3370,7 +3370,7 @@ public abstract class AbstractDatabase
     List<String> tables = new LinkedList<String>();
     List<String> conditions = new LinkedList<String>();
 
-    columnNames.add(MdAttributeDimensionInfo.ID);
+    columnNames.add(MdAttributeDimensionInfo.OID);
     columnNames.add(MdAttributeDimensionInfo.REQUIRED);
     columnNames.add(MdAttributeDimensionDAOIF.DEFAULT_VALUE);
     columnNames.add(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE);
@@ -3400,7 +3400,7 @@ public abstract class AbstractDatabase
    */
   public ResultSet getMdAttributeDimensionIds(String mdDimensionId)
   {
-    String sqlStmt = "SELECT " + MdAttributeDimensionInfo.ID + " FROM " + MdAttributeDimensionDAOIF.TABLE;
+    String sqlStmt = "SELECT " + MdAttributeDimensionInfo.OID + " FROM " + MdAttributeDimensionDAOIF.TABLE;
 
     if (mdDimensionId != null)
     {
@@ -4033,7 +4033,7 @@ public abstract class AbstractDatabase
       // get the blob
       statement = conn.createStatement();
       String select = "SELECT " + classColumnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdTypeId + "'";
-      String update = "UPDATE " + table + " SET " + classColumnName + " = ?, " + sourceColumnName + " = ?  WHERE " + EntityInfo.ID + " = '" + mdTypeId + "'";
+      String update = "UPDATE " + table + " SET " + classColumnName + " = ?, " + sourceColumnName + " = ?  WHERE " + EntityInfo.OID + " = '" + mdTypeId + "'";
       resultSet = statement.executeQuery(select);
       boolean resultSetFound = resultSet.next();
       if (!resultSetFound)

@@ -127,13 +127,13 @@ public  class ActorQuery extends com.runwaysdk.query.GeneratedBusinessQuery
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Actor.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Actor.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Actor.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Actor.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -627,13 +627,13 @@ public  class ActorQuery extends com.runwaysdk.query.GeneratedBusinessQuery
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Actor.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Actor.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Actor.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Actor.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1107,13 +1107,13 @@ public  class ActorQuery extends com.runwaysdk.query.GeneratedBusinessQuery
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Actor.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Actor.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Actor.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Actor.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

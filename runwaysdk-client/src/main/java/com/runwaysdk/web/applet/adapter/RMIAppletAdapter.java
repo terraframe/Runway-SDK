@@ -76,7 +76,7 @@ public class RMIAppletAdapter extends UnicastRemoteObject implements RemoteApple
       BusinessDTO businessDTO = clientRequest.newFile(path, filename, extension, RemoteInputStreamClient.wrap(stream));
 
       JSONObject json = new JSONObject();
-      json.put(EntityInfo.ID, businessDTO.getOid());
+      json.put(EntityInfo.OID, businessDTO.getOid());
       json.put(VaultFileInfo.FILE_NAME, businessDTO.getValue(VaultFileInfo.FILE_NAME));
       json.put(VaultFileInfo.EXTENSION, businessDTO.getValue(VaultFileInfo.EXTENSION));
       json.put(VaultFileInfo.FILE_SIZE, Integer.parseInt(businessDTO.getValue(VaultFileInfo.FILE_SIZE)));
@@ -155,7 +155,7 @@ public class RMIAppletAdapter extends UnicastRemoteObject implements RemoteApple
       BusinessDTO businessDTO = clientRequest.newSecureFile(filename, extension, RemoteInputStreamClient.wrap(stream));
 
       JSONObject json = new JSONObject();
-      json.put(EntityInfo.ID, businessDTO.getOid());
+      json.put(EntityInfo.OID, businessDTO.getOid());
       json.put(VaultFileInfo.FILE_NAME, businessDTO.getValue(VaultFileInfo.FILE_NAME));
       json.put(VaultFileInfo.EXTENSION, businessDTO.getValue(VaultFileInfo.EXTENSION));
       json.put(VaultFileInfo.FILE_SIZE, Integer.parseInt(businessDTO.getValue(VaultFileInfo.FILE_SIZE)));

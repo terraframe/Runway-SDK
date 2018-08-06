@@ -31,7 +31,7 @@ public abstract class InvalidUniversalRemoveLinkExceptionBase extends com.runway
   public final static String CLASS = "com.runwaysdk.system.gis.geo.InvalidUniversalRemoveLinkException";
   public static java.lang.String CHILDUNI = "childUni";
   public static java.lang.String GEOENTITIES = "geoEntities";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String PARENTUNI = "parentUni";
   private static final long serialVersionUID = 514133326;
   
@@ -113,18 +113,18 @@ public abstract class InvalidUniversalRemoveLinkExceptionBase extends com.runway
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.InvalidUniversalRemoveLinkException.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getParentUni()

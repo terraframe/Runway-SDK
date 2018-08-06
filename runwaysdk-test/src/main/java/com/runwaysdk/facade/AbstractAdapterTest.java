@@ -2329,7 +2329,7 @@ public abstract class AbstractAdapterTest
 
       clientRequest.createBusiness(businessDTO);
 
-      Assert.assertFalse("ID of a new " + BusinessDTO.class.getName() + " did not change when it was applied.", oid.equals(businessDTO.getOid()));
+      Assert.assertFalse("OID of a new " + BusinessDTO.class.getName() + " did not change when it was applied.", oid.equals(businessDTO.getOid()));
     }
     catch (Exception e)
     {
@@ -4163,7 +4163,7 @@ public abstract class AbstractAdapterTest
   }
 
   @Request
-//  @Test
+  @Test
   public void testGrantTypeNoReadPermission_NoDeveloperMessage()
   {
     BusinessDTO testObject = null;
@@ -4171,6 +4171,8 @@ public abstract class AbstractAdapterTest
     ClientRequestIF tommyProxy = null;
     try
     {
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());      
       clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
 
       tommySession = this.createSession("Tommy", "music");
@@ -5659,7 +5661,7 @@ public abstract class AbstractAdapterTest
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
     AttributeCharacterMdDTO md = instance.getOidMd();
 
-    Assert.assertEquals(md.getName(), EntityInfo.ID);
+    Assert.assertEquals(md.getName(), EntityInfo.OID);
     Assert.assertEquals(md.isRequired(), true);
     Assert.assertEquals(md.isSystem(), true);
   }

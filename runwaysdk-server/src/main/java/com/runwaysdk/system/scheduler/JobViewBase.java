@@ -31,7 +31,7 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobView";
   public static java.lang.String DOWNSTREAMJOB = "downstreamJob";
   public static java.lang.String DOWNSTREAMJOBDISPLAYLABEL = "downstreamJobDisplayLabel";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String JOB = "job";
   public static java.lang.String TRIGGERONFAILURE = "triggerOnFailure";
   private static final long serialVersionUID = 795436464;
@@ -111,18 +111,18 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobView.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public com.runwaysdk.system.scheduler.ExecutableJob getJob()

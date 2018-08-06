@@ -59,7 +59,7 @@ public enum AllPostalCodes implements com.runwaysdk.business.BusinessEnumeration
   
   IA(),
   
-  ID(),
+  OID(),
   
   IL(),
   

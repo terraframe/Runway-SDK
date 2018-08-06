@@ -26,7 +26,7 @@ public interface MdElementInfo extends MdEntityInfo
    */
   public static final String CLASS                     = Constants.METADATA_PACKAGE+".MdElement";
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE                   = "0000000000000000000000000000035700000000000000000000000000000001";
 

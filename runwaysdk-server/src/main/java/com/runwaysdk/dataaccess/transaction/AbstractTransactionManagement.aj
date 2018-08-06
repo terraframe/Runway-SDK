@@ -362,12 +362,12 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       {
         String devMessg = 
             "Objects of type ["+mdEntityDAOIF.definesType()+"] require a value for the ["+EntityInfo.KEY+"] "+
-            "attribute in order to generate a deterministic ID.";
+            "attribute in order to generate a deterministic OID.";
          throw new MissingKeyNameValue(devMessg, mdEntityDAOIF);
       }
       else
       {
-        // If the key has been modified, then we must change the ID
+        // If the key has been modified, then we must change the OID
         if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getOid()))
         {          
           String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid());
@@ -1414,7 +1414,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   List<RelationshipDAOIF> around(CacheAllRelationshipDAOStrategy relationshipCollection, String businessDAOid, String relationshipType)
   : getParents(relationshipCollection, businessDAOid, relationshipType)
   {
-    // ID could have been changed during the transaction and the oid in the global cache could be different
+    // OID could have been changed during the transaction and the oid in the global cache could be different
     String objectCacheId = this.getTransactionCache().getBusIdForGetParentsMethod(businessDAOid, relationshipType);
     
     List<RelationshipDAOIF> relationshipList = proceed(relationshipCollection, objectCacheId, relationshipType);
@@ -1437,7 +1437,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   List<RelationshipDAOIF> around(CacheAllRelationshipDAOStrategy relationshipCollection, String businessDAOid, String relationshipType)
   : getChildren(relationshipCollection, businessDAOid, relationshipType)
   {
-    // ID could have been changed during the transaction and the oid in the global cache could be different
+    // OID could have been changed during the transaction and the oid in the global cache could be different
     String objectCacheId = this.getTransactionCache().getBusIdForGetParentsMethod(businessDAOid, relationshipType);
     
     List<RelationshipDAOIF> relationshipList = proceed(relationshipCollection, objectCacheId, relationshipType);

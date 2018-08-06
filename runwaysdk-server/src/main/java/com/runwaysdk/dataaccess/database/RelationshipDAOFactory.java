@@ -176,7 +176,7 @@ public class RelationshipDAOFactory
    * BusinessDAO with the given oid.
    * 
    * @param businessDAOid
-   *          ID of the BusinessDAO
+   *          OID of the BusinessDAO
    * @param relationshipType
    *          Type of the relationship
    * @return an array of Relationship objects that represent parent
@@ -321,7 +321,7 @@ public class RelationshipDAOFactory
     // This used to be in EntityDAO.save(), but has been moved here to help with
     // distributed issues
     String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdEntityIF.getOid());
-    newRelationshipObject.getAttribute(EntityInfo.ID).setValue(newId);
+    newRelationshipObject.getAttribute(EntityInfo.OID).setValue(newId);
 
     return newRelationshipObject;
   }
@@ -338,7 +338,7 @@ public class RelationshipDAOFactory
     RelationshipDAOQuery relationshipQuery = RelationshipDAOQuery.getRelationshipInstance(oid);
     List<RelationshipDAOIF> relationshipList = queryRelationshipObjects(relationshipQuery);
 
-    // If the Relationship list is null, then a Relationship with the given ID
+    // If the Relationship list is null, then a Relationship with the given OID
     // does not exist.
     if (relationshipList.size() == 0)
     {
@@ -428,7 +428,7 @@ public class RelationshipDAOFactory
     ResultSet results = Database.query(sqlStmt);
 
     // ThreadRefactor: get rid of this map.
-    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
+    // Key: OID of an MdAttribute Value: MdEntity that defines the attribute;
     Map<String, MdTableClassIF> definedByMdTableClassMap = new HashMap<String, MdTableClassIF>();
     // This is map improves performance.
     // Key: type Values: List of MdAttributeIF objects that an instance of the

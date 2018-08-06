@@ -207,7 +207,7 @@ public abstract class Java5EnumGenerator extends AbstractGenerator
   }
 
   /**
-   * Writes the dereference method, which takes a String ID as a parameter and returns the
+   * Writes the dereference method, which takes a String OID as a parameter and returns the
    * associated enum item, or <code>null</code> if the oid isn't recognized
    * 
    * @param name

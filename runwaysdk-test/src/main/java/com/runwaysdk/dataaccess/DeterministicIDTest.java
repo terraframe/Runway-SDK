@@ -110,11 +110,11 @@ public class DeterministicIDTest
     mdBusiness.setValue(MdEntityInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
-    // Test that they key name is populated by the ID
+    // Test that they key name is populated by the OID
     BusinessDAO businessDAO1 = BusinessDAO.newInstance(NEW_CLASS.getType());
     businessDAO1.apply();
 
-    Assert.assertEquals("ID and KeyName values were not equal on a type without deterministic IDs.", businessDAO1.getOid(), businessDAO1.getKey());
+    Assert.assertEquals("OID and KeyName values were not equal on a type without deterministic IDs.", businessDAO1.getOid(), businessDAO1.getKey());
 
     // Enable Deterministic IDs
     mdBusiness.setValue(MdEntityInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
@@ -202,7 +202,7 @@ public class DeterministicIDTest
       businessDAO1.apply();
       String obj1TestKeyTwoId = businessDAO1.getOid();
 
-      Assert.assertTrue("An ID for an object did not change when the key name value changed.", !obj1TestKeyOneId.equals(obj1TestKeyTwoId));
+      Assert.assertTrue("An OID for an object did not change when the key name value changed.", !obj1TestKeyOneId.equals(obj1TestKeyTwoId));
 
       businessDAO2 = BusinessDAO.newInstance(NEW_CLASS.getType());
       businessDAO2.setValue(EntityInfo.KEY, "TestKeyOne");
@@ -210,13 +210,13 @@ public class DeterministicIDTest
       businessDAO2.apply();
       String obj2TestKeyOneId = businessDAO2.getOid();
 
-      Assert.assertTrue("The same ID was not generated for two different objects that have the same key.", obj1TestKeyOneId.equals(obj2TestKeyOneId));
+      Assert.assertTrue("The same OID was not generated for two different objects that have the same key.", obj1TestKeyOneId.equals(obj2TestKeyOneId));
 
       BusinessDAOIF businessDAOIF1 = BusinessDAO.get(obj1TestKeyTwoId);
       BusinessDAOIF businessDAOIF2 = BusinessDAO.get(obj2TestKeyOneId);
 
-      Assert.assertEquals("After an ID change, the wrong object was fetched.", "Obj1", businessDAOIF1.getValue(CHAR_ATTR));
-      Assert.assertEquals("After an ID change, the wrong object was fetched.", "Obj2", businessDAOIF2.getValue(CHAR_ATTR));
+      Assert.assertEquals("After an OID change, the wrong object was fetched.", "Obj1", businessDAOIF1.getValue(CHAR_ATTR));
+      Assert.assertEquals("After an OID change, the wrong object was fetched.", "Obj2", businessDAOIF2.getValue(CHAR_ATTR));
 
     }
     finally
@@ -290,7 +290,7 @@ public class DeterministicIDTest
     businessDAO1.apply();
     String obj1TestKeyTwoId = businessDAO1.getOid();
 
-    Assert.assertTrue("An ID for an object did not change when the key name value changed.", !obj1TestKeyOneId.equals(obj1TestKeyTwoId));
+    Assert.assertTrue("An OID for an object did not change when the key name value changed.", !obj1TestKeyOneId.equals(obj1TestKeyTwoId));
 
     businessDAO2 = BusinessDAO.newInstance(NEW_CLASS.getType());
     businessDAO2.setValue(EntityInfo.KEY, "TestKeyOne");
@@ -299,13 +299,13 @@ public class DeterministicIDTest
     String obj2TestKeyOneId = businessDAO2.getOid();
     returnList.add(businessDAO2);
 
-    Assert.assertTrue("The same ID was not generated for two different objects that have the same key.", obj1TestKeyOneId.equals(obj2TestKeyOneId));
+    Assert.assertTrue("The same OID was not generated for two different objects that have the same key.", obj1TestKeyOneId.equals(obj2TestKeyOneId));
 
     BusinessDAOIF businessDAOIF1 = BusinessDAO.get(obj1TestKeyTwoId);
     BusinessDAOIF businessDAOIF2 = BusinessDAO.get(obj2TestKeyOneId);
 
-    Assert.assertEquals("After an ID change, the wrong object was fetched.", "Obj1", businessDAOIF1.getValue(CHAR_ATTR));
-    Assert.assertEquals("After an ID change, the wrong object was fetched.", "Obj2", businessDAOIF2.getValue(CHAR_ATTR));
+    Assert.assertEquals("After an OID change, the wrong object was fetched.", "Obj1", businessDAOIF1.getValue(CHAR_ATTR));
+    Assert.assertEquals("After an OID change, the wrong object was fetched.", "Obj2", businessDAOIF2.getValue(CHAR_ATTR));
 
     return returnList;
   }

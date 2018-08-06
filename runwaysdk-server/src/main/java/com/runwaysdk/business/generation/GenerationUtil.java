@@ -466,7 +466,7 @@ public class GenerationUtil
     // don't create accessors for oid or type because
     // we don't want to override the native getOid()/getType()
     // in EntityDTO
-    if (m.definesAttribute().equals(EntityInfo.ID) || m.definesAttribute().equals(EntityInfo.TYPE))
+    if (m.definesAttribute().equals(EntityInfo.OID) || m.definesAttribute().equals(EntityInfo.TYPE))
     {
       return true;
     }

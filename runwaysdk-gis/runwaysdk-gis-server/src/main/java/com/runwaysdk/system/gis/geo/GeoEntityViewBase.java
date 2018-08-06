@@ -32,7 +32,7 @@ public abstract class GeoEntityViewBase extends com.runwaysdk.business.View
   public static java.lang.String CANCREATECHILDREN = "canCreateChildren";
   public static java.lang.String GEOENTITYDISPLAYLABEL = "geoEntityDisplayLabel";
   public static java.lang.String GEOENTITYID = "geoEntityId";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String RELATIONSHIPID = "relationshipId";
   public static java.lang.String RELATIONSHIPTYPE = "relationshipType";
   public static java.lang.String UNIVERSALDISPLAYLABEL = "universalDisplayLabel";
@@ -129,18 +129,18 @@ public abstract class GeoEntityViewBase extends com.runwaysdk.business.View
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntityView.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getRelationshipId()

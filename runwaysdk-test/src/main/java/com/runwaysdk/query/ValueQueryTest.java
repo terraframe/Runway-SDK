@@ -110,7 +110,7 @@ public class ValueQueryTest
     {
       QueryFactory qf = new QueryFactory();
 
-      // Query number of ID fields
+      // Query number of OID fields
 
       ValueQuery vQ1 = qf.valueQuery();
       BusinessDAOQuery mdAttrQ = qf.businessDAOQuery(MdAttributeConcreteInfo.CLASS);
@@ -220,7 +220,7 @@ public class ValueQueryTest
     {
       QueryFactory qf = new QueryFactory();
 
-      // Query number of ID fields
+      // Query number of OID fields
 
       ValueQuery vQ1 = qf.valueQuery();
       BusinessDAOQuery mdAttrQ = qf.businessDAOQuery(MdAttributeConcreteInfo.CLASS);
@@ -9822,7 +9822,7 @@ public class ValueQueryTest
     ValueQuery valueQuery1 = new ValueQuery(queryFactory);
     ValueQuery valueQuery2 = new ValueQuery(queryFactory);
 
-    valueQuery1.SELECT(bq.aCharacter(MdBusinessInfo.ID));
+    valueQuery1.SELECT(bq.aCharacter(MdBusinessInfo.OID));
 
     valueQuery2.SELECT(bq.aCharacter(MdBusinessInfo.NAME), valueQuery1.getSubSelect());
 
@@ -9854,7 +9854,7 @@ public class ValueQueryTest
     ValueQuery valueQuery1 = new ValueQuery(queryFactory);
     ValueQuery valueQuery2 = new ValueQuery(queryFactory);
 
-    valueQuery1.SELECT(F.COUNT(bq.aCharacter(MdBusinessInfo.ID)));
+    valueQuery1.SELECT(F.COUNT(bq.aCharacter(MdBusinessInfo.OID)));
 
     valueQuery2.SELECT(bq.aCharacter(MdBusinessInfo.NAME), valueQuery1.getSubSelect());
 

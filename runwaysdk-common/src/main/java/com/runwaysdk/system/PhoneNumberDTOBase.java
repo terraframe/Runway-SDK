@@ -47,7 +47,7 @@ public abstract class PhoneNumberDTOBase extends com.runwaysdk.business.StructDT
   
   public static java.lang.String AREACODE = "areaCode";
   public static java.lang.String EXTENSION = "extension";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String PREFIX = "prefix";
   public static java.lang.String SITEMASTER = "siteMaster";

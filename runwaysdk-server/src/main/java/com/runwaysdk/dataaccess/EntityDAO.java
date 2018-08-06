@@ -107,9 +107,9 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   private boolean                  disconnected          = false;
 
   /**
-   * The old ID of the object should the ID ever need to change due to a new key
-   * value from which the ID is hashed. This is used to update caches with the
-   * the new ID.
+   * The old OID of the object should the OID ever need to change due to a new key
+   * value from which the OID is hashed. This is used to update caches with the
+   * the new OID.
    */
   private String                   oldId                 = null;
 
@@ -209,9 +209,9 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
   
   /**
-   * Return the old ID of the object should the ID ever need to change due to a
-   * new key value from which the ID is hashed. This is used to update caches
-   * with the the new ID.
+   * Return the old OID of the object should the OID ever need to change due to a
+   * new key value from which the OID is hashed. This is used to update caches
+   * with the the new OID.
    */
   public String getOldId()
   {
@@ -336,7 +336,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
   /**
    * Returns the Id used for AttributeProblems (not messages). New instances
-   * that fail will have a different ID on the client.
+   * that fail will have a different OID on the client.
    * 
    * @return problem notification oid.
    */
@@ -593,9 +593,9 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     if (this.isAppliedToDB() && !this.getOid().equals(newId))
     {
-      this.oldId = this.getAttribute(EntityInfo.ID).getValue();
+      this.oldId = this.getAttribute(EntityInfo.OID).getValue();
     }
-    this.getAttribute(EntityInfo.ID).setValue(newId);
+    this.getAttribute(EntityInfo.OID).setValue(newId);
   }
 
   /**
@@ -971,7 +971,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
   /**
    * Applies the state of this EntityDAO to the database. If this is a new
-   * EntityDAO, then records are created in the database and an ID is created.
+   * EntityDAO, then records are created in the database and an OID is created.
    * If this is not a new EntityDAO, then records are modified in the database.
    * 
    * <br/>
@@ -984,14 +984,14 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    *          true if attributes should be checked for required values, false
    *          otherwise. StructDAOs used for struct attributes may or may not
    *          need required attributes validated.
-   * @return ID of the EntityDAO.
+   * @return OID of the EntityDAO.
    * @throws DataAccessException
    *           if an attribute contains a value that is not correct with respect
    *           to the metadata.
    */
   public String save(boolean validateRequired)
   {
-    // UserIdAspect will replace the user oid with the ID of the user
+    // UserIdAspect will replace the user oid with the OID of the user
     // doing this action through the facade
 
     if (this.isAppliedToDB() == false && !this.isImport())
@@ -1224,7 +1224,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
   /**
    * Applies the state of this EntityDAO to the database. If this is a new
-   * EntityDAO, then records are created in the database and an ID is created.
+   * EntityDAO, then records are created in the database and an OID is created.
    * If this is not a new EntityDAO, then records are modified in the database.
    * This method differs from the save method in that an Aspect will verify that
    * the user performing the opperation has a lock on the object.
@@ -1237,7 +1237,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * <b>Postcondition:</b> state of the EntityDAO is preserved in the database. <br/>
    * <b>Postcondition:</b> return value is not null
    * 
-   * @return ID of the EntityDAO.
+   * @return OID of the EntityDAO.
    * @throws DataAccessException
    *           if an attribute contains a value that is not correct with respect
    *           to the metadata. DataAccessException if the EntityDAO is locked
@@ -1245,7 +1245,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public String apply()
   {
-    // UserIdAspect will replace the user oid with the ID of the user
+    // UserIdAspect will replace the user oid with the OID of the user
     // doing this action through the facade
 
     if (this.isDisconnected())
@@ -1254,7 +1254,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       throw new DisconnectedEntityException(error);
     }
 
-    // returns the ID as a string, a new one or the existing one...
+    // returns the OID as a string, a new one or the existing one...
     String returnId = this.save(true);
 
     return returnId;
@@ -1529,7 +1529,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       }
 
       // Exclude this object from the database
-      entityQuery.WHERE(entityQuery.aCharacter(EntityInfo.ID).NE(this.getOid()));
+      entityQuery.WHERE(entityQuery.aCharacter(EntityInfo.OID).NE(this.getOid()));
 
       if (entityQuery.getCount() > 0)
       {
@@ -1756,7 +1756,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
     ValueQuery vq = new ValueQuery(qf);
 
-    vq.SELECT(entityQueryDAO.oid(EntityInfo.ID));
+    vq.SELECT(entityQueryDAO.oid(EntityInfo.OID));
     vq.WHERE(entityQueryDAO.aCharacter(EntityInfo.KEY).EQ(key));
 
     OIterator<ValueObject> i = vq.getIterator();
@@ -1765,7 +1765,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     {
       if (i.hasNext())
       {
-        return i.next().getValue(EntityInfo.ID);
+        return i.next().getValue(EntityInfo.OID);
       }
       else
       {

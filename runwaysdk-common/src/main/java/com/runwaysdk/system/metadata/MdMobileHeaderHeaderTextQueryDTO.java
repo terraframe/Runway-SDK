@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 951480837)
+@com.runwaysdk.business.ClassSignature(hash = 1263632258)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -10,7 +10,7 @@ package com.runwaysdk.system.metadata;
  */
 public class MdMobileHeaderHeaderTextQueryDTO extends com.runwaysdk.business.StructQueryDTO
 {
-private static final long serialVersionUID = 951480837;
+private static final long serialVersionUID = 1263632258;
 
   protected MdMobileHeaderHeaderTextQueryDTO(String type)
   {

@@ -929,7 +929,7 @@ public abstract class ComponentIFtoComponentDTOIF
    */
   private AttributeDTO createAttribute(String attributeName, String type, Object value, boolean readable, boolean writable)
   {
-    if (!readable && !attributeName.equals(ComponentInfo.ID))
+    if (!readable && !attributeName.equals(ComponentInfo.OID))
     {
       value = "";
     }

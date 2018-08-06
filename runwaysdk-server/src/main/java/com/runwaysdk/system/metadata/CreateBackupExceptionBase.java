@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class CreateBackupExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.CreateBackupException";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String LOCATION = "location";
   private static final long serialVersionUID = -2024211446;
   
@@ -55,18 +55,18 @@ public abstract class CreateBackupExceptionBase extends com.runwaysdk.business.S
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.CreateBackupException.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getLocation()

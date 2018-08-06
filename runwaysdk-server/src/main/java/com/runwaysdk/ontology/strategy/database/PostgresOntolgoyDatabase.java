@@ -95,7 +95,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
 
     // Create the INSERT structure. Preserve column order so the values can
     // be appropriately matched.
-    String oid = getColumn(termAllPaths, MetadataInfo.ID);
+    String oid = getColumn(termAllPaths, MetadataInfo.OID);
     String siteMaster = getColumn(termAllPaths, MetadataInfo.SITE_MASTER);
     String createdBy = getColumn(termAllPaths, MetadataInfo.CREATED_BY);
     String key = getColumn(termAllPaths, MetadataInfo.KEY);
@@ -205,7 +205,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     MdBusiness allPaths = (MdBusiness) this.getParameter(parameters, DatabaseAllPathsStrategy.ALL_PATHS_PARAMETER);
 
     String tableName = allPaths.getTableName();
-    String oid = getColumn(allPaths, MetadataInfo.ID);
+    String oid = getColumn(allPaths, MetadataInfo.OID);
     String siteMaster = getColumn(allPaths, MetadataInfo.SITE_MASTER);
     String createdBy = getColumn(allPaths, MetadataInfo.CREATED_BY);
     String key = getColumn(allPaths, MetadataInfo.KEY);

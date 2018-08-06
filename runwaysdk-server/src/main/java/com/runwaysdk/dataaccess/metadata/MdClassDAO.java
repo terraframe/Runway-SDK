@@ -266,7 +266,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   }
 
   /**
-   * Structs only get the ID attribute copied from the Entity class.
+   * Structs only get the OID attribute copied from the Entity class.
    */
   protected void copyDefaultAttributes()
   {

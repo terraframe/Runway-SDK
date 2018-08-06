@@ -50,7 +50,7 @@ public abstract class LayerSQLBuilderDTOBase extends com.runwaysdk.business.Busi
   public static java.lang.String DISPLAYATTRIBUTE = "displayAttribute";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String GEOMATTRIBUTE = "geomAttribute";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";

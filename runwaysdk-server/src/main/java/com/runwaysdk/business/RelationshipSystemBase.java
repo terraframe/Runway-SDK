@@ -30,7 +30,7 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
 {
   public final static String CLASS = "com.runwaysdk.business.Relationship";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   private static final long serialVersionUID = -373742517;
   
@@ -81,18 +81,18 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.business.Relationship.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()

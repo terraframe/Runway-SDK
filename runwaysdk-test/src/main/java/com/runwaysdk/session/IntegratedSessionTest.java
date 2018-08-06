@@ -241,17 +241,17 @@ public class IntegratedSessionTest
   private final static int                 sessionLimit = 2;
 
   /**
-   * The ID of an enumeration Item.
+   * The OID of an enumeration Item.
    */
   private static String                    enumItemId1;
 
   /**
-   * The ID of an enumeration Item.
+   * The OID of an enumeration Item.
    */
   private static String                    enumItemId2;
 
   /**
-   * The ID of an enumeration Item.
+   * The OID of an enumeration Item.
    */
   private static String                    enumItemId3;
 

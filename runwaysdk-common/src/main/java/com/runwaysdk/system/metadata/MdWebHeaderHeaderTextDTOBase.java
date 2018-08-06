@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1949374066)
+@com.runwaysdk.business.ClassSignature(hash = 2133551285)
 public abstract class MdWebHeaderHeaderTextDTOBase extends com.runwaysdk.business.LocalStructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebHeaderHeaderText";
-  private static final long serialVersionUID = 1949374066;
+  private static final long serialVersionUID = 2133551285;
   
   protected MdWebHeaderHeaderTextDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -28,8 +28,8 @@ public abstract class MdWebHeaderHeaderTextDTOBase extends com.runwaysdk.busines
   }
   
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
   public String getKeyName()
   {

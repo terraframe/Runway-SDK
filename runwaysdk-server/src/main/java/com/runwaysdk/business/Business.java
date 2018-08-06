@@ -109,7 +109,7 @@ public class Business extends Element
    * that its actual type is that specified by the type parameter.
    * 
    * @param oid
-   *          ID of the instance to get
+   *          OID of the instance to get
    * @return Typesafe Business representing the oid in the database
    */
   public static Business get(String oid)
@@ -169,7 +169,7 @@ public class Business extends Element
    * meaning that its actual type just a Business.
    * 
    * @param oid
-   *          ID of the instance to get.
+   *          OID of the instance to get.
    * @return Typesafe Business representing the oid in the database.
    */
   public static Business getBusiness(String oid)

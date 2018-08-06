@@ -69,7 +69,7 @@ public abstract class ImmutableRootExceptionDTOBase extends com.runwaysdk.busine
     return CLASS;
   }
   
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String ROOTNAME = "rootName";
   public String getRootName()
   {

@@ -28,7 +28,7 @@ public interface MdAttributeInfo extends MetadataInfo
   public static final String CLASS             = Constants.METADATA_PACKAGE + "." + CLASS_NAME;
 
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE          = "NM20081019000000000000000000000300000000000000000000000000000001";
 

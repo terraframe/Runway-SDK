@@ -40,7 +40,7 @@ public interface AttributeEnumerationIF extends AttributeIF
   /**
    * Returns a cached list of mappings between this object and enumeration items.
    * If an enumeration item is removed from the master list, this cache may
-   * still contain an ID to the item.
+   * still contain an OID to the item.
    * @return Returns the enumItemIdList.
    */
   public Set<String> getCachedEnumItemIdSet();

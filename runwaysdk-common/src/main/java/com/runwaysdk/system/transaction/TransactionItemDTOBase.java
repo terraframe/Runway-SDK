@@ -51,7 +51,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String IGNORESEQUENCENUMBER = "ignoreSequenceNumber";
   public static java.lang.String ITEMACTION = "itemAction";
   public static java.lang.String KEYNAME = "keyName";

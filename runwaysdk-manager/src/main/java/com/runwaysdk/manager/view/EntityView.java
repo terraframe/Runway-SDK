@@ -61,7 +61,7 @@ import com.runwaysdk.manager.widgets.WidgetVisitor;
 
 public abstract class EntityView extends ViewPart implements IViewPart
 {
-  public static final String            ID = "com.runwaysdk.view.EntityView";
+  public static final String            OID = "com.runwaysdk.view.EntityView";
 
   private IComponentObject              entity;
 

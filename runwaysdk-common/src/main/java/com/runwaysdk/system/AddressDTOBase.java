@@ -46,7 +46,7 @@ public abstract class AddressDTOBase extends com.runwaysdk.business.StructDTO
   }
   
   public static java.lang.String CITY = "city";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String POSTALCODE = "postalCode";
   public static java.lang.String PRIMARYADDRESS = "primaryAddress";

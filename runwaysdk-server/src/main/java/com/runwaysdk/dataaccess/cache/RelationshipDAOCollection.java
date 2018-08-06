@@ -30,7 +30,7 @@ public interface RelationshipDAOCollection extends TransactionItem
 
   /**
    *Returns an array of Relationship objects of the given type
-   * that are children of the BusinessDAO with given BusinessDAO ID.
+   * that are children of the BusinessDAO with given BusinessDAO OID.
    * 
    * <br/><b>Precondition:</b>  businessDAOid != null
    * <br/><b>Precondition:</b>  !businessDAOid.trim().equals("")
@@ -73,7 +73,7 @@ public interface RelationshipDAOCollection extends TransactionItem
    * <br/><b>Precondition:</b>  relationshipType != null
    * <br/><b>Precondition:</b>  !relationshipType.trim().equals("")
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
-   *         that are parents of the BusinessDAO with given BusinessDAO ID
+   *         that are parents of the BusinessDAO with given BusinessDAO OID
    * 
    * @param businessDAOid  Id of the BusinessDAO from which you want to retrieve the 
    *                     parents relationships
@@ -91,7 +91,7 @@ public interface RelationshipDAOCollection extends TransactionItem
    * <br/><b>Precondition:</b>  relationshipType != null
    * <br/><b>Precondition:</b>  !relationshipType.trim().equals("")
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
-   *         that are parents of the BusinessDAO with given BusinessDAO ID
+   *         that are parents of the BusinessDAO with given BusinessDAO OID
    * 
    * @param businessDAOid  oid of the BusinessDAO from which you want to retrieve the 
    *                     parents relationships

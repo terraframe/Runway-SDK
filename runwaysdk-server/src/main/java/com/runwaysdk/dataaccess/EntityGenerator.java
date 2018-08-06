@@ -428,7 +428,7 @@ public class EntityGenerator
       for (MdAttributeConcreteDAOIF mdAttribute : mdAttributes)
       {
         if ((mdAttribute.isSystem())
-        || (mdAttribute.definesAttribute().equalsIgnoreCase(EntityInfo.ID) && !isRootOfHierarchy ))
+        || (mdAttribute.definesAttribute().equalsIgnoreCase(EntityInfo.OID) && !isRootOfHierarchy ))
           continue;
         mdAttribute.setRandomValue(entity);
       }
@@ -536,7 +536,7 @@ public class EntityGenerator
     for (MdAttributeConcreteDAOIF mdAttribute : mdAttributes)
     {
       if ((mdAttribute.isSystem())
-      || (mdAttribute.definesAttribute().equalsIgnoreCase(EntityInfo.ID) && !isRootOfHierarchy ))
+      || (mdAttribute.definesAttribute().equalsIgnoreCase(EntityInfo.OID) && !isRootOfHierarchy ))
         continue;
       mdAttribute.setRandomValue(object);
     }

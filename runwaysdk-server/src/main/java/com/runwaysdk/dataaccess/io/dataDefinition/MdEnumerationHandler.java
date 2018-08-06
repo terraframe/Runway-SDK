@@ -142,7 +142,7 @@ public class MdEnumerationHandler extends TagHandler implements TagHandlerIF, Ha
       String enumName = attributes.getValue(XMLTags.ENUM_NAME_ATTRIBUTE);
       String enumItemKey = EnumerationItemDAO.buildKey(masterListType, enumName);
 
-      // Get the database ID of a XML puesdo oid
+      // Get the database OID of a XML puesdo oid
       String actualId = EntityDAO.getOidFromKey(masterListType, enumItemKey);
 
       if (mdEnumeration.containsEnumItem(actualId))

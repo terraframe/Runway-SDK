@@ -178,13 +178,13 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber()
@@ -705,13 +705,13 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber()
@@ -1228,13 +1228,13 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
  
   public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber()

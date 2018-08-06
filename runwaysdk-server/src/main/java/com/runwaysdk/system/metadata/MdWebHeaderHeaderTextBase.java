@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1840821490)
+@com.runwaysdk.business.ClassSignature(hash = -1231578571)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -12,10 +12,10 @@ public abstract class MdWebHeaderHeaderTextBase extends com.runwaysdk.business.L
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebHeaderHeaderText";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
-  private static final long serialVersionUID = 1840821490;
+  private static final long serialVersionUID = -1231578571;
   
   public MdWebHeaderHeaderTextBase()
   {
@@ -35,22 +35,6 @@ public abstract class MdWebHeaderHeaderTextBase extends com.runwaysdk.business.L
   public static MdWebHeaderHeaderText getByKey(String key)
   {
     return (MdWebHeaderHeaderText) com.runwaysdk.business.Struct.get(CLASS, key);
-  }
-  
-  public String getOid()
-  {
-    return getValue(ID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(ID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdWebHeaderHeaderText.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
   }
   
   public String getKeyName()
@@ -79,6 +63,22 @@ public abstract class MdWebHeaderHeaderTextBase extends com.runwaysdk.business.L
     {
       setValue(KEYNAME, value);
     }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdWebHeaderHeaderText.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getSiteMaster()

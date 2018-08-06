@@ -28,7 +28,7 @@ public interface MdAttributeIndicatorInfo extends MdAttributeConcreteInfo
   public static final String CLASS                = Constants.METADATA_PACKAGE + "." + CLASS_NAME;
   
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE             = "i1d478ac3n9ibhoahdzxqugpmqj8nwb500000000000000000000000000000001";
   

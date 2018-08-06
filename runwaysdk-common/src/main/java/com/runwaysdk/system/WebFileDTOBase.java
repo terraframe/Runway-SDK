@@ -51,7 +51,7 @@ public abstract class WebFileDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String FILEEXTENSION = "fileExtension";
   public static java.lang.String FILENAME = "fileName";
   public static java.lang.String FILEPATH = "filePath";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";

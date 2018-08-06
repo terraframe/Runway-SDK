@@ -55,14 +55,14 @@ public class EntityMasterTestSetup
   public static final TypeInfo REFERENCE_CLASS = new TypeInfo(JUNIT_PACKAGE, "Reference");
 
   /**
-   * <code>testMdBusinessId</code> is the ID for the metadata object that
+   * <code>testMdBusinessId</code> is the OID for the metadata object that
    * describes the Test class. It's used to delete the type after tests are
    * completed.
    */
   private String               testMdBusinessId;
 
   /**
-   * <code>referenceMdBusinessId</code> is the ID for the metadata object that
+   * <code>referenceMdBusinessId</code> is the OID for the metadata object that
    * describes the MasterTestSetup.REFERENCE_CLASS class. It's used to delete
    * the type after tests are completed.
    */

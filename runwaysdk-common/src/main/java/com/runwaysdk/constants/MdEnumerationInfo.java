@@ -42,7 +42,7 @@ public interface MdEnumerationInfo extends MdTypeInfo
    */
   public static final String INCLUDE_ALL               = "includeAll";
   /**
-   * ID of an enumeration attribute of a BusinessDAO
+   * OID of an enumeration attribute of a BusinessDAO
    * 
    */
   public static final String SET_ID                    = "set_id";

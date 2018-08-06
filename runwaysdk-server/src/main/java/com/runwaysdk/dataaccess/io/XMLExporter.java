@@ -138,7 +138,7 @@ public class XMLExporter
   private Hashtable<String, List<String>> attributeOrder;
 
   /**
-   * Indicates whether or not duplicate instances of the same ID are allowed. Documents with duplicates will not validate on schemas that enforce referential integrity.
+   * Indicates whether or not duplicate instances of the same OID are allowed. Documents with duplicates will not validate on schemas that enforce referential integrity.
    */
   private boolean                         allowDuplicates;
 
@@ -407,7 +407,7 @@ public class XMLExporter
     classType.appendChild(document.createTextNode(entityDAO.getType()));
     objectTag.appendChild(classType);
 
-    Element idTag = document.createElement(EntityInfo.ID);
+    Element idTag = document.createElement(EntityInfo.OID);
     idTag.appendChild(document.createTextNode(oid));
     objectTag.appendChild(idTag);
 
@@ -738,7 +738,7 @@ public class XMLExporter
       return true;
     }
 
-    String error = EntityInfo.ID + " [" + oid + "] is already in the document.  If you want to " + "allow duplicate elements in your document, call setAllowDuplicates(true)";
+    String error = EntityInfo.OID + " [" + oid + "] is already in the document.  If you want to " + "allow duplicate elements in your document, call setAllowDuplicates(true)";
     throw new XMLException(error);
   }
 

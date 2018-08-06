@@ -63,11 +63,11 @@ public class GenericBusinessQuery extends GeneratedBusinessQuery
 
   public SelectableChar getOid(String alias)
   {
-    return (SelectableChar) this.getComponentQuery().get(BusinessInfo.ID, alias, null);
+    return (SelectableChar) this.getComponentQuery().get(BusinessInfo.OID, alias, null);
   }
 
   public SelectableChar getOid(String alias, String displayLabel)
   {
-    return (SelectableChar) this.getComponentQuery().get(BusinessInfo.ID, alias, displayLabel);
+    return (SelectableChar) this.getComponentQuery().get(BusinessInfo.OID, alias, displayLabel);
   }
 }

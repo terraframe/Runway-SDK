@@ -34,7 +34,7 @@ import com.runwaysdk.query.QueryFactory;
 public class DomainTupleDAO extends TypeTupleDAO implements DomainTupleDAOIF
 {
   /**
-   * Eclipse auto generated serial ID 
+   * Eclipse auto generated serial OID 
    */
   private static final long serialVersionUID = -6190657962345427054L;
 

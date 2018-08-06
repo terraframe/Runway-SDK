@@ -56,7 +56,7 @@ public interface SelectableMultiReference extends Selectable
    * enumeration items with the given oid.
    * 
    * @param itemIds
-   *          ID of an enumeration.
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsAny(String... itemIds);
@@ -67,7 +67,7 @@ public interface SelectableMultiReference extends Selectable
    * the enumeration items with the given oid.
    * 
    * @param itemIds
-   *          ID of an enumeration.
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition notContainsAny(String... itemIds);
@@ -78,7 +78,7 @@ public interface SelectableMultiReference extends Selectable
    * enumeration items with the given oid.
    * 
    * @param itemIds
-   *          ID of an enumeration.
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsAll(String... itemIds);
@@ -89,7 +89,7 @@ public interface SelectableMultiReference extends Selectable
    * the enumeration items with the given oid.
    * 
    * @param itemIds
-   *          ID of an enumeration.
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition notContainsAll(String... itemIds);
@@ -100,7 +100,7 @@ public interface SelectableMultiReference extends Selectable
    * given set of the enumeration items with the given oid.
    * 
    * @param itemIds
-   *          ID of an enumeration.
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsExactly(String... itemIds);

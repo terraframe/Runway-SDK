@@ -34,7 +34,7 @@ public abstract class TestUtilDTOBase extends com.runwaysdk.business.UtilDTO imp
     return CLASS;
   }
   
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String UTILCHARACTER = "utilCharacter";
   public static java.lang.String UTILPHONE = "utilPhone";
   public static java.lang.String UTILREFERENCEOBJECT = "utilReferenceObject";

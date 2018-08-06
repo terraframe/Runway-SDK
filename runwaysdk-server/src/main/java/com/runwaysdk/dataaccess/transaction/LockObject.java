@@ -239,7 +239,7 @@ public class LockObject
     
     for (String oid : entityDAOidMap.keySet())
     {
-      // ID Could have changed during the transaction
+      // OID Could have changed during the transaction
       String originalId = transactionCache.getOriginalId(oid);
       
       if (this.transactionIDsMap.containsKey(originalId) && isLockedByThread(this.transactionIDsMap.get(originalId)))

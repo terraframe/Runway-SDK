@@ -40,8 +40,8 @@ public abstract class MdAttributeGeometry_Q extends MdAttributeConcrete_Q implem
   }
 
   /**
-   * Returns the projection ID used for this geometry attribute;
-   * @return projection ID used for this geometry attribute;
+   * Returns the projection OID used for this geometry attribute;
+   * @return projection OID used for this geometry attribute;
    */
   public int getSRID()
   {

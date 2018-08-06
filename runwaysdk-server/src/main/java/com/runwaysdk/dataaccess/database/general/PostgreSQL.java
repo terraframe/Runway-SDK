@@ -1162,7 +1162,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * Creates a new table in the database for a relationships. Automatically adds
-   * the Component.ID columnName as the primary key.
+   * the Component.OID columnName as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -1211,7 +1211,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * Returns the SQL string for a new table in the database for a relationship,
-   * minus the closing parenthesis. Automatically adds the Component.ID
+   * minus the closing parenthesis. Automatically adds the Component.OID
    * columnName as the primary key.
    * 
    * @param tableName
@@ -1292,7 +1292,7 @@ public class PostgreSQL extends AbstractDatabase
    * Drops an entire table from the database for a relationship. An undo command
    * is created that will recreate the table if transaction management requires
    * a rollback. However, the undo will <b>not </b> recreate all of the columns
-   * in the table, only the ID.
+   * in the table, only the OID.
    * 
    * @param table
    *          The name of the table to drop.

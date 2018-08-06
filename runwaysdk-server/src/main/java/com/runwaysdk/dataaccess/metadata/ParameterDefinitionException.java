@@ -23,7 +23,7 @@ import com.runwaysdk.dataaccess.MdParameterDAOIF;
 public abstract class ParameterDefinitionException extends InvalidDefinitionException
 {
   /**
-   * Auto-generated eclipse ID
+   * Auto-generated eclipse OID
    */
   private static final long serialVersionUID = 3603446056452018845L;
 

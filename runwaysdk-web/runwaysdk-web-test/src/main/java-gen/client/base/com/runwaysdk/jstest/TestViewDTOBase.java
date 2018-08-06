@@ -34,7 +34,7 @@ public abstract class TestViewDTOBase extends com.runwaysdk.business.ViewDTO imp
     return CLASS;
   }
   
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String VIEWCHARACTER = "viewCharacter";
   public static java.lang.String VIEWPHONE = "viewPhone";
   public static java.lang.String VIEWREFERENCEOBJECT = "viewReferenceObject";

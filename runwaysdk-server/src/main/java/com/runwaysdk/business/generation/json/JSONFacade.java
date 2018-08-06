@@ -341,7 +341,7 @@ public class JSONFacade
         MdMethodQuery q = new MdMethodQuery(f);
         ValueQuery v = new ValueQuery(f);
 
-        v.SELECT(q.getOid(MdMethodInfo.ID));
+        v.SELECT(q.getOid(MdMethodInfo.OID));
         v.WHERE(q.getMethodName().EQ(methodName));
         v.WHERE(q.getMdType().IN(ids)); // FIXME write tests for IN/NI on
                                         // AttributeReference
@@ -352,7 +352,7 @@ public class JSONFacade
         {
           if (iter.hasNext())
           {
-            declaredTypes = GenerationUtil.getDeclaredTypes(iter.next().getValue(MdMethodInfo.ID));
+            declaredTypes = GenerationUtil.getDeclaredTypes(iter.next().getValue(MdMethodInfo.OID));
           }
           else
           {

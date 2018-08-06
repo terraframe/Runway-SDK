@@ -98,7 +98,7 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
 
   /**
    *Applies the state of this EnumerationItem to the database.  If this is a new EnumerationItem,
-   * then records are created in the database and an ID is created.  If this is not a
+   * then records are created in the database and an OID is created.  If this is not a
    * new EnumerationItem, then records are modified in the database.
    *
    * <br/><b>Precondition:</b>   Attribues must have correct values as defined in their meta data.
@@ -108,7 +108,7 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
    * @param validateRequired ture if attributes should be checked for required values,
    *                         false otherwise.  Basic struct classes may or
    *                         may not need required attributes validated.
-   * @return ID of the EnumerationItem.
+   * @return OID of the EnumerationItem.
    * @throws DataAccessException if an attribute contains a value that is not
    *         correct with respect to the metadata.
    */

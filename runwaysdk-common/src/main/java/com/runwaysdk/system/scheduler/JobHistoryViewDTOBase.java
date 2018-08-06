@@ -40,7 +40,7 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   public static java.lang.String ENDTIME = "endTime";
   public static java.lang.String HISTORYCOMMENT = "historyComment";
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String JOBID = "jobId";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";

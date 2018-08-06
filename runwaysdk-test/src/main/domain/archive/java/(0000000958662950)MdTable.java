@@ -163,7 +163,7 @@ public class Sandbox implements Job
 
     String mdTableMdId = mdTable.apply();
 
-    System.out.println("MdTable ID: " + mdTableMdId);
+    System.out.println("MdTable OID: " + mdTableMdId);
 
     MdAttributeCharacter tableName = new MdAttributeCharacter();
     tableName.setValue(MdAttributeCharacterInfo.NAME, MdTableInfo.TABLE_NAME);

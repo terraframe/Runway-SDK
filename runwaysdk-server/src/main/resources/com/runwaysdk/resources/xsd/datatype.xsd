@@ -841,9 +841,9 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <!--The attribute-value pairings of the object -->
       <xs:element ref="attribute" />
-      <!--The attribute-xml id pairing of the object -->
+      <!--The attribute-xml oid pairing of the object -->
       <xs:element ref="attributeReference" />
-      <!--The attribute-multi xml id pairing of the object -->
+      <!--The attribute-multi xml oid pairing of the object -->
       <xs:element ref="attributeEnumeration" />
       <!--The struct attribute values -->
       <xs:element ref="attributeStruct" />
@@ -860,9 +860,9 @@
   <xs:complexType name="relationshipCreate">
     <xs:complexContent>
       <xs:extension base="entity">
-        <!--parentKey: The xml id of the object of the parent -->
+        <!--parentKey: The xml oid of the object of the parent -->
         <xs:attribute name="parentKey" type="xs:string" use="required" />
-        <!--childKey: The xml id of the object of the child -->
+        <!--childKey: The xml oid of the object of the child -->
         <xs:attribute name="childKey" type="xs:string" use="required" />
       </xs:extension>
     </xs:complexContent>
@@ -909,9 +909,9 @@
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <!--The attribute-value pairings of the object -->
         <xs:element ref="attribute" />
-        <!--The attribute-multi xml id pairing of the object -->
+        <!--The attribute-multi xml oid pairing of the object -->
         <xs:element ref="attributeEnumeration" />
-        <!--The attribute-xml id pairing of the object -->
+        <!--The attribute-xml oid pairing of the object -->
         <xs:element ref="attributeReference" />
       </xs:choice>
       <!--attribute: The name of the struct attribute -->

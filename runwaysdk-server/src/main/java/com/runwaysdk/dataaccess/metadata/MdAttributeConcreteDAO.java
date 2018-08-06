@@ -664,7 +664,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
   /**
    * Applies the state of this BusinessDAO to the database. If this is a new
-   * BusinessDAO, then records are created in the database and an ID is created.
+   * BusinessDAO, then records are created in the database and an OID is created.
    * If this is not a new BusinessDAO, then records are modified in the
    * database.
    * 
@@ -679,7 +679,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    *          ture if attributes should be checked for required values, false
    *          otherwise. StructDAOs used for struct attributes may or may not
    *          need required attributes validated.
-   * @return ID of the BusinessDAO.
+   * @return OID of the BusinessDAO.
    * @throws DataAccessException
    *           if an attribute contains a value that is not correct with respect
    *           to the metadata.

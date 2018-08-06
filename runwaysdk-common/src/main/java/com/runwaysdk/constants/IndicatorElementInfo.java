@@ -28,7 +28,7 @@ public interface IndicatorElementInfo
   public static final String CLASS             = Constants.METADATA_PACKAGE + "." + CLASS_NAME;
   
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE          = "in5q49sp4ysp566txfog13xfvpjpjrnb00000000000000000000000000000001";
    

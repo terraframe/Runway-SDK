@@ -50,7 +50,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Id used for AttributeProblems (not messages). New instances that fail will
-   * have a different ID on the client.
+   * have a different OID on the client.
    */
   private String                   problemNotificationId = "";
 
@@ -109,7 +109,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   
   /**
    * Returns the Id used for AttributeNotifications. New instances that fail
-   * will have a different ID on the client.
+   * will have a different OID on the client.
    * 
    * @return notification oid.
    */
@@ -126,8 +126,8 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Sets the ID used for AttributeProblems. Should be called on new instances,
-   * since the DTO on the client will have a different ID than the one
+   * Sets the OID used for AttributeProblems. Should be called on new instances,
+   * since the DTO on the client will have a different OID than the one
    * automatically created for this object.
    * 
    * @param problemNotificationId

@@ -41,7 +41,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
   private com.runwaysdk.business.Struct historyInformation = null;
   
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String JOBID = "jobId";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
@@ -197,18 +197,18 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getJobId()

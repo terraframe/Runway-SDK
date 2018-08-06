@@ -384,7 +384,7 @@ public class Struct extends Entity implements StructInfo
    * @param name
    *          String name of the enumerated attribute
    * @param item
-   *          ID of the enumeration item
+   *          OID of the enumeration item
    */
   public void addEnumItem(String name, String item)
   {
@@ -404,7 +404,7 @@ public class Struct extends Entity implements StructInfo
    * @param name
    *          String name of the enumerated attribute
    * @param item
-   *          ID of the enumeration item
+   *          OID of the enumeration item
    */
   public void removeEnumItem(String name, String item)
   {
@@ -504,7 +504,7 @@ public class Struct extends Entity implements StructInfo
    * Returns an object of the specified type with the specified oid from the database by using reflection. The returned Entity is type safe.
    *
    * @param oid
-   *          ID of the instance to get.
+   *          OID of the instance to get.
    * @return Type safe Struct representing the oid in the database.
    */
   public static Struct get(String oid)
@@ -551,7 +551,7 @@ public class Struct extends Entity implements StructInfo
    * Returns an object of the specified type with the specified oid from the database without using reflection. The returned Struct is not typesafe, meaning that its actual type just a Struct.
    *
    * @param oid
-   *          ID of the instance to get.
+   *          OID of the instance to get.
    * @return Type unsafe Struct representing the oid in the database.
    */
   public static Struct getStruct(String oid)

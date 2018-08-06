@@ -38,7 +38,7 @@ public class AttributeStructDTO extends AttributeDTO
   private StructDTO         structDTO;
 
   /**
-   * Auto-generated ID
+   * Auto-generated OID
    */
   private static final long serialVersionUID = 3218179807583523937L;
 

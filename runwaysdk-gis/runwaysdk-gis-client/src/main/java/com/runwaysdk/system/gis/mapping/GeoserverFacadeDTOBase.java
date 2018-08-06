@@ -34,7 +34,7 @@ public abstract class GeoserverFacadeDTOBase extends com.runwaysdk.business.Util
     return CLASS;
   }
   
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static final void initializeGeoServer(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     String[] _declaredTypes = new String[]{};

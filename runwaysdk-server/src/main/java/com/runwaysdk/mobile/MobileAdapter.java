@@ -874,7 +874,7 @@ public class MobileAdapter
   private static ComponentQueryDTO convertToGlobalId(String mobileId, ComponentQueryDTO dto)
   {
     // UNTESTED
-    AttributeDTO attr = dto.getAttributeDTO(ComponentInfo.ID);
+    AttributeDTO attr = dto.getAttributeDTO(ComponentInfo.OID);
     String globalId = idConverter.getGlobalIdFromLocalId(mobileId, attr.getValue());
     attr.setValue(globalId);
 
@@ -890,7 +890,7 @@ public class MobileAdapter
   private static ComponentQueryDTO convertToLocalId(String mobileId, ComponentQueryDTO dto)
   {
     // UNTESTED
-    AttributeDTO attr = dto.getAttributeDTO(ComponentInfo.ID);
+    AttributeDTO attr = dto.getAttributeDTO(ComponentInfo.OID);
     String localId = idConverter.generateLocalIdFromGlobalId(mobileId, attr.getValue());
     attr.setValue(localId);
 
@@ -909,7 +909,7 @@ public class MobileAdapter
     {
       Map<String, AttributeDTO> map = MobileDTOConversionHelper.getComponentDTOAttributeMap(dto);
 
-      AttributeDTO attr = map.get(ComponentInfo.ID);
+      AttributeDTO attr = map.get(ComponentInfo.OID);
       boolean modified = attr.isModified();
       String localId = attr.getValue();
 
@@ -950,7 +950,7 @@ public class MobileAdapter
     {
       Map<String, AttributeDTO> map = MobileDTOConversionHelper.getComponentDTOAttributeMap(dto);
 
-      AttributeDTO attr = map.get(ComponentInfo.ID);
+      AttributeDTO attr = map.get(ComponentInfo.OID);
       boolean modified = attr.isModified();
       String globalId = attr.getValue();
 

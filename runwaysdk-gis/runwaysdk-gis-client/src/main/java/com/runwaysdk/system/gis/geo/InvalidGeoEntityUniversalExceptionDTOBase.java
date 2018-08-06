@@ -70,7 +70,7 @@ public abstract class InvalidGeoEntityUniversalExceptionDTOBase extends com.runw
   }
   
   public static java.lang.String CHILDUNIVERSAL = "childUniversal";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String PARENTUNIVERSAL = "parentUniversal";
   public String getChildUniversal()
   {

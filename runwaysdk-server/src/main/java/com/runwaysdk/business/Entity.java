@@ -420,7 +420,7 @@ public abstract class Entity implements Mutable, Serializable
   protected abstract String getDeclaredType();
 
   /**
-   * Returns the Universally Unique ID (UUID) for this entity.
+   * Returns the Universally Unique OID (UUID) for this entity.
    * 
    * @return <b>this</b> entity's UUID
    */
@@ -430,7 +430,7 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns the Id used for AttributeProblems (not messages). New instances that fail will have a different ID on the client.
+   * Returns the Id used for AttributeProblems (not messages). New instances that fail will have a different OID on the client.
    * 
    * @return problem notification oid.
    */
@@ -662,7 +662,7 @@ public abstract class Entity implements Mutable, Serializable
    * Returns an object of the specified type with the specified oid from the database without using reflection. The returned Entity is not typesafe, meaning that its actual type just a Entity.
    * 
    * @param oid
-   *          ID of the instance to get.
+   *          OID of the instance to get.
    * @return Typesafe Entity representing the oid in the database.
    */
   public static Entity getEntity(String oid)
@@ -676,7 +676,7 @@ public abstract class Entity implements Mutable, Serializable
    * Returns an object of the specified type with the specified oid from the database without using reflection. The returned Entity is not typesafe, meaning that its actual type just a Entity.
    * 
    * @param oid
-   *          ID of the instance to get.
+   *          OID of the instance to get.
    * @return Typesafe Entity representing the oid in the database.
    */
   public static Entity getEntity(EntityDAO entityDAO)
@@ -702,7 +702,7 @@ public abstract class Entity implements Mutable, Serializable
       // has a lock on the object.
       return Struct.typeUnsafeStructFactory((StructDAO) entityDAO);
     }
-    throw new UnexpectedTypeException("ID [" + entityDAO.getOid() + "] is not an Entity");
+    throw new UnexpectedTypeException("OID [" + entityDAO.getOid() + "] is not an Entity");
   }
 
   /**
@@ -710,7 +710,7 @@ public abstract class Entity implements Mutable, Serializable
    * parameter.
    * 
    * @param oid
-   *          ID of the instance to get
+   *          OID of the instance to get
    * @return Typesafe Business representing the oid in the database
    */
   public static Entity get(String oid)
@@ -730,7 +730,7 @@ public abstract class Entity implements Mutable, Serializable
       return Struct.instantiate((StructDAOIF) entityDAOIF);
     }
 
-    throw new UnexpectedTypeException("ID [" + oid + "] is not an Entity");
+    throw new UnexpectedTypeException("OID [" + oid + "] is not an Entity");
   }
 
   /**

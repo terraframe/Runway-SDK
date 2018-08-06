@@ -174,7 +174,7 @@ public class ValueObjectFactory
         }
 
         StructDAO structDAO = null;
-        com.runwaysdk.dataaccess.attributes.entity.Attribute idAttribute = structAttributeMap.get(EntityInfo.ID);
+        com.runwaysdk.dataaccess.attributes.entity.Attribute idAttribute = structAttributeMap.get(EntityInfo.OID);
         if (!idAttribute.getValue().trim().equals(""))
         {
           structDAO = (StructDAO) StructDAOFactory.factoryMethod(structAttributeMap, mdStructIF.definesType());

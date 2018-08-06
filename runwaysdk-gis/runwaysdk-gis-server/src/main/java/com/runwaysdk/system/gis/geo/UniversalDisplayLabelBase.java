@@ -30,7 +30,7 @@ public abstract class UniversalDisplayLabelBase extends com.runwaysdk.business.L
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.UniversalDisplayLabel";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = 1660846026;
@@ -57,18 +57,18 @@ public abstract class UniversalDisplayLabelBase extends com.runwaysdk.business.L
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.UniversalDisplayLabel.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()

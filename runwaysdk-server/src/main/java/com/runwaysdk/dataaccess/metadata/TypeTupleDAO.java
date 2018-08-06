@@ -49,7 +49,7 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
   protected static final String                       DELIMETER      = "+";
 
   /**
-   * Eclipse auto generated serial ID
+   * Eclipse auto generated serial OID
    */
   private static final long serialVersionUID = -6190657962345427054L;
 

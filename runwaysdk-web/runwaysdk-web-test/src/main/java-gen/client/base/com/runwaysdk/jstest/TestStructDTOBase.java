@@ -45,7 +45,7 @@ public abstract class TestStructDTOBase extends com.runwaysdk.business.StructDTO
     return CLASS;
   }
   
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String STRUCTCHAR = "structChar";

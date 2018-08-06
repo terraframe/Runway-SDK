@@ -27,7 +27,7 @@ public interface MdBusinessInfo extends MdElementInfo
   public static final String CLASS                     = Constants.METADATA_PACKAGE+".MdBusiness";
 
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE                   = "0000000000000000000000000000000100000000000000000000000000000001";
   

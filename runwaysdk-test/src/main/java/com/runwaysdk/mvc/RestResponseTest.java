@@ -273,13 +273,13 @@ public class RestResponseTest
 
       Assert.assertEquals(testValue, parent.get(TestFixConst.ATTRIBUTE_CHARACTER));
       Assert.assertEquals(mdBusinessType, parent.get(EntityInfo.TYPE));
-      Assert.assertEquals(dto.getOid(), parent.get(EntityInfo.ID));
+      Assert.assertEquals(dto.getOid(), parent.get(EntityInfo.OID));
 
       JSONObject child = test.getJSONObject("child");
 
       Assert.assertEquals(testValue, child.get(TestFixConst.ATTRIBUTE_CHARACTER));
       Assert.assertEquals(mdBusinessType, child.get(EntityInfo.TYPE));
-      Assert.assertEquals(dto.getOid(), child.get(EntityInfo.ID));
+      Assert.assertEquals(dto.getOid(), child.get(EntityInfo.OID));
     }
     finally
     {

@@ -1472,7 +1472,7 @@ public abstract class SessionDTOAdapterTest
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
     AttributeCharacterMdDTO md = instance.getOidMd();
 
-    Assert.assertEquals(md.getName(), EntityInfo.ID);
+    Assert.assertEquals(md.getName(), EntityInfo.OID);
     Assert.assertEquals(md.isRequired(), true);
     Assert.assertEquals(md.isSystem(), true);
   }

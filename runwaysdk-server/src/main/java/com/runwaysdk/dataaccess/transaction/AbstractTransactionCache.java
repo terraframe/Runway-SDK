@@ -95,7 +95,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected ReentrantLock                                    transactionStateLock;
 
   /**
-   * Keeps track of which entities have been deleted. Value: Entity ID + method
+   * Keeps track of which entities have been deleted. Value: Entity OID + method
    * signature <br/>
    * <b>invariant</b> deletedEntitySignatures != null
    */
@@ -593,7 +593,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * <b>Pre: {@link EntityDAOIF.isNew()} equals true<b/>
    * 
    * @param entityId
-   *          ID of the {@link EntityDAOIF} that goes into the the global cache.
+   *          OID of the {@link EntityDAOIF} that goes into the the global cache.
    */
   public void recordNewlyCreatedNonCachedEntity(String entityId)
   {
@@ -1352,14 +1352,14 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * Returns the ID that should be passed on to the ObjectCache for fetching
+   * Returns the OID that should be passed on to the ObjectCache for fetching
    * parents objects with the given oid. The oid could have been changed during
    * the transaction, and the oid in the global cache may be different than the
    * oid for the object in the current transaction.
    * 
    * @param businessDAOid
    * @param relationshipType
-   * @return ID that should be passed on to the ObjectCache for fetching parents
+   * @return OID that should be passed on to the ObjectCache for fetching parents
    *         objects with the given oid.
    */
   public String getBusIdForGetParentsMethod(String businessDAOid, String relationshipType)

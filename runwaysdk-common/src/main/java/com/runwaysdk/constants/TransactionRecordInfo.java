@@ -26,7 +26,7 @@ public interface TransactionRecordInfo extends BusinessInfo
   public static final String CLASS                     = Constants.TRANSACTION_PACKAGE+".TransactionRecord";
 
   /**
-   * ID of the metadata that defines this class.
+   * OID of the metadata that defines this class.
    */
    public static final String ID_VALUE                   = "6p94ixgjqyk1g0if0wffh59do2yb654i00000000000000000000000000000001";
 

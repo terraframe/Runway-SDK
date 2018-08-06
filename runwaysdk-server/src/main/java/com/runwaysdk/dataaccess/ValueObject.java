@@ -115,7 +115,7 @@ public class ValueObject extends ComponentDAO
 
   /**
    * Returns the Id used for AttributeProblems (not messages).  New instances that fail will have a
-   * different ID on the client.
+   * different OID on the client.
    *
    * @return problem notification oid.
    */
@@ -125,13 +125,13 @@ public class ValueObject extends ComponentDAO
   }
 
   /**
-   * Returns the ID of this Component.
+   * Returns the OID of this Component.
    *
    * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> The state of
    * the InfoObject does not change <br/><b>Postcondition:</b> return value !=
    * null
    *
-   * @return The ID of this Component.
+   * @return The OID of this Component.
    */
   public String getOid()
   {

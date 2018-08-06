@@ -21,7 +21,7 @@ package com.runwaysdk.constants;
 public interface DatabaseInfo
 {
   /**
-   * The size, in characters, of the portion of an ID that does not include the type or the delimiter.
+   * The size, in characters, of the portion of an OID that does not include the type or the delimiter.
    */
   public static final String ROOT_ID_SIZE                    = "32";
 }

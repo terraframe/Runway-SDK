@@ -39,7 +39,7 @@ public abstract class TestProblemDTOBase extends com.runwaysdk.business.ProblemD
     return CLASS;
   }
   
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String PROBLEMCHAR = "problemChar";
   public static java.lang.String PROBLEMINT = "problemInt";
   public String getProblemChar()

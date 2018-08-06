@@ -43,7 +43,7 @@ public interface MdAttributeCharacterDAOIF extends MdAttributeCharDAOIF
   public String getSize();
 
   /**
-   * Precondition: assumes this character attribute is an ID. The collection of
+   * Precondition: assumes this character attribute is an OID. The collection of
    * <code>AttributeDAO</code> objects do not have their containing reference updated to
    * the returned <code>MdAttributeReferenceDAO</code> 
    */
@@ -53,7 +53,7 @@ public interface MdAttributeCharacterDAOIF extends MdAttributeCharDAOIF
    * This is used by the query API to allow for parent ids and child ids of relationships to
    * be used in queries.
    * 
-   * Precondition: assumes this character attribute is an ID. The collection of
+   * Precondition: assumes this character attribute is an OID. The collection of
    * <code>AttributeDAO</code> objects do not have their containing reference updated to
    * the returned <code>MdAttributeReferenceDAO</code> 
    * 

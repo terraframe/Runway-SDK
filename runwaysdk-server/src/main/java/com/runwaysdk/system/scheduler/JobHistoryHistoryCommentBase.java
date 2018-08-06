@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1615306242)
+@com.runwaysdk.business.ClassSignature(hash = -997355863)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -12,10 +12,10 @@ public abstract class JobHistoryHistoryCommentBase extends com.runwaysdk.busines
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryHistoryComment";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
-  private static final long serialVersionUID = -1615306242;
+  private static final long serialVersionUID = -997355863;
   
   public JobHistoryHistoryCommentBase()
   {
@@ -35,22 +35,6 @@ public abstract class JobHistoryHistoryCommentBase extends com.runwaysdk.busines
   public static JobHistoryHistoryComment getByKey(String key)
   {
     return (JobHistoryHistoryComment) com.runwaysdk.business.Struct.get(CLASS, key);
-  }
-  
-  public String getOid()
-  {
-    return getValue(ID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(ID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryHistoryComment.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
   }
   
   public String getKeyName()
@@ -79,6 +63,22 @@ public abstract class JobHistoryHistoryCommentBase extends com.runwaysdk.busines
     {
       setValue(KEYNAME, value);
     }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryHistoryComment.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getSiteMaster()

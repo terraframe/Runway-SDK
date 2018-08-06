@@ -209,7 +209,7 @@ public class EntityDAOFactory
           }
 
           StructDAO structDAO = null;
-          Attribute idAttribute = structAttributeMap.get(EntityInfo.ID);
+          Attribute idAttribute = structAttributeMap.get(EntityInfo.OID);
           if (!idAttribute.getValue().trim().equals(""))
           {
             structDAO = (StructDAO) StructDAOFactory.factoryMethod(structAttributeMap, mdStructIF.definesType());
@@ -261,7 +261,7 @@ public class EntityDAOFactory
   }
 
   /**
-   * Returns a Map of Attribute objects for the BusinessDAO with the given ID
+   * Returns a Map of Attribute objects for the BusinessDAO with the given OID
    * and type. It only returns attributes that are explicitly defined by the
    * given type.
    * 
@@ -278,7 +278,7 @@ public class EntityDAOFactory
    *          this is a total hack. If the instance is a relationship, then
    *          return the parent_id and child_id values in this map.
    * @return <code>Map</code> of Attribute objects for the BusinessDAO with the
-   *         given ID and type.
+   *         given OID and type.
    */
   public static Map<String, Attribute> getAttributesForHardcodedMetadata(String oid, String type, String tableName, Map<String, String> relationshipAttributesHackMap, boolean rootClass)
   {
@@ -464,7 +464,7 @@ public class EntityDAOFactory
             }
           }
 
-          if (fieldName.equalsIgnoreCase(EntityInfo.ID))
+          if (fieldName.equalsIgnoreCase(EntityInfo.OID))
           {
             addedId = true;
           }
@@ -509,22 +509,22 @@ public class EntityDAOFactory
     }
     catch (DuplicateDataDatabaseException duplicateDataDatabaseException)
     {
-      // Check to see if this is an exception due to an ID primary key violation
+      // Check to see if this is an exception due to an OID primary key violation
       if (!duplicateDataDatabaseException.isIdPrimaryKeyViolation())
       {
         throw duplicateDataDatabaseException;
       }
-      // An ID primary key violation occurred, check to see if it was the result
+      // An OID primary key violation occurred, check to see if it was the result
       // of a duplicate
       // key value. The error message should display the key value, rather than
-      // the ID as that would make
+      // the OID as that would make
       // more sense to the end user.
       else
       {
         String oid = entityDAO.getOid();
         String keyValue = entityDAO.getKey();
 
-        // There was a duplicate ID violation because the ID was derived
+        // There was a duplicate OID violation because the OID was derived
         // (hashed) from another record
         // with a duplicate key value. If no key value is supplied, then it is
         // given the oid. If the oid
@@ -757,7 +757,7 @@ public class EntityDAOFactory
             }
           }
 
-          if (attrName.equalsIgnoreCase(EntityInfo.ID))
+          if (attrName.equalsIgnoreCase(EntityInfo.OID))
           {
             addedId = true;
           }
@@ -795,7 +795,7 @@ public class EntityDAOFactory
         {
           // Do not bother updating the table if only the oid is changing, but it
           // is being set to the same value it already is.
-          if (! ( columnNames.size() == 1 && columnNames.get(0).equals(ComponentInfo.ID) && values.size() == 1 && values.get(0).equals(existingId) ))
+          if (! ( columnNames.size() == 1 && columnNames.get(0).equals(ComponentInfo.OID) && values.size() == 1 && values.get(0).equals(existingId) ))
           {
             preparedStmt = Database.buildPreparedSQLUpdateStatement(currMdEntity.getTableName(), columnNames, prepStmtVars, values, attributeTypes, existingId);
             preparedStatementList.add(preparedStmt);
@@ -972,7 +972,7 @@ public class EntityDAOFactory
   }
 
   /**
-   * Returns the oid to the MdEntity that defines the given type. given ID.
+   * Returns the oid to the MdEntity that defines the given type. given OID.
    * 
    * @param type
    * @return oid to the MdEntity that defines the given type.
@@ -1064,7 +1064,7 @@ public class EntityDAOFactory
   /**
    * Changes all references to the given object to use the new oid. After this
    * method is called, the given <code>EntityDAO</code> will be assigned the new
-   * ID.
+   * OID.
    * 
    * @param entityDAO
    * @param oldId

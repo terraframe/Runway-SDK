@@ -429,7 +429,7 @@ public class RelationshipTest
     RelationshipDAO relationshipDAO = reference.addParent(testObject, TEST_RELATIONSHIP_TREE.getType());
     relationshipDAO.apply();
 
-    // check database directly for ID match on parent/child
+    // check database directly for OID match on parent/child
     RelationshipDAOIF rel = RelationshipDAOFactory.get(relationshipDAO.getOid());
     if (rel == null)
     {
@@ -505,7 +505,7 @@ public class RelationshipTest
     RelationshipDAO relationshipDAO = testObject.addChild(reference, TEST_RELATIONSHIP_TREE.getType());
     relationshipDAO.apply();
 
-    // check database directly for ID match on parent/child
+    // check database directly for OID match on parent/child
     RelationshipDAOIF rel = RelationshipDAOFactory.get(relationshipDAO.getOid());
     if (rel == null)
     {

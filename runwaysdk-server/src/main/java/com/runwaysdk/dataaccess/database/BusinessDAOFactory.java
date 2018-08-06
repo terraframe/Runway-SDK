@@ -467,7 +467,7 @@ public class BusinessDAOFactory
     BusinessDAOQuery businessDAOsQuery = BusinessDAOQuery.getObjectInstance(oid);
     List<BusinessDAO> businessDAOlist = queryBusiessDAOs(businessDAOsQuery);
 
-    // If the BusinessDAO list is null, then a BusinessDAO with the given ID
+    // If the BusinessDAO list is null, then a BusinessDAO with the given OID
     // does not exist.
     if (businessDAOlist.size() == 0)
     {
@@ -561,7 +561,7 @@ public class BusinessDAOFactory
     ResultSet results = Database.query(sqlStmt);
 
     // ThreadRefactor: get rid of this map.
-    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
+    // Key: OID of an MdAttribute Value: MdEntity that defines the attribute;
     Map<String, MdTableClassIF> definedByMdTableClassMap = new HashMap<String, MdTableClassIF>();
     // This is map improves performance.
     // Key: type Values: List of MdAttributeIF objects that an instance of the
@@ -721,7 +721,7 @@ public class BusinessDAOFactory
     // This used to be in EntityDAO.save(), but has been moved here to help with
     // distributed issues
     String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdEntityIF.getOid());
-    newBusinessDAO.getAttribute(EntityInfo.ID).setValue(newId);
+    newBusinessDAO.getAttribute(EntityInfo.OID).setValue(newId);
 
     return newBusinessDAO;
   }

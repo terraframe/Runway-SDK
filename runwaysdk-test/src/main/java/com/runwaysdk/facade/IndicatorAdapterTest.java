@@ -111,14 +111,14 @@ public class IndicatorAdapterTest implements DoNotWeave
   private static final String      TEST_COUNT_INDICATOR   = "testCountIndicator";
 
   /**
-   * <code>testMdBusinessId</code> is the ID for the metadata object that
+   * <code>testMdBusinessId</code> is the OID for the metadata object that
    * describes the Test class. It's used to delete the type after tests are
    * completed.
    */
   private static String            testMdBusinessId;
 
   /**
-   * <code>referenceMdBusinessId</code> is the ID for the metadata object that
+   * <code>referenceMdBusinessId</code> is the OID for the metadata object that
    * describes the MasterTestSetup.REFERENCE_CLASS class. It's used to delete
    * the type after tests are completed.
    */

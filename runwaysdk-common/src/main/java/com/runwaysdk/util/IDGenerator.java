@@ -45,7 +45,7 @@ import sun.security.provider.Sun;
 public class IDGenerator
 {
   /**
-   * Generates random bits that are prepended on the unique ID
+   * Generates random bits that are prepended on the unique OID
    */
   private static SecureRandom  random;
 

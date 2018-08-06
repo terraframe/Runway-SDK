@@ -315,7 +315,7 @@ public class SchedulerManager
       detail = JobBuilder.newJob(job.getClass()).withIdentity(oid).build();
 
       // Give the Quartz Job a back-reference to the Runway Job
-      detail.getJobDataMap().put(JobHistoryRecord.ID, oid);
+      detail.getJobDataMap().put(JobHistoryRecord.OID, oid);
     }
 
     return detail;

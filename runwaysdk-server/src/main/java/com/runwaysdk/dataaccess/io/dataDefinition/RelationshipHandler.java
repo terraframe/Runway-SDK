@@ -139,7 +139,7 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
     String parentKey = attributes.getValue(XMLTags.PARENT_KEY_TAG);
     String childKey = attributes.getValue(XMLTags.CHILD_KEY_TAG);
 
-    // Get the database ID of a XML parent key
+    // Get the database OID of a XML parent key
     String dataParentId = "";
     try
     {
@@ -158,7 +158,7 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
       dataParentId = EntityDAO.getOidFromKey(parentType, parentKey);
     }
 
-    // Get the database ID of a XML child key
+    // Get the database OID of a XML child key
     String dataChildId = "";
     try
     {

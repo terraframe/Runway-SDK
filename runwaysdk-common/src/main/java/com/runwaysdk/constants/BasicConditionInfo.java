@@ -39,6 +39,6 @@ public interface BasicConditionInfo extends FieldConditionInfo
   /**
    * The operation to evaluate
    */
-  public static final String ID         = "oid";
+  public static final String OID         = "oid";
 
 }

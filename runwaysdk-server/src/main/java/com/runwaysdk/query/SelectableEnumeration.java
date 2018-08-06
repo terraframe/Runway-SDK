@@ -33,7 +33,7 @@ public interface SelectableEnumeration extends Selectable
   /**
    * Checks if the enumeration attribute contains a mapping with
    * one of the enumeration items with the given oid.
-   * @param enumIds ID of an enumeration.
+   * @param enumIds OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsAny(String ... enumIds);
@@ -42,7 +42,7 @@ public interface SelectableEnumeration extends Selectable
   /**
    * Checks if the enumeration attribute does not contain a mapping with
    * one of the enumeration items with the given oid.
-   * @param enumIds ID of an enumeration.
+   * @param enumIds OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition notContainsAny(String ... enumIds);
@@ -51,7 +51,7 @@ public interface SelectableEnumeration extends Selectable
   /**
    * Checks if the enumeration attribute contains a mapping with
    * all of the enumeration items with the given oid.
-   * @param enumIds ID of an enumeration.
+   * @param enumIds OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsAll(String ... enumIds);
@@ -60,7 +60,7 @@ public interface SelectableEnumeration extends Selectable
   /**
    * Checks if the enumeration attribute does not contain a mapping with
    * all of the enumeration items with the given oid.
-   * @param enumIds ID of an enumeration.
+   * @param enumIds OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition notContainsAll(String ... enumIds);
@@ -69,7 +69,7 @@ public interface SelectableEnumeration extends Selectable
   /**
    * Checks if the enumeration attribute contains a mapping with
    * exactly the given set of the enumeration items with the given oid.
-   * @param enumIds ID of an enumeration.
+   * @param enumIds OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsExactly(String ... enumIds);

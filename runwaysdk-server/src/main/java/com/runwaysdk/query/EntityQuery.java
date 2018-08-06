@@ -101,7 +101,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public AttributeCharacter oid(String userDefinedAlias)
   {
-    String name = EntityInfo.ID;
+    String name = EntityInfo.OID;
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
 
     String definingTableName = this.getMdEntityIF().getTableName();

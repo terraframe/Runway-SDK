@@ -49,13 +49,13 @@ public interface ComponentIF
   public boolean    isNew();
   
   /**
-   * Returns the ID of the component.
+   * Returns the OID of the component.
    * 
    * <br/><b>Precondition:</b>   true
    * <br/><b>Postcondition:</b>  The state of the Component does not change
    * <br/><b>Postcondition:</b>  return value != null
    * 
-   * @return  The ID of the component
+   * @return  The OID of the component
    */
   public String     getOid();
   

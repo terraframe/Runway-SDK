@@ -147,13 +147,13 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
    */
   protected void init(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap)
   {
-    if (attributeMap.get(ComponentInfo.ID) == null)
+    if (attributeMap.get(ComponentInfo.OID) == null)
     {
       this.oid = "";
     }
     else
     {
-      this.oid = attributeMap.get(ComponentInfo.ID).getValue();
+      this.oid = attributeMap.get(ComponentInfo.OID).getValue();
     }
 
     this.clientRequest = clientRequest;
@@ -198,13 +198,13 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
       attributeDTO.setContainingDTO(this);
     }
 
-    if (attributeMap.get(ComponentInfo.ID) == null)
+    if (attributeMap.get(ComponentInfo.OID) == null)
     {
       this.oid = "";
     }
     else
     {
-      this.oid = attributeMap.get(ComponentInfo.ID).getValue();
+      this.oid = attributeMap.get(ComponentInfo.OID).getValue();
     }
 
   }
@@ -239,7 +239,7 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
 
   public AttributeCharacterMdDTO getOidMd()
   {
-    return this.getAttributeCharacterDTO(ComponentInfo.ID).getAttributeMdDTO();
+    return this.getAttributeCharacterDTO(ComponentInfo.OID).getAttributeMdDTO();
   }
 
   /**

@@ -120,9 +120,9 @@ public class MdTableQueryTest
     mdTableChild.setValue(MdTableInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTableChild.apply();
 
-    // ID field
+    // OID field
     MdAttributeCharacterDAO mdTableChildIdAttr = TestFixtureFactory.addCharacterAttribute(mdTableChild, "childObjId");
-    mdTableChildIdAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, ComponentInfo.ID);
+    mdTableChildIdAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, ComponentInfo.OID);
     mdTableChildIdAttr.apply();
 
     MdAttributeCharacterDAOIF mdClassQueryCharAttr = (MdAttributeCharacterDAOIF) mdBusChildType.definesAttribute("queryCharacter");
@@ -160,7 +160,7 @@ public class MdTableQueryTest
     mdTableChildRef.apply();
 
     MdAttributeCharacterDAO mdTableChildRefIdAttr = TestFixtureFactory.addCharacterAttribute(mdTableChildRef, "childRefObjId");
-    mdTableChildRefIdAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, ComponentInfo.ID);
+    mdTableChildRefIdAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, ComponentInfo.OID);
     mdTableChildRefIdAttr.apply();
 
     MdAttributeCharacterDAOIF mdClassRefQueryCharAttr = (MdAttributeCharacterDAOIF) mdBusChildRefType.definesAttribute("refQueryCharacter");
@@ -233,7 +233,7 @@ public class MdTableQueryTest
 
       QueryFactory qf = new QueryFactory();
 
-      // Query number of ID fields
+      // Query number of OID fields
 
       ValueQuery vQ1 = qf.valueQuery();
       TableQuery mdAttrQ = qf.tableQuery(mdTabledAttrConcrete.definesType());
@@ -369,7 +369,7 @@ public class MdTableQueryTest
 
       QueryFactory qf = new QueryFactory();
 
-      // Query number of ID fields
+      // Query number of OID fields
 
       ValueQuery vQ1 = qf.valueQuery();
       TableQuery mdAttrQ = qf.tableQuery(mdTabledAttrConcrete.definesType());

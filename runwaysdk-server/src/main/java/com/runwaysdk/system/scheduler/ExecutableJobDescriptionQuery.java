@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1368785742)
+@com.runwaysdk.business.ClassSignature(hash = -1945154955)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -54,23 +54,6 @@ public  class ExecutableJobDescriptionQuery extends com.runwaysdk.query.Generate
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJobDescription.DEFAULTLOCALE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getOid()
-  {
-    return getOid(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getOid(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJobDescription.ID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJobDescription.ID, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableChar getKeyName()
   {
     return getKeyName(null);
@@ -86,6 +69,23 @@ public  class ExecutableJobDescriptionQuery extends com.runwaysdk.query.Generate
   public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJobDescription.KEYNAME, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJobDescription.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJobDescription.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getSiteMaster()
@@ -139,12 +139,12 @@ public  class ExecutableJobDescriptionQuery extends com.runwaysdk.query.Generate
     public com.runwaysdk.query.SelectableChar getDefaultLocale();
     public com.runwaysdk.query.SelectableChar getDefaultLocale(String alias);
     public com.runwaysdk.query.SelectableChar getDefaultLocale(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getOid();
-    public com.runwaysdk.query.SelectableChar getOid(String alias);
-    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getSiteMaster();
     public com.runwaysdk.query.SelectableChar getSiteMaster(String alias);
     public com.runwaysdk.query.SelectableChar getSiteMaster(String alias, String displayLabel);
@@ -180,23 +180,6 @@ public  class ExecutableJobDescriptionQuery extends com.runwaysdk.query.Generate
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJobDescription.DEFAULTLOCALE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getOid()
-  {
-    return getOid(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getOid(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJobDescription.ID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJobDescription.ID, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableChar getKeyName()
   {
     return getKeyName(null);
@@ -212,6 +195,23 @@ public  class ExecutableJobDescriptionQuery extends com.runwaysdk.query.Generate
   public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJobDescription.KEYNAME, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJobDescription.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJobDescription.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getSiteMaster()

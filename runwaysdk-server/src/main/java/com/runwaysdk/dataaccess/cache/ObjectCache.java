@@ -356,7 +356,7 @@ public class ObjectCache
   }
 
   /**
-   * Fetches an object with the given ID. If the object has been modified during
+   * Fetches an object with the given OID. If the object has been modified during
    * a transaction and the request is from that transaction, this object will
    * not come from the global {@link ObjectCache} but instead will come from a
    * transaction cache.
@@ -372,7 +372,7 @@ public class ObjectCache
   }
 
   /**
-   * Fetches an object with the given ID from the cache (or directly from the
+   * Fetches an object with the given OID from the cache (or directly from the
    * database, depending on its type) and should be used for internal purposes
    * only, as it does not take into account whether the object has been modified
    * during the transaction.

@@ -27,9 +27,9 @@ public interface ComponentInfo
   public static final String TABLE             = "component";
 
   /**
-   * Name of the attribute that specifies the ID.
+   * Name of the attribute that specifies the OID.
    */
-  public static final String ID               = "oid";
+  public static final String OID               = "oid";
 
   /**
    * Name root of the oid.  Denormalized for metadata loading performance.

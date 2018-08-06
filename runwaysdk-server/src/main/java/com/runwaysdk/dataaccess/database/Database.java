@@ -82,7 +82,7 @@ public class Database
   public static final int    MAX_ATTRIBUTE_NAME_SIZE          = 28;
 
   /**
-   * The size, in characters, of the ID strings for each object in the database.
+   * The size, in characters, of the OID strings for each object in the database.
    */
   public static final String DATABASE_ID_SIZE                 = "64";
 
@@ -513,7 +513,7 @@ public class Database
    * @param table
    *          The table to insert into.
    * @param entityId
-   *          entity ID (Optional)
+   *          entity OID (Optional)
    * @param columnName
    *          The name of the field being updated.
    * @param prepStmtVar
@@ -539,7 +539,7 @@ public class Database
    * @param table
    *          The table to insert into.
    * @param entityId
-   *          entity ID (Required)
+   *          entity OID (Required)
    * @param columnName
    *          The name of the field being updated.
    * @param prepStmtVar
@@ -695,7 +695,7 @@ public class Database
 
   /**
    * Creates a new table in the database for a class. Automatically adds the
-   * Component.ID column as the primary key.
+   * Component.OID column as the primary key.
    * 
    * @param table
    *          The name of the new table.
@@ -757,7 +757,7 @@ public class Database
 
     // // Populate the properties table
     // List<String> fields = new LinkedList<String>();
-    // fields.add(EntityInfo.ID);
+    // fields.add(EntityInfo.OID);
     // fields.add(Database.VERSION_NUMBER);
     //
     // List<String> prepStmtVars = new LinkedList<String>();
@@ -921,7 +921,7 @@ public class Database
   }
 
   /**
-   * Returns the oid to the MdEntity that defines the given type. given ID.
+   * Returns the oid to the MdEntity that defines the given type. given OID.
    * 
    * @param type
    * @return oid to the MdEntity that defines the given type.
@@ -985,7 +985,7 @@ public class Database
   }
 
   /**
-   * Returns a Map of Attribute objects for the EnityObject with the given ID
+   * Returns a Map of Attribute objects for the EnityObject with the given OID
    * and class name. It only returns attributes that are explicitly defined by
    * the given class name.
    * 
@@ -1001,7 +1001,7 @@ public class Database
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
    *          return the parent_id and child_id values in this map.
-   * @return Map of Attribute objects for the EnityObject with the given ID and
+   * @return Map of Attribute objects for the EnityObject with the given OID and
    *         class.
    */
   public static Map<String, Attribute> getAttributesForHardcodedMetadataObject(String oid, String type, String tableName, Map<String, String> relationshipAttributesHackMap, boolean rootClass)
@@ -1025,7 +1025,7 @@ public class Database
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
    *          return the parent_id and child_id values in this map.
-   * @return Map of Attribute objects for the EnityObject with the given ID and
+   * @return Map of Attribute objects for the EnityObject with the given OID and
    *         class.
    */
   public static HardCodedMetadataIterator getAttributesForHardcodedMetadataType(String cacheTypeTable, String type, String tableName, Map<String, Map<String, String>> relationshipAttributesHackMap, boolean rootClass)
@@ -1046,7 +1046,7 @@ public class Database
 
   /**
    * Creates a new table in the database for a relationships. Automatically adds
-   * the Component.ID column as the primary key.
+   * the Component.OID column as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -1079,7 +1079,7 @@ public class Database
 
   /**
    * Returns the SQL string for a new table in the database for a relationship,
-   * minus the closing parenthesis. Automatically adds the Component.ID column
+   * minus the closing parenthesis. Automatically adds the Component.OID column
    * as the primary key.
    * 
    * @param tableName
@@ -1121,7 +1121,7 @@ public class Database
    * Drops an entire table from the database for a class. An undo command is
    * created that will recreate the table if transaction management requires a
    * rollback. However, the undo will <b>not </b> recreate all of the columns in
-   * the table, only the Component.ID.
+   * the table, only the Component.OID.
    * 
    * @param table
    *          The name of the table to drop.
@@ -1146,7 +1146,7 @@ public class Database
    * Drops an entire table from the database for a relationship. An undo command
    * is created that will recreate the table if transaction management requires
    * a rollback. However, the undo will <b>not </b> recreate all of the columns
-   * in the table, only the Component.ID.
+   * in the table, only the Component.OID.
    * 
    * @param table
    *          The name of the table to drop.

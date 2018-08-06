@@ -479,8 +479,8 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     getWriter().writeLine("");
 
     // Generate an accessor that returns the reference oid
-    String refAttributeIdName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute()) + CommonGenerationUtil.upperFirstCharacter(ComponentInfo.ID);
-    String getRefIdReturnType = m.getMdAttributeDAO(ComponentInfo.ID).javaType(false);
+    String refAttributeIdName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute()) + CommonGenerationUtil.upperFirstCharacter(ComponentInfo.OID);
+    String getRefIdReturnType = m.getMdAttributeDAO(ComponentInfo.OID).javaType(false);
     getWriter().writeLine(getterVisibility.getJavaModifier() + " " + getRefIdReturnType + " get" + refAttributeIdName + "()");
     getWriter().openBracket();
 

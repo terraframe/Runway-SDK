@@ -634,7 +634,7 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
   }
 
   /**
-   * Returns the Universally Unique ID (UUID) for this entity.
+   * Returns the Universally Unique OID (UUID) for this entity.
    * 
    * @return <b>this</b> entity's UUID
    */
@@ -645,7 +645,7 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
 
   /**
    * Returns the Id used for AttributeProblems (not messages). New instances
-   * that fail will have a different ID on the client.
+   * that fail will have a different OID on the client.
    * 
    * @return problem notification oid.
    */

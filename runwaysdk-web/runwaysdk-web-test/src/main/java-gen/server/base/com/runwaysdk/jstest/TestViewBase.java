@@ -29,7 +29,7 @@ package com.runwaysdk.jstest;
 public abstract class TestViewBase extends com.runwaysdk.business.View implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestView";
-  public static java.lang.String ID = "oid";
+  public static java.lang.String OID = "oid";
   public static java.lang.String VIEWCHARACTER = "viewCharacter";
   public static java.lang.String VIEWPHONE = "viewPhone";
   private com.runwaysdk.business.Struct viewPhone = null;
@@ -46,18 +46,18 @@ public abstract class TestViewBase extends com.runwaysdk.business.View implement
   
   public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestView.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getViewCharacter()

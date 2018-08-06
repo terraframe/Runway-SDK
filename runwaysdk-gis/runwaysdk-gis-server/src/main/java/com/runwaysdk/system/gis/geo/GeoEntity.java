@@ -58,11 +58,11 @@ public class GeoEntity extends GeoEntityBase
   }
 
   /**
-   * Constructs the a GeoID from the given Country Code and Country ID.
+   * Constructs the a GeoID from the given Country Code and Country OID.
    * 
    * @param countryCode
    * @param countryId
-   * @return GeoID from the given Country Code and Country ID.
+   * @return GeoID from the given Country Code and Country OID.
    */
   public static String buildGeoIdFromCountryId(String _countryCode, String _countryId)
   {
@@ -202,7 +202,7 @@ public class GeoEntity extends GeoEntityBase
 
     GeoEntityQuery geoEntityQ = new GeoEntityQuery(queryFactory);
 
-    valueQuery.SELECT(geoEntityQ.getOid(GeoEntity.ID));
+    valueQuery.SELECT(geoEntityQ.getOid(GeoEntity.OID));
     valueQuery.WHERE(geoEntityQ.getGeoId().EQ(geoId));
 
     OIterator<? extends ValueObject> iterator = valueQuery.getIterator();
@@ -212,7 +212,7 @@ public class GeoEntity extends GeoEntityBase
       {
         ValueObject valueObject = iterator.next();
 
-        String oid = valueObject.getValue(GeoEntity.ID);
+        String oid = valueObject.getValue(GeoEntity.OID);
 
         return (GeoEntity) Business.get(oid);
       }

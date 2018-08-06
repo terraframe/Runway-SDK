@@ -23,7 +23,7 @@ public interface MetadataInfo extends BusinessInfo
 {
   
   /**
-   * ID.
+   * OID.
    */
   public static final String ID_VALUE  = "0000000000000000000000000000017800000000000000000000000000000001";  
   

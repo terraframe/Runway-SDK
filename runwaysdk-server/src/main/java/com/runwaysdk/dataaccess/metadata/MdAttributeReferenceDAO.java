@@ -290,7 +290,7 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
 
   /**
    * Used only to convert an <code>MdAttributeCharacterDAO</code> to an
-   * <code>MdAttributeReferenceDAO</code> for ID fields. Keys and values in the
+   * <code>MdAttributeReferenceDAO</code> for OID fields. Keys and values in the
    * given map replace the values in this map. The <code>AttributeDAO</code>
    * objects' containing entity reference is NOT updated.
    */

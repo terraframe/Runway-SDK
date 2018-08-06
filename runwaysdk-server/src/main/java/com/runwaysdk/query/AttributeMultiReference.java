@@ -1150,7 +1150,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
     Join enumMappingTableJoin = new InnerJoinEq(this.columnName, this.definingTableName, this.definingTableAlias, MdEnumerationDAOIF.SET_ID_COLUMN, this.mdMultiReferenceTableName, rootQuery.getTableAlias(this.attributeNamespace, this.mdMultiReferenceTableName));
 
     // Join the mapping table with the enumeration item master table
-    Join tableJoin = new InnerJoinEq(EntityInfo.ID, this.referenceTableName, this.referenceTableAlias, MdEnumerationDAOIF.ITEM_ID_COLUMN, this.mdMultiReferenceTableName, rootQuery.getTableAlias(this.attributeNamespace, this.mdMultiReferenceTableName));
+    Join tableJoin = new InnerJoinEq(EntityInfo.OID, this.referenceTableName, this.referenceTableAlias, MdEnumerationDAOIF.ITEM_ID_COLUMN, this.mdMultiReferenceTableName, rootQuery.getTableAlias(this.attributeNamespace, this.mdMultiReferenceTableName));
 
     this.tableJoinSet.add(enumMappingTableJoin);
     this.tableJoinSet.add(tableJoin);
@@ -1162,7 +1162,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
     if (!tableName.equals(this.referenceTableName))
     {
       String tableAlias = rootQuery.getTableAlias(refAttributeNameSpace, tableName);
-      this.tableJoinSet.add(new InnerJoinEq(EntityInfo.ID, this.referenceTableName, this.referenceTableAlias, EntityInfo.ID, tableName, tableAlias));
+      this.tableJoinSet.add(new InnerJoinEq(EntityInfo.OID, this.referenceTableName, this.referenceTableAlias, EntityInfo.OID, tableName, tableAlias));
 
       parameterTableName = tableName;
       parameterTableAlias = tableAlias;
@@ -1527,7 +1527,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
    * enumeration items with the given oid.
    * 
    * @param enumIds
-   *          ID of an enumeration.
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsAny(String... enumIds)
@@ -1547,7 +1547,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
    * the enumeration items with the given oid.
    * 
    * @param enumIds
-   *          ID of an enumeration.
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition notContainsAny(String... enumIds)
@@ -1561,7 +1561,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
    * enumeration items with the given oid.
    * 
    * @param enumIds
-   *          ID of an enumeration.
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsAll(String... enumIds)
@@ -1593,7 +1593,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
    * the enumeration items with the given oid.
    * 
    * @param enumIds
-   *          ID of an enumeration.
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition notContainsAll(String... enumIds)
@@ -1625,7 +1625,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
    * given set of the enumeration items with the given oid.
    * 
    * @param enumIds
-   *          ID of an enumeration.
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsExactly(String... enumIds)

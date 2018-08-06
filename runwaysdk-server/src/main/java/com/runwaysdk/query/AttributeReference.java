@@ -153,10 +153,10 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public AttributeCharacter oid()
   {
-    String attributeName = EntityInfo.ID;
+    String attributeName = EntityInfo.OID;
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
 
-    this.tableJoinSet.add(new InnerJoinEq(this.columnName, this.definingTableName, this.definingTableAlias, EntityInfo.ID, this.referenceTableName, this.referenceTableAlias));
+    this.tableJoinSet.add(new InnerJoinEq(this.columnName, this.definingTableName, this.definingTableAlias, EntityInfo.OID, this.referenceTableName, this.referenceTableAlias));
 
     return new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, this.refAttributeNameSpace + "." + attributeName, this.referenceTableName, this.referenceTableAlias, this.rootQuery, this.tableJoinSet, null, null);
   }
@@ -1315,7 +1315,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     if (!tableName.equals(this.referenceTableName))
     {
       String tableAlias = this.rootQuery.getTableAlias(refAttrReffAttrNamespace, tableName);
-      this.tableJoinSet.add(new InnerJoinEq(EntityInfo.ID, this.referenceTableName, this.referenceTableAlias, EntityInfo.ID, tableName, tableAlias));
+      this.tableJoinSet.add(new InnerJoinEq(EntityInfo.OID, this.referenceTableName, this.referenceTableAlias, EntityInfo.OID, tableName, tableAlias));
 
       parameterTableName = tableName;
       parameterTableAlias = tableAlias;

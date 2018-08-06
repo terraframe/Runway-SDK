@@ -92,7 +92,7 @@ public class JSONControllerGeneric
    */
   public static String delete(String sessionId, Map<?, ?> parameters)
   {
-    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.ID.getName()) )[0];
+    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.OID.getName()) )[0];
 
     return JSONController.delete(sessionId, oid);
   }
@@ -103,7 +103,7 @@ public class JSONControllerGeneric
    */
   public static String get(String sessionId, Map<?, ?> parameters)
   {
-    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.ID.getName()) )[0];
+    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.OID.getName()) )[0];
 
     return JSONController.get(sessionId, oid);
   }
@@ -277,7 +277,7 @@ public class JSONControllerGeneric
    */
   public static String lock(String sessionId, Map<?, ?> parameters)
   {
-    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.ID.getName()) )[0];
+    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.OID.getName()) )[0];
 
     return JSONController.lock(sessionId, oid);
   }
@@ -288,7 +288,7 @@ public class JSONControllerGeneric
    */
   public static String unlock(String sessionId, Map<?, ?> parameters)
   {
-    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.ID.getName()) )[0];
+    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.OID.getName()) )[0];
 
     return JSONController.unlock(sessionId, oid);
   }
