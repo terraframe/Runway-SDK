@@ -65,18 +65,18 @@ public class RelationshipDAOQuery extends AbstractRelationshipQuery
 
   /**
    * Creates a query object with the criteria set to fetch an object with the given oid.
-   * @param parentId OID of the object in the Relationship
-   * @param childId OID of the object in the Relationship
+   * @param parentOid OID of the object in the Relationship
+   * @param childOid OID of the object in the Relationship
    * @param relationshipType Type of the Relationship
    * @return query object with the criteria set to fetch an object with the given oid.
    */
-  public static RelationshipDAOQuery getRelationshipInstance(String parentId, String childId, String relationshipType)
+  public static RelationshipDAOQuery getRelationshipInstance(String parentOid, String childOid, String relationshipType)
   {
     RelationshipDAOQuery relationshipQuery = new QueryFactory().relationshipDAOQuery(relationshipType);
 
     relationshipQuery.
-      WHERE(relationshipQuery.parentId().EQ(parentId).
-      AND(relationshipQuery.childId().EQ(childId))
+      WHERE(relationshipQuery.parentOid().EQ(parentOid).
+      AND(relationshipQuery.childOid().EQ(childOid))
     );
 
     relationshipQuery.instanceQuery = true;

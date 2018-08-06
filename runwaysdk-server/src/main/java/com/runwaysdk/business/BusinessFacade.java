@@ -445,18 +445,18 @@ public class BusinessFacade
   /**
    * Returns a new instance of a business relationship. The returned instance is type-safe if the relationship is not a reserved type.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param type
    * @return
    */
-  public static Relationship newRelationship(String parentId, String childId, String type)
+  public static Relationship newRelationship(String parentOid, String childOid, String type)
   {
     Relationship relationship = null;
 
     if (isReservedType(type))
     {
-      relationship = new Relationship(parentId, childId, type);
+      relationship = new Relationship(parentOid, childOid, type);
     }
     else
     {
@@ -464,7 +464,7 @@ public class BusinessFacade
       {
         Class<?> clazz = LoaderDecorator.load(type);
         Constructor<?> constructor = clazz.getConstructor(String.class, String.class);
-        relationship = (Relationship) constructor.newInstance(parentId, childId);
+        relationship = (Relationship) constructor.newInstance(parentOid, childOid);
       }
       catch (InstantiationException e)
       {
@@ -783,7 +783,7 @@ public class BusinessFacade
     }
     else if (mdClassIF instanceof MdRelationshipDAOIF)
     {
-      return newRelationship(RelationshipDTOInfo.EMPTY_PARENT_ID, RelationshipDTOInfo.EMPTY_CHILD_ID, type);
+      return newRelationship(RelationshipDTOInfo.EMPTY_PARENT_OID, RelationshipDTOInfo.EMPTY_CHILD_OID, type);
     }
     else if (mdClassIF instanceof MdStructDAOIF)
     {

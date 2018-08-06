@@ -43,9 +43,9 @@ public abstract class SequentialBase extends com.runwaysdk.business.Relationship
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -651181314;
   
-  public SequentialBase(String parentId, String childId)
+  public SequentialBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

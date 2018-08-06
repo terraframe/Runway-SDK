@@ -22,9 +22,9 @@ public class BusinessInheritance extends BusinessInheritanceBase
 {
   private static final long serialVersionUID = -735294576;
   
-  public BusinessInheritance(String parentId, String childId)
+  public BusinessInheritance(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public BusinessInheritance(com.runwaysdk.system.metadata.MdBusiness parent, com.runwaysdk.system.metadata.MdBusiness child)

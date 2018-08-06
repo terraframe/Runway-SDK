@@ -24,9 +24,9 @@ public abstract class LocatedInDTOBase extends com.runwaysdk.business.ontology.T
   public final static String CLASS = "com.runwaysdk.system.gis.geo.LocatedIn";
   private static final long serialVersionUID = -1484155608;
   
-  public LocatedInDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public LocatedInDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -406,12 +406,12 @@ public abstract class LocatedInDTOBase extends com.runwaysdk.business.ontology.T
   
   public com.runwaysdk.system.gis.geo.GeoEntityDTO getParent()
   {
-    return com.runwaysdk.system.gis.geo.GeoEntityDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.gis.geo.GeoEntityDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.gis.geo.GeoEntityDTO getChild()
   {
-    return com.runwaysdk.system.gis.geo.GeoEntityDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.gis.geo.GeoEntityDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.gis.geo.LocatedInDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -421,16 +421,16 @@ public abstract class LocatedInDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.system.gis.geo.LocatedInDTO) dto;
   }
   
-  public static com.runwaysdk.system.gis.geo.LocatedInQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.gis.geo.LocatedInQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.LocatedInDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.gis.geo.LocatedInQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.gis.geo.LocatedInQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.gis.geo.LocatedInQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.LocatedInDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.gis.geo.LocatedInQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

@@ -118,9 +118,9 @@ public class DefaultPersistanceStrategy extends PersistanceStrategyAdapter imple
   }
 
   @Request
-  public RelationshipDAO newInstance(String parentId, String childId, String type)
+  public RelationshipDAO newInstance(String parentOid, String childOid, String type)
   {
-    return RelationshipDAO.newInstance(parentId, childId, type);
+    return RelationshipDAO.newInstance(parentOid, childOid, type);
   }
 
   @Request

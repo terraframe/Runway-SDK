@@ -22,9 +22,9 @@ public class UniversalTermAttributeRootDTO extends UniversalTermAttributeRootDTO
 {
   private static final long serialVersionUID = -895746155;
   
-  public UniversalTermAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public UniversalTermAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -24,9 +24,9 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
   public final static String CLASS = "com.runwaysdk.business.Relationship";
   private static final long serialVersionUID = -759986741;
   
-  public RelationshipSystemDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public RelationshipSystemDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -137,14 +137,14 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
   
   public com.runwaysdk.business.BusinessDTO getParent()
   {
-    com.runwaysdk.business.BusinessDTO dto = (com.runwaysdk.business.BusinessDTO) getRequest().get(super.getParentId());
+    com.runwaysdk.business.BusinessDTO dto = (com.runwaysdk.business.BusinessDTO) getRequest().get(super.getParentOid());
     
     return dto;
   }
   
     public com.runwaysdk.business.BusinessDTO getChild()
   {
-    com.runwaysdk.business.BusinessDTO dto = (com.runwaysdk.business.BusinessDTO) getRequest().get(super.getChildId());
+    com.runwaysdk.business.BusinessDTO dto = (com.runwaysdk.business.BusinessDTO) getRequest().get(super.getChildOid());
     
     return dto;
   }
@@ -156,16 +156,16 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
     return (com.runwaysdk.business.RelationshipSystemDTO) dto;
   }
   
-  public static com.runwaysdk.business.RelationshipQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.business.RelationshipQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.business.RelationshipDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.business.RelationshipQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.business.RelationshipQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.business.RelationshipDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

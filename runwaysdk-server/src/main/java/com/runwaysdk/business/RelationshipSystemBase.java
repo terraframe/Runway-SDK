@@ -34,9 +34,9 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
   public static java.lang.String KEYNAME = "keyName";
   private static final long serialVersionUID = -373742517;
   
-  public RelationshipSystemBase(String parentId, String childId)
+  public RelationshipSystemBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public com.runwaysdk.system.metadata.MdDomain getEntityDomain()

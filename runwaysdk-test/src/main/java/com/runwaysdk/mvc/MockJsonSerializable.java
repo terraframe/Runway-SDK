@@ -40,15 +40,15 @@ public class MockJsonSerializable implements JsonSerializable
   @Override
   public Object serialize(RestSerializer serializer, JsonConfiguration configuration) throws JSONException
   {
-    MutableDTO parent = this.request.get(this.relationship.getParentId());
-    MutableDTO child = this.request.get(this.relationship.getChildId());
+    MutableDTO parent = this.request.get(this.relationship.getParentOid());
+    MutableDTO child = this.request.get(this.relationship.getChildOid());
 
     JSONObject object = (JSONObject) serializer.serialize(this.relationship, configuration);
     object.put("parent", (JSONObject) serializer.serialize(parent, configuration));
     object.put("child", (JSONObject) serializer.serialize(child, configuration));
 
-    object.remove("parentId");
-    object.remove("childId");
+    object.remove("parentOid");
+    object.remove("childOid");
 
     return object;
   }

@@ -26,12 +26,12 @@ public enum JSONClientRequestConstants {
   /**
    * Parent oid parameter.
    */
-  PARENT_ID("parentId"),
+  PARENT_OID("parentOid"),
   
   /**
    * Child oid parameter.
    */
-  CHILD_ID("childId"),
+  CHILD_OID("childOid"),
   
   /**
    * Relationship type parameter.

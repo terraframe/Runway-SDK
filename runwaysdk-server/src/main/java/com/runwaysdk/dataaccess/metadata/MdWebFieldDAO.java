@@ -136,7 +136,7 @@ public abstract class MdWebFieldDAO extends MdFieldDAO implements MdWebFieldDAOI
     QueryFactory factory = new QueryFactory();
     RelationshipDAOQuery query = factory.relationshipDAOQuery(RelationshipTypes.WEB_GROUP_FIELD.getType());
 
-    query.WHERE(query.childId().EQ(this.getOid()));
+    query.WHERE(query.childOid().EQ(this.getOid()));
 
     OIterator<RelationshipDAOIF> it = query.getIterator();
 

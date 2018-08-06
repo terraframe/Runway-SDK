@@ -27,5 +27,5 @@
 ------------------- !!DO NOT LOG IN AS ROOT!! -------------------------
 -----------------------------------------------------------------------
 
-INSERT INTO dynamic_properties ( id, version_number) VALUES ('000000000000000000000', '0000000000010000'); -- universal.xml
--- INSERT INTO dynamic_properties ( id, version_number) VALUES ('000000000000000000000', '0000000000100010'); -- Change_Md_Action_cache_type
+INSERT INTO dynamic_properties ( oid, version_number) VALUES ('000000000000000000000', '0000000000010000'); -- universal.xml
+-- INSERT INTO dynamic_properties ( oid, version_number) VALUES ('000000000000000000000', '0000000000100010'); -- Change_Md_Action_cache_type

@@ -23,12 +23,12 @@ public interface RelationshipDAOIF extends ElementDAOIF
   /**
    * Attribute of relationship table.
    */
-  public static final String PARENT_ID_COLUMN                          = "parent_id";
+  public static final String PARENT_OID_COLUMN                          = "parent_oid";
 
   /**
    * Attribute of relationship table.
    */
-  public static final String CHILD_ID_COLUMN                            = "child_id";
+  public static final String CHILD_OID_COLUMN                            = "child_oid";
   
   /**
    * Returns the oid of the parent BusinessDAO in this relationship.
@@ -39,7 +39,7 @@ public interface RelationshipDAOIF extends ElementDAOIF
    *
    * @return oid of the parent BusinessDAO in this relationship
    */
-  public String getParentId();
+  public String getParentOid();
 
   /**
    * Returns the parent BusinessDAO in this relationship.
@@ -61,7 +61,7 @@ public interface RelationshipDAOIF extends ElementDAOIF
    *
    * @return oid of the child BusinessDAO in this relationship
    */
-  public String getChildId();
+  public String getChildOid();
   
   /**
    * Returns the child BusinessDAO in this relationship.

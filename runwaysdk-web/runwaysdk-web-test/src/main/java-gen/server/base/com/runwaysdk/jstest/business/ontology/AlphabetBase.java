@@ -465,7 +465,7 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
     return strategy;
   }
   
-  public static com.runwaysdk.business.ontology.TermAndRel create(com.runwaysdk.jstest.business.ontology.Alphabet dto, java.lang.String parentId, java.lang.String relationshipType)
+  public static com.runwaysdk.business.ontology.TermAndRel create(com.runwaysdk.jstest.business.ontology.Alphabet dto, java.lang.String parentOid, java.lang.String relationshipType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.jstest.business.ontology.Alphabet.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

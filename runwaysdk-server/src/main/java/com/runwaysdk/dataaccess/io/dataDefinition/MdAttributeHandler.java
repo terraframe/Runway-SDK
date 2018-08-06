@@ -151,12 +151,12 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
     protected RelationshipDAO getRelationship(MdAttributeDAO mdAttribute, BusinessDAOIF term, String relationshipType)
     {
-      String parentId = mdAttribute.getOid();
-      String childId = term.getOid();
+      String parentOid = mdAttribute.getOid();
+      String childOid = term.getOid();
 
       RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(relationshipType);
-      query.WHERE(query.parentId().EQ(parentId));
-      query.AND(query.childId().EQ(childId));
+      query.WHERE(query.parentOid().EQ(parentOid));
+      query.AND(query.childOid().EQ(childOid));
 
       OIterator<RelationshipDAOIF> iterator = query.getIterator();
 
@@ -170,7 +170,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
         }
         else
         {
-          RelationshipDAO relationship = RelationshipDAO.newInstance(parentId, childId, relationshipType);
+          RelationshipDAO relationship = RelationshipDAO.newInstance(parentOid, childOid, relationshipType);
           relationship.setValue(RelationshipInfo.KEY, mdAttribute.getKey() + "-" + term.getKey());
 
           return relationship;

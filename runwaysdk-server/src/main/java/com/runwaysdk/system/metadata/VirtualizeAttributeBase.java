@@ -31,9 +31,9 @@ public abstract class VirtualizeAttributeBase extends com.runwaysdk.system.metad
   public final static String CLASS = "com.runwaysdk.system.metadata.VirtualizeAttribute";
   private static final long serialVersionUID = 2106934250;
   
-  public VirtualizeAttributeBase(String parentId, String childId)
+  public VirtualizeAttributeBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

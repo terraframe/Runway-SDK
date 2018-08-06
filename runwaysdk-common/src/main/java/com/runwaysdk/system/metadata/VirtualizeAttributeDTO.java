@@ -22,9 +22,9 @@ public class VirtualizeAttributeDTO extends VirtualizeAttributeDTOBase
 {
   private static final long serialVersionUID = -2097411987;
   
-  public VirtualizeAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public VirtualizeAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

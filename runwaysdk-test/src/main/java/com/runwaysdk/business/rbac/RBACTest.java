@@ -336,7 +336,7 @@ public class RBACTest
     List<RelationshipDAOIF> list = newUser.getChildren(RelationshipTypes.ASSIGNMENTS.getType());
 
     Assert.assertEquals(list.size(), 1);
-    Assert.assertEquals(list.get(0).getChildId(), role.getOid());
+    Assert.assertEquals(list.get(0).getChildOid(), role.getOid());
 
     // Deassign user from a role
     role.deassignMember(newUser);
@@ -365,7 +365,7 @@ public class RBACTest
     List<RelationshipDAOIF> list = methodActor.getChildren(RelationshipTypes.ASSIGNMENTS.getType());
 
     Assert.assertEquals(list.size(), 1);
-    Assert.assertEquals(list.get(0).getChildId(), role.getOid());
+    Assert.assertEquals(list.get(0).getChildOid(), role.getOid());
 
     // Deassign user from a role
     role.deassignMember(methodActor);
@@ -714,7 +714,7 @@ public class RBACTest
 
     for (RelationshipDAOIF rel : set)
     {
-      list.add(rel.getChildId());
+      list.add(rel.getChildOid());
     }
 
     Assert.assertEquals(list.size(), 3);
@@ -754,7 +754,7 @@ public class RBACTest
 
     for (RelationshipDAOIF rel : set)
     {
-      list.add(rel.getChildId());
+      list.add(rel.getChildOid());
     }
 
     Assert.assertEquals(list.size(), 3);
@@ -797,7 +797,7 @@ public class RBACTest
 
     for (RelationshipDAOIF rel : set)
     {
-      list.add(rel.getChildId());
+      list.add(rel.getChildOid());
     }
 
     Assert.assertEquals(3, list.size());
@@ -866,7 +866,7 @@ public class RBACTest
     List<RelationshipDAOIF> list = BusinessDAO.get(role.getOid()).getChildren(RoleDAO.ROLE_INHERITANCE);
 
     Assert.assertEquals(1, list.size());
-    Assert.assertEquals(role2.getOid(), list.get(0).getChildId());
+    Assert.assertEquals(role2.getOid(), list.get(0).getChildOid());
 
     // Test delete inheritance
     role.deleteInheritance(role2);
@@ -891,14 +891,14 @@ public class RBACTest
     List<RelationshipDAOIF> list = role.getParents(RoleDAO.ROLE_INHERITANCE);
 
     Assert.assertEquals(1, list.size());
-    Assert.assertEquals(role2.getOid(), list.get(0).getParentId());
+    Assert.assertEquals(role2.getOid(), list.get(0).getParentOid());
 
     RoleDAO role3 = role.addDescendant("runway.SuperMan", "SuperMan");
 
     list = role.getChildren(RoleDAO.ROLE_INHERITANCE);
 
     Assert.assertEquals(1, list.size());
-    Assert.assertEquals(role3.getOid(), list.get(0).getChildId());
+    Assert.assertEquals(role3.getOid(), list.get(0).getChildOid());
 
     role.delete();
     role2.delete();
@@ -931,7 +931,7 @@ public class RBACTest
 
     for (RelationshipDAOIF rel : set)
     {
-      list.add(rel.getChildId());
+      list.add(rel.getChildOid());
     }
 
     Assert.assertEquals(list.size(), 3);
@@ -974,7 +974,7 @@ public class RBACTest
 
     for (RelationshipDAOIF rel : set)
     {
-      list.add(rel.getChildId());
+      list.add(rel.getChildOid());
     }
 
     Assert.assertEquals(list.size(), 3);
@@ -1107,7 +1107,7 @@ public class RBACTest
     List<RelationshipDAOIF> relationships = BusinessDAO.get(ssd.getOid()).getParents(SDutyDAO.SDCONFLICTINGROLES);
 
     Assert.assertEquals(relationships.size(), 1);
-    Assert.assertEquals(role2.getOid(), relationships.get(0).getParentId());
+    Assert.assertEquals(role2.getOid(), relationships.get(0).getParentOid());
 
     // Add a non conflicting role
     ssd.addSSDRoleMember(role);
@@ -1138,7 +1138,7 @@ public class RBACTest
 
     // Ensure the correct role is deleted
     Assert.assertEquals(1, relationships.size());
-    Assert.assertEquals(role2.getOid(), relationships.get(0).getParentId());
+    Assert.assertEquals(role2.getOid(), relationships.get(0).getParentOid());
 
     ssd.delete();
     role.delete();
@@ -1738,7 +1738,7 @@ public class RBACTest
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
       Assert.assertEquals(list.size(), 2);
@@ -1781,7 +1781,7 @@ public class RBACTest
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
       Assert.assertEquals(list.size(), 2);
@@ -1827,7 +1827,7 @@ public class RBACTest
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
       Assert.assertEquals(2, list.size());
@@ -1919,7 +1919,7 @@ public class RBACTest
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
       Assert.assertTrue(list.contains(mdUtil.getOid()));
@@ -1963,7 +1963,7 @@ public class RBACTest
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
       Assert.assertEquals(list.size(), 2);
@@ -2229,7 +2229,7 @@ public class RBACTest
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
       Assert.assertEquals(list.size(), 2);
@@ -2272,7 +2272,7 @@ public class RBACTest
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
       Assert.assertEquals(list.size(), 2);
@@ -2318,7 +2318,7 @@ public class RBACTest
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
       Assert.assertEquals(2, list.size());
@@ -2409,7 +2409,7 @@ public class RBACTest
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
       Assert.assertTrue(list.contains(mdView.getOid()));
@@ -2453,7 +2453,7 @@ public class RBACTest
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
       Assert.assertEquals(list.size(), 2);

@@ -22,9 +22,9 @@ public class DimensionHasClassDTO extends DimensionHasClassDTOBase
 {
   private static final long serialVersionUID = -446757066;
   
-  public DimensionHasClassDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public DimensionHasClassDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

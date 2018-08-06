@@ -22,9 +22,9 @@ public class BusinessInheritanceDTO extends BusinessInheritanceDTOBase
 {
   private static final long serialVersionUID = -496657904;
   
-  public BusinessInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public BusinessInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

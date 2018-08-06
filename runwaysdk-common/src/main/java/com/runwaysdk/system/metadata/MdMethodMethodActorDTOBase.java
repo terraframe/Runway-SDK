@@ -24,9 +24,9 @@ public abstract class MdMethodMethodActorDTOBase extends com.runwaysdk.system.me
   public final static String CLASS = "com.runwaysdk.system.metadata.MdMethodMethodActor";
   private static final long serialVersionUID = -428184030;
   
-  public MdMethodMethodActorDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public MdMethodMethodActorDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -48,12 +48,12 @@ public abstract class MdMethodMethodActorDTOBase extends com.runwaysdk.system.me
   
   public com.runwaysdk.system.metadata.MdMethodDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdMethodDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdMethodDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.MethodActorDTO getChild()
   {
-    return com.runwaysdk.system.MethodActorDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.MethodActorDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.MdMethodMethodActorDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -63,16 +63,16 @@ public abstract class MdMethodMethodActorDTOBase extends com.runwaysdk.system.me
     return (com.runwaysdk.system.metadata.MdMethodMethodActorDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.MdMethodMethodActorQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.MdMethodMethodActorQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.MdMethodMethodActorQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.MdMethodMethodActorQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.MdMethodMethodActorQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.MdMethodMethodActorQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

@@ -44,9 +44,9 @@ public abstract class GeoEntityTermAttributeRootBase extends com.runwaysdk.busin
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -1494542364;
   
-  public GeoEntityTermAttributeRootBase(String parentId, String childId)
+  public GeoEntityTermAttributeRootBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

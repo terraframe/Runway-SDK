@@ -87,7 +87,7 @@ public class JavaClientRequest extends ClientRequest
    *      java.lang.String, java.lang.Integer, java.lang.Integer)
    */
   @SuppressWarnings("unchecked")
-  public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
+  public List<TermAndRelDTO> getTermAllChildren(String parentOid, Integer pageNum, Integer pageSize)
   {
     this.clearNotifications();
     List<TermAndRelDTO> tnr;
@@ -96,7 +96,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      tnr = (List<TermAndRelDTO>) javaAdapterClass.getMethod(FacadeMethods.GET_TERM_ALL_CHILDREN.getName(), String.class, String.class, Integer.class, Integer.class).invoke(null, this.getSessionId(), parentId, pageNum, pageSize);
+      tnr = (List<TermAndRelDTO>) javaAdapterClass.getMethod(FacadeMethods.GET_TERM_ALL_CHILDREN.getName(), String.class, String.class, Integer.class, Integer.class).invoke(null, this.getSessionId(), parentOid, pageNum, pageSize);
     }
     catch (Throwable e)
     {
@@ -130,7 +130,7 @@ public class JavaClientRequest extends ClientRequest
    * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
    *      java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public RelationshipDTO addChild(String parentId, String childId, String relationshipType)
+  public RelationshipDTO addChild(String parentOid, String childOid, String relationshipType)
   {
     this.clearNotifications();
     RelationshipDTO generic;
@@ -139,7 +139,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (RelationshipDTO) javaAdapterClass.getMethod("addChild", String.class, String.class, String.class, String.class).invoke(null, this.getSessionId(), parentId, childId, relationshipType);
+      generic = (RelationshipDTO) javaAdapterClass.getMethod("addChild", String.class, String.class, String.class, String.class).invoke(null, this.getSessionId(), parentOid, childOid, relationshipType);
     }
     catch (Throwable e)
     {
@@ -163,7 +163,7 @@ public class JavaClientRequest extends ClientRequest
    * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
    *      java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public RelationshipDTO addParent(String parentId, String childId, String relationshipType)
+  public RelationshipDTO addParent(String parentOid, String childOid, String relationshipType)
   {
     this.clearNotifications();
     RelationshipDTO generic;
@@ -172,7 +172,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (RelationshipDTO) javaAdapterClass.getMethod("addParent", String.class, String.class, String.class, String.class).invoke(null, this.getSessionId(), parentId, childId, relationshipType);
+      generic = (RelationshipDTO) javaAdapterClass.getMethod("addParent", String.class, String.class, String.class, String.class).invoke(null, this.getSessionId(), parentOid, childOid, relationshipType);
     }
     catch (Throwable e)
     {

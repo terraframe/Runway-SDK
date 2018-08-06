@@ -43,9 +43,9 @@ public abstract class ConflictingRolesBase extends com.runwaysdk.business.Relati
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -1773820594;
   
-  public ConflictingRolesBase(String parentId, String childId)
+  public ConflictingRolesBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

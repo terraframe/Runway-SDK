@@ -32,9 +32,9 @@ public abstract class IndexAttributeBase extends com.runwaysdk.system.metadata.M
   public static java.lang.String INDEXORDER = "indexOrder";
   private static final long serialVersionUID = 315679883;
   
-  public IndexAttributeBase(String parentId, String childId)
+  public IndexAttributeBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public Integer getIndexOrder()

@@ -2199,10 +2199,10 @@ public class EntityGenTest
     rel.apply();
     RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(mom.getOid()))
+    if (!oracle.getParentOid().equals(mom.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle.getChildId().equals(kid.getOid()))
+    if (!oracle.getChildOid().equals(kid.getOid()))
       Assert.fail("Child reference mismatch in addChild");
   }
 
@@ -2243,8 +2243,8 @@ public class EntityGenTest
 
     RelationshipDAOIF oracle = RelationshipDAO.get(instance.getOid());
 
-    Assert.assertEquals(oracle.getParentId(), mom.getOid());
-    Assert.assertEquals(oracle.getChildId(), kid.getOid());
+    Assert.assertEquals(oracle.getParentOid(), mom.getOid());
+    Assert.assertEquals(oracle.getChildOid(), kid.getOid());
   }
 
   @Request
@@ -2265,10 +2265,10 @@ public class EntityGenTest
     rel.apply();
     RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(mom.getOid()))
+    if (!oracle.getParentOid().equals(mom.getOid()))
       Assert.fail("Parent reference mismatch in addParent");
 
-    if (!oracle.getChildId().equals(kid.getOid()))
+    if (!oracle.getChildOid().equals(kid.getOid()))
       Assert.fail("Child reference mismatch in addParent");
   }
 
@@ -2351,10 +2351,10 @@ public class EntityGenTest
       Assert.fail("RemoveAllChilren expected 1 child, found " + list.size());
 
     RelationshipDAOIF rel = list.get(0);
-    if (!rel.getParentId().equals(mom.getOid()))
+    if (!rel.getParentOid().equals(mom.getOid()))
       Assert.fail("Unexpected parent after removeAllChildren.");
 
-    if (!rel.getChildId().equals(kid2.getOid()))
+    if (!rel.getChildOid().equals(kid2.getOid()))
       Assert.fail("Unexpected child after removeAllChildren.");
 
   }
@@ -2386,12 +2386,12 @@ public class EntityGenTest
       Assert.fail("RemoveAllParents expected 1 parent, found " + list.size());
 
     RelationshipDAOIF rel = list.get(0);
-    if (!rel.getParentId().equals(dad.getOid()))
+    if (!rel.getParentOid().equals(dad.getOid()))
     {
       Assert.fail("Unexpected parent after removeAllParents.");
     }
 
-    if (!rel.getChildId().equals(kid.getOid()))
+    if (!rel.getChildOid().equals(kid.getOid()))
     {
       Assert.fail("Unexpected child after removeAllParents.");
     }
@@ -2498,8 +2498,8 @@ public class EntityGenTest
 
     RelationshipDAOIF oracle = RelationshipDAO.get(instance.getOid());
 
-    Assert.assertEquals(oracle.getParentId(), mom.getOid());
-    Assert.assertEquals(oracle.getChildId(), kid.getOid());
+    Assert.assertEquals(oracle.getParentOid(), mom.getOid());
+    Assert.assertEquals(oracle.getChildOid(), kid.getOid());
   }
 
   @Request
@@ -2766,8 +2766,8 @@ public class EntityGenTest
     RelationshipDTO oracle = list.get(0);
 
     Assert.assertTrue(relationshipClass.isInstance(oracle));
-    Assert.assertEquals(oracle.getChildId(), kidId);
-    Assert.assertEquals(oracle.getParentId(), momId);
+    Assert.assertEquals(oracle.getChildOid(), kidId);
+    Assert.assertEquals(oracle.getParentOid(), momId);
   }
 
   @Request
@@ -3759,8 +3759,8 @@ public class EntityGenTest
     RelationshipDTO oracle = list.get(0);
 
     Assert.assertTrue(relationshipClass.isInstance(oracle));
-    Assert.assertEquals(oracle.getParentId(), momId);
-    Assert.assertEquals(oracle.getChildId(), kidId);
+    Assert.assertEquals(oracle.getParentOid(), momId);
+    Assert.assertEquals(oracle.getChildOid(), kidId);
   }
 
   @Request

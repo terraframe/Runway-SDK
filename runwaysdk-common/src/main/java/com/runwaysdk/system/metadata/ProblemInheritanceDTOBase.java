@@ -24,9 +24,9 @@ public abstract class ProblemInheritanceDTOBase extends com.runwaysdk.system.met
   public final static String CLASS = "com.runwaysdk.system.metadata.ProblemInheritance";
   private static final long serialVersionUID = -1990814218;
   
-  public ProblemInheritanceDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public ProblemInheritanceDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -48,12 +48,12 @@ public abstract class ProblemInheritanceDTOBase extends com.runwaysdk.system.met
   
   public com.runwaysdk.system.metadata.MdProblemDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdProblemDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdProblemDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.MdProblemDTO getChild()
   {
-    return com.runwaysdk.system.metadata.MdProblemDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.MdProblemDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.ProblemInheritanceDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -63,16 +63,16 @@ public abstract class ProblemInheritanceDTOBase extends com.runwaysdk.system.met
     return (com.runwaysdk.system.metadata.ProblemInheritanceDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.ProblemInheritanceQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.ProblemInheritanceQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.ProblemInheritanceDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.ProblemInheritanceQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.ProblemInheritanceQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.ProblemInheritanceQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.ProblemInheritanceDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.ProblemInheritanceQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

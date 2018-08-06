@@ -644,9 +644,9 @@ public class MergeTest
    * RelationshipDAO.get(r1Ids.get(0));
    * 
    * // Ensure that the parent references the instance of CLASS
-   * Assert.assertEquals(c1.getOid(), r1.getParentId()); // Ensure that the child
+   * Assert.assertEquals(c1.getOid(), r1.getParentOid()); // Ensure that the child
    * reference the instance of CLASS2 Assert.assertEquals(c2.getOid(),
-   * r1.getChildId()); // Ensure that the value of testBoolean is true
+   * r1.getChildOid()); // Ensure that the value of testBoolean is true
    * Assert.assertEquals(MdAttributeBooleanInfo.TRUE,
    * r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
    * 

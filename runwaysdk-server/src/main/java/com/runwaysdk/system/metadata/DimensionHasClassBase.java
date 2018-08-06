@@ -31,9 +31,9 @@ public abstract class DimensionHasClassBase extends com.runwaysdk.system.metadat
   public final static String CLASS = "com.runwaysdk.system.metadata.DimensionHasClass";
   private static final long serialVersionUID = -1992305101;
   
-  public DimensionHasClassBase(String parentId, String childId)
+  public DimensionHasClassBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

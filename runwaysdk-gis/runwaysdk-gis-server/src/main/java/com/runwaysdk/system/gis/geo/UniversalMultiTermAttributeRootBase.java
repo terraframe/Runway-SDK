@@ -44,9 +44,9 @@ public abstract class UniversalMultiTermAttributeRootBase extends com.runwaysdk.
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 821926974;
   
-  public UniversalMultiTermAttributeRootBase(String parentId, String childId)
+  public UniversalMultiTermAttributeRootBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

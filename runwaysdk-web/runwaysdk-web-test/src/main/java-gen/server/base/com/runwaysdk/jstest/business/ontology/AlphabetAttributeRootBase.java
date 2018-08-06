@@ -44,9 +44,9 @@ public abstract class AlphabetAttributeRootBase extends com.runwaysdk.business.R
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -582989089;
   
-  public AlphabetAttributeRootBase(String parentId, String childId)
+  public AlphabetAttributeRootBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

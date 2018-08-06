@@ -723,8 +723,8 @@ public class GeoEntityTest
   private void assertLocatedIn(GeoEntity child, GeoEntity parent)
   {
     LocatedInQuery q = new LocatedInQuery(new QueryFactory());
-    q.WHERE(q.childId().EQ(child.getOid()));
-    q.AND(q.parentId().EQ(parent.getOid()));
+    q.WHERE(q.childOid().EQ(child.getOid()));
+    q.AND(q.parentOid().EQ(parent.getOid()));
 
     OIterator<? extends LocatedIn> iter = q.getIterator();
     try

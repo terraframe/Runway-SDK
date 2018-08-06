@@ -1617,7 +1617,7 @@ public abstract class AbstractAdapterTest
           // look for a relationship match
           if (defRel.getOid().equals(returnRel.getOid()))
           {
-            if (defRel.getChildId().equals(returnRel.getChildId()) && defRel.getParentId().equals(returnRel.getParentId()))
+            if (defRel.getChildOid().equals(returnRel.getChildOid()) && defRel.getParentOid().equals(returnRel.getParentOid()))
             {
               foundMatch = true;
             }
@@ -1698,7 +1698,7 @@ public abstract class AbstractAdapterTest
           // look for a relationship match
           if (defRel.getOid().equals(returnRel.getOid()))
           {
-            if (defRel.getChildId().equals(returnRel.getChildId()) && defRel.getParentId().equals(returnRel.getParentId()))
+            if (defRel.getChildOid().equals(returnRel.getChildOid()) && defRel.getParentOid().equals(returnRel.getParentOid()))
             {
               foundMatch = true;
             }

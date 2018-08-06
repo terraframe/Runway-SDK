@@ -22,9 +22,9 @@ public abstract class MetadataRelationship extends MetadataRelationshipBase
 {
   private static final long serialVersionUID = 1229405888061L;
 
-  public MetadataRelationship(String parentId, String childId)
+  public MetadataRelationship(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
 
   public MetadataRelationship(com.runwaysdk.system.metadata.Metadata parent, com.runwaysdk.business.Business child)

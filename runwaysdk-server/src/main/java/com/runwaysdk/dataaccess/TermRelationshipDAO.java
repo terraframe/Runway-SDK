@@ -34,9 +34,9 @@ public class TermRelationshipDAO extends RelationshipDAO implements TermRelation
    */
   private static final long serialVersionUID = 9424564709853L;
 
-  public TermRelationshipDAO(String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
+  public TermRelationshipDAO(String parentOid, String childOid, Map<String, Attribute> attributeMap, String relationshipType)
   {
-    super(parentId, childId, attributeMap, relationshipType);
+    super(parentOid, childOid, attributeMap, relationshipType);
   }
 
   /*
@@ -69,7 +69,7 @@ public class TermRelationshipDAO extends RelationshipDAO implements TermRelation
       }
       else if (items.contains(AssociationType.TREE.getOid()))
       {
-        RelationshipDAOFactory.recursiveLinkCheck(this.getParentId(), this.getChildId(), this.getMdRelationshipDAO().definesType());
+        RelationshipDAOFactory.recursiveLinkCheck(this.getParentOid(), this.getChildOid(), this.getMdRelationshipDAO().definesType());
       }
     }
 

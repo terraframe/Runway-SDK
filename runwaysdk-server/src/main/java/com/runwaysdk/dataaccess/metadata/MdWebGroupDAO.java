@@ -117,7 +117,7 @@ public class MdWebGroupDAO extends MdWebFieldDAO implements MdWebGroupDAOIF
     BusinessDAOQuery q = f.businessDAOQuery(MdWebField.CLASS);
     RelationshipDAOQuery relQ = f.relationshipDAOQuery(WebGroupField.CLASS);
 
-    relQ.WHERE(relQ.parentId().EQ(this.getOid()));
+    relQ.WHERE(relQ.parentOid().EQ(this.getOid()));
     q.WHERE(q.isChildIn(relQ));
 
     q.ORDER_BY_ASC(q.aInteger(MdWebField.FIELDORDER));

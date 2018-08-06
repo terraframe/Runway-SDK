@@ -34,14 +34,14 @@ public class TreeDAO extends GraphDAO implements TreeDAOIF
 
   /**
    *
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param attributeMap
    * @param relationshipType
    */
-  public TreeDAO(String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
+  public TreeDAO(String parentOid, String childOid, Map<String, Attribute> attributeMap, String relationshipType)
   {
-    super(parentId, childId, attributeMap, relationshipType);
+    super(parentOid, childOid, attributeMap, relationshipType);
   }
 
   /**
@@ -51,7 +51,7 @@ public class TreeDAO extends GraphDAO implements TreeDAOIF
   protected void validate()
   {
     super.validate();
-    RelationshipDAOFactory.recursiveLinkCheck(this.getParentId(), this.getChildId(), this.getMdRelationshipDAO().definesType());
+    RelationshipDAOFactory.recursiveLinkCheck(this.getParentOid(), this.getChildOid(), this.getMdRelationshipDAO().definesType());
   }
 
   /**
@@ -59,8 +59,8 @@ public class TreeDAO extends GraphDAO implements TreeDAOIF
    * @param relationshipType
    * @return
    */
-  public static TreeDAO newInstance(String parentId, String childId, String relationshipType)
+  public static TreeDAO newInstance(String parentOid, String childOid, String relationshipType)
   {
-    return (TreeDAO) RelationshipDAOFactory.newInstance(parentId, childId, relationshipType);
+    return (TreeDAO) RelationshipDAOFactory.newInstance(parentOid, childOid, relationshipType);
   }
 }

@@ -1000,7 +1000,7 @@ public class Database
    * @param tableName
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
-   *          return the parent_id and child_id values in this map.
+   *          return the parent_oid and child_oid values in this map.
    * @return Map of Attribute objects for the EnityObject with the given OID and
    *         class.
    */
@@ -1024,7 +1024,7 @@ public class Database
    * @param tableName
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
-   *          return the parent_id and child_id values in this map.
+   *          return the parent_oid and child_oid values in this map.
    * @return Map of Attribute objects for the EnityObject with the given OID and
    *         class.
    */
@@ -1055,7 +1055,7 @@ public class Database
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public static void createRelationshipTable(String table, String index1Name, String index2Name, Boolean isUnique)
@@ -1100,7 +1100,7 @@ public class Database
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public static void createRelationshipTableIndexesBatch(String tableName, String index1Name, String index2Name, boolean isUnique)
@@ -1155,7 +1155,7 @@ public class Database
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public static void dropRelationshipTable(String table, String index1Name, String index2Name, boolean isUnique)
@@ -2840,28 +2840,28 @@ public class Database
    * Returns the number of distinct child instances for a given parent of the
    * given relationship type.
    * 
-   * @param parent_id
+   * @param parent_oid
    * @param relationshipTableName
    * @return number of distinct child instances for a given parent of the given
    *         relationship type.
    */
-  public static long getChildCountForParent(String parent_id, String relationshipTableName)
+  public static long getChildCountForParent(String parent_oid, String relationshipTableName)
   {
-    return instance().getChildCountForParent(parent_id, relationshipTableName);
+    return instance().getChildCountForParent(parent_oid, relationshipTableName);
   }
 
   /**
    * Returns the number of distinct parent instances for a given child of the
    * given relationship type.
    * 
-   * @param child_id
+   * @param child_oid
    * @param relationshipTableName
    * @return number of distinct parent instances for a given child of the given
    *         relationship type.
    */
-  public static long getParentCountForChild(String child_id, String relationshipTableName)
+  public static long getParentCountForChild(String child_oid, String relationshipTableName)
   {
-    return instance().getParentCountForChild(child_id, relationshipTableName);
+    return instance().getParentCountForChild(child_oid, relationshipTableName);
   }
 
   /**

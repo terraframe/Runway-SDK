@@ -56,19 +56,19 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType)
    */
-  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  public String moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType)
   {
-    return JSONAdapterDelegate.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+    return JSONAdapterDelegate.moveBusiness(sessionId, newParentOid, childOid, oldRelationshipId, newRelationshipType);
   }
 
   /**
-   * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId, java.lang.String parentId, java.lang.Integer pageNum, java.lang.Integer pageSize)
+   * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId, java.lang.String parentOid, java.lang.Integer pageNum, java.lang.Integer pageSize)
    */
-  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  public String getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize)
   {
-    return JSONAdapterDelegate.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+    return JSONAdapterDelegate.getTermAllChildren(sessionId, parentOid, pageNum, pageSize);
   }
 
   public String checkAdminScreenAccess(String sessionId)
@@ -79,17 +79,17 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   /**
    * @see com.runwaysdk.ClientRequest#addChild(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public String addChild(String sessionId, String parentId, String childId, String relationshipType)
+  public String addChild(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    return JSONAdapterDelegate.addChild(sessionId, parentId, childId, relationshipType);
+    return JSONAdapterDelegate.addChild(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#addParent(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public String addParent(String sessionId, String parentId, String childId, String relationshipType)
+  public String addParent(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    return JSONAdapterDelegate.addParent(sessionId, parentId, childId, relationshipType);
+    return JSONAdapterDelegate.addParent(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**

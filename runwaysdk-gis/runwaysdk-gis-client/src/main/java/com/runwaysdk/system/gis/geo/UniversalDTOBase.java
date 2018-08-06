@@ -493,10 +493,10 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(UNIVERSALID).getAttributeMdDTO();
   }
   
-  public static final com.runwaysdk.business.ontology.TermAndRelDTO create(com.runwaysdk.constants.ClientRequestIF clientRequest, com.runwaysdk.system.gis.geo.UniversalDTO dto, java.lang.String parentId, java.lang.String relationshipType)
+  public static final com.runwaysdk.business.ontology.TermAndRelDTO create(com.runwaysdk.constants.ClientRequestIF clientRequest, com.runwaysdk.system.gis.geo.UniversalDTO dto, java.lang.String parentOid, java.lang.String relationshipType)
   {
     String[] _declaredTypes = new String[]{"com.runwaysdk.system.gis.geo.Universal", "java.lang.String", "java.lang.String"};
-    Object[] _parameters = new Object[]{dto, parentId, relationshipType};
+    Object[] _parameters = new Object[]{dto, parentOid, relationshipType};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.UniversalDTO.CLASS, "create", _declaredTypes);
     return (com.runwaysdk.business.ontology.TermAndRelDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

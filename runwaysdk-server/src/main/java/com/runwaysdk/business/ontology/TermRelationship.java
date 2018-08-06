@@ -46,27 +46,27 @@ public class TermRelationship extends Relationship
   private static final long serialVersionUID = -5381444576044996448L;
   
   /**
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param type
    */
-  public TermRelationship(String parentId, String childId, String type)
+  public TermRelationship(String parentOid, String childOid, String type)
   {
-    super(parentId, childId, type);
+    super(parentOid, childOid, type);
   }
   
   /**
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    */
-  public TermRelationship(String parentId, String childId)
+  public TermRelationship(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   @Override
   public String buildKey()
   {
-    return this.getParentId() + this.getChildId();
+    return this.getParentOid() + this.getChildOid();
   }
 }

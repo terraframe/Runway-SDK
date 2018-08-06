@@ -31,9 +31,9 @@ public abstract class TypeMethodBase extends com.runwaysdk.system.metadata.Metad
   public final static String CLASS = "com.runwaysdk.system.metadata.TypeMethod";
   private static final long serialVersionUID = -1656320301;
   
-  public TypeMethodBase(String parentId, String childId)
+  public TypeMethodBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

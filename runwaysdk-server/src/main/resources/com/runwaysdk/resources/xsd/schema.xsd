@@ -35,14 +35,14 @@
     <xs:field xpath="value"/>
   </xs:keyref>
 
-  <xs:keyref name="parentId" refer="objectKey">
+  <xs:keyref name="parentOid" refer="objectKey">
     <xs:selector xpath="./relationship"/>
-    <xs:field xpath="parent_id"/>
+    <xs:field xpath="parent_oid"/>
   </xs:keyref>
 
-  <xs:keyref name="childId" refer="objectKey">
+  <xs:keyref name="childOid" refer="objectKey">
     <xs:selector xpath="./relationship"/>
-    <xs:field xpath="child_id"/>
+    <xs:field xpath="child_oid"/>
   </xs:keyref>
 
   <xs:keyref name="mdRelId" refer="objectKey">
@@ -107,8 +107,8 @@
 <xs:complexType name="relationship">
   <xs:sequence>
     <xs:element name="oid" type="xs:string"/>
-    <xs:element name="parent_id" type="xs:string"/>
-    <xs:element name="child_id" type="xs:string"/>
+    <xs:element name="parent_oid" type="xs:string"/>
+    <xs:element name="child_oid" type="xs:string"/>
     <xs:element ref="attributes" minOccurs="0"/>
   </xs:sequence>
 </xs:complexType>

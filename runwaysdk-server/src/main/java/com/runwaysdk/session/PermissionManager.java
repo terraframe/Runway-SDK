@@ -55,7 +55,7 @@ public class PermissionManager
       
       for(RelationshipDAOIF relationship : _permissions)
       {
-        map.put(relationship.getChildId(), relationship);
+        map.put(relationship.getChildOid(), relationship);
       }
 
       permissions.put(key, map);
@@ -78,19 +78,19 @@ public class PermissionManager
 
   public void put(RelationshipDAOIF relationship)
   {
-    String key = relationship.getParentId();
+    String key = relationship.getParentOid();
 
     if (permissions.containsKey(key))
     {
       HashMap<String, RelationshipDAOIF> map = permissions.get(key);
       
-      map.put(relationship.getChildId(), relationship);
+      map.put(relationship.getChildOid(), relationship);
     }
     else
     {
       HashMap<String, RelationshipDAOIF> map = new HashMap<String, RelationshipDAOIF>();
 
-      map.put(relationship.getChildId(), relationship);
+      map.put(relationship.getChildOid(), relationship);
       
       permissions.put(key, map);
     }

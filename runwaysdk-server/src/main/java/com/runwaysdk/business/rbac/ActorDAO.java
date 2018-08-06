@@ -409,27 +409,27 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
    * Gets the permission relationship between an actor and an object of a given
    * type If the permission does not exist then it creates an new relationship
    * 
-   * @param parentId
+   * @param parentOid
    *          The oid to the parent object
-   * @param childId
+   * @param childOid
    *          The oid ot the child object
    * @param type
    *          The type of relationship
    * @return The relationship of the given type with the respective parent and
    *         child oid
    */
-  private RelationshipDAO getPermissions(String parentId, String childId, String type)
+  private RelationshipDAO getPermissions(String parentOid, String childOid, String type)
   {
     RelationshipDAO permission = null;
 
     // If the permission relationship does not already exist then create it
     try
     {
-      permission = RelationshipDAO.get(parentId, childId, type).get(0).getRelationshipDAO();
+      permission = RelationshipDAO.get(parentOid, childOid, type).get(0).getRelationshipDAO();
     }
     catch (DataAccessException e)
     {
-      permission = RelationshipDAO.newInstance(parentId, childId, type);
+      permission = RelationshipDAO.newInstance(parentOid, childOid, type);
     }
 
     return permission;

@@ -22,9 +22,9 @@ public class WebGridFieldDTO extends WebGridFieldDTOBase
 {
   private static final long serialVersionUID = 2029634463;
   
-  public WebGridFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public WebGridFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

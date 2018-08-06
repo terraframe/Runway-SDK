@@ -667,45 +667,45 @@ public class IntegratedMethodTest
     for (RelationshipDAOIF reference : newUser.getAllPermissions())
     {
       // Revoke any type permissions given to newUser
-      newUser.revokeAllPermissions(reference.getChildId());
+      newUser.revokeAllPermissions(reference.getChildOid());
     }
 
     for (RelationshipDAOIF reference : createMethod.getAllPermissions())
     {
       // Revoke any type permissions given to newUser
-      createMethod.revokeAllPermissions(reference.getChildId());
+      createMethod.revokeAllPermissions(reference.getChildOid());
     }
 
     for (RelationshipDAOIF reference : deleteMethod.getAllPermissions())
     {
       // Revoke any type permissions given to newUser
-      deleteMethod.revokeAllPermissions(reference.getChildId());
+      deleteMethod.revokeAllPermissions(reference.getChildOid());
     }
 
     for (RelationshipDAOIF reference : promoteMethod.getAllPermissions())
     {
-      promoteMethod.revokeAllPermissions(reference.getChildId());
+      promoteMethod.revokeAllPermissions(reference.getChildOid());
     }
 
     for (RelationshipDAOIF reference : addParentMethod.getAllPermissions())
     {
-      addParentMethod.revokeAllPermissions(reference.getChildId());
+      addParentMethod.revokeAllPermissions(reference.getChildOid());
 
     }
 
     for (RelationshipDAOIF reference : addChildMethod.getAllPermissions())
     {
-      addChildMethod.revokeAllPermissions(reference.getChildId());
+      addChildMethod.revokeAllPermissions(reference.getChildOid());
     }
 
     for (RelationshipDAOIF reference : deleteChildMethod.getAllPermissions())
     {
-      deleteChildMethod.revokeAllPermissions(reference.getChildId());
+      deleteChildMethod.revokeAllPermissions(reference.getChildOid());
     }
 
     for (RelationshipDAOIF reference : deleteParentMethod.getAllPermissions())
     {
-      deleteParentMethod.revokeAllPermissions(reference.getChildId());
+      deleteParentMethod.revokeAllPermissions(reference.getChildOid());
     }
 
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -713,7 +713,7 @@ public class IntegratedMethodTest
     for (RelationshipDAOIF reference : role.getAllPermissions())
     {
       // Revoke any businessDAO permissions given to newUser
-      role.revokeAllPermissions(reference.getChildId());
+      role.revokeAllPermissions(reference.getChildOid());
     }
 
     // Clear any lingering sessions

@@ -22,9 +22,9 @@ public class DownstreamJobRelationship extends DownstreamJobRelationshipBase
 {
   private static final long serialVersionUID = -562014163;
   
-  public DownstreamJobRelationship(String parentId, String childId)
+  public DownstreamJobRelationship(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public DownstreamJobRelationship(com.runwaysdk.system.scheduler.ExecutableJob parent, com.runwaysdk.system.scheduler.ExecutableJob child)

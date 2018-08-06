@@ -24,9 +24,9 @@ public abstract class MetadataParameterDTOBase extends com.runwaysdk.business.Re
   public final static String CLASS = "com.runwaysdk.system.MetadataParameter";
   private static final long serialVersionUID = 559952746;
   
-  public MetadataParameterDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public MetadataParameterDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -406,12 +406,12 @@ public abstract class MetadataParameterDTOBase extends com.runwaysdk.business.Re
   
   public com.runwaysdk.system.metadata.MetadataDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MetadataDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MetadataDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.MdParameterDTO getChild()
   {
-    return com.runwaysdk.system.metadata.MdParameterDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.MdParameterDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.MetadataParameterDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -421,16 +421,16 @@ public abstract class MetadataParameterDTOBase extends com.runwaysdk.business.Re
     return (com.runwaysdk.system.MetadataParameterDTO) dto;
   }
   
-  public static com.runwaysdk.system.MetadataParameterQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.MetadataParameterQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.MetadataParameterDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.MetadataParameterQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.MetadataParameterQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.MetadataParameterQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.MetadataParameterDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.MetadataParameterQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

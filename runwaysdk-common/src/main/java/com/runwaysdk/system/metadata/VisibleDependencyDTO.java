@@ -22,9 +22,9 @@ public class VisibleDependencyDTO extends VisibleDependencyDTOBase
 {
   private static final long serialVersionUID = 490159004;
   
-  public VisibleDependencyDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public VisibleDependencyDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

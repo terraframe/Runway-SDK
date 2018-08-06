@@ -22,9 +22,9 @@ public class IndexAttributeDTO extends IndexAttributeDTOBase
 {
   private static final long serialVersionUID = -1338773912;
   
-  public IndexAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public IndexAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

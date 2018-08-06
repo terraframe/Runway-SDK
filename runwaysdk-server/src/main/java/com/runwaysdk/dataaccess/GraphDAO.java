@@ -33,9 +33,9 @@ public class GraphDAO extends RelationshipDAO implements GraphDAOIF
    */
   private static final long serialVersionUID = 9424564709853L;
 
-  public GraphDAO(String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
+  public GraphDAO(String parentOid, String childOid, Map<String, Attribute> attributeMap, String relationshipType)
   {
-    super(parentId, childId, attributeMap, relationshipType);
+    super(parentOid, childOid, attributeMap, relationshipType);
   }
 
   /**
@@ -60,16 +60,16 @@ public class GraphDAO extends RelationshipDAO implements GraphDAOIF
    */
   public static void validateGraph(RelationshipDAO relationship)
   {
-    List<RelationshipDAOIF> relationshipIFList = RelationshipDAOFactory.get(relationship.getParentId(), relationship.getChildId(), relationship.getType());
+    List<RelationshipDAOIF> relationshipIFList = RelationshipDAOFactory.get(relationship.getParentOid(), relationship.getChildOid(), relationship.getType());
 
     if (relationshipIFList.size() >= 1)
     {
       MdRelationshipDAOIF mdRelationshipIF = relationship.getMdRelationshipDAO();
 
-      String error = "A relationship of type [" + mdRelationshipIF.definesType() + "] already exists between parent object with oid [" + relationship.getParentId() + "] and child object with oid [" + relationship.getChildId() + "]";
+      String error = "A relationship of type [" + mdRelationshipIF.definesType() + "] already exists between parent object with oid [" + relationship.getParentOid() + "] and child object with oid [" + relationship.getChildOid() + "]";
 
       DuplicateGraphPathException e = new DuplicateGraphPathException(error);
-      e.init(mdRelationshipIF, relationship.getParentId(), relationship.getChildId());
+      e.init(mdRelationshipIF, relationship.getParentOid(), relationship.getChildOid());
       throw e;
     }
   }

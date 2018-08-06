@@ -43,9 +43,9 @@ public abstract class WebGridFieldBase extends com.runwaysdk.business.Relationsh
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 1688752759;
   
-  public WebGridFieldBase(String parentId, String childId)
+  public WebGridFieldBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

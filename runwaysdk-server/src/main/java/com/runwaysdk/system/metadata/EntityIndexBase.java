@@ -31,9 +31,9 @@ public abstract class EntityIndexBase extends com.runwaysdk.system.metadata.Meta
   public final static String CLASS = "com.runwaysdk.system.metadata.EntityIndex";
   private static final long serialVersionUID = 939467729;
   
-  public EntityIndexBase(String parentId, String childId)
+  public EntityIndexBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

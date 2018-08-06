@@ -536,8 +536,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     for (RelationshipDTO dto : output)
     {
-      Assert.assertEquals(businessDAO.getOid(), dto.getParentId());
-      Assert.assertEquals(businessDAO2.getOid(), dto.getChildId());
+      Assert.assertEquals(businessDAO.getOid(), dto.getParentOid());
+      Assert.assertEquals(businessDAO2.getOid(), dto.getChildOid());
     }
   }
 
@@ -587,8 +587,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     for (RelationshipDTO dto : output)
     {
-      Assert.assertEquals(businessDAO.getOid(), dto.getParentId());
-      Assert.assertEquals(businessDAO2.getOid(), dto.getChildId());
+      Assert.assertEquals(businessDAO.getOid(), dto.getParentOid());
+      Assert.assertEquals(businessDAO2.getOid(), dto.getChildOid());
     }
   }
 

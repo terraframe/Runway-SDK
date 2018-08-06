@@ -22,9 +22,9 @@ public class GeoEntityAttributeRoot extends GeoEntityAttributeRootBase
 {
   private static final long serialVersionUID = -1073057578;
   
-  public GeoEntityAttributeRoot(String parentId, String childId)
+  public GeoEntityAttributeRoot(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public GeoEntityAttributeRoot(com.runwaysdk.system.metadata.MdAttributeTerm parent, com.runwaysdk.system.gis.geo.GeoEntity child)

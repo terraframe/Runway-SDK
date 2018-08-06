@@ -22,9 +22,9 @@ public class MobileFormFieldDTO extends MobileFormFieldDTOBase
 {
   private static final long serialVersionUID = -1656457446;
   
-  public MobileFormFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public MobileFormFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

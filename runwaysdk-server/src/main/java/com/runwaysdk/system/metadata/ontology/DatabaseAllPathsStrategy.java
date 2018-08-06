@@ -349,7 +349,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     // make sure there are no children
     QueryFactory f = new QueryFactory();
     RelationshipDAOQuery q = f.relationshipDAOQuery(relationshipType);
-    q.WHERE(q.parentId().EQ(term.getOid()));
+    q.WHERE(q.parentOid().EQ(term.getOid()));
 
     if (q.getCount() > 0)
     {
@@ -360,7 +360,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     // ensure there's only one parent
     f = new QueryFactory();
     q = f.relationshipDAOQuery(relationshipType);
-    q.WHERE(q.childId().EQ(term.getOid()));
+    q.WHERE(q.childOid().EQ(term.getOid()));
 
     // a leaf can only have one or less parents
     return q.getCount() <= 1;

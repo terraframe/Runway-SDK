@@ -40,12 +40,12 @@ public class RelationshipDTO extends ElementDTO
   /**
    * The oid of the child in this relationship.
    */
-  private String            childId;
+  private String            childOid;
 
   /**
    * The oid of the parent in this relationship.
    */
-  private String            parentId;
+  private String            parentOid;
 
   /**
    * Generic business object.
@@ -53,7 +53,7 @@ public class RelationshipDTO extends ElementDTO
    * @param sessionId
    * @param clientRequest
    */
-  protected RelationshipDTO(ClientRequestIF clientRequest, String type, String parentId, String childId)
+  protected RelationshipDTO(ClientRequestIF clientRequest, String type, String parentOid, String childOid)
   {
     super(clientRequest, type);
   }
@@ -61,7 +61,7 @@ public class RelationshipDTO extends ElementDTO
   /**
    * Constructor used when the object is instantiated on the front-end.
    */
-  protected RelationshipDTO(ClientRequestIF clientRequest, String parentId, String childId)
+  protected RelationshipDTO(ClientRequestIF clientRequest, String parentOid, String childOid)
   {
     super(clientRequest);
 
@@ -74,8 +74,8 @@ public class RelationshipDTO extends ElementDTO
       this.copyProperties(dto, dto.attributeMap);
     }
 
-    this.parentId = parentId;
-    this.childId  = childId;
+    this.parentOid = parentOid;
+    this.childOid  = childOid;
   }
 
 
@@ -92,8 +92,8 @@ public class RelationshipDTO extends ElementDTO
           ExceptionConstants.ProgrammingErrorException.getExceptionClass(), msg);
     }
 
-    this.parentId = relationshipDTO.parentId;
-    this.childId = relationshipDTO.childId;
+    this.parentOid = relationshipDTO.parentOid;
+    this.childOid = relationshipDTO.childOid;
 
     this.copyProperties(relationshipDTO, relationshipDTO.attributeMap);
   }
@@ -102,12 +102,12 @@ public class RelationshipDTO extends ElementDTO
    * Constructor used when the object is instantiated on the front-end or back-end.
    * If the clientRequest is null, then it is instantiated on the front-end, otherwise on the back-end.
    */
-  protected RelationshipDTO(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap, String parentId, String childId)
+  protected RelationshipDTO(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap, String parentOid, String childOid)
   {
     super(clientRequest, type, attributeMap);
 
-    this.parentId = parentId;
-    this.childId  = childId;
+    this.parentOid = parentOid;
+    this.childOid  = childOid;
   }
 
   /**
@@ -115,9 +115,9 @@ public class RelationshipDTO extends ElementDTO
    *
    * @return The reference of the child.
    */
-  public String getChildId()
+  public String getChildOid()
   {
-    return childId;
+    return childOid;
   }
 
 
@@ -126,28 +126,28 @@ public class RelationshipDTO extends ElementDTO
    *
    * @return The reference of the parent.
    */
-  public String getParentId()
+  public String getParentOid()
   {
-    return parentId;
+    return parentOid;
   }
 
   /**
    * Sets the parent oid (for internal use only).
    *
-   * @param parentId
+   * @param parentOid
    */
-  void setParentId(String parentId)
+  void setParentOid(String parentOid)
   {
-    this.parentId = parentId;
+    this.parentOid = parentOid;
   }
 
   /**
    * Sets the child oid (for internal use only).
-   * @param childId
+   * @param childOid
    */
-  void setChildId(String childId)
+  void setChildOid(String childOid)
   {
-    this.childId = childId;
+    this.childOid = childOid;
   }
 
   /**
@@ -161,8 +161,8 @@ public class RelationshipDTO extends ElementDTO
     if (componentDTOIF instanceof RelationshipDTO)
     {
       RelationshipDTO relationshipDTO = (RelationshipDTO)componentDTOIF;
-      this.parentId = relationshipDTO.parentId;
-      this.childId = relationshipDTO.childId;
+      this.parentOid = relationshipDTO.parentOid;
+      this.childOid = relationshipDTO.childOid;
     }
   }
 

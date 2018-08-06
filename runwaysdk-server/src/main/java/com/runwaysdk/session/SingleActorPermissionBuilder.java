@@ -95,7 +95,7 @@ public class SingleActorPermissionBuilder extends AbstractPermissionBuilder impl
 
     RelationshipDAOQuery query = factory.relationshipDAOQuery(RelationshipTypes.TYPE_PERMISSION.getType());
 
-    query.WHERE(query.parentId().IN(ids));
+    query.WHERE(query.parentOid().IN(ids));
 
     OIterator<RelationshipDAOIF> it = query.getIterator();
 

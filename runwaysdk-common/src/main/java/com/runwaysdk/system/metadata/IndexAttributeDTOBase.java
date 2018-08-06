@@ -24,9 +24,9 @@ public abstract class IndexAttributeDTOBase extends com.runwaysdk.system.metadat
   public final static String CLASS = "com.runwaysdk.system.metadata.IndexAttribute";
   private static final long serialVersionUID = 618828555;
   
-  public IndexAttributeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public IndexAttributeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -86,12 +86,12 @@ public abstract class IndexAttributeDTOBase extends com.runwaysdk.system.metadat
   
   public com.runwaysdk.system.metadata.MdIndexDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdIndexDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdIndexDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.MdAttributeConcreteDTO getChild()
   {
-    return com.runwaysdk.system.metadata.MdAttributeConcreteDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.MdAttributeConcreteDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.IndexAttributeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -101,16 +101,16 @@ public abstract class IndexAttributeDTOBase extends com.runwaysdk.system.metadat
     return (com.runwaysdk.system.metadata.IndexAttributeDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.IndexAttributeQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.IndexAttributeQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.IndexAttributeDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.IndexAttributeQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.IndexAttributeQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.IndexAttributeQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.IndexAttributeDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.IndexAttributeQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

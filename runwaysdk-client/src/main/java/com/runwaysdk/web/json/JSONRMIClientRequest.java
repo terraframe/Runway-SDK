@@ -105,11 +105,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
   
-  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  public String moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType)
   {
     try
     {
-      return rmiAdapter.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+      return rmiAdapter.moveBusiness(sessionId, newParentOid, childOid, oldRelationshipId, newRelationshipType);
     }
     catch (RuntimeException e)
     {
@@ -121,11 +121,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
   
-  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  public String getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize)
   {
     try
     {
-      return rmiAdapter.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+      return rmiAdapter.getTermAllChildren(sessionId, parentOid, pageNum, pageSize);
     }
     catch (RuntimeException e)
     {
@@ -137,11 +137,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String getChildren(String sessionId, String parentId, String relationshipType)
+  public String getChildren(String sessionId, String parentOid, String relationshipType)
   {
     try
     {
-      return rmiAdapter.getChildren(sessionId, parentId, relationshipType);
+      return rmiAdapter.getChildren(sessionId, parentOid, relationshipType);
     }
     catch (RuntimeException e)
     {
@@ -153,11 +153,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String getParents(String sessionId, String childId, String relationshipType)
+  public String getParents(String sessionId, String childOid, String relationshipType)
   {
     try
     {
-      return rmiAdapter.getParents(sessionId, childId, relationshipType);
+      return rmiAdapter.getParents(sessionId, childOid, relationshipType);
     }
     catch (RuntimeException e)
     {
@@ -169,11 +169,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String getChildRelationships(String sessionId, String parentId, String relationshipType)
+  public String getChildRelationships(String sessionId, String parentOid, String relationshipType)
   {
     try
     {
-      return rmiAdapter.getChildRelationships(sessionId, parentId, relationshipType);
+      return rmiAdapter.getChildRelationships(sessionId, parentOid, relationshipType);
     }
     catch (RuntimeException e)
     {
@@ -185,11 +185,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String getParentRelationships(String sessionId, String childId, String relationshipType)
+  public String getParentRelationships(String sessionId, String childOid, String relationshipType)
   {
     try
     {
-      return rmiAdapter.getParentRelationships(sessionId, childId, relationshipType);
+      return rmiAdapter.getParentRelationships(sessionId, childOid, relationshipType);
     }
     catch (RuntimeException e)
     {
@@ -233,11 +233,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String addChild(String sessionId, String parentId, String childId, String relationshipType)
+  public String addChild(String sessionId, String parentOid, String childOid, String relationshipType)
   {
     try
     {
-      return rmiAdapter.addChild(sessionId, parentId, childId, relationshipType);
+      return rmiAdapter.addChild(sessionId, parentOid, childOid, relationshipType);
     }
     catch (RuntimeException e)
     {
@@ -265,11 +265,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String addParent(String sessionId, String parentId, String childId, String relationshipType)
+  public String addParent(String sessionId, String parentOid, String childOid, String relationshipType)
   {
     try
     {
-      return rmiAdapter.addParent(sessionId, parentId, childId, relationshipType);
+      return rmiAdapter.addParent(sessionId, parentOid, childOid, relationshipType);
     }
     catch (RuntimeException e)
     {
@@ -761,11 +761,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String deleteChildren(String sessionId, String parentId, String relationshipType)
+  public String deleteChildren(String sessionId, String parentOid, String relationshipType)
   {
     try
     {
-      return rmiAdapter.deleteChildren(sessionId, parentId, relationshipType);
+      return rmiAdapter.deleteChildren(sessionId, parentOid, relationshipType);
     }
     catch (RuntimeException e)
     {
@@ -777,11 +777,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String deleteParents(String sessionId, String childId, String relationshipType)
+  public String deleteParents(String sessionId, String childOid, String relationshipType)
   {
     try
     {
-      return rmiAdapter.deleteParents(sessionId, childId, relationshipType);
+      return rmiAdapter.deleteParents(sessionId, childOid, relationshipType);
     }
     catch (RuntimeException e)
     {

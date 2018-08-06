@@ -44,9 +44,9 @@ public abstract class SynonymTermAttributeRootBase extends com.runwaysdk.busines
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -1719539342;
   
-  public SynonymTermAttributeRootBase(String parentId, String childId)
+  public SynonymTermAttributeRootBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

@@ -64,10 +64,10 @@
       <xs:attribute name="oid" type="xs:string" use="required"/>
       <!--The qualified path of the class being instaniated-->
       <xs:attribute name="type" type="xs:string" use="required"/>
-      <!--parentId: The xml oid of the instance of the parent-->
-      <xs:attribute name="parentId" type="xs:string" use="required"/>
-      <!--childId: The xml oid of the instance of the child-->
-      <xs:attribute name="childId" type="xs:string" use="required"/>
+      <!--parentOid: The xml oid of the instance of the parent-->
+      <xs:attribute name="parentOid" type="xs:string" use="required"/>
+      <!--childOid: The xml oid of the instance of the child-->
+      <xs:attribute name="childOid" type="xs:string" use="required"/>
     </xs:complexType>
   </xs:element>
 

@@ -24,9 +24,9 @@ public abstract class MobileGridFieldDTOBase extends com.runwaysdk.business.Rela
   public final static String CLASS = "com.runwaysdk.system.metadata.MobileGridField";
   private static final long serialVersionUID = -1867240775;
   
-  public MobileGridFieldDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public MobileGridFieldDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -406,12 +406,12 @@ public abstract class MobileGridFieldDTOBase extends com.runwaysdk.business.Rela
   
   public com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.MdMobilePrimitiveDTO getChild()
   {
-    return com.runwaysdk.system.metadata.MdMobilePrimitiveDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.MdMobilePrimitiveDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.MobileGridFieldDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -421,16 +421,16 @@ public abstract class MobileGridFieldDTOBase extends com.runwaysdk.business.Rela
     return (com.runwaysdk.system.metadata.MobileGridFieldDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.MobileGridFieldQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.MobileGridFieldQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.MobileGridFieldQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.MobileGridFieldQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.MobileGridFieldQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.MobileGridFieldQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

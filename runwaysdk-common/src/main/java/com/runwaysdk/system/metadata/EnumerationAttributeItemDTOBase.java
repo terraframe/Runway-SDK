@@ -24,9 +24,9 @@ public abstract class EnumerationAttributeItemDTOBase extends com.runwaysdk.syst
   public final static String CLASS = "com.runwaysdk.system.metadata.EnumerationAttributeItem";
   private static final long serialVersionUID = -531906261;
   
-  public EnumerationAttributeItemDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public EnumerationAttributeItemDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -48,12 +48,12 @@ public abstract class EnumerationAttributeItemDTOBase extends com.runwaysdk.syst
   
   public com.runwaysdk.system.metadata.MdEnumerationDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdEnumerationDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdEnumerationDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.EnumerationMasterDTO getChild()
   {
-    return com.runwaysdk.system.EnumerationMasterDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.EnumerationMasterDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.EnumerationAttributeItemDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -63,16 +63,16 @@ public abstract class EnumerationAttributeItemDTOBase extends com.runwaysdk.syst
     return (com.runwaysdk.system.metadata.EnumerationAttributeItemDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.EnumerationAttributeItemQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.EnumerationAttributeItemQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.EnumerationAttributeItemDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.EnumerationAttributeItemQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.EnumerationAttributeItemQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.EnumerationAttributeItemQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.EnumerationAttributeItemDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.EnumerationAttributeItemQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

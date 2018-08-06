@@ -22,9 +22,9 @@ public class RelationshipInheritance extends RelationshipInheritanceBase
 {
   private static final long serialVersionUID = 1229405888089L;
   
-  public RelationshipInheritance(String parentId, String childId)
+  public RelationshipInheritance(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public RelationshipInheritance(com.runwaysdk.system.metadata.MdRelationship parent, com.runwaysdk.system.metadata.MdRelationship child)

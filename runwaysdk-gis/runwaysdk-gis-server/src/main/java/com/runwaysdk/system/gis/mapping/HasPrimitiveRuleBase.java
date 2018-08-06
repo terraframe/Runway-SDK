@@ -43,9 +43,9 @@ public abstract class HasPrimitiveRuleBase extends com.runwaysdk.business.Relati
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -609452316;
   
-  public HasPrimitiveRuleBase(String parentId, String childId)
+  public HasPrimitiveRuleBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

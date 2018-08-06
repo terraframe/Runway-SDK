@@ -22,9 +22,9 @@ public class IndexAttribute extends IndexAttributeBase
 {
   private static final long serialVersionUID = 1244871442632L;
   
-  public IndexAttribute(String parentId, String childId)
+  public IndexAttribute(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public IndexAttribute(com.runwaysdk.system.metadata.MdIndex parent, com.runwaysdk.system.metadata.MdAttributeConcrete child)

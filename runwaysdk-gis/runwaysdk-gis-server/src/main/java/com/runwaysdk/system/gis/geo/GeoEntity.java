@@ -273,22 +273,22 @@ public class GeoEntity extends GeoEntityBase
   }
 
   /**
-   * This MdMethod will apply the GeoEntity dto and append it to parentId with
+   * This MdMethod will apply the GeoEntity dto and append it to parentOid with
    * relationshipType.
    * 
    * @param dto
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * @return JSON {term, relType, relId}.
    */
   @Transaction
-  public static GeoEntityView create(GeoEntity dto, String parentId, String relationshipType)
+  public static GeoEntityView create(GeoEntity dto, String parentOid, String relationshipType)
   {
-    return GeoEntity.doCreate(dto, parentId, relationshipType);
+    return GeoEntity.doCreate(dto, parentOid, relationshipType);
   }
 
   @AbortIfProblem
-  private static GeoEntityView doCreate(GeoEntity child, String parentId, String relationshipType)
+  private static GeoEntityView doCreate(GeoEntity child, String parentOid, String relationshipType)
   {
     // if (child.getGeoId() == null || child.getGeoId().equals(""))
     // {
@@ -297,7 +297,7 @@ public class GeoEntity extends GeoEntityBase
 
     child.apply();
 
-    GeoEntity parent = GeoEntity.get(parentId);
+    GeoEntity parent = GeoEntity.get(parentOid);
 
     Relationship rel = child.addLink(parent, relationshipType);
 
@@ -415,9 +415,9 @@ public class GeoEntity extends GeoEntityBase
     return this.getDisplayLabel().getValue();
   }
 
-  public static GeoEntityView[] getDirectDescendants(String parentId, String[] relationshipTypes, Integer pageNum, Integer pageSize)
+  public static GeoEntityView[] getDirectDescendants(String parentOid, String[] relationshipTypes, Integer pageNum, Integer pageSize)
   {
-    TermAndRel[] tnrs = TermUtil.getDirectDescendants(parentId, relationshipTypes);
+    TermAndRel[] tnrs = TermUtil.getDirectDescendants(parentOid, relationshipTypes);
     GeoEntityView[] views = new GeoEntityView[tnrs.length];
 
     int i = 0;

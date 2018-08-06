@@ -44,8 +44,8 @@ public class MobileDTOConversionHelper
   {
     qry.addAttribute(attributeDTO);
   }
-  public static void setRelationshipIds(RelationshipDTO dto, String parentId, String childId) {
-    dto.setParentId(parentId);
-    dto.setChildId(childId);
+  public static void setRelationshipIds(RelationshipDTO dto, String parentOid, String childOid) {
+    dto.setParentOid(parentOid);
+    dto.setChildOid(childOid);
   }
 }

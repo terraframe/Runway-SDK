@@ -150,7 +150,7 @@ public class CharacterConditionDAO extends BasicConditionDAO implements Characte
     for (Entity entity : entities)
     {
       Relationship relationship = (Relationship) entity;
-      values.add(relationship.getChildId());
+      values.add(relationship.getChildOid());
     }
 
     Operation operation = this.getOperation();

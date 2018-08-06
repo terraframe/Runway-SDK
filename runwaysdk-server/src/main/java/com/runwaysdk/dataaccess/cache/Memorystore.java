@@ -163,16 +163,16 @@ public class Memorystore implements ObjectStore
    */
   public void addRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAOIF)
   {
-    synchronized (relationshipDAOIF.getParentId())
+    synchronized (relationshipDAOIF.getParentOid())
     {
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentId(relationshipDAOIF), relationshipDAOIF.getParentId(), CachedEntityDAOinfo.Types.BUSINESS);
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentOid(relationshipDAOIF), relationshipDAOIF.getParentOid(), CachedEntityDAOinfo.Types.BUSINESS);
 
       cachedBusinessDAOinfo.addChildRelationship(relationshipDAOIF);
     }
 
-    synchronized (relationshipDAOIF.getChildId())
+    synchronized (relationshipDAOIF.getChildOid())
     {
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildId(relationshipDAOIF), relationshipDAOIF.getChildId(), CachedEntityDAOinfo.Types.BUSINESS);
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildOid(relationshipDAOIF), relationshipDAOIF.getChildOid(), CachedEntityDAOinfo.Types.BUSINESS);
 
       cachedBusinessDAOinfo.addParentRelationship(relationshipDAOIF);
     }
@@ -189,9 +189,9 @@ public class Memorystore implements ObjectStore
   {
     RelationshipDAO relationshipDAO = (RelationshipDAO)relationshipDAOIF;
     
-    synchronized (relationshipDAO.getParentId())
+    synchronized (relationshipDAO.getParentOid())
     {
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentId(relationshipDAOIF), relationshipDAOIF.getParentId(), CachedEntityDAOinfo.Types.BUSINESS);
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentOid(relationshipDAOIF), relationshipDAOIF.getParentOid(), CachedEntityDAOinfo.Types.BUSINESS);
 
       if (hasIdChanged)
       {
@@ -203,9 +203,9 @@ public class Memorystore implements ObjectStore
       }
     }
 
-    synchronized (relationshipDAOIF.getChildId())
+    synchronized (relationshipDAOIF.getChildOid())
     {
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildId(relationshipDAOIF), relationshipDAOIF.getChildId(), CachedEntityDAOinfo.Types.BUSINESS);
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildOid(relationshipDAOIF), relationshipDAOIF.getChildOid(), CachedEntityDAOinfo.Types.BUSINESS);
 
       if (hasIdChanged)
       {
@@ -252,27 +252,27 @@ public class Memorystore implements ObjectStore
    */
   public boolean removeParentRelationshipDAOIFtoCache(RelationshipDAO relationshipDAO, boolean deletedObject)
   {
-    synchronized (relationshipDAO.getChildId())
+    synchronized (relationshipDAO.getChildOid())
     {
       boolean stillHasParents = false;
 
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getChildId());
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getChildOid());
       if (cachedBusinessDAOinfo != null)
       {
         stillHasParents = cachedBusinessDAOinfo.removeParentRelationship(relationshipDAO);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {
-          this.removeFromEntityMap(relationshipDAO.getChildId());
+          this.removeFromEntityMap(relationshipDAO.getChildOid());
         }
       }
       
-//      if (relationshipDAO.hasChildIdChanged())
+//      if (relationshipDAO.hasChildOidChanged())
 //      {
-//        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getOldChildId());
+//        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getOldChildOid());
 //        if (cachedBusinessDAOinfo != null)
 //        {
-//          this.entityMap.remove(relationshipDAO.getOldChildId());
+//          this.entityMap.remove(relationshipDAO.getOldChildOid());
 //        }
 //      }
 
@@ -284,23 +284,23 @@ public class Memorystore implements ObjectStore
    * Removes all parent relationships of the given type for the
    * {@link BusinessDAOIF} with the given oid.
    * 
-   * @param childId
+   * @param childOid
    * @param relationshipType
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  public void removeAllParentRelationshipsOfType(String childId, String relationshipType, boolean deletedObject)
+  public void removeAllParentRelationshipsOfType(String childOid, String relationshipType, boolean deletedObject)
   {
-    synchronized (childId)
+    synchronized (childOid)
     {
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(childId);
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(childOid);
       if (cachedBusinessDAOinfo != null)
       {
         cachedBusinessDAOinfo.removeAllParentRelationshipsOfType(relationshipType);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {
-          this.removeFromEntityMap(childId);
+          this.removeFromEntityMap(childOid);
         }
       }
     }
@@ -319,18 +319,18 @@ public class Memorystore implements ObjectStore
    */
   public boolean removeChildRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAO, boolean deletedObject)
   {
-    synchronized (relationshipDAO.getParentId())
+    synchronized (relationshipDAO.getParentOid())
     {
       boolean stillHasChildren = false;
 
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getParentId());
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getParentOid());
       if (cachedBusinessDAOinfo != null)
       {
         stillHasChildren = cachedBusinessDAOinfo.removeChildRelationship(relationshipDAO);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {
-          this.removeFromEntityMap(relationshipDAO.getParentId());
+          this.removeFromEntityMap(relationshipDAO.getParentOid());
         }
       }
 
@@ -342,23 +342,23 @@ public class Memorystore implements ObjectStore
    * Removes all child relationships of the given type for the
    * {@link BusinessDAOIF} with the given oid.
    * 
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  public void removeAllChildRelationshipsOfType(String parentId, String relationshipType, boolean deletedObject)
+  public void removeAllChildRelationshipsOfType(String parentOid, String relationshipType, boolean deletedObject)
   {
-    synchronized (parentId)
+    synchronized (parentOid)
     {
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(parentId);
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(parentOid);
       if (cachedBusinessDAOinfo != null)
       {
         cachedBusinessDAOinfo.removeAllChildRelationshipsOfType(relationshipType);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {
-          this.removeFromEntityMap(parentId);
+          this.removeFromEntityMap(parentOid);
         }
       }
     }

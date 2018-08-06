@@ -43,9 +43,9 @@ public abstract class HasThematicRuleBase extends com.runwaysdk.business.Relatio
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -1928727602;
   
-  public HasThematicRuleBase(String parentId, String childId)
+  public HasThematicRuleBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

@@ -76,40 +76,40 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
 
   /**
    * Returns an attribute character statement object where the name of the
-   * attribute is the Relationship.PARENT_ID.
+   * attribute is the Relationship.PARENT_OID.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter parentId()
+  public AttributeCharacter parentOid()
   {
-    return this.getRelationshipQuery().parentId();
+    return this.getRelationshipQuery().parentOid();
   }
  
   /**
    * Returns an attribute character statement object where the name of the
-   * attribute is the Relationship.PARENT_ID.
+   * attribute is the Relationship.PARENT_OID.
    * @param userDefinedAlias
    * @return Attribute character statement object.
    */
-  public AttributeCharacter parentId(String userDefinedAlias)
+  public AttributeCharacter parentOid(String userDefinedAlias)
   {
-    return this.getRelationshipQuery().parentId(userDefinedAlias, null);
+    return this.getRelationshipQuery().parentOid(userDefinedAlias, null);
   }
 
   /**
    * Returns an attribute character statement object where the name of the
-   * attribute is the Relationship.PARENT_ID.
+   * attribute is the Relationship.PARENT_OID.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute character statement object.
    */
-  public AttributeCharacter parentId(String userDefinedAlias, String userDefinedDisplayLabel)
+  public AttributeCharacter parentOid(String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return this.getRelationshipQuery().parentId(userDefinedAlias, userDefinedDisplayLabel);
+    return this.getRelationshipQuery().parentOid(userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute reference statement object where the name of the
-   * attribute is the Relationship.PARENT_ID.
+   * attribute is the Relationship.PARENT_OID.
    * @return Attribute reference statement object.
    */
   public SelectableReference getParent()
@@ -119,7 +119,7 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
 
   /**
    * Returns an attribute reference statement object where the name of the
-   * attribute is the Relationship.PARENT_ID.
+   * attribute is the Relationship.PARENT_OID.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute reference statement object.
@@ -131,7 +131,7 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
   
   /**
    * Returns an attribute reference statement object where the name of the
-   * attribute is the Relationship.PARENT_ID.
+   * attribute is the Relationship.PARENT_OID.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute reference statement object.
@@ -141,16 +141,16 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
     MdRelationshipDAOIF mdRelationshipDAOIF = this.getMdRelationshipIF();
     MdBusinessDAOIF parentMdBusinessDAOIF = mdRelationshipDAOIF.getParentMdBusiness();
     
-    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_ID has no medadata that defines it.
-    // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to PARENT_ID.
+    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_OID has no medadata that defines it.
+    // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to PARENT_OID.
     MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF)this.getComponentQuery().getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
     MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = mdAttributeCharacterDAOIF.convertToReference(parentMdBusinessDAOIF);
     
     AttributeReference attributeReference = (AttributeReference) 
         this.getComponentQuery().internalAttributeFactory(mdAttributeCharacterDAOIF.definesAttribute(), mdAttributeReferenceDAOIF, this, userDefinedAlias, userDefinedDisplayLabel);   
     
-    attributeReference.setAttributeName(RelationshipInfo.PARENT_ID);
-    attributeReference.setColumnName(RelationshipDAOIF.PARENT_ID_COLUMN);
+    attributeReference.setAttributeName(RelationshipInfo.PARENT_OID);
+    attributeReference.setColumnName(RelationshipDAOIF.PARENT_OID_COLUMN);
     attributeReference.recomputeColumnAlias();
 
     return attributeReference;
@@ -158,41 +158,41 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
   
   /**
    * Returns an attribute character statement object where the name of the
-   * attribute is the Relationship.CHILD_ID.
+   * attribute is the Relationship.CHILD_OID.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter childId()
+  public AttributeCharacter childOid()
   {
-    return this.getRelationshipQuery().childId();
+    return this.getRelationshipQuery().childOid();
   }
 
   /**
    * Returns an attribute character statement object where the name of the
-   * attribute is the Relationship.CHILD_ID.
+   * attribute is the Relationship.CHILD_OID.
    * @param userDefinedAlias
    * @return Attribute character statement object.
    */
-  public AttributeCharacter childId(String userDefinedAlias)
+  public AttributeCharacter childOid(String userDefinedAlias)
   {
-    return this.getRelationshipQuery().childId(userDefinedAlias, null);
+    return this.getRelationshipQuery().childOid(userDefinedAlias, null);
   }
 
 
   /**
    * Returns an attribute character statement object where the name of the
-   * attribute is the Relationship.CHILD_ID.
+   * attribute is the Relationship.CHILD_OID.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute character statement object.
    */
-  public AttributeCharacter childId(String userDefinedAlias, String userDefinedDisplayLabel)
+  public AttributeCharacter childOid(String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return this.getRelationshipQuery().childId(userDefinedAlias, userDefinedDisplayLabel);
+    return this.getRelationshipQuery().childOid(userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute reference statement object where the name of the
-   * attribute is the Relationship.CHILD_ID.
+   * attribute is the Relationship.CHILD_OID.
    *
    * @return Attribute reference statement object.
    */
@@ -203,7 +203,7 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
   
   /**
    * Returns an attribute reference statement object where the name of the
-   * attribute is the Relationship.CHILD_ID.
+   * attribute is the Relationship.CHILD_OID.
    * @param userDefinedAlias
    * @return Attribute reference statement object.
    */
@@ -214,7 +214,7 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
 
   /**
    * Returns an attribute reference statement object where the name of the
-   * attribute is the Relationship.CHILD_ID.
+   * attribute is the Relationship.CHILD_OID.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute reference statement object.
@@ -224,16 +224,16 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
     MdRelationshipDAOIF mdRelationshipDAOIF = this.getMdRelationshipIF();
     MdBusinessDAOIF parentMdBusinessDAOIF = mdRelationshipDAOIF.getParentMdBusiness();
     
-    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_ID has no metadata that defines it.
-    // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to PARENT_ID.
+    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_OID has no metadata that defines it.
+    // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to PARENT_OID.
     MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF)this.getComponentQuery().getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
     MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = mdAttributeCharacterDAOIF.convertToReference(parentMdBusinessDAOIF);
     
     AttributeReference attributeReference = (AttributeReference) 
         this.getComponentQuery().internalAttributeFactory(mdAttributeCharacterDAOIF.definesAttribute(), mdAttributeReferenceDAOIF, this, userDefinedAlias, userDefinedDisplayLabel);   
    
-    attributeReference.setAttributeName(RelationshipInfo.CHILD_ID);
-    attributeReference.setColumnName(RelationshipDAOIF.CHILD_ID_COLUMN);
+    attributeReference.setAttributeName(RelationshipInfo.CHILD_OID);
+    attributeReference.setColumnName(RelationshipDAOIF.CHILD_OID_COLUMN);
     attributeReference.recomputeColumnAlias();
 
     return attributeReference;

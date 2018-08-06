@@ -1180,7 +1180,7 @@ public class SAXParseTest
 
     // Ensure the correct attribute roots were set
     RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(mdTermIF.getTermAttributeRootsRelationshipType());
-    query.WHERE(query.parentId().EQ(mdAttributeTermIF.getOid()));
+    query.WHERE(query.parentOid().EQ(mdAttributeTermIF.getOid()));
 
     OIterator<RelationshipDAOIF> it = query.getIterator();
 
@@ -2568,7 +2568,7 @@ public class SAXParseTest
     {
       for (RelationshipDAOIF relationship : relationships)
       {
-        MdWebLongDAOIF testWebLong = (MdWebLongDAOIF) MdWebPrimitiveDAO.get(relationship.getChildId());
+        MdWebLongDAOIF testWebLong = (MdWebLongDAOIF) MdWebPrimitiveDAO.get(relationship.getChildOid());
 
         Assert.assertEquals(mdWebLong.getFieldName(), testWebLong.getFieldName());
         Assert.assertEquals(mdWebLong.getFieldOrder(), testWebLong.getFieldOrder());
@@ -3751,9 +3751,9 @@ public class SAXParseTest
     RelationshipDAOIF r1 = RelationshipDAO.get(r1Ids.get(0));
 
     // Ensure that the parent references the instance of CLASS
-    Assert.assertEquals(c1.getOid(), r1.getParentId());
+    Assert.assertEquals(c1.getOid(), r1.getParentOid());
     // Ensure that the child reference the instance of CLASS2
-    Assert.assertEquals(c2.getOid(), r1.getChildId());
+    Assert.assertEquals(c2.getOid(), r1.getChildOid());
     // Ensure that the value of testBoolean is true
     Assert.assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
   }
@@ -6177,9 +6177,9 @@ public class SAXParseTest
     RelationshipDAOIF r1 = RelationshipDAO.get(r1Ids.get(0));
 
     // Ensure that the parent references the instance of CLASS
-    Assert.assertEquals(c1.getOid(), r1.getParentId());
+    Assert.assertEquals(c1.getOid(), r1.getParentOid());
     // Ensure that the child reference the instance of CLASS2
-    Assert.assertEquals(c2.getOid(), r1.getChildId());
+    Assert.assertEquals(c2.getOid(), r1.getChildOid());
     // Ensure that the value of testBoolean is true
     Assert.assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
 

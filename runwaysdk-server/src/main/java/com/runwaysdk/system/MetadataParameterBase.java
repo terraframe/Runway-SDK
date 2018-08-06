@@ -43,9 +43,9 @@ public abstract class MetadataParameterBase extends com.runwaysdk.business.Relat
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 230863338;
   
-  public MetadataParameterBase(String parentId, String childId)
+  public MetadataParameterBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

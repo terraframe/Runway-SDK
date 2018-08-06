@@ -141,9 +141,9 @@ public class PersistanceFacade
     return strategy().newInstance(type);
   }
 
-  public static RelationshipDAO newInstance(String parentId, String childId, String type)
+  public static RelationshipDAO newInstance(String parentOid, String childOid, String type)
   {
-    return strategy().newInstance(parentId, childId, type);
+    return strategy().newInstance(parentOid, childOid, type);
   }
 
   public static List<MdRelationshipDAOIF> getAllParentMdRelationships(MdBusinessDAOIF mdBusiness)

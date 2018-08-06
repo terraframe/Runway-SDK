@@ -4,9 +4,9 @@ public class SessionMap extends SessionMapBase implements com.runwaysdk.generati
 {
   private static final long serialVersionUID = -1714203169;
   
-  public SessionMap(String parentId, String childId)
+  public SessionMap(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public SessionMap(com.runwaysdk.geodashboard.SessionEntry parent, com.runwaysdk.geodashboard.gis.persist.DashboardMap child)

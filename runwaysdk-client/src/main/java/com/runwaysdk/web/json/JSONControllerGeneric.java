@@ -36,12 +36,12 @@ public class JSONControllerGeneric
    */
   public static String moveBusiness(String sessionId, Map<?, ?> parameters) {
     
-    String newParentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String newParentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String oldRelationshipId = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_ID.getName()) )[0];
     String newRelationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
     
-    return JSONController.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+    return JSONController.moveBusiness(sessionId, newParentOid, childOid, oldRelationshipId, newRelationshipType);
   }
   
   /**
@@ -51,11 +51,11 @@ public class JSONControllerGeneric
    */
   public static String getTermAllChildren(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
     Integer pageNum = Integer.parseInt(( (String[]) parameters.get(JSONClientRequestConstants.PAGE_NUM.getName()) )[0]);
     Integer pageSize = Integer.parseInt(( (String[]) parameters.get(JSONClientRequestConstants.PAGE_SIZE.getName()) )[0]);
 
-    return JSONController.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+    return JSONController.getTermAllChildren(sessionId, parentOid, pageNum, pageSize);
   }
   
   /**
@@ -65,11 +65,11 @@ public class JSONControllerGeneric
    */
   public static String addChild(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.addChild(sessionId, parentId, childId, relationshipType);
+    return JSONController.addChild(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
@@ -79,11 +79,11 @@ public class JSONControllerGeneric
    */
   public static String addParent(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.addParent(sessionId, parentId, childId, relationshipType);
+    return JSONController.addParent(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
@@ -321,50 +321,50 @@ public class JSONControllerGeneric
    */
   public static String getChildren(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.getChildren(sessionId, parentId, relationshipType);
+    return JSONController.getChildren(sessionId, parentOid, relationshipType);
   }
 
   public static String getChildRelationships(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.getChildRelationships(sessionId, parentId, relationshipType);
+    return JSONController.getChildRelationships(sessionId, parentOid, relationshipType);
   }
 
   public static String getParentRelationships(String sessionId, Map<?, ?> parameters)
   {
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.getParentRelationships(sessionId, childId, relationshipType);
+    return JSONController.getParentRelationships(sessionId, childOid, relationshipType);
   }
 
   public static String getParents(String sessionId, Map<?, ?> parameters)
   {
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.getParents(sessionId, childId, relationshipType);
+    return JSONController.getParents(sessionId, childOid, relationshipType);
   }
 
   public static String deleteChildren(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.deleteChildren(sessionId, parentId, relationshipType);
+    return JSONController.deleteChildren(sessionId, parentOid, relationshipType);
   }
 
   public static String deleteParents(String sessionId, Map<?, ?> parameters)
   {
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.deleteParents(sessionId, childId, relationshipType);
+    return JSONController.deleteParents(sessionId, childOid, relationshipType);
   }
 
   public static String queryBusinesses(String sessionId, Map<?, ?> parameters)

@@ -723,13 +723,13 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     return strategy;
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityView create(com.runwaysdk.system.gis.geo.GeoEntity dto, java.lang.String parentId, java.lang.String relationshipType)
+  public static com.runwaysdk.system.gis.geo.GeoEntityView create(com.runwaysdk.system.gis.geo.GeoEntity dto, java.lang.String parentOid, java.lang.String relationshipType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.gis.geo.GeoEntity.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityView[] getDirectDescendants(java.lang.String parentId, java.lang.String[] relationshipTypes, java.lang.Integer pageNum, java.lang.Integer pageSize)
+  public static com.runwaysdk.system.gis.geo.GeoEntityView[] getDirectDescendants(java.lang.String parentOid, java.lang.String[] relationshipTypes, java.lang.Integer pageNum, java.lang.Integer pageSize)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.gis.geo.GeoEntity.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

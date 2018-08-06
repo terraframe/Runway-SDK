@@ -43,9 +43,9 @@ public abstract class RoleInheritanceBase extends com.runwaysdk.business.Relatio
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -789534063;
   
-  public RoleInheritanceBase(String parentId, String childId)
+  public RoleInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

@@ -24,9 +24,9 @@ public abstract class BefriendsDTOBase extends com.runwaysdk.business.Relationsh
   public final static String CLASS = "com.runwaysdk.jstest.Befriends";
   private static final long serialVersionUID = 277626582;
   
-  public BefriendsDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public BefriendsDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -444,12 +444,12 @@ public abstract class BefriendsDTOBase extends com.runwaysdk.business.Relationsh
   
   public com.runwaysdk.jstest.TestClassDTO getParent()
   {
-    return com.runwaysdk.jstest.TestClassDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.jstest.TestClassDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.jstest.RefClassDTO getChild()
   {
-    return com.runwaysdk.jstest.RefClassDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.jstest.RefClassDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.jstest.BefriendsDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -459,16 +459,16 @@ public abstract class BefriendsDTOBase extends com.runwaysdk.business.Relationsh
     return (com.runwaysdk.jstest.BefriendsDTO) dto;
   }
   
-  public static com.runwaysdk.jstest.BefriendsQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.jstest.BefriendsQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.jstest.BefriendsDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.jstest.BefriendsQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.jstest.BefriendsQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.jstest.BefriendsQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.jstest.BefriendsDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.jstest.BefriendsQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

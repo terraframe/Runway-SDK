@@ -22,9 +22,9 @@ public class LocatedIn extends LocatedInBase
 {
   private static final long serialVersionUID = 645462528;
 
-  public LocatedIn(String parentId, String childId)
+  public LocatedIn(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
 
   public LocatedIn(com.runwaysdk.system.gis.geo.GeoEntity parent, com.runwaysdk.system.gis.geo.GeoEntity child)
@@ -35,7 +35,7 @@ public class LocatedIn extends LocatedInBase
   @Override
   public String buildKey()
   {
-    return this.getParentId() + this.getChildId();
+    return this.getParentOid() + this.getChildOid();
   }
 
   @Override

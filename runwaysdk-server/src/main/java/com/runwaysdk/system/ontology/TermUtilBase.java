@@ -63,19 +63,19 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     return (TermUtil) com.runwaysdk.business.Util.get(oid);
   }
   
-  public static com.runwaysdk.business.Relationship addAndRemoveLink(java.lang.String childId, java.lang.String oldParentId, java.lang.String oldRelType, java.lang.String newParentId, java.lang.String newRelType)
+  public static com.runwaysdk.business.Relationship addAndRemoveLink(java.lang.String childOid, java.lang.String oldParentOid, java.lang.String oldRelType, java.lang.String newParentOid, java.lang.String newRelType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static com.runwaysdk.business.Relationship addLink(java.lang.String childId, java.lang.String parentId, java.lang.String relationshipType)
+  public static com.runwaysdk.business.Relationship addLink(java.lang.String childOid, java.lang.String parentOid, java.lang.String relationshipType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static void exportTerm(java.io.OutputStream outputStream, java.lang.String parentId, java.lang.Boolean exportParent, com.runwaysdk.system.ontology.io.TermFileFormat format)
+  public static void exportTerm(java.io.OutputStream outputStream, java.lang.String parentOid, java.lang.Boolean exportParent, com.runwaysdk.system.ontology.io.TermFileFormat format)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
@@ -111,7 +111,7 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static void removeLink(java.lang.String childId, java.lang.String parentId, java.lang.String relationshipType)
+  public static void removeLink(java.lang.String childOid, java.lang.String parentOid, java.lang.String relationshipType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

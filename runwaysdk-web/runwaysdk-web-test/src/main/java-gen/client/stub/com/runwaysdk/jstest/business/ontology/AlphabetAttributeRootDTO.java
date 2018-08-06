@@ -22,9 +22,9 @@ public class AlphabetAttributeRootDTO extends AlphabetAttributeRootDTOBase
  implements com.runwaysdk.generation.loader.{
   private static final long serialVersionUID = -1533698206;
   
-  public AlphabetAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public AlphabetAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

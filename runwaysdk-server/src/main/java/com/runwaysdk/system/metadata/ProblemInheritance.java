@@ -22,9 +22,9 @@ public class ProblemInheritance extends ProblemInheritanceBase
 {
   private static final long serialVersionUID = 1229405888109L;
   
-  public ProblemInheritance(String parentId, String childId)
+  public ProblemInheritance(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public ProblemInheritance(com.runwaysdk.system.metadata.MdProblem parent, com.runwaysdk.system.metadata.MdProblem child)

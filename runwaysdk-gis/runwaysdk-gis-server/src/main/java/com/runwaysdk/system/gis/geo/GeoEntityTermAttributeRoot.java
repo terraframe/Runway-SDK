@@ -22,9 +22,9 @@ public class GeoEntityTermAttributeRoot extends GeoEntityTermAttributeRootBase
 {
   private static final long serialVersionUID = 1834196455;
   
-  public GeoEntityTermAttributeRoot(String parentId, String childId)
+  public GeoEntityTermAttributeRoot(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public GeoEntityTermAttributeRoot(com.runwaysdk.system.metadata.MdAttributeTerm parent, com.runwaysdk.system.gis.geo.GeoEntity child)

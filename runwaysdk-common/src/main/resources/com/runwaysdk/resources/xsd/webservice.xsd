@@ -362,8 +362,8 @@
     <xs:complexContent>
       <xs:extension base="elementDTOproperties">
 	    <xs:sequence>
-          <xs:element name="parentId" type="xs:string"/>
-          <xs:element name="childId" type="xs:string"/>
+          <xs:element name="parentOid" type="xs:string"/>
+          <xs:element name="childOid" type="xs:string"/>
 	    </xs:sequence>
 	  </xs:extension>
     </xs:complexContent>

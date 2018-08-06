@@ -157,9 +157,9 @@ public class Facade
    * 
    * @param sessionId
    *          The oid of a previously established session.
-   * @param newParentId
+   * @param newParentOid
    *          The oid of the Term that the child will be appended under.
-   * @param childId
+   * @param childOid
    *          The oid of the Term that will be either moved or copied.
    * @param oldRelationshipId
    *          The oid of the relationship that currently exists between parent
@@ -169,19 +169,19 @@ public class Facade
    */
   @Request(RequestType.SESSION)
   @Deprecated
-  public static RelationshipDTO moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  public static RelationshipDTO moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType)
   {
-    Relationship rel = doMoveTerm(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+    Relationship rel = doMoveTerm(sessionId, newParentOid, childOid, oldRelationshipId, newRelationshipType);
 
     return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, rel, true);
   }
 
   @Transaction
   @Deprecated
-  private static Relationship doMoveTerm(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  private static Relationship doMoveTerm(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType)
   {
-    Term newParent = (Term) getEntity(newParentId);
-    Term child = (Term) Term.get(childId);
+    Term newParent = (Term) getEntity(newParentOid);
+    Term child = (Term) Term.get(childOid);
 
     if (oldRelationshipId != null)
     {
@@ -201,7 +201,7 @@ public class Facade
    * 
    * @param sessionId
    *          The oid of a previously established session.
-   * @param parentId
+   * @param parentOid
    *          The oid of the term to get all children.
    * @param pageNum
    *          Used to break large returns into chunks (pages), this denotes the
@@ -213,15 +213,15 @@ public class Facade
    */
   @Deprecated
   @Request(RequestType.SESSION)
-  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize)
   {
 
-    assertReadAccess(sessionId, getEntity(parentId));
+    assertReadAccess(sessionId, getEntity(parentOid));
 
     List<TermAndRelDTO> dtos = new ArrayList<TermAndRelDTO>();
 
     // Fetch the Term from oid.
-    Term parent = (Term) Term.get(parentId);
+    Term parent = (Term) Term.get(parentOid);
 
     // Get all MdRelationships that this term is a valid child in
     MdTermDAOIF mdTerm = parent.getMdTerm();
@@ -602,19 +602,19 @@ public class Facade
    * Adds a child to a parent for a given relationship.
    * 
    * @param sessionId
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipDTO
    * @return RelationshipDTO
    */
   @Request(RequestType.SESSION)
-  public static RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType)
+  public static RelationshipDTO addChild(String sessionId, String parentOid, String childOid, String relationshipType)
   {
     // get the parent
-    Business parent = (Business) getEntity(parentId);
+    Business parent = (Business) getEntity(parentOid);
 
     // create the relationship (the returned relationship is type-unsafe)
-    Relationship relationship = parent.addChild(childId, relationshipType);
+    Relationship relationship = parent.addChild(childOid, relationshipType);
 
     return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, relationship, true);
   }
@@ -649,18 +649,18 @@ public class Facade
    * Adds a parent to a child for a given relationship.
    * 
    * @param sessionId
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipDTO
    * @return RelationshipDTO
    */
   @Request(RequestType.SESSION)
-  public static RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType)
+  public static RelationshipDTO addParent(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    Business child = (Business) getEntity(childId);
+    Business child = (Business) getEntity(childOid);
 
     // create the relationship (the returned relationship is type-unsafe)
-    Relationship relationship = child.addParent(parentId, relationshipType);
+    Relationship relationship = child.addParent(parentOid, relationshipType);
 
     return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, relationship, true);
   }
@@ -1375,17 +1375,17 @@ public class Facade
   }
 
   @Request(RequestType.SESSION)
-  public static void deleteChildren(String sessionId, String parentId, String relationshipType)
+  public static void deleteChildren(String sessionId, String parentOid, String relationshipType)
   {
     // get all children of the business object and delete them
-    _deleteChildren(sessionId, parentId, relationshipType);
+    _deleteChildren(sessionId, parentOid, relationshipType);
   }
 
   @Transaction
-  private static void _deleteChildren(String sessionId, String parentId, String relationshipType)
+  private static void _deleteChildren(String sessionId, String parentOid, String relationshipType)
   {
     // get all children of the business object and delete them
-    Business business = (Business) getEntity(parentId);
+    Business business = (Business) getEntity(parentOid);
 
     OIterator<? extends Relationship> childrenRels = business.getChildRelationships(relationshipType);
 
@@ -1396,16 +1396,16 @@ public class Facade
   }
 
   @Request(RequestType.SESSION)
-  public static void deleteParents(String sessionId, String childId, String relationshipType)
+  public static void deleteParents(String sessionId, String childOid, String relationshipType)
   {
-    _deleteParents(sessionId, childId, relationshipType);
+    _deleteParents(sessionId, childOid, relationshipType);
   }
 
   @Transaction
-  private static void _deleteParents(String sessionId, String childId, String relationshipType)
+  private static void _deleteParents(String sessionId, String childOid, String relationshipType)
   {
     // get all children of the business object and delete them
-    Business business = (Business) getEntity(childId);
+    Business business = (Business) getEntity(childOid);
 
     OIterator<? extends Relationship> parentRels = business.getParentRelationships(relationshipType);
     for (Relationship parentRel : parentRels)

@@ -168,12 +168,12 @@ public abstract class InstanceExporter
     String type = relationshipDAOIF.getType();
     String oid = relationshipDAOIF.getOid();
 
-    // Add the type, oid, parent_id, and child_id to the attributes of the
+    // Add the type, oid, parent_oid, and child_oid to the attributes of the
     // <relationship> tag
     parameters.put(XMLTags.TYPE_TAG, type);
     parameters.put(XMLTags.ID_TAG, oid);
-    parameters.put(XMLTags.PARENT_ID_TAG, relationshipDAOIF.getParentId());
-    parameters.put(XMLTags.CHILD_ID_TAG, relationshipDAOIF.getChildId());
+    parameters.put(XMLTags.PARENT_OID_TAG, relationshipDAOIF.getParentOid());
+    parameters.put(XMLTags.CHILD_OID_TAG, relationshipDAOIF.getChildOid());
 
     writer.openEscapedTag(XMLTags.RELATIONSHIP_TAG, parameters);
 

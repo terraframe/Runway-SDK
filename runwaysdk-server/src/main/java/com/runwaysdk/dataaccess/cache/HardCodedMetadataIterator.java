@@ -76,8 +76,8 @@ public class HardCodedMetadataIterator
       if (this.relationshipAttributesHackMap != null)
       {
         Map<String, String> relHackMap = new HashMap<String, String>(2);
-        relHackMap.put(RelationshipInfo.PARENT_ID, this.resultSet.getString(RelationshipDAOIF.PARENT_ID_COLUMN).toString());
-        relHackMap.put(RelationshipInfo.CHILD_ID, this.resultSet.getString(RelationshipDAOIF.CHILD_ID_COLUMN).toString());
+        relHackMap.put(RelationshipInfo.PARENT_OID, this.resultSet.getString(RelationshipDAOIF.PARENT_OID_COLUMN).toString());
+        relHackMap.put(RelationshipInfo.CHILD_OID, this.resultSet.getString(RelationshipDAOIF.CHILD_OID_COLUMN).toString());
 
         this.relationshipAttributesHackMap.put(oid, relHackMap);
       }

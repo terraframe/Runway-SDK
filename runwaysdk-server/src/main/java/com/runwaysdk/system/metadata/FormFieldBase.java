@@ -43,9 +43,9 @@ public abstract class FormFieldBase extends com.runwaysdk.business.Relationship
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -1088279398;
   
-  public FormFieldBase(String parentId, String childId)
+  public FormFieldBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

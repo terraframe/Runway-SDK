@@ -31,9 +31,9 @@ public abstract class MdMethodMethodActorBase extends com.runwaysdk.system.metad
   public final static String CLASS = "com.runwaysdk.system.metadata.MdMethodMethodActor";
   private static final long serialVersionUID = 506003362;
   
-  public MdMethodMethodActorBase(String parentId, String childId)
+  public MdMethodMethodActorBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

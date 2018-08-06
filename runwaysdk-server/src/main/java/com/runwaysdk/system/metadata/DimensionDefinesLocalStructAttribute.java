@@ -22,9 +22,9 @@ public class DimensionDefinesLocalStructAttribute extends DimensionDefinesLocalS
 {
   private static final long serialVersionUID = 1393105157;
   
-  public DimensionDefinesLocalStructAttribute(String parentId, String childId)
+  public DimensionDefinesLocalStructAttribute(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public DimensionDefinesLocalStructAttribute(com.runwaysdk.system.metadata.MdDimension parent, com.runwaysdk.system.metadata.MdAttributeConcrete child)

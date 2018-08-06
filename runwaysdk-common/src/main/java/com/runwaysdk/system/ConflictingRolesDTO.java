@@ -22,9 +22,9 @@ public class ConflictingRolesDTO extends ConflictingRolesDTOBase
 {
   private static final long serialVersionUID = 1439386828;
   
-  public ConflictingRolesDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public ConflictingRolesDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

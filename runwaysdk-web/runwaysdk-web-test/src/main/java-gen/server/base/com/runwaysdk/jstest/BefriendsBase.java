@@ -44,9 +44,9 @@ public abstract class BefriendsBase extends com.runwaysdk.business.Relationship 
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 163233110;
   
-  public BefriendsBase(String parentId, String childId)
+  public BefriendsBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

@@ -22,9 +22,9 @@ public class Befriends extends BefriendsBase implements com.runwaysdk.generation
 {
   private static final long serialVersionUID = -1106016064;
   
-  public Befriends(String parentId, String childId)
+  public Befriends(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public Befriends(com.runwaysdk.jstest.TestClass parent, com.runwaysdk.jstest.RefClass child)

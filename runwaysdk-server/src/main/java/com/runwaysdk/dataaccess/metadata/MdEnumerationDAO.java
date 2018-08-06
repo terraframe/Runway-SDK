@@ -448,7 +448,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
     for (RelationshipDAOIF relationshipDAO : children)
     {
-      if (oid.equals(relationshipDAO.getChildId()))
+      if (oid.equals(relationshipDAO.getChildOid()))
       {
         return true;
       }

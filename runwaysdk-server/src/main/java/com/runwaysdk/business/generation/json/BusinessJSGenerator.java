@@ -169,8 +169,8 @@ public class BusinessJSGenerator extends ElementJSGenerator
 
     method.writeln(methodName + " : function(clientRequest, child)");
     method.openBracketLn();
-    method.writeln("var childId = (child instanceof Object) ? child.getOid() : child;");
-    method.writeln(JSON.RUNWAY_FACADE.getLabel()+".addChild(clientRequest, this.getOid(), childId, '"+relationshipName+"');");
+    method.writeln("var childOid = (child instanceof Object) ? child.getOid() : child;");
+    method.writeln(JSON.RUNWAY_FACADE.getLabel()+".addChild(clientRequest, this.getOid(), childOid, '"+relationshipName+"');");
     method.closeBracket();
 
     return method;
@@ -285,8 +285,8 @@ public class BusinessJSGenerator extends ElementJSGenerator
 
     method.writeln(methodName + " : function(clientRequest, parent)");
     method.openBracketLn();
-    method.writeln("var parentId = (parent instanceof Object) ? parent.getOid() : parent;");
-    method.writeln(JSON.RUNWAY_FACADE.getLabel()+".addParent(clientRequest, parentId, this.getOid(), '"+relationshipName+"');");
+    method.writeln("var parentOid = (parent instanceof Object) ? parent.getOid() : parent;");
+    method.writeln(JSON.RUNWAY_FACADE.getLabel()+".addParent(clientRequest, parentOid, this.getOid(), '"+relationshipName+"');");
     method.closeBracket();
 
     return method;

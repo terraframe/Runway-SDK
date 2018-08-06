@@ -38,10 +38,10 @@ public interface RelationshipInfo extends ElementInfo
   /**
    * Attribute of relationship table.
    */
-  public static final String PARENT_ID                          = "parent_id";
+  public static final String PARENT_OID                          = "parent_oid";
 
   /**
    * Attribute of relationship table.
    */
-  public static final String CHILD_ID                            = "child_id";
+  public static final String CHILD_OID                            = "child_oid";
 }

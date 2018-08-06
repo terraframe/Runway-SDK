@@ -22,9 +22,9 @@ public class SynonymMultiTermAttributeRoot extends SynonymMultiTermAttributeRoot
 {
   private static final long serialVersionUID = 712905825;
   
-  public SynonymMultiTermAttributeRoot(String parentId, String childId)
+  public SynonymMultiTermAttributeRoot(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public SynonymMultiTermAttributeRoot(com.runwaysdk.system.metadata.MdAttributeMultiTerm parent, com.runwaysdk.system.gis.geo.Synonym child)

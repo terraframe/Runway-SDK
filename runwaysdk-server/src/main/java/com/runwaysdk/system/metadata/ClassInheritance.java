@@ -22,9 +22,9 @@ public abstract class ClassInheritance extends ClassInheritanceBase
 {
   private static final long serialVersionUID = 1229405888016L;
   
-  public ClassInheritance(String parentId, String childId)
+  public ClassInheritance(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public ClassInheritance(com.runwaysdk.system.metadata.MdClass parent, com.runwaysdk.system.metadata.MdClass child)

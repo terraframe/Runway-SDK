@@ -22,9 +22,9 @@ public class AttributeIndicator extends AttributeIndicatorBase
 {
   private static final long serialVersionUID = -551637739;
   
-  public AttributeIndicator(String parentId, String childId)
+  public AttributeIndicator(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public AttributeIndicator(com.runwaysdk.system.metadata.MdAttributeIndicator parent, com.runwaysdk.system.metadata.IndicatorComposite child)

@@ -44,9 +44,9 @@ public abstract class SynonymMultiTermAttributeRootBase extends com.runwaysdk.bu
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -1335927650;
   
-  public SynonymMultiTermAttributeRootBase(String parentId, String childId)
+  public SynonymMultiTermAttributeRootBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

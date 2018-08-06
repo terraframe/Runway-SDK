@@ -153,7 +153,7 @@ public class MethodTest
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any type permissions given to newUser
-      methodActor.revokeAllPermissions(reference.getChildId());
+      methodActor.revokeAllPermissions(reference.getChildOid());
     }
 
     // Clear any lingering sessions

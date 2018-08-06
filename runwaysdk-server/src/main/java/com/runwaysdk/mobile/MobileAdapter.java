@@ -102,13 +102,13 @@ public class MobileAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static RelationshipDTO addChild(String mobileId, String parentId, String childId, String relationshipType)
+  public static RelationshipDTO addChild(String mobileId, String parentOid, String childOid, String relationshipType)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    parentId = idConverter.getGlobalIdFromLocalId(mobileId, parentId);
-    childId = idConverter.getGlobalIdFromLocalId(mobileId, childId);
-    return (RelationshipDTO) convertToLocalId(mobileId, Facade.addChild(sessionId, parentId, childId, relationshipType));
+    parentOid = idConverter.getGlobalIdFromLocalId(mobileId, parentOid);
+    childOid = idConverter.getGlobalIdFromLocalId(mobileId, childOid);
+    return (RelationshipDTO) convertToLocalId(mobileId, Facade.addChild(sessionId, parentOid, childOid, relationshipType));
   }
 
   /**
@@ -116,13 +116,13 @@ public class MobileAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static RelationshipDTO addParent(String mobileId, String parentId, String childId, String relationshipType)
+  public static RelationshipDTO addParent(String mobileId, String parentOid, String childOid, String relationshipType)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    parentId = idConverter.getGlobalIdFromLocalId(mobileId, parentId);
-    childId = idConverter.getGlobalIdFromLocalId(mobileId, childId);
-    return (RelationshipDTO) convertToLocalId(mobileId, Facade.addParent(sessionId, parentId, childId, relationshipType));
+    parentOid = idConverter.getGlobalIdFromLocalId(mobileId, parentOid);
+    childOid = idConverter.getGlobalIdFromLocalId(mobileId, childOid);
+    return (RelationshipDTO) convertToLocalId(mobileId, Facade.addParent(sessionId, parentOid, childOid, relationshipType));
   }
 
   /**
@@ -935,9 +935,9 @@ public class MobileAdapter
       if (dto instanceof RelationshipDTO)
       {
         RelationshipDTO relat = (RelationshipDTO) dto;
-        String parentId = idConverter.getGlobalIdFromLocalId(mobileId, relat.getParentId());
-        String childId = idConverter.getGlobalIdFromLocalId(mobileId, relat.getChildId());
-        MobileDTOConversionHelper.setRelationshipIds(relat, parentId, childId);
+        String parentOid = idConverter.getGlobalIdFromLocalId(mobileId, relat.getParentOid());
+        String childOid = idConverter.getGlobalIdFromLocalId(mobileId, relat.getChildOid());
+        MobileDTOConversionHelper.setRelationshipIds(relat, parentOid, childOid);
       }
     }
 
@@ -963,9 +963,9 @@ public class MobileAdapter
       if (dto instanceof RelationshipDTO)
       {
         RelationshipDTO relat = (RelationshipDTO) dto;
-        String parentId = idConverter.generateLocalIdFromGlobalId(mobileId, relat.getParentId());
-        String childId = idConverter.generateLocalIdFromGlobalId(mobileId, relat.getChildId());
-        MobileDTOConversionHelper.setRelationshipIds(relat, parentId, childId);
+        String parentOid = idConverter.generateLocalIdFromGlobalId(mobileId, relat.getParentOid());
+        String childOid = idConverter.generateLocalIdFromGlobalId(mobileId, relat.getChildOid());
+        MobileDTOConversionHelper.setRelationshipIds(relat, parentOid, childOid);
       }
     }
 

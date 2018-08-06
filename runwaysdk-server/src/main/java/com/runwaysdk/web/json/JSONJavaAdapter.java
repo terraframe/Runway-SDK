@@ -25,14 +25,14 @@ import com.runwaysdk.session.Request;
 public class JSONJavaAdapter
 {
   /**
-   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType)
    */
-  public static String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
-    return JSONAdapterDelegate.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+  public static String moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType) {
+    return JSONAdapterDelegate.moveBusiness(sessionId, newParentOid, childOid, oldRelationshipId, newRelationshipType);
   }
   
-  public static String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
-    return JSONAdapterDelegate.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+  public static String getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize) {
+    return JSONAdapterDelegate.getTermAllChildren(sessionId, parentOid, pageNum, pageSize);
   }
   
   public static String checkAdminScreenAccess(String sessionId)
@@ -45,10 +45,10 @@ public class JSONJavaAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static String addChild(String sessionId, String parentId, String childId,
+  public static String addChild(String sessionId, String parentOid, String childOid,
       String relationshipType)
   {
-    return JSONAdapterDelegate.addChild(sessionId, parentId, childId, relationshipType);
+    return JSONAdapterDelegate.addChild(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
@@ -56,10 +56,10 @@ public class JSONJavaAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static String addParent(String sessionId, String parentId, String childId,
+  public static String addParent(String sessionId, String parentOid, String childOid,
       String relationshipType)
   {
-    return JSONAdapterDelegate.addParent(sessionId, parentId, childId, relationshipType);
+    return JSONAdapterDelegate.addParent(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**

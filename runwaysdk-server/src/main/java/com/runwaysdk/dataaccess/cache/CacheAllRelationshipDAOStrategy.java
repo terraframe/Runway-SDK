@@ -278,36 +278,36 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
     {
       RelationshipDAO relationshipDAO = (RelationshipDAO)entityDAO;
 
-      if (relationshipDAO.hasParentIdChanged())
+      if (relationshipDAO.hasParentOidChanged())
       {
-        parentRelSet.remove(relationshipDAO.getOldParentId());
+        parentRelSet.remove(relationshipDAO.getOldParentOid());
       }
-      if (relationshipDAO.hasChildIdChanged())
+      if (relationshipDAO.hasChildOidChanged())
       {
-        childRelSet.add(relationshipDAO.getOldChildId());
+        childRelSet.add(relationshipDAO.getOldChildOid());
       }
       
-      String parentId  = relationshipDAO.getParentId();
-      String childId   = relationshipDAO.getChildId();
+      String parentOid  = relationshipDAO.getParentOid();
+      String childOid   = relationshipDAO.getChildOid();
 
-      parentRelSet.add(childId);
-      childRelSet.add(parentId);
+      parentRelSet.add(childOid);
+      childRelSet.add(parentOid);
 
       Boolean hasIdChanged = relationshipDAO.hasIdChanged();
       String oldId = relationshipDAO.getOldId();
       
-      Boolean hasParentIdChanged = relationshipDAO.hasParentIdChanged();
-      String oldParentId = relationshipDAO.getOldParentId();
+      Boolean hasParentOidChanged = relationshipDAO.hasParentOidChanged();
+      String oldParentOid = relationshipDAO.getOldParentOid();
       
-      Boolean hasChildIdChanged = relationshipDAO.hasChildIdChanged();
-      String oldChildId = relationshipDAO.getOldChildId();
+      Boolean hasChildOidChanged = relationshipDAO.hasChildOidChanged();
+      String oldChildOid = relationshipDAO.getOldChildOid();
 
       // Needs to be cleared for storage in the global cache
       relationshipDAO.clearOldRelIds();
 
       super.updateCache(relationshipDAO);
         
-      if (hasIdChanged || hasParentIdChanged || hasChildIdChanged)
+      if (hasIdChanged || hasParentOidChanged || hasChildOidChanged)
       {
         // Need to set the old oid variable, so that the code below will work.
         if (hasIdChanged)
@@ -315,14 +315,14 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
           relationshipDAO.setOldId(oldId);
         }
         
-        if (hasParentIdChanged)
+        if (hasParentOidChanged)
         {
-          relationshipDAO.setOldParentId(oldParentId);
+          relationshipDAO.setOldParentOid(oldParentOid);
         }
 
-        if (hasChildIdChanged)
+        if (hasChildOidChanged)
         {
-          relationshipDAO.setOldChildId(oldChildId);          
+          relationshipDAO.setOldChildOid(oldChildOid);          
         }
         
         ObjectCache.updateRelationshipDAOIFinCache(hasIdChanged, relationshipDAO);
@@ -353,19 +353,19 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
     {   
       RelationshipDAO relationship = (RelationshipDAO)entityDAO;
      
-      String parentId  = relationship.getParentId();
-      String childId   = relationship.getChildId();
+      String parentOid  = relationship.getParentOid();
+      String childOid   = relationship.getChildOid();
       
       boolean stillHasParents = ObjectCache.removeParentRelationshipDAOIFtoCache(relationship, true);
       if (stillHasParents)
       {
-        parentRelSet.remove(childId);
+        parentRelSet.remove(childOid);
       }
 
       boolean stillHasChildren = ObjectCache.removeChildRelationshipDAOIFtoCache(relationship, true);
       if (stillHasChildren)
       {
-        childRelSet.remove(parentId);
+        childRelSet.remove(parentOid);
       }
       
       super.removeCache(entityDAO);
@@ -407,15 +407,15 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
     Iterator<String> i = parentRelSet.iterator();
     while(i.hasNext())
     {
-      String childId = i.next();
-      ObjectCache.removeAllParentRelationshipsOfType(childId, relationshipType, false);
+      String childOid = i.next();
+      ObjectCache.removeAllParentRelationshipsOfType(childOid, relationshipType, false);
     }
     
     i = childRelSet.iterator();
     while(i.hasNext())
     {
-      String parentId = i.next();
-      ObjectCache.removeAllChildRelationshipsOfType(parentId, relationshipType, false);
+      String parentOid = i.next();
+      ObjectCache.removeAllChildRelationshipsOfType(parentOid, relationshipType, false);
     }
   }
 }

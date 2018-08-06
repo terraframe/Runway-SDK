@@ -1034,7 +1034,7 @@ public class BusinessDAOFactory
       List<MdRelationshipDAOIF> superMdRelationshipDAOIF = mdRelationshipDAOIF.getSuperClasses();
 
       RelationshipDAOQuery relQuery = queryFactory.relationshipDAOQuery(mdRelationshipDAOIF.definesType());
-      relQuery.WHERE(relQuery.parentId().EQ(oldId));
+      relQuery.WHERE(relQuery.parentOid().EQ(oldId));
       OIterator<RelationshipDAOIF> iterator = null;
       try
       {
@@ -1043,7 +1043,7 @@ public class BusinessDAOFactory
         for (RelationshipDAOIF relationshipDAOIF : iterator)
         {
           RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
-          relationshipDAO.setParentId(newId);
+          relationshipDAO.setParentOid(newId);
 
           // Not calling the apply method because we do not want to invoke any
           // other logic.
@@ -1053,7 +1053,7 @@ public class BusinessDAOFactory
           for (MdRelationshipDAOIF parentMdRelationshipDAOIF : superMdRelationshipDAOIF)
           {
             PreparedStatement preparedStmt = null;
-            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getOid(), RelationshipInfo.PARENT_ID, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getOid(), RelationshipInfo.PARENT_OID, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
             preparedStatementList.add(preparedStmt);
           }
 
@@ -1096,7 +1096,7 @@ public class BusinessDAOFactory
       List<MdRelationshipDAOIF> superMdRelationshipDAOIF = mdRelationshipDAOIF.getSuperClasses();
 
       RelationshipDAOQuery relQuery = queryFactory.relationshipDAOQuery(mdRelationshipDAOIF.definesType());
-      relQuery.WHERE(relQuery.childId().EQ(oldId));
+      relQuery.WHERE(relQuery.childOid().EQ(oldId));
       OIterator<RelationshipDAOIF> iterator = null;
       try
       {
@@ -1105,7 +1105,7 @@ public class BusinessDAOFactory
         for (RelationshipDAOIF relationshipDAOIF : iterator)
         {
           RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
-          relationshipDAO.setChildId(newId);
+          relationshipDAO.setChildOid(newId);
 
           // Not calling the apply method because we do not want to invoke any
           // other logic.
@@ -1114,7 +1114,7 @@ public class BusinessDAOFactory
           for (MdRelationshipDAOIF parentMdRelationshipDAOIF : superMdRelationshipDAOIF)
           {
             PreparedStatement preparedStmt = null;
-            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getOid(), RelationshipInfo.CHILD_ID, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getOid(), RelationshipInfo.CHILD_OID, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
             preparedStatementList.add(preparedStmt);
           }
 

@@ -22,9 +22,9 @@ public class MdMethodMethodActor extends MdMethodMethodActorBase
 {
   private static final long serialVersionUID = 1229405888117L;
   
-  public MdMethodMethodActor(String parentId, String childId)
+  public MdMethodMethodActor(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public MdMethodMethodActor(com.runwaysdk.system.metadata.MdMethod parent, com.runwaysdk.system.MethodActor child)

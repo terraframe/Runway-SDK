@@ -718,14 +718,14 @@ public class RelationshipQueryTest
 
   @Request
   @Test
-  public void testQueryChildId()
+  public void testQueryChildOid()
   {
     try
     {
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.childId().EQ(QueryMasterSetup.relQueryObject1.getOid()));
+      relQuery.WHERE(relQuery.childOid().EQ(QueryMasterSetup.relQueryObject1.getOid()));
 
       OIterator<RelationshipDAOIF> iterator = relQuery.getIterator();
 
@@ -744,7 +744,7 @@ public class RelationshipQueryTest
 
       // perform a query that WILL NOT find a match
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.childId().EQ(QueryMasterSetup.testQueryObject1.getOid()));
+      relQuery.WHERE(relQuery.childOid().EQ(QueryMasterSetup.testQueryObject1.getOid()));
 
       iterator = relQuery.getIterator();
 
@@ -762,7 +762,7 @@ public class RelationshipQueryTest
 
   @Request
   @Test
-  public void testQueryChildId_Generated()
+  public void testQueryChildOid_Generated()
   {
     try
     {
@@ -773,7 +773,7 @@ public class RelationshipQueryTest
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      AttributeCharacter attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("childId").invoke(relQueryObject);
+      AttributeCharacter attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("childOid").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeCharacter.EQ(QueryMasterSetup.relQueryObject1.getOid()));
 
       // Load the iterator class
@@ -798,7 +798,7 @@ public class RelationshipQueryTest
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("childId").invoke(relQueryObject);
+      attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("childOid").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeCharacter.EQ(QueryMasterSetup.testQueryObject1.getOid()));
 
       resultIterator = relQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(relQueryObject);
@@ -818,14 +818,14 @@ public class RelationshipQueryTest
 
   @Request
   @Test
-  public void testQueryParentId()
+  public void testQueryParentOid()
   {
     try
     {
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.parentId().EQ(QueryMasterSetup.testQueryObject1.getOid()));
+      relQuery.WHERE(relQuery.parentOid().EQ(QueryMasterSetup.testQueryObject1.getOid()));
 
       OIterator<RelationshipDAOIF> iterator = relQuery.getIterator();
 
@@ -844,7 +844,7 @@ public class RelationshipQueryTest
 
       // perform a query that WILL NOT find a match
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.parentId().EQ(QueryMasterSetup.relQueryObject1.getOid()));
+      relQuery.WHERE(relQuery.parentOid().EQ(QueryMasterSetup.relQueryObject1.getOid()));
 
       iterator = relQuery.getIterator();
 
@@ -862,7 +862,7 @@ public class RelationshipQueryTest
 
   @Request
   @Test
-  public void testQueryParentId_Generated()
+  public void testQueryParentOid_Generated()
   {
     try
     {
@@ -873,7 +873,7 @@ public class RelationshipQueryTest
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      AttributeCharacter attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("parentId").invoke(relQueryObject);
+      AttributeCharacter attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("parentOid").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeCharacter.EQ(QueryMasterSetup.testQueryObject1.getOid()));
 
       // Load the iterator class
@@ -898,7 +898,7 @@ public class RelationshipQueryTest
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("parentId").invoke(relQueryObject);
+      attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("parentOid").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeCharacter.EQ(QueryMasterSetup.relQueryObject1.getOid()));
 
       resultIterator = relQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(relQueryObject);
@@ -992,8 +992,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
-        if (!childId.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childId.equals(relQueryObject2.getOid()))
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
+        if (!childOid.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childOid.equals(relQueryObject2.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -1095,8 +1095,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
-        if (!childId.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childId.equals(relQueryObject2.getOid()))
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
+        if (!childOid.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childOid.equals(relQueryObject2.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -1206,8 +1206,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
-        if (!childId.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childId.equals(relQueryObject2.getOid()))
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
+        if (!childOid.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childOid.equals(relQueryObject2.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -1325,8 +1325,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
-        if (!childId.equals(QueryMasterSetup.relQueryObject1.getOid()))
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
+        if (!childOid.equals(QueryMasterSetup.relQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -1463,8 +1463,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
-        if (!childId.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childId.equals(relQueryObject2.getOid()))
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
+        if (!childOid.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childOid.equals(relQueryObject2.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -1591,8 +1591,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
-        if (!childId.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childId.equals(relQueryObject2.getOid()))
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
+        if (!childOid.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childOid.equals(relQueryObject2.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -1725,8 +1725,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
-        if (!childId.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childId.equals(relQueryObject2.getOid()))
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
+        if (!childOid.equals(QueryMasterSetup.relQueryObject1.getOid()) && !childOid.equals(relQueryObject2.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -1835,8 +1835,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String) parentClass.getMethod("getOid").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getOid()) && !parentId.equals(testQueryObject2.getOid()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()) && !parentOid.equals(testQueryObject2.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -1937,8 +1937,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String) parentClass.getMethod("getOid").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getOid()) && !parentId.equals(testQueryObject2.getOid()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()) && !parentOid.equals(testQueryObject2.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -2066,8 +2066,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String) parentClass.getMethod("getOid").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getOid()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -2193,8 +2193,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String) parentClass.getMethod("getOid").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getOid()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -2316,8 +2316,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String) parentClass.getMethod("getOid").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getOid()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
@@ -2449,8 +2449,8 @@ public class RelationshipQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String) parentClass.getMethod("getOid").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getOid()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }

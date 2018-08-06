@@ -930,15 +930,15 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   }
 
   // Check permission for adding a child to an object
-  pointcut addChildId(Business parentBusiness, String childId, String relationshipType)
+  pointcut addChildOid(Business parentBusiness, String childOid, String relationshipType)
     : execution (* com.runwaysdk.business.Business.addChild(String, String))
-      && args(childId, relationshipType) && this(parentBusiness);
-  before(Business parentBusiness, String childId, String relationshipType)
-    : addChildId(parentBusiness, childId, relationshipType)
+      && args(childOid, relationshipType) && this(parentBusiness);
+  before(Business parentBusiness, String childOid, String relationshipType)
+    : addChildOid(parentBusiness, childOid, relationshipType)
   {
     if (this.isSessionInitialized())
     {
-      this.checkAddChildObject(parentBusiness, childId, relationshipType);
+      this.checkAddChildObject(parentBusiness, childOid, relationshipType);
     }
   }
 
@@ -948,12 +948,12 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    *
    * @param parentBusiness
    *          object that the child object is added to.
-   * @param childId
+   * @param childOid
    *          reference to the child object.
    * @param relationship
    *          type of involved.
    */
-  private void checkAddChildObject(Business parentBusiness, String childId, String relationshipType)
+  private void checkAddChildObject(Business parentBusiness, String childOid, String relationshipType)
   {
     BusinessDAO parentBusinessDAO = parentBusiness.businessDAO();
 
@@ -977,7 +977,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
       if (!access)
       {
-        Business childBusiness = Business.get(childId);
+        Business childBusiness = Business.get(childOid);
         SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
@@ -995,21 +995,21 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      this.checkRemoveChildObject(parentBusiness, relationship.getChildId(), relationship.getType());
+      this.checkRemoveChildObject(parentBusiness, relationship.getChildOid(), relationship.getType());
     }
   }
 
-  pointcut removeChildId(Business parentBusiness, String relationshipId)
+  pointcut removeChildOid(Business parentBusiness, String relationshipId)
     : execution (* com.runwaysdk.business.Business.removeChild(String))
       && args(relationshipId) && this(parentBusiness);
   before(Business parentBusiness, String relationshipId)
-    : removeChildId(parentBusiness, relationshipId)
+    : removeChildOid(parentBusiness, relationshipId)
   {
     if (this.isSessionInitialized())
     {
       MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(relationshipId));
       Relationship relationship = Relationship.get(relationshipId);
-      this.checkRemoveChildObject(parentBusiness, relationship.getChildId(), mdClassIF.definesType());
+      this.checkRemoveChildObject(parentBusiness, relationship.getChildOid(), mdClassIF.definesType());
     }
   }
 
@@ -1025,34 +1025,34 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
   }
 
-  pointcut removeAllChildId(Business parentBusiness, String childId, String relationshipType)
+  pointcut removeAllChildOid(Business parentBusiness, String childOid, String relationshipType)
     : execution (* com.runwaysdk.business.Business.removeAllChildren(String, String))
-      && args(childId, relationshipType) && this(parentBusiness);
-  before(Business parentBusiness, String childId, String relationshipType)
-    : removeAllChildId(parentBusiness, childId, relationshipType)
+      && args(childOid, relationshipType) && this(parentBusiness);
+  before(Business parentBusiness, String childOid, String relationshipType)
+    : removeAllChildOid(parentBusiness, childOid, relationshipType)
   {
     if (this.isSessionInitialized())
     {
-      this.checkRemoveChildObject(parentBusiness, childId, relationshipType);
+      this.checkRemoveChildObject(parentBusiness, childOid, relationshipType);
     }
   }
 
   /**
    * Checks if session userIF has permission to remove the given child object
-   * from the given parent object. Either childId or relationshipId is null, but
+   * from the given parent object. Either childOid or relationshipId is null, but
    * not both.
    *
    *
    * @param parentBusiness
    *          object that the child object is removed from.
-   * @param childId
+   * @param childOid
    *          oid to the child object.
    * @param relationshipType
    *          name of the relationship type.
    * @param relationshipId
    *          oid to the relationship.
    */
-  private void checkRemoveChildObject(Business parentBusiness, String childId, String relationshipType)
+  private void checkRemoveChildObject(Business parentBusiness, String childOid, String relationshipType)
   {
     BusinessDAO parentBusinessDAO = parentBusiness.businessDAO();
 
@@ -1077,7 +1077,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
       if (!access)
       {
-        Business childBusiness = Business.get(childId);
+        Business childBusiness = Business.get(childOid);
         SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the delete_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
@@ -1100,15 +1100,15 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   }
 
   // Check permission for adding a parent to an object
-  pointcut addParentId(String parentId, Business childBusiness, String relationshipType)
+  pointcut addParentOid(String parentOid, Business childBusiness, String relationshipType)
     : execution (* com.runwaysdk.business.Business.addParent(String, String))
-      && args(parentId, relationshipType) && this(childBusiness);
-  before(String parentId, Business childBusiness, String relationshipType)
-    : addParentId(parentId, childBusiness, relationshipType)
+      && args(parentOid, relationshipType) && this(childBusiness);
+  before(String parentOid, Business childBusiness, String relationshipType)
+    : addParentOid(parentOid, childBusiness, relationshipType)
   {
     if (this.isSessionInitialized())
     {
-      this.checkAddParentObject(childBusiness, parentId, relationshipType);
+      this.checkAddParentObject(childBusiness, parentOid, relationshipType);
     }
   }
 
@@ -1118,12 +1118,12 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    *
    * @param childBusiness
    *          object that the parent object is added to.
-   * @param parentId
+   * @param parentOid
    *          oid to the child object.
    * @param relationship
    *          type of relationship involved.
    */
-  private void checkAddParentObject(Business childBusiness, String parentId, String relationshipType)
+  private void checkAddParentObject(Business childBusiness, String parentOid, String relationshipType)
   {
     BusinessDAO childBusinessDAO = childBusiness.businessDAO();
 
@@ -1146,7 +1146,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
       if (!access)
       {
-        Business parentBusiness = Business.get(parentId);
+        Business parentBusiness = Business.get(parentOid);
         SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_parent permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + childBusinessDAO.getType() + "]";
@@ -1164,21 +1164,21 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      this.checkRemoveParentObject(childBusiness, relationship.getParentId(), relationship.getType());
+      this.checkRemoveParentObject(childBusiness, relationship.getParentOid(), relationship.getType());
     }
   }
 
-  pointcut removeParentId(Business childBusiness, String relationshipId)
+  pointcut removeParentOid(Business childBusiness, String relationshipId)
     : execution (* com.runwaysdk.business.Business.removeParent(String))
       && args(relationshipId) && this(childBusiness);
   before(Business childBusiness, String relationshipId)
-    : removeParentId(childBusiness, relationshipId)
+    : removeParentOid(childBusiness, relationshipId)
   {
     if (this.isSessionInitialized())
     {
       MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(relationshipId));
       Relationship relationship = Relationship.get(relationshipId);
-      this.checkRemoveParentObject(childBusiness, relationship.getParentId(), mdClassIF.definesType());
+      this.checkRemoveParentObject(childBusiness, relationship.getParentOid(), mdClassIF.definesType());
     }
   }
 
@@ -1195,15 +1195,15 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   }
 
   // Check permission for adding a parent to an object
-  pointcut removeAllParentIds(String parentId, Business childBusiness, String relationshipType)
+  pointcut removeAllParentOids(String parentOid, Business childBusiness, String relationshipType)
     : execution (* com.runwaysdk.business.Business.removeAllParents(String, String))
-      && args(parentId, relationshipType) && this(childBusiness);
-  before(String parentId, Business childBusiness, String relationshipType)
-    : removeAllParentIds(parentId, childBusiness, relationshipType)
+      && args(parentOid, relationshipType) && this(childBusiness);
+  before(String parentOid, Business childBusiness, String relationshipType)
+    : removeAllParentOids(parentOid, childBusiness, relationshipType)
   {
     if (this.isSessionInitialized())
     {
-      checkRemoveParentObject(childBusiness, parentId, relationshipType);
+      checkRemoveParentObject(childBusiness, parentOid, relationshipType);
     }
   }
 
@@ -1213,14 +1213,14 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    *
    * @param childBusiness
    *          object that the parent object is removed from.
-   * @param parentId
+   * @param parentOid
    *          reference to the child object.
    * @param relationshipType
    *          name of the relationship type.
    * @param relationshipId
    *          reference to the relationship.
    */
-  private void checkRemoveParentObject(Business childBusiness, String parentId, String relationshipType)
+  private void checkRemoveParentObject(Business childBusiness, String parentOid, String relationshipType)
   {
     BusinessDAO childBusinessDAO = childBusiness.businessDAO();
 
@@ -1243,7 +1243,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
       if (!access)
       {
-        Business parentBusiness = Business.get(parentId);
+        Business parentBusiness = Business.get(parentOid);
         SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the delete_parent permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + childBusinessDAO.getType() + "]";

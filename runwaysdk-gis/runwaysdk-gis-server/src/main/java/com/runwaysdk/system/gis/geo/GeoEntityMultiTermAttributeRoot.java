@@ -22,9 +22,9 @@ public class GeoEntityMultiTermAttributeRoot extends GeoEntityMultiTermAttribute
 {
   private static final long serialVersionUID = 1717981971;
   
-  public GeoEntityMultiTermAttributeRoot(String parentId, String childId)
+  public GeoEntityMultiTermAttributeRoot(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public GeoEntityMultiTermAttributeRoot(com.runwaysdk.system.metadata.MdAttributeMultiTerm parent, com.runwaysdk.system.gis.geo.GeoEntity child)

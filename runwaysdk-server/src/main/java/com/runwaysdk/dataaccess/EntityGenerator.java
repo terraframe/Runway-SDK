@@ -471,12 +471,12 @@ public class EntityGenerator
     MdBusinessDAOIF parentMd = mdRelationshipIF.getParentMdBusiness();
     MdBusinessDAOIF childMd = mdRelationshipIF.getChildMdBusiness();
 
-    List<String> parentIds = EntityDAO.getEntityIdsFromDB(parentMd);
-    List<String> childIds = EntityDAO.getEntityIdsFromDB(childMd);
+    List<String> parentOids = EntityDAO.getEntityIdsFromDB(parentMd);
+    List<String> childOids = EntityDAO.getEntityIdsFromDB(childMd);
 
     // Make sure that the number of requested instances isn't too high
-    if (parentIds.size() * childCardinality < instances ||
-        childIds.size() * parentCardinality < instances)
+    if (parentOids.size() * childCardinality < instances ||
+        childOids.size() * parentCardinality < instances)
     {
       String error = "There are not enough instances of the part or child classes to generate "
           + instances + " [" + mdRelationshipIF.getDisplayLabel(CommonProperties.getDefaultLocale() ) + "] relationship instances.";
@@ -493,7 +493,7 @@ public class EntityGenerator
     while (true)
     {
       // Iterating over all child ids ensures an even distribution of relationships
-      for (String childId : childIds)
+      for (String childOid : childOids)
       {
         for (int i = 0; i < parentCardinality; i++)
         {
@@ -501,13 +501,13 @@ public class EntityGenerator
           // is at the end, shuffle the parent list and restart the iterator.
           if (!parentIterator.hasNext())
           {
-            Collections.shuffle(parentIds);
-            parentIterator = parentIds.iterator();
+            Collections.shuffle(parentOids);
+            parentIterator = parentOids.iterator();
           }
-          RelationshipDAO relationship = RelationshipDAO.newInstance(parentIterator.next(), childId, relationshipType);
+          RelationshipDAO relationship = RelationshipDAO.newInstance(parentIterator.next(), childOid, relationshipType);
           try
           {
-            // FIXME forced uniqueness on parentId-childId
+            // FIXME forced uniqueness on parentOid-childOid
             generateInstance(relationship).apply();
           }
           catch (Exception e) {}

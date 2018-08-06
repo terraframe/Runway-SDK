@@ -31,12 +31,12 @@ public class RelationshipRecursionException extends RelationshipConstraintExcept
   /**
    * Id of the parent object.
    */
-  private String              parentId;
+  private String              parentOid;
 
   /**
    * Id of the child object.
    */
-  private String              childId;
+  private String              childOid;
 
   /**
    * 
@@ -55,17 +55,17 @@ public class RelationshipRecursionException extends RelationshipConstraintExcept
    *          {@link #getMessage()} method.
    * @param mdTreeIF
    *          Tree type.
-   * @param parentId
+   * @param parentOid
    *          Id of the parent object.
-   * @param childId
+   * @param childOid
    *          Id of the child object.
    */
-  public RelationshipRecursionException(String devMessage, MdRelationshipDAOIF mdTreeIF, String parentId, String childId)
+  public RelationshipRecursionException(String devMessage, MdRelationshipDAOIF mdTreeIF, String parentOid, String childOid)
   {
     super(devMessage);
     this.mdTreeIF = mdTreeIF;
-    this.parentId = parentId;
-    this.childId = childId;
+    this.parentOid = parentOid;
+    this.childOid = childOid;
   }
 
   /**
@@ -88,17 +88,17 @@ public class RelationshipRecursionException extends RelationshipConstraintExcept
    *          and indicates that the cause is nonexistent or unknown.)
    * @param mdTreeIF
    *          Tree type.
-   * @param parentId
+   * @param parentOid
    *          Id of the parent object.
-   * @param childId
+   * @param childOid
    *          Id of the child object.
    */
-  public RelationshipRecursionException(String devMessage, Throwable cause, MdRelationshipDAOIF mdTreeIF, String parentId, String childId)
+  public RelationshipRecursionException(String devMessage, Throwable cause, MdRelationshipDAOIF mdTreeIF, String parentOid, String childOid)
   {
     super(devMessage, cause);
     this.mdTreeIF = mdTreeIF;
-    this.parentId = parentId;
-    this.childId = childId;
+    this.parentOid = parentOid;
+    this.childOid = childOid;
   }
 
   /**
@@ -114,17 +114,17 @@ public class RelationshipRecursionException extends RelationshipConstraintExcept
    *          and indicates that the cause is nonexistent or unknown.)
    * @param mdTreeIF
    *          Tree type.
-   * @param parentId
+   * @param parentOid
    *          Id of the parent object.
-   * @param childId
+   * @param childOid
    *          Id of the child object..
    */
-  public RelationshipRecursionException(Throwable cause, MdRelationshipDAOIF mdTreeIF, String parentId, String childId)
+  public RelationshipRecursionException(Throwable cause, MdRelationshipDAOIF mdTreeIF, String parentOid, String childOid)
   {
     super(cause);
     this.mdTreeIF = mdTreeIF;
-    this.parentId = parentId;
-    this.childId = childId;
+    this.parentOid = parentOid;
+    this.childOid = childOid;
   }
 
   /**
@@ -135,8 +135,8 @@ public class RelationshipRecursionException extends RelationshipConstraintExcept
   public String getLocalizedMessage()
   {
     String treeLabel = this.mdTreeIF.getDisplayLabel(this.getLocale());
-    String parentUniqueLabel = Business.get(this.parentId).toString();
-    String childUniqueLabel = Business.get(this.childId).toString();
+    String parentUniqueLabel = Business.get(this.parentOid).toString();
+    String childUniqueLabel = Business.get(this.childOid).toString();
 
     return ServerExceptionMessageLocalizer.relationshipRecursionException(this.getLocale(), treeLabel, parentUniqueLabel, childUniqueLabel);
   }

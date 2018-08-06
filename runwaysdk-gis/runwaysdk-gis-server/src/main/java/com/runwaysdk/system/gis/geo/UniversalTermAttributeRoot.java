@@ -22,9 +22,9 @@ public class UniversalTermAttributeRoot extends UniversalTermAttributeRootBase
 {
   private static final long serialVersionUID = 138214933;
   
-  public UniversalTermAttributeRoot(String parentId, String childId)
+  public UniversalTermAttributeRoot(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public UniversalTermAttributeRoot(com.runwaysdk.system.metadata.MdAttributeTerm parent, com.runwaysdk.system.gis.geo.Universal child)

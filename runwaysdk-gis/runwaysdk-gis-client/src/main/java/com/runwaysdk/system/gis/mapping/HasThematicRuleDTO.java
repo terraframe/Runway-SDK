@@ -22,9 +22,9 @@ public class HasThematicRuleDTO extends HasThematicRuleDTOBase
 {
   private static final long serialVersionUID = 1992693969;
   
-  public HasThematicRuleDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public HasThematicRuleDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

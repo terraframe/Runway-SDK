@@ -576,8 +576,8 @@ public class UniversalTest
   private void assertAllowedIn(Universal child, Universal parent)
   {
     AllowedInQuery q = new AllowedInQuery(new QueryFactory());
-    q.WHERE(q.childId().EQ(child.getOid()));
-    q.AND(q.parentId().EQ(parent.getOid()));
+    q.WHERE(q.childOid().EQ(child.getOid()));
+    q.AND(q.parentOid().EQ(parent.getOid()));
 
     OIterator<? extends AllowedIn> iter = q.getIterator();
     try

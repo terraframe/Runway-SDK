@@ -115,8 +115,8 @@ public class GISMetadataExporter
   // {
   // RelationshipDAOIF relationship = (RelationshipDAOIF) entity;
   //
-  // export(relationship.getParentId(), all);
-  // export(relationship.getChildId(), all);
+  // export(relationship.getParentOid(), all);
+  // export(relationship.getChildOid(), all);
   // }
   // }
   // }

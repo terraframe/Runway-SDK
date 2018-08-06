@@ -31,9 +31,9 @@ public abstract class WebFormFieldBase extends com.runwaysdk.system.metadata.For
   public final static String CLASS = "com.runwaysdk.system.metadata.WebFormField";
   private static final long serialVersionUID = 806583955;
   
-  public WebFormFieldBase(String parentId, String childId)
+  public WebFormFieldBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

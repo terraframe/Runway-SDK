@@ -94,8 +94,8 @@ public class RefactorUtil
     {
       String
         sql =  "UPDATE "+tableNameIterator.next();
-        sql += "\n   SET "+RelationshipInfo.PARENT_ID+" = '"+newId+"'";
-        sql += "\n WHERE "+RelationshipInfo.PARENT_ID+" = '"+originalId+"';\n";
+        sql += "\n   SET "+RelationshipInfo.PARENT_OID+" = '"+newId+"'";
+        sql += "\n WHERE "+RelationshipInfo.PARENT_OID+" = '"+originalId+"';\n";
       System.out.println(sql);
     }
 
@@ -121,8 +121,8 @@ public class RefactorUtil
     {
       String
         sql =  "UPDATE "+tableNameIterator.next();
-        sql += "\n   SET "+RelationshipInfo.CHILD_ID+" = '"+newId+"'";
-        sql += "\n WHERE "+RelationshipInfo.CHILD_ID+" = '"+originalId+"';\n";
+        sql += "\n   SET "+RelationshipInfo.CHILD_OID+" = '"+newId+"'";
+        sql += "\n WHERE "+RelationshipInfo.CHILD_OID+" = '"+originalId+"';\n";
       System.out.println(sql);
     }
 

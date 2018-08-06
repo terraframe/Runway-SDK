@@ -43,9 +43,9 @@ public abstract class SynonymRelationshipBase extends com.runwaysdk.business.ont
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -816862765;
   
-  public SynonymRelationshipBase(String parentId, String childId)
+  public SynonymRelationshipBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

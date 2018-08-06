@@ -31,9 +31,9 @@ public abstract class EnumerationAttributeBase extends com.runwaysdk.system.meta
   public final static String CLASS = "com.runwaysdk.system.metadata.EnumerationAttribute";
   private static final long serialVersionUID = 1667169941;
   
-  public EnumerationAttributeBase(String parentId, String childId)
+  public EnumerationAttributeBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

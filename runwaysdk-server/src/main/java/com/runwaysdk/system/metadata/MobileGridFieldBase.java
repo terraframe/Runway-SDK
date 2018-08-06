@@ -43,9 +43,9 @@ public abstract class MobileGridFieldBase extends com.runwaysdk.business.Relatio
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 1094097977;
   
-  public MobileGridFieldBase(String parentId, String childId)
+  public MobileGridFieldBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

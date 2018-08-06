@@ -678,32 +678,32 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       if (cacheCode == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode() || cacheCode == EntityCacheMaster.CACHE_HARDCODED.getCacheCode())
       {
 
-        String parentId = relationshipDAO.getParentId();
-        String childId = relationshipDAO.getChildId();
+        String parentOid = relationshipDAO.getParentOid();
+        String childOid = relationshipDAO.getChildOid();
 
         TransactionBusinessDAORelationships parentRels;
-        if (this.updatedBusinessDAORelationships.containsKey(parentId))
+        if (this.updatedBusinessDAORelationships.containsKey(parentOid))
         {
-          parentRels = this.updatedBusinessDAORelationships.get(parentId);
+          parentRels = this.updatedBusinessDAORelationships.get(parentOid);
         }
         else
         {
           parentRels = new TransactionBusinessDAORelationships();
         }
         parentRels.addChildRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(parentId, parentRels);
+        this.updatedBusinessDAORelationships.put(parentOid, parentRels);
 
         TransactionBusinessDAORelationships childRels;
-        if (this.updatedBusinessDAORelationships.containsKey(childId))
+        if (this.updatedBusinessDAORelationships.containsKey(childOid))
         {
-          childRels = this.updatedBusinessDAORelationships.get(childId);
+          childRels = this.updatedBusinessDAORelationships.get(childOid);
         }
         else
         {
           childRels = new TransactionBusinessDAORelationships();
         }
         childRels.addParentRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(childId, childRels);
+        this.updatedBusinessDAORelationships.put(childOid, childRels);
 
       }
     }
@@ -737,32 +737,32 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
       if (cacheCode == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode() || cacheCode == EntityCacheMaster.CACHE_HARDCODED.getCacheCode())
       {
-        String parentId = relationshipDAO.getParentId();
-        String childId = relationshipDAO.getChildId();
+        String parentOid = relationshipDAO.getParentOid();
+        String childOid = relationshipDAO.getChildOid();
 
         TransactionBusinessDAORelationships parentRels;
-        if (this.updatedBusinessDAORelationships.containsKey(parentId))
+        if (this.updatedBusinessDAORelationships.containsKey(parentOid))
         {
-          parentRels = this.updatedBusinessDAORelationships.get(parentId);
+          parentRels = this.updatedBusinessDAORelationships.get(parentOid);
         }
         else
         {
           parentRels = new TransactionBusinessDAORelationships();
         }
         parentRels.updateChildRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(parentId, parentRels);
+        this.updatedBusinessDAORelationships.put(parentOid, parentRels);
 
         TransactionBusinessDAORelationships childRels;
-        if (this.updatedBusinessDAORelationships.containsKey(childId))
+        if (this.updatedBusinessDAORelationships.containsKey(childOid))
         {
-          childRels = this.updatedBusinessDAORelationships.get(childId);
+          childRels = this.updatedBusinessDAORelationships.get(childOid);
         }
         else
         {
           childRels = new TransactionBusinessDAORelationships();
         }
         childRels.updateParentRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(childId, childRels);
+        this.updatedBusinessDAORelationships.put(childOid, childRels);
       }
     }
     finally
@@ -933,32 +933,32 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
       if (cacheCode == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode() || cacheCode == EntityCacheMaster.CACHE_HARDCODED.getCacheCode())
       {
-        String parentId = relationshipDAO.getParentId();
-        String childId = relationshipDAO.getChildId();
+        String parentOid = relationshipDAO.getParentOid();
+        String childOid = relationshipDAO.getChildOid();
 
         TransactionBusinessDAORelationships parentRels;
-        if (this.updatedBusinessDAORelationships.containsKey(parentId))
+        if (this.updatedBusinessDAORelationships.containsKey(parentOid))
         {
-          parentRels = this.updatedBusinessDAORelationships.get(parentId);
+          parentRels = this.updatedBusinessDAORelationships.get(parentOid);
         }
         else
         {
           parentRels = new TransactionBusinessDAORelationships();
         }
         parentRels.deletedChildRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(parentId, parentRels);
+        this.updatedBusinessDAORelationships.put(parentOid, parentRels);
 
         TransactionBusinessDAORelationships childRels;
-        if (this.updatedBusinessDAORelationships.containsKey(childId))
+        if (this.updatedBusinessDAORelationships.containsKey(childOid))
         {
-          childRels = this.updatedBusinessDAORelationships.get(childId);
+          childRels = this.updatedBusinessDAORelationships.get(childOid);
         }
         else
         {
           childRels = new TransactionBusinessDAORelationships();
         }
         childRels.deletedParentRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(childId, childRels);
+        this.updatedBusinessDAORelationships.put(childOid, childRels);
 
       }
     }

@@ -24,9 +24,9 @@ public abstract class EntityIndexDTOBase extends com.runwaysdk.system.metadata.M
   public final static String CLASS = "com.runwaysdk.system.metadata.EntityIndex";
   private static final long serialVersionUID = -297253551;
   
-  public EntityIndexDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public EntityIndexDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -48,12 +48,12 @@ public abstract class EntityIndexDTOBase extends com.runwaysdk.system.metadata.M
   
   public com.runwaysdk.system.metadata.MdEntityDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdEntityDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdEntityDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.MdIndexDTO getChild()
   {
-    return com.runwaysdk.system.metadata.MdIndexDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.MdIndexDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.EntityIndexDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -63,16 +63,16 @@ public abstract class EntityIndexDTOBase extends com.runwaysdk.system.metadata.M
     return (com.runwaysdk.system.metadata.EntityIndexDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.EntityIndexQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.EntityIndexQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.EntityIndexDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.EntityIndexQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.EntityIndexQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.EntityIndexQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.EntityIndexDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.EntityIndexQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

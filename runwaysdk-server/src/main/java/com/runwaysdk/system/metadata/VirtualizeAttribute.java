@@ -22,9 +22,9 @@ public class VirtualizeAttribute extends VirtualizeAttributeBase
 {
   private static final long serialVersionUID = 1229405888142L;
   
-  public VirtualizeAttribute(String parentId, String childId)
+  public VirtualizeAttribute(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public VirtualizeAttribute(com.runwaysdk.system.metadata.MdAttributeConcrete parent, com.runwaysdk.system.metadata.MdAttributeVirtual child)

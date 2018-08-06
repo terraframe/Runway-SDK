@@ -381,29 +381,29 @@ public class Diskstore implements ObjectStore
    */
   public void addRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAOIF)
   {
-    String parentId = relationshipDAOIF.getParentId();
-    synchronized (parentId)
+    String parentOid = relationshipDAOIF.getParentOid();
+    synchronized (parentOid)
     {
-      Serializable entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentId(relationshipDAOIF), parentId, CachedEntityDAOinfo.Types.BUSINESS);
+      Serializable entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentOid(relationshipDAOIF), parentOid, CachedEntityDAOinfo.Types.BUSINESS);
       CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry;
 
       if (!cachedBusinessDAOinfo.isMarkedForDelete())
       {
         cachedBusinessDAOinfo.addChildRelationship(relationshipDAOIF);
-        mainCache.put(parentId, entry);
+        mainCache.put(parentOid, entry);
       }
     }
 
-    String childId = relationshipDAOIF.getChildId();
-    synchronized (childId)
+    String childOid = relationshipDAOIF.getChildOid();
+    synchronized (childOid)
     {
-      Serializable entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildId(relationshipDAOIF), childId, CachedEntityDAOinfo.Types.BUSINESS);
+      Serializable entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildOid(relationshipDAOIF), childOid, CachedEntityDAOinfo.Types.BUSINESS);
       CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry;
 
       if (!cachedBusinessDAOinfo.isMarkedForDelete())
       {
         cachedBusinessDAOinfo.addParentRelationship(relationshipDAOIF);
-        mainCache.put(childId, entry);
+        mainCache.put(childOid, entry);
       }
     }
   }
@@ -418,10 +418,10 @@ public class Diskstore implements ObjectStore
   {
     RelationshipDAO relationshipDAO = (RelationshipDAO) relationshipDAOIF;
 
-    String parentId = relationshipDAO.getParentId();
-    synchronized (parentId)
+    String parentOid = relationshipDAO.getParentOid();
+    synchronized (parentOid)
     {
-      Serializable entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentId(relationshipDAOIF), parentId, CachedEntityDAOinfo.Types.BUSINESS);
+      Serializable entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentOid(relationshipDAOIF), parentOid, CachedEntityDAOinfo.Types.BUSINESS);
       CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry;
 
       if (!cachedBusinessDAOinfo.isMarkedForDelete())
@@ -434,14 +434,14 @@ public class Diskstore implements ObjectStore
         {
           cachedBusinessDAOinfo.addChildRelationship(relationshipDAO);
         }
-        mainCache.put(parentId, entry);
+        mainCache.put(parentOid, entry);
       }
     }
 
-    String childId = relationshipDAO.getChildId();
-    synchronized (childId)
+    String childOid = relationshipDAO.getChildOid();
+    synchronized (childOid)
     {
-      Serializable entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildId(relationshipDAOIF), childId, CachedEntityDAOinfo.Types.BUSINESS);
+      Serializable entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildOid(relationshipDAOIF), childOid, CachedEntityDAOinfo.Types.BUSINESS);
       CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry;
 
       if (!cachedBusinessDAOinfo.isMarkedForDelete())
@@ -454,7 +454,7 @@ public class Diskstore implements ObjectStore
         {
           cachedBusinessDAOinfo.addParentRelationship(relationshipDAO);
         }
-        mainCache.put(childId, entry);
+        mainCache.put(childOid, entry);
       }
     }
   }
@@ -497,12 +497,12 @@ public class Diskstore implements ObjectStore
    */
   public boolean removeParentRelationshipDAOIFtoCache(RelationshipDAO relationshipDAO, boolean deletedObject)
   {
-    String childId = relationshipDAO.getChildId();
-    synchronized (childId)
+    String childOid = relationshipDAO.getChildOid();
+    synchronized (childOid)
     {
       boolean stillHasParents = false;
 
-      Serializable entry = mainCache.get(childId);
+      Serializable entry = mainCache.get(childOid);
       if (entry != null)
       {
         CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry;
@@ -513,16 +513,16 @@ public class Diskstore implements ObjectStore
           if (deletedObject)
           {
             cachedBusinessDAOinfo.setMarkedForDelete();
-            mainCache.put(childId, entry);
+            mainCache.put(childOid, entry);
           }
 
-          mainCache.remove(childId);
+          mainCache.remove(childOid);
         }
         else
         {
           if (!cachedBusinessDAOinfo.isMarkedForDelete())
           {
-            mainCache.put(childId, entry);
+            mainCache.put(childOid, entry);
           }
         }
       }
@@ -534,16 +534,16 @@ public class Diskstore implements ObjectStore
   /**
    * Removes all parent relationships of the given type for the {@link BusinessDAOIF} with the given oid.
    * 
-   * @param childId
+   * @param childOid
    * @param relationshipType
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  public void removeAllParentRelationshipsOfType(String childId, String relationshipType, boolean deletedObject)
+  public void removeAllParentRelationshipsOfType(String childOid, String relationshipType, boolean deletedObject)
   {
-    synchronized (childId)
+    synchronized (childOid)
     {
-      Serializable entry = mainCache.get(childId);
+      Serializable entry = mainCache.get(childOid);
       if (entry != null)
       {
         CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry;
@@ -554,16 +554,16 @@ public class Diskstore implements ObjectStore
           if (deletedObject)
           {
             cachedBusinessDAOinfo.setMarkedForDelete();
-            mainCache.put(childId, entry);
+            mainCache.put(childOid, entry);
           }
 
-          mainCache.remove(childId);
+          mainCache.remove(childOid);
         }
         else
         {
           if (!cachedBusinessDAOinfo.isMarkedForDelete())
           {
-            mainCache.put(childId, entry);
+            mainCache.put(childOid, entry);
           }
         }
       }
@@ -580,12 +580,12 @@ public class Diskstore implements ObjectStore
    */
   public boolean removeChildRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAOIF, boolean deletedObject)
   {
-    String parentId = relationshipDAOIF.getParentId();
-    synchronized (parentId)
+    String parentOid = relationshipDAOIF.getParentOid();
+    synchronized (parentOid)
     {
       boolean stillHasChildren = false;
 
-      Serializable entry = mainCache.get(parentId);
+      Serializable entry = mainCache.get(parentOid);
       if (entry != null)
       {
         CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry;
@@ -596,15 +596,15 @@ public class Diskstore implements ObjectStore
           if (deletedObject)
           {
             cachedBusinessDAOinfo.setMarkedForDelete();
-            mainCache.put(parentId, entry);
+            mainCache.put(parentOid, entry);
           }
-          mainCache.remove(parentId);
+          mainCache.remove(parentOid);
         }
         else
         {
           if (!cachedBusinessDAOinfo.isMarkedForDelete())
           {
-            mainCache.put(parentId, entry);
+            mainCache.put(parentOid, entry);
           }
         }
       }
@@ -616,16 +616,16 @@ public class Diskstore implements ObjectStore
   /**
    * Removes all child relationships of the given type for the {@link BusinessDAOIF} with the given oid.
    * 
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  public void removeAllChildRelationshipsOfType(String parentId, String relationshipType, boolean deletedObject)
+  public void removeAllChildRelationshipsOfType(String parentOid, String relationshipType, boolean deletedObject)
   {
-    synchronized (parentId)
+    synchronized (parentOid)
     {
-      Serializable entry = mainCache.get(parentId);
+      Serializable entry = mainCache.get(parentOid);
       if (entry != null)
       {
         CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry;
@@ -636,15 +636,15 @@ public class Diskstore implements ObjectStore
           if (deletedObject)
           {
             cachedBusinessDAOinfo.setMarkedForDelete();
-            mainCache.put(parentId, entry);
+            mainCache.put(parentOid, entry);
           }
-          mainCache.remove(parentId);
+          mainCache.remove(parentOid);
         }
         else
         {
           if (!cachedBusinessDAOinfo.isMarkedForDelete())
           {
-            mainCache.put(parentId, entry);
+            mainCache.put(parentOid, entry);
           }
         }
       }

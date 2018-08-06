@@ -43,9 +43,9 @@ public abstract class MetadataRelationshipBase extends com.runwaysdk.business.Re
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 71702994;
   
-  public MetadataRelationshipBase(String parentId, String childId)
+  public MetadataRelationshipBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

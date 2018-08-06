@@ -43,9 +43,9 @@ public abstract class LocatedInBase extends com.runwaysdk.business.ontology.Term
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -908351832;
   
-  public LocatedInBase(String parentId, String childId)
+  public LocatedInBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

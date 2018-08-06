@@ -24,9 +24,9 @@ public abstract class VisibleDependencyDTOBase extends com.runwaysdk.system.meta
   public final static String CLASS = "com.runwaysdk.system.metadata.VisibleDependency";
   private static final long serialVersionUID = -1388598951;
   
-  public VisibleDependencyDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public VisibleDependencyDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -98,12 +98,12 @@ public abstract class VisibleDependencyDTOBase extends com.runwaysdk.system.meta
   
   public com.runwaysdk.system.metadata.MdFieldDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdFieldDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdFieldDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.MdFieldDTO getChild()
   {
-    return com.runwaysdk.system.metadata.MdFieldDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.MdFieldDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.VisibleDependencyDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -113,16 +113,16 @@ public abstract class VisibleDependencyDTOBase extends com.runwaysdk.system.meta
     return (com.runwaysdk.system.metadata.VisibleDependencyDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.VisibleDependencyQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.VisibleDependencyQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.VisibleDependencyDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.VisibleDependencyQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.VisibleDependencyQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.VisibleDependencyQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.VisibleDependencyDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.VisibleDependencyQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

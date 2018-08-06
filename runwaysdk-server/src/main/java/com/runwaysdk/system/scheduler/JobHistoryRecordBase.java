@@ -43,9 +43,9 @@ public abstract class JobHistoryRecordBase extends com.runwaysdk.business.Relati
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -1886158806;
   
-  public JobHistoryRecordBase(String parentId, String childId)
+  public JobHistoryRecordBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

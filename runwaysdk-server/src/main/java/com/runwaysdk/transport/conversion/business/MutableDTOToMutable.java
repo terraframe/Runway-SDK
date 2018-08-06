@@ -754,9 +754,9 @@ public abstract class MutableDTOToMutable
         // Relationship
         else if (mutableDTO instanceof RelationshipDTO)
         {
-          String parentId = ( (RelationshipDTO) mutableDTO ).getParentId();
-          String childId = ( (RelationshipDTO) mutableDTO ).getChildId();
-          component = BusinessFacade.newRelationship(parentId, childId, mutableDTO.getType());
+          String parentOid = ( (RelationshipDTO) mutableDTO ).getParentOid();
+          String childOid = ( (RelationshipDTO) mutableDTO ).getChildOid();
+          component = BusinessFacade.newRelationship(parentOid, childOid, mutableDTO.getType());
         }
         // Struct
         else if (mutableDTO instanceof StructDTO)

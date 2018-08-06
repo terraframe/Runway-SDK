@@ -22,9 +22,9 @@ public class GeoEntityTermAttributeRootDTO extends GeoEntityTermAttributeRootDTO
 {
   private static final long serialVersionUID = 800235367;
   
-  public GeoEntityTermAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public GeoEntityTermAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

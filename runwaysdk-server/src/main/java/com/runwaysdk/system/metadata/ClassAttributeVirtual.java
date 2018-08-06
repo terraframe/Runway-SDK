@@ -22,9 +22,9 @@ public class ClassAttributeVirtual extends ClassAttributeVirtualBase
 {
   private static final long serialVersionUID = -1471084713;
   
-  public ClassAttributeVirtual(String parentId, String childId)
+  public ClassAttributeVirtual(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public ClassAttributeVirtual(com.runwaysdk.system.metadata.MdView parent, com.runwaysdk.system.metadata.MdAttributeVirtual child)

@@ -82,7 +82,7 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
     
     String entityTableName = allTypesTableMap.get(this.getEntityType());
 
-    // get parent_id and child_id
+    // get parent_oid and child_oid
     Map<String, Map<String, String>> relationshipAttributesHackMap = new HashMap<String, Map<String, String>>();
 
     // get attributes from the root table
@@ -99,10 +99,10 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
       Map<String, Attribute> attributeMap = tupleMap.get(oid);
       String type = attributeMap.get(ComponentInfo.TYPE).getValue();
       
-      String parentId = relationshipAttributesHackMap.get(oid).get(RelationshipInfo.PARENT_ID);
-      String childId = relationshipAttributesHackMap.get(oid).get(RelationshipInfo.CHILD_ID);
+      String parentOid = relationshipAttributesHackMap.get(oid).get(RelationshipInfo.PARENT_OID);
+      String childOid = relationshipAttributesHackMap.get(oid).get(RelationshipInfo.CHILD_OID);
       
-      RelationshipDAO relationshipDAO = RelationshipDAOFactory.get(oid, parentId, childId, attributeMap, type);
+      RelationshipDAO relationshipDAO = RelationshipDAOFactory.get(oid, parentOid, childOid, attributeMap, type);
       this.updateCache(relationshipDAO);
       
       tupleMap = i.next();
@@ -178,7 +178,7 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
    */
   protected RelationshipDAOIF getFromFactory(String oid, String type, String rootType, Map<String, String> inheritanceListMap)
   {
-    // get parent_id and child_id
+    // get parent_oid and child_oid
     Map<String, String> relationshipAttributesHackMap = new HashMap<String, String>(2);
     Map<String, Attribute> attributeMap = new HashMap<String, Attribute>();
 
@@ -198,10 +198,10 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
       rootOfHierarchy));
     }
 
-    String parentId = relationshipAttributesHackMap.get(RelationshipInfo.PARENT_ID);
-    String childId = relationshipAttributesHackMap.get(RelationshipInfo.CHILD_ID);
+    String parentOid = relationshipAttributesHackMap.get(RelationshipInfo.PARENT_OID);
+    String childOid = relationshipAttributesHackMap.get(RelationshipInfo.CHILD_OID);
 
-    RelationshipDAO relationshipDAO = RelationshipDAOFactory.get(oid, parentId, childId, attributeMap, type);
+    RelationshipDAO relationshipDAO = RelationshipDAOFactory.get(oid, parentOid, childOid, attributeMap, type);
     return relationshipDAO;
   }
 

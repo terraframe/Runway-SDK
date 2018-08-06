@@ -22,9 +22,9 @@ public class TypePermission extends TypePermissionBase
 {
   private static final long serialVersionUID = 1229405888049L;
   
-  public TypePermission(String parentId, String childId)
+  public TypePermission(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public TypePermission(com.runwaysdk.system.Actor parent, com.runwaysdk.system.metadata.Metadata child)

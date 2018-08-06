@@ -57,11 +57,11 @@ public class JSONToRelationshipDTO extends JSONToElementDTO
   {
     JSONObject json = getJSON();
     
-    String parentId = json.getString(JSON.RELATIONSHIP_DTO_PARENT_ID.getLabel());
+    String parentOid = json.getString(JSON.RELATIONSHIP_DTO_PARENT_OID.getLabel());
 
-    String childId = json.getString(JSON.RELATIONSHIP_DTO_CHILD_ID.getLabel());
+    String childOid = json.getString(JSON.RELATIONSHIP_DTO_CHILD_OID.getLabel());
 
-    return ComponentDTOFacade.buildRelationshipDTO(null, type, attributeMap, parentId, childId,
+    return ComponentDTOFacade.buildRelationshipDTO(null, type, attributeMap, parentOid, childOid,
         newInstance, readable, writable, modified,  toString, lockedByCurrentUser);
   }
   

@@ -658,7 +658,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     return strategy;
   }
   
-  public static com.runwaysdk.business.ontology.TermAndRel create(com.runwaysdk.system.gis.geo.Universal dto, java.lang.String parentId, java.lang.String relationshipType)
+  public static com.runwaysdk.business.ontology.TermAndRel create(com.runwaysdk.system.gis.geo.Universal dto, java.lang.String parentOid, java.lang.String relationshipType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.gis.geo.Universal.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

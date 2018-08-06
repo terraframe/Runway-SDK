@@ -22,9 +22,9 @@ public class AlphabetAttributeRoot extends AlphabetAttributeRootBase implements 
 {
   private static final long serialVersionUID = 1250958818;
   
-  public AlphabetAttributeRoot(String parentId, String childId)
+  public AlphabetAttributeRoot(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public AlphabetAttributeRoot(com.runwaysdk.system.metadata.MdAttributeTerm parent, com.runwaysdk.jstest.business.ontology.Alphabet child)

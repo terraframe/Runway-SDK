@@ -60,63 +60,63 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * oid of the parent BusinessDAO in the relationship. <br/>
-   * <b>invariant </b> parentId != null <br/>
-   * <b>invariant </b> !parentId.trim().equals("") <br/>
+   * <b>invariant </b> parentOid != null <br/>
+   * <b>invariant </b> !parentOid.trim().equals("") <br/>
    */
-  private String            parentId;
+  private String            parentOid;
   
   /**
    * The old oid of the parent if the parent has changed.
    */
-  private String            oldParentId;
+  private String            oldParentOid;
 
   /**
    * oid of the child BusinessDAO in the relationship. <br/>
-   * <b>invariant </b> childId != null <br/>
-   * <b>invariant </b> !childId().equals("") <br/>
+   * <b>invariant </b> childOid != null <br/>
+   * <b>invariant </b> !childOid().equals("") <br/>
    */
-  private String            childId;
+  private String            childOid;
   
   /**
    * The old oid of the parent if the child has changed.
    */
-  private String            oldChildId;
+  private String            oldChildOid;
 
   /**
    *
    */
-  public RelationshipDAO(String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
+  public RelationshipDAO(String parentOid, String childOid, Map<String, Attribute> attributeMap, String relationshipType)
   {
     super(attributeMap, relationshipType);
-    this.parentId = parentId;
-    this.childId = childId;
-    this.oldParentId = null;
-    this.oldChildId = null;
+    this.parentOid = parentOid;
+    this.childOid = childOid;
+    this.oldParentOid = null;
+    this.oldChildOid = null;
   }
 
   /**
-   * @param parentId
+   * @param parentOid
    *          Overwrites the parent oid if this relationship is new and has not
    *          been applied to the database
    */
-  public void overwriteParentId(String parentId)
+  public void overwriteParentOid(String parentOid)
   {
     if (this.isNew() && !this.isAppliedToDB())
     {
-      this.parentId = parentId;
+      this.parentOid = parentOid;
     }
   }
 
   /**
-   * @param childId
+   * @param childOid
    *          Overwrites the child oid if this relationship is new and has not
    *          been applied to the database
    */
-  public void overwriteChildId(String childId)
+  public void overwriteChildOid(String childOid)
   {
     if (this.isNew() && !this.isAppliedToDB())
     {
-      this.childId = childId;
+      this.childOid = childOid;
     }
   }
 
@@ -144,8 +144,8 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     String expectedParentClass = expectedParentMdBusinessDAOIF.definesType();
     String expectedChildClass = expectedChildMdBusinessDAOIF.definesType();
 
-    String parentMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.parentId);
-    String childMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.childId);
+    String parentMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.parentOid);
+    String childMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.childOid);
 
     MdBusinessDAOIF actualParentMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(parentMdTypeRootId);
     MdBusinessDAOIF actualChildMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(childMdTypeRootId);
@@ -154,8 +154,8 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     String actualChildClass = actualChildMdBusinessDAOIF.definesType();
 
     // Ensure that the parent and child exist
-    BusinessDAO.get(this.parentId);
-    BusinessDAO.get(this.childId);
+    BusinessDAO.get(this.parentOid);
+    BusinessDAO.get(this.childOid);
 
     // Check if the type of the parent matches what is expected
     if (!expectedParentClass.equals(BusinessInfo.CLASS))
@@ -197,40 +197,40 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
     if (!parentCardinality.equals("*"))
     {
-      long existingParentsForChild = Database.getParentCountForChild(childId, mdRelationshipIF.getTableName());
+      long existingParentsForChild = Database.getParentCountForChild(childOid, mdRelationshipIF.getTableName());
 
       int cardinality = Integer.parseInt(parentCardinality);
 
       if (existingParentsForChild >= cardinality)
       {
-        String childMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.childId);
+        String childMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.childOid);
         MdBusinessDAOIF childMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(childMdTypeRootId);
 
         String error = "A [" + childMdBusinessDAOIF.definesType() + "] can only be in " + cardinality + " [" + mdRelationshipIF.definesType() + "] relationships.  The requested operation " + "would put it in " + ( cardinality + 1 ) + ".";
 
         MdBusinessDAOIF otherMdBusinessIF = mdRelationshipIF.getParentMdBusiness();
 
-        throw new RelationshipCardinalityException(error, childMdBusinessDAOIF, cardinality, mdRelationshipIF, this.childId, otherMdBusinessIF);
+        throw new RelationshipCardinalityException(error, childMdBusinessDAOIF, cardinality, mdRelationshipIF, this.childOid, otherMdBusinessIF);
 
       }
     }
 
     if (!childCardinality.equals("*"))
     {
-      long existingChildrenForParent = Database.getChildCountForParent(this.parentId, mdRelationshipIF.getTableName());
+      long existingChildrenForParent = Database.getChildCountForParent(this.parentOid, mdRelationshipIF.getTableName());
 
       int cardinality = Integer.parseInt(childCardinality);
 
       if (existingChildrenForParent >= cardinality)
       {
-        String parentMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.parentId);
+        String parentMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.parentOid);
         MdBusinessDAOIF parentMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(parentMdTypeRootId);
 
         String error = "A [" + parentMdBusinessDAOIF.definesType() + "] can only be in " + cardinality + " [" + mdRelationshipIF.definesType() + "] relationships.  The requested operation " + "would put it in " + ( cardinality + 1 ) + ".";
 
         MdBusinessDAOIF otherMdBusinessIF = mdRelationshipIF.getChildMdBusiness();
 
-        throw new RelationshipCardinalityException(error, parentMdBusinessDAOIF, cardinality, mdRelationshipIF, this.parentId, otherMdBusinessIF);
+        throw new RelationshipCardinalityException(error, parentMdBusinessDAOIF, cardinality, mdRelationshipIF, this.parentOid, otherMdBusinessIF);
       }
     }
 
@@ -257,8 +257,8 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    */
   public void clearOldRelIds()
   {
-    this.oldParentId = null;
-    this.oldChildId = null;
+    this.oldParentOid = null;
+    this.oldChildOid = null;
   }
 
   /**
@@ -270,39 +270,39 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * 
    * @return oid of the parent BusinessDAO in this relationship
    */
-  public String getParentId()
+  public String getParentOid()
   {
-    return this.parentId;
+    return this.parentOid;
   }
 
   /**
    * Sets the parent oid to a new oid. ONLY CALL THIS ONCE IN A TRANSACTION!
    * 
-   * @param newParentId
+   * @param newParentOid
    */
-  public void setParentId(String newParentId)
+  public void setParentOid(String newParentOid)
   {
-    if (this.isAppliedToDB() && !this.getParentId().equals(newParentId))
+    if (this.isAppliedToDB() && !this.getParentOid().equals(newParentOid))
     {
-      this.oldParentId = this.parentId;  
-      this.parentId = newParentId;
+      this.oldParentOid = this.parentOid;  
+      this.parentOid = newParentOid;
     }
   }
   
   /**
-   * @return the oldParentId
+   * @return the oldParentOid
    */
-  public String getOldParentId()
+  public String getOldParentOid()
   {
-    return oldParentId;
+    return oldParentOid;
   }
 
   /**
-   * @param oldParentId the oldParentId to set
+   * @param oldParentOid the oldParentOid to set
    */
-  public void setOldParentId(String oldParentId)
+  public void setOldParentOid(String oldParentOid)
   {
-    this.oldParentId = oldParentId;
+    this.oldParentOid = oldParentOid;
   }
   
   /**
@@ -310,10 +310,10 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * 
    * @return true if the child oid has changed, false otherwise.
    */
-  public boolean hasChildIdChanged()
+  public boolean hasChildOidChanged()
   {
-    if (this.oldChildId != null && 
-        !this.oldChildId.equals(this.childId))
+    if (this.oldChildOid != null && 
+        !this.oldChildOid.equals(this.childOid))
     {
       return true;
     }
@@ -328,10 +328,10 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * 
    * @return true if the parent oid has changed, false otherwise.
    */
-  public boolean hasParentIdChanged()
+  public boolean hasParentOidChanged()
   {
-    if (this.oldParentId != null && 
-        !this.oldParentId.equals(this.parentId))
+    if (this.oldParentOid != null && 
+        !this.oldParentOid.equals(this.parentOid))
     {
       return true;
     }
@@ -352,7 +352,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    */
   public BusinessDAOIF getParent()
   {
-    return BusinessDAO.get(this.parentId);
+    return BusinessDAO.get(this.parentOid);
   }
 
   /**
@@ -364,39 +364,39 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * 
    * @return oid of the child BusinessDAO in this relationship
    */
-  public String getChildId()
+  public String getChildOid()
   {
-    return this.childId;
+    return this.childOid;
   }
 
   /**
    * Sets the child oid to a new oid. ONLY CALL THIS ONCE IN A TRANSACTION!
    * 
-   * @param newChildId
+   * @param newChildOid
    */
-  public void setChildId(String newChildId)
+  public void setChildOid(String newChildOid)
   {
-    if (this.isAppliedToDB() && !this.getChildId().equals(newChildId))
+    if (this.isAppliedToDB() && !this.getChildOid().equals(newChildOid))
     {
-      this.oldChildId = this.childId;  
-      this.childId = newChildId;
+      this.oldChildOid = this.childOid;  
+      this.childOid = newChildOid;
     }
   }
   
   /**
-   * @return the oldChildId
+   * @return the oldChildOid
    */
-  public String getOldChildId()
+  public String getOldChildOid()
   {
-    return oldChildId;
+    return oldChildOid;
   }
 
   /**
-   * @param oldChildId the oldChildId to set
+   * @param oldChildOid the oldChildOid to set
    */
-  public void setOldChildId(String oldChildId)
+  public void setOldChildOid(String oldChildOid)
   {
-    this.oldChildId = oldChildId;
+    this.oldChildOid = oldChildOid;
   }
   
   /**
@@ -410,7 +410,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    */
   public BusinessDAOIF getChild()
   {
-    return BusinessDAO.get(this.childId);
+    return BusinessDAO.get(this.childOid);
   }
 
   /**
@@ -447,13 +447,13 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    */
   public String save(boolean save)
   {
-    ( LockRelationship.getLockRelationship() ).relLock(this.parentId, this.childId);
+    ( LockRelationship.getLockRelationship() ).relLock(this.parentOid, this.childOid);
 
     if (this.isNew() && !this.isAppliedToDB())
     {
       // Ensure that the parent and child exist
-      BusinessDAO.get(this.parentId);
-      BusinessDAO.get(this.childId);
+      BusinessDAO.get(this.parentOid);
+      BusinessDAO.get(this.childOid);
     }
 
     super.save(save);
@@ -544,8 +544,8 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * 
    * <b>Precondition:</b>Assumes that the given relationshipType is concrete.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipType
    * @return list of relationship objects of the given type with the given
    *         parent and child ids. Throws an exception if the relationship does
@@ -563,21 +563,21 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * 
    * <b>Precondition:</b>Assumes that the given relationshipType is concrete.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipType
    * @return list of relationship objects of the given type with the given
    *         parent and child ids. Throws an exception if the relationship does
    *         not exist.
    */
-  public static List<RelationshipDAOIF> get(String parentId, String childId, String relationshipType)
+  public static List<RelationshipDAOIF> get(String parentOid, String childOid, String relationshipType)
   {
-    List<RelationshipDAOIF> relaitonshipIFList = RelationshipDAOFactory.get(parentId, childId, relationshipType);
+    List<RelationshipDAOIF> relaitonshipIFList = RelationshipDAOFactory.get(parentOid, childOid, relationshipType);
 
     if (relaitonshipIFList.size() == 0)
     {
       MdRelationshipDAOIF mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
-      String errMsg = "A relationship of type [" + relationshipType + "] with parent oid [" + parentId + "] and child oid [" + childId + "] could not be found.";
+      String errMsg = "A relationship of type [" + relationshipType + "] with parent oid [" + parentOid + "] and child oid [" + childOid + "] could not be found.";
       throw new DataNotFoundException(errMsg, mdRelationship);
     }
 
@@ -589,9 +589,9 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * @param relationshipType
    * @return
    */
-  public static RelationshipDAO newInstance(String parentId, String childId, String relationshipType)
+  public static RelationshipDAO newInstance(String parentOid, String childOid, String relationshipType)
   {
-    return RelationshipDAOFactory.newInstance(parentId, childId, relationshipType);
+    return RelationshipDAOFactory.newInstance(parentOid, childOid, relationshipType);
   }
 
   /**
@@ -615,7 +615,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
       Attribute attrNew = attrOld.attributeClone();
       newAttrList.put(attrNew.getName(), attrNew);
     }
-    RelationshipDAO clonedObject = RelationshipDAOFactory.factoryMethod(this.getParentId(), this.getChildId(), newAttrList, new String(this.componentType), true);
+    RelationshipDAO clonedObject = RelationshipDAOFactory.factoryMethod(this.getParentOid(), this.getChildOid(), newAttrList, new String(this.componentType), true);
 
     clonedObject.setIsNew(this.isNew());
     clonedObject.setAppliedToDB(this.isAppliedToDB());
@@ -633,7 +633,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   {
     HashMap<String, Attribute> newAttrMap = new HashMap<String, Attribute>();
 
-    RelationshipDAO copiedObject = RelationshipDAO.newInstance(this.getParentId(), this.getChildId(), this.getType());
+    RelationshipDAO copiedObject = RelationshipDAO.newInstance(this.getParentOid(), this.getChildOid(), this.getType());
 
     // clone all of the attributes
     for (Attribute attrOld : this.getObjectState().getAttributeMap().values())
@@ -691,21 +691,21 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * Facade method.
    * 
    * @param relationshipDAOIF
-   * @return the oldParentId
+   * @return the oldParentOid
    */
-  public static String getOldParentId(RelationshipDAOIF relationshipDAOIF)
+  public static String getOldParentOid(RelationshipDAOIF relationshipDAOIF)
   {
-    return ((RelationshipDAO)relationshipDAOIF).getOldParentId();
+    return ((RelationshipDAO)relationshipDAOIF).getOldParentOid();
   }
   
   /**
    * Facade method.
    * 
    * @param relationshipDAOIF
-   * @return the oldChildId
+   * @return the oldChildOid
    */
-  public static String getOldChildId(RelationshipDAOIF relationshipDAOIF)
+  public static String getOldChildOid(RelationshipDAOIF relationshipDAOIF)
   {
-    return ((RelationshipDAO)relationshipDAOIF).getOldChildId();
+    return ((RelationshipDAO)relationshipDAOIF).getOldChildOid();
   }
 }

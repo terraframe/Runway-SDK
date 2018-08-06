@@ -242,14 +242,14 @@ public class SharedRequestPersistanceStrategy extends PersistanceStrategyAdapter
   }
 
   @Override
-  public RelationshipDAO newInstance(final String parentId, final String childId, final String type)
+  public RelationshipDAO newInstance(final String parentOid, final String childOid, final String type)
   {
     SharedRequestExecutor<RelationshipDAO> executor = new SharedRequestExecutor<RelationshipDAO>(state)
     {
       @Override
       protected RelationshipDAO run()
       {
-        return RelationshipDAO.newInstance(parentId, childId, type);
+        return RelationshipDAO.newInstance(parentOid, childOid, type);
       }
     };
 

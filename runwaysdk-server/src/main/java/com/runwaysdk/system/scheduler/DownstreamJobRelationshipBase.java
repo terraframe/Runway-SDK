@@ -44,9 +44,9 @@ public abstract class DownstreamJobRelationshipBase extends com.runwaysdk.busine
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -1776204715;
   
-  public DownstreamJobRelationshipBase(String parentId, String childId)
+  public DownstreamJobRelationshipBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

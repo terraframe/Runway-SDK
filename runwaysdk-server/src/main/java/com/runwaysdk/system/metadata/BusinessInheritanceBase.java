@@ -31,9 +31,9 @@ public abstract class BusinessInheritanceBase extends com.runwaysdk.system.metad
   public final static String CLASS = "com.runwaysdk.system.metadata.BusinessInheritance";
   private static final long serialVersionUID = -598433549;
   
-  public BusinessInheritanceBase(String parentId, String childId)
+  public BusinessInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

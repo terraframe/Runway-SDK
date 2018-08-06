@@ -124,12 +124,12 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String relationshipTable = termRelationship.getTableName();
 
     sql.append("WITH RECURSIVE " + view + " (" + originalChild + ") AS (" + NL);
-    sql.append("  SELECT " + RelationshipDAOIF.CHILD_ID_COLUMN + " AS " + originalChild + ", " + RelationshipDAOIF.PARENT_ID_COLUMN + NL);
+    sql.append("  SELECT " + RelationshipDAOIF.CHILD_OID_COLUMN + " AS " + originalChild + ", " + RelationshipDAOIF.PARENT_OID_COLUMN + NL);
     sql.append("  FROM " + relationshipTable + NL);
     sql.append("  UNION" + NL);
-    sql.append("  SELECT " + originalChild + ", l." + RelationshipDAOIF.PARENT_ID_COLUMN + NL);
+    sql.append("  SELECT " + originalChild + ", l." + RelationshipDAOIF.PARENT_OID_COLUMN + NL);
     sql.append("  FROM " + relationshipTable + " l" + NL);
-    sql.append("  INNER JOIN " + view + " ON (l." + RelationshipDAOIF.CHILD_ID_COLUMN + " = " + view + "." + RelationshipDAOIF.PARENT_ID_COLUMN + ")" + NL);
+    sql.append("  INNER JOIN " + view + " ON (l." + RelationshipDAOIF.CHILD_OID_COLUMN + " = " + view + "." + RelationshipDAOIF.PARENT_OID_COLUMN + ")" + NL);
     sql.append(")" + NL);
 
     // Create the primary SELECT body
@@ -158,16 +158,16 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     sql.append("  '" + createdById + "' AS " + lastUpdateDate + "," + NL);
 
     // parent term
-    sql.append("  paths." + RelationshipInfo.PARENT_ID + " AS " + parentTerm + "," + NL);
+    sql.append("  paths." + RelationshipInfo.PARENT_OID + " AS " + parentTerm + "," + NL);
 
     // child term
     sql.append("  paths." + originalChild + " AS " + childTerm + NL);
 
     sql.append("FROM " + domainTable + " as p, " + NL);
     sql.append(domainTable + " as c," + NL);
-    sql.append("(SELECT " + originalChild + ", " + RelationshipInfo.PARENT_ID + " FROM " + view + " UNION SELECT " + oid + "," + oid + " FROM " + domainTable + " ) AS paths" + NL);
+    sql.append("(SELECT " + originalChild + ", " + RelationshipInfo.PARENT_OID + " FROM " + view + " UNION SELECT " + oid + "," + oid + " FROM " + domainTable + " ) AS paths" + NL);
 
-    sql.append("WHERE p." + oid + " = paths." + RelationshipInfo.PARENT_ID + " AND c." + oid + " = paths." + originalChild + ";" + NL);
+    sql.append("WHERE p." + oid + " = paths." + RelationshipInfo.PARENT_OID + " AND c." + oid + " = paths." + originalChild + ";" + NL);
 
     int afterCount = this.execute(sql.toString(), transactionDate, transactionDate);
 
@@ -240,8 +240,8 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
 
     String insertColumns = StringUtils.join(metadataColumns, "," + NL);
 
-    String childId = child.getOid();
-    String parentId = parent.getOid();
+    String childOid = child.getOid();
+    String parentOid = parent.getOid();
 
     String identifierSQL = "MD5(nextval('" + sequenceName + "') || allpaths_parent." + parentTerm + " || allpaths_child." + childTerm + " ) || '" + allPathsRootTypeId + "'";
 
@@ -268,12 +268,12 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     // the child term itself.
     sql.append("  (SELECT " + childTerm + " " + NL);
     sql.append("    FROM " + tableName + " " + NL);
-    sql.append("    WHERE " + parentTerm + " = '" + childId + "' ) AS allpaths_child, " + NL);
+    sql.append("    WHERE " + parentTerm + " = '" + childOid + "' ) AS allpaths_child, " + NL);
     // Fech all of the recursive parents of the given new parent term,
     // including the new parent term itself.
     sql.append("  (SELECT " + parentTerm + " " + NL);
     sql.append("     FROM " + tableName + " " + NL);
-    sql.append("     WHERE " + childTerm + " = '" + parentId + "' " + NL + "    ) AS allpaths_parent " + NL);
+    sql.append("     WHERE " + childTerm + " = '" + parentOid + "' " + NL + "    ) AS allpaths_parent " + NL);
     // Since a term can have multiple parents, a path to one of the new
     // parent's parents may already exist
     sql.append(" WHERE allpaths_parent." + parentTerm + " NOT IN " + NL);

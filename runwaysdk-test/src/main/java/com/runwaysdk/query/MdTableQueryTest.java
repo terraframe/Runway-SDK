@@ -121,9 +121,9 @@ public class MdTableQueryTest
     mdTableChild.apply();
 
     // OID field
-    MdAttributeCharacterDAO mdTableChildIdAttr = TestFixtureFactory.addCharacterAttribute(mdTableChild, "childObjId");
-    mdTableChildIdAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, ComponentInfo.OID);
-    mdTableChildIdAttr.apply();
+    MdAttributeCharacterDAO mdTableChildOidAttr = TestFixtureFactory.addCharacterAttribute(mdTableChild, "childObjId");
+    mdTableChildOidAttr.setValue(MdAttributeCharacterInfo.COLUMN_NAME, ComponentInfo.OID);
+    mdTableChildOidAttr.apply();
 
     MdAttributeCharacterDAOIF mdClassQueryCharAttr = (MdAttributeCharacterDAOIF) mdBusChildType.definesAttribute("queryCharacter");
     MdAttributeCharacterDAO mdTableQueryCharAttr = TestFixtureFactory.addCharacterAttribute(mdTableChild, mdClassQueryCharAttr.definesAttribute());

@@ -22,9 +22,9 @@ public class ViewInheritance extends ViewInheritanceBase
 {
   private static final long serialVersionUID = 1229405888100L;
   
-  public ViewInheritance(String parentId, String childId)
+  public ViewInheritance(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public ViewInheritance(com.runwaysdk.system.metadata.MdView parent, com.runwaysdk.system.metadata.MdView child)

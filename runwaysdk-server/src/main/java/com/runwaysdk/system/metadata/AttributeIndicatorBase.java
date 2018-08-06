@@ -31,9 +31,9 @@ public abstract class AttributeIndicatorBase extends com.runwaysdk.system.metada
   public final static String CLASS = "com.runwaysdk.system.metadata.AttributeIndicator";
   private static final long serialVersionUID = -1602917870;
   
-  public AttributeIndicatorBase(String parentId, String childId)
+  public AttributeIndicatorBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

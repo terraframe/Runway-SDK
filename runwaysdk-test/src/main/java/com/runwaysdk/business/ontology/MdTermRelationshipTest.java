@@ -284,8 +284,8 @@ public class MdTermRelationshipTest
         RelationshipDAOIF result = RelationshipDAO.get(relationship.getOid());
 
         Assert.assertNotNull(result);
-        Assert.assertNotNull(parent.getOid(), result.getParentId());
-        Assert.assertNotNull(child.getOid(), result.getChildId());
+        Assert.assertNotNull(parent.getOid(), result.getParentOid());
+        Assert.assertNotNull(child.getOid(), result.getChildOid());
       }
       finally
       {
@@ -347,8 +347,8 @@ public class MdTermRelationshipTest
         RelationshipDAOIF result = RelationshipDAO.get(relationship.getOid());
 
         Assert.assertNotNull(result);
-        Assert.assertNotNull(parent.getOid(), result.getParentId());
-        Assert.assertNotNull(child.getOid(), result.getChildId());
+        Assert.assertNotNull(parent.getOid(), result.getParentOid());
+        Assert.assertNotNull(child.getOid(), result.getChildOid());
       }
       finally
       {
@@ -410,8 +410,8 @@ public class MdTermRelationshipTest
         RelationshipDAOIF result = RelationshipDAO.get(relationship.getOid());
 
         Assert.assertNotNull(result);
-        Assert.assertNotNull(parent.getOid(), result.getParentId());
-        Assert.assertNotNull(child.getOid(), result.getChildId());
+        Assert.assertNotNull(parent.getOid(), result.getParentOid());
+        Assert.assertNotNull(child.getOid(), result.getChildOid());
       }
       finally
       {

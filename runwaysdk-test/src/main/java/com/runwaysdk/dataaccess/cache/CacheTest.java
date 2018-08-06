@@ -92,12 +92,12 @@ public class CacheTest
   /**
    * A list of references of instances of the Parent class
    */
-  private List<String>          parentIds;
+  private List<String>          parentOids;
 
   /**
    * A list of IDs of instances of the Child class
    */
-  private List<String>          childIds;
+  private List<String>          childOids;
 
   /**
    * Defines all metadata for the Parent and Child classes <b>except</b> the
@@ -211,8 +211,8 @@ public class CacheTest
    */
   private void populate(int parentCount, int childCount)
   {
-    parentIds = EntityGenerator.generate(parentInfo.getType(), parentCount);
-    childIds = EntityGenerator.generate(childInfo.getType(), childCount);
+    parentOids = EntityGenerator.generate(parentInfo.getType(), parentCount);
+    childOids = EntityGenerator.generate(childInfo.getType(), childCount);
   }
 
   /**
@@ -421,22 +421,22 @@ public class CacheTest
         Assert.fail("Child cache collection is NOT deferreing to Parent as expected");
       }
 
-      if (!containsAll(parentCache, parentIds))
+      if (!containsAll(parentCache, parentOids))
       {
         Assert.fail("Parent cache collection is missing an instance of Parent.");
       }
 
-      if (!globalCacheContainsAll(parentIds))
+      if (!globalCacheContainsAll(parentOids))
       {
         Assert.fail("Global cache is corrupt: Global cache is missing an instance of Parent.");
       }
 
-      if (!containsAll(parentCache, childIds))
+      if (!containsAll(parentCache, childOids))
       {
         Assert.fail("Parent cache collection is missing an instance of an inherited Child");
       }
 
-      if (!globalCacheContainsAll(childIds))
+      if (!globalCacheContainsAll(childOids))
       {
         Assert.fail("Global cache is corrupt: Global cache is missing an instance of an inherited Child");
       }
@@ -484,12 +484,12 @@ public class CacheTest
         Assert.fail("Parent is set to cache none, but the cache collection is NOT empty");
       }
 
-      if (!containsAll(childCache, childIds))
+      if (!containsAll(childCache, childOids))
       {
         Assert.fail("Child cache collection is missing an instance of Child");
       }
 
-      if (!globalCacheContainsAll(childIds))
+      if (!globalCacheContainsAll(childOids))
       {
         Assert.fail("Global cache is corrupt: Child cache collection is missing an instance of Child");
       }
@@ -537,22 +537,22 @@ public class CacheTest
         Assert.fail("Child cache collection is NOT deferreing to Parent as expected");
       }
 
-      if (!containsAll(parentCache, parentIds))
+      if (!containsAll(parentCache, parentOids))
       {
         Assert.fail("Parent cache collection is missing an instance of Parent");
       }
 
-      if (!globalCacheContainsAll(parentIds))
+      if (!globalCacheContainsAll(parentOids))
       {
         Assert.fail("Global cache is corrupt: Global cache is missing an instance of Parent");
       }
 
-      if (!containsAll(parentCache, childIds))
+      if (!containsAll(parentCache, childOids))
       {
         Assert.fail("Parent cache collection is missing an instance of an inherited Child");
       }
 
-      if (!globalCacheContainsAll(childIds))
+      if (!globalCacheContainsAll(childOids))
       {
         Assert.fail("Global cache is corrupt:  Global cache is missing an instance of an inherited Child");
       }
@@ -599,24 +599,24 @@ public class CacheTest
       }
       // Since we know the ordr of population, we also know that the end of the
       // list is the most recently used - get that sublist
-      List<String> cachedParentIds = parentIds.subList(parentIds.size() - cacheSize + 25, parentIds.size());
-      if (!containsAll(parentCache, cachedParentIds))
+      List<String> cachedParentOids = parentOids.subList(parentOids.size() - cacheSize + 25, parentOids.size());
+      if (!containsAll(parentCache, cachedParentOids))
       {
         Assert.fail("Parent cache collection is missing an instance of Parent");
       }
-      if (!containsAll(parentCache, childIds))
+      if (!containsAll(parentCache, childOids))
       {
         Assert.fail("Parent cache collection is missing an instance of an inherited Child");
       }
 
-      if (!globalCacheContainsAll(childIds))
+      if (!globalCacheContainsAll(childOids))
       {
         Assert.fail("Global cache is corrupt: Global cache collection is missing an instance of an inherited Child");
       }
 
       // The front portion of the list should have been bumped out of the cache
-      List<String> uncachedParentIds = parentIds.subList(0, parentIds.size() - cacheSize + 25);
-      for (String oid : uncachedParentIds)
+      List<String> uncachedParentOids = parentOids.subList(0, parentOids.size() - cacheSize + 25);
+      for (String oid : uncachedParentOids)
       {
         if (parentCache.entityDAOIdSet.contains(oid))
         {
@@ -625,7 +625,7 @@ public class CacheTest
       }
 
       // The list should also have been bumped out of the global cache.
-      for (String oid : uncachedParentIds)
+      for (String oid : uncachedParentOids)
       {
         if (ObjectCache.globalCacheContainsId(oid))
         {
@@ -673,31 +673,31 @@ public class CacheTest
       }
       // Since we know the order of population, we also know that the end of the
       // list is the most recently used - get that sublist
-      List<String> cachedParentIds = parentIds.subList(25, parentIds.size());
-      if (!containsAll(parentCache, cachedParentIds))
+      List<String> cachedParentOids = parentOids.subList(25, parentOids.size());
+      if (!containsAll(parentCache, cachedParentOids))
       {
         Assert.fail("Parent cache collection is missing an instance of Parent");
       }
 
-      if (!globalCacheContainsAll(cachedParentIds))
+      if (!globalCacheContainsAll(cachedParentOids))
       {
         Assert.fail("Global cache is corrupt: Global cache is missing an instance of Parent");
       }
 
       // The child caches all, so we check its collection
-      if (!containsAll(childCache, childIds))
+      if (!containsAll(childCache, childOids))
       {
         Assert.fail("Child cache collection is missing an instance of Child");
       }
 
-      if (!globalCacheContainsAll(childIds))
+      if (!globalCacheContainsAll(childOids))
       {
         Assert.fail("Global cache is corrupt: Child cache collection is missing an instance of Child");
       }
 
       // The front portion of the list should have been bumped out of the cache
-      List<String> uncachedParentIds = parentIds.subList(0, 25);
-      for (String oid : uncachedParentIds)
+      List<String> uncachedParentOids = parentOids.subList(0, 25);
+      for (String oid : uncachedParentOids)
       {
         if (parentCache.entityDAOIdSet.contains(oid))
         {
@@ -705,7 +705,7 @@ public class CacheTest
         }
       }
 
-      for (String oid : uncachedParentIds)
+      for (String oid : uncachedParentOids)
       {
         if (ObjectCache.globalCacheContainsId(oid))
         {
@@ -758,12 +758,12 @@ public class CacheTest
       }
 
       // The child caches all, so we check its collection
-      if (!containsAll(childCache, childIds))
+      if (!containsAll(childCache, childOids))
       {
         Assert.fail("Child cache collection is missing an instance of Child");
       }
 
-      if (!globalCacheContainsAll(childIds))
+      if (!globalCacheContainsAll(childOids))
       {
         Assert.fail("Global cache is corrupt: Global cache is missing an instance of Child");
       }
@@ -771,7 +771,7 @@ public class CacheTest
       // Since the child is caching all, the parent collection should have no
       // instances of the child.
       // The child should still be referenced in the global cache.
-      for (String oid : childIds)
+      for (String oid : childOids)
       {
         if (parentCache.entityDAOIdSet.contains(oid))
         {
@@ -822,13 +822,13 @@ public class CacheTest
 
       // Now we check to make sure that all items in both caches have the new
       // attribute
-      for (String oid : parentIds)
+      for (String oid : parentOids)
       {
         EntityDAOIF parent = ObjectCache.getEntityDAO(oid);
         parent.getAttributeIF("dropMe");
       }
 
-      for (String oid : childIds)
+      for (String oid : childOids)
       {
         EntityDAOIF child = ObjectCache.getEntityDAO(oid);
         child.getAttributeIF("dropMe");
@@ -840,7 +840,7 @@ public class CacheTest
 
       // Now we check to make sure that all items in both caches have dropped
       // the attribute
-      for (String oid : parentIds)
+      for (String oid : parentOids)
       {
         // Check the global cached
         // Make sure it gets into the cache.
@@ -857,7 +857,7 @@ public class CacheTest
         }
       }
 
-      for (String oid : childIds)
+      for (String oid : childOids)
       {
         // Check the global cached
         // Make sure it gets into the cache.

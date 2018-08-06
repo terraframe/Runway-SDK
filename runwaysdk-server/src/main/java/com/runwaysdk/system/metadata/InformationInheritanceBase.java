@@ -31,9 +31,9 @@ public abstract class InformationInheritanceBase extends com.runwaysdk.system.me
   public final static String CLASS = "com.runwaysdk.system.metadata.InformationInheritance";
   private static final long serialVersionUID = -1772125341;
   
-  public InformationInheritanceBase(String parentId, String childId)
+  public InformationInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

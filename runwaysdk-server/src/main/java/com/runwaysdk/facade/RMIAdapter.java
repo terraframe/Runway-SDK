@@ -96,17 +96,17 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /**
    * @see com.runwaysdk.request.RemoteAdapter#addChild(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType)
+  public RelationshipDTO addChild(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    return Facade.addChild(sessionId, parentId, childId, relationshipType);
+    return Facade.addChild(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
    * @see com.runwaysdk.request.RemoteAdapter#addParent(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType)
+  public RelationshipDTO addParent(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    return Facade.addParent(sessionId, parentId, childId, relationshipType);
+    return Facade.addParent(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
@@ -128,9 +128,9 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /**
    * @see com.runwaysdk.request.RemoteAdapter#getTermAllChildren(java.lang.String, java.lang.Integer, java.lang.Integer)
    */
-  public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize)
   {
-    return Facade.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+    return Facade.getTermAllChildren(sessionId, parentOid, pageNum, pageSize);
   }
 
   /**

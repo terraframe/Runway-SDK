@@ -43,9 +43,9 @@ public abstract class AllowedInBase extends com.runwaysdk.business.ontology.Term
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 1241841010;
   
-  public AllowedInBase(String parentId, String childId)
+  public AllowedInBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

@@ -44,9 +44,9 @@ public abstract class GeoEntityAttributeRootBase extends com.runwaysdk.business.
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 1014354707;
   
-  public GeoEntityAttributeRootBase(String parentId, String childId)
+  public GeoEntityAttributeRootBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

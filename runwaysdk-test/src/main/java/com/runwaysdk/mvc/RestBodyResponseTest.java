@@ -145,8 +145,8 @@ public class RestBodyResponseTest
       JSONObject object = new JSONObject(result);
 
       Assert.assertEquals(mdRelationshipType, object.get(EntityInfo.TYPE));
-      Assert.assertEquals(dto.getOid(), object.get(JSON.RELATIONSHIP_DTO_PARENT_ID.getLabel()));
-      Assert.assertEquals(dto.getOid(), object.get(JSON.RELATIONSHIP_DTO_CHILD_ID.getLabel()));
+      Assert.assertEquals(dto.getOid(), object.get(JSON.RELATIONSHIP_DTO_PARENT_OID.getLabel()));
+      Assert.assertEquals(dto.getOid(), object.get(JSON.RELATIONSHIP_DTO_CHILD_OID.getLabel()));
     }
     finally
     {

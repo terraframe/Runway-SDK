@@ -31,9 +31,9 @@ public abstract class RelationshipInheritanceBase extends com.runwaysdk.system.m
   public final static String CLASS = "com.runwaysdk.system.metadata.RelationshipInheritance";
   private static final long serialVersionUID = -943585669;
   
-  public RelationshipInheritanceBase(String parentId, String childId)
+  public RelationshipInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

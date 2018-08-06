@@ -24,9 +24,9 @@ public abstract class DimensionHasClassDTOBase extends com.runwaysdk.system.meta
   public final static String CLASS = "com.runwaysdk.system.metadata.DimensionHasClass";
   private static final long serialVersionUID = 1796446131;
   
-  public DimensionHasClassDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public DimensionHasClassDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -48,12 +48,12 @@ public abstract class DimensionHasClassDTOBase extends com.runwaysdk.system.meta
   
   public com.runwaysdk.system.metadata.MdDimensionDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdDimensionDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdDimensionDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.MdClassDimensionDTO getChild()
   {
-    return com.runwaysdk.system.metadata.MdClassDimensionDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.MdClassDimensionDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.DimensionHasClassDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -63,16 +63,16 @@ public abstract class DimensionHasClassDTOBase extends com.runwaysdk.system.meta
     return (com.runwaysdk.system.metadata.DimensionHasClassDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.DimensionHasClassQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.DimensionHasClassQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.DimensionHasClassDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.DimensionHasClassQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.DimensionHasClassQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.DimensionHasClassQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.DimensionHasClassDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.DimensionHasClassQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

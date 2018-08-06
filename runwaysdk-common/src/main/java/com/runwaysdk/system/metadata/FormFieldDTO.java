@@ -22,9 +22,9 @@ public abstract class FormFieldDTO extends FormFieldDTOBase
 {
   private static final long serialVersionUID = 1816480796;
   
-  public FormFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public FormFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

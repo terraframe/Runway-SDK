@@ -24,9 +24,9 @@ public abstract class SynonymMultiTermAttributeRootDTOBase extends com.runwaysdk
   public final static String CLASS = "com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot";
   private static final long serialVersionUID = 1222065694;
   
-  public SynonymMultiTermAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public SynonymMultiTermAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -444,12 +444,12 @@ public abstract class SynonymMultiTermAttributeRootDTOBase extends com.runwaysdk
   
   public com.runwaysdk.system.metadata.MdAttributeMultiTermDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdAttributeMultiTermDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdAttributeMultiTermDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.gis.geo.SynonymDTO getChild()
   {
-    return com.runwaysdk.system.gis.geo.SynonymDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.gis.geo.SynonymDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -459,16 +459,16 @@ public abstract class SynonymMultiTermAttributeRootDTOBase extends com.runwaysdk
     return (com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO) dto;
   }
   
-  public static com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

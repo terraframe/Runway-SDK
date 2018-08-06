@@ -22,9 +22,9 @@ public class RoleInheritanceDTO extends RoleInheritanceDTOBase
 {
   private static final long serialVersionUID = 1759441513;
   
-  public RoleInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public RoleInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

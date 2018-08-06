@@ -299,7 +299,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.childId().EQ(this.getOid()));
+      rq.WHERE(rq.childOid().EQ(this.getOid()));
 
       // Now fetch the child objects
       BusinessQuery bq = queryFactory.businessQuery(mdRelationshipIF.getParentMdBusiness().definesType());
@@ -338,7 +338,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.childId().EQ(this.getOid()));
+      rq.WHERE(rq.childOid().EQ(this.getOid()));
 
       return rq.getIterator();
     }
@@ -374,7 +374,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.childId().EQ(this.getOid()).AND(rq.parentId().EQ(parent.getOid())));
+      rq.WHERE(rq.childOid().EQ(this.getOid()).AND(rq.parentOid().EQ(parent.getOid())));
 
       return rq.getIterator();
     }
@@ -413,7 +413,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.parentId().EQ(this.getOid()));
+      rq.WHERE(rq.parentOid().EQ(this.getOid()));
 
       // Now fetch the child objects
       BusinessQuery bq = queryFactory.businessQuery(mdRelationshipIF.getChildMdBusiness().definesType());
@@ -452,7 +452,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.parentId().EQ(this.getOid()));
+      rq.WHERE(rq.parentOid().EQ(this.getOid()));
 
       return rq.getIterator();
     }
@@ -488,7 +488,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.parentId().EQ(this.getOid()).AND(rq.childId().EQ(child.getOid())));
+      rq.WHERE(rq.parentOid().EQ(this.getOid()).AND(rq.childOid().EQ(child.getOid())));
 
       return rq.getIterator();
     }
@@ -520,7 +520,7 @@ public class Business extends Element
    *          type of the desired relationship
    * @return The newly created Relationship
    */
-  public Relationship addParent(String parentId, String relationshipType)
+  public Relationship addParent(String parentOid, String relationshipType)
   {
     try
     {
@@ -530,11 +530,11 @@ public class Business extends Element
       {
         Class<?> clazz = LoaderDecorator.load(relationshipType);
         Constructor<?> con = clazz.getConstructor(String.class, String.class);
-        return (Relationship) con.newInstance(parentId, this.getOid());
+        return (Relationship) con.newInstance(parentOid, this.getOid());
       }
       else
       {
-        return new Relationship(parentId, this.getOid(), relationshipType);
+        return new Relationship(parentOid, this.getOid(), relationshipType);
       }
     }
     catch (Exception e)
@@ -561,14 +561,14 @@ public class Business extends Element
    * Generic, type-unsafe Relationship delete mechanism. Removes all instances
    * of the given object as a parent of <b>this</b> object.
    * 
-   * @param parentId
+   * @param parentOid
    *          oid of the Parent of <b>this</b> to be removed.
    * @param relationshipType
    *          type of the desired relationship
    */
-  public void removeAllParents(String parentId, String relationshipType)
+  public void removeAllParents(String parentOid, String relationshipType)
   {
-    businessDAO().removeAllParents(parentId, relationshipType, true);
+    businessDAO().removeAllParents(parentOid, relationshipType, true);
   }
 
   /**
@@ -625,13 +625,13 @@ public class Business extends Element
    * Type-safe Relationship creation mechanism. Creates a Relationship of the
    * given type with the given child and <b>this</b> as the parent.
    * 
-   * @param childId
+   * @param childOid
    *          oid of the Child of <b>this</b> in the new relationship
    * @param relationshipType
    *          type of the desired relationship
    * @return The newly created Relationship.
    */
-  public Relationship addChild(String childId, String relationshipType)
+  public Relationship addChild(String childOid, String relationshipType)
   {
     try
     {
@@ -641,11 +641,11 @@ public class Business extends Element
       {
         Class<?> clazz = LoaderDecorator.load(relationshipType);
         Constructor<?> con = clazz.getConstructor(String.class, String.class);
-        return (Relationship) con.newInstance(this.getOid(), childId);
+        return (Relationship) con.newInstance(this.getOid(), childOid);
       }
       else
       {
-        return new Relationship(this.getOid(), childId, relationshipType);
+        return new Relationship(this.getOid(), childOid, relationshipType);
       }
     }
     catch (Exception e)
@@ -672,14 +672,14 @@ public class Business extends Element
    * Generic, type-unsafe Relationship delete mechanism. Removes all instances
    * of this object as a child of <b>this</b> object.
    * 
-   * @param childId
+   * @param childOid
    *          oid of the child of <b>this</b> to be removed.
    * @param relationshipType
    *          type of the desired relationship
    */
-  public void removeAllChildren(String childId, String relationshipType)
+  public void removeAllChildren(String childOid, String relationshipType)
   {
-    businessDAO().removeAllChildren(childId, relationshipType, true);
+    businessDAO().removeAllChildren(childOid, relationshipType, true);
   }
 
   /**

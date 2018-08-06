@@ -198,16 +198,16 @@ public class RelationshipGenTest
     if (oracle2.getOid().equals(oracle.getOid()))
       Assert.fail("Two Relationships created with the same oid");
 
-    if (!oracle.getParentId().equals(mom.getOid()))
+    if (!oracle.getParentOid().equals(mom.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle.getChildId().equals(kid.getOid()))
+    if (!oracle.getChildOid().equals(kid.getOid()))
       Assert.fail("Child reference mismatch in addChild");
 
-    if (!oracle2.getParentId().equals(mom.getOid()))
+    if (!oracle2.getParentOid().equals(mom.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle2.getChildId().equals(kid.getOid()))
+    if (!oracle2.getChildOid().equals(kid.getOid()))
       Assert.fail("Child reference mismatch in addChild");
   }
 
@@ -265,10 +265,10 @@ public class RelationshipGenTest
     rel.apply();
     RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getOid()))
+    if (!oracle.getParentOid().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addParent");
 
-    if (!oracle.getChildId().equals(child.getOid()))
+    if (!oracle.getChildOid().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addParent");
   }
 
@@ -293,10 +293,10 @@ public class RelationshipGenTest
     rel.apply();
     RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getOid()))
+    if (!oracle.getParentOid().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addParent");
 
-    if (!oracle.getChildId().equals(child.getOid()))
+    if (!oracle.getChildOid().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addParent");
   }
 
@@ -321,10 +321,10 @@ public class RelationshipGenTest
     rel.apply();
     RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getOid()))
+    if (!oracle.getParentOid().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addParent");
 
-    if (!oracle.getChildId().equals(child.getOid()))
+    if (!oracle.getChildOid().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addParent");
   }
 
@@ -350,10 +350,10 @@ public class RelationshipGenTest
     rel.apply();
     RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getOid()))
+    if (!oracle.getParentOid().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle.getChildId().equals(child.getOid()))
+    if (!oracle.getChildOid().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addChild");
   }
 
@@ -378,10 +378,10 @@ public class RelationshipGenTest
     rel.apply();
     RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getOid()))
+    if (!oracle.getParentOid().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle.getChildId().equals(child.getOid()))
+    if (!oracle.getChildOid().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addChild");
   }
 
@@ -406,10 +406,10 @@ public class RelationshipGenTest
     rel.apply();
     RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getOid()))
+    if (!oracle.getParentOid().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle.getChildId().equals(child.getOid()))
+    if (!oracle.getChildOid().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addChild");
   }
 

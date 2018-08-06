@@ -140,10 +140,10 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
     String childKey = attributes.getValue(XMLTags.CHILD_KEY_TAG);
 
     // Get the database OID of a XML parent key
-    String dataParentId = "";
+    String dataParentOid = "";
     try
     {
-      dataParentId = EntityDAO.getOidFromKey(parentType, parentKey);
+      dataParentOid = EntityDAO.getOidFromKey(parentType, parentKey);
     }
     catch (DataNotFoundException e)
     {
@@ -153,16 +153,16 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
       SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.KEY_ATTRIBUTE, parentKey, key);
     }
 
-    if (dataParentId.equals(""))
+    if (dataParentOid.equals(""))
     {
-      dataParentId = EntityDAO.getOidFromKey(parentType, parentKey);
+      dataParentOid = EntityDAO.getOidFromKey(parentType, parentKey);
     }
 
     // Get the database OID of a XML child key
-    String dataChildId = "";
+    String dataChildOid = "";
     try
     {
-      dataChildId = EntityDAO.getOidFromKey(childType, childKey);
+      dataChildOid = EntityDAO.getOidFromKey(childType, childKey);
     }
     catch (DataNotFoundException e)
     {
@@ -172,9 +172,9 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
       // childType, childKey);
     }
 
-    if (dataChildId.equals(""))
+    if (dataChildOid.equals(""))
     {
-      dataChildId = EntityDAO.getOidFromKey(childType, childKey);
+      dataChildOid = EntityDAO.getOidFromKey(childType, childKey);
     }
 
     // Ensure that the class being referenced has already been defined
@@ -184,7 +184,7 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
       SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, type, key);
     }
 
-    RelationshipDAO relationship = RelationshipDAO.newInstance(dataParentId, dataChildId, type);
+    RelationshipDAO relationship = RelationshipDAO.newInstance(dataParentOid, dataChildOid, type);
 
     if (key != null && !key.equals(""))
     {

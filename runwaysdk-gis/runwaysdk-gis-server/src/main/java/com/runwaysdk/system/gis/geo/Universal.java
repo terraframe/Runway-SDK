@@ -197,31 +197,31 @@ public class Universal extends UniversalBase
   }
 
   /**
-   * This MdMethod will apply the Universal dto and append it to parentId with
-   * relationshipType. If parentId == RootUniversal then it will also create a
+   * This MdMethod will apply the Universal dto and append it to parentOid with
+   * relationshipType. If parentOid == RootUniversal then it will also create a
    * corresponding GeoEntity.
    * 
    * @param dto
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * @return JSON {term, relType, relId}.
    */
   @Transaction
-  public static TermAndRel create(Universal dto, String parentId, String relationshipType)
+  public static TermAndRel create(Universal dto, String parentOid, String relationshipType)
   {
-    return Universal.doCreate(dto, parentId, relationshipType);
+    return Universal.doCreate(dto, parentOid, relationshipType);
   }
 
   @AbortIfProblem
-  private static TermAndRel doCreate(Universal child, String parentId, String relationshipType)
+  private static TermAndRel doCreate(Universal child, String parentOid, String relationshipType)
   {
     child.apply();
 
-    Universal parent = Universal.get(parentId);
+    Universal parent = Universal.get(parentOid);
 
     // Creating a Country Universal automatically creates a GeoEntity of the
     // same name.
-    if (parentId.equals(Universal.getRoot().getOid()))
+    if (parentOid.equals(Universal.getRoot().getOid()))
     {
       GeoEntity geo = new GeoEntity();
       geo.setGeoId(child.getUniversalId());
@@ -366,7 +366,7 @@ public class Universal extends UniversalBase
     // // TODO : There may be a way to do this in one query, ask Naifeh/Smethie.
     // RelationshipQuery relq = new
     // QueryFactory().relationshipQuery(possibleRel);
-    // relq.WHERE(relq.parentId().EQ(parent.getOid()).AND(relq.childId().EQ(this.getOid())));
+    // relq.WHERE(relq.parentOid().EQ(parent.getOid()).AND(relq.childOid().EQ(this.getOid())));
     // OIterator<? extends Relationship> relit = relq.getIterator();
     //
     // try {

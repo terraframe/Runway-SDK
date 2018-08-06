@@ -24,9 +24,9 @@ public abstract class AttributeIndicatorDTOBase extends com.runwaysdk.system.met
   public final static String CLASS = "com.runwaysdk.system.metadata.AttributeIndicator";
   private static final long serialVersionUID = 1731390354;
   
-  public AttributeIndicatorDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public AttributeIndicatorDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -48,12 +48,12 @@ public abstract class AttributeIndicatorDTOBase extends com.runwaysdk.system.met
   
   public com.runwaysdk.system.metadata.MdAttributeIndicatorDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdAttributeIndicatorDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdAttributeIndicatorDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.IndicatorCompositeDTO getChild()
   {
-    return com.runwaysdk.system.metadata.IndicatorCompositeDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.IndicatorCompositeDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.AttributeIndicatorDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -63,16 +63,16 @@ public abstract class AttributeIndicatorDTOBase extends com.runwaysdk.system.met
     return (com.runwaysdk.system.metadata.AttributeIndicatorDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.AttributeIndicatorQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.AttributeIndicatorQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.AttributeIndicatorQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.AttributeIndicatorQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.AttributeIndicatorQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.AttributeIndicatorQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

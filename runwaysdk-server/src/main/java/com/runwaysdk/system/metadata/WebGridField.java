@@ -22,9 +22,9 @@ public class WebGridField extends WebGridFieldBase
 {
   private static final long serialVersionUID = -1592622561;
   
-  public WebGridField(String parentId, String childId)
+  public WebGridField(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public WebGridField(com.runwaysdk.system.metadata.MdWebSingleTermGrid parent, com.runwaysdk.system.metadata.MdWebPrimitive child)

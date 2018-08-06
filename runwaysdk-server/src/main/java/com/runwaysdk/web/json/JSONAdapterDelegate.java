@@ -52,15 +52,15 @@ import com.runwaysdk.transport.conversion.json.JSONUtil;
 public class JSONAdapterDelegate
 {
   /**
-   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType)
    */
-  public static String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+  public static String moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType) {
     JSONReturnObject returnJSON = new JSONReturnObject();
     
     RelationshipDTO rel;
     try
     {
-      rel = Facade.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+      rel = Facade.moveBusiness(sessionId, newParentOid, childOid, oldRelationshipId, newRelationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -75,17 +75,17 @@ public class JSONAdapterDelegate
   
   /**
    * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId,
-   *   java.lang.String parentId, java.lang.Integer pageNum,
+   *   java.lang.String parentOid, java.lang.Integer pageNum,
    *   java.lang.Integer pageSize)
    */
   @SuppressWarnings("unchecked")
-  public static String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+  public static String getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize) {
     JSONReturnObject returnJSON = new JSONReturnObject();
     
     List<TermAndRelDTO> tnr;
     try
     {
-      tnr = Facade.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+      tnr = Facade.getTermAllChildren(sessionId, parentOid, pageNum, pageSize);
     }
     catch (MessageExceptionDTO me)
     {
@@ -119,14 +119,14 @@ public class JSONAdapterDelegate
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static String addChild(String sessionId, String parentId, String childId, String relationshipType)
+  public static String addChild(String sessionId, String parentOid, String childOid, String relationshipType)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
     RelationshipDTO relationshipDTO;
 
     try
     {
-      relationshipDTO = Facade.addChild(sessionId, parentId, childId, relationshipType);
+      relationshipDTO = Facade.addChild(sessionId, parentOid, childOid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -144,14 +144,14 @@ public class JSONAdapterDelegate
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static String addParent(String sessionId, String parentId, String childId, String relationshipType)
+  public static String addParent(String sessionId, String parentOid, String childOid, String relationshipType)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
     RelationshipDTO relationshipDTO;
 
     try
     {
-      relationshipDTO = Facade.addParent(sessionId, parentId, childId, relationshipType);
+      relationshipDTO = Facade.addParent(sessionId, parentOid, childOid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {

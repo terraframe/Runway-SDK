@@ -474,7 +474,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
       // Add the parent of the current oid to the set role ids
       for (RelationshipDAOIF relationship : list)
       {
-        RoleDAOIF parent = RoleDAO.get(relationship.getChildId());
+        RoleDAOIF parent = RoleDAO.get(relationship.getChildOid());
 
         // If the parent is not already in the set of ids add to the stack
         if (set.add(parent))

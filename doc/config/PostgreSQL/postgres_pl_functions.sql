@@ -18,7 +18,7 @@
 --
 
 /*
- * Creates an id.  It requires a sequence number and a timestamp.
+ * Creates an oid.  It requires a sequence number and a timestamp.
  */
 CREATE OR REPLACE FUNCTION com_runwaysdk_createid
 (

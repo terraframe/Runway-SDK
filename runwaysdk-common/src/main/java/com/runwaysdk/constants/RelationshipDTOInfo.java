@@ -27,10 +27,10 @@ public interface RelationshipDTOInfo
   /**
    * The parent oid value on a RelationshipDTO for which no OID has been specified.
    */
-  public static final String EMPTY_PARENT_ID = "0";
+  public static final String EMPTY_PARENT_OID = "0";
   
   /**
    * The child oid value on a RelationshipDTO for which no OID has been specified.
    */
-  public static final String EMPTY_CHILD_ID = "0";
+  public static final String EMPTY_CHILD_OID = "0";
 }

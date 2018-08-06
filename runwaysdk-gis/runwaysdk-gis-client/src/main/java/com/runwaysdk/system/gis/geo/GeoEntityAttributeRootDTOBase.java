@@ -24,9 +24,9 @@ public abstract class GeoEntityAttributeRootDTOBase extends com.runwaysdk.busine
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityAttributeRoot";
   private static final long serialVersionUID = 1205908627;
   
-  public GeoEntityAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public GeoEntityAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -444,12 +444,12 @@ public abstract class GeoEntityAttributeRootDTOBase extends com.runwaysdk.busine
   
   public com.runwaysdk.system.metadata.MdAttributeTermDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdAttributeTermDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdAttributeTermDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.gis.geo.GeoEntityDTO getChild()
   {
-    return com.runwaysdk.system.gis.geo.GeoEntityDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.gis.geo.GeoEntityDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.gis.geo.GeoEntityAttributeRootDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -459,16 +459,16 @@ public abstract class GeoEntityAttributeRootDTOBase extends com.runwaysdk.busine
     return (com.runwaysdk.system.gis.geo.GeoEntityAttributeRootDTO) dto;
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.gis.geo.GeoEntityAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.GeoEntityAttributeRootDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.gis.geo.GeoEntityAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.gis.geo.GeoEntityAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.gis.geo.GeoEntityAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.GeoEntityAttributeRootDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.gis.geo.GeoEntityAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

@@ -60,8 +60,8 @@ public class RelationshipToRelationshipDTO extends ElementToElementDTO
    * @param sessionId
    * @param type
    * @param attributeMap
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param newInstance
    * @param readable
    * @param writable
@@ -72,7 +72,7 @@ public class RelationshipToRelationshipDTO extends ElementToElementDTO
       boolean newInstance, boolean readable, boolean writable, boolean modified)
   {
     return ComponentDTOFacade.buildRelationshipDTO(
-        null,  this.getComponentIF().getType(), attributeMap, this.getComponentIF().getParentId(), this.getComponentIF().getChildId(),
+        null,  this.getComponentIF().getType(), attributeMap, this.getComponentIF().getParentOid(), this.getComponentIF().getChildOid(),
         newInstance, readable, writable, modified, this.getComponentIF().toString(), this.getComponentIF().checkUserLock());
   }
   /**

@@ -52,9 +52,9 @@ public class MdIndexHandler extends TagHandler implements TagHandlerIF, HandlerF
 
       String attributeName = attributes.getValue(XMLTags.INDEX_NAME_ATTRIBUTE);
       int indexOrder = Integer.parseInt(attributes.getValue(XMLTags.INDEX_ORDER_ATTRIBUTE));
-      String parentId = mdIndex.getValue(MdIndexInfo.MD_ENTITY);
+      String parentOid = mdIndex.getValue(MdIndexInfo.MD_ENTITY);
 
-      MdElementDAOIF mdEntity = MdElementDAO.get(parentId);
+      MdElementDAOIF mdEntity = MdElementDAO.get(parentOid);
       MdAttributeDAOIF mdAttribute = mdEntity.definesAttribute(attributeName);
 
       // IMPORTANT: The mdAttribute may not be defined yet. It could be defined

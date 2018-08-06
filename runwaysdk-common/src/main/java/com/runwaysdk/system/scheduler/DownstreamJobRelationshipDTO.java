@@ -22,9 +22,9 @@ public class DownstreamJobRelationshipDTO extends DownstreamJobRelationshipDTOBa
 {
   private static final long serialVersionUID = 1633568429;
   
-  public DownstreamJobRelationshipDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public DownstreamJobRelationshipDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

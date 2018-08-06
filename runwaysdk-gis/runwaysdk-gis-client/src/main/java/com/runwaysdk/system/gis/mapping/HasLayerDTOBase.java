@@ -24,9 +24,9 @@ public abstract class HasLayerDTOBase extends com.runwaysdk.business.Relationshi
   public final static String CLASS = "com.runwaysdk.system.gis.mapping.HasLayer";
   private static final long serialVersionUID = -1811741188;
   
-  public HasLayerDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public HasLayerDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -444,12 +444,12 @@ public abstract class HasLayerDTOBase extends com.runwaysdk.business.Relationshi
   
   public com.runwaysdk.system.gis.mapping.GeneratedMapDTO getParent()
   {
-    return com.runwaysdk.system.gis.mapping.GeneratedMapDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.gis.mapping.GeneratedMapDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.gis.mapping.LayerDTO getChild()
   {
-    return com.runwaysdk.system.gis.mapping.LayerDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.gis.mapping.LayerDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.gis.mapping.HasLayerDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -459,16 +459,16 @@ public abstract class HasLayerDTOBase extends com.runwaysdk.business.Relationshi
     return (com.runwaysdk.system.gis.mapping.HasLayerDTO) dto;
   }
   
-  public static com.runwaysdk.system.gis.mapping.HasLayerQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.gis.mapping.HasLayerQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.mapping.HasLayerDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.gis.mapping.HasLayerQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.gis.mapping.HasLayerQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.gis.mapping.HasLayerQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.mapping.HasLayerDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.gis.mapping.HasLayerQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

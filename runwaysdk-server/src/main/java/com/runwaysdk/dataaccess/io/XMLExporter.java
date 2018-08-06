@@ -443,13 +443,13 @@ public class XMLExporter
     idElement.appendChild(document.createTextNode(relationship.getOid()));
     relationshipTag.appendChild(idElement);
 
-    Element parentIdTag = document.createElement(RelationshipInfo.PARENT_ID);
-    parentIdTag.appendChild(document.createTextNode(relationship.getParentId()));
-    relationshipTag.appendChild(parentIdTag);
+    Element parentOidTag = document.createElement(RelationshipInfo.PARENT_OID);
+    parentOidTag.appendChild(document.createTextNode(relationship.getParentOid()));
+    relationshipTag.appendChild(parentOidTag);
 
-    Element childIdTag = document.createElement(RelationshipInfo.CHILD_ID);
-    childIdTag.appendChild(document.createTextNode(relationship.getChildId()));
-    relationshipTag.appendChild(childIdTag);
+    Element childOidTag = document.createElement(RelationshipInfo.CHILD_OID);
+    childOidTag.appendChild(document.createTextNode(relationship.getChildOid()));
+    relationshipTag.appendChild(childOidTag);
 
     Element attributesTag = document.createElement("attributes");
     relationshipTag.appendChild(attributesTag);

@@ -24,9 +24,9 @@ public abstract class HasThematicAttributeDTOBase extends com.runwaysdk.business
   public final static String CLASS = "com.runwaysdk.system.gis.mapping.HasThematicAttribute";
   private static final long serialVersionUID = 1010761974;
   
-  public HasThematicAttributeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public HasThematicAttributeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -406,12 +406,12 @@ public abstract class HasThematicAttributeDTOBase extends com.runwaysdk.business
   
   public com.runwaysdk.system.gis.mapping.LayerDTO getParent()
   {
-    return com.runwaysdk.system.gis.mapping.LayerDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.gis.mapping.LayerDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.gis.mapping.ThematicAttributeDTO getChild()
   {
-    return com.runwaysdk.system.gis.mapping.ThematicAttributeDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.gis.mapping.ThematicAttributeDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.gis.mapping.HasThematicAttributeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -421,16 +421,16 @@ public abstract class HasThematicAttributeDTOBase extends com.runwaysdk.business
     return (com.runwaysdk.system.gis.mapping.HasThematicAttributeDTO) dto;
   }
   
-  public static com.runwaysdk.system.gis.mapping.HasThematicAttributeQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.gis.mapping.HasThematicAttributeQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.mapping.HasThematicAttributeDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.gis.mapping.HasThematicAttributeQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.gis.mapping.HasThematicAttributeQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.gis.mapping.HasThematicAttributeQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.mapping.HasThematicAttributeDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.gis.mapping.HasThematicAttributeQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

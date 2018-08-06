@@ -22,9 +22,9 @@ public class JobHistoryRecordDTO extends JobHistoryRecordDTOBase
 {
   private static final long serialVersionUID = -1506811220;
   
-  public JobHistoryRecordDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public JobHistoryRecordDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -31,14 +31,14 @@ public interface JSONRemoteAdapter extends Remote
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.transport.RelationshipDTO)
    */
-  public String addChild(String sessionId, String parentId, String childId, String relationshipType) throws RemoteException;
+  public String addChild(String sessionId, String parentOid, String childOid, String relationshipType) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.transport.RelationshipDTO)
    */
-  public String addParent(String sessionId, String parentId, String childId, String relationshipType) throws RemoteException;
+  public String addParent(String sessionId, String parentOid, String childOid, String relationshipType) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#deleteBusiness(java.lang.String,
@@ -239,9 +239,9 @@ public interface JSONRemoteAdapter extends Remote
 
   public String newMutable(String sessionId, String type) throws RemoteException;
 
-  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) throws RemoteException;
+  public String getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize) throws RemoteException;
 
-  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) throws RemoteException;
+  public String moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType) throws RemoteException;
 
   /**
    * @param sessionId

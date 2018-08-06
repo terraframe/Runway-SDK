@@ -145,8 +145,8 @@ public abstract class EntityView extends ViewPart implements IViewPart
     {
       RelationshipObject relationship = (RelationshipObject) entity;
 
-      this.createRelationshipContent(content, Localizer.getMessage("PARENT_ID"), relationship.getParentId());
-      this.createRelationshipContent(content, Localizer.getMessage("CHILD_ID"), relationship.getChildId());
+      this.createRelationshipContent(content, Localizer.getMessage("PARENT_OID"), relationship.getParentOid());
+      this.createRelationshipContent(content, Localizer.getMessage("CHILD_OID"), relationship.getChildOid());
     }
 
     List<MdAttributeDAOIF> attributes = this.entity.definesMdAttributes();

@@ -438,14 +438,14 @@ public class IntegratedSessionTest
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any type permissions given to newUser1
-      newUser1.revokeAllPermissions(reference.getChildId());
+      newUser1.revokeAllPermissions(reference.getChildOid());
     }
 
     set = newUser2.getAllPermissions();
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any type permissions given to newUser2
-      newUser2.revokeAllPermissions(reference.getChildId());
+      newUser2.revokeAllPermissions(reference.getChildOid());
     }
 
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -455,7 +455,7 @@ public class IntegratedSessionTest
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any businessDAO permissions given to newUser
-      role.revokeAllPermissions(reference.getChildId());
+      role.revokeAllPermissions(reference.getChildOid());
     }
 
     // Clear any lingering sessions

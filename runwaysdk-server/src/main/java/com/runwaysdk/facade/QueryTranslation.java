@@ -153,15 +153,15 @@ public class QueryTranslation
         String conditionValue = queryCondition.getConditionValue();
         Condition translateCondition;
 
-        if (queryDTO instanceof RelationshipQueryDTO && attributeName.equals(RelationshipInfo.PARENT_ID))
+        if (queryDTO instanceof RelationshipQueryDTO && attributeName.equals(RelationshipInfo.PARENT_OID))
         {
           RelationshipQuery relationshipQuery = (RelationshipQuery) query;
-          translateCondition = translateCharCondition(relationshipQuery.parentId(), condition, conditionValue);
+          translateCondition = translateCharCondition(relationshipQuery.parentOid(), condition, conditionValue);
         }
-        else if (queryDTO instanceof RelationshipQueryDTO && attributeName.equals(RelationshipInfo.CHILD_ID))
+        else if (queryDTO instanceof RelationshipQueryDTO && attributeName.equals(RelationshipInfo.CHILD_OID))
         {
           RelationshipQuery relationshipQuery = (RelationshipQuery) query;
-          translateCondition = translateCharCondition(relationshipQuery.childId(), condition, conditionValue);
+          translateCondition = translateCharCondition(relationshipQuery.childOid(), condition, conditionValue);
         }
         else
         {

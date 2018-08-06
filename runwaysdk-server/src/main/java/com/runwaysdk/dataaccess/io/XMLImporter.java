@@ -335,7 +335,7 @@ public class XMLImporter
       Element relationship = (Element) relationships.item(i);
 
       // Insert attribtues on the relationship
-      this.insert(getValueFromChildTag(relationship, "oid"), getAttributeValue(relationship, EntityInfo.TYPE), (Element) relationship.getElementsByTagName("attributes").item(0), getValueFromChildTag(relationship, RelationshipInfo.PARENT_ID), getValueFromChildTag(relationship, RelationshipInfo.CHILD_ID));
+      this.insert(getValueFromChildTag(relationship, "oid"), getAttributeValue(relationship, EntityInfo.TYPE), (Element) relationship.getElementsByTagName("attributes").item(0), getValueFromChildTag(relationship, RelationshipInfo.PARENT_OID), getValueFromChildTag(relationship, RelationshipInfo.CHILD_OID));
 
     }
 
@@ -346,7 +346,7 @@ public class XMLImporter
       Element entityIndex = (Element) entityIndexRelationships.item(i);
 
       // Insert attribtues on the relationship
-      this.insert(getValueFromChildTag(entityIndex, "oid"), getAttributeValue(entityIndex, EntityInfo.TYPE), (Element) entityIndex.getElementsByTagName("attributes").item(0), getValueFromChildTag(entityIndex, RelationshipInfo.PARENT_ID), getValueFromChildTag(entityIndex, RelationshipInfo.CHILD_ID));
+      this.insert(getValueFromChildTag(entityIndex, "oid"), getAttributeValue(entityIndex, EntityInfo.TYPE), (Element) entityIndex.getElementsByTagName("attributes").item(0), getValueFromChildTag(entityIndex, RelationshipInfo.PARENT_OID), getValueFromChildTag(entityIndex, RelationshipInfo.CHILD_OID));
 
     }
 
@@ -705,10 +705,10 @@ public class XMLImporter
    * @param oid
    * @param type
    * @param attributes
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    */
-  private void insert(String oid, String type, Element attributes, String parentId, String childId)
+  private void insert(String oid, String type, Element attributes, String parentOid, String childOid)
   {
     validateId(oid);
 
@@ -845,17 +845,17 @@ public class XMLImporter
 
       PreparedStatement preparedStmt = null;
 
-      if (parentId != null && childId != null && !tableName.equals(ElementInfo.CLASS))
+      if (parentOid != null && childOid != null && !tableName.equals(ElementInfo.CLASS))
       {
-        // Add the parent_id and child_id values to a relationship table
-        columnNames.add(RelationshipDAOIF.PARENT_ID_COLUMN);
+        // Add the parent_oid and child_oid values to a relationship table
+        columnNames.add(RelationshipDAOIF.PARENT_OID_COLUMN);
         prepSmtVars.add("?");
-        values.add(parentId);
+        values.add(parentOid);
         attributeTypes.add(MdAttributeCharacterInfo.CLASS);
 
-        columnNames.add(RelationshipDAOIF.CHILD_ID_COLUMN);
+        columnNames.add(RelationshipDAOIF.CHILD_OID_COLUMN);
         prepSmtVars.add("?");
-        values.add(childId);
+        values.add(childOid);
         attributeTypes.add(MdAttributeCharacterInfo.CLASS);
       }
 

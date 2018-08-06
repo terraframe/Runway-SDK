@@ -24,9 +24,9 @@ public abstract class SynonymTermAttributeRootDTOBase extends com.runwaysdk.busi
   public final static String CLASS = "com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot";
   private static final long serialVersionUID = -1164072206;
   
-  public SynonymTermAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public SynonymTermAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -444,12 +444,12 @@ public abstract class SynonymTermAttributeRootDTOBase extends com.runwaysdk.busi
   
   public com.runwaysdk.system.metadata.MdAttributeTermDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdAttributeTermDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdAttributeTermDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.gis.geo.SynonymDTO getChild()
   {
-    return com.runwaysdk.system.gis.geo.SynonymDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.gis.geo.SynonymDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -459,16 +459,16 @@ public abstract class SynonymTermAttributeRootDTOBase extends com.runwaysdk.busi
     return (com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO) dto;
   }
   
-  public static com.runwaysdk.system.gis.geo.SynonymTermAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.gis.geo.SynonymTermAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.gis.geo.SynonymTermAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.gis.geo.SynonymTermAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.gis.geo.SynonymTermAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.gis.geo.SynonymTermAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

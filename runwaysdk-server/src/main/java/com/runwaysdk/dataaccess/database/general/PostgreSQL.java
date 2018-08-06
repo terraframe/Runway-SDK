@@ -1171,7 +1171,7 @@ public class PostgreSQL extends AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public void createRelationshipTable(String tableName, String index1Name, String index2Name, boolean isUnique)
@@ -1220,7 +1220,7 @@ public class PostgreSQL extends AbstractDatabase
   @Override
   public String startCreateRelationshipTableBatch(String tableName)
   {
-    return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL PRIMARY KEY, \n" + RelationshipDAOIF.PARENT_ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL, \n" + RelationshipDAOIF.CHILD_ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL";
+    return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL PRIMARY KEY, \n" + RelationshipDAOIF.PARENT_OID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL, \n" + RelationshipDAOIF.CHILD_OID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL";
   }
 
   /**
@@ -1233,7 +1233,7 @@ public class PostgreSQL extends AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   @Override
@@ -1244,12 +1244,12 @@ public class PostgreSQL extends AbstractDatabase
     {
       statement += " UNIQUE ";
     }
-    statement += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_ID_COLUMN + ", " + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    statement += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
 
     String undo = "DROP INDEX " + index1Name;
     new DDLCommand(statement, undo, false).doIt();
 
-    statement = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    statement = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
 
     undo = "DROP INDEX " + index1Name;
     new DDLCommand(statement, undo, false).doIt();
@@ -1301,7 +1301,7 @@ public class PostgreSQL extends AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public void dropRelationshipTable(String tableName, String index1Name, String index2Name, boolean isUnique)
@@ -1313,11 +1313,11 @@ public class PostgreSQL extends AbstractDatabase
     {
       undo += " UNIQUE ";
     }
-    undo += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_ID_COLUMN + ", " + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    undo += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
     new DDLCommand(statement, undo, true).doIt();
 
     statement = "DROP INDEX " + index2Name;
-    undo = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    undo = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
     new DDLCommand(statement, undo, true).doIt();
 
     statement = "DROP TABLE " + tableName;
@@ -2514,9 +2514,9 @@ public class PostgreSQL extends AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.relationship.AbstractDatabase#getChildCountForParent(java.lang.String,
    *      java.lang.String)
    */
-  public long getChildCountForParent(String parent_id, String relationshipTableName)
+  public long getChildCountForParent(String parent_oid, String relationshipTableName)
   {
-    String query = " SELECT COUNT(*) AS CT \n" + " FROM " + relationshipTableName + " \n" + " WHERE " + RelationshipDAOIF.PARENT_ID_COLUMN + " = '" + parent_id + "' \n" + " AND " + RelationshipDAOIF.CHILD_ID_COLUMN + " IN " + "   (SELECT DISTINCT " + RelationshipDAOIF.CHILD_ID_COLUMN + " \n" + "    FROM " + relationshipTableName + " \n" + "    WHERE " + RelationshipDAOIF.PARENT_ID_COLUMN + " = '" + parent_id + "')";
+    String query = " SELECT COUNT(*) AS CT \n" + " FROM " + relationshipTableName + " \n" + " WHERE " + RelationshipDAOIF.PARENT_OID_COLUMN + " = '" + parent_oid + "' \n" + " AND " + RelationshipDAOIF.CHILD_OID_COLUMN + " IN " + "   (SELECT DISTINCT " + RelationshipDAOIF.CHILD_OID_COLUMN + " \n" + "    FROM " + relationshipTableName + " \n" + "    WHERE " + RelationshipDAOIF.PARENT_OID_COLUMN + " = '" + parent_oid + "')";
 
     ResultSet resultSet = this.query(query);
 
@@ -2555,9 +2555,9 @@ public class PostgreSQL extends AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.relationship.AbstractDatabase#getParentCountForChild(java.lang.String,
    *      java.lang.String)
    */
-  public long getParentCountForChild(String child_id, String relationshipTableName)
+  public long getParentCountForChild(String child_oid, String relationshipTableName)
   {
-    String query = " SELECT COUNT(*) AS CT \n" + " FROM " + relationshipTableName + " \n" + " WHERE " + RelationshipDAOIF.CHILD_ID_COLUMN + " = '" + child_id + "' \n" + " AND " + RelationshipDAOIF.PARENT_ID_COLUMN + " IN " + "   (SELECT DISTINCT " + RelationshipDAOIF.PARENT_ID_COLUMN + " \n" + "    FROM " + relationshipTableName + " \n" + "    WHERE " + RelationshipDAOIF.CHILD_ID_COLUMN + " = '" + child_id + "')";
+    String query = " SELECT COUNT(*) AS CT \n" + " FROM " + relationshipTableName + " \n" + " WHERE " + RelationshipDAOIF.CHILD_OID_COLUMN + " = '" + child_oid + "' \n" + " AND " + RelationshipDAOIF.PARENT_OID_COLUMN + " IN " + "   (SELECT DISTINCT " + RelationshipDAOIF.PARENT_OID_COLUMN + " \n" + "    FROM " + relationshipTableName + " \n" + "    WHERE " + RelationshipDAOIF.CHILD_OID_COLUMN + " = '" + child_oid + "')";
 
     ResultSet resultSet = this.query(query);
 

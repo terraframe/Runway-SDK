@@ -121,13 +121,13 @@ public interface ObjectStore
    * Removes all parent relationships of the given type for the
    * {@link BusinessDAOIF} with the given oid.
    * 
-   * @param childId
+   * @param childOid
    * @param relationshipType
    * 
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  public void removeAllParentRelationshipsOfType(String childId, String relationshipType, boolean deletedObject);
+  public void removeAllParentRelationshipsOfType(String childOid, String relationshipType, boolean deletedObject);
 
   /**
    * Removes the {@link RelationshipDAOIF} from the child relationship of the
@@ -147,13 +147,13 @@ public interface ObjectStore
    * Removes all child relationships of the given type for the
    * {@link BusinessDAOIF} with the given oid.
    * 
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * 
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  public void removeAllChildRelationshipsOfType(String parentId, String relationshipType, boolean deletedObject);
+  public void removeAllChildRelationshipsOfType(String parentOid, String relationshipType, boolean deletedObject);
 
   /**
    * Persists the collections to the cache so that it can be persisted to the

@@ -276,7 +276,7 @@ public class EntityDAOFactory
    * @param tableName
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
-   *          return the parent_id and child_id values in this map.
+   *          return the parent_oid and child_oid values in this map.
    * @return <code>Map</code> of Attribute objects for the BusinessDAO with the
    *         given OID and type.
    */
@@ -483,13 +483,13 @@ public class EntityDAOFactory
       if (entityDAO instanceof RelationshipDAO)
       {
         RelationshipDAO relationshipDAO = (RelationshipDAO) entityDAO;
-        columnNames.add(RelationshipDAOIF.PARENT_ID_COLUMN);
+        columnNames.add(RelationshipDAOIF.PARENT_OID_COLUMN);
         prepStmtVars.add("?");
-        values.add(relationshipDAO.getParentId());
+        values.add(relationshipDAO.getParentOid());
         attributeTypes.add(MdAttributeCharacterInfo.CLASS);
-        columnNames.add(RelationshipDAOIF.CHILD_ID_COLUMN);
+        columnNames.add(RelationshipDAOIF.CHILD_OID_COLUMN);
         prepStmtVars.add("?");
-        values.add(relationshipDAO.getChildId());
+        values.add(relationshipDAO.getChildOid());
         attributeTypes.add(MdAttributeCharacterInfo.CLASS);
       }
 
@@ -504,7 +504,7 @@ public class EntityDAOFactory
     catch (DuplicateGraphPathException duplicateGraphPathException)
     {
       RelationshipDAO relationshipDAO = (RelationshipDAO) entityDAO;
-      duplicateGraphPathException.init(relationshipDAO.getMdRelationshipDAO(), relationshipDAO.getParentId(), relationshipDAO.getChildId());
+      duplicateGraphPathException.init(relationshipDAO.getMdRelationshipDAO(), relationshipDAO.getParentOid(), relationshipDAO.getChildOid());
       throw duplicateGraphPathException;
     }
     catch (DuplicateDataDatabaseException duplicateDataDatabaseException)

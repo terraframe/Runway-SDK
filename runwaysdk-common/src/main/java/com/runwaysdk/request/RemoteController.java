@@ -51,7 +51,7 @@ public interface RemoteController extends Remote
    *      com.runwaysdk.business.RelationshipDTO)
    * @throws RemoteException
    */
-  public RelationshipDTO addChild(String sessionId, String parentId, String childId,
+  public RelationshipDTO addChild(String sessionId, String parentOid, String childOid,
       String relationshipType) throws RemoteException;
 
   /**
@@ -60,7 +60,7 @@ public interface RemoteController extends Remote
    *      com.runwaysdk.business.RelationshipDTO)
    * @throws RemoteException
    */
-  public RelationshipDTO addParent(String sessionId, String parentId, String childId,
+  public RelationshipDTO addParent(String sessionId, String parentOid, String childOid,
       String relationshipType) throws RemoteException;
 
   /**

@@ -22,9 +22,9 @@ public class RelationshipInheritanceDTO extends RelationshipInheritanceDTOBase
 {
   private static final long serialVersionUID = -1409467368;
   
-  public RelationshipInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public RelationshipInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -44,9 +44,9 @@ public abstract class GeoEntityMultiTermAttributeRootBase extends com.runwaysdk.
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 230634704;
   
-  public GeoEntityMultiTermAttributeRootBase(String parentId, String childId)
+  public GeoEntityMultiTermAttributeRootBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

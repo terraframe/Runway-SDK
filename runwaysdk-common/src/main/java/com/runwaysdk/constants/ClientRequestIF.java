@@ -117,19 +117,19 @@ public interface ClientRequestIF extends ClientRequestMarker
 
   /**
    * Returns a list of BusinessDTO objects that represents all children in a
-   * relationship where the parent has the given parentId.
+   * relationship where the parent has the given parentOid.
    * 
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * @return
    */
-  public List<? extends BusinessDTO> getChildren(String parentId, String relationshipType);
+  public List<? extends BusinessDTO> getChildren(String parentOid, String relationshipType);
 
   /**
    * Returns a list of BusinessDTO objects that represent all parents in a
-   * relationship where the child has the given childId.
+   * relationship where the child has the given childOid.
    * 
-   * @param childId
+   * @param childOid
    * @param relationshipType
    */
   public List<? extends BusinessDTO> getParents(String childid, String relationshipType);
@@ -157,7 +157,7 @@ public interface ClientRequestIF extends ClientRequestMarker
   /**
    * Returns all children of and their relationship with the given term.
    * 
-   * @param parentId
+   * @param parentOid
    *          The oid of the term to get all children.
    * @param pageNum
    *          Used to break large returns into chunks (pages), this denotes the
@@ -167,7 +167,7 @@ public interface ClientRequestIF extends ClientRequestMarker
    *          will be treated as infinity.
    * @return A list of TermAndRelDTO objects of size pageSize.
    */
-  public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize);
+  public List<TermAndRelDTO> getTermAllChildren(String parentOid, Integer pageNum, Integer pageSize);
 
   /**
    * Returns the session oid used by the clientRequest to connect to the
@@ -203,12 +203,12 @@ public interface ClientRequestIF extends ClientRequestMarker
   /**
    * Adds a child to a parent for a given relationship.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipType
    * @return RelationshipDTO representing the new relationship.
    */
-  public RelationshipDTO addChild(String parentId, String childId, String relationshipType);
+  public RelationshipDTO addChild(String parentOid, String childOid, String relationshipType);
 
   /**
    * Deletes a child from a parent for a given relationship.
@@ -220,12 +220,12 @@ public interface ClientRequestIF extends ClientRequestMarker
   /**
    * Adds a parent to a child for a given relationship.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipType
    * @return RelationshipDTO representing the new relationship.
    */
-  public RelationshipDTO addParent(String parentId, String childId, String relationshipType);
+  public RelationshipDTO addParent(String parentOid, String childOid, String relationshipType);
 
   /**
    * Deletes a parent from a child for a given relationship.

@@ -235,7 +235,7 @@ public class SerializedSessionTest
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any type permissions given to newUser
-      newUser.revokeAllPermissions(reference.getChildId());
+      newUser.revokeAllPermissions(reference.getChildOid());
     }
 
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -245,7 +245,7 @@ public class SerializedSessionTest
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any businessDAO permissions given to newUser
-      role.revokeAllPermissions(reference.getChildId());
+      role.revokeAllPermissions(reference.getChildOid());
     }
 
     UserDAOIF publicUser = UserDAO.getPublicUser();
@@ -255,7 +255,7 @@ public class SerializedSessionTest
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any businessDAO permissions given to newUser
-      role.revokeAllPermissions(reference.getChildId());
+      role.revokeAllPermissions(reference.getChildOid());
     }
 
     // Clear any lingering sessions

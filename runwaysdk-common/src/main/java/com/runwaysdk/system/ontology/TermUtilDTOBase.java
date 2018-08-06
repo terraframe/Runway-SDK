@@ -35,26 +35,26 @@ public abstract class TermUtilDTOBase extends com.runwaysdk.business.UtilDTO
   }
   
   public static java.lang.String OID = "oid";
-  public static final com.runwaysdk.business.RelationshipDTO addAndRemoveLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childId, java.lang.String oldParentId, java.lang.String oldRelType, java.lang.String newParentId, java.lang.String newRelType)
+  public static final com.runwaysdk.business.RelationshipDTO addAndRemoveLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childOid, java.lang.String oldParentOid, java.lang.String oldRelType, java.lang.String newParentOid, java.lang.String newRelType)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "java.lang.String", "java.lang.String", "java.lang.String", "java.lang.String"};
-    Object[] _parameters = new Object[]{childId, oldParentId, oldRelType, newParentId, newRelType};
+    Object[] _parameters = new Object[]{childOid, oldParentOid, oldRelType, newParentOid, newRelType};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "addAndRemoveLink", _declaredTypes);
     return (com.runwaysdk.business.RelationshipDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public static final com.runwaysdk.business.RelationshipDTO addLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childId, java.lang.String parentId, java.lang.String relationshipType)
+  public static final com.runwaysdk.business.RelationshipDTO addLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childOid, java.lang.String parentOid, java.lang.String relationshipType)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "java.lang.String", "java.lang.String"};
-    Object[] _parameters = new Object[]{childId, parentId, relationshipType};
+    Object[] _parameters = new Object[]{childOid, parentOid, relationshipType};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "addLink", _declaredTypes);
     return (com.runwaysdk.business.RelationshipDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public static final void exportTerm(com.runwaysdk.constants.ClientRequestIF clientRequest, java.io.OutputStream outputStream, java.lang.String parentId, java.lang.Boolean exportParent, com.runwaysdk.system.ontology.io.TermFileFormatDTO format)
+  public static final void exportTerm(com.runwaysdk.constants.ClientRequestIF clientRequest, java.io.OutputStream outputStream, java.lang.String parentOid, java.lang.Boolean exportParent, com.runwaysdk.system.ontology.io.TermFileFormatDTO format)
   {
     String[] _declaredTypes = new String[]{"java.io.OutputStream", "java.lang.String", "java.lang.Boolean", "com.runwaysdk.system.ontology.io.TermFileFormat"};
-    Object[] _parameters = new Object[]{outputStream, parentId, exportParent, format};
+    Object[] _parameters = new Object[]{outputStream, parentOid, exportParent, format};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "exportTerm", _declaredTypes);
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -99,10 +99,10 @@ public abstract class TermUtilDTOBase extends com.runwaysdk.business.UtilDTO
     return (java.lang.String) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public static final void removeLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childId, java.lang.String parentId, java.lang.String relationshipType)
+  public static final void removeLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childOid, java.lang.String parentOid, java.lang.String relationshipType)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "java.lang.String", "java.lang.String"};
-    Object[] _parameters = new Object[]{childId, parentId, relationshipType};
+    Object[] _parameters = new Object[]{childOid, parentOid, relationshipType};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "removeLink", _declaredTypes);
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }

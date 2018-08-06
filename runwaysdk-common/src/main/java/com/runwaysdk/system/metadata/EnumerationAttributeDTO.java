@@ -22,9 +22,9 @@ public class EnumerationAttributeDTO extends EnumerationAttributeDTOBase
 {
   private static final long serialVersionUID = -1746656974;
   
-  public EnumerationAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public EnumerationAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

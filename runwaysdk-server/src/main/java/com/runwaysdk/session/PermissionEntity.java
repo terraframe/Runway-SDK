@@ -256,12 +256,12 @@ public abstract class PermissionEntity implements Serializable
 
         try
         {
-          if (IdParser.validId(relationship.getParentId()))
+          if (IdParser.validId(relationship.getParentOid()))
           {
             parent = relationship.getParent();
           }
 
-          if (IdParser.validId(relationship.getChildId()))
+          if (IdParser.validId(relationship.getChildOid()))
           {
             child = relationship.getChild();
           }
@@ -611,12 +611,12 @@ public abstract class PermissionEntity implements Serializable
 
         try
         {
-          if (IdParser.validId(relationship.getParentId()))
+          if (IdParser.validId(relationship.getParentOid()))
           {
             parent = relationship.getParent();
           }
 
-          if (IdParser.validId(relationship.getChildId()))
+          if (IdParser.validId(relationship.getChildOid()))
           {
             child = relationship.getChild();
           }

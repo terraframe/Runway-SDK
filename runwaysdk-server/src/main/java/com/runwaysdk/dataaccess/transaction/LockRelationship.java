@@ -56,11 +56,11 @@ public class LockRelationship
    * @param oid of the parent object in a relationship.
    * @param oid of the child object in a relationship.
    */
-  public void relLock(String parentId, String childId)
+  public void relLock(String parentOid, String childOid)
   {
     while (true)
     {
-      boolean breakLoop = tryRelLock(parentId, childId);
+      boolean breakLoop = tryRelLock(parentOid, childOid);
 
       if (breakLoop == true)
       {
@@ -71,24 +71,24 @@ public class LockRelationship
 
   /**
    *
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @return
    */
-  private synchronized boolean tryRelLock(String parentId, String childId)
+  private synchronized boolean tryRelLock(String parentOid, String childOid)
   {
-    if (! (this.lockedIDsMap.containsKey(parentId) &&
-           this.lockedIDsMap.containsKey(childId)))
+    if (! (this.lockedIDsMap.containsKey(parentOid) &&
+           this.lockedIDsMap.containsKey(childOid)))
     {
-      this.recordRelLock(parentId, childId);
+      this.recordRelLock(parentOid, childOid);
 
       return true;
     }
 
 
     // block if the oid is in the lockedIDsMap
-    if ( (!LockObject.isLockedByThread(this.lockedIDsMap.get(parentId))) &&
-         (!LockObject.isLockedByThread(this.lockedIDsMap.get(childId)))  )
+    if ( (!LockObject.isLockedByThread(this.lockedIDsMap.get(parentOid))) &&
+         (!LockObject.isLockedByThread(this.lockedIDsMap.get(childOid)))  )
     {
       try
       {
@@ -97,7 +97,7 @@ public class LockRelationship
       catch (Exception ex)
       {
         String error = "An error occured during the cache database synchronization routine for ids ["
-            + parentId + "] and ["+childId+"]";
+            + parentOid + "] and ["+childOid+"]";
         throw new LockException(error);
       }
     }
@@ -110,28 +110,28 @@ public class LockRelationship
   }
 
   // Hook method for an aspect
-  private void recordRelLock(String parentId, String childId)
+  private void recordRelLock(String parentOid, String childOid)
   {
-    this.lockedIDsMap.put(parentId, LockObject.getCurrentThread());
-    this.lockedIDsMap.put(childId, LockObject.getCurrentThread());
+    this.lockedIDsMap.put(parentOid, LockObject.getCurrentThread());
+    this.lockedIDsMap.put(childOid, LockObject.getCurrentThread());
   }
 
 
   /**
    * Releases a relationship lock on the objects with the given ids, but only if the
    * current thread is the thread that holds the lock.
-   * @param parentId oid of the parent object in the relationship.
-   * @param childId oid of the child object in the relationship.
+   * @param parentOid oid of the parent object in the relationship.
+   * @param childOid oid of the child object in the relationship.
    */
-  public synchronized void releaseRelLock(String parentId, String childId)
+  public synchronized void releaseRelLock(String parentOid, String childOid)
   {
-    if( ( this.lockedIDsMap.containsKey(parentId) && (LockObject.isLockedByThread(this.lockedIDsMap.get(parentId))) )
+    if( ( this.lockedIDsMap.containsKey(parentOid) && (LockObject.isLockedByThread(this.lockedIDsMap.get(parentOid))) )
         &&
-        ( this.lockedIDsMap.containsKey(childId) && (LockObject.isLockedByThread(this.lockedIDsMap.get(childId))) )
+        ( this.lockedIDsMap.containsKey(childOid) && (LockObject.isLockedByThread(this.lockedIDsMap.get(childOid))) )
       )
     {
-      this.lockedIDsMap.remove(parentId);
-      this.lockedIDsMap.remove(childId);
+      this.lockedIDsMap.remove(parentOid);
+      this.lockedIDsMap.remove(childOid);
     }
     this.notifyAll();
   }

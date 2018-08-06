@@ -44,9 +44,9 @@ public abstract class TypePermissionBase extends com.runwaysdk.business.Relation
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -662995173;
   
-  public TypePermissionBase(String parentId, String childId)
+  public TypePermissionBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

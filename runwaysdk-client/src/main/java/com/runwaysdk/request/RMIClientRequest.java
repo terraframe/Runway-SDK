@@ -188,13 +188,13 @@ public class RMIClientRequest extends ClientRequest
    *      java.lang.String, java.lang.Integer, java.lang.Integer)
    */
   @SuppressWarnings("unchecked")
-  public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
+  public List<TermAndRelDTO> getTermAllChildren(String parentOid, Integer pageNum, Integer pageSize)
   {
     this.clearNotifications();
     List<TermAndRelDTO> tnr;
     try
     {
-      tnr = rmiAdapter.getTermAllChildren(this.getSessionId(), parentId, pageNum, pageSize);
+      tnr = rmiAdapter.getTermAllChildren(this.getSessionId(), parentOid, pageNum, pageSize);
     }
     catch (MessageExceptionDTO me)
     {
@@ -224,13 +224,13 @@ public class RMIClientRequest extends ClientRequest
    * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
    *      java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public RelationshipDTO addChild(String parentId, String childId, String relationshipType)
+  public RelationshipDTO addChild(String parentOid, String childOid, String relationshipType)
   {
     this.clearNotifications();
     RelationshipDTO generic;
     try
     {
-      generic = rmiAdapter.addChild(this.getSessionId(), parentId, childId, relationshipType);
+      generic = rmiAdapter.addChild(this.getSessionId(), parentOid, childOid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -252,13 +252,13 @@ public class RMIClientRequest extends ClientRequest
    * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
    *      java.lang.String, java.lang.String,)
    */
-  public RelationshipDTO addParent(String parentId, String childId, String relationshipType)
+  public RelationshipDTO addParent(String parentOid, String childOid, String relationshipType)
   {
     this.clearNotifications();
     RelationshipDTO generic;
     try
     {
-      generic = rmiAdapter.addParent(this.getSessionId(), parentId, childId, relationshipType);
+      generic = rmiAdapter.addParent(this.getSessionId(), parentOid, childOid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {

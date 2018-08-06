@@ -32,9 +32,9 @@ public abstract class VisibleDependencyBase extends com.runwaysdk.system.metadat
   public static java.lang.String CONDITION = "condition";
   private static final long serialVersionUID = -2074703911;
   
-  public VisibleDependencyBase(String parentId, String childId)
+  public VisibleDependencyBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public com.runwaysdk.system.metadata.FieldCondition getCondition()

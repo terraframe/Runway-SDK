@@ -456,11 +456,11 @@ public abstract class AbstractDatabase
 
     LinkedHashMap<String, String> superTypeMap = new LinkedHashMap<String, String>();
 
-    String subSqlSelect = "SELECT " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.PARENT_ID_COLUMN + ", " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.CHILD_ID_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.TYPE_NAME_COLUMN + "\n" + "  FROM " + MdTypeDAOIF.TABLE + ", " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + " " + " WHERE " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.PARENT_ID_COLUMN;
+    String subSqlSelect = "SELECT " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.CHILD_OID_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.TYPE_NAME_COLUMN + "\n" + "  FROM " + MdTypeDAOIF.TABLE + ", " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + " " + " WHERE " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.PARENT_OID_COLUMN;
 
-    String sqlSelect = "SELECT parent." + RelationshipDAOIF.PARENT_ID_COLUMN + ", " + "parent." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + ", " + "parent." + MdTypeDAOIF.TYPE_NAME_COLUMN + ",\n" +
+    String sqlSelect = "SELECT parent." + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + "parent." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + ", " + "parent." + MdTypeDAOIF.TYPE_NAME_COLUMN + ",\n" +
     // Table name of the child
-        MdEntityDAOIF.TABLE + "." + MdEntityDAOIF.TABLE_NAME_COLUMN + "\n" + "  FROM " + MdEntityDAOIF.TABLE + ", " + MdTypeDAOIF.TABLE + " LEFT JOIN " + "(" + subSqlSelect + ") parent " + " ON " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = parent." + RelationshipDAOIF.CHILD_ID_COLUMN + "\n" + " WHERE " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + MdEntityDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + "\n" + " AND " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.TYPE_NAME_COLUMN + " = '" + typeName + "'\n" + " AND " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + " = '" + packageName + "'\n";
+        MdEntityDAOIF.TABLE + "." + MdEntityDAOIF.TABLE_NAME_COLUMN + "\n" + "  FROM " + MdEntityDAOIF.TABLE + ", " + MdTypeDAOIF.TABLE + " LEFT JOIN " + "(" + subSqlSelect + ") parent " + " ON " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = parent." + RelationshipDAOIF.CHILD_OID_COLUMN + "\n" + " WHERE " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + MdEntityDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + "\n" + " AND " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.TYPE_NAME_COLUMN + " = '" + typeName + "'\n" + " AND " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + " = '" + packageName + "'\n";
 
     ResultSet resultSet = this.query(sqlSelect);
 
@@ -487,7 +487,7 @@ public abstract class AbstractDatabase
 
         loopCount++;
 
-        if (resultSet.getString(RelationshipDAOIF.PARENT_ID_COLUMN) != null)
+        if (resultSet.getString(RelationshipDAOIF.PARENT_OID_COLUMN) != null)
         {
           String parentPackageName = resultSet.getString(MdTypeDAOIF.PACKAGE_NAME_COLUMN);
           String parentTypeName = resultSet.getString(MdTypeDAOIF.TYPE_NAME_COLUMN);
@@ -771,7 +771,7 @@ public abstract class AbstractDatabase
   {
     List<String> subClassTypeList = new LinkedList<String>();
 
-    String sqlSelect = "SELECT " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.CHILD_ID_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.TYPE_NAME_COLUMN + ", " + MdElementDAOIF.TABLE + "." + MdElementDAOIF.ABSTRACT_COLUMN + "\n" + "  FROM " + MdTypeDAOIF.TABLE + " LEFT JOIN " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + " ON " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.PARENT_ID_COLUMN + ", " + MdElementDAOIF.TABLE + "\n " + " WHERE " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + MdElementDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + "\n " + "   AND " + MdTypeDAOIF.TABLE
+    String sqlSelect = "SELECT " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.CHILD_OID_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.TYPE_NAME_COLUMN + ", " + MdElementDAOIF.TABLE + "." + MdElementDAOIF.ABSTRACT_COLUMN + "\n" + "  FROM " + MdTypeDAOIF.TABLE + " LEFT JOIN " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + " ON " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + MdElementDAOIF.TABLE + "\n " + " WHERE " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + MdElementDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + "\n " + "   AND " + MdTypeDAOIF.TABLE
         + "." + EntityDAOIF.ID_COLUMN + " = '" + mdEntityId + "'";
 
     ResultSet resultSet = this.query(sqlSelect);
@@ -795,11 +795,11 @@ public abstract class AbstractDatabase
           }
         }
 
-        if (resultSet.getString(RelationshipDAOIF.CHILD_ID_COLUMN) != null)
+        if (resultSet.getString(RelationshipDAOIF.CHILD_OID_COLUMN) != null)
         {
-          String childId = resultSet.getString(RelationshipDAOIF.CHILD_ID_COLUMN);
+          String childOid = resultSet.getString(RelationshipDAOIF.CHILD_OID_COLUMN);
 
-          subClassTypeList.addAll(getConcreteSubClasses(childId));
+          subClassTypeList.addAll(getConcreteSubClasses(childOid));
         }
 
       }
@@ -841,7 +841,7 @@ public abstract class AbstractDatabase
    * @param tableName
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
-   *          return the parent_id and child_id values in this map.
+   *          return the parent_oid and child_oid values in this map.
    * @return Map of Attribute objects for the EnityObject with the given OID and
    *         class.
    */
@@ -862,8 +862,8 @@ public abstract class AbstractDatabase
 
       if (relationshipAttributesHackMap != null)
       {
-        relationshipAttributesHackMap.put(RelationshipInfo.PARENT_ID, resultSet.getString(RelationshipDAOIF.PARENT_ID_COLUMN).toString());
-        relationshipAttributesHackMap.put(RelationshipInfo.CHILD_ID, resultSet.getString(RelationshipDAOIF.CHILD_ID_COLUMN).toString());
+        relationshipAttributesHackMap.put(RelationshipInfo.PARENT_OID, resultSet.getString(RelationshipDAOIF.PARENT_OID_COLUMN).toString());
+        relationshipAttributesHackMap.put(RelationshipInfo.CHILD_OID, resultSet.getString(RelationshipDAOIF.CHILD_OID_COLUMN).toString());
       }
 
       Map<String, Map<String, String>> mdAttributeInfoMap = DefaultMdEntityInfo.getAttributeMapForType(type);
@@ -963,7 +963,7 @@ public abstract class AbstractDatabase
    * @param _tableName
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
-   *          return the parent_id and child_id values in this map.
+   *          return the parent_oid and child_oid values in this map.
    * @return Map of Attribute objects for the EnityObject with the given OID and
    *         class.
    */
@@ -1573,7 +1573,7 @@ public abstract class AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public abstract void createRelationshipTable(String tableName, String index1Name, String index2Name, boolean isUnique);
@@ -1609,7 +1609,7 @@ public abstract class AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public abstract void createRelationshipTableIndexesBatch(String tableName, String index1Name, String index2Name, boolean isUnique);
@@ -1767,7 +1767,7 @@ public abstract class AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public abstract void dropRelationshipTable(String tableName, String index1Name, String index2Name, boolean isUnique);
@@ -4997,21 +4997,21 @@ public abstract class AbstractDatabase
    * Returns the number of distinct child instances for a given parent of the
    * given relationship type.
    * 
-   * @param parent_id
+   * @param parent_oid
    * @param relationshipTableName
    * @return
    */
-  public abstract long getChildCountForParent(String parent_id, String relationshipTableName);
+  public abstract long getChildCountForParent(String parent_oid, String relationshipTableName);
 
   /**
    * Returns the number of distinct parent instances for a given child of the
    * given relationship type.
    * 
-   * @param child_id
+   * @param child_oid
    * @param relationshipTableName
    * @return
    */
-  public abstract long getParentCountForChild(String child_id, String relationshipTableName);
+  public abstract long getParentCountForChild(String child_oid, String relationshipTableName);
 
   /**
    * Returns the number of instances of Relationships of the given type. This

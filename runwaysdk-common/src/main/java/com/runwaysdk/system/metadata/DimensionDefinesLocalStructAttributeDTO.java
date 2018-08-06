@@ -22,9 +22,9 @@ public class DimensionDefinesLocalStructAttributeDTO extends DimensionDefinesLoc
 {
   private static final long serialVersionUID = 1106426501;
   
-  public DimensionDefinesLocalStructAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public DimensionDefinesLocalStructAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

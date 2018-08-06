@@ -52,7 +52,7 @@ public interface RemoteAdapter extends Remote
    *      com.runwaysdk.business.RelationshipDTO)
    * @throws RemoteException
    */
-  public RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType) throws RemoteException;
+  public RelationshipDTO addChild(String sessionId, String parentOid, String childOid, String relationshipType) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
@@ -60,7 +60,7 @@ public interface RemoteAdapter extends Remote
    *      com.runwaysdk.business.RelationshipDTO)
    * @throws RemoteException
    */
-  public RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType) throws RemoteException;
+  public RelationshipDTO addParent(String sessionId, String parentOid, String childOid, String relationshipType) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#delete(java.lang.String, java.lang.String)
@@ -363,11 +363,11 @@ public interface RemoteAdapter extends Remote
   public RemoteInputStream importExcelFile(String sessionId, RemoteInputStream stream, String type, String listenerMethod, String... params) throws RemoteException, IOException;
 
   /**
-   * @param parentId
+   * @param parentOid
    * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String,
    *      java.lang.Integer, java.lang.Integer)
    */
-  public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) throws RemoteException;
+  public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize) throws RemoteException;
 
   /**
    * @param sessionId

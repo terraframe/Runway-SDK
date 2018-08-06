@@ -611,14 +611,14 @@ public class ObjectCache
    * Removes all parent relationships of the given type for the
    * {@link BusinessDAOIF} with the given oid.
    * 
-   * @param childId
+   * @param childOid
    * @param relationshipType
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  protected static void removeAllParentRelationshipsOfType(String childId, String relationshipType, boolean deletedObject)
+  protected static void removeAllParentRelationshipsOfType(String childOid, String relationshipType, boolean deletedObject)
   {
-    globalCache.removeAllParentRelationshipsOfType(childId, relationshipType, deletedObject);
+    globalCache.removeAllParentRelationshipsOfType(childOid, relationshipType, deletedObject);
   }
 
   /**
@@ -640,14 +640,14 @@ public class ObjectCache
    * Removes all child relationships of the given type for the
    * {@link BusinessDAOIF} with the given oid.
    * 
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  protected static void removeAllChildRelationshipsOfType(String parentId, String relationshipType, boolean deletedObject)
+  protected static void removeAllChildRelationshipsOfType(String parentOid, String relationshipType, boolean deletedObject)
   {
-    globalCache.removeAllChildRelationshipsOfType(parentId, relationshipType, deletedObject);
+    globalCache.removeAllChildRelationshipsOfType(parentOid, relationshipType, deletedObject);
   }
 
   /**

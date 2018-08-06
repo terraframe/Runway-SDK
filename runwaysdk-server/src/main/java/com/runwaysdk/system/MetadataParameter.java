@@ -22,9 +22,9 @@ public class MetadataParameter extends MetadataParameterBase
 {
   private static final long serialVersionUID = 1229405888081L;
   
-  public MetadataParameter(String parentId, String childId)
+  public MetadataParameter(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public MetadataParameter(com.runwaysdk.system.metadata.Metadata parent, com.runwaysdk.system.metadata.MdParameter child)

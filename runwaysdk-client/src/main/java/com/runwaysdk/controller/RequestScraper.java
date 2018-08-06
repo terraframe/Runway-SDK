@@ -568,10 +568,10 @@ public class RequestScraper
     if (RelationshipDTO.class.isAssignableFrom(c))
     {
       String name = this.parameter.getName();
-      String parentId = getValue("#" + name + ".parent.oid");
-      String childId = getValue("#" + name + ".child.oid");
+      String parentOid = getValue("#" + name + ".parent.oid");
+      String childOid = getValue("#" + name + ".child.oid");
 
-      return (MutableDTO) c.getConstructor(ClientRequestIF.class, String.class, String.class).newInstance(clientRequestIF, parentId, childId);
+      return (MutableDTO) c.getConstructor(ClientRequestIF.class, String.class, String.class).newInstance(clientRequestIF, parentOid, childOid);
     }
 
     return (MutableDTO) c.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);

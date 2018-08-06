@@ -31,9 +31,9 @@ public abstract class ProblemInheritanceBase extends com.runwaysdk.system.metada
   public final static String CLASS = "com.runwaysdk.system.metadata.ProblemInheritance";
   private static final long serialVersionUID = 1827230838;
   
-  public ProblemInheritanceBase(String parentId, String childId)
+  public ProblemInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

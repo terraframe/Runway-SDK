@@ -63,17 +63,17 @@ public class Relationship extends Element implements Serializable
   /**
    * Constructor for new instances of Realtionships.
    *
-   * @param parentId
+   * @param parentOid
    *          Database oid of the parent
-   * @param childId
+   * @param childOid
    *          Database oid of the child
    * @param type
    *          type the relationship
    */
-  public Relationship(String parentId, String childId)
+  public Relationship(String parentOid, String childOid)
   {
     super();
-    setDataEntity(RelationshipDAO.newInstance(parentId, childId, getDeclaredType()));
+    setDataEntity(RelationshipDAO.newInstance(parentOid, childOid, getDeclaredType()));
     parent = null;
     child = null;
   }
@@ -81,17 +81,17 @@ public class Relationship extends Element implements Serializable
   /**
    * Constructor for generic instances of Realtionships. Should not be called by subclasses, as their java type may not correctly represent their DAO type.
    *
-   * @param parentId
+   * @param parentOid
    *          Database oid of the parent
-   * @param childId
+   * @param childOid
    *          Database oid of the child
    * @param type
    *          type the relationship
    */
-  public Relationship(String parentId, String childId, String type)
+  public Relationship(String parentOid, String childOid, String type)
   {
     super();
-    setDataEntity(RelationshipDAO.newInstance(parentId, childId, type));
+    setDataEntity(RelationshipDAO.newInstance(parentOid, childOid, type));
     parent = null;
     child = null;
   }
@@ -112,21 +112,21 @@ public class Relationship extends Element implements Serializable
    * Overwrites the parent oid if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data
    * corruption.
    *
-   * @param parentId
+   * @param parentOid
    */
-  public void overwriteParentId(String parentId)
+  public void overwriteParentOid(String parentOid)
   {
-    ( (RelationshipDAO) this.entityDAO ).overwriteParentId(parentId);
+    ( (RelationshipDAO) this.entityDAO ).overwriteParentOid(parentOid);
   }
 
   /**
    * Overwrites the child oid if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data corruption.
    *
-   * @param childId
+   * @param childOid
    */
-  public void overwriteChildId(String childId)
+  public void overwriteChildOid(String childOid)
   {
-    ( (RelationshipDAO) this.entityDAO ).overwriteParentId(childId);
+    ( (RelationshipDAO) this.entityDAO ).overwriteParentOid(childOid);
   }
 
   /**
@@ -227,7 +227,7 @@ public class Relationship extends Element implements Serializable
         Class<String> stringClass = String.class;
         Constructor<?> con = clazz.getConstructor(stringClass, stringClass);
 
-        relationship = (Relationship) con.newInstance(relationshipDAO.getParentId(), relationshipDAO.getChildId());
+        relationship = (Relationship) con.newInstance(relationshipDAO.getParentOid(), relationshipDAO.getChildOid());
 
         // Set the private variables of the runtime type
         for (AttributeIF attribute : relationshipDAO.getAttributeArrayIF())
@@ -284,7 +284,7 @@ public class Relationship extends Element implements Serializable
   {
     // Lazy instantiation of parent
     if (parent == null)
-      parent = Business.get(relationship().getParentId());
+      parent = Business.get(relationship().getParentOid());
 
     return parent;
   }
@@ -294,9 +294,9 @@ public class Relationship extends Element implements Serializable
    *
    * @return oid of the parent on this object.
    */
-  public String getParentId()
+  public String getParentOid()
   {
-    return this.relationship().getParentId();
+    return this.relationship().getParentOid();
   }
 
   /**
@@ -308,7 +308,7 @@ public class Relationship extends Element implements Serializable
   {
     // Lazy instantiation of child
     if (child == null)
-      child = Business.get(relationship().getChildId());
+      child = Business.get(relationship().getChildOid());
 
     return child;
   }
@@ -318,9 +318,9 @@ public class Relationship extends Element implements Serializable
    *
    * @return oid of the child on this object.
    */
-  public String getChildId()
+  public String getChildOid()
   {
-    return this.relationship().getChildId();
+    return this.relationship().getChildOid();
   }
 
   protected String getDeclaredType()

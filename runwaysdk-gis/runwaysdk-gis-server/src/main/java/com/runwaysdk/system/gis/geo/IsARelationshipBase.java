@@ -43,9 +43,9 @@ public abstract class IsARelationshipBase extends com.runwaysdk.business.ontolog
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 270710704;
   
-  public IsARelationshipBase(String parentId, String childId)
+  public IsARelationshipBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

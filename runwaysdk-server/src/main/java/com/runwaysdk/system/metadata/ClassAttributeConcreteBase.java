@@ -31,9 +31,9 @@ public abstract class ClassAttributeConcreteBase extends com.runwaysdk.system.me
   public final static String CLASS = "com.runwaysdk.system.metadata.ClassAttributeConcrete";
   private static final long serialVersionUID = 84621679;
   
-  public ClassAttributeConcreteBase(String parentId, String childId)
+  public ClassAttributeConcreteBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

@@ -56,12 +56,12 @@ public class RelationshipDTOToJSON extends ElementDTOToJSON
     RelationshipDTO relationshipDTO = getComponentDTO();
 
     // parent
-    String parentId = relationshipDTO.getParentId();
-    json.put(JSON.RELATIONSHIP_DTO_PARENT_ID.getLabel(), parentId);
+    String parentOid = relationshipDTO.getParentOid();
+    json.put(JSON.RELATIONSHIP_DTO_PARENT_OID.getLabel(), parentOid);
 
     // child
-    String childId = relationshipDTO.getChildId();
-    json.put(JSON.RELATIONSHIP_DTO_CHILD_ID.getLabel(), childId);
+    String childOid = relationshipDTO.getChildOid();
+    json.put(JSON.RELATIONSHIP_DTO_CHILD_OID.getLabel(), childOid);
   }
 
   /**

@@ -64,7 +64,7 @@ public class ParentCommand implements IRelationshipStrategy
   @Override
   public BusinessObject getEndPoint(RelationshipDAOIF relationship)
   {
-    return (BusinessObject) BusinessObject.get(relationship.getChildId());
+    return (BusinessObject) BusinessObject.get(relationship.getChildOid());
   }
 
   @Override

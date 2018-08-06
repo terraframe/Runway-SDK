@@ -31,9 +31,9 @@ public abstract class ClassAttributeBase extends com.runwaysdk.system.metadata.M
   public final static String CLASS = "com.runwaysdk.system.metadata.ClassAttribute";
   private static final long serialVersionUID = -1700247515;
   
-  public ClassAttributeBase(String parentId, String childId)
+  public ClassAttributeBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

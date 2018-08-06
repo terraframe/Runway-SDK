@@ -22,9 +22,9 @@ public abstract class ClassAttribute extends ClassAttributeBase
 {
   private static final long serialVersionUID = 1229405888136L;
   
-  public ClassAttribute(String parentId, String childId)
+  public ClassAttribute(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public ClassAttribute(com.runwaysdk.system.metadata.MdClass parent, com.runwaysdk.system.metadata.MdAttribute child)

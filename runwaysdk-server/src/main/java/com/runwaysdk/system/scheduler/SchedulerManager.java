@@ -182,7 +182,7 @@ public class SchedulerManager
     JobHistoryRecordQuery jhrq = new JobHistoryRecordQuery(qf);
 
     jhq.WHERE(jhq.getStatus().containsExactly(AllJobStatus.RUNNING));
-    ejq.WHERE(ejq.getOid().EQ(jhrq.parentId()));
+    ejq.WHERE(ejq.getOid().EQ(jhrq.parentOid()));
     jhrq.WHERE(jhrq.hasChild(jhq));
 
     OIterator<? extends JobHistoryRecord> it = jhrq.getIterator();

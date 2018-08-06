@@ -22,9 +22,9 @@ public class GeoEntityAttributeRootDTO extends GeoEntityAttributeRootDTOBase
 {
   private static final long serialVersionUID = -881503658;
   
-  public GeoEntityAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public GeoEntityAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

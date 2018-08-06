@@ -31,9 +31,9 @@ public abstract class ViewInheritanceBase extends com.runwaysdk.system.metadata.
   public final static String CLASS = "com.runwaysdk.system.metadata.ViewInheritance";
   private static final long serialVersionUID = 837114318;
   
-  public ViewInheritanceBase(String parentId, String childId)
+  public ViewInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

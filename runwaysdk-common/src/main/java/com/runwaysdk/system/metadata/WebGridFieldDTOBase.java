@@ -24,9 +24,9 @@ public abstract class WebGridFieldDTOBase extends com.runwaysdk.business.Relatio
   public final static String CLASS = "com.runwaysdk.system.metadata.WebGridField";
   private static final long serialVersionUID = 1534620663;
   
-  public WebGridFieldDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public WebGridFieldDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -406,12 +406,12 @@ public abstract class WebGridFieldDTOBase extends com.runwaysdk.business.Relatio
   
   public com.runwaysdk.system.metadata.MdWebSingleTermGridDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdWebSingleTermGridDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdWebSingleTermGridDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.MdWebPrimitiveDTO getChild()
   {
-    return com.runwaysdk.system.metadata.MdWebPrimitiveDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.MdWebPrimitiveDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.WebGridFieldDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -421,16 +421,16 @@ public abstract class WebGridFieldDTOBase extends com.runwaysdk.business.Relatio
     return (com.runwaysdk.system.metadata.WebGridFieldDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.WebGridFieldQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.WebGridFieldQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.WebGridFieldQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.WebGridFieldQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.WebGridFieldQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.WebGridFieldQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

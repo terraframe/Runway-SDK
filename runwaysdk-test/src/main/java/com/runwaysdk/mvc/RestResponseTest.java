@@ -200,8 +200,8 @@ public class RestResponseTest
       JSONObject test = object.getJSONObject("relationship");
 
       Assert.assertEquals(mdRelationshipType, test.get(EntityInfo.TYPE));
-      Assert.assertEquals(dto.getOid(), test.get(JSON.RELATIONSHIP_DTO_PARENT_ID.getLabel()));
-      Assert.assertEquals(dto.getOid(), test.get(JSON.RELATIONSHIP_DTO_CHILD_ID.getLabel()));
+      Assert.assertEquals(dto.getOid(), test.get(JSON.RELATIONSHIP_DTO_PARENT_OID.getLabel()));
+      Assert.assertEquals(dto.getOid(), test.get(JSON.RELATIONSHIP_DTO_CHILD_OID.getLabel()));
     }
     finally
     {

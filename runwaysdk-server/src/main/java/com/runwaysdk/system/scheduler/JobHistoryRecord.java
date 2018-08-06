@@ -22,9 +22,9 @@ public class JobHistoryRecord extends JobHistoryRecordBase
 {
   private static final long serialVersionUID = -764169172;
   
-  public JobHistoryRecord(String parentId, String childId)
+  public JobHistoryRecord(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public JobHistoryRecord(com.runwaysdk.system.scheduler.ExecutableJob parent, com.runwaysdk.system.scheduler.JobHistory child)

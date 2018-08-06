@@ -22,9 +22,9 @@ public class MobileGridField extends MobileGridFieldBase
 {
   private static final long serialVersionUID = -1412718085;
   
-  public MobileGridField(String parentId, String childId)
+  public MobileGridField(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public MobileGridField(com.runwaysdk.system.metadata.MdMobileSingleTermGrid parent, com.runwaysdk.system.metadata.MdMobilePrimitive child)

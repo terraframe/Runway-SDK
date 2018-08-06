@@ -117,11 +117,11 @@ public class EnumerationMasterQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
         boolean foundMatch = false;
         for (EnumerationItemDAO enumItem : QueryMasterSetup.enumerationItems)
         {
-          if (childId.equals(enumItem.getOid()))
+          if (childOid.equals(enumItem.getOid()))
           {
             foundMatch = true;
           }
@@ -259,11 +259,11 @@ public class EnumerationMasterQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
         boolean foundMatch = false;
         for (EnumerationItemDAO enumItem : QueryMasterSetup.enumerationItems_east)
         {
-          if (childId.equals(enumItem.getOid()))
+          if (childOid.equals(enumItem.getOid()))
           {
             foundMatch = true;
           }
@@ -289,11 +289,11 @@ public class EnumerationMasterQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
         boolean foundMatch = false;
         for (EnumerationItemDAO enumItem : QueryMasterSetup.enumerationItems_west)
         {
-          if (childId.equals(enumItem.getOid()))
+          if (childOid.equals(enumItem.getOid()))
           {
             foundMatch = true;
           }
@@ -414,11 +414,11 @@ public class EnumerationMasterQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
         boolean foundMatch = false;
         for (EnumerationItemDAO enumItem : QueryMasterSetup.enumerationItems_west)
         {
-          if (childId.equals(enumItem.getOid()))
+          if (childOid.equals(enumItem.getOid()))
           {
             foundMatch = true;
           }
@@ -444,11 +444,11 @@ public class EnumerationMasterQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         childClass.cast(object);
-        String childId = (String) childClass.getMethod("getOid").invoke(object);
+        String childOid = (String) childClass.getMethod("getOid").invoke(object);
         boolean foundMatch = false;
         for (EnumerationItemDAO enumItem : QueryMasterSetup.enumerationItems_east)
         {
-          if (childId.equals(enumItem.getOid()))
+          if (childOid.equals(enumItem.getOid()))
           {
             foundMatch = true;
           }

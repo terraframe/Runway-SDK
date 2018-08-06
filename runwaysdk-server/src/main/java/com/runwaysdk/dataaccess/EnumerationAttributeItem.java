@@ -32,9 +32,9 @@ public class EnumerationAttributeItem extends TreeDAO implements SpecializedDAOI
    */
   private static final long serialVersionUID = 238176507795865128L;
 
-  public EnumerationAttributeItem(String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
+  public EnumerationAttributeItem(String parentOid, String childOid, Map<String, Attribute> attributeMap, String relationshipType)
   {
-    super(parentId, childId, attributeMap, relationshipType);
+    super(parentOid, childOid, attributeMap, relationshipType);
   }
 
 

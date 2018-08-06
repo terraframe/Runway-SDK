@@ -22,9 +22,9 @@ public class GeoEntityMultiTermAttributeRootDTO extends GeoEntityMultiTermAttrib
 {
   private static final long serialVersionUID = 1427207315;
   
-  public GeoEntityMultiTermAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public GeoEntityMultiTermAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

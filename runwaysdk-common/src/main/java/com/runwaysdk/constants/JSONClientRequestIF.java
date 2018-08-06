@@ -27,23 +27,23 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * and child. All operations happen within a transaction. This method created with Term (ontology) in mind.
    * 
    * @param sessionId The oid of a previously established session.
-   * @param newParentId The oid of the business that the child will be appended under.
-   * @param childId The oid of the business that will be either moved or copied.
+   * @param newParentOid The oid of the business that the child will be appended under.
+   * @param childOid The oid of the business that will be either moved or copied.
    * @param oldRelationshipId The oid of the relationship that currently exists between parent and child.
    * @param newRelationshipType The type string of the new relationship to create.
    */
-  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType);
+  public String moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType);
   
   /**
    * Returns all children of and their relationship with the given term.
    * 
    * @param sessionId The oid of a previously established session.
-   * @param parentId The oid of the term to get all children.
+   * @param parentOid The oid of the term to get all children.
    * @param pageNum Used to break large returns into chunks (pages), this denotes the page number in the iteration request. Set to 0 to not use pages.
    * @param pageSize Denotes the number of TermAndRel objects per page. A pageSize of 0 will be treated as infinity.
    * @return A list of TermAndRelDTO objects of size pageSize.
    */
-  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize);
+  public String getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize);
   
   /**
    * Checks if the user with the given session has admin screen access.
@@ -70,24 +70,24 @@ public interface JSONClientRequestIF extends ClientRequestMarker
 
   /**
    * Returns a list of BusinessDTO objects that represents all children in a relationship where
-   * the parent has the given parentId.
+   * the parent has the given parentOid.
    *
    * @param sessionId
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * @return
    */
-  public String getChildren(String sessionId, String parentId, String relationshipType);
+  public String getChildren(String sessionId, String parentOid, String relationshipType);
 
   /**
    * Returns a list of BusinessDTO objects that represent all parents in a relationship where the
-   * child has the given childId.
+   * child has the given childOid.
    *
    * @param sessionId
-   * @param childId
+   * @param childOid
    * @param relationshipType
    */
-  public String getParents(String sessionId, String childId, String relationshipType);
+  public String getParents(String sessionId, String childOid, String relationshipType);
 
   /**
    * Returns a list of RelationshipDTO objects (with children information)
@@ -98,7 +98,7 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @param relationshipType
    * @return
    */
-  public String getChildRelationships(String sessionId, String parentId, String relationshipType);
+  public String getChildRelationships(String sessionId, String parentOid, String relationshipType);
 
   /**
    * Returns a list of RelationshipDTO objects (with parent information)
@@ -109,7 +109,7 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @param relationshipType
    * @return
    */
-  public String getParentRelationships(String sessionId, String childId, String relationshipType);
+  public String getParentRelationships(String sessionId, String childOid, String relationshipType);
 
   public String getEnumeration(String sessionId, String enumType, String enumName);
 
@@ -139,13 +139,13 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * Adds a child to a parent for a given relationship.
    *
    * @param sessionId
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipType
    * @return RelationshipDTO representing the new relationship.
    */
-  public String addChild(String sessionId, String parentId,
-      String childId, String relationshipType);
+  public String addChild(String sessionId, String parentOid,
+      String childOid, String relationshipType);
 
   /**
    * Deletes a child from a parent for a given relationship.
@@ -159,13 +159,13 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * Adds a parent to a child for a given relationship.
    *
    * @param sessionId
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipType
    * @return RelationshipDTO representing the new relationship.
    */
-  public String addParent(String sessionId, String parentId,
-      String childId, String relationshipType);
+  public String addParent(String sessionId, String parentOid,
+      String childOid, String relationshipType);
 
   /**
    * Deletes a parent from a child for a given relationship.

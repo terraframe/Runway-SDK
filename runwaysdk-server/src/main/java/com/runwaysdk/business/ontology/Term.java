@@ -61,12 +61,12 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
 
   public static final String TEMP_TABLE = "RUNWAY_ALLPATHS_MULTIPARENT_TEMP";
   public static final String TEMP_TERM_ID_COL = "termId";
-  public static final String TEMP_PARENT_ID_COL = "parentId";
+  public static final String TEMP_PARENT_OID_COL = "parentOid";
   public static final String TEMP_DEPTH_COL = "depth";
   public static final String INDEX_NAME = "RUNWAY_ALLPATHS_MULTIPARENT_TEMP_INDEX";
   public static final List<String> TEMP_TABLE_COLUMNS = Arrays.asList(
       TEMP_TERM_ID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "64"),
-      TEMP_PARENT_ID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "64"),
+      TEMP_PARENT_OID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "64"),
       TEMP_DEPTH_COL + " " + DatabaseProperties.getDatabaseType(MdAttributeIntegerInfo.CLASS)
   );
   private static final List<String> TEMP_TABLE_ATTRS = Arrays.asList(
@@ -176,23 +176,23 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
         @SuppressWarnings("unchecked")
         List<Term> parents = (List<Term>) current.getParents(relationship).getAll();
         
-        List<String> parentIds = new ArrayList<String>();
+        List<String> parentOids = new ArrayList<String>();
         for (Term parent : parents)
         {
-          parentIds.add(parent.getOid());
+          parentOids.add(parent.getOid());
         }
         
-        insertIntoTemp(current.getOid(), parentIds, s.size());
+        insertIntoTemp(current.getOid(), parentOids, s.size());
       }
       else
       {
-        String sql = Database.instance().buildSQLDeleteWhereStatement(TEMP_TABLE, Arrays.asList(TEMP_TERM_ID_COL + " = '" + current.getOid() + "' OR " + TEMP_PARENT_ID_COL + " = '" + current.getOid() + "'"));
+        String sql = Database.instance().buildSQLDeleteWhereStatement(TEMP_TABLE, Arrays.asList(TEMP_TERM_ID_COL + " = '" + current.getOid() + "' OR " + TEMP_PARENT_OID_COL + " = '" + current.getOid() + "'"));
         Database.parseAndExecute(sql);
         
         // TODO: We can't do this with the standard deleteWhere because it causes:
         // A SQL DDL operation was performed in a transaction on table [RUNWAY_ALLPATHS_MULTIPARENT_TEMP] after a SQL DML operation had been perfromed on the same table.  DDL statements cannot be performed if DML statements have aleady been performed on the same table within the same transaction.
         // See ruway apps ticket 558 for more details.
-//        Database.deleteWhere(TEMP_TABLE, TEMP_TERM_ID_COL + " = '" + current.getOid() + "' OR " + TEMP_PARENT_ID_COL + " = '" + current.getOid() + "'");
+//        Database.deleteWhere(TEMP_TABLE, TEMP_TERM_ID_COL + " = '" + current.getOid() + "' OR " + TEMP_PARENT_OID_COL + " = '" + current.getOid() + "'");
         
         strategy.removeTerm(current, relationship);
         if (s.size() != 0)
@@ -206,7 +206,7 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
     
     // Post step: since we destroyed terms with multiple parents those multiple parents (that aren't our children) must now be rebuilt.
     //   We have to do 2 loops here because we need two separate phases for deleting any still existing allpaths data and then rebuilding it.
-    String selectSql = Database.selectClause(Arrays.asList(TEMP_TERM_ID_COL, TEMP_PARENT_ID_COL, TEMP_DEPTH_COL), Arrays.asList(TEMP_TABLE),  new ArrayList<String>());
+    String selectSql = Database.selectClause(Arrays.asList(TEMP_TERM_ID_COL, TEMP_PARENT_OID_COL, TEMP_DEPTH_COL), Arrays.asList(TEMP_TABLE),  new ArrayList<String>());
     ResultSet resultSet = Database.query(selectSql + " ORDER BY " + TEMP_DEPTH_COL + " DESC");
     
     try
@@ -244,9 +244,9 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
       while (resultSet2.next())
       {
         String termId = resultSet2.getString(TEMP_TERM_ID_COL);
-        String parentId = resultSet2.getString(TEMP_PARENT_ID_COL);
+        String parentOid = resultSet2.getString(TEMP_PARENT_OID_COL);
         
-        strategy.addLink(Term.get(parentId), Term.get(termId), relationship);
+        strategy.addLink(Term.get(parentOid), Term.get(termId), relationship);
       }
     }
     catch (SQLException sqlEx1)
@@ -270,16 +270,16 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
     // When deleting with multiple relationships we won't have exited the transaction yet and thus this table will still exist.
     Database.dropTables(Arrays.asList("runway_allpaths_multiparent_temp"));
   }
-  private void insertIntoTemp(String termId, List<String> parentIds, Integer depth)
+  private void insertIntoTemp(String termId, List<String> parentOids, Integer depth)
   {
     List<PreparedStatement> statements = new ArrayList<PreparedStatement>();
     
-    for (String parentId : parentIds)
+    for (String parentOid : parentOids)
     {
       List<String> bindVals = Arrays.asList("?","?","?");
-      List<Object> vals = Arrays.asList(termId, parentId, String.valueOf(depth));
+      List<Object> vals = Arrays.asList(termId, parentOid, String.valueOf(depth));
       
-      PreparedStatement preparedStmt = Database.buildPreparedSQLInsertStatement(TEMP_TABLE, Arrays.asList(TEMP_TERM_ID_COL, TEMP_PARENT_ID_COL, TEMP_DEPTH_COL), bindVals, vals, TEMP_TABLE_ATTRS);
+      PreparedStatement preparedStmt = Database.buildPreparedSQLInsertStatement(TEMP_TABLE, Arrays.asList(TEMP_TERM_ID_COL, TEMP_PARENT_OID_COL, TEMP_DEPTH_COL), bindVals, vals, TEMP_TABLE_ATTRS);
       statements.add(preparedStmt);
     }
     

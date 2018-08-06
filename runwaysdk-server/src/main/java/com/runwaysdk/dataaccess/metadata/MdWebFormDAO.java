@@ -139,7 +139,7 @@ public class MdWebFormDAO extends MdFormDAO implements MdWebFormDAOIF
     RelationshipDAOQuery relQ = f.relationshipDAOQuery(WebGroupField.CLASS);
 
     // exclude fields that are directly beneath a group
-    relQ.WHERE(relQ.childId().EQ(q1.oid()));
+    relQ.WHERE(relQ.childOid().EQ(q1.oid()));
     q.AND(q.isNotChildIn_SUBSELECT(relQ));
 
     q.WHERE(q.aReference(MdWebField.DEFININGMDFORM).EQ(this));

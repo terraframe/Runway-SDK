@@ -31,9 +31,9 @@ public abstract class ExceptionInheritanceBase extends com.runwaysdk.system.meta
   public final static String CLASS = "com.runwaysdk.system.metadata.ExceptionInheritance";
   private static final long serialVersionUID = -367311898;
   
-  public ExceptionInheritanceBase(String parentId, String childId)
+  public ExceptionInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

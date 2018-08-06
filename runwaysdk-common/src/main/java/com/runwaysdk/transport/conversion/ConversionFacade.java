@@ -683,7 +683,7 @@ public class ConversionFacade
    * @return
    */
 
-  public static RelationshipDTO createDynamicRelationshipDTO(ClientRequestIF clientRequest, String type, String parentId, String childId)
+  public static RelationshipDTO createDynamicRelationshipDTO(ClientRequestIF clientRequest, String type, String parentOid, String childOid)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
     RelationshipDTO retDTO = null;
@@ -693,7 +693,7 @@ public class ConversionFacade
       clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class, String.class, String.class);
 
-      retDTO = (RelationshipDTO) constructor.newInstance(clientRequest, parentId, childId);
+      retDTO = (RelationshipDTO) constructor.newInstance(clientRequest, parentOid, childOid);
     }
     catch (SecurityException e)
     {
@@ -730,7 +730,7 @@ public class ConversionFacade
     {
       if (e instanceof LoaderDecoratorExceptionIF)
       {
-        retDTO = ComponentDTOFacade.buildRelationshipDTO(clientRequest, type, parentId, childId);
+        retDTO = ComponentDTOFacade.buildRelationshipDTO(clientRequest, type, parentOid, childOid);
       }
       else
       {
@@ -739,7 +739,7 @@ public class ConversionFacade
     }
     catch (ClassNotFoundException e)
     {
-      retDTO = ComponentDTOFacade.buildRelationshipDTO(clientRequest, type, parentId, childId);
+      retDTO = ComponentDTOFacade.buildRelationshipDTO(clientRequest, type, parentOid, childOid);
     }
     
 

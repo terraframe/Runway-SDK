@@ -22,9 +22,9 @@ public class IsARelationship extends IsARelationshipBase
 {
   private static final long serialVersionUID = -1789452472;
   
-  public IsARelationship(String parentId, String childId)
+  public IsARelationship(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public IsARelationship(com.runwaysdk.system.gis.geo.Universal parent, com.runwaysdk.system.gis.geo.Universal child)
@@ -35,7 +35,7 @@ public class IsARelationship extends IsARelationshipBase
   @Override
   public String buildKey()
   {
-    return this.getParentId() + this.getChildId();
+    return this.getParentOid() + this.getChildOid();
   }
   
 }

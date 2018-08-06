@@ -50,7 +50,7 @@ public interface IPersistanceStrategy
 
   public EntityDAO newInstance(String type);
 
-  public RelationshipDAO newInstance(String parentId, String childId, String type);
+  public RelationshipDAO newInstance(String parentOid, String childOid, String type);
 
   public List<MdRelationshipDAOIF> getAllParentMdRelationships(MdBusinessDAOIF mdBusiness);
 

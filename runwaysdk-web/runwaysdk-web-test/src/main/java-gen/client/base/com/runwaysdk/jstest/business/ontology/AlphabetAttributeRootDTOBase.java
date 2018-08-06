@@ -24,9 +24,9 @@ public abstract class AlphabetAttributeRootDTOBase extends com.runwaysdk.busines
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot";
   private static final long serialVersionUID = 927321183;
   
-  public AlphabetAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public AlphabetAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -444,12 +444,12 @@ public abstract class AlphabetAttributeRootDTOBase extends com.runwaysdk.busines
   
   public com.runwaysdk.system.metadata.MdAttributeTermDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdAttributeTermDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdAttributeTermDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.jstest.business.ontology.AlphabetDTO getChild()
   {
-    return com.runwaysdk.jstest.business.ontology.AlphabetDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.jstest.business.ontology.AlphabetDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -459,16 +459,16 @@ public abstract class AlphabetAttributeRootDTOBase extends com.runwaysdk.busines
     return (com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO) dto;
   }
   
-  public static com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

@@ -44,9 +44,9 @@ public abstract class HasLayerBase extends com.runwaysdk.business.Relationship
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 2083800188;
   
-  public HasLayerBase(String parentId, String childId)
+  public HasLayerBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

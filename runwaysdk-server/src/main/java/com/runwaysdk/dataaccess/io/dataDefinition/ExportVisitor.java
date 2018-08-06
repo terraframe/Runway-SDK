@@ -501,7 +501,7 @@ public class ExportVisitor extends MarkupVisitor
 
           for (RelationshipDAOIF relationship : relationships)
           {
-            MdWebPrimitiveDAOIF mdWebPrimitive = (MdWebPrimitiveDAOIF) MdWebPrimitiveDAO.get(relationship.getChildId());
+            MdWebPrimitiveDAOIF mdWebPrimitive = (MdWebPrimitiveDAOIF) MdWebPrimitiveDAO.get(relationship.getChildOid());
 
             String primitiveTag = getTagName(mdWebPrimitive);
 

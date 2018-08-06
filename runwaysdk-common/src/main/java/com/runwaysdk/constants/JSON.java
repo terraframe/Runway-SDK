@@ -239,12 +239,12 @@ public enum JSON {
   /**
      * 
      */
-  RELATIONSHIP_DTO_PARENT_ID("parentId"),
+  RELATIONSHIP_DTO_PARENT_OID("parentOid"),
 
   /**
      * 
      */
-  RELATIONSHIP_DTO_CHILD_ID("childId"),
+  RELATIONSHIP_DTO_CHILD_OID("childOid"),
 
   /*------------------- StructDTO -------------------*/
 

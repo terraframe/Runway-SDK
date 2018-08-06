@@ -22,9 +22,9 @@ public class UtilInheritance extends UtilInheritanceBase
 {
   private static final long serialVersionUID = 1229405888113L;
   
-  public UtilInheritance(String parentId, String childId)
+  public UtilInheritance(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public UtilInheritance(com.runwaysdk.system.metadata.MdUtil parent, com.runwaysdk.system.metadata.MdUtil child)

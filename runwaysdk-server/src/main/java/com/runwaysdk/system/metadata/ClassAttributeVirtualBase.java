@@ -31,9 +31,9 @@ public abstract class ClassAttributeVirtualBase extends com.runwaysdk.system.met
   public final static String CLASS = "com.runwaysdk.system.metadata.ClassAttributeVirtual";
   private static final long serialVersionUID = -651262342;
   
-  public ClassAttributeVirtualBase(String parentId, String childId)
+  public ClassAttributeVirtualBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()

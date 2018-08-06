@@ -184,7 +184,7 @@ public class MdAttributeTermTest
         List<RelationshipDAOIF> roots = mdAttributeTerm.getAllAttributeRoots();
 
         Assert.assertEquals(1, roots.size());
-        Assert.assertEquals(term.getOid(), roots.get(0).getChildId());
+        Assert.assertEquals(term.getOid(), roots.get(0).getChildOid());
       }
       finally
       {

@@ -56,9 +56,9 @@ public class JavaAdapter
    * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String,
    *      java.lang.String, java.lang.Integer, java.lang.Integer)
    */
-  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize)
   {
-    return Facade.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+    return Facade.getTermAllChildren(sessionId, parentOid, pageNum, pageSize);
   }
 
   /**
@@ -66,9 +66,9 @@ public class JavaAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType)
+  public static RelationshipDTO addChild(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    return Facade.addChild(sessionId, parentId, childId, relationshipType);
+    return Facade.addChild(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
@@ -76,9 +76,9 @@ public class JavaAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType)
+  public static RelationshipDTO addParent(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    return Facade.addParent(sessionId, parentId, childId, relationshipType);
+    return Facade.addParent(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**

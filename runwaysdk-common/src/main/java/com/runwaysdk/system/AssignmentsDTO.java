@@ -22,9 +22,9 @@ public class AssignmentsDTO extends AssignmentsDTOBase
 {
   private static final long serialVersionUID = 1677576903;
   
-  public AssignmentsDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public AssignmentsDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

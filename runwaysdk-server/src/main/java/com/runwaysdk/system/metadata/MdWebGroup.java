@@ -44,7 +44,7 @@ public class MdWebGroup extends MdWebGroupBase
     MdWebFieldQuery q = new MdWebFieldQuery(f);
     WebGroupFieldQuery relQ = new WebGroupFieldQuery(f);
     
-    relQ.WHERE(relQ.parentId().EQ(this.getOid()));
+    relQ.WHERE(relQ.parentOid().EQ(this.getOid()));
     q.WHERE(q.groupFields(relQ));
     
     q.ORDER_BY_ASC(q.getFieldOrder());

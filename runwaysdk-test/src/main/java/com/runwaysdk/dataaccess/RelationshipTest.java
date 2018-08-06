@@ -436,7 +436,7 @@ public class RelationshipTest
       Assert.fail("RelationshipFactory.get() returned null");
     }
 
-    if (rel.getParentId().compareTo(testObject.getOid()) != 0 || rel.getChildId().compareTo(reference.getOid()) != 0)
+    if (rel.getParentOid().compareTo(testObject.getOid()) != 0 || rel.getChildOid().compareTo(reference.getOid()) != 0)
     {
       Assert.fail("BusinessDAO.addParent() did not correctly save the information to the database.");
     }
@@ -512,7 +512,7 @@ public class RelationshipTest
       Assert.fail("RelationshipFactory.get() returned null");
     }
 
-    if (rel.getParentId().compareTo(testObject.getOid()) != 0 || rel.getChildId().compareTo(reference.getOid()) != 0)
+    if (rel.getParentOid().compareTo(testObject.getOid()) != 0 || rel.getChildOid().compareTo(reference.getOid()) != 0)
     {
       Assert.fail("BusinessDAO.addParent() did not correctly save the information to the database.");
     }

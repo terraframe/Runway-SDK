@@ -24,9 +24,9 @@ public abstract class ClassAttributeVirtualDTOBase extends com.runwaysdk.system.
   public final static String CLASS = "com.runwaysdk.system.metadata.ClassAttributeVirtual";
   private static final long serialVersionUID = 835908858;
   
-  public ClassAttributeVirtualDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public ClassAttributeVirtualDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -48,12 +48,12 @@ public abstract class ClassAttributeVirtualDTOBase extends com.runwaysdk.system.
   
   public com.runwaysdk.system.metadata.MdViewDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdViewDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdViewDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.MdAttributeVirtualDTO getChild()
   {
-    return com.runwaysdk.system.metadata.MdAttributeVirtualDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.MdAttributeVirtualDTO.get(getRequest(), super.getChildOid());
   }
   
   public static com.runwaysdk.system.metadata.ClassAttributeVirtualDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
@@ -63,16 +63,16 @@ public abstract class ClassAttributeVirtualDTOBase extends com.runwaysdk.system.
     return (com.runwaysdk.system.metadata.ClassAttributeVirtualDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.ClassAttributeVirtualQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.ClassAttributeVirtualQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.ClassAttributeVirtualQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.ClassAttributeVirtualQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.ClassAttributeVirtualQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.ClassAttributeVirtualQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()

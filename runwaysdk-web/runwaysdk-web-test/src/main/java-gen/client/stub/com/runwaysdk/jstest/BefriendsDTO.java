@@ -22,9 +22,9 @@ public class BefriendsDTO extends BefriendsDTOBase
  implements com.runwaysdk.generation.loader.{
   private static final long serialVersionUID = 571042368;
   
-  public BefriendsDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public BefriendsDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -44,9 +44,9 @@ public abstract class UniversalAttributeRootBase extends com.runwaysdk.business.
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -1190781951;
   
-  public UniversalAttributeRootBase(String parentId, String childId)
+  public UniversalAttributeRootBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()

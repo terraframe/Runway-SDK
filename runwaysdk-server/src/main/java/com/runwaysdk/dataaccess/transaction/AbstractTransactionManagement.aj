@@ -298,14 +298,14 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   }
 
   // these objects should be unlocked at the end of the session request
-  protected pointcut setRelLock(String parentId, String childId)
-    : (execution (* com.runwaysdk.dataaccess.transaction.LockRelationship.recordRelLock(String, String)) && args(parentId, childId))
+  protected pointcut setRelLock(String parentOid, String childOid)
+    : (execution (* com.runwaysdk.dataaccess.transaction.LockRelationship.recordRelLock(String, String)) && args(parentOid, childOid))
   && cflow(topLevelTransactions());
 
-  before(String parentId, String childId) :  setRelLock(parentId, childId)
+  before(String parentOid, String childOid) :  setRelLock(parentOid, childOid)
   {
-    this.getState().addSetAppLocksSet(parentId);
-    this.getState().addSetAppLocksSet(childId);
+    this.getState().addSetAppLocksSet(parentOid);
+    this.getState().addSetAppLocksSet(childOid);
   }
 
   protected pointcut reloadGlobalPublicPermissions()

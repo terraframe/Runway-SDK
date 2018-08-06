@@ -160,11 +160,11 @@ public class MojaxObjectParser
 
     if (dto.getString(JSON.DTO_TYPE.getLabel()).equals(RelationshipDTOInfo.CLASS))
     {
-      String parentId = dto.getString(JSON.RELATIONSHIP_DTO_PARENT_ID.getLabel());
-      parameters.put("#" + baseName + ".parent.oid", new String[] { parentId });
+      String parentOid = dto.getString(JSON.RELATIONSHIP_DTO_PARENT_OID.getLabel());
+      parameters.put("#" + baseName + ".parent.oid", new String[] { parentOid });
 
-      String childId = dto.getString(JSON.RELATIONSHIP_DTO_CHILD_ID.getLabel());
-      parameters.put("#" + baseName + ".child.oid", new String[] { childId });
+      String childOid = dto.getString(JSON.RELATIONSHIP_DTO_CHILD_OID.getLabel());
+      parameters.put("#" + baseName + ".child.oid", new String[] { childOid });
     }
   }
 

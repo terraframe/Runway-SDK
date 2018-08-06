@@ -22,9 +22,9 @@ public class SynonymAttributeRoot extends SynonymAttributeRootBase
 {
   private static final long serialVersionUID = -834699164;
   
-  public SynonymAttributeRoot(String parentId, String childId)
+  public SynonymAttributeRoot(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public SynonymAttributeRoot(com.runwaysdk.system.metadata.MdAttributeTerm parent, com.runwaysdk.system.gis.geo.Synonym child)

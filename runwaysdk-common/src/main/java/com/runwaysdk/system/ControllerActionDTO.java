@@ -22,9 +22,9 @@ public class ControllerActionDTO extends ControllerActionDTOBase
 {
   private static final long serialVersionUID = -1937003;
   
-  public ControllerActionDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public ControllerActionDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
